@@ -543,7 +543,7 @@ static class LogUtilities
             case Race.Kobolds:
                 return GetRandomStringFrom("kobold", "little lizard", "little reptile"); ////new 
             case Race.Frogs:
-                return GetRandomStringFrom("demi-frog", "amphibian", "frog"); ////new, many thanks to Flame_Valxsarion    
+                return GetRandomStringFrom("demi-frog", "amphibian", "frog"); ////new, many thanks to Flame_Valxsarion             
             case Race.FeralLions:
                 return GetRandomStringFrom("feline", GetGenderString(unit, "lioness", "lion", "lion"), "leonine", "kitty"); 
             default:

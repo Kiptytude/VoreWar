@@ -1278,6 +1278,8 @@ static class StoredLogTexts
 
             new EventString((i) => $"\"Who’s a good {BoyGirl(i.Target)}?\" <b>{i.Unit.Name}</b> asks while pressing {GPPHis(i.Unit)} fingers into {GPPHis(i.Target)} belly. <b>{i.Target.Name}</b> cocks {GPPHis(i.Target)} head to the side, wondering to the answer. \"You are!\" The answer sends the canine into an excited, jiggling jumping spree.",
             targetRace: Race.Dogs, priority: 9, conditional: s => s.Target.Side == s.Unit.Side && ActorHumanoid(s)),
+            new EventString((i) => $"<b>{i.Unit.Name}</b>’s attentive massage of <b>{i.Target.Name}</b>’s stuffed midsection convinces the voracious canine to make {GPPHim(i.Unit)} {GPPHis(i.Target)} master no matter the cost.",
+            targetRace: Race.Dogs, priority: 9, conditional: s => s.Target.Side == s.Unit.Side || (s.Unit.HasTrait(Traits.SeductiveTouch) && TacticalUtilities.Units.Where(actor => actor.Unit == s.Target)?.FirstOrDefault().TurnsSinceLastParalysis <= 0) ),
             new EventString((i) => $"<b>{i.Target.Name}</b> just loves <b>{i.Unit.Name}</b> so much! {GPPHe(i.Target)} can’t help {GPPHimself(i.Target)} from using {GPPHis(i.Target)} sloshing belly weight to push {GPPHim(i.Unit)} over and assaulting {GPPHim(i.Unit)} in a flurry of licks.",
             targetRace: Race.Dogs, priority: 9, conditional: s => s.Target.Side == s.Unit.Side && ReqTargetCompatible(s)),
             new EventString((i) => $"<b>{i.Target.Name}</b> lolls out {GPPHis(i.Target)} tongue and gently starts to lick <b>{ApostrophizeWithOrWithoutS(i.Unit.Name)}</b> face as {GPPHe(i.Unit)} work{SIfSingular(i.Unit)} to satisfy {GPPHis(i.Target)} gurgling tummy.",
@@ -1656,17 +1658,17 @@ static class StoredLogTexts
             new EventString((i) => $"<b>{i.Unit.Name}</b> grab{SIfSingular(i.Unit)} <b>{i.Target.Name}</b> and stick{SIfSingular(i.Unit)} {GPPHis(i.Target)} {(TargetHumanoid(i) ? "legs" : "hind legs")} into his anus, leaving {GPPHim(i.Target)} to dangle against the {GetRaceDescSingl(i.Unit)}'s genitals, while the quicksand trap that is {GPPHis(i.Unit)} asshole slowly pulls {GPPHim(i.Target)} into {GPPHis(i.Target)} smelly doom.",
             conditional: s => SizeDiff(s, 3), actorRace: Race.FeralLions, priority: 9),
 
-            new EventString((i) => $"<b>{i.Unit.Name}</b> leaps high into the air before coming down onto <b>{i.Target.Name}</b> ass-first, slurping the terrified prey up {GPPHis(i.Unit)} tailhole.", priority: 8),
+           new EventString((i) => $"<b>{i.Unit.Name}</b> leaps high into the air before coming down onto <b>{i.Target.Name}</b> ass-first, slurping the terrified prey up {GPPHis(i.Unit)} tailhole.", priority: 8),
             new EventString((i) => $"<b>{i.Target.Name}</b> leaves skidmarks on the ground as {GPPHe(i.Target)} is being pulled up <b>{ApostrophizeWithOrWithoutS(i.Unit.Name)}</b> booty.", priority: 8),
             new EventString((i) => $"<b>{i.Unit.Name}</b> clenches <b>{ApostrophizeWithOrWithoutS(i.Target.Name)}</b> head between {GPPHis(i.Unit)} asscheeks and pulls {GPPHim(i.Target)} in.", priority: 8),
             new EventString((i) => $"<b>{i.Unit.Name}</b> sits on <b>{ApostrophizeWithOrWithoutS(i.Target.Name)}</b> face, letting the lucky prey feel {GPPHis(i.Unit)} plump booty before quickly pulling them inside.", priority: 8),
             new EventString((i) => $"<b>{i.Unit.Name}</b> smooshes <b>{ApostrophizeWithOrWithoutS(i.Target.Name)}</b> face under {GPPHis(i.Unit)} rump, grinding indulgently and working {GPPHim(i.Target)} into {GPPHis(i.Unit)} anus among muffled protests, before getting up and stretching {GPPHis(i.Unit)} butt in the air, letting gravity do the rest.", priority: 8),
-            new EventString((i) => $"<b>{i.Unit.Name}</b> baits a sneak attack from <b>{i.Target.Name}</b>, only to let {GPPHim(i.Target)} collide with {GPPHis(i.Unit)} gaping tailhole, which consumes {GPPHim(i.Target)} in a series of powerful anal clenches.", priority: 8, conditional: s => ActorTail(s)),
+           new EventString((i) => $"<b>{i.Unit.Name}</b> baits a sneak attack from <b>{i.Target.Name}</b>, only to let {GPPHim(i.Target)} collide with {GPPHis(i.Unit)} gaping tailhole, which consumes {GPPHim(i.Target)} in a series of powerful anal clenches.", priority: 8, conditional: s => ActorTail(s)),
             new EventString((i) => $"<b>{i.Target.Name}</b> is pulled screaming and thrashing into <b>{ApostrophizeWithOrWithoutS(i.Unit.Name)}</b> behind!",priority: 8),
-            new EventString((i) => $"<b>{i.Unit.Name}</b> lies on the ground watching <b>{i.Target.Name}</b> disappear up {GPPHis(i.Unit)} ass.",priority: 8),
-            new EventString((i) => $"<b>{i.Unit.Name}</b> knocks <b>{i.Target.Name}</b> onto the ground and swiftly shoves the terrified prey’s lower body up {GPPHis(i.Unit)} ass. After a few contractions, {i.Unit.Name} leans over, caressing their now enormous belly.", priority: 8),
-            new EventString((i) => $"<b>{i.Unit.Name}</b> slides <b>{i.Target.Name}</b> into {GPPHis(i.Unit)} {PreyLocStrings.ToSyn(PreyLocation.anal)}!", priority: 8),
-            new EventString((i) => $"<b>{i.Unit.Name}</b> backs up into <b>{i.Target.Name}</b> until {GPPHe(i.Target)} trip{SIfSingular(i.Target)}, dooming {GPPHim(i.Target)} to getting face-first engulfed in ass.", priority: 8),
+           new EventString((i) => $"<b>{i.Unit.Name}</b> lies on the ground watching <b>{i.Target.Name}</b> disappear up {GPPHis(i.Unit)} ass.",priority: 8),
+           new EventString((i) => $"<b>{i.Unit.Name}</b> knocks <b>{i.Target.Name}</b> onto the ground and swiftly shoves the terrified prey’s lower body up {GPPHis(i.Unit)} ass. After a few contractions, {i.Unit.Name} leans over, caressing their now enormous belly.", priority: 8),
+           new EventString((i) => $"<b>{i.Unit.Name}</b> slides <b>{i.Target.Name}</b> into {GPPHis(i.Unit)} {PreyLocStrings.ToSyn(PreyLocation.anal)}!", priority: 8),
+           new EventString((i) => $"<b>{i.Unit.Name}</b> backs up into <b>{i.Target.Name}</b> until {GPPHe(i.Target)} trip{SIfSingular(i.Target)}, dooming {GPPHim(i.Target)} to getting face-first engulfed in ass.", priority: 8),
             new EventString((i) => $"Once <b>{i.Target.Name}</b> finds {GPPHimself(i.Target)} immobilized, {GPPHe(i.Target)} can only watch in fear as <b>{ApostrophizeWithOrWithoutS(i.Unit.Name)}</b> sphincter slurps up {GPPHis(i.Target)} body like a noodle", priority: 8),
             new EventString((i) => $"<b>{i.Target.Name}</b> looks up at <b>{ApostrophizeWithOrWithoutS(i.Unit.Name)}</b> pucker in awe, realizing {GPPHe(i.Target)} want{SIfSingular(i.Target)} to slip up that hole so bad – which makes {GPPHim(i.Target)} rather cooperative when the butt thwumps down.", priority: 10, conditional: s=> Cursed(s) && Shrunk(s)),
             new EventString((i) => $"<b>{i.Unit.Name}</b> sits down on the shrunken <b>{i.Target.Name}</b> and grinds {GPPHis(i.Unit)} butt on the ground. After {GPPHe(i.Unit)} stand{SIfSingular(i.Unit)} up, <b>{i.Target.Name}</b> is nowhere to be seen.",
@@ -1718,7 +1720,7 @@ static class StoredLogTexts
             //Shrunken Prey
             new EventString((i) => $"<b>{i.Unit.Name}</b> unceremoniously turns around and thwumps down on the shrunken <b>{i.Target.Name}</b>, making {GPPHim(i.Target)} slip up into {GPPHis(i.Unit)} wet folds.",
             priority: 9, conditional: Shrunk),
-
+            
             //Size difference in general
             new EventString((i) => $"Effortlessly, <b>{i.Target.Name}</b> is trapped in the comparatively huge slobbery maw of <b>{i.Unit.Name}</b>. The next time light touches {GPPHis(i.Target)} body, it's only for {GPPHis(i.Unit)} massive tongue to squish {GPPHim(i.Target)} against {GPPHis(i.Unit)} aroused slit, repeatedly dragging {GPPHim(i.Target)} across its length, before {GPPHe(i.Target)} slip{SIfSingular(i.Target)} in with a <i>~shlup~</i>.",
             priority: 9, conditional: s => SizeDiff(s , 4) && !ActorHumanoid(s)),
