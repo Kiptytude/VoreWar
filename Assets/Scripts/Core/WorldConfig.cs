@@ -220,7 +220,7 @@ public class WorldConfig
             return value;
         }
 
-        var obj = new SpawnerInfo(false, 4, .15f, 40, 900 + (int)race, 1, true, 8, 12, 40);
+        var obj = new SpawnerInfo(false, 4, .15f, 40, 900 + (int)race, 1, true, 6f, 8, 12, 40);
         SpawnerInfo[race] = obj;
         return obj;
     }
@@ -244,7 +244,7 @@ public class WorldConfig
         {
             if (race >= Race.Vagrants && race < Race.Selicia)
             {
-                SpawnerInfo[race] = new SpawnerInfo(false, 4, .15f, 40, 900 + (int)race, 1, true, 8, 12, 40);
+                SpawnerInfo[race] = new SpawnerInfo(false, 4, .15f, 40, 900 + (int)race, 1, true, 6f, 8, 12, 40);
             }
         }
     }

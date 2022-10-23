@@ -12,11 +12,14 @@ public class TacticalAI : ITacticalAI
         internal float MinPowerRatio;
         [OdinSerialize]
         internal int targetsEaten;
+        [OdinSerialize]
+        internal float acceptableLossRatio;
 
-        public RetreatConditions(float minPowerRatio, int targetsEaten)
+        public RetreatConditions(float minPowerRatio, int targetsEaten, float lossRatio = 0f)
         {
             MinPowerRatio = minPowerRatio;
             this.targetsEaten = targetsEaten;
+            this.acceptableLossRatio = lossRatio;
         }
     }
 
@@ -143,6 +146,62 @@ public class TacticalAI : ITacticalAI
                     retreating = false;
                 }
             }
+            else if (retreatPlan.acceptableLossRatio > 0.0001) // Made because it actually considers how the battle is developing instead of just a snapshot metric
+            {
+                bool aIisAttacker = actors[0].Unit.Side == AISide;
+
+                var friendlies = actors.Where(s => s.Unit.Side == AISide && s.Unit.IsDead == false && s.Surrendered == false).Select(s => s.Unit).ToList();
+                var enemies = actors.Where(s => s.Unit.Side != AISide && s.Unit.IsDead == false && s.Surrendered == false).Select(s => s.Unit).ToList();
+
+                double friendlyPower = 0d;
+                double enemyPower = 0d;
+
+                actors.ForEach(actor =>
+                {
+                    if (AISide == actor.Unit.Side)
+                    {
+                        friendlyPower += actor.Unit.HealthPct * StrategicUtilities.ArmyPower(new List<Unit> { actor.Unit });  // More accurately than an average health pct, this correctly considers health loss on fodder units as less important
+                    }
+                    else
+                    {
+                        enemyPower += actor.Unit.HealthPct * StrategicUtilities.ArmyPower(new List<Unit> { actor.Unit });
+                    }
+                });
+
+                double friendLoss;
+                double enemyLoss;
+
+                // This fails to accurately consider units that already started with less than full health, but I find that worth it in exchange for recognizing the peril in having many half digested and wounded units
+                // Also viable retreat plan for 1 man armies and somesuch 
+                // (Would go great with dragon monster packs, now that I think about it) (((they lowkey need their own AI where the kobolds serve and rub them and the dragons sometimes devour them for heals O?O)))
+                if (aIisAttacker)
+                {
+                    enemyLoss = State.GameManager.TacticalMode.StartingDefenderPower - enemyPower * enemies.Count;
+                    friendLoss = State.GameManager.TacticalMode.StartingAttackerPower - friendlyPower * friendlies.Count;
+                }
+                else
+                {
+                    friendLoss = State.GameManager.TacticalMode.StartingDefenderPower - friendlyPower * friendlies.Count;
+                    enemyLoss = State.GameManager.TacticalMode.StartingAttackerPower - enemyPower * enemies.Count;
+                }
+
+                if ((enemyLoss > 0) && (friendLoss / enemyLoss) > retreatPlan.acceptableLossRatio || (enemyLoss <= 0 && friendLoss > 0))
+                {
+                    if (retreating == false)
+                    {
+                        State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<color=orange>{(aIisAttacker ? "Attackers" : "Defenders")} are now fleeing because the battle isn't developing favorably enough</color>");
+                    }
+                    retreating = true;
+                }
+                else
+                {
+                    if (retreating && (enemyLoss > 0) && (friendLoss / enemyLoss) < 0.8f * retreatPlan.acceptableLossRatio)
+                    {
+                        State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<color=orange>{(aIisAttacker ? "Attackers" : "Defenders")} are no longer fleeing</color>");
+                    }
+                    retreating = false;
+                }
+            }
         }
     }
 
@@ -217,6 +276,9 @@ public class TacticalAI : ITacticalAI
 
     private void GetNewOrder(Actor_Unit actor)
     {
+        foundPath = false;
+        didAction = false; // Very important fix: surrounded retreaters sometimes just skipped doing attacks because this was never set to false in or before "fightwithoutmoving"
+
         path = null;
         if (retreating && actor.Unit.Type != UnitType.Summon && actor.Unit.Type != UnitType.SpecialMercenary && actor.Unit.HasTrait(Traits.Fearless) == false)
         {
@@ -241,8 +303,6 @@ public class TacticalAI : ITacticalAI
 
             return;
         }
-        foundPath = false;
-        didAction = false;
         //do action
 
 
@@ -356,13 +416,22 @@ public class TacticalAI : ITacticalAI
             {
                 if (actor.Unit.HasTrait(Traits.RangedVore))
                 {
-                    MoveToAndAction(actor, targets[0].actor.Position, 1, 999, () => actor.PredatorComponent.UsePreferredVore(targets[0].actor)); //If anydistance is off, this will already be limited to the units move radius
+                    MoveToAndAction(actor, targets[0].actor.Position, 1, 999, () => {
+                        if (actor.PredatorComponent.UsePreferredVore(targets[0].actor))
+                            targetsEaten++;
+                    }); //If anydistance is off, this will already be limited to the units move radius
                     if (foundPath && path.Path.Count() < actor.Movement)
                         break;
-                    MoveToAndAction(actor, targets[0].actor.Position, 4, 999, () => actor.PredatorComponent.UsePreferredVore(targets[0].actor)); //If anydistance is off, this will already be limited to the units move radius                                      
+                    MoveToAndAction(actor, targets[0].actor.Position, 4, 999, () => {
+                        if (actor.PredatorComponent.UsePreferredVore(targets[0].actor))
+                            targetsEaten++;
+                    }); //If anydistance is off, this will already be limited to the units move radius                                      
                 }
                 else
-                    MoveToAndAction(actor, targets[0].actor.Position, 1, 999, () => actor.PredatorComponent.UsePreferredVore(targets[0].actor)); //If anydistance is off, this will already be limited to the units move radius
+                    MoveToAndAction(actor, targets[0].actor.Position, 1, 999, () => {
+                        if (actor.PredatorComponent.UsePreferredVore(targets[0].actor))
+                            targetsEaten++;
+                    }); //If anydistance is off, this will already be limited to the units move radius
                 if (foundPath && path.Path.Count() < actor.Movement)
                 {
                     break;
@@ -490,17 +559,29 @@ public class TacticalAI : ITacticalAI
         {
             if (targets[0].distance == 1)
             {
-                actor.PredatorComponent.Devour(targets[0].actor);
+                if (actor.PredatorComponent.UsePreferredVore(targets[0].actor))
+                    targetsEaten++;
                 didAction = true;
                 break;
             }
             if (targets[0].distance <= 4 && targets[0].distance > 1)
             {
                 actor.VorePounce(targets[0].actor, AIAutoPick: true);
+                if (!targets[0].actor.Visible)
+                {
+                    targetsEaten++;
+                }
                 didAction = true;
                 break;
             }
-            MoveToAndAction(actor, targets[0].actor.Position, 4, 2 + actor.Movement, () => actor.VorePounce(targets[0].actor, AIAutoPick: true));
+            MoveToAndAction(actor, targets[0].actor.Position, 4, 2 + actor.Movement, () =>
+            {
+                actor.VorePounce(targets[0].actor, AIAutoPick: true);
+                if (!targets[0].actor.Visible)
+                {
+                    targetsEaten++;
+                }
+            });
             if (path != null)
                 return;
             targets.RemoveAt(0);

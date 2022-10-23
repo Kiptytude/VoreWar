@@ -548,6 +548,11 @@ static class TacticalUtilities
         return null;
     }
 
+    static internal Actor_Unit GetActorOf(Unit unit) 
+    {
+        return Units.FirstOrDefault(actor => actor.Unit == unit);
+    }
+
     static internal void CreateEffect(Vec2i location, TileEffectType type, int areaOfEffect, float strength, int duration)
     {
         for (int x = location.x - areaOfEffect; x <= location.x + areaOfEffect; x++)

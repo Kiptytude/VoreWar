@@ -21,7 +21,7 @@ public class UnitSprite : MonoBehaviour
     float startingTimeForDamage = .75f;
     Color startingColor;
 
-    CompleteSprite CompleteSprite;
+    CompleteSprite _CompleteSprite;
     Animator animator;
     Animator ballsAnimator;
 
@@ -36,6 +36,8 @@ public class UnitSprite : MonoBehaviour
     public Transform OtherFolder;
 
     int lastHealth = 0;
+
+    internal CompleteSprite CompleteSprite { get => _CompleteSprite; set => _CompleteSprite = value; }
 
     public void Awake()
     {
@@ -111,6 +113,20 @@ public class UnitSprite : MonoBehaviour
     {
         DamageIndicator.faceColor = Color.white;
         DamageIndicator.text = "Summoned!";
+        FinishDisplayedTextSetup();
+    }
+
+    public void DisplaySeduce()
+    {
+        DamageIndicator.faceColor = Color.magenta;
+        DamageIndicator.text = "Seduced!";
+        FinishDisplayedTextSetup();
+    }
+
+    public void DisplayDistract()
+    {
+        DamageIndicator.faceColor = Color.magenta;
+        DamageIndicator.text = "Distracted!";
         FinishDisplayedTextSetup();
     }
 

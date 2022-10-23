@@ -630,9 +630,15 @@ Note, due to the way this is set up, you have to restart the game client for cha
                 return @"Enables the player to use belly rub on enemies, is mostly a toggle so you don't do it by accident.
 Note, that units with the SeductiveTouch cheat trait will be able to rub enemies even when this is disabled";
             case 247:
+                return @"Enables the Dratopyr monster packs";
+            case 248:
+                return @"Enables the Feral Lions monster packs";
+            case 249:
+                return @"How many times as strong an enemy army can be, before this monster ceases to view it as a target.";
+            case 250:
                 return @"Breast size modifier for herm units, if in the center, all types have an equal chance, but sliding it prevents one level per tick and changes the average size
 Does not retroactively affect already created units.";
-            case 248:
+            case 251:
                 return "How many tiles armies and villages can see if fog of war is enabled.  The game uses a simple system where line of sight isn't blocked by obstacles. ";
             default:
                 return "";

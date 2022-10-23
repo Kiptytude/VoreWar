@@ -44,8 +44,8 @@ public class Unit
     [OdinSerialize]
     protected int level;
     [OdinSerialize]
-    private float _baseScale = 1;
-    internal float BaseScale
+    private double _baseScale = 1;
+    internal double BaseScale
     {
         get
         {
@@ -590,34 +590,39 @@ public class Unit
     internal void SetGenderRandomizeName(Race race, Gender gender)
     {
         var raceData = Races.GetRace(this);
+        var isMale = false;
         if (raceData.CanBeGender.Count == 0 || (raceData.CanBeGender.Contains(Gender.None) && raceData.CanBeGender.Count == 1))
         {
             DickSize = 0;
             SetDefaultBreastSize(0);
-            Name = State.NameGen.GetName(State.Rand.NextDouble() > Config.HermNameFraction, race);
+            isMale = State.Rand.NextDouble() > Config.HermNameFraction;
         }
         else if (gender == Gender.Hermaphrodite && raceData.CanBeGender.Contains(Gender.Hermaphrodite))
         {
             DickSize = 0;
             SetDefaultBreastSize(0);
-            Name = State.NameGen.GetName(State.Rand.NextDouble() > Config.HermNameFraction, race);
+            isMale = State.Rand.NextDouble() > Config.HermNameFraction;
         }
         else if ((gender == Gender.Male && raceData.CanBeGender.Contains(Gender.Male)) || raceData.CanBeGender.Contains(Gender.Female) == false)
         {
             DickSize = 0;
             SetDefaultBreastSize(-1);
-            Name = State.NameGen.GetName(true, race);
+            isMale = true;
         }
         else
         {
             SetDefaultBreastSize(0);
             DickSize = -1;
-            Name = State.NameGen.GetName(false, race);
+            isMale = false;
         }
 
         if (race >= Race.Vagrants)
         {
-            Name = State.NameGen.GetMonsterName(race);
+            Name = State.NameGen.GetMonsterName(isMale, race);
+        }
+        else
+        {
+            Name = State.NameGen.GetName(isMale, race);
         }
 
 
@@ -646,6 +651,7 @@ public class Unit
         var raceStats = State.RaceSettings.Get(race);
         float maleFraction;
         float hermFraction;
+        bool isMale = false;
         if (raceStats.OverrideGender)
         {
             maleFraction = raceStats.maleFraction;
@@ -663,7 +669,7 @@ public class Unit
             SetDefaultBreastSize(0);
             HasVagina = false;
             Pronouns = new List<string> { "they", "them", "their", "theirs", "themself", "plural" };
-            Name = State.NameGen.GetName(State.Rand.NextDouble() > Config.HermNameFraction, race);
+            isMale = State.Rand.NextDouble() > Config.HermNameFraction;
         }
         else if (State.Rand.NextDouble() < hermFraction && raceData.CanBeGender.Contains(Gender.Hermaphrodite))
         {
@@ -671,7 +677,7 @@ public class Unit
             SetDefaultBreastSize(0);
             HasVagina = Config.HermsCanUB;
             Pronouns = new List<string> { "they", "them", "their", "theirs", "themself", "plural" };
-            Name = State.NameGen.GetName(State.Rand.NextDouble() > Config.HermNameFraction, race);
+            isMale = State.Rand.NextDouble() > Config.HermNameFraction;
         }
         else if ((State.Rand.NextDouble() < maleFraction && raceData.CanBeGender.Contains(Gender.Male)) || raceData.CanBeGender.Contains(Gender.Female) == false)
         {
@@ -679,7 +685,7 @@ public class Unit
             SetDefaultBreastSize(-1);
             HasVagina = false;
             Pronouns = new List<string> { "he", "him", "his", "his", "himself", "singular" };
-            Name = State.NameGen.GetName(true, race);
+            isMale = true;
         }
         else
         {
@@ -687,12 +693,16 @@ public class Unit
             DickSize = -1;
             HasVagina = true;
             Pronouns = new List<string> { "she", "her", "her", "hers", "herself", "singular" };
-            Name = State.NameGen.GetName(false, race);
+            isMale = false;
         }
 
         if (race >= Race.Vagrants)
         {
-            Name = State.NameGen.GetMonsterName(race);
+            Name = State.NameGen.GetMonsterName(isMale, race);
+        }
+        else
+        {
+            Name = State.NameGen.GetName(isMale, race);
         }
 
         if (skipTraits == false)

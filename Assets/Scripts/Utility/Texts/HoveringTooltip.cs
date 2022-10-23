@@ -475,6 +475,9 @@ public class HoveringTooltip : MonoBehaviour
             case Traits.TheGreatEscape:
                 return "This unit cannot be digested, but the battle will end if only units with this remain and they're all eaten.  The prey are assumed to escape sometime later, and are count as fled units. (Note that you'd need end of battle review checked to see the escape messages as they happen at the very end of battle)";
             case Traits.Growth:
+                return "Each absorbtion makes this unit grow in size, but the effect slowly degrades outside battle.\n(Cheat Trait)";
+            case Traits.PermanentGrowth:
+                return "An accessory trait to Growth that makes growth gained permanent.  (Does nothing without the Growth trait)\n(Cheat Trait)";
                 return "Each absorption makes this unit grow in size, but the effect slowly degrades outside battle.\n(Cheat Trait)";
             case Traits.Berserk:
                 return "If the unit is reduced below half health by an attack, will go berserk, greating increasing its strength and voracity for 3 turns.\nCan only occur once per battle.";

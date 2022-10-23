@@ -58,7 +58,7 @@ internal class EventList
             empire.RecentEvents = new List<int>();
         for (int i = 0; i < 20; i++)
         {
-            int val = State.Rand.Next(27);
+            int val = State.Rand.Next(28);
             if (i < 17 && empire.RecentEvents.Contains(val))
                 continue;
             if (Config.EventsRepeat == false && empire.EventHappened.ContainsKey(val))
@@ -1550,7 +1550,7 @@ internal class EventList
                     UI.ThirdChoice.GetComponentInChildren<Text>().text = $"Such a fine example of voracity would make a fine war beast! Round up some civilians to sacrifice as a grand feast to earn the wolf's favour.";
                     UI.ThirdChoice.onClick.AddListener(() =>
                     {
-                        Unit unit = new Unit(empire.Side, Race.FeralWolves, village.GetStartingXp(), true);
+                        Unit unit = new Unit(empire.Side, Race.FeralWolves, village.GetStartingXp()*3, true);
                         unit.AddPermanentTrait(Traits.Large);
                         unit.AddPermanentTrait(Traits.IronGut);
                         unit.AddPermanentTrait(Traits.StrongGullet);
@@ -1560,6 +1560,91 @@ internal class EventList
                         village.SetPopulationToAtleastTwo();
                         village.Happiness -= 40;
                         State.GameManager.CreateMessageBox($"{unit.Name} the feral wolf is available for recruitment at {village.Name} after gorging itself to immobility on the sacrificed villagers. Whilst the people look at such an act with much distaste, adding such a powerful beast to our ranks will surely pay off with time.");
+                    });
+                    UI.ThirdChoice.interactable = true;
+                }
+                break;
+            case 27:
+                {
+                    Village village = GetRandomVillage(empire.Side);
+                    if (village == null)
+                        return false;
+                    UI.MainText.text = $"Concerned citizens from {village.Name} have reached out with stories about a dangerous animal in their midst. After many odd tales about a \"friendly big kitten\" from one of the children, adults decided to take a look into the shed in question. There were only those that did not return and those that were then kept out by the ominous gurgling noises. How does one react to this?";
+                    UI.MainText.text += AddVillageInfo(village);
+                    UI.FirstChoice.GetComponentInChildren<Text>().text = $"The safety of our citizens is our utmost duty. Have the garrison bait and ambush the creature.";
+                    UI.FirstChoice.onClick.AddListener(() =>
+                    {
+                        {
+                            var garrison = village.PrepareAndReturnGarrison();
+                            foreach (var unit in garrison)
+                            {
+                                village.VillagePopulation.RemoveHireable(unit);
+                                village.SubtractPopulation(1);
+                            }
+                            village.SubtractPopulation(village.Maxpop / 6);
+                            village.SetPopulationToAtleastTwo();
+                            empire.AddGold(50);
+                            village.Happiness += 10;
+                            Unit youth = new Unit(empire.Side, empire.ReplacedRace, village.GetStartingXp(), empire.CanVore && !State.RaceSettings.Get(empire.ReplacedRace).RaceTraits.Contains(Traits.Prey));
+                            youth.Items[0] = State.World.ItemRepository.GetItem(ItemType.CompoundBow);
+                            Unit lion = new Unit(empire.Side, Race.FeralLions, 0, true);
+                            lion.AddPermanentTrait(Traits.Large);
+                            lion.AddPermanentTrait(Traits.IronGut);
+                            lion.AddPermanentTrait(Traits.StrongGullet);
+                            youth.AddPermanentTrait(Traits.PleasurableTouch);
+                            lion.Name = "Kitty";
+                            lion.DigestedUnits = State.Rand.Next(village.Maxpop / 6, (int)(village.Maxpop / 4));
+                            lion.GiveExp(lion.DigestedUnits * 10);
+                            State.GameManager.CreateMessageBox($"Dear government,\n\nKitty would like to say thanks for the treat, but I think something about soldier equipment makes {(lion.GetPronoun(2))} gassy, heheh. Anyways, it's been feeling pretty noisy here for Kitty so we'll leave!\nXOXO Kitty and {youth.Name} \n\nOn the bright side, we could recover all the victims' valuables and the remaining citizens are thankful for our efforts.\n\nVillage Happiness +10, Gold +50, Garrison wiped out, Population -{(village.Maxpop / 6)}, The duo is still out there");
+                            var armyName = $"Kitty and {youth.Name}";
+                            Empire kittyEmp = CreateFactionlessArmy(village, 57, new[]{lion, youth}, 10, armyName);
+                            kittyEmp.Name = armyName;
+                        }
+
+                    });
+                    UI.FirstChoice.interactable = true;
+                    UI.SecondChoice.GetComponentInChildren<Text>().text = $"Fables, superstition, and vaguery, without a single witness. We cannot be bothered.";
+                    UI.SecondChoice.onClick.AddListener(() =>
+                    {
+                        village.SubtractPopulation(village.Maxpop / 3);
+                        village.SetPopulationToAtleastTwo();
+                        village.Happiness -= 15;
+                        Unit youth = new Unit(empire.Side, empire.ReplacedRace, village.GetStartingXp(), empire.CanVore && !State.RaceSettings.Get(empire.ReplacedRace).RaceTraits.Contains(Traits.Prey));
+                        youth.Items[0] = State.World.ItemRepository.GetItem(ItemType.CompoundBow);
+                        Unit lion = new Unit(empire.Side, Race.FeralLions, 0, true);
+                        lion.AddPermanentTrait(Traits.Large);
+                        lion.AddPermanentTrait(Traits.IronGut);
+                        lion.AddPermanentTrait(Traits.StrongGullet);
+                        youth.AddPermanentTrait(Traits.PleasurableTouch);
+                        lion.Name = "Kitty";
+                        lion.DigestedUnits = State.Rand.Next(village.Maxpop / 3, (int)(village.Maxpop / 2));
+                        lion.GiveExp(lion.DigestedUnits * 10);
+                        var raceSingular = InfoPanel.RaceSingular(youth);
+                        State.GameManager.CreateMessageBox($"The villagers aren't thrilled, but the so-called \"kitten\" and their little {raceSingular} friend continue to grow up alongside the people of {village.Name}. While only some of them learn to be merry with the ever more grown-up, less feisty feline in their midst, everyone knows not to question the disappearing neighbors or the well-rounded lion gut. Eventually, the duo leaves and goes on adventures in the surrounding lands.\n\n{village.Name} Population -{village.Maxpop / 3}, Happiness -15, The duo stays neutral to the empire");
+                        var armyName = $"Kitty and {youth.Name}";
+                        Empire kittyEmp = CreateFactionlessArmy(village, 57, new[]{lion, youth}, 10, armyName);
+                        kittyEmp.Name = armyName;
+                        RelationsManager.SetPeace(kittyEmp, empire);
+                    });
+                    UI.SecondChoice.interactable = true;
+                    UI.ThirdChoice.GetComponentInChildren<Text>().text = $"Seek a favorable standing with the child and convince them to enroll once they're old enough. They can bring their pet, of course.";
+                    UI.ThirdChoice.onClick.AddListener(() =>
+                    {
+                        Unit youth = new Unit(empire.Side, empire.ReplacedRace, village.GetStartingXp(), empire.CanVore && !State.RaceSettings.Get(empire.ReplacedRace).RaceTraits.Contains(Traits.Prey));
+                        Unit lion = new Unit(empire.Side, Race.FeralLions, village.GetStartingXp(), true);
+                        lion.AddPermanentTrait(Traits.Large);
+                        lion.AddPermanentTrait(Traits.IronGut);
+                        lion.AddPermanentTrait(Traits.StrongGullet);
+                        lion.Name = "Kitty";
+                        youth.AddPermanentTrait(Traits.PleasurableTouch);
+                        youth.ModifyStat(Stat.Dexterity, 20);
+                        lion.DigestedUnits = State.Rand.Next(village.Maxpop / 2, (int)(village.Maxpop / 1.5));
+                        village.SubtractPopulation(village.Maxpop / 2);
+                        village.SetPopulationToAtleastTwo();
+                        village.VillagePopulation.AddHireable(lion);
+                        village.VillagePopulation.AddHireable(youth);
+                        village.Happiness -= 40;
+                        State.GameManager.CreateMessageBox($"The people feel betrayed with how their government seems to extend its protection towards the beast and its keeper rather than them, as it devours more and more of them unhindered. On the bright side, Kitty grows up big and strong, and the duo can be recruited in {village.Name}.\n\n Happiness -40, Population -{village.Maxpop/2}");
                     });
                     UI.ThirdChoice.interactable = true;
                 }
@@ -1802,13 +1887,13 @@ internal class EventList
         switch (diff)
         {
             case RebelDifficulty.Easy:
-                count = 4 + State.Rand.Next(4);
+                count = village.MaxGarrisonSize/4 + State.Rand.Next(village.MaxGarrisonSize/4);
                 break;
             case RebelDifficulty.Medium:
-                count = 6 + State.Rand.Next(8);
+                count = village.MaxGarrisonSize/2 + State.Rand.Next(village.MaxGarrisonSize/2);
                 break;
             case RebelDifficulty.Hard:
-                count = 12 + State.Rand.Next(12);
+                count = village.MaxGarrisonSize - village.MaxGarrisonSize/4 + State.Rand.Next(village.MaxGarrisonSize - village.MaxGarrisonSize/4);
                 break;
         }
         if (count == 0)
@@ -1871,13 +1956,13 @@ internal class EventList
         switch (diff)
         {
             case RebelDifficulty.Easy:
-                count = 4 + State.Rand.Next(4);
+                count = village.MaxGarrisonSize/4 + State.Rand.Next(village.MaxGarrisonSize/4);
                 break;
             case RebelDifficulty.Medium:
-                count = 6 + State.Rand.Next(8);
+                count = village.MaxGarrisonSize/2 + State.Rand.Next(village.MaxGarrisonSize/2);
                 break;
             case RebelDifficulty.Hard:
-                count = 12 + State.Rand.Next(12);
+                count = village.MaxGarrisonSize - village.MaxGarrisonSize/4 + State.Rand.Next(village.MaxGarrisonSize - village.MaxGarrisonSize/4);
                 break;
         }
         if (count >= village.Population)
@@ -1936,6 +2021,60 @@ internal class EventList
             else if (State.Rand.Next(4) == 0)
                 loc = spot;
         }
+    }
+    
+    Empire CreateFactionlessArmy(Village village, int bannerType, Unit[] units, int distance, string armyName) {
+
+        Vec2 loc = new Vec2(0, 0);
+        CheckTile(village.Position + new Vec2(-distance, 0));
+        CheckTile(village.Position + new Vec2(0, distance));
+        CheckTile(village.Position + new Vec2(distance, 0));
+        CheckTile(village.Position + new Vec2(-distance, -distance));
+        CheckTile(village.Position + new Vec2(-distance, distance));
+        CheckTile(village.Position + new Vec2(0, -distance));
+        CheckTile(village.Position + new Vec2(distance, -distance));
+        CheckTile(village.Position + new Vec2(distance, distance));
+
+        if (loc.x == 0 && loc.y == 0) 
+        {
+             for (int i = 0; i < 10; i++)
+            {
+                loc.x = State.Rand.Next(Config.StrategicWorldSizeX);
+                loc.y = State.Rand.Next(Config.StrategicWorldSizeY);
+
+                if (StrategicUtilities.IsTileClear(loc))
+                    break;
+                
+            }
+            Debug.Log("Could not place army");
+            return null;
+        }
+        void CheckTile(Vec2 spot)
+        {
+            if (StrategicUtilities.IsTileClear(spot) == false)
+                return;
+            if (loc.x == 0 && loc.y == 0)
+                loc = spot;
+            else if (State.Rand.Next(4) == 0)
+                loc = spot;
+        }
+
+        int unusedSide = 702;
+        while (State.World.AllActiveEmpires.Any(emp => emp.Side == unusedSide))
+        {
+            unusedSide++;
+        }
+        Empire pseudoEmp = new MonsterEmpire(new Empire.ConstructionArgs(unusedSide, UnityEngine.Color.white, UnityEngine.Color.white, bannerType, StrategyAIType.Monster, TacticalAIType.Full, 2000+unusedSide, 32, 0));
+        Army army = new Army(pseudoEmp, new Vec2i(loc.x, loc.y), unusedSide);
+        army.Units = units.ToList();
+        army.Name = armyName;
+        pseudoEmp.ReplacedRace = army.Units[0].Race;
+        pseudoEmp.Armies.Add(army);
+        pseudoEmp.TurnOrder = 1337;
+        Config.World.SpawnerInfo[(Race)unusedSide]= new SpawnerInfo(true,1,0,0.4f,pseudoEmp.Team,0,false,9999,2,pseudoEmp.MaxArmySize,pseudoEmp.TurnOrder);
+        State.World.AllActiveEmpires.Add(pseudoEmp);
+        State.World.RefreshTurnOrder();
+        return pseudoEmp;
     }
 
     void ChangeAllVillageHappiness(Empire empire, int value)

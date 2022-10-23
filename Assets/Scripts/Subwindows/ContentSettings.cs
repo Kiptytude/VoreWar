@@ -441,6 +441,12 @@ public class ContentSettings : MonoBehaviour
             case Race.Terrorbird:
                 tooltip.value = 238;
                 break;
+            case Race.Dratopyr:
+                tooltip.value = 247;
+                break;
+            case Race.FeralLions:
+                tooltip.value = 248;
+                break;
         }
         return spawner;
     }
@@ -618,6 +624,7 @@ public class ContentSettings : MonoBehaviour
                 PlayerPrefs.GetInt($"{spawner.race} Team", 900 + (int)spawner.race),
                 PlayerPrefs.GetInt($"{spawner.race} Attempts", 1),
                 PlayerPrefs.GetInt($"{spawner.race} Add-On", 1) == 1,
+                PlayerPrefs.GetFloat($"{spawner.race} Confidence", 6f),
                 PlayerPrefs.GetInt($"{spawner.race} Min Army Size", 8),
                 PlayerPrefs.GetInt($"{spawner.race} Max Army Size", 12),
                 PlayerPrefs.GetInt($"{spawner.race} Turn Order", 40)
@@ -735,6 +742,7 @@ public class ContentSettings : MonoBehaviour
             spawner.SpawnRate.value = info.spawnRate;
             spawner.ScalingRate.text = info.scalingFactor.ToString();
             spawner.MaxArmies.text = info.MaxArmies.ToString();
+            spawner.Confidence.text = info.Confidence.ToString();
             spawner.MinArmySize.text = info.MinArmySize.ToString();
             spawner.MaxArmySize.text = info.MaxArmySize.ToString();
             spawner.Team.text = info.Team.ToString();
@@ -946,6 +954,11 @@ public class ContentSettings : MonoBehaviour
             else
                 info.SpawnAttempts = 1;
 
+            if (float.TryParse(spawner.Confidence.text, out float confidence))
+                info.Confidence = confidence;
+            else
+                info.Confidence = 6f;
+
             if (spawner.ConquestType.value > 0)
                 info.SetSpawnerType((Config.MonsterConquestType)(spawner.ConquestType.value - 2));
             else
@@ -1049,6 +1062,11 @@ public class ContentSettings : MonoBehaviour
                 PlayerPrefs.SetInt($"{spawner.race} Max Armies", armies);
             else
                 PlayerPrefs.SetInt($"{spawner.race} Max Armies", 4);
+
+            if (float.TryParse(spawner.Confidence.text, out float confidence))
+                PlayerPrefs.SetFloat($"{spawner.race} Confidence", confidence);
+            else
+                PlayerPrefs.SetFloat($"{spawner.race} Confidence", 6f);
 
             if (int.TryParse(spawner.MinArmySize.text, out int minSize))
                 PlayerPrefs.SetInt($"{spawner.race} Min Army Size", minSize);
