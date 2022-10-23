@@ -71,7 +71,7 @@ public class GameManager : MonoBehaviour
 
     bool menuOpen = false;
 
-    internal bool PureTactical = false;
+    public bool PureTactical = false;
 
     public GameObject UnitBase;
     public UnitEditorPanel UnitEditor;

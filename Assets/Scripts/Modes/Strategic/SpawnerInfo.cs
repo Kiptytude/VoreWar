@@ -13,6 +13,8 @@ class SpawnerInfo
     [OdinSerialize]
     internal int MaxArmies;
     [OdinSerialize]
+    internal float Confidence;
+    [OdinSerialize]
     internal int MinArmySize;
     [OdinSerialize]
     internal int MaxArmySize;
@@ -39,7 +41,7 @@ class SpawnerInfo
     }
 
 
-    public SpawnerInfo(bool enabled, int maxArmies, float spawnRate, float scalingFactor, int team, int spawnAttempts, bool addOnRace, int minArmySize, int maxArmySize, int turnOrder)
+    public SpawnerInfo(bool enabled, int maxArmies, float spawnRate, float scalingFactor, int team, int spawnAttempts, bool addOnRace, float confidence, int minArmySize, int maxArmySize, int turnOrder)
     {
         Enabled = enabled;
         MaxArmies = maxArmies;
@@ -48,6 +50,7 @@ class SpawnerInfo
         Team = team;
         SpawnAttempts = spawnAttempts;
         AddOnRace = addOnRace;
+        Confidence = confidence;
         MinArmySize = minArmySize;
         MaxArmySize = maxArmySize;
         TurnOrder = turnOrder;

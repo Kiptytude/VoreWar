@@ -58,4 +58,7 @@ public class PaletteDictionary : MonoBehaviour
     public Texture2D DeerLeaf;
     public Texture2D TerrorbirdSkin;
     public Texture2D VargulSkin;
+    public Texture2D FeralLionsFur;
+    public Texture2D FeralLionsEyes;
+    public Texture2D FeralLionsMane;
 }

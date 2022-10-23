@@ -509,6 +509,9 @@ public class StrategyMode : SceneBase
                             case StrategicDoodadType.SpawnerDratopyr:
                                 Spawners.Add(new MonsterSpawnerLocation(new Vec2i(i, j), Race.Dratopyr));
                                 break;
+                            case StrategicDoodadType.SpawnerFeralLions:
+                                Spawners.Add(new MonsterSpawnerLocation(new Vec2i(i, j), Race.FeralLions));
+                                break;
                         }
                     }
                 }
