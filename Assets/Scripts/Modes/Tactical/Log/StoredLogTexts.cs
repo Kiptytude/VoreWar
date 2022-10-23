@@ -1899,7 +1899,7 @@ static class StoredLogTexts
         };
         BreastFeedMessages = new List<EventString>()
         {
-            new EventString((i) => $"<b>{i.Target.Name}</b> suckles on {(i.Unit == i.Target ? GPPHis(i.Target) + "own" : i.Unit.Name + "'s")} full breasts, eagerly gulping down a mouthful of {PreyLocStrings.ToFluid(PreyLocation.breasts)}.",priority:8),
+            new EventString((i) => $"<b>{i.Target.Name}</b> suckles on {(i.Unit == i.Target ? GPPHis(i.Target) + " own" : ApostrophizeWithOrWithoutS(i.Unit.Name) + "'s")} full breasts, eagerly gulping down a mouthful of {PreyLocStrings.ToFluid(PreyLocation.breasts)}.",priority:8),
         };
         CumFeedMessages = new List<EventString>()
         {
