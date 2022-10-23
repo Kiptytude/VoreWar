@@ -1955,7 +1955,7 @@ static class StoredLogTexts
             new EventString((i) => $"A loud shriek is silenced by a crunch as <b>{i.Target.Name}</b> is instantly digested in the belly of <b>{i.Unit.Name}</b>",
             priority: 10, conditional: s => s.Unit.HasTrait(Traits.InstantDigestion) && InStomach(s) && HardVore(s)),
             new EventString((i) => $"<b>{ApostrophizeWithOrWithoutS(i.Unit.Name)}</b> belly goes soft as <b>{i.Target.Name}</b> is instantly digested",
-            priority: 10, conditional: s => s.Unit.HasTrait(Traits.InstantDigestion) && InStomach(s),
+            priority: 10, conditional: s => s.Unit.HasTrait(Traits.InstantDigestion) && InStomach(s)),
             new EventString((i) => $"<b>{i.Unit.Name}</b> contracts {GPPHis(i.Unit)} abs and <b>{i.Target.Name}</b> is digested instanlty",
             priority: 10, conditional: s => s.Unit.HasTrait(Traits.InstantDigestion) && InStomach(s)),
             new EventString((i) => $"A loud scream, a gutteral crunch, and a soft belly describes what <b>{ApostrophizeWithOrWithoutS(i.Unit.Name)}</b> belly did to <b>{i.Target.Name}</b> in such a short time ",
@@ -2029,7 +2029,6 @@ static class StoredLogTexts
             priority: 9, conditional: s => Cursed(s) && Lewd(s) && InStomach(s) && Scat(s)),
             new EventString((i) => $"The realization that {GPPHe(i.Target)} {IsAre(i.Target)} in the process of becoming {GetRaceDescSingl(i.Unit)} fart fuel for some reason gives {GPPHim(i.Target)} the best {(i.Target.HasDick ? "Nut" : (i.Target.HasVagina ? "Squirt" : "Orgasm"))} of {GPPHis(i.Target)} life - so good it makes {GPPHim(i.Target)} pass out forever.",
             priority: 9, conditional: s => Cursed(s) && Lewd(s) && InStomach(s) && Farts(s)),
-
         };
 
         AbsorptionMessages = new List<EventString>()

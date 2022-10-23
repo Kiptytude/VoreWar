@@ -361,11 +361,9 @@ MigrationBackup/
 FodyWeavers.xsd
 /Library/metadata
 /Library
-/*
-/*/
-!/Assets/
-/Assets/*
-/Assets/*/
-!/Assets/Scripts/
-*.*
+
 !*.cs
+!*.unity
+!*.png
+!*.jpg
+/Temp
