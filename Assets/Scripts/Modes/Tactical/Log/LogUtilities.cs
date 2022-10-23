@@ -275,6 +275,11 @@ static class LogUtilities
         return str;
     }
 
+    internal static string ApostrophizeWithOrWithoutS(string str)
+    {
+        return str + (str.EndsWith("s") ? "'" : "'s");
+    }
+
     /// <summary>
     /// <para>Gets a descriptive string that fits sentences like "Edmond stuffs Sidney down his maw, enjoying the * morsels squirms on her way down."</para>
     /// <para>Generally meant for the prey/loser/weaker unit. Has mostly demeaning, belittling, weakness indicating or fear portraying terms.</para>
@@ -345,7 +350,8 @@ static class LogUtilities
                 return GetRandomStringFrom("tasty noodle", "noodle derg", "spaghetti-like", "easily-slurpable"); ////new, many thanks to Flame_Valxsarion
             case Race.Dragon:
                 return GetRandomStringFrom("formerly apex predator", "delicious dragon", "ex-predator"); ////new 
-            
+            case Race.FeralLions:
+                return GetRandomStringFrom("roaring", "once-vicious", "formerly-fearsome"); 
             default:
                 return "tasty";
         }
@@ -418,7 +424,9 @@ static class LogUtilities
             case Race.Selicia:
                 return GetRandomStringFrom("wide mawed", "smooth scaled", "stretchy", "huge", "impressive", "all-too-eager", "mighty");
             case Race.Dragon:
-                return GetRandomStringFrom("apex predator", "hungry dragon", "voracious dragon"); ////new 
+                return GetRandomStringFrom("apex predator", "hungry dragon", "voracious dragon"); 
+            case Race.FeralLions:
+                return GetRandomStringFrom("indulgent", "greedily snarling", "voracious", "capacious", "insatiable", "dominant", "pleased"); ////new 
             default:
                 return "strong";
         }
@@ -444,6 +452,8 @@ static class LogUtilities
                 return GetRandomStringFrom("feral", GetGenderString(unit, "wolfess", "wolf", "wolf"), "canine"); ////I changed "wolfen" to "wolfess" 
             case Race.Bunnies:
                 return GetRandomStringFrom("bunny", GetGenderString(unit, "doe", "buck", "lagomorph"), "rabbit");
+            case Race.Deer:
+                return GetRandomStringFrom(GetGenderString(unit, GetRandomStringFrom("doe","roe"), GetRandomStringFrom("buck", "stag","hart"), "cervid"), "faun", "deer");
             case Race.Lizards:
                 return GetRandomStringFrom("lizard", "reptile", "reptilian");
             case Race.Slimes:
@@ -534,6 +544,8 @@ static class LogUtilities
                 return GetRandomStringFrom("kobold", "little lizard", "little reptile"); ////new 
             case Race.Frogs:
                 return GetRandomStringFrom("demi-frog", "amphibian", "frog"); ////new, many thanks to Flame_Valxsarion             
+            case Race.FeralLions:
+                return GetRandomStringFrom("feline", GetGenderString(unit, "lioness", "lion", "lion"), "leonine", "kitty"); 
             default:
                 return "creature";
         }
