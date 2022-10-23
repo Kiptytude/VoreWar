@@ -92,7 +92,7 @@ Does not retroactively affect already created units.";
             case 33:
                 return @"Affects what % of all units wear clothes, does not prevent you from changing individual characters in the customizer.  Does not retroactively affect already created units.";
             case 34:
-                return @"Breast size modifier, if in the center, all types have an equal chance, but sliding it prevents one level per tick and changes the average size
+                return @"Breast size modifier for female units, if in the center, all types have an equal chance, but sliding it prevents one level per tick and changes the average size
 Does not retroactively affect already created units.";
             case 35:
                 return @"Affects the starting weight of units, this only affects certain races
@@ -629,6 +629,11 @@ Note, due to the way this is set up, you have to restart the game client for cha
             case 246:
                 return @"Enables the player to use belly rub on enemies, is mostly a toggle so you don't do it by accident.
 Note, that units with the SeductiveTouch cheat trait will be able to rub enemies even when this is disabled";
+            case 247:
+                return @"Breast size modifier for herm units, if in the center, all types have an equal chance, but sliding it prevents one level per tick and changes the average size
+Does not retroactively affect already created units.";
+            case 248:
+                return "How many tiles armies and villages can see if fog of war is enabled.  The game uses a simple system where line of sight isn't blocked by obstacles. ";
             default:
                 return "";
         }

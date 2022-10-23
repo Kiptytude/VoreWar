@@ -866,7 +866,7 @@ Turns: {currentTurn}
         {
             foreach (Actor_Unit actor in units)
             {
-                if (Config.VisibleCorpses && actor.Targetable == false && actor.Visible == true && actor.Surrendered)
+                if (actor.Targetable == false && actor.Visible == true && actor.Surrendered)
                 {
                     float angle = 40 + State.Rand.Next(280);
                     if (actor.UnitSprite != null) actor.UnitSprite.transform.rotation = Quaternion.Euler(0, 0, angle);
@@ -1419,6 +1419,11 @@ Turns: {currentTurn}
         units.Add(actor);
         actor.UpdateBestWeapons();
         UpdateActorColor(actor);
+        if (actor.UnitSprite != null)
+        {
+            actor.UnitSprite.HitPercentagesDisplayed(false);
+            actor.UnitSprite.DisplaySummoned();
+        }        
         //if (actor.Unit.Side == defenderSide)
         //actor.Unit.CurrentLeader = DefenderLeader;
     }
@@ -2452,6 +2457,8 @@ Turns: {currentTurn}
                 {
                     while (autoAdvancing && currentTurn < 2000)
                     {
+                        if (waitingForDialog)
+                            return;
                         EndTurn();
                     }
                 }
@@ -3515,6 +3522,7 @@ Turns: {currentTurn}
                         retreatedAttackers.Add(actor.Unit);
                         armies[0].Units.Remove(actor.Unit);
                     }
+                    actor.PredatorComponent?.PurgePrey();
                     units.Remove(actor);
                 }
                 else if (actor.Fled)
@@ -3577,12 +3585,16 @@ Turns: {currentTurn}
             else if (remainingDefenders > 0 && extraDefenders.Any())
                 AssignLeftoverTroops(armies[1], extraDefenders);
 
-
-
             ProcessFledUnits();
             remainingAttackers = 0;
             remainingDefenders = 0;
             CalculateRemaining(ref remainingAttackers, ref remainingDefenders);
+            if (remainingAttackers > 0 && remainingDefenders > 0)
+            {
+                //This is just a back-up incase there's some other method of causing the issue I fixed
+                VictoryCheck();
+                return false;
+            }
             ProcessConsumedCorpses();
             if (village != null)
             {
@@ -3688,6 +3700,7 @@ Turns: {currentTurn}
             actor.Unit.DigestedUnits = 0;
             actor.Unit.KilledUnits = 0;
             actor.Unit.Health = actor.Unit.MaxHealth;
+            actor.PredatorComponent?.PurgePrey();
         }
     }
 
@@ -3887,6 +3900,11 @@ Turns: {currentTurn}
             {
                 actors.Remove(actor);
             }
+            else
+            {  //Extra safety to eliminate the possibility of doubled units
+                retreatedAttackers.Remove(actor.Unit);
+                retreatedDefenders.Remove(actor.Unit);
+            }
         }
 
         if (army != null)
@@ -3934,7 +3952,7 @@ Turns: {currentTurn}
         }
         if (actors.Any())
         {
-            TacticalUtilities.ProcessTravelingUnits(actors.Select(s => s.Unit).ToList());
+            TacticalUtilities.ProcessTravelingUnits(actors.Select(s => s.Unit).ToList());            
         }
     }
 
@@ -3967,7 +3985,7 @@ Turns: {currentTurn}
             Actor_Unit predatorUnit = survivingPredators.Where(s => s.Unit.Health < s.Unit.MaxHealth).OrderByDescending(s => s.Unit.MaxHealth - s.Unit.Health).FirstOrDefault();
             if (predatorUnit == null)
                 predatorUnit = survivingPredators[State.Rand.Next(survivingPredators.Length)];
-            predatorUnit.Unit.GiveScaledExp(8, predatorUnit.Unit.Level - preyUnit.Unit.Level, true);
+            predatorUnit.Unit.GiveScaledExp(4, predatorUnit.Unit.Level - preyUnit.Unit.Level, true);
             predatorUnit.Unit.Heal((preyUnit.Unit.MaxHealth + preyUnit.Unit.Health) / 2);
             //Weight gain disabled for consuming corpses
             preyUnit.Unit.Health = -999999;

@@ -697,6 +697,7 @@ class Auri : DefaultRaceData
         unit.BodySize = 0;
         unit.BodyAccentType1 = 0;
         unit.ClothingExtraType1 = 1;
+        unit.TailType = 0;
         if (Config.WinterActive())
             unit.ClothingExtraType1 = 3;
     }

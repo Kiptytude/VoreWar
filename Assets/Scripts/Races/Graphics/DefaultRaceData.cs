@@ -515,7 +515,12 @@ abstract class DefaultRaceData
                 unit.SetDefaultBreastSize(Mathf.Clamp(unit.DefaultBreastSize, 0, BreastSizes - 1));
             }
             else
-                unit.SetDefaultBreastSize(Mathf.Clamp(State.Rand.Next(BreastSizes) + Config.BreastSizeModifier * BreastSizes / 6, 0, BreastSizes - 1));
+            {
+                if (unit.HasDick)
+                    unit.SetDefaultBreastSize(Mathf.Clamp(State.Rand.Next(BreastSizes) + Config.HermBreastSizeModifier * BreastSizes / 6, 0, BreastSizes - 1));
+                else
+                    unit.SetDefaultBreastSize(Mathf.Clamp(State.Rand.Next(BreastSizes) + Config.BreastSizeModifier * BreastSizes / 6, 0, BreastSizes - 1));
+            }
         }
 
         if (Config.HairMatchesFur && FurCapable)

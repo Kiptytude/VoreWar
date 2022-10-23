@@ -899,7 +899,7 @@ static class StrategicUtilities
                 break;
         }
 
-        if (unit.Type == UnitType.Leader && Config.LeadersUseCustomizations)
+        if (unit.Type == UnitType.Leader && Config.LeadersAutoGainLeadership == false)
         {
             weight[(int)Stat.Leadership] = 4;
         }

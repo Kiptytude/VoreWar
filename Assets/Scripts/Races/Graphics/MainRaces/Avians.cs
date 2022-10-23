@@ -102,8 +102,15 @@ class Avians : DefaultRaceData
 
         unit.TailType = State.Rand.Next(TailTypes);
 
+        if (Config.RagsForSlaves && State.World?.MainEmpires != null && (State.World.GetEmpireOfRace(unit.Race)?.IsEnemy(State.World.GetEmpireOfSide(unit.Side)) ?? false) && unit.ImmuneToDefections == false)
+        {
+            unit.ClothingType = 1 + AllowedMainClothingTypes.IndexOf(Rags);
+            if (unit.ClothingType == -1) //Covers rags not in the list
+                unit.ClothingType = 1;
+        }
+
         if (unit.Type == UnitType.Leader)
-            unit.ClothingType = 1 + AllowedMainClothingTypes.IndexOf(LeaderClothes);
+            unit.ClothingType = 1 + AllowedMainClothingTypes.IndexOf(LeaderClothes);       
     }
 
     internal override int DickSizes => 8;

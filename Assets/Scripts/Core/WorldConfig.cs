@@ -68,6 +68,9 @@ public class WorldConfig
     [OdinSerialize]
     internal int RandomAIEventRate = 0;
 
+    [OdinSerialize]
+    internal int FogDistance = 2;
+
 
     [OdinSerialize]
     internal float WeightLossFractionBreasts = 0;
@@ -145,7 +148,9 @@ public class WorldConfig
     internal int MonsterConquestTurns;
 
     [OdinSerialize]
-    internal int BreastSizeModifier = 3;
+    internal int BreastSizeModifier = 0;    
+    [OdinSerialize]
+    internal int HermBreastSizeModifier = 0;
     [OdinSerialize]
     internal int CockSizeModifier = 0;
     [OdinSerialize]

@@ -43,14 +43,14 @@ class FogSystem
         {
             if (village.Empire.IsAlly(playerEmpire) && village.GetTotalPop() > 0)
             {
-                ClearWithin2TilesOf(village.Position);
+                ClearWithinXTilesOf(village.Position);
             }
         }
         foreach (Army army in armies)
         {
             if (army.Empire.IsAlly(playerEmpire))
             {
-                ClearWithin2TilesOf(army.Position);
+                ClearWithinXTilesOf(army.Position);
             }
         }
 
@@ -79,26 +79,29 @@ class FogSystem
             {
                 if (FoggedTile[State.World.Villages[i].Position.x, State.World.Villages[i].Position.y])
                 {
-                    currentVillageTiles[3 * i].GetComponent<SpriteRenderer>().enabled = false;
-                    currentVillageTiles[3 * i + 1].GetComponent<SpriteRenderer>().enabled = false;
-                    currentVillageTiles[3 * i + 2].GetComponent<SpriteRenderer>().enabled = false;
+                    currentVillageTiles[4 * i].GetComponent<SpriteRenderer>().enabled = false;
+                    currentVillageTiles[4 * i + 1].GetComponent<SpriteRenderer>().enabled = false;
+                    currentVillageTiles[4 * i + 2].GetComponent<SpriteRenderer>().enabled = false;
+                    currentVillageTiles[4 * i + 3].GetComponent<SpriteRenderer>().enabled = false;
                 }
                 else
                 {
-                    currentVillageTiles[3 * i].GetComponent<SpriteRenderer>().enabled = true;
-                    currentVillageTiles[3 * i + 1].GetComponent<SpriteRenderer>().enabled = true;
-                    currentVillageTiles[3 * i + 2].GetComponent<SpriteRenderer>().enabled = true;
+                    currentVillageTiles[4 * i].GetComponent<SpriteRenderer>().enabled = true;
+                    currentVillageTiles[4 * i + 1].GetComponent<SpriteRenderer>().enabled = true;
+                    currentVillageTiles[4 * i + 2].GetComponent<SpriteRenderer>().enabled = true;
+                    currentVillageTiles[4 * i + 3].GetComponent<SpriteRenderer>().enabled = true;
                 }
             }
         }
 
     }
 
-    void ClearWithin2TilesOf(Vec2i pos)
+    void ClearWithinXTilesOf(Vec2i pos)
     {
-        for (int x = pos.x - 2; x <= pos.x + 2; x++)
+        int dist = Config.FogDistance;
+        for (int x = pos.x - dist; x <= pos.x + dist; x++)
         {
-            for (int y = pos.y - 2; y <= pos.y + 2; y++)
+            for (int y = pos.y - dist; y <= pos.y + dist; y++)
             {
                 if (x < 0 || y < 0 || x > FoggedTile.GetUpperBound(0) || y > FoggedTile.GetUpperBound(1))
                     continue;

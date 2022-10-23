@@ -9,7 +9,7 @@ using UnityEngine;
 public static class State
 {
     static int saveErrors = 0;
-    public const string Version = "38F";
+    public const string Version = "39";
     public static World World;
     public static Rand Rand = new Rand();
     public static NameGenerator NameGen;
@@ -674,6 +674,37 @@ public static class State
                 }
             }
 
+
+            if (string.Compare(World.SaveVersion, "38G") < 0)
+            {
+                if (World.AllActiveEmpires != null)
+                {
+                    foreach (var unit in StrategicUtilities.GetAllUnits())
+                    {
+                        if (unit.GetGender() == Gender.Hermaphrodite || unit.GetGender() == Gender.Gynomorph)
+                        {
+                            unit.HasVagina = Config.HermsCanUB;
+                        }
+                    }
+                }
+                
+            }
+
+            if (string.Compare(World.SaveVersion, "39") < 0)
+            {
+                World.ConfigStorage.FogDistance = 2;
+
+                if (World.AllActiveEmpires != null)
+                {
+                    foreach (var unit in StrategicUtilities.GetAllUnits())
+                    {
+                        if (unit.Race == Race.Humans)
+                        {
+                            unit.RandomizeAppearance();
+                        }
+                    }
+                }
+            }
 
             if (World.AllActiveEmpires != null)
             {

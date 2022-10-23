@@ -578,7 +578,12 @@ class StrategicArmyCommander
         army.RefreshMovementMode();
         State.World.Stats.ResurrectedLeader(empire.Side);
         if (Config.LeadersRerandomizeOnDeath)
+        {
             empire.Leader.TotalRandomizeAppearance();
+            empire.Leader.ReloadTraits();
+            empire.Leader.InitializeTraits();
+        }
+
         return empire.Leader;
     }
 

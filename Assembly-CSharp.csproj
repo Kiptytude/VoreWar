@@ -241,6 +241,7 @@
     <Compile Include="Assets\Scripts\Races\Graphics\Mercs\Puca.cs" />
     <Compile Include="Assets\Scripts\Races\Graphics\Mercs\Succubi.cs" />
     <Compile Include="Assets\Scripts\Races\Graphics\Mercs\Tigers.cs" />
+    <Compile Include="Assets\Scripts\Races\Graphics\Mercs\Vargul.cs" />
     <Compile Include="Assets\Scripts\Races\Graphics\Mercs\Vipers.cs" />
     <Compile Include="Assets\Scripts\Races\Graphics\Monsters\Ant.cs" />
     <Compile Include="Assets\Scripts\Races\Graphics\Monsters\Bat.cs" />
@@ -420,6 +421,7 @@
     <Compile Include="Assets\Scripts\Utility\RelationsManager.cs" />
     <Compile Include="Assets\Scripts\Utility\SimpleFileLoader.cs" />
     <Compile Include="Assets\Scripts\Utility\SimpleHover.cs" />
+    <Compile Include="Assets\Scripts\Utility\SimpleHoverSpells.cs" />
     <Compile Include="Assets\Scripts\Utility\SoundManager.cs" />
     <Compile Include="Assets\Scripts\Utility\Stored\CreateStrategicStored.cs" />
     <Compile Include="Assets\Scripts\Utility\Stored\CustomizationDataStorer.cs" />

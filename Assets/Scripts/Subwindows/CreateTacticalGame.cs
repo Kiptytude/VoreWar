@@ -499,7 +499,7 @@ public class CreateTacticalGame : MonoBehaviour
                 defender.Units.Add(new NPC_unit(levelB, defenderRangedHeavyCount > 0, 1, defenderSide, DefenderRace(), 0, Defender.CanVore.isOn));
                 defender.Units.Last().ImmuneToDefections = true;
                 defenderRangedHeavyCount--;
-                if (State.Rand.NextDouble() < Defender.MagicPercentage.value)
+                if (State.Rand.NextDouble() < Defender.MagicPercentage.value / 100)
                     defender.Units.Last().SetItem(State.World.ItemRepository.GetRandomBook(1, maxMagicB, true), 1);
             }
             else
@@ -507,7 +507,7 @@ public class CreateTacticalGame : MonoBehaviour
                 defender.Units.Add(new NPC_unit(levelB, defenderMeleeHeavyCount > 0, 0, defenderSide, DefenderRace(), 0, Defender.CanVore.isOn));
                 defender.Units.Last().ImmuneToDefections = true;
                 defenderMeleeHeavyCount--;
-                if (State.Rand.NextDouble() < Defender.MagicPercentage.value)
+                if (State.Rand.NextDouble() < Defender.MagicPercentage.value / 100)
                     defender.Units.Last().SetItem(State.World.ItemRepository.GetRandomBook(1, maxMagicB, true), 1);
             }
         }

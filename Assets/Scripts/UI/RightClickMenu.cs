@@ -257,8 +257,6 @@ public class RightClickMenu : MonoBehaviour
             DevourChance = devourChance
         };
 
-        float spellChance = target.GetMagicChance(actor, null);
-
         if (actor.Unit.UseableSpells != null)
         {
             foreach (Spell spell in actor.Unit.UseableSpells)
@@ -266,9 +264,9 @@ public class RightClickMenu : MonoBehaviour
                 if (spell.AcceptibleTargets.Contains(AbilityTargets.Enemy))
                 {
                     if (spell == SpellList.Maw)
-                        currentButton = AddSpell(spell, actor, target, currentButton, range, spellChance * target.GetDevourChance(actor, skillBoost: actor.Unit.GetStat(Stat.Mind)));
+                        currentButton = AddSpell(spell, actor, target, currentButton, range, target.GetMagicChance(actor, spell) * target.GetDevourChance(actor, skillBoost: actor.Unit.GetStat(Stat.Mind)));
                     else
-                        currentButton = AddSpell(spell, actor, target, currentButton, range, spellChance);
+                        currentButton = AddSpell(spell, actor, target, currentButton, range, target.GetMagicChance(actor, spell));
                 }
             }
         }

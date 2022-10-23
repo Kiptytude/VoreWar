@@ -50,6 +50,7 @@ static class Races
     static internal Vipers Vipers = new Vipers();
     static internal Komodos Komodos = new Komodos();
     static internal Cockatrice Cockatrice = new Cockatrice();
+    static internal Vargul Vargul = new Vargul();
 
 
     static internal Vagrants Vagrants = new Vagrants();
@@ -297,7 +298,9 @@ static class Races
             case Race.Schiwardez:
                 return Schiwardez;
             case Race.Terrorbird:
-                return Terrorbird; 
+                return Terrorbird;
+            case Race.Vargul:
+                return Vargul; 
             case Race.Dratopyr:
                 return Dratopyr;
             case Race.Erin:

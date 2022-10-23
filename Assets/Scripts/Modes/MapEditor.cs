@@ -555,6 +555,11 @@ public class MapEditor : SceneBase
                 for (int j = 0; j <= tiles.GetUpperBound(1); j++)
                 {
                     TilemapLayers[0].SetTile(new Vector3Int(i, j, 0), TileTypes[StrategicTileInfo.GetTileType(tiles[i, j], i, j)]);
+
+                    var type = StrategicTileInfo.GetObjectTileType(this.tiles[i, j], i, j);
+                    if (type != -1)
+                        TilemapLayers[2].SetTile(new Vector3Int(i, j, 0), State.GameManager.StrategyMode.TileDictionary.Objects[type]);
+                        
                 }
             }
         }
@@ -825,6 +830,11 @@ public class MapEditor : SceneBase
                 if (SimpleDisplay.isOn)
                 {
                     TilemapLayers[0].SetTile(new Vector3Int(x, y, 0), TileTypes[StrategicTileInfo.GetTileType(tiles[x, y], x, y)]);
+                    var type = StrategicTileInfo.GetObjectTileType(this.tiles[x, y], x, y);
+                    if (type != -1)
+                        TilemapLayers[2].SetTile(new Vector3Int(x, y, 0), State.GameManager.StrategyMode.TileDictionary.Objects[type]);
+                    else
+                        TilemapLayers[2].SetTile(new Vector3Int(x, y, 0), null);
                 }
                 else
                 {

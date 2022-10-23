@@ -407,6 +407,15 @@ public class UnitCustomizer
                 buttons[(int)ButtonTypes.ClothingExtraType2].Label.text = "Stockings";
                 buttons[(int)ButtonTypes.ClothingExtraType3].Label.text = "Shoes";
                 break;
+
+		case Race.Vargul:
+                buttons[(int)ButtonTypes.BodyAccessoryType].Label.text = "Body Pattern Type";
+                buttons[(int)ButtonTypes.BodyAccentTypes1].Label.text = "Ear Type";
+                buttons[(int)ButtonTypes.BodyAccentTypes2].Label.text = "Head Pattern Type";
+                buttons[(int)ButtonTypes.BodyAccentTypes3].Label.text = "Mask On/Off (for armors)";
+                buttons[(int)ButtonTypes.BodyAccessoryColor].Label.text = "Body Pattern Colors";
+                buttons[(int)ButtonTypes.ExtraColor1].Label.text = "Armor Details Color";
+                break;
         }
     }
 
@@ -416,7 +425,7 @@ public class UnitCustomizer
         {
             if (unit.HasDick)
             {
-                if (unit.HasVagina)
+                if (unit.HasVagina || Config.HermsCanUB == false)
                     CustomizerUI.Gender.value = 2;
                 else
                     CustomizerUI.Gender.value = 3;
@@ -797,7 +806,7 @@ public class UnitCustomizer
             }
             changedGender = true;
             Unit.DickSize = State.Rand.Next(RaceData.DickSizes);
-            Unit.HasVagina = true;
+            Unit.HasVagina = Config.HermsCanUB;
             Unit.SetDefaultBreastSize(State.Rand.Next(RaceData.BreastSizes));
         }
         else if (CustomizerUI.Gender.value == 3 && Unit.GetGender() != Gender.Gynomorph)
@@ -851,7 +860,7 @@ public class UnitCustomizer
         buttons[(int)ButtonTypes.CockSize].gameObject.SetActive(Unit.HasDick && RaceData.DickSizes > 1);
         if (changedGender)
         {
-            if (CustomizerUI.Gender.value == 0)
+            if (CustomizerUI.Gender.value == 0 || CustomizerUI.Gender.value == 5)
             {
                 CustomizerUI.Nominative.text = "he";
                 CustomizerUI.Accusative.text = "him";

@@ -661,7 +661,12 @@ public class Recruit_Mode : SceneBase
         State.World.Stats.ResurrectedLeader(empire.Side);
         army.Units.Add(empire.Leader);
         if (Config.LeadersRerandomizeOnDeath)
+        {
             empire.Leader.TotalRandomizeAppearance();
+            empire.Leader.ReloadTraits();
+            empire.Leader.InitializeTraits();
+        }
+
         UpdateActorList();
         GenText();
     }
@@ -1422,6 +1427,8 @@ public class Recruit_Mode : SceneBase
         }
         if (selectedIndex > 0)
             Select(selectedIndex - 1);
+        else
+            Select(0);
     }
 
     public void SetUpDisplay()

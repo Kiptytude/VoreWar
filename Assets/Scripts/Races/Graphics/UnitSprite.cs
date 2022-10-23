@@ -107,6 +107,13 @@ public class UnitSprite : MonoBehaviour
         FinishDisplayedTextSetup();
     }
 
+    public void DisplaySummoned()
+    {
+        DamageIndicator.faceColor = Color.white;
+        DamageIndicator.text = "Summoned!";
+        FinishDisplayedTextSetup();
+    }
+
     public void DisplayEscape()
     {
         DamageIndicator.faceColor = Color.blue;

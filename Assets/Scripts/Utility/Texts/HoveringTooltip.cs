@@ -45,6 +45,25 @@ public class HoveringTooltip : MonoBehaviour
         transform.position = Input.mousePosition + new Vector3(xAdjust, 0, 0);
     }
 
+    public void UpdateInformationSpellsOnly(string[] words)
+    {
+        string description = GetSpellDescription(words);
+        if (description == "")
+        {
+            gameObject.SetActive(false);
+            return;
+        }
+        rect.sizeDelta = new Vector2(500, 200);
+        gameObject.SetActive(true);
+        remainingFrames = 3;
+        text.text = description;
+        float xAdjust = 10;
+        float exceeded = Input.mousePosition.x + (rect.rect.width * Screen.width / 1920) - Screen.width;
+        if (exceeded > 0)
+            xAdjust = -exceeded;
+        transform.position = Input.mousePosition + new Vector3(xAdjust, 0, 0);
+    }
+
     public void UpdateInformation(string[] words, Unit unit, Actor_Unit actor)
     {
         string description = GetDescription(words, unit, actor);
@@ -96,6 +115,23 @@ public class HoveringTooltip : MonoBehaviour
         if (Enum.TryParse(words[2], out Traits trait))
         {
             return GetTraitData(trait);
+        }
+        return "";
+    }
+
+    string GetSpellDescription(string[] words)
+    {
+        if (Enum.TryParse(words[2], out SpellTypes spell))
+        {
+            List<Spell> AllSpells = SpellList.SpellDict.Select(s => s.Value).ToList();
+            string complete = $"{words[0]} {words[1]} {words[2]} {words[3]} {words[4]}";
+            for (int i = 0; i < AllSpells.Count; i++)
+            {
+                if (words[2] == AllSpells[i].SpellType.ToString() || (complete.Contains(AllSpells[i].SpellType.ToString()) && AllSpells[i].SpellType.ToString().Contains(words[2]))) //Ensures that the phrase contains the highlighed word
+                {
+                    return $"{AllSpells[i].Description}\nRange: {AllSpells[i].Range.Min}-{AllSpells[i].Range.Max}\nMana Cost: {AllSpells[i].ManaCost}\nTargets: {string.Join(", ", AllSpells[i].AcceptibleTargets)}";
+                }
+            }
         }
         return "";
     }
@@ -191,6 +227,9 @@ public class HoveringTooltip : MonoBehaviour
                         return $"Unit only gets 1 AP per turn, and stats are temporarily lowered\nTurns Remaining: {effect.Duration}";
                     case StatusEffectType.Petrify:
                         return $"Unit cannot perform any actions, but is easy to hit, takes half damage from attacks and is bulky to eat.\nTurns Remaining: {effect.Duration}";
+                    case StatusEffectType.Berserk:
+                        return $"Unit is berserk, its strength and voracity are greatly increased for a brief period\nTurns Remaining: {effect.Duration}";
+
                 }
             }
         }
@@ -370,7 +409,7 @@ public class HoveringTooltip : MonoBehaviour
             case Traits.FearsomeAppetite:
                 return "Consuming a victim frightens nearby allies of the prey, temporarily reducing their stats";
             case Traits.Endosoma:
-                return "Can vore friendly units, friendly units that are vored take no digestion damage \nThey do not try to escape, but can be regurgitated or are freed at the end of battle\nHas 100% chance to eat allies, and only costs 2 mp, like eating surrendered units";
+                return "Can vore friendly units, friendly units that are vored take no digestion damage \nThey do not try to escape, but can be regurgitated or are freed at the end of battle\nHas 100% chance to eat allies, and only costs 2 mp, like eating surrendered units.  May cause battles to not automatically end if used with TheGreatEscape";
             case Traits.TailStrike:
                 return "An attack that does less damage, but attacks the tile and the 2 tiles adjacent to it that are within reach";
             case Traits.HealingBelly:
@@ -436,7 +475,9 @@ public class HoveringTooltip : MonoBehaviour
             case Traits.TheGreatEscape:
                 return "This unit cannot be digested, but the battle will end if only units with this remain and they're all eaten.  The prey are assumed to escape sometime later, and are count as fled units. (Note that you'd need end of battle review checked to see the escape messages as they happen at the very end of battle)";
             case Traits.Growth:
-                return "Each absorbtion makes this unit grow in size, but the effect slowly degrades outside battle.\n(Cheat Trait)";
+                return "Each absorption makes this unit grow in size, but the effect slowly degrades outside battle.\n(Cheat Trait)";
+            case Traits.Berserk:
+                return "If the unit is reduced below half health by an attack, will go berserk, greating increasing its strength and voracity for 3 turns.\nCan only occur once per battle.";
         }
         return "<b>This trait needs a tooltip!</b>";
     }

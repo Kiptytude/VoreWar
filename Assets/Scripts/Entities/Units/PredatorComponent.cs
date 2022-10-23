@@ -550,6 +550,20 @@ public class PredatorComponent
         }
     }
 
+    internal void PurgePrey()
+    {
+        FreeAnyAlivePrey();
+        prey.Clear();
+        womb.Clear();
+        breasts.Clear();
+        leftBreast.Clear();
+        rightBreast.Clear();
+        balls.Clear();
+        stomach.Clear();
+        stomach2.Clear();
+        tail.Clear();
+    }
+
     public Vec2i GetCurrentLocation()
     {
         Actor_Unit located = actor;
@@ -885,6 +899,7 @@ public class PredatorComponent
             if (unit.HasTrait(Traits.Growth))
             {
                 unit.BaseScale = unit.BaseScale + ((float)totalHeal / 200) * Mathf.Pow((1 / unit.GetScale()) * preyUnit.Unit.GetScale(), 2);
+                //unit.BaseScale = unit.BaseScale + ((float)totalHeal / preyUnit.Unit.MaxHealth * .2f) * Mathf.Pow(1 / unit.GetScale() * preyUnit.Unit.GetScale(), 2);
             }
         }
         if (!(unit.Health < unit.MaxHealth))
@@ -944,7 +959,7 @@ public class PredatorComponent
 
         if (preyUnit.Unit.IsThisCloseToDeath(preyDamage))
         {
-            if ((Location(preyUnit) == PreyLocation.womb || Config.KuroTenkoConvertsAllTypes) && preyUnit.Unit.CanBeConverted() && Config.KuroTenkoEnabled && (Config.UBConversion == UBConversion.Both || Config.UBConversion == UBConversion.ConversionOnly) && preyUnit.Unit.Type != UnitType.Summon && preyUnit.Unit.Type != UnitType.Leader && preyUnit.Unit.Type != UnitType.SpecialMercenary && preyUnit.Unit.HasTrait(Traits.Eternal) == false && preyUnit.Unit.SavedCopy == null)
+            if ((Location(preyUnit) == PreyLocation.womb || Config.KuroTenkoConvertsAllTypes) && preyUnit.Unit.CanBeConverted() && Config.KuroTenkoEnabled && unit.HasTrait(Traits.PredGusher) == false && (Config.UBConversion == UBConversion.Both || Config.UBConversion == UBConversion.ConversionOnly) && preyUnit.Unit.Type != UnitType.Summon && preyUnit.Unit.Type != UnitType.Leader && preyUnit.Unit.Type != UnitType.SpecialMercenary && preyUnit.Unit.HasTrait(Traits.Eternal) == false && preyUnit.Unit.SavedCopy == null)
             {
                 preyUnit.Unit.Health = preyUnit.Unit.MaxHealth / 2;
                 preyUnit.Actor.Movement = 0;
@@ -1082,6 +1097,8 @@ public class PredatorComponent
                 speedFactor = 4f;
 
             int healthReduction = (int)Math.Max(Math.Round(preyUnit.Unit.MaxHealth * speedFactor / 15), 1);
+            if (healthReduction >= preyUnit.Unit.MaxHealth + preyUnit.Unit.Health)
+                healthReduction = preyUnit.Unit.MaxHealth + preyUnit.Unit.Health + 1;
             preyUnit.Actor.SubtractHealth(healthReduction);
             totalHeal += Math.Max((int)(healthReduction / 2 * preyUnit.Unit.TraitBoosts.Outgoing.Nutrition * unit.TraitBoosts.Incoming.Nutrition), 1);
             var baseManaGain = healthReduction * (preyUnit.Unit.TraitBoosts.Outgoing.ManaAbsorbHundreths + unit.TraitBoosts.Incoming.ManaAbsorbHundreths);

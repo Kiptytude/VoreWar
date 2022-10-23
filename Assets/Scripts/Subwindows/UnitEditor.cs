@@ -99,7 +99,7 @@ class UnitEditor : UnitCustomizer
             }
             changedGender = true;
             Unit.DickSize = State.Rand.Next(RaceData.DickSizes);
-            Unit.HasVagina = true;
+            Unit.HasVagina = Config.HermsCanUB;
             Unit.SetDefaultBreastSize(State.Rand.Next(RaceData.BreastSizes));
         }
         else if (CustomizerUI.Gender.value == 3 && Unit.GetGender() != Gender.Gynomorph)
