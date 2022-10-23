@@ -1,0 +1,333 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+static class Config
+{
+    public enum AutoAdvanceType
+    {
+        DoNothing,
+        AdvanceTurns,
+        SkipToEnd
+    }
+
+    public enum VictoryType
+    {
+        AllCapitals,
+        AllCities,
+        CompleteElimination,
+        NeverEnd,
+    }
+
+    public enum MonsterConquestType
+    {
+        IgnoreTowns = -1,
+        DevourAndDisperse,
+        DevourAndHold,
+        CompleteDevourAndHold,
+        CompleteDevourAndRepopulate,
+        CompleteDevourAndMoveOn,
+        CompleteDevourAndRepopulateFortify,
+    }
+
+    public enum SeasonalType
+    {
+        Automatic,
+        AlwaysOn,
+        Disabled
+    }
+
+    public const int NumberOfRaces = 29;
+
+    public const int NewItemSlots = 2;
+
+    public const int GarrisonCost = 8;
+    public const int ArmyCost = 10;
+
+    public const int MaximumPossibleArmy = 48;
+
+    public static bool PutTeamsTogether = false;
+
+    public static float StrategicAIMoveDelay = 0.3f;
+    public static float TacticalPlayerMovementDelay = 0.1f;
+    public static float TacticalFriendlyAIMovementDelay = 0.1f;
+    public static float TacticalAIMovementDelay = 0.1f;
+    public static float TacticalAttackDelay = 0.2f;
+    public static float TacticalVoreDelay = 0.3f;
+
+    public static int MaxVillages => World.VillagesPerEmpire.Sum();
+
+    public static AutoAdvanceType AutoAdvance = AutoAdvanceType.AdvanceTurns;
+    public static bool StopAtEndOfBattle = false;
+    public static bool WatchAIBattles = false;
+    public static bool ShowStatsForSkippedBattles = false;
+    public static bool SkipAIOnlyStats = false;
+    public static bool TimedAIStats = false;
+    public static bool EdgeScrolling = false;
+    public static bool HardLava = false;
+    public static bool DontFixLeaders = false;
+
+    public static bool AutoUseAI = false;
+
+    public static bool DisplayEndOfTurnText = false;
+
+    public static float BannerScale = 1;
+
+    public static bool Notifications = false;
+    public static bool StrategicCenterCameraOnAction = false;
+    public static bool TacticalCenterCameraOnAction = false;
+    public static bool StrategicCameraActionPanel = false;
+    public static bool TacticalCameraActionPanel = false;
+
+    public static bool SimpleFarms = false;
+    public static bool SimpleForests = false;
+    public static bool BattleReport = true;
+
+    public static bool HideUnitViewer = false;
+
+    public static bool IgnoreMonsterBattles = false;
+
+    public static bool ExtraTacticalInfo = false;
+    public static bool CheatExtraStrategicInfo = false;
+    public static bool CheatUnitEditorEnabled = false;
+    public static bool CheatViewHostileArmies = false;
+    public static bool CheatAddUnitButton = false;
+    public static bool CheatPopulation = false;
+    public static bool CloseInDigestionNoises = false;
+
+    public static bool DamageNumbers = true;
+    public static bool RightClickMenu = false;
+    public static bool HideBaseStats = false;
+
+    public static bool DesaturatedTiles = false;
+
+    public static bool ShowLevelText = true;
+    public static bool AltFriendlyColor = false;
+    public static bool PromptEndTurn = true;
+    public static bool ScrollToBattleLocation = true;
+
+    public static int AllianceSquaresDarkness = 1;
+
+    public static bool AIToAIMessagesForever = false;
+    public static string LetterBeforeLeaderNames = "";
+
+    public static bool KuroTenkoConvertsAllTypes = false;
+
+    public static bool[] CenteredEmpire = new bool[NumberOfRaces];
+
+    public static int StartingGold;
+
+    //Everything below this line should be mirrored in WorldConfigStorage to ensure proper saving
+
+    internal static WorldConfig World = new WorldConfig();
+
+
+    internal static int[] VillagesPerEmpire => World.VillagesPerEmpire;
+
+    internal static MonsterConquestType MonsterConquest => World.MonsterConquest;
+    internal static int MonsterConquestTurns => World.MonsterConquestTurns;
+
+    internal static bool FirstTurnArmiesIdle => World.GetValue("FirstTurnArmiesIdle");
+
+    internal static Orientation MalesLike => World.MalesLike;
+    internal static Orientation FemalesLike => World.FemalesLike;
+
+    internal static DiplomacyScale DiplomacyScale => World.DiplomacyScale;
+
+    internal static bool AllowInfighting => World.GetValue("AllowInfighting");
+
+    internal static bool RaceSpecificVoreGraphicsDisabled => World.GetValue("RaceSpecificVoreGraphicsDisabled");
+
+
+    internal static bool FriendlyRegurgitation => World.GetValue("FriendlyRegurgitation");//Units will vomit up friendly units if they're in the main stomach    
+    internal static int StrategicWorldSizeX => World.StrategicWorldSizeX;
+    internal static int StrategicWorldSizeY => World.StrategicWorldSizeY;
+    internal static bool AutoScaleTactical => World.AutoScaleTactical;
+    internal static int TacticalSizeX => World.TacticalSizeX;
+    internal static int TacticalSizeY => World.TacticalSizeY;
+    internal static int ExperiencePerLevel => World.ExperiencePerLevel;
+    internal static int AdditionalExperiencePerLevel => World.AdditionalExperiencePerLevel;
+    internal static int VillageIncomePercent => World.VillageIncomePercent;
+    internal static int VillagersPerFarm => World.VillagersPerFarm;
+    internal static int SoftLevelCap => World.SoftLevelCap;
+    internal static int HardLevelCap => World.HardLevelCap;
+
+    internal static bool CapMaxGarrisonIncrease => World.CapMaxGarrisonIncrease;
+
+    internal static int VoreRate => World.VoreRate;
+    internal static int EscapeRate => World.EscapeRate;
+    internal static int RandomEventRate => World.RandomEventRate;
+    internal static int RandomAIEventRate => World.RandomAIEventRate;
+    internal static bool EventsRepeat => World.GetValue("EventsRepeat");
+    internal static FairyBVType FairyBVType => World.FairyBVType;
+    internal static FeedingType FeedingType => World.FeedingType;
+    internal static FourthWallBreakType FourthWallBreakType => World.FourthWallBreakType;
+    internal static UBConversion UBConversion => World.UBConversion;
+    internal static SucklingPermission SucklingPermission => World.SucklingPermission;
+
+    internal static int StartingPopulation => World.StartingPopulation;
+
+    internal static bool NewGraphics => true;
+
+
+    internal static bool MultiRaceFlip => World.GetValue("MultiRaceFlip");
+    internal static bool AdventurersDisabled => World.GetValue("AdventurersDisabled");
+    internal static bool MercenariesDisabled => World.GetValue("MercenariesDisabled");
+    internal static bool TroopScatter => World.GetValue("TroopScatter");
+
+    internal static bool HideViperSlits => World.GetValue("HideViperSlit");
+
+
+    internal static bool AlwaysRandomizeConverted => World.GetValue("AlwaysRandomizeConverted");
+    internal static bool SpecialMercsCanConvert => World.GetValue("SpecialMercsCanConvert");
+
+    internal static bool LeadersRerandomizeOnDeath => World.GetValue("LeadersRerandomizeOnDeath");
+
+    internal static float MaleFraction => World.MaleFraction;
+    internal static float HermFraction => World.HermFraction;
+    internal static float HermNameFraction => World.HermNameFraction;
+    internal static float ClothedFraction => World.ClothedFraction;
+    internal static float WeightLossFractionBreasts => World.WeightLossFractionBreasts;
+    internal static float WeightLossFractionBody => World.WeightLossFractionBody;
+    internal static float WeightLossFractionDick => World.WeightLossFractionDick;
+    internal static float FurryFraction => World.FurryFraction;
+    internal static float CustomEventFrequency => World.CustomEventFrequency;
+    internal static float TacticalWaterValue => World.TacticalWaterValue;
+    internal static float TacticalTerrainFrequency => World.TacticalTerrainFrequency;
+
+    internal static float AutoSurrenderChance => World.AutoSurrenderChance;
+
+    internal static float OverallMonsterSpawnRateModifier => World.OverallMonsterSpawnRateModifier;
+    internal static float OverallMonsterCapModifier => World.OverallMonsterCapModifier;
+
+    internal static float LeaderLossExpPct => World.LeaderLossExpPct;
+    internal static int LeaderLossLevels => World.LeaderLossLevels;
+
+    public static bool LamiaUseTailAsSecondBelly => World.GetValue("LamiaUseTailAsSecondBelly");
+
+    internal static SpawnerInfo SpawnerInfo(Race race) => World.GetSpawner(race);
+    internal static SpawnerInfo SpawnerInfoWithoutGeneration(Race race) => World.GetSpawnerWithoutGeneration(race);
+
+    internal static VictoryType VictoryCondition => World.VictoryCondition;
+    internal static int BreastSizeModifier => World.BreastSizeModifier;
+    internal static int CockSizeModifier => World.CockSizeModifier;
+    internal static int DefaultStartingWeight => World.DefaultStartingWeight;
+    internal static int GoldMineIncome => World.GoldMineIncome;
+    internal static int MaxSpellLevelDrop => World.MaxSpellLevelDrop;
+
+    internal static int ArmyMP => World.ArmyMP;
+    internal static int MaxArmies => World.MaxArmies;
+
+    internal static bool RaceTraitsEnabled => World.GetValue("RaceTraitsEnabled");
+    internal static bool RagsForSlaves => World.GetValue("RagsForSlaves");
+    internal static bool VisibleCorpses => World.GetValue("VisibleCorpses");
+    internal static bool EdibleCorpses => World.GetValue("EdibleCorpses");
+
+    internal static List<Traits> LeaderTraits => World.LeaderTraits;
+    internal static List<Traits> MaleTraits => World.MaleTraits;
+    internal static List<Traits> FemaleTraits => World.FemaleTraits;
+    internal static List<Traits> HermTraits => World.HermTraits;
+
+    internal static bool NoAIRetreat => World.GetValue("NoAIRetreat");
+    internal static bool AICanCheatSpecialMercs => World.GetValue("AICanCheatSpecialMercs");
+    internal static bool AICanHireSpecialMercs => World.GetValue("AICanHireSpecialMercs");
+
+    internal static bool GoblinCaravans => World.GetValue("GoblinCaravans");
+    internal static bool MonstersDropSpells => World.GetValue("MonstersDropSpells");
+
+    internal static bool ExtraRandomHairColors => World.GetValue("ExtraRandomHairColors");
+
+    internal static bool WeightGain => World.GetValue("WeightGain");
+    internal static bool WeightLoss => World.GetValue("WeightLoss");
+    internal static bool FurryHandsAndFeet => World.GetValue("FurryHandsAndFeet");
+    internal static bool FurryFluff => World.GetValue("FurryFluff");
+    internal static bool FurryGenitals => World.GetValue("FurryGenitals");
+    internal static bool AllowHugeBreasts => World.GetValue("AllowHugeBreasts");
+    internal static bool AllowHugeDicks => World.GetValue("AllowHugeDicks");
+    internal static bool HairMatchesFur => World.GetValue("HairMatchesFur");
+    internal static bool MaleHairForFemales => World.GetValue("MaleHairForFemales");
+    internal static bool FemaleHairForMales => World.GetValue("FemaleHairForMales");
+    internal static bool HermsOnlyUseFemaleHair => World.GetValue("HermsOnlyUseFemaleHair");
+    internal static bool HideBreasts => World.GetValue("HideBreasts");
+    internal static bool HideCocks => World.GetValue("HideCocks");
+    internal static bool ErectionsFromVore => World.GetValue("ErectionsFromVore");
+    internal static bool ErectionsFromCockVore => World.GetValue("ErectionsFromCockVore");
+    internal static bool LewdDialog => World.GetValue("LewdDialog");
+    internal static bool HardVoreDialog => World.GetValue("HardVoreDialog");
+
+
+    internal static bool MonstersCanReform => World.GetValue("MonstersCanReform");
+
+    internal static bool AltVoreOralGain => World.GetValue("AltVoreOralGain");
+    internal static bool BreastVore => World.GetValue("BreastVore");
+    internal static bool AnalVore => World.GetValue("AnalVore");
+    internal static bool TailVore => World.GetValue("TailVore");
+    internal static bool Unbirth => World.GetValue("Unbirth");
+    internal static bool HermsCanUB => World.GetValue("HermsCanUB");
+    internal static bool CockVore => World.GetValue("CockVore");
+    internal static bool CockVoreHidesClothes => World.GetValue("CockVoreHidesClothes");
+    internal static bool KuroTenkoEnabled => World.GetValue("KuroTenkoEnabled");
+    internal static bool OverhealEXP => World.GetValue("OverhealEXP");
+    internal static bool TransferAllowed => World.GetValue("TransferAllowed");
+    internal static bool CumGestation => World.GetValue("CumGestation");
+    internal static bool NoScatForDeadTransfers => World.GetValue("NoScatForDeadTransfers");
+
+    internal static int OralWeight => World.OralWeight;
+    internal static int UnbirthWeight => World.UnbirthWeight;
+    internal static int AnalWeight => World.AnalWeight;
+    internal static int BreastWeight => World.BreastWeight;
+    internal static int CockWeight => World.CockWeight;
+    internal static int TailWeight => World.TailWeight;
+
+    internal static bool CanUseStomachRubOnEnemies => World.GetValue("CanUseStomachRubOnEnemies");
+    internal static bool BoostedAccuracy => World.GetValue("BoostedAccuracy");
+    internal static bool AllowTopless => World.GetValue("AllowTopless");
+    internal static bool FactionLeaders => World.FactionLeaders;
+    internal static int ItemSlots => World.ItemSlots;
+
+    internal static bool FlatExperience => World.GetValue("FlatExperience");
+    internal static bool FogOfWar => World.GetValue("FogOfWar");
+    internal static bool LeadersUseCustomizations => World.GetValue("LeadersUseCustomizations");
+    internal static bool LeadersAutoGainLeadership => World.GetValue("LeadersAutoGainLeadership");
+    internal static bool LizardsHaveNoBreasts => World.GetValue("LizardsHaveNoBreasts");
+    internal static bool RaceSizeLimitsWeightGain => World.GetValue("RaceSizeLimitsWeightGain");
+
+    internal static bool MultiRaceVillages => World.GetValue("MultiRaceVillages");
+
+
+    internal static bool Defections => World.GetValue("Defections");
+    internal static bool Diplomacy => World.GetValue("Diplomacy");
+    internal static bool LockedAIRelations => World.GetValue("LockedAIRelations");
+    internal static bool DisorientedPrey => World.GetValue("DisorientedPrey");
+
+    public static bool AnimatedBellies => World.GetValue("AnimatedBellies");
+    public static bool DigestionSkulls => World.GetValue("DigestionSkulls");
+    public static bool Bones => World.GetValue("Bones");
+    public static bool Scat => World.GetValue("Scat");
+    public static bool ScatV2 => World.GetValue("ScatV2");
+    public static bool ScatBones => World.GetValue("ScatBones");
+    public static bool ClothingDiscards => World.GetValue("ClothingDiscards");
+    public static bool AutoSurrender => World.GetValue("AutoSurrender");
+    public static bool SurrenderedCanConvert => World.GetValue("SurrenderedCanConvert");
+    public static bool EatSurrenderedAllies => World.GetValue("EatSurrenderedAllies");
+    public static bool Cumstains => World.GetValue("Cumstains");
+    public static float BurpFraction => World.BurpFraction;
+    public static float FartFraction => World.FartFraction;
+    internal static bool BurpOnDigest => World.GetValue("BurpOnDigest");
+    internal static bool FartOnAbsorb => World.GetValue("FartOnAbsorb");
+
+    internal static bool WinterActive()
+    {
+        if (World.WinterStuff == SeasonalType.AlwaysOn)
+            return true;
+        else if (World.WinterStuff == SeasonalType.Disabled)
+            return false;
+        if (DateTime.UtcNow.Month == 12 || DateTime.UtcNow.DayOfYear < 15)
+            return true;
+        return false;
+    }
+
+}
+

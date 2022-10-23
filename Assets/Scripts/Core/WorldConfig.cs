@@ -1,0 +1,309 @@
+﻿using OdinSerializer;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+
+public class WorldConfig
+{
+
+    [OdinSerialize]
+    internal Dictionary<string, bool> Toggles = new Dictionary<string, bool>();
+
+    [OdinSerialize]
+    internal Dictionary<Race, SpawnerInfo> SpawnerInfo = new Dictionary<Race, SpawnerInfo>();
+
+    [OdinSerialize]
+    internal int[] VillagesPerEmpire = new int[Config.NumberOfRaces];
+
+
+    [OdinSerialize]
+    internal int StrategicWorldSizeX = 32;
+    [OdinSerialize]
+    internal int StrategicWorldSizeY = 32;
+    [OdinSerialize]
+    internal bool AutoScaleTactical = true;
+    [OdinSerialize]
+    internal int TacticalSizeX = 24;
+    [OdinSerialize]
+    internal int TacticalSizeY = 24;
+    [OdinSerialize, AllowEditing, ProperName("Experience Per Level"), IntegerRange(0, 9999), Description("Base Exp required per level")]
+    internal int ExperiencePerLevel = 20;
+    [OdinSerialize, AllowEditing, ProperName("Additional Experience Per Level"), IntegerRange(0, 9999), Description("How much extra exp is required per level")]
+    internal int AdditionalExperiencePerLevel = 1;
+    [OdinSerialize, AllowEditing, ProperName("Village Income Percent"), IntegerRange(0, 9999), Description("Multiplier to Village income")]
+    internal int VillageIncomePercent = 100;
+    [OdinSerialize, AllowEditing, ProperName("Villagers Per Farm"), IntegerRange(0, 9999), Description("Doesn't take effect until a new turn")]
+    internal int VillagersPerFarm = 6;
+    [OdinSerialize, AllowEditing, ProperName("Soft Level Cap"), IntegerRange(0, 9999), Description("After this level exp required spikes sharply")]
+    internal int SoftLevelCap = 0;
+    [OdinSerialize, AllowEditing, ProperName("Hard Level Cap"), IntegerRange(0, 9999), Description("After this level there are no more levels")]
+    internal int HardLevelCap = 0;
+
+    [OdinSerialize, AllowEditing, ProperName("Army Maintenance"), IntegerRange(0, 999), Description("Each unit in an active army costs this much gold per turn.  Default is 3.")]
+    internal int ArmyUpkeep = 0;
+
+    [OdinSerialize, AllowEditing, ProperName("Cap Max Garrison Increase"), IntegerRange(0, 9999), Description("Will make it so that the maximum increase to a garrison's size from buildings or a capital is 150% of the base value.   Basically designed to better support small army/garrison sizes, so if your max garrison size is 4, the capital will be a reasonable 6, instead of getting the full +8 and becoming 12.")]
+    internal bool CapMaxGarrisonIncrease = true;
+
+    [OdinSerialize]
+    internal int MaxSpellLevelDrop = 4;
+
+    [OdinSerialize]
+    internal int ArmyMP = 3;
+    [OdinSerialize]
+    internal int MaxArmies = 32;
+
+    [OdinSerialize, AllowEditing, ProperName("Gold Mine Income"), IntegerRange(0, 9999), Description("Gold provided by gold mines")]
+    internal int GoldMineIncome = 40;
+
+    [OdinSerialize]
+    internal int VoreRate = 1;
+    [OdinSerialize]
+    internal int EscapeRate = 1;
+    [OdinSerialize]
+    internal int RandomEventRate = 0;
+    [OdinSerialize]
+    internal int RandomAIEventRate = 0;
+
+
+    [OdinSerialize]
+    internal float WeightLossFractionBreasts = 0;
+    [OdinSerialize]
+    internal float WeightLossFractionBody = 0;
+    [OdinSerialize]
+    internal float WeightLossFractionDick = 0;
+    
+    [OdinSerialize]
+    internal float AutoSurrenderChance = 1;
+
+    [OdinSerialize]
+    internal float MaleFraction = 0;
+    [OdinSerialize]
+    internal float HermFraction = 0;
+    [OdinSerialize]
+    internal float ClothedFraction = 0;
+    [OdinSerialize]
+    internal float FurryFraction = 0;
+    [OdinSerialize]
+    internal float HermNameFraction = 0;
+
+    [OdinSerialize]
+    internal float OverallMonsterSpawnRateModifier = 1;
+    [OdinSerialize]
+    internal float OverallMonsterCapModifier = 1;
+
+    [OdinSerialize]
+    internal float TacticalWaterValue = 0;
+    [OdinSerialize]
+    internal float TacticalTerrainFrequency = 0;
+
+    [OdinSerialize]
+    internal int StartingPopulation = 99999;
+
+    [OdinSerialize]
+    internal List<Traits> LeaderTraits;
+    [OdinSerialize]
+    internal List<Traits> MaleTraits;
+    [OdinSerialize]
+    internal List<Traits> FemaleTraits;
+    [OdinSerialize]
+    internal List<Traits> HermTraits;
+
+    [OdinSerialize]
+    internal float CustomEventFrequency = 0;
+
+    [OdinSerialize]
+    internal Orientation MalesLike = 0;
+    [OdinSerialize]
+    internal Orientation FemalesLike = 0;
+    [OdinSerialize]
+    internal FairyBVType FairyBVType = 0;
+    [OdinSerialize]
+    internal FeedingType FeedingType = 0;
+    [OdinSerialize]
+    internal FourthWallBreakType FourthWallBreakType = 0;
+    [OdinSerialize]
+    internal UBConversion UBConversion = 0;
+    [OdinSerialize]
+    internal SucklingPermission SucklingPermission = 0;
+
+    [OdinSerialize]
+    internal DiplomacyScale DiplomacyScale = 0; 
+    
+    [OdinSerialize]
+    internal Config.SeasonalType WinterStuff = 0;
+
+    [OdinSerialize, AllowEditing, ProperName("Victory Condition"), Description("The condition required for victory")]
+    internal Config.VictoryType VictoryCondition;
+
+    [OdinSerialize]
+    internal Config.MonsterConquestType MonsterConquest;
+    [OdinSerialize]
+    internal int MonsterConquestTurns;
+
+    [OdinSerialize]
+    internal int BreastSizeModifier = 3;
+    [OdinSerialize]
+    internal int CockSizeModifier = 0;
+    [OdinSerialize]
+    internal int DefaultStartingWeight = 3;
+
+
+    [OdinSerialize]
+    internal bool FactionLeaders;
+    [OdinSerialize]
+    internal int ItemSlots;
+
+    [OdinSerialize]
+    internal float BurpFraction = .1f;
+
+    [OdinSerialize]
+    internal float FartFraction = .1f;
+
+    [OdinSerialize, AllowEditing, FloatRange(0, 1), ProperName("Leader death exp loss Percentage"), Description("On death they will lose this % of their total experience")]
+    internal float LeaderLossExpPct = 0;
+    [OdinSerialize, AllowEditing, ProperName("Leader levels lost on death"), IntegerRange(0, 9999), Description("On death they will this many levels")]
+    internal int LeaderLossLevels = 1;
+
+    [OdinSerialize]
+    internal int OralWeight = 1;
+    [OdinSerialize]
+    internal int BreastWeight = 1;
+    [OdinSerialize]
+    internal int UnbirthWeight = 1;
+    [OdinSerialize]
+    internal int CockWeight = 1;
+    [OdinSerialize]
+    internal int TailWeight = 1;
+    [OdinSerialize]
+    internal int AnalWeight = 1;
+
+    
+
+    internal bool GetValue(string name)
+    {
+        if (Toggles == null)
+        {
+            ResetDictionary();
+        }
+
+        if (Toggles.TryGetValue(name, out bool value))
+            return value;
+        if (name == "ClothingDiscards")
+        {
+            Toggles[name] = true;
+            return true;
+        }
+        else
+            Toggles[name] = false;
+        return false;
+    }
+
+    internal SpawnerInfo GetSpawner(Race race)
+    {
+        if (SpawnerInfo == null)
+        {
+            ResetSpawnerDictionary();
+        }
+
+        if (SpawnerInfo.TryGetValue(race, out SpawnerInfo value))
+        {
+            if (value.SpawnAttempts == 0) value.SpawnAttempts = 1;
+            return value;
+        }
+
+        var obj = new SpawnerInfo(false, 4, .15f, 40, 900 + (int)race, 1, true, 8, 12, 40);
+        SpawnerInfo[race] = obj;
+        return obj;
+    }
+
+    internal SpawnerInfo GetSpawnerWithoutGeneration(Race race)
+    {
+
+        if (SpawnerInfo.TryGetValue(race, out SpawnerInfo value))
+        {
+            if (value.SpawnAttempts == 0) value.SpawnAttempts = 1;
+            return value;
+        }
+        
+        return null;
+    }
+
+    internal void ResetSpawnerDictionary()
+    {
+        SpawnerInfo = new Dictionary<Race, SpawnerInfo>();
+        foreach (Race race in (Race[])Enum.GetValues(typeof(Race)))
+        {
+            if (race >= Race.Vagrants && race < Race.Selicia)
+            {
+                SpawnerInfo[race] = new SpawnerInfo(false, 4, .15f, 40, 900 + (int)race, 1, true, 8, 12, 40);
+            }
+        }
+    }
+
+    internal void ResetDictionary()
+    {
+        
+        Toggles = new Dictionary<string, bool>
+        {
+            ["RaceTraitsEnabled"] = true,
+            ["FriendlyRegurgitation"] = true,
+            ["Unbirth"] = false,
+            ["CockVore"] = false,
+            ["CockVoreHidesClothes"] = false,
+            ["BreastVore"] = false,
+            ["TailVore"] = false,
+            ["KuroTenkoEnabled"] = false,
+            ["OverhealEXP"] = true,
+            ["TransferAllowed"] = true,
+            ["CumGestation"] = true,
+            ["RagsForSlaves"] = true,
+            ["VisibleCorpses"] = true,
+            ["EdibleCorpses"] = false,
+            ["WeightGain"] = true,
+            ["FurryFluff"] = true,
+            ["FurryHandsAndFeet"] = true,
+            ["FurryGenitals"] = false,
+            ["AllowHugeBreasts"] = false,
+            ["AllowHugeDicks"] = false,
+            ["HairMatchesFur"] = false,
+            ["MaleHairForFemales"] = true,
+            ["FemaleHairForMales"] = true,
+            ["HideBreasts"] = false,
+            ["HideCocks"] = false,
+            ["LamiaUseTailAsSecondBelly"] = false,
+            ["AllowTopless"] = false,
+            ["VagrantsEnabled"] = false,
+            ["AnimatedBellies"] = true,
+            ["DigestionSkulls"] = true,
+            ["Bones"] = true,
+            ["Scat"] = false,
+            ["ScatBones"] = false,
+            ["AutoSurrender"] = false,
+            ["EatSurrenderedAllies"] = false,
+            ["NewGraphics"] = true,
+            ["ErectionsFromVore"] = false,
+            ["ErectionsFromCockVore"] = false,
+            ["FogOfWar"] = false,
+            ["LeadersUseCustomizations"] = false,
+            ["HermsCanUB"] = false,
+            ["FlatExperience"] = false,
+            ["BoostedAccuracy"] = false,
+            ["ClothingDiscards"] = true,
+            ["HideViperSlit"] = false,
+            ["BurpOnDigest"] = false,
+            ["FartOnAbsorb"] = false
+        };
+
+        foreach (Race race in (Race[])Enum.GetValues(typeof(Race)))
+        {
+            Toggles[$"Merc {race}"] = true;
+        }
+        //Disable any not-implemented races
+        //Toggles[$"Merc {Race.Succubi}"] = false;
+    }
+}
+
