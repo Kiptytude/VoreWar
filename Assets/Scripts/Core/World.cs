@@ -269,6 +269,7 @@ public class World
             if (spawner == null)
                 continue;
             empire.TurnOrder = spawner.TurnOrder;
+            empire.Team = spawner.Team;
         }
 
     }

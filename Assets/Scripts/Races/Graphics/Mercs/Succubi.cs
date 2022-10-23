@@ -16,31 +16,31 @@ class Succubi : DefaultRaceData
         HairStyles = 4;
 
         BodySizes = 0;
-        SkinColors = ColorPaletteMap.GetPaletteCount(ColorPaletteMap.SwapType.Imp);
-        AccessoryColors = ColorPaletteMap.GetPaletteCount(ColorPaletteMap.SwapType.ImpDark);
-        Body = new SpriteExtraInfo(2, BodySprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.Imp, s.Unit.SkinColor));
-        Head = new SpriteExtraInfo(3, HeadSprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.Imp, s.Unit.SkinColor));
-        BodyAccessory = new SpriteExtraInfo(5, AccessorySprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.ImpDark, s.Unit.AccessoryColor));
+        SkinColors = ColorPaletteMap.GetPaletteCount(ColorPaletteMap.SwapType.OldImp);
+        AccessoryColors = ColorPaletteMap.GetPaletteCount(ColorPaletteMap.SwapType.OldImpDark);
+        Body = new SpriteExtraInfo(2, BodySprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.OldImp, s.Unit.SkinColor));
+        Head = new SpriteExtraInfo(3, HeadSprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.OldImp, s.Unit.SkinColor));
+        BodyAccessory = new SpriteExtraInfo(5, AccessorySprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.OldImpDark, s.Unit.AccessoryColor));
         BodyAccent = new SpriteExtraInfo(5, BodyAccentSprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.ImpRedKey, s.Unit.AccessoryColor));
-        BodyAccent2 = new SpriteExtraInfo(1, BodyAccentSprite2, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.ImpDark, s.Unit.AccessoryColor));
-        BodyAccent3 = new SpriteExtraInfo(0, BodyAccentSprite3, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.ImpDark, s.Unit.AccessoryColor));
+        BodyAccent2 = new SpriteExtraInfo(1, BodyAccentSprite2, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.OldImpDark, s.Unit.AccessoryColor));
+        BodyAccent3 = new SpriteExtraInfo(0, BodyAccentSprite3, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.OldImpDark, s.Unit.AccessoryColor));
         BodyAccent4 = new SpriteExtraInfo(1, BodyAccentSprite4, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.HairRedKeyStrict, s.Unit.HairColor));
         BodyAccent5 = new SpriteExtraInfo(1, BodyAccentSprite5, WhiteColored);
-        Mouth = new SpriteExtraInfo(5, MouthSprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.Imp, s.Unit.SkinColor));
+        Mouth = new SpriteExtraInfo(5, MouthSprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.OldImp, s.Unit.SkinColor));
         Hair = new SpriteExtraInfo(6, HairSprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.HairRedKeyStrict, s.Unit.HairColor));
         Hair2 = new SpriteExtraInfo(4, HairSprite2, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.HairRedKeyStrict, s.Unit.HairColor));
         Hair3 = new SpriteExtraInfo(0, HairSprite3, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.HairRedKeyStrict, s.Unit.HairColor));
         Eyes = new SpriteExtraInfo(5, EyesSprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.HairRedKeyStrict, s.Unit.HairColor));
         SecondaryAccessory = null;
-        Belly = new SpriteExtraInfo(13, null, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.Imp, s.Unit.SkinColor));
+        Belly = new SpriteExtraInfo(13, null, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.OldImp, s.Unit.SkinColor));
         Weapon = null;
         BackWeapon = null;
         BodySize = null;
-        Breasts = new SpriteExtraInfo(15, BreastsSprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.Imp, s.Unit.SkinColor));
+        Breasts = new SpriteExtraInfo(15, BreastsSprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.OldImp, s.Unit.SkinColor));
         BreastShadow = new SpriteExtraInfo(16, BreastsShadowSprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.ImpRedKey, s.Unit.AccessoryColor));
         ClothingShift = new Vector3(0, 32 * .625f, 0);
-        Dick = new SpriteExtraInfo(9, DickSprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.Imp, s.Unit.SkinColor));
-        Balls = new SpriteExtraInfo(8, BallsSprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.Imp, s.Unit.SkinColor));
+        Dick = new SpriteExtraInfo(9, DickSprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.OldImp, s.Unit.SkinColor));
+        Balls = new SpriteExtraInfo(8, BallsSprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.OldImp, s.Unit.SkinColor));
 
 
         AvoidedMainClothingTypes = 0;

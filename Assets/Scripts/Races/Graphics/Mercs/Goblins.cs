@@ -265,7 +265,7 @@ class Goblins : DefaultRaceData
     protected override Sprite BodySizeSprite(Actor_Unit actor) => null;
     protected override Sprite BodySprite(Actor_Unit actor)
     {
-        int weightMod = actor.Unit.BodySize * 2;
+        int weightMod = Math.Min(actor.Unit.BodySize * 2, 2);
         if (actor.Unit.HasBreasts == true)
         {
             if (actor.IsAttacking)
@@ -943,7 +943,7 @@ class Goblins : DefaultRaceData
                 else
                     clothing3.YOffset = 0;
                 clothing2.GetSprite = null;
-                clothing1.GetSprite = (s) => State.GameManager.SpriteDictionary.Gobbunderonepieces[58 + size + 8 * weightMod];
+                clothing1.GetSprite = (s) => State.GameManager.SpriteDictionary.Gobbunderonepieces[57 + size + 9 * weightMod];
                 clothing1.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.Clothing50Spaced, actor.Unit.ClothingColor2);
                 clothing2.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.Clothing50Spaced, actor.Unit.ClothingColor2);
                 clothing3.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.Clothing50Spaced, actor.Unit.ClothingColor2);

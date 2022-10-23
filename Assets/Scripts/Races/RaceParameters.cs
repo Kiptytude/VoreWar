@@ -48,6 +48,7 @@ static class RaceParameters
     static readonly RaceTraits Vipers;
     static readonly RaceTraits Komodos;
     static readonly RaceTraits Cockatrice;
+    static readonly RaceTraits Vargul;
     static readonly RaceTraits Vagrants;
     static readonly RaceTraits Serpents;
     static readonly RaceTraits Wyvern;
@@ -193,6 +194,8 @@ static class RaceParameters
                 return Komodos;
             case Race.Cockatrice:
                 return Cockatrice;
+            case Race.Vargul:
+                return Vargul;
             case Race.Vagrants:
                 return Vagrants;
             case Race.Serpents:
@@ -1026,6 +1029,35 @@ static class RaceParameters
             {
                 Traits.Intimidating,
                 Traits.Petrifier,
+            },
+            RaceDescription = "",
+        };
+
+        Vargul = new RaceTraits()
+        {
+            BodySize = 17,
+            StomachSize = 17,
+            HasTail = true,
+            FavoredStat = Stat.Strength,
+            ExpMultiplier = 1.25f,
+            PowerAdjustment = 1.5f,
+            RaceStats = new RaceStats()
+            {
+                Strength = new RaceStats.StatRange(14, 20),
+                Dexterity = new RaceStats.StatRange(14, 20),
+                Endurance = new RaceStats.StatRange(14, 20),
+                Mind = new RaceStats.StatRange(8, 16),
+                Will = new RaceStats.StatRange(8, 16),
+                Agility = new RaceStats.StatRange(14, 20),
+                Voracity = new RaceStats.StatRange(14, 20),
+                Stomach = new RaceStats.StatRange(12, 18),
+            },
+            RacialTraits = new List<Traits>()
+            {
+                Traits.Intimidating,
+                Traits.SenseWeakness,
+                Traits.StrongGullet,
+                Traits.Berserk,
             },
             RaceDescription = "",
         };

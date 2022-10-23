@@ -82,6 +82,10 @@ internal class ClothingDiscards
             AllClothes.AddRange(Races.Deer.AllowedMainClothingTypes);
             AllClothes.AddRange(Races.Deer.AllowedWaistTypes);
             AllClothes.AddRange(Races.Deer.ExtraMainClothing1Types);
+            AllClothes.AddRange(Races.Humans.AllowedMainClothingTypes);
+            AllClothes.AddRange(Races.Humans.AllowedWaistTypes);
+            AllClothes.AddRange(Races.Vargul.AllowedMainClothingTypes);
+            AllClothes.AddRange(Races.Vargul.AllowedWaistTypes);
             AllClothes = AllClothes.Distinct().ToList();
         }        
         var clothingType = AllClothes.Where(s => s.Type == type).FirstOrDefault();

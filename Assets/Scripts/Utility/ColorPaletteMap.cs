@@ -16,6 +16,7 @@ public static class ColorPaletteMap
         Fur,
         FurStrict,
         Skin,
+        RedSkin,
         Mouth,
         EyeColor,
         LizardMain,
@@ -25,6 +26,8 @@ public static class ColorPaletteMap
         Imp,
         ImpDark,
         ImpRedKey,
+        OldImp,
+        OldImpDark,
         Goblins,
         CrypterWeapon,
         Clothing,
@@ -90,6 +93,7 @@ public static class ColorPaletteMap
         EarthwormSkin,
         HorseSkin,
         TerrorbirdSkin,
+        VargulSkin,
     }
 
     static Dictionary<SwapType, List<ColorSwapPalette>> Swaps;
@@ -152,6 +156,7 @@ public static class ColorPaletteMap
         List<ColorSwapPalette> WildHairSwaps = WireUp(SwapType.WildHair);
         List<ColorSwapPalette> UniversalHairSwaps = WireUp(SwapType.UniversalHair);
         List<ColorSwapPalette> SkinColorSwaps = WireUp(SwapType.Skin);
+        List<ColorSwapPalette> RedSkinColorSwaps = WireUp(SwapType.RedSkin);
         List<ColorSwapPalette> SkinToClothingSwaps = WireUp(SwapType.SkinToClothing);
         List<ColorSwapPalette> MouthColorSwaps = WireUp(SwapType.Mouth);
         List<ColorSwapPalette> EyeColorSwaps = WireUp(SwapType.EyeColor);
@@ -162,6 +167,8 @@ public static class ColorPaletteMap
         List<ColorSwapPalette> ImpSwaps = WireUp(SwapType.Imp);
         List<ColorSwapPalette> ImpRedKey = WireUp(SwapType.ImpRedKey);
         List<ColorSwapPalette> ImpDarkSwaps = WireUp(SwapType.ImpDark);
+        List<ColorSwapPalette> OldImpSwaps = WireUp(SwapType.OldImp);
+        List<ColorSwapPalette> OldImpDarkSwaps = WireUp(SwapType.OldImpDark);
         List<ColorSwapPalette> GoblinSwaps = WireUp(SwapType.Goblins);
         List<ColorSwapPalette> KangarooSwaps = WireUp(SwapType.Kangaroo);
         List<ColorSwapPalette> FeralWolfMane = WireUp(SwapType.FeralWolfMane);
@@ -222,6 +229,7 @@ public static class ColorPaletteMap
         List<ColorSwapPalette> EarthwormSkinSwaps = WireUp(SwapType.EarthwormSkin);
         List<ColorSwapPalette> HorseSkinSwaps = WireUp(SwapType.HorseSkin);
         List<ColorSwapPalette> TerrorbirdSkinSwaps = WireUp(SwapType.TerrorbirdSkin);
+        List<ColorSwapPalette> VargulSkinSwaps = WireUp(SwapType.VargulSkin);
 
         int[] NormalIndexes = { 81, 153, 198, 229, 255 };
         Texture2D map = State.GameManager.PaletteDictionary.SimpleHair;
@@ -325,6 +333,21 @@ public static class ColorPaletteMap
             clear[255] = true;
             swap = new ColorSwapPalette(swapDict, clear);
             MouthColorSwaps.Add(swap);
+        }
+        
+        map = State.GameManager.PaletteDictionary.Skin;
+        for (int pixelY = 0; pixelY < map.height; pixelY++)
+        {
+            Dictionary<int, Color> swapDict = new Dictionary<int, Color>
+            {
+                [50] = map.GetPixel(4, pixelY),
+                [100] = map.GetPixel(3, pixelY),
+                [150] = map.GetPixel(2, pixelY),
+                [200] = map.GetPixel(1, pixelY),
+                [250] = map.GetPixel(0, pixelY),
+            };
+            ColorSwapPalette swap = new ColorSwapPalette(swapDict, maxClearRange: 0);
+            RedSkinColorSwaps.Add(swap);
         }
 
         map = State.GameManager.PaletteDictionary.Eyes;
@@ -494,6 +517,21 @@ public static class ColorPaletteMap
             ImpSwaps.Add(swap);
         }
 
+        map = State.GameManager.PaletteDictionary.Imps;
+        for (int pixelY = 0; pixelY < map.height; pixelY++)
+        {
+            Dictionary<int, Color> swapDict = new Dictionary<int, Color>
+            {
+                [81] = map.GetPixel(4, pixelY),
+                [153] = map.GetPixel(3, pixelY),
+                [198] = map.GetPixel(2, pixelY),
+                [229] = map.GetPixel(1, pixelY),
+                [255] = map.GetPixel(0, pixelY),
+            };
+            ColorSwapPalette swap = new ColorSwapPalette(swapDict);
+            OldImpSwaps.Add(swap);
+        }
+
         map = State.GameManager.PaletteDictionary.ImpsDark;
         for (int pixelY = 0; pixelY < map.height; pixelY++)
         {
@@ -510,6 +548,21 @@ public static class ColorPaletteMap
             swapDict = RedReversed(map, pixelY);
             swap = new ColorSwapPalette(swapDict);
             ImpRedKey.Add(swap);
+        }
+
+        map = State.GameManager.PaletteDictionary.ImpsDark;
+        for (int pixelY = 0; pixelY < map.height; pixelY++)
+        {
+            Dictionary<int, Color> swapDict = new Dictionary<int, Color>
+            {
+                [81] = map.GetPixel(4, pixelY),
+                [153] = map.GetPixel(3, pixelY),
+                [198] = map.GetPixel(2, pixelY),
+                [229] = map.GetPixel(1, pixelY),
+                [255] = map.GetPixel(0, pixelY),
+            };
+            ColorSwapPalette swap = new ColorSwapPalette(swapDict);
+            OldImpDarkSwaps.Add(swap);            
         }
 
         {
@@ -1276,6 +1329,28 @@ public static class ColorPaletteMap
             };
             ColorSwapPalette swap = new ColorSwapPalette(swapDict);
             KomodosReversedSwaps.Add(swap);
+        }
+
+        map = State.GameManager.PaletteDictionary.VargulSkin;
+        for (int pixelY = 0; pixelY < map.height; pixelY++)
+        {
+            Dictionary<int, Color> swapDict = new Dictionary<int, Color>
+            {
+                [32] = map.GetPixel(11, pixelY),
+                [47] = map.GetPixel(10, pixelY),
+                [81] = map.GetPixel(9, pixelY),
+                [96] = map.GetPixel(8, pixelY),
+                [109] = map.GetPixel(7, pixelY),
+                [123] = map.GetPixel(6, pixelY),
+                [138] = map.GetPixel(5, pixelY),
+                [153] = map.GetPixel(4, pixelY),
+                [198] = map.GetPixel(3, pixelY),
+                [214] = map.GetPixel(2, pixelY),
+                [229] = map.GetPixel(1, pixelY),
+                [255] = map.GetPixel(0, pixelY),
+            };
+            ColorSwapPalette swap = new ColorSwapPalette(swapDict);
+            VargulSkinSwaps.Add(swap);
         }
 
         map = State.GameManager.PaletteDictionary.Harvester;

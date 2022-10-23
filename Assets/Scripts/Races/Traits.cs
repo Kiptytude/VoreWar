@@ -141,7 +141,7 @@ static class TraitList
         [Traits.Clever] = new Booster("Requires less experience to level up", (s) => s.ExpRequired *= 0.7f),
         [Traits.Foolish] = new Booster("Requires additional experience to level up", (s) => s.ExpRequired *= 1.4f),
         [Traits.StrongMelee] = new Booster("Does additional damage in melee", (s) => s.Outgoing.MeleeDamage *= 1.2f),
-        [Traits.Weak] = new Booster("Does reduced damage in melee", (s) => s.Outgoing.MeleeDamage *= 0.8f),
+        [Traits.WeakAttack] = new Booster("Does reduced damage in melee", (s) => s.Outgoing.MeleeDamage *= 0.8f),
         [Traits.FastDigestion] = new Booster("Does additional acid damage to prey", (s) => s.Outgoing.DigestionRate *= 2f),
         [Traits.SlowDigestion] = new Booster("Does reduced acid damage to prey", (s) => s.Outgoing.DigestionRate *= 0.5f),
         [Traits.Tasty] = new Booster("Provides additonal healing when consumed", (s) => s.Outgoing.Nutrition *= 2f),
@@ -322,9 +322,9 @@ internal class DefensiveStance : Trait, IVoreDefenseOdds, IPhysicalDefenseOdds
 {
     public DefensiveStance() => Description = "Unit gets a bonus to defense if it has at least 1 mp remaining";
 
-    public void PhysicalDefense(Actor_Unit defender, ref float defMult) => defMult *= defender.Movement > 0 ? 1.4f : 1;
+    public void PhysicalDefense(Actor_Unit defender, ref float defMult) => defMult += defender.Movement > 0 ? 0.8f : 0;
 
-    public void VoreDefense(Actor_Unit defender, ref float voreMult) => voreMult *= .75f;
+    public void VoreDefense(Actor_Unit defender, ref float voreMult) => voreMult *= defender.Movement > 0 ? 1.333f : 1;
 }
 
 

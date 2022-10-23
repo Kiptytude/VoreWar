@@ -12,6 +12,7 @@ class Alraune : DefaultRaceData
     readonly Sprite[] Sprites = State.GameManager.SpriteDictionary.Alraune;
     readonly float yOffset = 10 * .625f;
     readonly AlrauneLeader LeaderClothes;
+    AlrauneRags Rags;
     public Alraune()
     {
         BodySizes = 4;
@@ -54,6 +55,8 @@ class Alraune : DefaultRaceData
 
         LeaderClothes = new AlrauneLeader();
 
+        Rags = new AlrauneRags();
+
         AllowedMainClothingTypes = new List<MainClothing>()
         {
             new AlrauneLeafs(),
@@ -61,7 +64,7 @@ class Alraune : DefaultRaceData
             new AlrauneVines2(),
             new AlrauneMoss(),
             new AlrauneChristmas(),
-            new AlrauneRags(),
+            Rags,
             LeaderClothes
         };
         AllowedWaistTypes = new List<MainClothing>()
@@ -76,6 +79,14 @@ class Alraune : DefaultRaceData
     internal override void RandomCustom(Unit unit)
     {
         base.RandomCustom(unit);
+
+        if (Config.RagsForSlaves && State.World?.MainEmpires != null && (State.World.GetEmpireOfRace(unit.Race)?.IsEnemy(State.World.GetEmpireOfSide(unit.Side)) ?? false) && unit.ImmuneToDefections == false)
+        {
+            unit.ClothingType = 1 + AllowedMainClothingTypes.IndexOf(Rags);
+            if (unit.ClothingType == -1) //Covers rags not in the list
+                unit.ClothingType = 1;
+        }
+
         if (unit.Type == UnitType.Leader)
             unit.ClothingType = 1 + AllowedMainClothingTypes.IndexOf(LeaderClothes);
         if (unit.HasDick && unit.HasBreasts)

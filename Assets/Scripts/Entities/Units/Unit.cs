@@ -261,7 +261,7 @@ public class Unit
 
     internal Gender GetGender()
     {
-        if (HasBreasts && HasDick && HasVagina)
+        if (HasBreasts && HasDick && (HasVagina || Config.HermsCanUB == false))
             return Gender.Hermaphrodite;
         else if (HasBreasts && HasDick && !HasVagina)
             return Gender.Gynomorph;
@@ -635,6 +635,12 @@ public class Unit
 
     }
 
+    internal void RandomizeAppearance()
+    {
+        var raceData = Races.GetRace(this);
+        raceData.RandomCustom(this);
+    }
+
     internal void RandomizeNameAndGender(Race race, DefaultRaceData raceData, bool skipTraits = false)
     {
         var raceStats = State.RaceSettings.Get(race);
@@ -663,7 +669,7 @@ public class Unit
         {
             DickSize = 0;
             SetDefaultBreastSize(0);
-            HasVagina = true;
+            HasVagina = Config.HermsCanUB;
             Pronouns = new List<string> { "they", "them", "their", "theirs", "themself", "plural" };
             Name = State.NameGen.GetName(State.Rand.NextDouble() > Config.HermNameFraction, race);
         }
@@ -923,6 +929,18 @@ public class Unit
         {
             StatusEffect eff = GetStatusEffect(StatusEffectType.Empowered);
             bonus += GetStatBase(stat) * eff.Strength * eff.Duration / 5;
+        }
+
+        if (GetStatusEffect(StatusEffectType.Berserk) != null)
+        {
+            if (stat == Stat.Voracity)
+            {
+                bonus += GetStatBase(Stat.Voracity);
+            }
+            if (stat == Stat.Strength)
+            {
+                bonus += GetStatBase(Stat.Strength);
+            }
         }
 
         if (stat == Stat.Strength && GetStatusEffect(StatusEffectType.BladeDance) != null)
@@ -1292,14 +1310,14 @@ public class Unit
         Tags = new List<Traits>();
         if (Config.RaceTraitsEnabled)
             Tags.AddRange(State.RaceSettings.GetRaceTraits(Race));
-        if (HasBreasts && (HasDick != HasVagina))
+        if (HasBreasts && HasDick == false)
         {
             var femaleTraits = State.RaceSettings.GetFemaleRaceTraits(Race);
             if (femaleTraits != null) Tags.AddRange(femaleTraits);
             femaleTraits = Config.FemaleTraits;
             if (femaleTraits != null) Tags.AddRange(femaleTraits);
         }
-        else if (!HasBreasts && (HasDick != HasVagina))
+        else if (!HasBreasts && HasDick)
         {
             var maleTraits = State.RaceSettings.GetMaleRaceTraits(Race);
             if (maleTraits != null) Tags.AddRange(maleTraits);

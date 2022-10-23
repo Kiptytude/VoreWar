@@ -23,6 +23,8 @@ public class ContentSettings : MonoBehaviour
     public Slider FurryFraction;
     public Toggle FriendlyRegurgitation;
 
+    public Slider FogDistance; 
+
     public Toggle HairMatchesFur;
     public Toggle MaleHairForFemales;
     public Toggle FemaleHairForMales;
@@ -73,6 +75,7 @@ public class ContentSettings : MonoBehaviour
     public Toggle AllowHugeDicks;
     public Toggle AllowTopless;
     public Slider BreastSizeModifier;
+    public Slider HermBreastSizeModifier;
     public Slider CockSizeModifier;
     public Slider DefaultStartingWeight;
 
@@ -671,7 +674,9 @@ public class ContentSettings : MonoBehaviour
         TacticalWaterValue.value = Config.TacticalWaterValue;
         TacticalTerrainFrequency.value = Config.TacticalTerrainFrequency;
         BreastSizeModifier.value = Config.BreastSizeModifier;
+        HermBreastSizeModifier.value = Config.HermBreastSizeModifier;
         CockSizeModifier.value = Config.CockSizeModifier;
+        FogDistance.value = Config.FogDistance;
         DefaultStartingWeight.value = Config.DefaultStartingWeight;
         OralWeight.value = Config.OralWeight;
         BreastWeight.value = Config.BreastWeight;
@@ -759,7 +764,7 @@ public class ContentSettings : MonoBehaviour
         SucklingPermission.interactable = KuroTenkoEnabled.isOn && (int)Config.FeedingType == 0;
         TransferAllowed.interactable = KuroTenkoEnabled.isOn;
         CumGestation.interactable = KuroTenkoEnabled.isOn && TransferAllowed.isOn;
-        SpecialMercsCanConvert.interactable = KuroTenkoEnabled.isOn && (int)Config.UBConversion <= 1;
+        SpecialMercsCanConvert.interactable = KuroTenkoEnabled.isOn && (Config.UBConversion == global::UBConversion.Both || Config.UBConversion == global::UBConversion.RebirthOnly);
         NoScatForDeadTransfers.interactable = KuroTenkoEnabled.isOn;
     }
 
@@ -805,6 +810,33 @@ public class ContentSettings : MonoBehaviour
                 }
             }
         }
+        if (Config.HermsCanUB != HermsCanUB.isOn)
+        {
+            if (State.World?.MainEmpires != null)
+            {
+                foreach (Unit unit in StrategicUtilities.GetAllUnits())
+                {
+                    if (unit.GetGender() == Gender.Hermaphrodite || unit.GetGender() == Gender.Gynomorph)
+                    {
+                        unit.HasVagina = HermsCanUB.isOn;
+                    }
+                }
+            }
+            else
+            {
+                if (TacticalUtilities.Units != null)
+                {
+                    foreach (var actor in TacticalUtilities.Units)
+                    {
+                        if (actor.Unit.GetGender() == Gender.Hermaphrodite || actor.Unit.GetGender() == Gender.Gynomorph)
+                        {
+                            actor.Unit.HasVagina = HermsCanUB.isOn;
+                        }
+                    }
+                }
+               
+            }
+        }
         foreach (ToggleObject toggle in Toggles)
         {
             Config.World.Toggles[toggle.Name] = toggle.Toggle.isOn;
@@ -820,6 +852,7 @@ public class ContentSettings : MonoBehaviour
         Config.World.TacticalTerrainFrequency = TacticalTerrainFrequency.value;
         Config.World.TacticalWaterValue = TacticalWaterValue.value;
         Config.World.AutoSurrenderChance = AutoSurrenderChance.value;
+        Config.World.HermBreastSizeModifier = (int)HermBreastSizeModifier.value;
         Config.World.BreastSizeModifier = (int)BreastSizeModifier.value;
         Config.World.CockSizeModifier = (int)CockSizeModifier.value;
         Config.World.DefaultStartingWeight = (int)DefaultStartingWeight.value;
@@ -854,6 +887,7 @@ public class ContentSettings : MonoBehaviour
         Config.World.AnalWeight = (int)AnalWeight.value;
         Config.World.TailWeight = (int)TailWeight.value;
         Config.World.BreastWeight = (int)BreastWeight.value;
+        Config.World.FogDistance = (int)FogDistance.value;
         Config.World.OverallMonsterCapModifier = OverallMonsterCapModifier.value;
         Config.World.OverallMonsterSpawnRateModifier = OverallMonsterSpawnRateModifier.value;
 
@@ -921,6 +955,7 @@ public class ContentSettings : MonoBehaviour
         {
             State.World.PopulateMonsterTurnOrders();
             State.World.RefreshTurnOrder();
+            RelationsManager.ResetMonsterRelations(); //So it will recalculate any changed teams.  
         }
 
         if (Config.MultiRaceVillages != oldMulti)
@@ -963,6 +998,7 @@ public class ContentSettings : MonoBehaviour
         PlayerPrefs.SetFloat("OverallMonsterSpawnRateModifier", OverallMonsterSpawnRateModifier.value);
         PlayerPrefs.SetFloat("OverallMonsterCapModifier", OverallMonsterCapModifier.value);
         PlayerPrefs.SetInt("BreastSizeModifier", (int)BreastSizeModifier.value);
+        PlayerPrefs.SetInt("HermBreastSizeModifier", (int)HermBreastSizeModifier.value);
         PlayerPrefs.SetInt("CockSizeModifier", (int)CockSizeModifier.value);
         PlayerPrefs.SetInt("StartingWeight", (int)DefaultStartingWeight.value);
         PlayerPrefs.SetInt("MonsterConquest", MonsterConquest.value - 1);
@@ -997,6 +1033,7 @@ public class ContentSettings : MonoBehaviour
         PlayerPrefs.SetInt("UnbirthWeight", (int)UnbirthWeight.value);
         PlayerPrefs.SetInt("CockWeight", (int)CockWeight.value);
         PlayerPrefs.SetInt("TailWeight", (int)TailWeight.value);
+        PlayerPrefs.SetInt("FogDistance", (int)FogDistance.value);
 
         foreach (MonsterSpawnerPanel spawner in MonsterSpawners)
         {

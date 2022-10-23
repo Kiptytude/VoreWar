@@ -159,7 +159,7 @@ public class Army
             }
             if (unit.HasTrait(Traits.Growth) && unit.BaseScale > 1)
             {
-                unit.BaseScale = Math.Max(1f, unit.BaseScale * 0.8f);
+                unit.BaseScale = Math.Max(1f, unit.BaseScale * 0.85f);
             }
         }
         RefreshMovementMode();

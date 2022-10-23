@@ -128,7 +128,7 @@ class MonsterStrategicAI : IStrategicAI
                 if (spawner.MinArmySize > spawner.MaxArmySize)
                     count = spawner.MaxArmySize;
                 else
-                    count = State.Rand.Next(spawner.MinArmySize, spawner.MaxArmySize);
+                    count = State.Rand.Next(spawner.MinArmySize, spawner.MaxArmySize + 1);
 
                 if (count <= 0)
                     continue;

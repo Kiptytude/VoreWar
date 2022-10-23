@@ -86,6 +86,9 @@ public class Actor_Unit
     public int TimesParalyzed;
 
     [OdinSerialize]
+    public bool GoneBerserk;
+
+    [OdinSerialize]
     internal int AIAvoidEat;
 
     [OdinSerialize]
@@ -1389,9 +1392,9 @@ public class Actor_Unit
             trait.VoreAttack(attacker, ref attackerScore);
         }
 
-        foreach (IVoreDefenseOdds trait in attacker.Unit.VoreDefenseOdds)
+        foreach (IVoreDefenseOdds trait in Unit.VoreDefenseOdds)
         {
-            trait.VoreDefense(this, ref attackerScore);
+            trait.VoreDefense(this, ref defenderScore);
         }
 
         float odds = attackerScore / (attackerScore + defenderScore) * 100;
@@ -1738,6 +1741,14 @@ public class Actor_Unit
         }
         UnitSprite.DisplayDamage(damage, spellDamage);
         SubtractHealth(damage);
+        if (Unit.HasTrait(Traits.Berserk) && GoneBerserk == false)
+        {
+            if (Unit.HealthPct < .5f)
+            {
+                GoneBerserk = true;
+                Unit.ApplyStatusEffect(StatusEffectType.Berserk, 1, 3);
+            }
+        }
         if ((canKill == false && Unit.IsDead) || (Config.AutoSurrender && Unit.IsDead && State.Rand.NextDouble() < Config.AutoSurrenderChance && Surrendered == false && Unit.HasTrait(Traits.Fearless) == false))
         {
             Unit.Health = 1;
@@ -1764,9 +1775,17 @@ public class Actor_Unit
             State.GameManager.TacticalMode.DirtyPack = true;
             Targetable = false;
             Surrendered = true;
-            float angle = 40 + State.Rand.Next(280);
-            UnitSprite.transform.rotation = Quaternion.Euler(0, 0, angle);
-            spriteLayerOffset = State.GameManager.TacticalMode.GetNextCorpseLayer();
+            if (Config.VisibleCorpses && Unit.Race != Race.Erin)
+            {
+                float angle = 40 + State.Rand.Next(280);
+                UnitSprite.transform.rotation = Quaternion.Euler(0, 0, angle);
+                spriteLayerOffset = State.GameManager.TacticalMode.GetNextCorpseLayer();
+            }
+            else
+            {
+                Visible = false;
+            }
+
             PredatorComponent?.FreeAnyAlivePrey();
         }
         return true;

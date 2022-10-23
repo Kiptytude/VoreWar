@@ -25,6 +25,23 @@ static class RelationsManager
         }
     }
 
+    static internal void ResetMonsterRelations()
+    {
+        var sides = State.World.AllActiveEmpires.Select(s => s.Side).ToList();
+        foreach (int side in sides)
+        {
+            foreach (int targetSide in sides)
+            {
+                if (side >= 100 || targetSide >= 100)
+                {
+                    if (State.World.Relations.ContainsKey(side))
+                        State.World.Relations[side].Remove(targetSide);
+                }
+                    
+            }
+        }
+    }
+
     /// <summary>
     /// Resets the type of relation to be based on the teams, but doesn't change the actual relations values
     /// </summary>
@@ -75,6 +92,10 @@ static class RelationsManager
                 return new Relationship(0, 0);
             else
                 return new Relationship(-1, -1);
+        }
+        else if (sideA >= 100 || sideB >= 100)
+        {
+
         }
         if (State.World.Relations.TryGetValue(sideA, out var dict))
         {
@@ -365,13 +386,15 @@ static class RelationsManager
     static internal void AskPlayerForPeace(Empire AI, Empire player)
     {
         var box = State.GameManager.CreateDialogBox();
-        box.SetData(() => SetPeace(AI, player), "Accept", "Reject", $"The {AI.Name} wants to know if you ({player.Name}) would accept a peace treaty?", () => GetRelation(AI.Side, player.Side).TurnsSinceAsked = 0);
+        State.GameManager.ActiveInput = true;
+        box.SetData(() => { SetPeace(AI, player); State.GameManager.ActiveInput = false; }, "Accept", "Reject", $"The {AI.Name} wants to know if you ({player.Name}) would accept a peace treaty?", () => { GetRelation(AI.Side, player.Side).TurnsSinceAsked = 0; State.GameManager.ActiveInput = false; });
     }
 
     static internal void AskPlayerForAlliance(Empire AI, Empire player)
     {
         var box = State.GameManager.CreateDialogBox();
-        box.SetData(() => SetAlly(AI, player), "Accept", "Reject", $"The {AI.Name} wants to know if you ({player.Name}) would accept an alliance?", () => GetRelation(AI.Side, player.Side).TurnsSinceAsked = 0);
+        State.GameManager.ActiveInput = true;
+        box.SetData(() => { SetAlly(AI, player); State.GameManager.ActiveInput = false; }, "Accept", "Reject", $"The {AI.Name} wants to know if you ({player.Name}) would accept an alliance?", () => { GetRelation(AI.Side, player.Side).TurnsSinceAsked = 0; State.GameManager.ActiveInput = false; });
     }
 
 }

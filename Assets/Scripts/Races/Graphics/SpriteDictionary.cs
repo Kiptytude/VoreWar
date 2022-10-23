@@ -105,6 +105,16 @@ public class SpriteDictionary : MonoBehaviour
     public Sprite[] Gobbunderonepieces;
     public Sprite[] Gobboveronepieces;
     public Sprite[] Gobbohat;
+    
+    public Sprite[] HumenFundertops;
+    public Sprite[] HumenMundertops;
+    public Sprite[] HumenFOnePieces;
+    public Sprite[] HumenUnderbottoms;
+    public Sprite[] HumenUniform1;
+    public Sprite[] HumenUniform2;
+    public Sprite[] HumenBigLoin;
+    public Sprite[] HumenPants;
+    public Sprite[] HumenSkirt;
 
     public Sprite[] AlrauneChristmas;
 
@@ -184,6 +194,11 @@ public class SpriteDictionary : MonoBehaviour
     public Sprite[] Cockatrice1;
     public Sprite[] Cockatrice2;
     public Sprite[] Cockatrice3;
+    public Sprite[] Vargul1;
+    public Sprite[] Vargul2;
+    public Sprite[] Vargul3;
+    public Sprite[] Vargul4;
+    public Sprite[] Vargul5;
 
     public Sprite[] CowsSeliciaBelly;
 
@@ -193,8 +208,13 @@ public class SpriteDictionary : MonoBehaviour
     public Sprite[] Horse;
     public Sprite[] HorseClothing;
     public Sprite[] HorseExtras1;
-
-
+    
+    public Sprite[] HumansBodySprites1;
+    public Sprite[] HumansBodySprites2;
+    public Sprite[] HumansBodySprites3;
+    public Sprite[] HumansBodySprites4;
+    public Sprite[] HumansBodySprites5;
+    public Sprite[] HumansVoreSprites;
 
     [Header("Unique Mercenaries")]
     public Sprite[] Selicia;

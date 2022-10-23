@@ -212,6 +212,7 @@ static class Config
 
     internal static VictoryType VictoryCondition => World.VictoryCondition;
     internal static int BreastSizeModifier => World.BreastSizeModifier;
+    internal static int HermBreastSizeModifier => World.HermBreastSizeModifier;
     internal static int CockSizeModifier => World.CockSizeModifier;
     internal static int DefaultStartingWeight => World.DefaultStartingWeight;
     internal static int GoldMineIncome => World.GoldMineIncome;
@@ -289,6 +290,8 @@ static class Config
 
     internal static bool FlatExperience => World.GetValue("FlatExperience");
     internal static bool FogOfWar => World.GetValue("FogOfWar");
+
+    internal static int FogDistance => World.FogDistance;
     internal static bool LeadersUseCustomizations => World.GetValue("LeadersUseCustomizations");
     internal static bool LeadersAutoGainLeadership => World.GetValue("LeadersAutoGainLeadership");
     internal static bool LizardsHaveNoBreasts => World.GetValue("LizardsHaveNoBreasts");

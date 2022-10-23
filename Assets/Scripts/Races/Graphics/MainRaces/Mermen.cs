@@ -96,6 +96,12 @@ class Mermen : DefaultRaceData
     internal override void RandomCustom(Unit unit)
     {
         base.RandomCustom(unit);
+        if (Config.RagsForSlaves && State.World?.MainEmpires != null && (State.World.GetEmpireOfRace(unit.Race)?.IsEnemy(State.World.GetEmpireOfSide(unit.Side)) ?? false) && unit.ImmuneToDefections == false)
+        {
+            unit.ClothingType = 1 + AllowedMainClothingTypes.IndexOf(Rags);
+            if (unit.ClothingType == -1) //Covers rags not in the list
+                unit.ClothingType = 1;
+        }
         if (unit.Type == UnitType.Leader)
             unit.ClothingType = 1 + AllowedMainClothingTypes.IndexOf(LeaderClothes);
         if (unit.HasDick && unit.HasBreasts)

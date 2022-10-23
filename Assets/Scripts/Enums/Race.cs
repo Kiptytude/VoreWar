@@ -45,6 +45,7 @@ public enum Race : int
     Vipers = 58,
     Komodos = 59,
     Cockatrice = 60,
+    Vargul = 61,
     Vagrants = 100,
     Serpents = 101,
     Wyvern = 102,

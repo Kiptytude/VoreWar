@@ -20,7 +20,7 @@ public enum Traits
     /// <summary>Unit does extra melee damage</summary>
     StrongMelee,
     /// <summary>Unit does reduced melee damage</summary>
-    Weak,
+    WeakAttack,
     /// <summary>Unit is easier to vore</summary>
     EasyToVore,
     PackStrength,
@@ -205,6 +205,8 @@ public enum Traits
     Honeymaker,
     WetNurse,
     TheGreatEscape,
+    Berserk,
+
 
 
     //Everything after this is a cheat trait

@@ -64,6 +64,7 @@ public class WorldSettings : MonoBehaviour
                 Empires[i].gameObject.SetActive(false);
         }
         UpdateColors();
+        RelationsManager.ResetMonsterRelations();
     }
 
     public static Color GetLighterColor(Color color)

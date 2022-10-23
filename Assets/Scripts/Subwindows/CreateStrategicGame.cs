@@ -727,6 +727,7 @@ public class CreateStrategicGame : MonoBehaviour
             UIUnitSprite sprite = obj.GetComponentInChildren<UIUnitSprite>();
             Actor_Unit actor = new Actor_Unit(new Vec2i(0, 0), new Unit(1, (Race)i, 0, true));
             TextMeshProUGUI text = obj.transform.GetChild(3).GetComponent<TextMeshProUGUI>();
+            obj.GetComponentInChildren<UnitInfoPanel>().Unit = actor.Unit;
             var racePar = RaceParameters.GetTraitData(actor.Unit);
             text.text = $"{(Race)i}\nBody Size: {State.RaceSettings.GetBodySize(actor.Unit.Race)}\nBase Stomach Size: {State.RaceSettings.GetStomachSize(actor.Unit.Race)}\nFavored Stat: {State.RaceSettings.GetFavoredStat(actor.Unit.Race)}\nDefault Traits:\n{State.RaceSettings.ListTraits(actor.Unit.Race)}";
             sprite.UpdateSprites(actor);

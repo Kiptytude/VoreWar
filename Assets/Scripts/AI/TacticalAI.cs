@@ -659,7 +659,7 @@ public class TacticalAI : ITacticalAI
             }
             else
             {
-                if (targets[0].actor.Position.GetNumberOfMovesDistance(actor.Position) < actor.Movement) //discard the clearly impossible
+                if (targets[0].actor.Position.GetNumberOfMovesDistance(actor.Position) <= actor.Movement) //discard the clearly impossible
                 {
                     if (actor.Unit.Race == Race.Asura && TacticalActionList.TargetedDictionary[SpecialAction.ShunGokuSatsu].AppearConditional(actor))
                         MoveToAndAction(actor, targets[0].actor.Position, 1, actor.Movement, () => actor.ShunGokuSatsu(targets[0].actor));
@@ -698,7 +698,7 @@ public class TacticalAI : ITacticalAI
             {
 
                 int distance = unit.Position.GetNumberOfMovesDistance(actor.Position);
-                if (distance < actor.Movement)
+                if (distance <= actor.Movement)
                 {
                     if (distance > 1 && TacticalUtilities.FreeSpaceAroundTarget(unit.Position, actor) == false)
                         continue;
@@ -800,7 +800,7 @@ public class TacticalAI : ITacticalAI
             }
             else
             {
-                if (targets[0].actor.Position.GetNumberOfMovesDistance(actor.Position) < actor.Movement) //discard the clearly impossible
+                if (targets[0].actor.Position.GetNumberOfMovesDistance(actor.Position) <= actor.Movement + spell.Range.Max) //discard the clearly impossible
                 {
                     MoveToAndAction(actor, targets[0].actor.Position, spell.Range.Max, actor.Movement, () => spell.TryCast(actor, targets[0].actor));
                     if (foundPath && path.Path.Count() < actor.Movement)
@@ -834,15 +834,17 @@ public class TacticalAI : ITacticalAI
                     int enemies = 0;
                     foreach (var splashTarget in TacticalUtilities.UnitsWithinTiles(unit.Position, spell.AreaOfEffect))
                     {
+                        if (spell is StatusSpell status && splashTarget.Unit.GetStatusEffect(status.Type) != null)
+                            continue;
                         if (splashTarget.Unit.Side == actor.Unit.Side)
                             friendlies++;
-                        else
+                        else if (splashTarget.Surrendered == false)
                             enemies++;
                     }
                     int net = enemies - friendlies;
                     if (net < 1)
                         continue;
-                    targets.Add(new PotentialTarget(unit, net, distance, 4, chance));
+                    targets.Add(new PotentialTarget(unit, net, distance, 4, net * 1000 + chance));
                 }
                 if (unit.Targetable == true && unit.Surrendered == false)
                 {

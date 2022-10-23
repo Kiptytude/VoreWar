@@ -162,6 +162,8 @@ public class StrategicAI : IStrategicAI
         {
             if (otherEmp == empire)
                 continue;
+            if (otherEmp.KnockedOut)
+                continue;
             var relation = RelationsManager.GetRelation(empire.Side, otherEmp.Side);
             switch (relation.Type)
             {

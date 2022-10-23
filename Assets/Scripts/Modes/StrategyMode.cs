@@ -688,6 +688,7 @@ public class StrategyMode : SceneBase
             currentVillageTiles.Add(vill);
             currentVillageTiles.Add(villColored);
             currentVillageTiles.Add(villShield);
+            currentVillageTiles.Add(villShieldInner);
         }
         foreach (var mercHouse in State.World.MercenaryHouses)
         {

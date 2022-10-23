@@ -25,5 +25,6 @@ public enum StatusEffectType
     BladeDance,
     Petrify,
     Tenacious,
+    Berserk,
 }
 

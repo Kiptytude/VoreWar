@@ -324,7 +324,7 @@ class StrategicTileLogic
             count += IsTileType(new Vec2(x + 1, y + 1), type) ? 1 : 0;
             count += IsTileType(new Vec2(x + 1, y - 1), type) ? 1 : 0;
             count += IsTileType(new Vec2(x - 1, y + 1), type) ? 1 : 0;
-            count += IsTileType(new Vec2(x + 1, y - 1), type) ? 1 : 0;
+            count += IsTileType(new Vec2(x - 1, y - 1), type) ? 1 : 0;
             return count;
         }
     }
