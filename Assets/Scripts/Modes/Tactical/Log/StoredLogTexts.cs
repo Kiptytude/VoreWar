@@ -1068,7 +1068,7 @@ static class StoredLogTexts
             priority: 8, conditional: s => s.Target.Side == s.Unit.Side && ReqTargetCompatibleLewd(s)),
 
             new EventString((i) => $"<b>{i.Target.Name}</b> grabs onto <b>{i.Unit.Name}</b> and presses {GPPHis(i.Unit)} face against {GPPHis(i.Target)} gurgling gut, resting one hand against the small of {GPPHis(i.Target)} back to push {GPPHis(i.Target)} stomach out even further while the other lovingly rubs the back of {GPPHis(i.Target)} potential mate’s head. While <b>{i.Unit.Name}</b> was initially nervous, the methodic sloshing coming from within the squishy belly calms {GPPHim(i.Unit)} and {GPPHe(i.Target)} begin{SIfSingular(i.Unit)} rubbing it with awe.",
-            priority: 8, conditional: s => ReqTargetCompatible(s)),
+            priority: 8, conditional: s => ReqTargetCompatible(s) && ActorHumanoid(s)),
             new EventString((i) => $"Exhausted from the process of digestion, <b>{i.Target.Name}</b> lies down, breathing heavily as {GPPHis(i.Target)} gut pulsates. <b>{i.Unit.Name}</b> takes the opportunity to help. Going over, {GPPHe(i.Unit)} push{EsIfSingular(i.Unit)} the bloated stomach towards the lying predator’s chest creating a chorus of sloshing. With the huge gut out of the way, <b>{i.Unit.Name}</b> begins to go to work relieving {GPPHim(i.Target)} stress via carnal pleasures. <b>{i.Target.Name}</b> soon returns to the battlefield, renewed and ready to continue.",
             priority: 8, conditional: s => s.Target.Side == s.Unit.Side && ReqTargetCompatibleLewd(s)),
 
