@@ -1,0 +1,434 @@
+{
+    "$id": 0,
+    "$type": "0|RaceOverride, Assembly-CSharp",
+    "Overrides": {
+        "$id": 1,
+        "$type": "1|System.Collections.Generic.Dictionary`2[[Race, Assembly-CSharp],[RaceOverride+Override, Assembly-CSharp]], mscorlib",
+        "comparer": {
+            "$id": 2,
+            "$type": "2|System.Collections.Generic.EnumEqualityComparer`1[[Race, Assembly-CSharp]], mscorlib",
+            "$rlength": 0,
+            "$rcontent": [
+            ]
+        },
+        "$rlength": 32,
+        "$rcontent": [
+            {
+                0,
+                {
+                    "$type": "3|RaceOverride+Override, Assembly-CSharp",
+                    "RaceName": "Cats",
+                    "UsableFlags": "Gender Furry",
+                    "OverrideGender": false,
+                    "maleFraction": 0,
+                    "hermFraction": 0,
+                    "OverrideFurry": false,
+                    "furryFraction": 0
+                }
+            },
+            {
+                1,
+                {
+                    "$type": 3,
+                    "RaceName": "Dogs",
+                    "UsableFlags": "Gender Furry",
+                    "OverrideGender": false,
+                    "maleFraction": 0,
+                    "hermFraction": 0,
+                    "OverrideFurry": false,
+                    "furryFraction": 0
+                }
+            },
+            {
+                2,
+                {
+                    "$type": 3,
+                    "RaceName": "Foxes",
+                    "UsableFlags": "Gender Furry",
+                    "OverrideGender": false,
+                    "maleFraction": 0,
+                    "hermFraction": 0,
+                    "OverrideFurry": false,
+                    "furryFraction": 0
+                }
+            },
+            {
+                3,
+                {
+                    "$type": 3,
+                    "RaceName": "Wolves",
+                    "UsableFlags": "Gender Furry",
+                    "OverrideGender": false,
+                    "maleFraction": 0,
+                    "hermFraction": 0,
+                    "OverrideFurry": false,
+                    "furryFraction": 0
+                }
+            },
+            {
+                4,
+                {
+                    "$type": 3,
+                    "RaceName": "Bunnies",
+                    "UsableFlags": "Gender Furry",
+                    "OverrideGender": false,
+                    "maleFraction": 0,
+                    "hermFraction": 0,
+                    "OverrideFurry": false,
+                    "furryFraction": 0
+                }
+            },
+            {
+                5,
+                {
+                    "$type": 3,
+                    "RaceName": "Lizards",
+                    "UsableFlags": "Gender",
+                    "OverrideGender": false,
+                    "maleFraction": 0,
+                    "hermFraction": 0,
+                    "OverrideFurry": false,
+                    "furryFraction": 0
+                }
+            },
+            {
+                6,
+                {
+                    "$type": 3,
+                    "RaceName": "Slimes",
+                    "UsableFlags": "Gender",
+                    "OverrideGender": false,
+                    "maleFraction": 0,
+                    "hermFraction": 0,
+                    "OverrideFurry": false,
+                    "furryFraction": 0
+                }
+            },
+            {
+                7,
+                {
+                    "$type": 3,
+                    "RaceName": "Scylla",
+                    "UsableFlags": "Gender",
+                    "OverrideGender": false,
+                    "maleFraction": 0,
+                    "hermFraction": 0,
+                    "OverrideFurry": false,
+                    "furryFraction": 0
+                }
+            },
+            {
+                8,
+                {
+                    "$type": 3,
+                    "RaceName": "Harpies",
+                    "UsableFlags": "Gender",
+                    "OverrideGender": false,
+                    "maleFraction": 0,
+                    "hermFraction": 0,
+                    "OverrideFurry": false,
+                    "furryFraction": 0
+                }
+            },
+            {
+                9,
+                {
+                    "$type": 3,
+                    "RaceName": "Imps",
+                    "UsableFlags": "Gender",
+                    "OverrideGender": false,
+                    "maleFraction": 0,
+                    "hermFraction": 0,
+                    "OverrideFurry": false,
+                    "furryFraction": 0
+                }
+            },
+            {
+                10,
+                {
+                    "$type": 3,
+                    "RaceName": "Humans",
+                    "UsableFlags": "Gender",
+                    "OverrideGender": false,
+                    "maleFraction": 0,
+                    "hermFraction": 0,
+                    "OverrideFurry": false,
+                    "furryFraction": 0
+                }
+            },
+            {
+                11,
+                {
+                    "$type": 3,
+                    "RaceName": "Crypters",
+                    "UsableFlags": "Gender",
+                    "OverrideGender": false,
+                    "maleFraction": 0,
+                    "hermFraction": 0,
+                    "OverrideFurry": false,
+                    "furryFraction": 0
+                }
+            },
+            {
+                12,
+                {
+                    "$type": 3,
+                    "RaceName": "Lamia",
+                    "UsableFlags": "Gender",
+                    "OverrideGender": false,
+                    "maleFraction": 0,
+                    "hermFraction": 0,
+                    "OverrideFurry": false,
+                    "furryFraction": 0
+                }
+            },
+            {
+                13,
+                {
+                    "$type": 3,
+                    "RaceName": "Kangaroos",
+                    "UsableFlags": "Gender",
+                    "OverrideGender": false,
+                    "maleFraction": 0,
+                    "hermFraction": 0,
+                    "OverrideFurry": false,
+                    "furryFraction": 0
+                }
+            },
+            {
+                14,
+                {
+                    "$type": 3,
+                    "RaceName": "Taurus",
+                    "UsableFlags": "Gender Furry",
+                    "OverrideGender": false,
+                    "maleFraction": 0,
+                    "hermFraction": 0,
+                    "OverrideFurry": false,
+                    "furryFraction": 0
+                }
+            },
+            {
+                15,
+                {
+                    "$type": 3,
+                    "RaceName": "Crux",
+                    "UsableFlags": "Gender",
+                    "OverrideGender": false,
+                    "maleFraction": 0,
+                    "hermFraction": 0,
+                    "OverrideFurry": false,
+                    "furryFraction": 0
+                }
+            },
+            {
+                50,
+                {
+                    "$type": 3,
+                    "RaceName": "Succubi",
+                    "UsableFlags": "Gender",
+                    "OverrideGender": false,
+                    "maleFraction": 0,
+                    "hermFraction": 0,
+                    "OverrideFurry": false,
+                    "furryFraction": 0
+                }
+            },
+            {
+                51,
+                {
+                    "$type": 3,
+                    "RaceName": "Tigers",
+                    "UsableFlags": "Gender Furry",
+                    "OverrideGender": false,
+                    "maleFraction": 0,
+                    "hermFraction": 0,
+                    "OverrideFurry": false,
+                    "furryFraction": 0
+                }
+            },
+            {
+                52,
+                {
+                    "$type": 3,
+                    "RaceName": "Goblins",
+                    "UsableFlags": "Gender",
+                    "OverrideGender": false,
+                    "maleFraction": 0,
+                    "hermFraction": 0,
+                    "OverrideFurry": false,
+                    "furryFraction": 0
+                }
+            },
+            {
+                53,
+                {
+                    "$type": 3,
+                    "RaceName": "Alligators",
+                    "UsableFlags": "Gender",
+                    "OverrideGender": false,
+                    "maleFraction": 0,
+                    "hermFraction": 0,
+                    "OverrideFurry": false,
+                    "furryFraction": 0
+                }
+            },
+            {
+                54,
+                {
+                    "$type": 3,
+                    "RaceName": "Puca",
+                    "UsableFlags": "Gender",
+                    "OverrideGender": false,
+                    "maleFraction": 0,
+                    "hermFraction": 0,
+                    "OverrideFurry": false,
+                    "furryFraction": 0
+                }
+            },
+            {
+                100,
+                {
+                    "$type": 3,
+                    "RaceName": "Vagrants",
+                    "UsableFlags": "",
+                    "OverrideGender": false,
+                    "maleFraction": 0,
+                    "hermFraction": 0,
+                    "OverrideFurry": false,
+                    "furryFraction": 0
+                }
+            },
+            {
+                101,
+                {
+                    "$type": 3,
+                    "RaceName": "Serpents",
+                    "UsableFlags": "",
+                    "OverrideGender": false,
+                    "maleFraction": 0,
+                    "hermFraction": 0,
+                    "OverrideFurry": false,
+                    "furryFraction": 0
+                }
+            },
+            {
+                102,
+                {
+                    "$type": 3,
+                    "RaceName": "Wyvern",
+                    "UsableFlags": "Gender",
+                    "OverrideGender": false,
+                    "maleFraction": 0,
+                    "hermFraction": 0,
+                    "OverrideFurry": false,
+                    "furryFraction": 0
+                }
+            },
+            {
+                103,
+                {
+                    "$type": 3,
+                    "RaceName": "YoungWyvern",
+                    "UsableFlags": "",
+                    "OverrideGender": false,
+                    "maleFraction": 0,
+                    "hermFraction": 0,
+                    "OverrideFurry": false,
+                    "furryFraction": 0
+                }
+            },
+            {
+                104,
+                {
+                    "$type": 3,
+                    "RaceName": "Compy",
+                    "UsableFlags": "",
+                    "OverrideGender": false,
+                    "maleFraction": 0,
+                    "hermFraction": 0,
+                    "OverrideFurry": false,
+                    "furryFraction": 0
+                }
+            },
+            {
+                105,
+                {
+                    "$type": 3,
+                    "RaceName": "Sharks",
+                    "UsableFlags": "",
+                    "OverrideGender": false,
+                    "maleFraction": 0,
+                    "hermFraction": 0,
+                    "OverrideFurry": false,
+                    "furryFraction": 0
+                }
+            },
+            {
+                106,
+                {
+                    "$type": 3,
+                    "RaceName": "FeralWolves",
+                    "UsableFlags": "",
+                    "OverrideGender": false,
+                    "maleFraction": 0,
+                    "hermFraction": 0,
+                    "OverrideFurry": false,
+                    "furryFraction": 0
+                }
+            },
+            {
+                107,
+                {
+                    "$type": 3,
+                    "RaceName": "DarkSwallower",
+                    "UsableFlags": "",
+                    "OverrideGender": false,
+                    "maleFraction": 0,
+                    "hermFraction": 0,
+                    "OverrideFurry": false,
+                    "furryFraction": 0
+                }
+            },
+            {
+                108,
+                {
+                    "$type": 3,
+                    "RaceName": "Cake",
+                    "UsableFlags": "",
+                    "OverrideGender": false,
+                    "maleFraction": 0,
+                    "hermFraction": 0,
+                    "OverrideFurry": false,
+                    "furryFraction": 0
+                }
+            },
+            {
+                109,
+                {
+                    "$type": 3,
+                    "RaceName": "Harvesters",
+                    "UsableFlags": "",
+                    "OverrideGender": false,
+                    "maleFraction": 0,
+                    "hermFraction": 0,
+                    "OverrideFurry": false,
+                    "furryFraction": 0
+                }
+            },
+            {
+                170,
+                {
+                    "$type": 3,
+                    "RaceName": "Selicia",
+                    "UsableFlags": "",
+                    "OverrideGender": false,
+                    "maleFraction": 0,
+                    "hermFraction": 0,
+                    "OverrideFurry": false,
+                    "furryFraction": 0
+                }
+            }
+        ]
+    }
+}
