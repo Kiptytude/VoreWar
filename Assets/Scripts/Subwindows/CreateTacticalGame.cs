@@ -456,9 +456,10 @@ public class CreateTacticalGame : MonoBehaviour
             }
             return GetRandomRace;
         }
-
         Army attacker = new Army(new Empire(), none, attackerSide);
         Army defender = new Army(new Empire(), none, defenderSide);
+        attacker.Empire.ReplacedRace = AttackerRace();              // Needed to make lions have the proper AI
+        defender.Empire.ReplacedRace = DefenderRace();
         if (Attacker.HasLeader.isOn)
         {
             attacker.Units.Add(new NPC_unit(levelA, Attacker.RangedPercentage.value >= 50, 3, attackerSide, AttackerRace(), 0, Attacker.CanVore.isOn));

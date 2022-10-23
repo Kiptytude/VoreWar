@@ -8,7 +8,7 @@
             "$id": 2,
             "$type": "2|System.Collections.Generic.GenericEqualityComparer`1[[System.String, mscorlib]], mscorlib"
         },
-        "$rlength": 16,
+        "$rlength": 18,
         "$rcontent": [
             {
                 "StrategicX",
@@ -36,11 +36,11 @@
             },
             {
                 "VillageIncomeRate",
-                "100"
+                "25"
             },
             {
                 "VillagersPerFarm",
-                "6"
+                "5"
             },
             {
                 "SoftLevelCap",
@@ -51,16 +51,20 @@
                 "9999"
             },
             {
+                "StartingVillagePopulation",
+                "80"
+            },
+            {
                 "LeaderLossLevels",
                 "1"
             },
             {
                 "GoldMines",
-                "0"
+                "3"
             },
             {
                 "MercenaryHouses",
-                "1"
+                "0"
             },
             {
                 "StartingGold",
@@ -68,11 +72,15 @@
             },
             {
                 "GoldMineIncome",
-                "20"
+                "100"
+            },
+            {
+                "ArmyUpkeep",
+                "0"
             },
             {
                 "AbandonedVillages",
-                "0"
+                "2"
             }
         ]
     },
@@ -80,7 +88,7 @@
         "$id": 3,
         "$type": "3|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.Boolean, mscorlib]], mscorlib",
         "comparer": $iref:2,
-        "$rlength": 6,
+        "$rlength": 9,
         "$rcontent": [
             {
                 "AutoScaleTactical",
@@ -95,6 +103,10 @@
                 true
             },
             {
+                "LeadersAutoGainLeadership",
+                true
+            },
+            {
                 "SpawnTeamsTogether",
                 true
             },
@@ -103,7 +115,15 @@
                 false
             },
             {
+                "CapitalGarrisonCapped",
+                true
+            },
+            {
                 "MapGenPoles",
+                true
+            },
+            {
+                "MapGenExcessBridges",
                 false
             }
         ]
@@ -116,11 +136,11 @@
         "$rcontent": [
             {
                 "StrategicAutoSize",
-                2
+                0
             },
             {
                 "VictoryCondition",
-                1
+                3
             },
             {
                 "MapGenType",
@@ -148,7 +168,7 @@
             },
             {
                 "MapGenForests",
-                0.23
+                0.31579268
             },
             {
                 "MapGenSwamps",
@@ -167,23 +187,23 @@
             "$id": 7,
             "$type": "7|System.Collections.Generic.GenericEqualityComparer`1[[System.Int32, mscorlib]], mscorlib"
         },
-        "$rlength": 23,
+        "$rlength": 29,
         "$rcontent": [
             {
                 0,
                 {
                     "$type": "8|Assets.Scripts.Utility.Stored.EmpireData, Assembly-CSharp",
                     "AIPlayer": true,
-                    "VillageCount": "4",
-                    "StrategicAI": 2,
+                    "VillageCount": "1",
+                    "StrategicAI": 3,
                     "TacticalAI": 1,
                     "CanVore": true,
-                    "Team": "1",
-                    "PrimaryColor": 2,
-                    "SecondaryColor": 4,
-                    "TurnOrder": "2",
-                    "MaxArmySize": 16,
-                    "MaxGarrisonSize": 16
+                    "Team": "30",
+                    "PrimaryColor": 4,
+                    "SecondaryColor": 10,
+                    "TurnOrder": "4",
+                    "MaxArmySize": 8,
+                    "MaxGarrisonSize": 8
                 }
             },
             {
@@ -191,16 +211,16 @@
                 {
                     "$type": 8,
                     "AIPlayer": true,
-                    "VillageCount": "4",
-                    "StrategicAI": 2,
+                    "VillageCount": "1",
+                    "StrategicAI": 3,
                     "TacticalAI": 1,
                     "CanVore": true,
-                    "Team": "2",
+                    "Team": "10",
                     "PrimaryColor": 0,
                     "SecondaryColor": 10,
-                    "TurnOrder": "1",
-                    "MaxArmySize": 16,
-                    "MaxGarrisonSize": 16
+                    "TurnOrder": "5",
+                    "MaxArmySize": 8,
+                    "MaxGarrisonSize": 8
                 }
             },
             {
@@ -208,16 +228,16 @@
                 {
                     "$type": 8,
                     "AIPlayer": true,
-                    "VillageCount": "4",
-                    "StrategicAI": 2,
+                    "VillageCount": "1",
+                    "StrategicAI": 3,
                     "TacticalAI": 1,
                     "CanVore": true,
-                    "Team": "3",
+                    "Team": "30",
                     "PrimaryColor": 2,
-                    "SecondaryColor": 14,
-                    "TurnOrder": "1",
-                    "MaxArmySize": 16,
-                    "MaxGarrisonSize": 16
+                    "SecondaryColor": 1,
+                    "TurnOrder": "3",
+                    "MaxArmySize": 8,
+                    "MaxGarrisonSize": 8
                 }
             },
             {
@@ -225,14 +245,14 @@
                 {
                     "$type": 8,
                     "AIPlayer": true,
-                    "VillageCount": "4",
+                    "VillageCount": "0",
                     "StrategicAI": 2,
                     "TacticalAI": 1,
                     "CanVore": true,
                     "Team": "4",
                     "PrimaryColor": 1,
                     "SecondaryColor": 0,
-                    "TurnOrder": "4",
+                    "TurnOrder": "1",
                     "MaxArmySize": 16,
                     "MaxGarrisonSize": 16
                 }
@@ -241,17 +261,17 @@
                 4,
                 {
                     "$type": 8,
-                    "AIPlayer": true,
-                    "VillageCount": "4",
-                    "StrategicAI": 2,
+                    "AIPlayer": false,
+                    "VillageCount": "1",
+                    "StrategicAI": 3,
                     "TacticalAI": 1,
                     "CanVore": true,
                     "Team": "30",
-                    "PrimaryColor": 10,
-                    "SecondaryColor": 5,
-                    "TurnOrder": "0",
-                    "MaxArmySize": 16,
-                    "MaxGarrisonSize": 16
+                    "PrimaryColor": 14,
+                    "SecondaryColor": 15,
+                    "TurnOrder": "1",
+                    "MaxArmySize": 8,
+                    "MaxGarrisonSize": 8
                 }
             },
             {
@@ -259,7 +279,7 @@
                 {
                     "$type": 8,
                     "AIPlayer": true,
-                    "VillageCount": "4",
+                    "VillageCount": "0",
                     "StrategicAI": 2,
                     "TacticalAI": 1,
                     "CanVore": true,
@@ -267,8 +287,8 @@
                     "PrimaryColor": 5,
                     "SecondaryColor": 5,
                     "TurnOrder": "1",
-                    "MaxArmySize": 16,
-                    "MaxGarrisonSize": 16
+                    "MaxArmySize": 4,
+                    "MaxGarrisonSize": 4
                 }
             },
             {
@@ -276,7 +296,7 @@
                 {
                     "$type": 8,
                     "AIPlayer": true,
-                    "VillageCount": "4",
+                    "VillageCount": "0",
                     "StrategicAI": 2,
                     "TacticalAI": 1,
                     "CanVore": true,
@@ -284,8 +304,8 @@
                     "PrimaryColor": 9,
                     "SecondaryColor": 6,
                     "TurnOrder": "1",
-                    "MaxArmySize": 16,
-                    "MaxGarrisonSize": 16
+                    "MaxArmySize": 4,
+                    "MaxGarrisonSize": 4
                 }
             },
             {
@@ -293,16 +313,16 @@
                 {
                     "$type": 8,
                     "AIPlayer": true,
-                    "VillageCount": "4",
+                    "VillageCount": "0",
                     "StrategicAI": 2,
                     "TacticalAI": 1,
                     "CanVore": true,
                     "Team": "7",
                     "PrimaryColor": 7,
                     "SecondaryColor": 0,
-                    "TurnOrder": "44",
-                    "MaxArmySize": 16,
-                    "MaxGarrisonSize": 16
+                    "TurnOrder": "1",
+                    "MaxArmySize": 4,
+                    "MaxGarrisonSize": 4
                 }
             },
             {
@@ -310,16 +330,16 @@
                 {
                     "$type": 8,
                     "AIPlayer": true,
-                    "VillageCount": "4",
+                    "VillageCount": "0",
                     "StrategicAI": 2,
                     "TacticalAI": 1,
                     "CanVore": true,
                     "Team": "8",
                     "PrimaryColor": 10,
                     "SecondaryColor": 12,
-                    "TurnOrder": "12",
-                    "MaxArmySize": 16,
-                    "MaxGarrisonSize": 16
+                    "TurnOrder": "1",
+                    "MaxArmySize": 4,
+                    "MaxGarrisonSize": 4
                 }
             },
             {
@@ -327,16 +347,16 @@
                 {
                     "$type": 8,
                     "AIPlayer": true,
-                    "VillageCount": "4",
+                    "VillageCount": "0",
                     "StrategicAI": 2,
                     "TacticalAI": 1,
                     "CanVore": true,
                     "Team": "9",
                     "PrimaryColor": 1,
                     "SecondaryColor": 11,
-                    "TurnOrder": "34",
-                    "MaxArmySize": 16,
-                    "MaxGarrisonSize": 16
+                    "TurnOrder": "1",
+                    "MaxArmySize": 4,
+                    "MaxGarrisonSize": 4
                 }
             },
             {
@@ -344,16 +364,16 @@
                 {
                     "$type": 8,
                     "AIPlayer": true,
-                    "VillageCount": "4",
-                    "StrategicAI": 2,
+                    "VillageCount": "5",
+                    "StrategicAI": 5,
                     "TacticalAI": 1,
                     "CanVore": true,
                     "Team": "10",
-                    "PrimaryColor": 2,
+                    "PrimaryColor": 3,
                     "SecondaryColor": 6,
-                    "TurnOrder": "1",
-                    "MaxArmySize": 16,
-                    "MaxGarrisonSize": 16
+                    "TurnOrder": "2",
+                    "MaxArmySize": 14,
+                    "MaxGarrisonSize": 14
                 }
             },
             {
@@ -361,7 +381,7 @@
                 {
                     "$type": 8,
                     "AIPlayer": true,
-                    "VillageCount": "4",
+                    "VillageCount": "0",
                     "StrategicAI": 2,
                     "TacticalAI": 1,
                     "CanVore": true,
@@ -369,8 +389,8 @@
                     "PrimaryColor": 11,
                     "SecondaryColor": 10,
                     "TurnOrder": "1",
-                    "MaxArmySize": 16,
-                    "MaxGarrisonSize": 16
+                    "MaxArmySize": 4,
+                    "MaxGarrisonSize": 4
                 }
             },
             {
@@ -378,7 +398,7 @@
                 {
                     "$type": 8,
                     "AIPlayer": true,
-                    "VillageCount": "4",
+                    "VillageCount": "0",
                     "StrategicAI": 2,
                     "TacticalAI": 1,
                     "CanVore": true,
@@ -386,8 +406,8 @@
                     "PrimaryColor": 5,
                     "SecondaryColor": 11,
                     "TurnOrder": "1",
-                    "MaxArmySize": 16,
-                    "MaxGarrisonSize": 16
+                    "MaxArmySize": 4,
+                    "MaxGarrisonSize": 4
                 }
             },
             {
@@ -395,7 +415,7 @@
                 {
                     "$type": 8,
                     "AIPlayer": true,
-                    "VillageCount": "4",
+                    "VillageCount": "0",
                     "StrategicAI": 2,
                     "TacticalAI": 1,
                     "CanVore": true,
@@ -403,8 +423,8 @@
                     "PrimaryColor": 13,
                     "SecondaryColor": 2,
                     "TurnOrder": "1",
-                    "MaxArmySize": 16,
-                    "MaxGarrisonSize": 16
+                    "MaxArmySize": 4,
+                    "MaxGarrisonSize": 4
                 }
             },
             {
@@ -412,7 +432,7 @@
                 {
                     "$type": 8,
                     "AIPlayer": true,
-                    "VillageCount": "4",
+                    "VillageCount": "0",
                     "StrategicAI": 2,
                     "TacticalAI": 1,
                     "CanVore": true,
@@ -420,8 +440,8 @@
                     "PrimaryColor": 14,
                     "SecondaryColor": 3,
                     "TurnOrder": "1",
-                    "MaxArmySize": 16,
-                    "MaxGarrisonSize": 16
+                    "MaxArmySize": 4,
+                    "MaxGarrisonSize": 4
                 }
             },
             {
@@ -429,7 +449,7 @@
                 {
                     "$type": 8,
                     "AIPlayer": true,
-                    "VillageCount": "4",
+                    "VillageCount": "0",
                     "StrategicAI": 2,
                     "TacticalAI": 1,
                     "CanVore": true,
@@ -437,8 +457,8 @@
                     "PrimaryColor": 4,
                     "SecondaryColor": 10,
                     "TurnOrder": "1",
-                    "MaxArmySize": 16,
-                    "MaxGarrisonSize": 16
+                    "MaxArmySize": 4,
+                    "MaxGarrisonSize": 4
                 }
             },
             {
@@ -446,7 +466,7 @@
                 {
                     "$type": 8,
                     "AIPlayer": true,
-                    "VillageCount": "4",
+                    "VillageCount": "0",
                     "StrategicAI": 2,
                     "TacticalAI": 1,
                     "CanVore": true,
@@ -454,8 +474,8 @@
                     "PrimaryColor": 14,
                     "SecondaryColor": 5,
                     "TurnOrder": "1",
-                    "MaxArmySize": 16,
-                    "MaxGarrisonSize": 16
+                    "MaxArmySize": 4,
+                    "MaxGarrisonSize": 4
                 }
             },
             {
@@ -463,7 +483,7 @@
                 {
                     "$type": 8,
                     "AIPlayer": true,
-                    "VillageCount": "4",
+                    "VillageCount": "0",
                     "StrategicAI": 2,
                     "TacticalAI": 1,
                     "CanVore": true,
@@ -471,8 +491,8 @@
                     "PrimaryColor": 13,
                     "SecondaryColor": 14,
                     "TurnOrder": "1",
-                    "MaxArmySize": 16,
-                    "MaxGarrisonSize": 16
+                    "MaxArmySize": 4,
+                    "MaxGarrisonSize": 4
                 }
             },
             {
@@ -480,7 +500,7 @@
                 {
                     "$type": 8,
                     "AIPlayer": true,
-                    "VillageCount": "4",
+                    "VillageCount": "0",
                     "StrategicAI": 2,
                     "TacticalAI": 1,
                     "CanVore": true,
@@ -488,8 +508,8 @@
                     "PrimaryColor": 3,
                     "SecondaryColor": 11,
                     "TurnOrder": "1",
-                    "MaxArmySize": 16,
-                    "MaxGarrisonSize": 16
+                    "MaxArmySize": 4,
+                    "MaxGarrisonSize": 4
                 }
             },
             {
@@ -497,7 +517,7 @@
                 {
                     "$type": 8,
                     "AIPlayer": true,
-                    "VillageCount": "4",
+                    "VillageCount": "0",
                     "StrategicAI": 2,
                     "TacticalAI": 1,
                     "CanVore": true,
@@ -505,8 +525,8 @@
                     "PrimaryColor": 11,
                     "SecondaryColor": 6,
                     "TurnOrder": "1",
-                    "MaxArmySize": 16,
-                    "MaxGarrisonSize": 16
+                    "MaxArmySize": 4,
+                    "MaxGarrisonSize": 4
                 }
             },
             {
@@ -514,16 +534,16 @@
                 {
                     "$type": 8,
                     "AIPlayer": true,
-                    "VillageCount": "4",
+                    "VillageCount": "0",
                     "StrategicAI": 2,
                     "TacticalAI": 1,
                     "CanVore": true,
                     "Team": "20",
-                    "PrimaryColor": 9,
-                    "SecondaryColor": 14,
+                    "PrimaryColor": 1,
+                    "SecondaryColor": 9,
                     "TurnOrder": "1",
-                    "MaxArmySize": 16,
-                    "MaxGarrisonSize": 16
+                    "MaxArmySize": 4,
+                    "MaxGarrisonSize": 4
                 }
             },
             {
@@ -531,7 +551,7 @@
                 {
                     "$type": 8,
                     "AIPlayer": true,
-                    "VillageCount": "4",
+                    "VillageCount": "0",
                     "StrategicAI": 2,
                     "TacticalAI": 1,
                     "CanVore": true,
@@ -539,8 +559,8 @@
                     "PrimaryColor": 8,
                     "SecondaryColor": 11,
                     "TurnOrder": "1",
-                    "MaxArmySize": 16,
-                    "MaxGarrisonSize": 16
+                    "MaxArmySize": 4,
+                    "MaxGarrisonSize": 4
                 }
             },
             {
@@ -548,7 +568,7 @@
                 {
                     "$type": 8,
                     "AIPlayer": true,
-                    "VillageCount": "4",
+                    "VillageCount": "0",
                     "StrategicAI": 2,
                     "TacticalAI": 1,
                     "CanVore": true,
@@ -556,8 +576,110 @@
                     "PrimaryColor": 16,
                     "SecondaryColor": 14,
                     "TurnOrder": "1",
-                    "MaxArmySize": 16,
-                    "MaxGarrisonSize": 16
+                    "MaxArmySize": 4,
+                    "MaxGarrisonSize": 4
+                }
+            },
+            {
+                23,
+                {
+                    "$type": 8,
+                    "AIPlayer": true,
+                    "VillageCount": "0",
+                    "StrategicAI": 2,
+                    "TacticalAI": 1,
+                    "CanVore": true,
+                    "Team": "23",
+                    "PrimaryColor": 5,
+                    "SecondaryColor": 0,
+                    "TurnOrder": "1",
+                    "MaxArmySize": 4,
+                    "MaxGarrisonSize": 4
+                }
+            },
+            {
+                24,
+                {
+                    "$type": 8,
+                    "AIPlayer": true,
+                    "VillageCount": "0",
+                    "StrategicAI": 2,
+                    "TacticalAI": 1,
+                    "CanVore": true,
+                    "Team": "24",
+                    "PrimaryColor": 12,
+                    "SecondaryColor": 0,
+                    "TurnOrder": "1",
+                    "MaxArmySize": 4,
+                    "MaxGarrisonSize": 4
+                }
+            },
+            {
+                25,
+                {
+                    "$type": 8,
+                    "AIPlayer": true,
+                    "VillageCount": "0",
+                    "StrategicAI": 2,
+                    "TacticalAI": 1,
+                    "CanVore": true,
+                    "Team": "25",
+                    "PrimaryColor": 14,
+                    "SecondaryColor": 9,
+                    "TurnOrder": "1",
+                    "MaxArmySize": 4,
+                    "MaxGarrisonSize": 4
+                }
+            },
+            {
+                26,
+                {
+                    "$type": 8,
+                    "AIPlayer": true,
+                    "VillageCount": "0",
+                    "StrategicAI": 2,
+                    "TacticalAI": 1,
+                    "CanVore": true,
+                    "Team": "26",
+                    "PrimaryColor": 3,
+                    "SecondaryColor": 9,
+                    "TurnOrder": "1",
+                    "MaxArmySize": 4,
+                    "MaxGarrisonSize": 4
+                }
+            },
+            {
+                27,
+                {
+                    "$type": 8,
+                    "AIPlayer": true,
+                    "VillageCount": "0",
+                    "StrategicAI": 2,
+                    "TacticalAI": 1,
+                    "CanVore": true,
+                    "Team": "27",
+                    "PrimaryColor": 10,
+                    "SecondaryColor": 11,
+                    "TurnOrder": "1",
+                    "MaxArmySize": 4,
+                    "MaxGarrisonSize": 4
+                }
+            },
+            {
+                28,
+                {
+                    "$type": 8,
+                    "AIPlayer": true,
+                    "VillageCount": "0",
+                    "StrategicAI": 2,
+                    "TacticalAI": 1,
+                    "CanVore": true,
+                    "Team": "28",
+                    "PrimaryColor": 9,
+                    "SecondaryColor": 14,
+                    "TurnOrder": "1",
+                    "MaxArmySize": 4,
+                    "MaxGarrisonSize": 4
                 }
             }
         ]

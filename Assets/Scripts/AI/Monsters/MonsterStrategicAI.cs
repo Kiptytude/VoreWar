@@ -128,7 +128,7 @@ class MonsterStrategicAI : IStrategicAI
                 if (spawner.MinArmySize > spawner.MaxArmySize)
                     count = spawner.MaxArmySize;
                 else
-                    count = State.Rand.Next(spawner.MinArmySize, spawner.MaxArmySize);
+                    count = State.Rand.Next(spawner.MinArmySize, spawner.MaxArmySize + 1);
 
                 if (count <= 0)
                     continue;
@@ -212,6 +212,14 @@ class MonsterStrategicAI : IStrategicAI
                             army.Units.Add(new Unit(empire.Side, Race.Komodos, RandXp(baseXp), true));
                         else
                             army.Units.Add(new Unit(empire.Side, Race.Monitors, RandXp(baseXp), true));
+                    }
+                }
+                else if (empire.ReplacedRace == Race.FeralLions)
+                {
+                    army.Units.Add(new Leader(empire.Side, Race.FeralLions, RandXp(baseXp*2)));
+                    for (int i = 1; i < count; i++)
+                    {
+                        army.Units.Add(new Unit(empire.Side, Race.FeralLions, RandXp(baseXp), true));
                     }
                 }
                 else
@@ -341,63 +349,7 @@ class MonsterStrategicAI : IStrategicAI
                 return;
             }
         }
-
-
-
-        switch (empire.Race)
-        {
-            case Race.Vagrants:
-                Attack(army, 4);
-                break;
-            case Race.Serpents:
-                Attack(army, 8);
-                break;
-            case Race.Wyvern:
-                Attack(army, 6);
-                break;
-            case Race.Compy:
-                Attack(army, 12);
-                break;
-            case Race.FeralSharks:
-                Attack(army, 8);
-                break;
-            case Race.FeralWolves:
-                Attack(army, 8);
-                break;
-            case Race.Cake:
-                Attack(army, 8);
-                break;
-            case Race.Harvesters:
-                Attack(army, 6);
-                break;
-            case Race.Voilin:
-                Attack(army, 6);
-                break;
-            case Race.FeralBats:
-                Attack(army, 5);
-                break;
-            case Race.FeralFrogs:
-                Attack(army, 6);
-                break;
-            case Race.Dragon:
-                Attack(army, 6);
-                break;
-            case Race.Dragonfly:
-                Attack(army, 8);
-                break;
-            case Race.TwistedVines:
-                Attack(army, 6);
-                break;
-            case Race.Fairies:
-                Attack(army, 6);
-                break;
-            case Race.Gryphons:
-                Attack(army, 6);
-                break;
-            default:
-                Attack(army, 8);
-                break;
-        }
+        Attack(army, spawner.Confidence);
     }
 
 

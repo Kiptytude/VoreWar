@@ -67,6 +67,7 @@ public enum StrategicDoodadType
     SpawnerSchiwardez = 1027,
     SpawnerTerrorbird = 1028,
     SpawnerDratopyr = 1029,
+    SpawnerFeralLions = 1030,
 }
 
 public enum MovementType

@@ -8,7 +8,7 @@ using System.Text;
 
 public class World
 {
-    internal const int MonsterCount = 30;
+    internal const int MonsterCount = 31;
     [OdinSerialize]
     public int Turn = 1;
     [OdinSerialize]
@@ -121,7 +121,9 @@ public class World
         MainEmpires.Last().ReplacedRace = Race.Tigers;
         MainEmpires.Add(new Empire(new Empire.ConstructionArgs(701, UnityEngine.Color.red, new UnityEngine.Color(.6f, 0, 0), 5, StrategyAIType.Basic, TacticalAIType.Full, 701, 16, 16)));
         MainEmpires.Last().Name = "Bandits";
-        MainEmpires.Last().ReplacedRace = Race.Tigers;
+/*         MainEmpires.Add(new Empire(new Empire.ConstructionArgs(702, UnityEngine.Color.red, new UnityEngine.Color(.6f, 0, 0), 5, StrategyAIType.Basic, TacticalAIType.Full, 702, 16, 16)));
+        MainEmpires.Last().Name = "Outcasts";
+        MainEmpires.Last().ReplacedRace = Race.Tigers; */
         UpdateBanditLimits();
         crazyBuildings = args.crazyBuildings;
         VillageBuildingList.SetBuildings(crazyBuildings);
@@ -237,6 +239,7 @@ public class World
         MonsterEmpires[27] = new MonsterEmpire(new Empire.ConstructionArgs((int)Race.Schiwardez, UnityEngine.Color.white, UnityEngine.Color.white, 54, StrategyAIType.Monster, TacticalAIType.Full, 1022, 32, 0));
         MonsterEmpires[28] = new MonsterEmpire(new Empire.ConstructionArgs((int)Race.Terrorbird, UnityEngine.Color.white, UnityEngine.Color.white, 55, StrategyAIType.Monster, TacticalAIType.Full, 1023, 32, 0));
         MonsterEmpires[29] = new MonsterEmpire(new Empire.ConstructionArgs((int)Race.Dratopyr, UnityEngine.Color.white, UnityEngine.Color.white, 56, StrategyAIType.Monster, TacticalAIType.Full, 1024, 32, 0));
+        MonsterEmpires[30] = new MonsterEmpire(new Empire.ConstructionArgs((int)Race.FeralLions, UnityEngine.Color.white, UnityEngine.Color.white, 57, StrategyAIType.Monster, TacticalAIType.Full, 1337, 32, 0));
         foreach (var emp in MonsterEmpires)
         {
             SpawnerInfo spawner = Config.SpawnerInfo(emp.Race);

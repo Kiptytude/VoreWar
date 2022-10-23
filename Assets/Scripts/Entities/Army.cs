@@ -157,9 +157,9 @@ public class Army
                     unit.DickSize--;
 
             }
-            if (unit.HasTrait(Traits.Growth) && unit.BaseScale > 1)
+            if (unit.HasTrait(Traits.Growth) && unit.BaseScale > 1 && !unit.HasTrait(Traits.PermanentGrowth))
             {
-                unit.BaseScale = Math.Max(1f, unit.BaseScale * 0.8f);
+                unit.BaseScale = Math.Max(1, unit.BaseScale * (Math.Pow(1 - ((Math.Pow(unit.TraitBoosts.GrowthDecayRate * 2, unit.BaseScale / 2) / 70)), 2)));
             }
         }
         RefreshMovementMode();

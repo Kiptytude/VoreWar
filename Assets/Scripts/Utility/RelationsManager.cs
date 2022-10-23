@@ -69,7 +69,7 @@ static class RelationsManager
     {
         if (State.World.Relations == null)
             ResetRelations();
-        if (sideA >= 700 || sideB >= 700)
+        if (sideA == 700 || sideA == 701 || sideB == 700 || sideB == 701)
         {
             if (sideA == sideB)
                 return new Relationship(0, 0);

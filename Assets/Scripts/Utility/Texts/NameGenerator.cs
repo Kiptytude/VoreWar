@@ -48,7 +48,7 @@ public class NameGenerator
     List<string> wyvernNames;
     List<string> youngWyvernNames;
     List<string> gryphonNames;
-
+    List<string> feralLionNames;
     Dictionary<Race, List<string>> RaceMaleNames;
     Dictionary<Race, List<string>> RaceFemaleNames;
     Dictionary<Race, List<string>> RaceMonsterNames;
@@ -309,7 +309,13 @@ public class NameGenerator
             "Dryotriorchis",
             "Casuarius",
         };
-        catTownNames = new List<string>
+        feralLionNames = new List<string>
+        {
+            "Kalahari",
+            "Okavangu",
+            "Zenobia"
+        };
+            catTownNames = new List<string>
         {
             "Pyramid of Indulgence",
             "Catro",
@@ -917,43 +923,59 @@ public class NameGenerator
         }
     }
 
-    public string GetMonsterName(Race race)
+    public string GetMonsterName(bool male, Race race)
     {
-        RaceMonsterNames.TryGetValue(race, out var list);
-        if (list != null)
+        List<string> list;
+        if (male)
+        {
+            RaceMaleNames.TryGetValue(race, out list);
+            if (list != null && list.Any())
+            {
+                return list[State.Rand.Next(list.Count)];
+            }
+        }
+        else
+        {
+            RaceFemaleNames.TryGetValue(race, out list);
+            if (list != null && list.Any())
+            {
+                return list[State.Rand.Next(list.Count)];
+            }
+        }
+        RaceMonsterNames.TryGetValue(race, out list);
+        if (list != null && list.Any())
         {
             return list[State.Rand.Next(list.Count)];
         }
-        List<string> nameList = null;
+        list = null;
         switch (race)
         {
             case Race.Wyvern:
-                nameList = wyvernNames;
+                list = wyvernNames;
                 break;
             case Race.YoungWyvern:
-                nameList = youngWyvernNames;
+                list = youngWyvernNames;
                 break;
             case Race.Vagrants:
-                nameList = vagrantNames;
+                list = vagrantNames;
                 break;
             case Race.Serpents:
-                nameList = serpentNames;
+                list = serpentNames;
                 break;
             case Race.Compy:
-                nameList = compyNames;
+                list = compyNames;
                 break;
             case Race.Gryphons:
-                nameList = gryphonNames;
+                list = gryphonNames;
                 break;
         }
-
-        if (nameList != null)
+        if (list != null)
         {
-            if (nameList.Count > 20)
-                return nameList[State.Rand.Next(nameList.Count)];
+            if (list.Count > 20)
+                return list[State.Rand.Next(list.Count)];
             int rand = State.Rand.Next(20);
-            if (rand < nameList.Count)
-                return nameList[rand];
+            if (rand < list.Count)
+                return list[rand];
         }
         return monsterNames[State.Rand.Next(monsterNames.Count)];
 

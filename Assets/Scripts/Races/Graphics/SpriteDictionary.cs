@@ -260,6 +260,7 @@ public class SpriteDictionary : MonoBehaviour
     public Sprite[] Schiwardez;
     public Sprite[] Terrorbird;
     public Sprite[] Dratopyr;
+    public Sprite[] FeralLions;
 
 
 

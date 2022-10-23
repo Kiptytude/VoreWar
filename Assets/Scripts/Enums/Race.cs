@@ -45,6 +45,7 @@ public enum Race : int
     Vipers = 58,
     Komodos = 59,
     Cockatrice = 60,
+
     Vagrants = 100,
     Serpents = 101,
     Wyvern = 102,
@@ -82,6 +83,8 @@ public enum Race : int
     Schiwardez = 134,
     Terrorbird = 135,
     Dratopyr = 136,
+    FeralLions = 137,
+
     Selicia = 170,
     Vision = 171,
     Ki = 172,
@@ -93,5 +96,4 @@ public enum Race : int
     Zera = 178,
     Auri = 179,
     Erin = 180
-
 }

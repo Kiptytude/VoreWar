@@ -804,13 +804,14 @@ public class TacticalMessageLog
         UpdateListing();
     }
 
-    public void RegisterTailRub(Unit predator, Unit prey, float odds)
+    public void RegisterTailRub(Unit predator, Unit target, Unit prey, float odds)
     {
         events.Add(new EventLog
         {
             Type = MessageLogEvent.TailRub,
             Unit = predator,
             Target = prey,
+            Prey = prey,
             Odds = odds,
             preyLocation = PreyLocation.tail,
         });
@@ -830,25 +831,27 @@ public class TacticalMessageLog
         UpdateListing();
     }
 
-    public void RegisterFeed(Unit predator, Unit prey, float odds)
+    public void RegisterFeed(Unit predator, Unit target, Unit prey, float odds)
     {
         events.Add(new EventLog
         {
             Type = MessageLogEvent.Feed,
             Unit = predator,
-            Target = prey,
+            Target = target,
+            Prey = prey,
             Odds = odds
         });
         UpdateListing();
     }
 
-    public void RegisterCumFeed(Unit predator, Unit prey, float odds)
+    public void RegisterCumFeed(Unit predator, Unit target, Unit prey, float odds)
     {
         events.Add(new EventLog
         {
             Type = MessageLogEvent.FeedCum,
             Unit = predator,
-            Target = prey,
+            Target = target,
+            Prey = prey,
             Odds = odds
         });
         UpdateListing();

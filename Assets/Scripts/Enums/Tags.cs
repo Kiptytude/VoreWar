@@ -205,6 +205,12 @@ public enum Traits
     Honeymaker,
     WetNurse,
     TheGreatEscape,
+    HighlyAbsorbable,
+    IdealSustenance,
+    EfficientGuts,
+    WastefulProcessing,
+
+
 
 
     //Everything after this is a cheat trait
@@ -236,6 +242,15 @@ public enum Traits
     PredConverter,
     PredRebirther,
     SeductiveTouch,
-Growth,
 
+    // Growth-related section
+	Growth,
+    IncreasedGrowth,
+    DoubleGrowth,
+    PersistentGrowth,
+    PermanentGrowth,
+    MinorGrowth,
+    SlowedGrowth,
+    FleetingGrowth,
+    ProteinRich
 }

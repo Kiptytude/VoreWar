@@ -140,7 +140,7 @@ public class InfoPanel
     public static string RaceSingular(Unit unit)
     {
         if (unit.Race >= Race.Selicia)
-            return "";
+            return unit.Race.ToString();
         switch (unit.Race)
         {
             case Race.Cats:
@@ -306,8 +306,180 @@ public class InfoPanel
                 return "Terrorbird";
             case Race.Dratopyr:
                 return "Dratopyr";
+            case Race.FeralLions:
+                return "Lion";
         }
         return unit.Race.ToString(); //Updated this so a new race will return the race's name, instead of nothing
+    }
+
+        public static string RaceSingular(Empire empire)
+    {
+        if (empire?.ReplacedRace >= Race.Selicia)
+            return "";
+        switch (empire?.ReplacedRace)
+        {
+            case Race.Cats:
+                return "Cat";
+            case Race.Dogs:
+                return "Dog";
+            case Race.Foxes:
+                return "Fox";
+            case Race.Wolves:
+                return "Wolf";
+            case Race.Bunnies:
+                return "Bunny";
+            case Race.Lizards:
+                return "Lizard";
+            case Race.Slimes:
+                return "Slime";
+            case Race.Scylla:
+                return "Scylla";
+            case Race.Harpies:
+                return "Harpy";
+            case Race.Imps:
+                return "Imp";
+            case Race.Humans:
+                return "Human";
+            case Race.Crypters:
+                return "Crypter";
+            case Race.Lamia:
+                return "Lamia";
+            case Race.Kangaroos:
+                return "Kangaroo";
+            case Race.Taurus:
+                return "Cow";
+            case Race.Crux:
+                return "Crux";
+            case Race.Equines:
+                return "Equine";
+            case Race.Sergal:
+                return "Sergal";
+            case Race.Bees:
+                return "Bee";
+            case Race.Driders:
+                return "Drider";
+            case Race.Alraune:
+                return "Alraune";
+            case Race.Bats:
+                return "Bat";
+            case Race.Tigers:
+                return "Tiger";
+            case Race.Goblins:
+                return "Goblin";
+            case Race.Succubi:
+                return "Succubus";            
+            case Race.Alligators:
+                return "Alligator";
+            case Race.Puca:
+                return "Puca";
+            case Race.Hippos:
+                return "Hippo";
+            case Race.Vipers:
+                return "Viper";
+            case Race.Komodos:
+                return "Komodo";
+            case Race.Vagrants:
+                return "Vagrant";
+            case Race.Serpents:
+                return "Serpent";
+            case Race.Wyvern:
+                return "Wyvern";
+            case Race.YoungWyvern:
+                return "Young Wyvern";
+            case Race.Compy:
+                return "Compy";
+            case Race.FeralWolves:
+                return "Feral Wolf";
+            case Race.FeralSharks:
+                return "Shark";
+            case Race.DarkSwallower:
+                return "Dark Swallower";
+            case Race.Cake:
+                return "Cake";
+            case Race.Harvesters:
+                return "Harvester";
+            case Race.Collectors:
+                return "Collector";
+            case Race.Vision:
+                return "Vision";
+            case Race.Voilin:
+                return "Voilin";
+            case Race.FeralBats:
+                return "Bat";
+            case Race.Kobolds:
+                return "Kobolds";
+            case Race.FeralFrogs:
+                return "Feral Frog";
+            case Race.Dragon:
+                return "Dragon";
+            case Race.Dragonfly:
+                return "Dragonfly";
+            case Race.TwistedVines:
+                return "Plant";
+            case Race.Fairies:
+                return "Fairy";
+            case Race.DRACO:
+                return "D.R.A.C.O";
+            case Race.FeralAnts:
+                return "Ant";
+            case Race.Gryphons:
+                return "Gryphon";
+            case Race.SpitterSlugs:
+                return "Spitter Slug";
+            case Race.SpringSlugs:
+                return "Spring Slug";
+            case Race.RockSlugs:
+                return "Rock Slug";
+            case Race.CoralSlugs:
+                return "Coral Slug";
+            case Race.DewSprites:
+                return "Dew Sprite";
+            case Race.Panthers:
+                return "Panther";
+            case Race.Salamanders:
+                return "Salamander";
+            case Race.EasternDragon:
+                return "Eastern Dragon";
+            case Race.Merfolk:
+                return "Merfolk";
+            case Race.Mantis:
+                return "Mantis";
+            case Race.Avians:
+                return "Avian";
+            case Race.Catfish:
+                return "Catfish";
+            case Race.Raptor:
+                return "Raptor";
+            case Race.Ants:
+                return "Ant";
+            case Race.WarriorAnts:
+                return "Warrior Ant";
+            case Race.Frogs:
+                return "Frog";
+            case Race.Gazelle:
+                return "Gazelle";
+            case Race.Sharks:
+                return "Shark";
+            case Race.Earthworms:
+                return "Earthworm";
+            case Race.FeralLizards:
+                return "Feral Lizard";
+            case Race.Cockatrice:
+                return "Cockatrice";
+            case Race.Monitors:
+                return "Monitor";
+            case Race.Deer:
+                return "Deer";
+            case Race.Schiwardez:
+                return "Schiwardez";
+            case Race.Terrorbird:
+                return "Terrorbird";
+            case Race.Dratopyr:
+                return "Dratopyr";
+            case Race.FeralLions:
+                return "Lion";
+        }
+        return empire.ReplacedRace.ToString();
     }
 
     void BuildStatus(StringBuilder sb, Unit unit)

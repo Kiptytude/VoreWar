@@ -629,6 +629,12 @@ Note, due to the way this is set up, you have to restart the game client for cha
             case 246:
                 return @"Enables the player to use belly rub on enemies, is mostly a toggle so you don't do it by accident.
 Note, that units with the SeductiveTouch cheat trait will be able to rub enemies even when this is disabled";
+            case 247:
+                return @"Enables the Dratopyr monster packs";
+            case 248:
+                return @"Enables the Feral Lions monster packs";
+            case 249:
+                return @"How many times as strong an enemy army can be, before this monster ceases to view it as a target.";
             default:
                 return "";
         }

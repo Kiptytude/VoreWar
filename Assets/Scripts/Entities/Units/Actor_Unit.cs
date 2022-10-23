@@ -19,6 +19,15 @@ public class Actor_Unit
         AnalVore,
         Unbirth,
         FrogPouncing,
+        VoreSuccess,
+        VoreFail,
+        Digesting,
+        Absorbing,
+        Birthing,
+        Suckling,
+        Rubbing,
+        Suckled,
+        Rubbed,
         Injured,
         IdleAnimation,
 
@@ -27,6 +36,7 @@ public class Actor_Unit
     int animationStep = 4;
     float animationUpdateTime;
     DisplayMode mode;
+    List<KeyValuePair<DisplayMode, float>> modeQueue = new List<KeyValuePair<DisplayMode, float>>();
 
     private DisplayMode Mode
     {
@@ -362,6 +372,61 @@ public class Actor_Unit
 
     }
 
+    public void SetVoreSuccessMode()
+    {
+        DisplayMode displayMode = DisplayMode.VoreSuccess;
+        float time = 1f;
+        modeQueue.Add(new KeyValuePair<DisplayMode, float> (displayMode, time));
+    }
+
+    public void SetVoreFailMode()
+    {
+        DisplayMode displayMode = DisplayMode.VoreFail;
+        float time = 1f;
+        modeQueue.Add(new KeyValuePair<DisplayMode, float>(displayMode, time));
+    }
+
+    public void SetAbsorbtionMode()
+    {
+        Mode = DisplayMode.Absorbing;
+        animationUpdateTime = 2f;
+    }
+
+    public void SetDigestionMode()
+    {
+        Mode = DisplayMode.Digesting;
+        animationUpdateTime = 1.0f;
+    }
+
+    public void SetBirthMode()
+    {
+        Mode = DisplayMode.Birthing;
+        animationUpdateTime = 1.0f;
+    }
+    public void SetSuckleMode()
+    {
+        Mode = DisplayMode.Suckling;
+        animationUpdateTime = 1.0f;
+    }
+
+    public void SetSuckledMode()
+    {
+        Mode = DisplayMode.Suckled;
+        animationUpdateTime = 1.0f;
+    }
+
+    public void SetRubMode()
+    {
+        Mode = DisplayMode.Rubbing;
+        animationUpdateTime = 1.0f;
+    }
+
+    public void SetRubbedMode()
+    {
+        Mode = DisplayMode.Rubbed;
+        animationUpdateTime = 1.0f;
+    }
+
     public int CheckAnimationFrame()
     {
         if (Mode == DisplayMode.IdleAnimation)
@@ -579,6 +644,16 @@ public class Actor_Unit
     public bool IsTailVoring => Mode == DisplayMode.TailVore;
     public bool IsAnalVoring => Mode == DisplayMode.AnalVore;
     public bool IsPouncingFrog => Mode == DisplayMode.FrogPouncing;
+    public bool HasJustVored => Mode == DisplayMode.VoreSuccess;
+    public bool HasJustFailedToVore => Mode == DisplayMode.VoreFail;
+    public bool IsDigesting => Mode == DisplayMode.Digesting;
+    public bool IsAbsorbing => Mode == DisplayMode.Absorbing;
+    public bool IsBirthing => Mode == DisplayMode.Birthing;
+    public bool IsSuckling => Mode == DisplayMode.Suckling;
+    public bool IsBeingSuckled => Mode == DisplayMode.Suckled;
+    public bool IsRubbing => Mode == DisplayMode.Rubbing;
+    public bool IsBeingRubbed => Mode == DisplayMode.Rubbed;
+    
 
 
 
@@ -1460,16 +1535,22 @@ public class Actor_Unit
             case 0:
                 prey = target.PredatorComponent.GetDirectPrey().FirstOrDefault(p => p.Location.Equals(PreyLocation.stomach) || p.Location.Equals(PreyLocation.stomach2) || p.Location.Equals(PreyLocation.anal) || p.Location.Equals(PreyLocation.womb));
                 if (prey == null) break;
+                SetRubMode();
+                target.SetRubbedMode();
                 TacticalUtilities.Log.RegisterBellyRub(Unit, target.Unit, prey.Unit, 1f);
                 break;
             case 1:
                 prey = target.PredatorComponent.GetDirectPrey().FirstOrDefault(p => p.Location.Equals(PreyLocation.breasts) || p.Location.Equals(PreyLocation.leftBreast) || p.Location.Equals(PreyLocation.rightBreast));
                 if (prey == null) break;
+                SetRubMode();
+                target.SetRubbedMode();
                 TacticalUtilities.Log.RegisterBreastRub(Unit, target.Unit, prey.Unit, 1f);
                 break;
             case 2:
                 prey = target.PredatorComponent.GetDirectPrey().FirstOrDefault(p => p.Location.Equals(PreyLocation.balls));
                 if (prey == null) break;
+                SetRubMode();
+                target.SetRubbedMode();
                 TacticalUtilities.Log.RegisterBallMassage(Unit, target.Unit, prey.Unit, 1f);
                 break;
             default:
@@ -1486,6 +1567,8 @@ public class Actor_Unit
 
         if (Unit.HasTrait(Traits.SeductiveTouch) && target.Unit.Side != Unit.Side && target.TurnsSinceLastDamage > 1)
         {
+            bool seduce = false;
+            bool distract = false;
             for (int i = 0; i < (Unit.HasTrait(Traits.PleasurableTouch) ? 2 : 1); i++)
             {
                 float r = (float)State.Rand.NextDouble();
@@ -1493,33 +1576,43 @@ public class Actor_Unit
                 {
                     if (target.TurnsSinceLastParalysis <= 0 || target.Paralyzed)
                     {
-                        State.GameManager.TacticalMode.Log.RegisterMiscellaneous(
-                                LogUtilities.GetRandomStringFrom(
-                                $"<b>{target.Unit.Name}</b> decides to swap sides because <b>{Unit.Name}</b>'s rubs are just that sublime!",
-                                $"<b>{target.Unit.Name}</b> joins <b>{Unit.Name}</b>'s side to get more of those irresistable scritches later!",
-                                $"The way <b>{Unit.Name}</b> touches {LogUtilities.GPPHim(target.Unit)} moves something other than {LogUtilities.GPPHis(target.Unit)} prey-filled innards in <b>{target.Unit.Name}</b>, making {LogUtilities.GPPHim(target.Unit)} join {LogUtilities.GPPHim(Unit)}.",
-                                $"<b>{Unit.Name}</b> makes <b>{target.Unit.Name}</b> feel incredible, rearranging {LogUtilities.GPPHis(target.Unit)} priorities in this conflict...",
-                                $"<b>{target.Unit.Name}</b> slowly returns from a world of pure bliss and decides to stick with <b>{Unit.Name}</b> after all."
-                                )
-                            );
-
-                        State.GameManager.TacticalMode.SwitchAlignment(target);
+                        seduce = true;
                     }
                     else
                     {
-                        State.GameManager.TacticalMode.Log.RegisterMiscellaneous(
-                                LogUtilities.GetRandomStringFrom(
-                                $"<b>{target.Unit.Name}</b> is so enthralled by <b>{Unit.Name}</b>'s touch that {LogUtilities.GPPHe(target.Unit)} forgot what {LogUtilities.GPPHeWas(target.Unit)} gonna do.",
-                                $"Despite the battle, <b>{target.Unit.Name}</b> wants to spend {LogUtilities.GPPHis(target.Unit)} turn enjoying <b>{Unit.Name}</b>'s affection.",
-                                $"It looks like <b>{Unit.Name}</b>'s rubs take up 100% of <b>{target.Unit.Name}</b>'s attention right now.",
-                                $"<b>{target.Unit.Name}</b>'s aggression and tactics melt in <b>{Unit.Name}</b>'s hands",
-                                $"<b>{Unit.Name}</b>'s massage really hits the spot, causing <b>{target.Unit.Name}</b> to close {LogUtilities.GPPHis(target.Unit)} eyes and forget about the battle for a moment."
-                                )
-                        );
-                        target.Paralyzed = true;
+                        distract = true;
                     }
 
                 }
+            }
+            if (seduce)
+            {
+                var strings = new [] {$"<b>{target.Unit.Name}</b> decides to swap sides because <b>{Unit.Name}</b>'s rubs are just that sublime!",
+                        $"<b>{target.Unit.Name}</b> joins <b>{Unit.Name}</b>'s side to get more of those irresistable scritches later!",
+                        $"The way <b>{Unit.Name}</b> touches {LogUtilities.GPPHim(target.Unit)} moves something other than {LogUtilities.GPPHis(target.Unit)} prey-filled innards in <b>{target.Unit.Name}</b>, making {LogUtilities.GPPHim(target.Unit)} join {LogUtilities.GPPHim(Unit)}.",
+                        $"<b>{Unit.Name}</b> makes <b>{target.Unit.Name}</b> feel incredible, rearranging {LogUtilities.GPPHis(target.Unit)} priorities in this conflict...",
+                        $"<b>{target.Unit.Name}</b> slowly returns from a world of pure bliss and decides to stick with <b>{Unit.Name}</b> after all."};
+                if (target.Unit.Race == Race.Dogs)
+                strings.Append($"<b>{Unit.Name}</b>’s attentive massage of <b>{target.Unit.Name}</b>’s stuffed midsection convinces the voracious canine to make {LogUtilities.GPPHim(Unit)} {LogUtilities.GPPHis(target.Unit)} master no matter the cost.");
+                target.UnitSprite.DisplaySeduce();
+                State.GameManager.TacticalMode.Log.RegisterMiscellaneous(
+                        LogUtilities.GetRandomStringFrom(strings)
+                );
+                State.GameManager.TacticalMode.SwitchAlignment(target);
+            }
+            else if (distract)
+            {
+                target.UnitSprite.DisplayDistract();
+                State.GameManager.TacticalMode.Log.RegisterMiscellaneous(
+                        LogUtilities.GetRandomStringFrom(
+                        $"<b>{target.Unit.Name}</b> is so enthralled by <b>{Unit.Name}</b>'s touch that {LogUtilities.GPPHe(target.Unit)} forgot what {LogUtilities.GPPHeWas(target.Unit)} gonna do.",
+                        $"Despite the battle, <b>{target.Unit.Name}</b> wants to spend {LogUtilities.GPPHis(target.Unit)} turn enjoying <b>{Unit.Name}</b>'s affection.",
+                        $"It looks like <b>{Unit.Name}</b>'s rubs take up 100% of <b>{target.Unit.Name}</b>'s attention right now.",
+                        $"<b>{target.Unit.Name}</b>'s aggression and tactics melt in <b>{Unit.Name}</b>'s hands",
+                        $"<b>{Unit.Name}</b>'s massage really hits the spot, causing <b>{target.Unit.Name}</b> to close {LogUtilities.GPPHis(target.Unit)} eyes and forget about the battle for a moment."
+                        )
+                );
+                target.Paralyzed = true;
             }
         }
 
@@ -1675,16 +1768,33 @@ public class Actor_Unit
                     animationStep--;
                     if (animationStep == 0)
                     {
-                        animationUpdateTime = 0;
-                        Mode = 0;
+                        if (Mode > DisplayMode.Attacking && Mode < DisplayMode.VoreSuccess && modeQueue.Count > 0)
+                        {
+                            animationUpdateTime = modeQueue.FirstOrDefault().Value;
+                            Mode = modeQueue.FirstOrDefault().Key;
+                            modeQueue.RemoveAt(0);
+                        }
+                        else
+                        {
+                            animationUpdateTime = 0;
+                            Mode = 0;
+                        }
                     }
                 }
                 else
                 {
-                    animationUpdateTime = 0;
-                    if (Mode != DisplayMode.Injured)
+                    if (Mode >= DisplayMode.Attacking && Mode <= DisplayMode.FrogPouncing)
                         HasAttackedThisCombat = true;
-                    Mode = 0;
+                    if (modeQueue.Count > 0)
+                    {
+                        animationUpdateTime = modeQueue.FirstOrDefault().Value;
+                        Mode = modeQueue.FirstOrDefault().Key;
+                        modeQueue.RemoveAt(0);
+                    } else
+                    {
+                        animationUpdateTime = 0;
+                        Mode = 0;
+                    }
 
                 }
             }

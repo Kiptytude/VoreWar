@@ -90,6 +90,7 @@ static class Races
     static internal Schiwardez Schiwardez = new Schiwardez();
     static internal Terrorbird Terrorbird = new Terrorbird();
     static internal Dratopyr Dratopyr = new Dratopyr();
+    static internal FeralLions FeralLions = new FeralLions();
 
     static internal Selicia Selicia = new Selicia();
     static internal Vision Vision = new Vision();
@@ -302,6 +303,8 @@ static class Races
                 return Dratopyr;
             case Race.Erin:
                 return Erin;
+            case Race.FeralLions:
+                return FeralLions;
         }
         UnityEngine.Debug.LogWarning("Couldn't find race, substituting the Blank Slate");
         return BlankSlate;

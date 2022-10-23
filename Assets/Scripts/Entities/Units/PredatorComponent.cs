@@ -884,7 +884,9 @@ public class PredatorComponent
                 DigestOneUnit(preyUnit, preyDamage);
             if (unit.HasTrait(Traits.Growth))
             {
-                unit.BaseScale = unit.BaseScale + ((float)totalHeal / 200) * Mathf.Pow((1 / unit.GetScale()) * preyUnit.Unit.GetScale(), 2);
+                unit.BaseScale += ((float)totalHeal / preyUnit.Unit.MaxHealth * .2d) * CalculateGrowthValue(preyUnit);
+                if (unit.BaseScale > 5)
+                    unit.BaseScale = 5.0d;
             }
         }
         if (!(unit.Health < unit.MaxHealth))
@@ -898,6 +900,16 @@ public class PredatorComponent
             TacticalUtilities.Log.RegisterHeal(unit, new int[] { totalHeal, 0 });
         }
         UpdateFullness();
+    }
+
+    float CalculateGrowthValue(Prey preyUnit)
+    {
+        float preyMass = preyUnit.Unit.TraitBoosts.BulkMultiplier * State.RaceSettings.GetBodySize(preyUnit.Unit.Race);
+        float predMass = unit.TraitBoosts.BulkMultiplier * State.RaceSettings.GetBodySize(unit.Race);
+        float sizeDiff = (preyUnit.Unit.GetScale(2) * preyMass) / (unit.GetScale(2) * predMass);
+        float preyBoosts = (((preyUnit.Unit.TraitBoosts.Outgoing.Nutrition - 1) * .2f) + 1f) * preyUnit.Unit.TraitBoosts.Outgoing.GrowthRate;
+        float predBoosts = (((unit.TraitBoosts.Incoming.Nutrition - 1) * .2f) + 1f) * unit.TraitBoosts.Incoming.GrowthRate;
+        return sizeDiff * preyBoosts * predBoosts;
     }
 
     int CalculateDigestionDamage(Prey preyUnit)
@@ -953,6 +965,7 @@ public class PredatorComponent
                 preyUnit.Actor.Surrendered = false;
                 FreeUnit(preyUnit.Actor);
                 TacticalUtilities.Log.RegisterBirth(unit, preyUnit.Unit, 1f);
+                actor.SetBirthMode();
                 return 0;
             }
             if (Location(preyUnit) == PreyLocation.womb && preyUnit.Unit.CanBeConverted() && preyUnit.Unit.Type != UnitType.Summon && preyUnit.Unit.Type != UnitType.Leader && preyUnit.Unit.Type != UnitType.SpecialMercenary && preyUnit.Unit.HasTrait(Traits.Eternal) == false && preyUnit.Unit.SavedCopy == null && unit.HasTrait(Traits.PredConverter) && unit.HasTrait(Traits.PredRebirther) == false && unit.HasTrait(Traits.PredGusher) == false)
@@ -964,10 +977,12 @@ public class PredatorComponent
                 preyUnit.Actor.Surrendered = false;
                 FreeUnit(preyUnit.Actor);
                 TacticalUtilities.Log.RegisterBirth(unit, preyUnit.Unit, 1f);
+                actor.SetBirthMode();
                 return 0;
             }
             State.GameManager.TacticalMode.TacticalStats.RegisterDigestion(unit.Side);
             TacticalUtilities.Log.RegisterDigest(unit, preyUnit.Unit, Location(preyUnit));
+            actor.SetDigestionMode();
             if (State.GameManager.TacticalMode.turboMode == false && Config.DigestionSkulls)
                 GameObject.Instantiate(State.GameManager.TacticalMode.SkullPrefab, new Vector3(actor.Position.x + UnityEngine.Random.Range(-0.2F, 0.2F), actor.Position.y + 0.1F + UnityEngine.Random.Range(-0.1F, 0.1F)), new Quaternion());
             Actor_Unit existingPredator = actor;
@@ -1077,11 +1092,14 @@ public class PredatorComponent
             speedFactor = (float)Math.Sqrt(actor.BodySize() / preyUnit.Actor.BodySize());
 
             speedFactor *= unit.TraitBoosts.Outgoing.AbsorptionRate;
+            speedFactor *= preyUnit.Unit.TraitBoosts.Incoming.AbsorptionRate;
 
             if (speedFactor > 4f && speedFactor < 1000)
                 speedFactor = 4f;
 
             int healthReduction = (int)Math.Max(Math.Round(preyUnit.Unit.MaxHealth * speedFactor / 15), 1);
+            if (healthReduction >= preyUnit.Unit.MaxHealth + preyUnit.Unit.Health)
+                healthReduction = preyUnit.Unit.MaxHealth + preyUnit.Unit.Health + 1;
             preyUnit.Actor.SubtractHealth(healthReduction);
             totalHeal += Math.Max((int)(healthReduction / 2 * preyUnit.Unit.TraitBoosts.Outgoing.Nutrition * unit.TraitBoosts.Incoming.Nutrition), 1);
             var baseManaGain = healthReduction * (preyUnit.Unit.TraitBoosts.Outgoing.ManaAbsorbHundreths + unit.TraitBoosts.Incoming.ManaAbsorbHundreths);
@@ -1157,6 +1175,7 @@ public class PredatorComponent
                     }
                     FreeUnit(preyUnit.Actor);
                     TacticalUtilities.Log.RegisterBirth(unit, preyUnit.Unit, 1f);
+                    actor.SetBirthMode();
                     RemovePrey(preyUnit);
                     return 0;
                 }
@@ -1218,7 +1237,7 @@ public class PredatorComponent
                     }
                 }
                 AbsorptionEffect(preyUnit, Location(preyUnit));
-
+                actor.SetAbsorbtionMode();
                 CheckPredTraitAbsorption(preyUnit);
 
                 if (preyUnit.SubPrey?.Count() > 0) //Catches any dead prey that weren't already properly moved
@@ -1529,7 +1548,7 @@ public class PredatorComponent
             {
                 State.GameManager.SoundManager.PlayAbsorb(location, actor);
             }
-            if (Config.FartOnAbsorb && State.Rand.NextDouble() < Config.FartFraction)
+            if (Config.FartOnAbsorb && (location == PreyLocation.stomach || location == PreyLocation.stomach2 || location == PreyLocation.anal) && State.Rand.NextDouble() < Config.FartFraction)
             {
                 State.GameManager.SoundManager.PlayFart(actor);
             }
@@ -2023,6 +2042,7 @@ public class PredatorComponent
             if (r < v)
             {
                 PerformConsume(target, action, preyType, v, delay);
+                actor.SetVoreSuccessMode();
                 if (unit.HasTrait(Traits.Tenacious))
                     unit.RemoveTenacious();
                 if (unit.HasTrait(Traits.FearsomeAppetite))
@@ -2035,6 +2055,7 @@ public class PredatorComponent
             }
             else
             {
+                actor.SetVoreFailMode();
                 if (actor.Unit.HasTrait(Traits.Biter))
                 {
                     int oldMP = actor.Movement;
@@ -2400,6 +2421,11 @@ public class PredatorComponent
                     rightHeal += CalcFeedValue(preyUnit, actor);
                 rightExp += CalcFeedBonus(preyUnit);
             }
+            if (leftHeal + rightHeal > 0)
+            {
+                target.SetSuckledMode();
+                actor.SetSuckleMode();
+            }
             if (leftHeal > rightHeal)
                 return new int[] { leftHeal, leftExp, 1 };
             else
@@ -2415,6 +2441,11 @@ public class PredatorComponent
                     heal += CalcFeedValue(preyUnit, actor);
                 exp += CalcFeedBonus(preyUnit);
             }
+            if (heal > 0)
+            {
+                target.SetSuckledMode();
+                actor.SetSuckleMode();
+            }
             return new int[] { heal, exp, 0 };
         }
     }
@@ -2428,6 +2459,10 @@ public class PredatorComponent
             if (preyUnit.Unit.IsDead)
                 heal += CalcFeedValue(preyUnit, actor);
             exp += CalcFeedBonus(preyUnit);
+        }
+        if (heal > 0) { 
+            target.SetSuckledMode();
+            actor.SetSuckleMode();
         }
         return new int[] { heal, exp, 3 };
     }
@@ -2588,10 +2623,12 @@ public class PredatorComponent
         int leftExp = 0;
         int rightExp = 0;
         int targetMaxHeal = target.Unit.MaxHealth - target.Unit.Health;
+        var deadPrey = new List<Prey>();
         foreach (Prey preyUnit in actor.PredatorComponent.breasts.ToList())
         {
             if (preyUnit.Unit.IsDead)
             {
+                deadPrey.Add(preyUnit);
                 standardHeal += CalcFeedValue(preyUnit, target); ;
                 standardExp += CalcFeedBonus(preyUnit);
                 DigestOneUnit(preyUnit, CalculateDigestionDamage(preyUnit) / (2 + (actor.Unit.HasTrait(Traits.Honeymaker) ? 1 : 0)));
@@ -2601,6 +2638,7 @@ public class PredatorComponent
         {
             if (preyUnit.Unit.IsDead)
             {
+                deadPrey.Add(preyUnit);
                 leftHeal += CalcFeedValue(preyUnit, target); ;
                 leftExp += CalcFeedBonus(preyUnit);
                 DigestOneUnit(preyUnit, CalculateDigestionDamage(preyUnit) / (2 + (actor.Unit.HasTrait(Traits.Honeymaker) ? 1 : 0)));
@@ -2610,6 +2648,7 @@ public class PredatorComponent
         {
             if (preyUnit.Unit.IsDead)
             {
+                deadPrey.Add(preyUnit);
                 rightHeal += CalcFeedValue(preyUnit, target); ;
                 rightExp += CalcFeedBonus(preyUnit);
                 DigestOneUnit(preyUnit, CalculateDigestionDamage(preyUnit) / (2 + (actor.Unit.HasTrait(Traits.Honeymaker) ? 1 : 0)));
@@ -2617,7 +2656,7 @@ public class PredatorComponent
         }
         int totalHeal = baseHeal + Math.Max(standardHeal, Math.Max(leftHeal, rightHeal));
 
-        TacticalUtilities.Log.RegisterFeed(unit, target.Unit, 1f);
+        TacticalUtilities.Log.RegisterFeed(unit, target.Unit, deadPrey[0].Unit, 1f);
         return new int[] { totalHeal, GetSuckleBonus(Math.Max(standardExp, Math.Max(leftExp, rightExp)), Math.Max(standardHeal, Math.Max(leftHeal, rightHeal)), targetMaxHeal, target) };
     }
     private int[] CumFeed(Actor_Unit target)
@@ -2626,17 +2665,20 @@ public class PredatorComponent
         int cumHeal = 0;
         int expBonus = 0;
         int targetMaxHeal = target.Unit.MaxHealth - target.Unit.Health;
+        var deadPrey = new List<Prey>();
+
         foreach (Prey preyUnit in actor.PredatorComponent.balls)
         {
             if (preyUnit.Unit.IsDead)
             {
+                deadPrey.Add(preyUnit);
                 cumHeal += CalcFeedValue(preyUnit, target);
                 expBonus += CalcFeedBonus(preyUnit);
             }
         }
         int totalHeal = baseHeal + cumHeal;
 
-        TacticalUtilities.Log.RegisterCumFeed(unit, target.Unit, 1f);
+        TacticalUtilities.Log.RegisterCumFeed(unit, target.Unit, deadPrey[0].Unit, 1f);
         return new int[] { totalHeal, GetSuckleBonus(expBonus, cumHeal, targetMaxHeal, target) };
     }
 

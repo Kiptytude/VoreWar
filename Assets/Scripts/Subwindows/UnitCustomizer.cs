@@ -407,6 +407,12 @@ public class UnitCustomizer
                 buttons[(int)ButtonTypes.ClothingExtraType2].Label.text = "Stockings";
                 buttons[(int)ButtonTypes.ClothingExtraType3].Label.text = "Shoes";
                 break;
+
+            case Race.FeralLions:
+                buttons[(int)ButtonTypes.Skintone].Label.text = "Fur Color";
+                buttons[(int)ButtonTypes.HairStyle].Label.text = "Mane Style";
+                buttons[(int)ButtonTypes.HairColor].Label.text = "Mane Color";
+                break;
         }
     }
 

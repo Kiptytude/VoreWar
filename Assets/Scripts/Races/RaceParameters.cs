@@ -79,6 +79,7 @@ static class RaceParameters
     static readonly RaceTraits Raptor;
     static readonly RaceTraits WarriorAnts;
     static readonly RaceTraits Gazelle;
+    static readonly RaceTraits FeralLions;
     static readonly RaceTraits Earthworms;
     static readonly RaceTraits FeralLizards;
     static readonly RaceTraits Monitors;
@@ -207,6 +208,8 @@ static class RaceParameters
                 return Sharks;
             case Race.FeralWolves:
                 return FeralWolves;
+            case Race.FeralLions:
+                return FeralLions;
             case Race.Alligators:
                 return Alligators;
             case Race.Taurus:
@@ -1224,7 +1227,6 @@ static class RaceParameters
                 Traits.PackStrength,
         },
             RaceDescription = "Natives of this realm, the wolves were more than happy for a chance to welcome the newcomers to their bellies. While likely related to their bipedal cousins, the ferals only consider them as familiar smelling food.",
-
         };
 
         BlackSwallowers = new RaceTraits()
@@ -1614,6 +1616,37 @@ static class RaceParameters
                 Traits.Pathfinder,
         },
             RaceDescription = ""
+        };
+
+        FeralLions = new RaceTraits()
+        {
+            BodySize = 20,
+            StomachSize = 20,
+            HasTail = true,
+            FavoredStat = Stat.Voracity,
+            AllowedVoreTypes = new List<VoreType> { VoreType.Oral, VoreType.Anal, VoreType.Unbirth, VoreType.CockVore },
+            ExpMultiplier = 1.75f,
+            PowerAdjustment = 3f,
+            RaceStats = new RaceStats()
+            {
+                Strength = new RaceStats.StatRange(14, 20),
+                Dexterity = new RaceStats.StatRange(8, 16),
+                Endurance = new RaceStats.StatRange(16, 24),
+                Mind = new RaceStats.StatRange(6, 12),
+                Will = new RaceStats.StatRange(12, 18),
+                Agility = new RaceStats.StatRange(14, 20),
+                Voracity = new RaceStats.StatRange(18, 24),
+                Stomach = new RaceStats.StatRange(18, 24),
+            },
+            RacialTraits = new List<Traits>()
+        {
+                Traits.Biter,
+                Traits.Pounce,
+                Traits.Ravenous,
+                Traits.TasteForBlood,
+                Traits.PleasurableTouch,
+        },
+            RaceDescription = $"They were probably following a migration of gazelle before they came upon this land.\nMuch older texts claim they are the children of Raha, another world's godess of pleasure. She spread her blessing to this realm, and in exchange, these kitties are feeling right at home digesting the natives."
         };
 
         SpitterSlugs = new RaceTraits()
@@ -2179,7 +2212,7 @@ static class RaceParameters
                 Traits.Intimidating,
 
             },
-            RaceDescription = "A Xeno-Spinosaurid about the size of a small horse or large dog. They eat about half or even double its body weight at minimum a day, but have been known to eat things larger than themselves. Because of their huge appetite, their digestive tract is mostly stomach, what they can't digest it regurgitates as an owl-like pellet",
+            RaceDescription = "A Xeno-Spinosaurid about the size of a small horse or large dog. They eat about half or even double their body weight at minimum a day, but have been known to eat things larger than themselves. Because of their huge appetite, their digestive tract is mostly stomach, what they can't digest they regurgitate as an owl-like pellet",
 
         };
 
