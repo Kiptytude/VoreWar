@@ -99,6 +99,7 @@ public class TacticalMode : SceneBase
     public GameObject ArrowPrefab;
     public GameObject HitEffectPrefab;
     public GameObject SkullPrefab;
+    public GameObject HandPrefab;
 
     public GameObject SwipeEffectPrefab;
 

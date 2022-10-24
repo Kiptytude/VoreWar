@@ -307,8 +307,7 @@ public class HedonistTacticalAI : ITacticalAI
         int thirdMovement = actor.MaxMovement() / 3;
         if (spareMp >= thirdMovement)
         {
-            if(RunBellyRub(actor, spareMp))
-                State.GameManager.TacticalMode.AITimer = Config.TacticalVoreDelay;
+            RunBellyRub(actor, spareMp);
         }
 
 
@@ -346,8 +345,7 @@ public class HedonistTacticalAI : ITacticalAI
             RunMelee(actor);
         if (foundPath || didAction) return;
 
-        if(RunBellyRub(actor, actor.Movement))
-            State.GameManager.TacticalMode.AITimer = Config.TacticalVoreDelay;
+        RunBellyRub(actor, actor.Movement);
         //Search for surrendered targets outside of vore range
         //If no path to any targets, will sit out its turn
         RunPred(actor, true);

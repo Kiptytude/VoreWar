@@ -43,7 +43,7 @@ Low values create units that rapidly spike in power, high values generate a more
 Higher values slow down the rate at which super armies form, by slowing down leveling as you level";
             case 12:
                 return @"Whether units will regurgitate a friendly unit that somehow ends up in their stomach
-Happens if you eat an enemy that's eaten one of your troops, and your unit breaks escapes from the enemy's stomach
+Happens if you eat an enemy that's eaten one of your troops, and your unit escapes from the enemy's stomach
 Note that surrendered units ignore this setting";
             case 13:
                 return "How much gold all the empires start with.  They also gain their normal income for the first turn in addition to this value";

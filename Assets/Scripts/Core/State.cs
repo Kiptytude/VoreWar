@@ -9,7 +9,7 @@ using UnityEngine;
 public static class State
 {
     static int saveErrors = 0;
-    public const string Version = "39";
+    public const string Version = "40";
     public static World World;
     public static Rand Rand = new Rand();
     public static NameGenerator NameGen;
@@ -73,6 +73,10 @@ public static class State
                 File.Copy($"{Application.streamingAssetsPath}{Path.DirectorySeparatorChar}events.txt", $"{StorageDirectory}events.txt");
             if (File.Exists($"{StorageDirectory}armyNames.txt") == false)
                 File.Copy($"{Application.streamingAssetsPath}{Path.DirectorySeparatorChar}armyNames.txt", $"{StorageDirectory}armyNames.txt");
+            if (File.Exists($"{StorageDirectory}femaleFeralLions.txt") == false)
+                File.Copy($"{Application.streamingAssetsPath}{Path.DirectorySeparatorChar}femaleFeralLions.txt", $"{StorageDirectory}femaleFeralLions.txt");
+            if (File.Exists($"{StorageDirectory}maleFeralLions.txt") == false)
+                File.Copy($"{Application.streamingAssetsPath}{Path.DirectorySeparatorChar}maleFeralLions.txt", $"{StorageDirectory}maleFeralLions.txt");
         }
         catch
         {

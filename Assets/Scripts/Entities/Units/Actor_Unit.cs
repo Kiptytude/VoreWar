@@ -1559,6 +1559,12 @@ public class Actor_Unit
             default:
                 break;
         }
+         if (!State.GameManager.TacticalMode.turboMode)
+        {
+            GameObject.Instantiate(State.GameManager.TacticalMode.HandPrefab, new Vector3(target.Position.x + UnityEngine.Random.Range(-0.2F, 0.2F), target.Position.y + 0.1F + UnityEngine.Random.Range(-0.1F, 0.1F)), new Quaternion());
+            State.GameManager.TacticalMode.AITimer = Config.TacticalVoreDelay;
+
+        }
         target.DigestCheck();
         if (Unit.HasTrait(Traits.PleasurableTouch))
             target.DigestCheck();
