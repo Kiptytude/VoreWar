@@ -1108,7 +1108,7 @@ static class StoredLogTexts
             new EventString((i) => $"<b>{i.Unit.Name}</b> decides to pet {GPPHimself(i.Unit)}, accidentally squishing out <b>{ApostrophizeWithOrWithoutS(i.Prey.Name)}</b> last breathable air as a meaty burp!",
             priority: 11, conditional: s => s.Target == s.Unit && !PreyDead(s) && CanBurp(s), actorRace: Race.FeralLions),
             new EventString((i) => $"<b>{i.Unit.Name}</b> decides to pet {GPPHis(i.Unit)} abdomen, squishing out what might have been <b>{ApostrophizeWithOrWithoutS(i.Prey.Name)}</b> dying breath as a juicy fart.",
-            priority: 11, conditional: s => InStomach(s) && s.Target == s.Unit && PreyDead(s) && Farts(s), actorRace: Race.FeralLions),
+            priority: 11, conditional: s => InStomach(s) && !InWomb(s) && s.Target == s.Unit && PreyDead(s) && Farts(s), actorRace: Race.FeralLions),
             new EventString((i) => $"<b>{i.Unit.Name}</b> spiritedly flops on {GPPHis(i.Unit)} back to give {GPPHis(i.Unit)} {PreyLocStrings.ToSyn(i.preyLocation)} some paw attention, kneading the newly dissolved <b>{i.Prey.Name}</b>-mass deeper into {GPPHimself(i.Unit)}",
             priority: 11, conditional: s => s.Target == s.Unit && PreyDead(s), actorRace: Race.FeralLions),
             new EventString((i) => $"<b>{i.Unit.Name}</b> relaxedly takes on a loaf position, squishing {GPPHis(i.Unit)} food and willing it to churn away faster.",
