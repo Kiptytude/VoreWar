@@ -1,0 +1,43 @@
+fileFormatVersion: 2
+guid: 8859c8950a093674d9aeef42c39a0d09
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - UI: {instanceID: 0}
+  - TileDictionary: {instanceID: 0}
+  - Tilemap: {instanceID: 0}
+  - UnderTilemap: {instanceID: 0}
+  - FrontTilemap: {instanceID: 0}
+  - FrontColorTilemap: {instanceID: 0}
+  - EffectTileMap: {instanceID: 0}
+  - FrontSpriteTilemap: {instanceID: 0}
+  - Pyre: {instanceID: 0}
+  - Ice: {instanceID: 0}
+  - TerrainFolder: {instanceID: 0}
+  - MovementGrid: {instanceID: 0}
+  - SelectionBox: {instanceID: 0}
+  - ActorFolder: {instanceID: 0}
+  - StatusUI: {instanceID: 0}
+  - InfoUI: {instanceID: 0}
+  - SkipUI: {instanceID: 0}
+  - UnitPickerUI: {instanceID: 0}
+  - CommandsUI: {instanceID: 0}
+  - EnemyTurnText: {instanceID: 0}
+  - AutoAdvanceText: {instanceID: 0}
+  - PausedText: {instanceID: 0}
+  - BattleReviewText: {instanceID: 0}
+  - ArrowPrefab: {instanceID: 0}
+  - HitEffectPrefab: {instanceID: 0}
+  - SkullPrefab: {instanceID: 0}
+  - HandPrefab: {fileID: 1409011130989796, guid: 2324a038cfa9b7749aead2769775e55d,
+      type: 3}
+  - SwipeEffectPrefab: {instanceID: 0}
+  - SpellHelperText: {instanceID: 0}
+  - LogUI: {instanceID: 0}
+  - RightClickMenu: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
