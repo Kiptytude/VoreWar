@@ -474,7 +474,7 @@ static class TacticalUtilities
         {
             UnityEngine.Object.Destroy(UnitPickerUI.ActorFolder.transform.GetChild(i).gameObject);
         }
-        Actor_Unit[] list = Units.Where(s => s.Unit.Side == side && s.Unit.IsDead).OrderByDescending(s => s.Unit.Experience).ToArray();
+        Actor_Unit[] list = Units.Where(s => s.Unit.Side == side && s.Unit.IsDead && s.Unit.Type != UnitType.Summon).OrderByDescending(s => s.Unit.Experience).ToArray();
         foreach (Actor_Unit actor in list)
         {
             GameObject obj = UnityEngine.Object.Instantiate(UnitPickerUI.HiringUnitPanel, UnitPickerUI.ActorFolder);

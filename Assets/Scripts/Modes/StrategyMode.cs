@@ -110,6 +110,7 @@ public class StrategyMode : SceneBase
     internal FogSystem FogSystem;
 
     List<GameObject> currentVillageTiles;
+    List<GameObject> currentClaimableTiles;
 
     public Tilemap[] TilemapLayers;
     public Tilemap FogOfWar;
@@ -559,7 +560,7 @@ public class StrategyMode : SceneBase
             Config.World.Toggles["FogOfWar"] = false;
             return;
         }
-        FogSystem.UpdateFog(LastHumanEmpire, State.World.Villages, StrategicUtilities.GetAllArmies(), currentVillageTiles);
+        FogSystem.UpdateFog(LastHumanEmpire, State.World.Villages, StrategicUtilities.GetAllArmies(), currentVillageTiles, currentClaimableTiles);
     }
 
 
@@ -665,6 +666,7 @@ public class StrategyMode : SceneBase
         ClearVillages();
         Village[] villages = State.World.Villages;
         currentVillageTiles = new List<GameObject>();
+        currentClaimableTiles = new List<GameObject>();
         int highestVillageSprite = VillageSprites.Count() - 1;
         for (int i = 0; i < villages.Length; i++)
         {
@@ -718,7 +720,11 @@ public class StrategyMode : SceneBase
             villShieldInner.GetComponent<SpriteRenderer>().sprite = Sprites[10];
             villShieldInner.GetComponent<SpriteRenderer>().sortingOrder = 2;
             villShieldInner.GetComponent<SpriteRenderer>().color = claimable.Owner?.UnityColor ?? Color.clear;
-        }
+            currentClaimableTiles.Add(vill);
+            currentClaimableTiles.Add(villColored);
+            currentClaimableTiles.Add(villShield);
+            currentClaimableTiles.Add(villShieldInner);
+    }
 
 
         if (Config.FogOfWar)
