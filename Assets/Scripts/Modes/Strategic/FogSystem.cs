@@ -19,7 +19,7 @@ class FogSystem
         FogOfWar = fogOfWar;
     }
 
-    internal void UpdateFog(Empire playerEmpire, Village[] villages, Army[] armies, List<GameObject> currentVillageTiles)
+    internal void UpdateFog(Empire playerEmpire, Village[] villages, Army[] armies, List<GameObject> currentVillageTiles, List<GameObject> currentClaimableTiles)
     {
         FogOfWar.ClearAllTiles();
         if (State.World.Relations == null)
@@ -90,6 +90,23 @@ class FogSystem
                     currentVillageTiles[4 * i + 1].GetComponent<SpriteRenderer>().enabled = true;
                     currentVillageTiles[4 * i + 2].GetComponent<SpriteRenderer>().enabled = true;
                     currentVillageTiles[4 * i + 3].GetComponent<SpriteRenderer>().enabled = true;
+                }
+            }
+            for (int i = 0; i < State.World.Claimables.Length; i++)
+            {
+                if (FoggedTile[State.World.Claimables[i].Position.x, State.World.Claimables[i].Position.y])
+                {
+                    currentClaimableTiles[4 * i].GetComponent<SpriteRenderer>().enabled = false;
+                    currentClaimableTiles[4 * i + 1].GetComponent<SpriteRenderer>().enabled = false;
+                    currentClaimableTiles[4 * i + 2].GetComponent<SpriteRenderer>().enabled = false;
+                    currentClaimableTiles[4 * i + 3].GetComponent<SpriteRenderer>().enabled = false;
+                }
+                else
+                {
+                    currentClaimableTiles[4 * i].GetComponent<SpriteRenderer>().enabled = true;
+                    currentClaimableTiles[4 * i + 1].GetComponent<SpriteRenderer>().enabled = true;
+                    currentClaimableTiles[4 * i + 2].GetComponent<SpriteRenderer>().enabled = true;
+                    currentClaimableTiles[4 * i + 3].GetComponent<SpriteRenderer>().enabled = true;
                 }
             }
         }
