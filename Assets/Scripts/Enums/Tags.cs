@@ -233,6 +233,7 @@ public enum Traits
     AdaptiveTactics,
     KillerKnowledge,
     InfiniteAssimilation,
+    SharedAssimilation,
     DigestionConversion,
     DigestionRebirth,
     EssenceAbsorption,

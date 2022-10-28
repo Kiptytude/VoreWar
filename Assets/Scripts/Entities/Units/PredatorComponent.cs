@@ -1396,14 +1396,22 @@ public class PredatorComponent
     void CheckPredTraitAbsorption(Prey preyUnit)
     {
         bool updated = false;
+        bool raceUpdated = true;
         if (unit.HasTrait(Traits.InfiniteAssimilation))
         {
             var possibleTraits = preyUnit.Unit.GetTraits.Where(s => unit.GetTraits.Contains(s) == false && State.AssimilateList.CanGet(s)).ToArray();
 
             if (possibleTraits.Any())
             {
-                unit.AddPermanentTrait(possibleTraits[State.Rand.Next(possibleTraits.Length)]);
-                updated = true;
+                if (unit.HasTrait(Traits.SharedAssimilation))
+                {
+                    RaceSettingsItem item = State.RaceSettings.Get(unit.Race);
+                    item.RaceTraits.Add(possibleTraits[State.Rand.Next(possibleTraits.Length)]);
+                    raceUpdated = true;
+                } else { 
+                 unit.AddPermanentTrait(possibleTraits[State.Rand.Next(possibleTraits.Length)]);
+                 updated = true;
+                }
             }
         }
         else if (unit.HasTrait(Traits.Assimilate))
@@ -1414,8 +1422,17 @@ public class PredatorComponent
 
                 if (possibleTraits.Any())
                 {
-                    unit.AddPermanentTrait(possibleTraits[State.Rand.Next(possibleTraits.Length)]);
-                    updated = true;
+                    if (unit.HasTrait(Traits.SharedAssimilation))
+                    {
+                        RaceSettingsItem item = State.RaceSettings.Get(unit.Race);
+                        item.RaceTraits.Add(possibleTraits[State.Rand.Next(possibleTraits.Length)]);
+                        raceUpdated = true;
+                    }
+                    else
+                    {
+                        unit.AddPermanentTrait(possibleTraits[State.Rand.Next(possibleTraits.Length)]);
+                        updated = true;
+                    }
                 }
             }
             else if (unit.BaseTraitsCount == 5)
@@ -1425,8 +1442,17 @@ public class PredatorComponent
                 if (possibleTraits.Any())
                 {
                     unit.RemoveTrait(Traits.Assimilate);
-                    unit.AddPermanentTrait(possibleTraits[State.Rand.Next(possibleTraits.Length)]);
-                    updated = true;
+                    if (unit.HasTrait(Traits.SharedAssimilation))
+                    {
+                        RaceSettingsItem item = State.RaceSettings.Get(unit.Race);
+                        item.RaceTraits.Add(possibleTraits[State.Rand.Next(possibleTraits.Length)]);
+                        raceUpdated = true;
+                    }
+                    else
+                    {
+                        unit.AddPermanentTrait(possibleTraits[State.Rand.Next(possibleTraits.Length)]);
+                        updated = true;
+                    }
                 }
             }
         }
@@ -1444,6 +1470,42 @@ public class PredatorComponent
         {
             unit.ReloadTraits();
             unit.InitializeTraits();
+        }
+        if (raceUpdated)
+        {
+            if (State.World.Villages != null)
+            {
+                var units = StrategicUtilities.GetAllUnits();
+                foreach (Unit unit in units)
+                {
+                    unit.ReloadTraits();
+                }
+            }
+            else
+            {
+                foreach (Actor_Unit actor in TacticalUtilities.Units)
+                {
+                    actor.Unit.ReloadTraits();
+                    actor.Unit.InitializeTraits();
+                    actor.Unit.UpdateSpells();
+                }
+            }
+            if (State.World.AllActiveEmpires != null)
+            {
+                foreach (Empire emp in State.World.AllActiveEmpires)
+                {
+                    if (emp.Side > 300)
+                        continue;
+                    var raceFlags = State.RaceSettings.GetRaceTraits(emp.ReplacedRace);
+                    if (raceFlags != null)
+                    {
+                        if (raceFlags.Contains(Traits.Prey))
+                            emp.CanVore = false;
+                        else
+                            emp.CanVore = true;
+                    }
+                }
+            }
         }
     }
 
