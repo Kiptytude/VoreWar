@@ -30,6 +30,9 @@ public enum Traits
     PackWill,
     PackMind,
     PackStomach,
+
+    /// <summary> combines all the other pack traits into one </summary>
+    PackTactics,
     /// <summary>Unit is more likely to escape from vore</summary>
     EscapeArtist = 20,
     /// <summary>Unit digests prey faster</summary>
@@ -157,7 +160,8 @@ public enum Traits
     Bulky,
     PollenProjector,
     Webber,
-    Loyal,
+    Camaraderie,
+    RaceLoyal,
     SlowMovement,
     VerySlowMovement,
     Toxic,
@@ -233,7 +237,7 @@ public enum Traits
     AdaptiveTactics,
     KillerKnowledge,
     InfiniteAssimilation,
-    SharedAssimilation,
+    SynchronizedEvolution,
     DigestionConversion,
     DigestionRebirth,
     EssenceAbsorption,
@@ -252,5 +256,5 @@ public enum Traits
     MinorGrowth,
     SlowedGrowth,
     FleetingGrowth,
-    ProteinRich
+    ProteinRich,
 }

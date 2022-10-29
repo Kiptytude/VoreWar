@@ -424,8 +424,10 @@ public class HoveringTooltip : MonoBehaviour
                 return "Allows using the pollen cloud ability once per battle, which attempts to inflict a few status effects in a 3x3 area for a small mana cost.  This trait also makes the unit immune to most of the statuses from this ability.";
             case Traits.Webber:
                 return "Allows using the web ability once per battle, which attempts to inflict the webbed status for 3 turns, which lowers AP to 1, and reduces stats.";
-            case Traits.Loyal:
+            case Traits.Camaraderie:
                 return "Prevents the unit from defecting to rejoin its race if that option is enabled.";
+            case Traits.RaceLoyal:
+                return "Unit will defect to rejoin its race at every opportunity if that option is enabled.";
             case Traits.WillingRace:
                 return "Gives the whole race the willing prey spell effect permanently, which makes them easier to eat, and changes some of the dialogue.";
             case Traits.InfiniteAssimilation:
@@ -480,7 +482,7 @@ public class HoveringTooltip : MonoBehaviour
                 return "An accessory trait to Growth that makes growth gained permanent.  (Does nothing without the Growth trait)\n(Cheat Trait)";
             case Traits.Berserk:
                 return "If the unit is reduced below half health by an attack, will go berserk, greating increasing its strength and voracity for 3 turns.\nCan only occur once per battle.";
-            case Traits.SharedAssimilation:
+            case Traits.SynchronizedEvolution:
                 return "Any trait this unit assimilates is received by all members of their race. (requires Assimilate or InfiniteAssimilation)\n(Cheat Trait)";
         }
         return "<b>This trait needs a tooltip!</b>";

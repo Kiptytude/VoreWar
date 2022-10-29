@@ -121,6 +121,7 @@ static class TraitList
         [Traits.PackMind] = new PackStat(Stat.Mind),
         [Traits.PackVoracity] = new PackStat(Stat.Voracity),
         [Traits.PackStomach] = new PackStat(Stat.Stomach),
+        [Traits.PackTactics] = new PackTactics(),
         [Traits.Paralyzer] = new Paralyzer(),
         [Traits.BoggingSlime] = new BoggingSlime(),
         [Traits.Vampirism] = new Vampirism(),
@@ -270,6 +271,24 @@ internal class PackStat : Trait, IStatBoost
     {
         int ret = 0;
         if (stat == usedStat)
+        {
+            ret = Math.Min(unit.NearbyFriendlies, 2) * (1 + unit.Level) / 2;
+        }
+        return ret;
+    }
+}
+
+internal class PackTactics : Trait, IStatBoost
+{
+    public PackTactics()
+    {
+        Description = $"A combination of all the other pack stat traits";
+    }
+
+    public int StatBoost(Unit unit, Stat stat)
+    {
+        int ret = 0;
+        if (stat != Stat.Endurance && stat != Stat.Leadership)
         {
             ret = Math.Min(unit.NearbyFriendlies, 2) * (1 + unit.Level) / 2;
         }

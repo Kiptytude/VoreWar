@@ -1403,7 +1403,7 @@ public class PredatorComponent
 
             if (possibleTraits.Any())
             {
-                if (unit.HasTrait(Traits.SharedAssimilation))
+                if (unit.HasTrait(Traits.SynchronizedEvolution))
                 {
                     RaceSettingsItem item = State.RaceSettings.Get(unit.Race);
                     item.RaceTraits.Add(possibleTraits[State.Rand.Next(possibleTraits.Length)]);
@@ -1422,7 +1422,7 @@ public class PredatorComponent
 
                 if (possibleTraits.Any())
                 {
-                    if (unit.HasTrait(Traits.SharedAssimilation))
+                    if (unit.HasTrait(Traits.SynchronizedEvolution))
                     {
                         RaceSettingsItem item = State.RaceSettings.Get(unit.Race);
                         item.RaceTraits.Add(possibleTraits[State.Rand.Next(possibleTraits.Length)]);
@@ -1442,7 +1442,7 @@ public class PredatorComponent
                 if (possibleTraits.Any())
                 {
                     unit.RemoveTrait(Traits.Assimilate);
-                    if (unit.HasTrait(Traits.SharedAssimilation))
+                    if (unit.HasTrait(Traits.SynchronizedEvolution))
                     {
                         RaceSettingsItem item = State.RaceSettings.Get(unit.Race);
                         item.RaceTraits.Add(possibleTraits[State.Rand.Next(possibleTraits.Length)]);
