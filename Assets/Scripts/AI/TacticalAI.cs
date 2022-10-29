@@ -146,7 +146,7 @@ public class TacticalAI : ITacticalAI
                     retreating = false;
                 }
             }
-            else if (retreatPlan.acceptableLossRatio > 0.0001) // Made because it actually considers how the battle is developing instead of just a snapshot metric
+            else if (retreatPlan.acceptableLossRatio > 0.0001) // Made because it somewhat considers how the battle is developing instead of just a snapshot metric
             {
                 bool aIisAttacker = actors[0].Unit.Side == AISide;
 
@@ -173,7 +173,7 @@ public class TacticalAI : ITacticalAI
 
                 // This fails to accurately consider units that already started with less than full health, but I find that worth it in exchange for recognizing the peril in having many half digested and wounded units
                 // Also viable retreat plan for 1 man armies and somesuch 
-                // (Would go great with dragon monster packs, now that I think about it) (((they lowkey need their own AI where the kobolds serve and rub them and the dragons sometimes devour them for heals O?O)))
+                // (Would go great with dragon monster packs, now that I think about it) (((they lowkey need their own AI where the kobolds serve and rub them and the dragons sometimes devour them for heals OwO)))
                 if (aIisAttacker)
                 {
                     enemyLoss = State.GameManager.TacticalMode.StartingDefenderPower - enemyPower * enemies.Count;
@@ -280,7 +280,7 @@ public class TacticalAI : ITacticalAI
         didAction = false; // Very important fix: surrounded retreaters sometimes just skipped doing attacks because this was never set to false in or before "fightwithoutmoving"
 
         path = null;
-        if (retreating && actor.Unit.Type != UnitType.Summon && actor.Unit.Type != UnitType.SpecialMercenary && actor.Unit.HasTrait(Traits.Fearless) == false)
+        if (retreating && actor.Unit.Type != UnitType.Summon && actor.Unit.Type != UnitType.SpecialMercenary && actor.Unit.HasTrait(Traits.Fearless) == false && actor.Unit.GetStatusEffect(StatusEffectType.Charmed) == null)
         {
             int retreatY;
             if (State.GameManager.TacticalMode.IsDefender(actor) == false)
@@ -416,19 +416,22 @@ public class TacticalAI : ITacticalAI
             {
                 if (actor.Unit.HasTrait(Traits.RangedVore))
                 {
-                    MoveToAndAction(actor, targets[0].actor.Position, 1, 999, () => {
+                    MoveToAndAction(actor, targets[0].actor.Position, 1, 999, () =>
+                    {
                         if (actor.PredatorComponent.UsePreferredVore(targets[0].actor))
                             targetsEaten++;
                     }); //If anydistance is off, this will already be limited to the units move radius
                     if (foundPath && path.Path.Count() < actor.Movement)
                         break;
-                    MoveToAndAction(actor, targets[0].actor.Position, 4, 999, () => {
+                    MoveToAndAction(actor, targets[0].actor.Position, 4, 999, () =>
+                    {
                         if (actor.PredatorComponent.UsePreferredVore(targets[0].actor))
                             targetsEaten++;
                     }); //If anydistance is off, this will already be limited to the units move radius                                      
                 }
                 else
-                    MoveToAndAction(actor, targets[0].actor.Position, 1, 999, () => {
+                    MoveToAndAction(actor, targets[0].actor.Position, 1, 999, () =>
+                    {
                         if (actor.PredatorComponent.UsePreferredVore(targets[0].actor))
                             targetsEaten++;
                     }); //If anydistance is off, this will already be limited to the units move radius
@@ -666,7 +669,7 @@ public class TacticalAI : ITacticalAI
     }
 
     void RunRanged(Actor_Unit actor)
-    {        
+    {
         List<PotentialTarget> targets = GetListOfPotentialRangedTargets(actor);
         if (!targets.Any() || actor.BestRanged == null || actor.Unit.GetBestRanged() == null)
             return;
@@ -787,7 +790,7 @@ public class TacticalAI : ITacticalAI
                 int chance = (int)unit.GetAttackChance(actor, false, true);
                 int damage = actor.WeaponDamageAgainstTarget(unit, false);
                 targets.Add(new PotentialTarget(unit, chance, distance, damage));
-                
+
             }
         }
 

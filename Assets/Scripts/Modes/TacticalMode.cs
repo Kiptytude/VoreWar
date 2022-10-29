@@ -289,7 +289,7 @@ public class TacticalMode : SceneBase
 
         }
     }
-
+    
     private void Start()
     {
         var allSprites = State.GameManager.TacticalBuildingSpriteDictionary.AllSprites;
@@ -442,7 +442,7 @@ public class TacticalMode : SceneBase
         StartingDefenderPower = StrategicUtilities.UnitValue(defenders.Concat(garrison).Select(s => s.Unit).ToList());
 
 
-        if (Config.Defections)
+        if (Config.Defections && !State.GameManager.PureTactical)
         {
             Race defenderRace = defender?.Empire?.ReplacedRace ?? village.Empire?.Race ?? (Race)defenderSide;
             Race attackerRace = invader.Empire?.ReplacedRace ?? (Race)invader.Side;

@@ -144,7 +144,7 @@ public class HedonistTacticalAI : ITacticalAI
                     retreating = false;
                 }
             }
-            else if (retreatPlan.acceptableLossRatio > 0.0001) // Made because it actually considers how the battle is developing instead of just a snapshot metric
+            else if (retreatPlan.acceptableLossRatio > 0.0001) // Made because it somewhat considers how the battle is developing instead of just a snapshot metric
             {
                 bool aIisAttacker = actors[0].Unit.Side == AISide;
 
@@ -308,6 +308,9 @@ public class HedonistTacticalAI : ITacticalAI
         if (spareMp >= thirdMovement)
         {
             RunBellyRub(actor, spareMp);
+            if (path != null)
+                return;
+            if (didAction) return;
         }
 
 
@@ -346,6 +349,7 @@ public class HedonistTacticalAI : ITacticalAI
         if (foundPath || didAction) return;
 
         RunBellyRub(actor, actor.Movement);
+        if (foundPath || didAction) return;
         //Search for surrendered targets outside of vore range
         //If no path to any targets, will sit out its turn
         RunPred(actor, true);
@@ -420,14 +424,16 @@ public class HedonistTacticalAI : ITacticalAI
         return -1;
     }
 
-    bool RunBellyRub(Actor_Unit actor, int spareAP)
+    void RunBellyRub(Actor_Unit actor, int spareAP)
     {
         int cost = actor.MaxMovement() / 3;
         List<PotentialTarget> targets = GetListOfPotentialRubTargets(actor, actor.Position, spareAP);
 
         if (!targets.Any())
-            return false;
-
+        {
+            return;
+        }
+            
 
         // no looping for now, due to gameplay concerns
         //while (spareAP > 0)
@@ -437,7 +443,8 @@ public class HedonistTacticalAI : ITacticalAI
             if (targets[0].distance < 2)
             {
                 actor.BellyRub(targets[0].actor);
-                return true;
+                didAction = true;
+                return;
                 //spareAP -= cost;
                 //targets.RemoveAt(0);
                 //break;
@@ -453,25 +460,16 @@ public class HedonistTacticalAI : ITacticalAI
                     var nextToAlly = new Vec2i(destination.X, destination.Y);
                     if (CheckActionEconomyOfActorFromPositionWithAP(actor, nextToAlly, actor.Movement - (rubPath.Count + cost)) >= 0)
                     {
-                        if (actor.MoveTo(nextToAlly, tiles, (State.GameManager.TacticalMode.RunningFriendlyAI ? Config.TacticalFriendlyAIMovementDelay : Config.TacticalAIMovementDelay)) == false)
-                        {
-                            return false;
-                        }
-                        actor.BellyRub(targets[0].actor);
-                        return true;
-                        //targets.RemoveAt(0);
-                        //spareAP -= rubPath.Count + cost;
-                        //break;
-
+                        MoveToAndAction(actor, nextToAlly, 0, spareAP, () => actor.BellyRub(targets[0].actor));
+                        return;
                     }
                    
                 }
 
-
             }
             targets.RemoveAt(0);
         }
-        return false;
+        return;
         //}
     }
 
