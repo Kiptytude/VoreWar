@@ -40,6 +40,7 @@ static class SpellList
     static internal readonly StatusSpell Speed;
     static internal readonly StatusSpell Valor;
     static internal readonly StatusSpell Predation;
+    static internal readonly StatusSpell Charm;
 
     static internal readonly DamageSpell IceBlast;
     static internal readonly DamageSpell Pyre;
@@ -371,6 +372,27 @@ static class SpellList
             OnExecute = (a, t) => a.CastMaw(Maw, t),
         };
         SpellDict[SpellTypes.Maw] = Maw;
+
+        Charm = new StatusSpell()
+        {
+            Name = "Charm",
+            Id = "charm",
+            SpellType = SpellTypes.Charm,
+            Description = "Has a chance to temporarily make an enemy fight for the caster.",
+            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy },
+            Range = new Range(6),
+            Duration = (a, t) => 2 + a.Unit.GetStat(Stat.Mind) / 10,
+            Effect = (a, t) => a.Unit.Side,
+            Type = StatusEffectType.Charmed,
+            Tier = 3,
+            Resistable = true,
+            OnExecute = (a, t) =>
+            {
+                a.CastStatusSpell(Charm, t);
+                TacticalGraphicalEffects.CreateHeartProjectile(a.Position, t.Position, t);
+            },
+        };
+        SpellDict[SpellTypes.Charm] = Charm;
 
         Summon = new Spell()
         {

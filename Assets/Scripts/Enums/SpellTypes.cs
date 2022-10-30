@@ -25,6 +25,7 @@ public enum SpellTypes
     //Quicksand,
     PreysCurse,
     Maw,
+    Charm,
     Summon,
     Enlarge,
 

@@ -304,6 +304,11 @@ public class Actor_Unit
             unit.SingleUseSpells.Add(SpellList.Petrify.SpellType);
             unit.UpdateSpells();
         }
+        if (unit.HasTrait(Traits.Charmer) && State.World?.ItemRepository != null) //protection for the create strat screen
+        {
+            unit.SingleUseSpells.Add(SpellList.Charm.SpellType);
+            unit.UpdateSpells();
+    }
     }
 
     public void GenerateSpritePrefab(Transform folder)

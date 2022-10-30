@@ -884,7 +884,7 @@ public class PredatorComponent
                 preyUnit.Unit.InitializeTraits();
 
             }
-            else if (Config.FriendlyRegurgitation && unit.HasTrait(Traits.Greedy) == false && preyUnit.Unit.Side == unit.Side && preyUnit.Unit.Health > 0 && preyUnit.Actor.Surrendered == false)
+            else if (Config.FriendlyRegurgitation && unit.HasTrait(Traits.Greedy) == false && !TacticalUtilities.TreatAsHostile(actor, preyUnit.Actor) && preyUnit.Unit.Health > 0 && preyUnit.Actor.Surrendered == false)
             {
                 State.GameManager.TacticalMode.TacticalStats.RegisterRegurgitation(unit.Side);
                 TacticalUtilities.Log.RegisterRegurgitated(unit, preyUnit.Unit, Location(preyUnit));

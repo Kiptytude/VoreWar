@@ -484,6 +484,8 @@ public class HoveringTooltip : MonoBehaviour
                 return "If the unit is reduced below half health by an attack, will go berserk, greating increasing its strength and voracity for 3 turns.\nCan only occur once per battle.";
             case Traits.SynchronizedEvolution:
                 return "Any trait this unit assimilates is received by all members of their race. (requires Assimilate or InfiniteAssimilation)\n(Cheat Trait)";
+            case Traits.Charmer:
+                return "Allows the casting of the Charm spell once per battle";
         }
         return "<b>This trait needs a tooltip!</b>";
     }

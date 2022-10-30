@@ -123,6 +123,7 @@ public class TacticalMode : SceneBase
     internal PlacedDecoration[] Decorations;
 
     int defenderSide;
+    int attackerSide; // because sides just got a lot more complex.
 
     internal bool DirtyPack = true;
 
@@ -262,6 +263,11 @@ public class TacticalMode : SceneBase
         return defenderSide;
     }
 
+    internal int GetAttackerSide()
+    {
+        return attackerSide;
+    }
+
     private Actor_Unit _selectedUnit;
 
     public Actor_Unit SelectedUnit
@@ -393,6 +399,8 @@ public class TacticalMode : SceneBase
         tiles = mapGen.GenMap(village?.HasWalls() ?? false);
 
         defenderSide = defender?.Side ?? village.Side;
+        attackerSide = invader.Side;
+
 
 
         DefectProcessor defectors = new DefectProcessor(armies[0], armies[1], village);
@@ -490,7 +498,7 @@ public class TacticalMode : SceneBase
             attackerAI = new LegacyTacticalAI(units, tiles, armies[0].Side);
         else
         {
-            if (invader.Empire.ReplacedRace == Race.FeralLions || invader.Empire.Race == Race.FeralLions)
+            if (invader.Empire.ReplacedRace == Race.FeralLions)
                 attackerAI = new HedonistTacticalAI(units, tiles, armies[0].Side);
             else
                 attackerAI = new TacticalAI(units, tiles, armies[0].Side);
@@ -2140,13 +2148,37 @@ Turns: {currentTurn}
         {
             if (AIDefender == false)
             {
-                defenderAI = new TacticalAI(units, tiles, defenderSide);
+                if ((armies[1]?.Empire?.ReplacedRace ?? village?.Empire?.ReplacedRace ?? ((Race)defenderSide)) == Race.FeralLions)
+                    defenderAI = new HedonistTacticalAI(units, tiles, armies[1].Side);
+                else
+                    defenderAI = new TacticalAI(units, tiles, armies[1].Side);
                 if (SkipUI.AllowRetreat.isOn)
-                    defenderAI.RetreatPlan = new TacticalAI.RetreatConditions(.2f, 0);
+                    if (armies[1]?.Empire?.ReplacedRace == Race.Vagrants)
+                    {
+                        defenderAI.RetreatPlan = new TacticalAI.RetreatConditions(.2f, armies[1].Units.Count + 2);
+                    }
+                    else if (armies[1]?.Empire?.ReplacedRace == Race.FeralLions)
+                    {
+                        defenderAI.RetreatPlan = new TacticalAI.RetreatConditions(0, armies[1].Units.Count * 3, 0.9f);
+                    }
+                    else if (armies[1]?.Empire is MonsterEmpire)
+                    {
+                        if (armies[1].Units.Where(s => s.HasTrait(Traits.EvasiveBattler)).Count() / (float)armies[1].Units.Count > .8f) //If more than 80% has fast flee
+                            defenderAI.RetreatPlan = new TacticalAI.RetreatConditions(.05f, 0);
+                        else
+                            defenderAI.RetreatPlan = new TacticalAI.RetreatConditions(.025f, 0);
+                    }
+                    else
+                    {
+                        if (armies[1].Units.Where(s => s.HasTrait(Traits.EvasiveBattler)).Count() / (float)armies[1].Units.Count > .8f)
+                            defenderAI.RetreatPlan = new TacticalAI.RetreatConditions(.3f, 0);
+                        else
+                            defenderAI.RetreatPlan = new TacticalAI.RetreatConditions(.15f, 0);
+                    }
                 AIDefender = true;
                 if (surrender)
                 {
-                    foreach (Actor_Unit actor in units.Where(s => s.Unit.Side == defenderSide))
+                    foreach (Actor_Unit actor in units.Where(s => s.Unit.Side == defenderSide && unitControllableBySide(s, defenderSide)))
                     {
                         actor.Surrendered = true;
                         actor.Movement = 0;
@@ -2155,9 +2187,33 @@ Turns: {currentTurn}
             }
             else if (AIAttacker == false)
             {
+                if ((armies[0]?.Empire?.ReplacedRace ?? village?.Empire?.ReplacedRace ?? ((Race)defenderSide)) == Race.FeralLions)
+                    attackerAI = new HedonistTacticalAI(units, tiles, armies[0].Side);
+                else
                 attackerAI = new TacticalAI(units, tiles, armies[0].Side);
                 if (SkipUI.AllowRetreat.isOn)
-                    attackerAI.RetreatPlan = new TacticalAI.RetreatConditions(.2f, 0);
+                    if (armies[0]?.Empire?.ReplacedRace == Race.Vagrants)
+                    {
+                        attackerAI.RetreatPlan = new TacticalAI.RetreatConditions(.2f, armies[0].Units.Count + 2);
+                    }
+                    else if (armies[0]?.Empire?.ReplacedRace == Race.FeralLions)
+                    {
+                        attackerAI.RetreatPlan = new TacticalAI.RetreatConditions(0, armies[0].Units.Count * 3, 0.9f);
+                    }
+                    else if (armies[0]?.Empire is MonsterEmpire)
+                    {
+                        if (armies[0].Units.Where(s => s.HasTrait(Traits.EvasiveBattler)).Count() / (float)armies[0].Units.Count > .8f) //If more than 80% has fast flee
+                            attackerAI.RetreatPlan = new TacticalAI.RetreatConditions(.05f, 0);
+                        else
+                            attackerAI.RetreatPlan = new TacticalAI.RetreatConditions(.025f, 0);
+                    }
+                    else
+                    {
+                        if (armies[0].Units.Where(s => s.HasTrait(Traits.EvasiveBattler)).Count() / (float)armies[0].Units.Count > .8f)
+                            attackerAI.RetreatPlan = new TacticalAI.RetreatConditions(.3f, 0);
+                        else
+                            attackerAI.RetreatPlan = new TacticalAI.RetreatConditions(.15f, 0);
+                    }
                 AIAttacker = true;
                 if (surrender)
                 {
@@ -2174,18 +2230,65 @@ Turns: {currentTurn}
         }
         if (attackersTurn)
         {
-            attackerAI = new TacticalAI(units, tiles, activeSide);
+            if ((armies[0]?.Empire?.ReplacedRace ?? village?.Empire?.ReplacedRace ?? ((Race)defenderSide)) == Race.FeralLions)
+                attackerAI = new HedonistTacticalAI(units, tiles, armies[0].Side);
+            else
+                attackerAI = new TacticalAI(units, tiles, armies[0].Side);
             if (SkipUI.AllowRetreat.isOn)
-                attackerAI.RetreatPlan = new TacticalAI.RetreatConditions(.2f, 0);
-
+                if (armies[0]?.Empire?.ReplacedRace == Race.Vagrants)
+                {
+                    attackerAI.RetreatPlan = new TacticalAI.RetreatConditions(.2f, armies[0].Units.Count + 2);
+                }
+                else if (armies[0]?.Empire?.ReplacedRace == Race.FeralLions)
+                {
+                    attackerAI.RetreatPlan = new TacticalAI.RetreatConditions(0, armies[0].Units.Count * 3, 0.9f);
+                }
+                else if (armies[0]?.Empire is MonsterEmpire)
+                {
+                    if (armies[0].Units.Where(s => s.HasTrait(Traits.EvasiveBattler)).Count() / (float)armies[0].Units.Count > .8f) //If more than 80% has fast flee
+                        attackerAI.RetreatPlan = new TacticalAI.RetreatConditions(.05f, 0);
+                    else
+                        attackerAI.RetreatPlan = new TacticalAI.RetreatConditions(.025f, 0);
+                }
+                else
+                {
+                    if (armies[0].Units.Where(s => s.HasTrait(Traits.EvasiveBattler)).Count() / (float)armies[0].Units.Count > .8f)
+                        attackerAI.RetreatPlan = new TacticalAI.RetreatConditions(.3f, 0);
+                    else
+                        attackerAI.RetreatPlan = new TacticalAI.RetreatConditions(.15f, 0);
+                }
             AIAttacker = true;
             currentAI = attackerAI;
         }
         else
         {
-            defenderAI = new TacticalAI(units, tiles, activeSide);
+            if ((armies[1]?.Empire?.ReplacedRace ?? village?.Empire?.ReplacedRace ?? ((Race)defenderSide)) == Race.FeralLions)
+                defenderAI = new HedonistTacticalAI(units, tiles, armies[1].Side);
+            else
+                defenderAI = new TacticalAI(units, tiles, armies[1].Side);
             if (SkipUI.AllowRetreat.isOn)
-                defenderAI.RetreatPlan = new TacticalAI.RetreatConditions(.2f, 0);
+                if (armies[1]?.Empire?.ReplacedRace == Race.Vagrants)
+                {
+                    defenderAI.RetreatPlan = new TacticalAI.RetreatConditions(.2f, armies[1].Units.Count + 2);
+                }
+                else if (armies[1]?.Empire?.ReplacedRace == Race.FeralLions)
+                {
+                    defenderAI.RetreatPlan = new TacticalAI.RetreatConditions(0, armies[1].Units.Count * 3, 0.9f);
+                }
+                else if (armies[1]?.Empire is MonsterEmpire)
+                {
+                    if (armies[1].Units.Where(s => s.HasTrait(Traits.EvasiveBattler)).Count() / (float)armies[1].Units.Count > .8f) //If more than 80% has fast flee
+                        defenderAI.RetreatPlan = new TacticalAI.RetreatConditions(.05f, 0);
+                    else
+                        defenderAI.RetreatPlan = new TacticalAI.RetreatConditions(.025f, 0);
+                }
+                else
+                {
+                    if (armies[1].Units.Where(s => s.HasTrait(Traits.EvasiveBattler)).Count() / (float)armies[1].Units.Count > .8f)
+                        defenderAI.RetreatPlan = new TacticalAI.RetreatConditions(.3f, 0);
+                    else
+                        defenderAI.RetreatPlan = new TacticalAI.RetreatConditions(.15f, 0);
+                }
             AIDefender = true;
             currentAI = defenderAI;
         }
@@ -2193,7 +2296,7 @@ Turns: {currentTurn}
         IsPlayerTurn = false;
         if (surrender)
         {
-            foreach (Actor_Unit actor in units.Where(s => s.Unit.Side == activeSide))
+            foreach (Actor_Unit actor in units.Where(s => s.Unit.Side == activeSide && unitControllableBySide(s, activeSide)))
             {
                 actor.Surrendered = true;
                 actor.Movement = 0;
@@ -2238,7 +2341,7 @@ Turns: {currentTurn}
         bool canStillMove = false;
         for (int i = 0; i < units.Count; i++)
         {
-            if (units[i].Unit.Side == activeSide && units[i].Targetable && units[i].Movement > 0)
+            if (unitControllableBySide(units[i],activeSide) && units[i].Targetable && units[i].Movement > 0)
             {
                 canStillMove = true;
                 break;
@@ -2904,7 +3007,7 @@ Turns: {currentTurn}
 
                 if (ActionMode == 0)
                 {
-                    if (unit.Unit.Side == activeSide)
+                    if (unitControllableBySide(unit, activeSide))
                     {
 
                         if (SelectedUnit != units[i])
@@ -2919,7 +3022,7 @@ Turns: {currentTurn}
                     continue;
                 if (ActionMode == 1)
                 {
-                    if (unit.Unit.Side != activeSide || (Config.AllowInfighting && unit != SelectedUnit))
+                    if (!unitControllableBySide(unit, activeSide) || (Config.AllowInfighting && unit != SelectedUnit))
                     {
                         MeleeAttack(SelectedUnit, unit);
                         return;
@@ -2928,7 +3031,7 @@ Turns: {currentTurn}
                 }
                 if (ActionMode == 2)
                 {
-                    if (unit.Unit.Side != activeSide || Config.AllowInfighting)
+                    if (!unitControllableBySide(unit, activeSide) || Config.AllowInfighting)
                     {
                         RangedAttack(SelectedUnit, unit);
                         return;
@@ -3024,6 +3127,13 @@ Turns: {currentTurn}
         }
 
 
+    }
+
+    private bool unitControllableBySide(Actor_Unit unit, int side)
+    {
+        bool correctSide = unit.Unit.Side == side;
+        bool controlOverriden = unit.Unit.GetStatusEffect(StatusEffectType.Charmed) != null || unit.Unit.FixedSide != side;
+        return correctSide && !controlOverriden;
     }
 
     internal void VoreAttack(Actor_Unit actor, Actor_Unit unit)

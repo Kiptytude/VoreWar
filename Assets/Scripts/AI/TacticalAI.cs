@@ -47,7 +47,10 @@ public class TacticalAI : ITacticalAI
 
     bool didAction;
     bool foundPath;
+    [OdinSerialize]
     List<Actor_Unit> actors;
+    [OdinSerialize]
+    int enemySide;
     [OdinSerialize]
     readonly TacticalTileType[,] tiles;
     [OdinSerialize]
@@ -81,6 +84,8 @@ public class TacticalAI : ITacticalAI
         this.tiles = tiles;
         this.actors = actors;
         this.defendingVillage = defendingVillage;
+        var enemies = actors.Where(s => s.Unit.Side != AISide).ToList();
+        enemySide = enemies[0].Unit.Side;
     }
 
     public void TurnAI()
@@ -280,7 +285,7 @@ public class TacticalAI : ITacticalAI
         didAction = false; // Very important fix: surrounded retreaters sometimes just skipped doing attacks because this was never set to false in or before "fightwithoutmoving"
 
         path = null;
-        if (retreating && actor.Unit.Type != UnitType.Summon && actor.Unit.Type != UnitType.SpecialMercenary && actor.Unit.HasTrait(Traits.Fearless) == false && actor.Unit.GetStatusEffect(StatusEffectType.Charmed) == null)
+        if (retreating && actor.Unit.Type != UnitType.Summon && actor.Unit.Type != UnitType.SpecialMercenary && actor.Unit.HasTrait(Traits.Fearless) == false && actor.Unit.GetStatusEffect(StatusEffectType.Charmed) == null && TacticalUtilities.GetPreferredSide(actor, AISide, enemySide) == AISide)
         {
             int retreatY;
             if (State.GameManager.TacticalMode.IsDefender(actor) == false)
@@ -462,7 +467,7 @@ public class TacticalAI : ITacticalAI
             foreach (Actor_Unit unit in actors)
             {
 
-                if (unit.Targetable && unit.Unit.Side != AISide && unit.Bulk() <= cap)
+                if (unit.Targetable && TacticalUtilities.TreatAsHostile(actor, unit) && unit.Bulk() <= cap)
                 {
                     int distance = unit.Position.GetNumberOfMovesDistance(actor.Position);
                     if (distance <= actor.Movement || anyDistance)
@@ -601,7 +606,7 @@ public class TacticalAI : ITacticalAI
             foreach (Actor_Unit unit in actors)
             {
 
-                if (unit.Targetable && unit.Unit.Side != AISide && unit.Bulk() <= cap && TacticalUtilities.FreeSpaceAroundTarget(unit.Position, actor))
+                if (unit.Targetable && TacticalUtilities.TreatAsHostile(actor, unit) && unit.Bulk() <= cap && TacticalUtilities.FreeSpaceAroundTarget(unit.Position, actor))
                 {
                     int distance = unit.Position.GetNumberOfMovesDistance(actor.Position);
                     if (distance <= 2 + actor.Movement)
@@ -655,7 +660,7 @@ public class TacticalAI : ITacticalAI
 
         foreach (Actor_Unit unit in actors)
         {
-            if (unit.Targetable == true && TacticalUtilities.FreeSpaceAroundTarget(unit.Position, actor) && unit.Unit.Side != AISide && (unit.Surrendered == false || (onlySurrendered && lackPredators) || currentTurn > 150))
+            if (unit.Targetable == true && TacticalUtilities.FreeSpaceAroundTarget(unit.Position, actor) && TacticalUtilities.TreatAsHostile(actor, unit) && (unit.Surrendered == false || (onlySurrendered && lackPredators) || currentTurn > 150))
             {
                 int distance = unit.Position.GetNumberOfMovesDistance(actor.Position);
                 if (distance <= 2 + actor.Movement)
@@ -716,7 +721,7 @@ public class TacticalAI : ITacticalAI
         {
             if (target?.Unit == null) //If this doesn't prevent exceptions I might have to just try/catch this function.  
                 continue;
-            if (target.Targetable == true && target.Unit.Side != AISide && (target.Surrendered == false || (onlySurrendered && lackPredators) || currentTurn > 150))
+            if (target.Targetable == true && TacticalUtilities.TreatAsHostile(actor, target) && (target.Surrendered == false || (onlySurrendered && lackPredators) || currentTurn > 150))
             {
                 int distance = target.Position.GetNumberOfMovesDistance(actor.Position);
                 float chance = target.GetAttackChance(actor, true, true);
@@ -778,7 +783,7 @@ public class TacticalAI : ITacticalAI
 
         foreach (Actor_Unit unit in actors)
         {
-            if (unit.Targetable == true && unit.Unit.Side != AISide && (unit.Surrendered == false || (onlySurrendered && lackPredators) || currentTurn > 150))
+            if (unit.Targetable == true && TacticalUtilities.TreatAsHostile(actor, unit) && (unit.Surrendered == false || (onlySurrendered && lackPredators) || currentTurn > 150))
             {
 
                 int distance = unit.Position.GetNumberOfMovesDistance(actor.Position);
@@ -908,7 +913,7 @@ public class TacticalAI : ITacticalAI
         {
             if (spell is StatusSpell statusSpell && unit.Unit.GetStatusEffect(statusSpell.Type) != null)
                 continue; //Don't recast the same spell on the same unit
-            if (unit.Unit.Side != AISide && spell.AcceptibleTargets.Contains(AbilityTargets.Enemy))
+            if (TacticalUtilities.TreatAsHostile(actor, unit) && spell.AcceptibleTargets.Contains(AbilityTargets.Enemy))
             {
                 if (spell.AreaOfEffect > 0)
                 {
@@ -939,7 +944,7 @@ public class TacticalAI : ITacticalAI
                 }
             }
 
-            else if (unit.Unit.Side == AISide && spell.AcceptibleTargets.Contains(AbilityTargets.Ally))
+            else if (!TacticalUtilities.TreatAsHostile(actor, unit) && spell.AcceptibleTargets.Contains(AbilityTargets.Ally))
             {
                 if (spell == SpellList.Mending && (100 * unit.Unit.HealthPct) > 84)
                     continue;

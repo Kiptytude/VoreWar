@@ -246,6 +246,7 @@ public enum Traits
     PredConverter,
     PredRebirther,
     SeductiveTouch,
+    Charmer,
 
     // Growth-related section
 	Growth,
