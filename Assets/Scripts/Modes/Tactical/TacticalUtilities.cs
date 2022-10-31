@@ -183,10 +183,6 @@ static class TacticalUtilities
                 village.ChangeOwner(armies[0].Side);
         }
 
-      
-       
-
-
         if (MonsterAttacker && remainingAttackers > 0 && village.Empire.IsEnemy(armies[0].Empire))
         {
             if (spawnerType == Config.MonsterConquestType.DevourAndDisperse)

@@ -125,12 +125,15 @@ public class TacticalMode : SceneBase
     int defenderSide;
     int attackerSide; // because sides just got a lot more complex.
 
+
     internal bool DirtyPack = true;
 
     internal bool TacticalLogUpdated;
 
     internal ChoiceOption FledReturn;
     bool waitingForDialog;
+
+    private bool pseudoTurn = false;
 
     internal int currentTurn = 1;
 
@@ -590,6 +593,8 @@ public class TacticalMode : SceneBase
             skip = false;
         if (tacticalBattleOverride == TacticalBattleOverride.ForceSkip && AIAttacker && AIDefender)
             skip = true;
+        if (units.Any(actor => State.World.AllActiveEmpires != null && State.World.GetEmpireOfSide(actor.Unit.FixedSide)?.StrategicAI == null))
+            skip = false;
 
         if (skip)
         {
@@ -2190,7 +2195,7 @@ Turns: {currentTurn}
                 if ((armies[0]?.Empire?.ReplacedRace ?? village?.Empire?.ReplacedRace ?? ((Race)defenderSide)) == Race.FeralLions)
                     attackerAI = new HedonistTacticalAI(units, tiles, armies[0].Side);
                 else
-                attackerAI = new TacticalAI(units, tiles, armies[0].Side);
+                    attackerAI = new TacticalAI(units, tiles, armies[0].Side);
                 if (SkipUI.AllowRetreat.isOn)
                     if (armies[0]?.Empire?.ReplacedRace == Race.Vagrants)
                     {
@@ -2217,7 +2222,7 @@ Turns: {currentTurn}
                 AIAttacker = true;
                 if (surrender)
                 {
-                    foreach (Actor_Unit actor in units.Where(s => s.Unit.Side != defenderSide))
+                    foreach (Actor_Unit actor in units.Where(s => s.Unit.Side != defenderSide && unitControllableBySide(s, s.Unit.Side)))
                     {
                         actor.Surrendered = true;
                         actor.Movement = 0;
@@ -3312,6 +3317,11 @@ Turns: {currentTurn}
 
     void EndTurn()
     {
+        if (pseudoTurn)
+        {
+            pseudoTurn = false;
+            return;
+        }
         if (waitingForDialog)
             return;
         if (Config.AutoUseAI && IsPlayerInControl && repeatingTurn == false)

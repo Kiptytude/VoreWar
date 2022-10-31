@@ -1054,6 +1054,13 @@ public class PredatorComponent
                 unit.AddPermanentTrait(Traits.CursedMark);
                 preyUnit.Unit.RemoveTrait(Traits.CursedMark);
             }
+            if (preyUnit.Unit.HasTrait(Traits.Turned))
+            {
+                unit.AddPermanentTrait(Traits.Turned);
+                unit.FixedSide = preyUnit.Unit.FixedSide;
+                unit.hiddenFixedSide = true;
+                preyUnit.Unit.RemoveTrait(Traits.Turned);
+            }
             unit.DigestedUnits++;
             if (unit.HasTrait(Traits.EssenceAbsorption) && unit.DigestedUnits % 4 == 0)
                 unit.GeneralStatIncrease(1);
@@ -2112,7 +2119,10 @@ public class PredatorComponent
                 }
             }
             actor.SetPredMode(preyType);
-
+            if (actor.Unit.Side == (target.Unit.hiddenFixedSide ? target.Unit.Side : target.Unit.FixedSide) && !actor.Unit.HasTrait(Traits.Endosoma))
+            {
+                actor.Unit.hiddenFixedSide = false;
+            }
             float r = (float)State.Rand.NextDouble();
             float v = target.GetDevourChance(actor, skillBoost: boost);
             if (r < v)
@@ -2200,6 +2210,10 @@ public class PredatorComponent
 
     void MagicDevour(Actor_Unit target, float v, Prey preyref)
     {
+        if (actor.Unit.Side == (target.Unit.hiddenFixedSide ? target.Unit.Side : target.Unit.FixedSide) && !actor.Unit.HasTrait(Traits.Endosoma))
+        {
+            actor.Unit.hiddenFixedSide = false;
+        }
         //State.GameManager.SoundManager.PlaySwallow(PreyLocation.stomach, actor);
         //TacticalUtilities.Log.RegisterVore(unit, target.Unit, v);
         AddToStomach(preyref, v);

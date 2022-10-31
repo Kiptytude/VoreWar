@@ -299,7 +299,37 @@ public class UnitSprite : MonoBehaviour
             alpha = (activeTurn && actor.Movement > 0) ? .5f : .2f;
         else
             alpha = 0;
-        if (BlueColored)
+
+        if (actor.Unit.FixedSide != actor.Unit.Side)
+        {
+            if (BlueColored)
+            {
+                {
+                    if (Config.AllianceSquaresDarkness == 3)
+                    {
+                        if (activeTurn && actor.Movement > 0)
+                            FlexibleSquare.color = new Color(1f, 0.6f, 0, 1);
+                        else
+                            FlexibleSquare.color = new Color(0.75f, 0.40f, 0, 1);
+                    }
+                    else
+                        FlexibleSquare.color = new Color(0.45f, 0f, 0.75f, alpha);
+                }
+            }
+            else
+            {
+                if (Config.AllianceSquaresDarkness == 3)
+                {
+                    if (activeTurn && actor.Movement > 0)
+                        FlexibleSquare.color = new Color(0.6f, 0, 0.9f, 1);
+                    else
+                        FlexibleSquare.color = new Color(0.25f, 0, 0.45f, 1);
+                }
+                else
+                    FlexibleSquare.color = new Color(0.45f, 0f, 0.75f, alpha);
+            }
+        }
+        else if (BlueColored)
         {
             if (Config.AltFriendlyColor)
             {

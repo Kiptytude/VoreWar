@@ -308,7 +308,7 @@ public class Actor_Unit
         {
             unit.SingleUseSpells.Add(SpellList.Charm.SpellType);
             unit.UpdateSpells();
-    }
+        }
     }
 
     public void GenerateSpritePrefab(Transform folder)
@@ -1335,6 +1335,10 @@ public class Actor_Unit
 
     internal bool DefendDamageSpell(DamageSpell spell, Actor_Unit attacker, int damage)
     {
+        if (attacker.Unit.Side == (Unit.hiddenFixedSide ? Unit.Side : Unit.FixedSide))
+        {
+            attacker.Unit.hiddenFixedSide = false;
+        }
         if (Unit.IsDead)
             return false;
         if (DefendSpellCheck(spell, attacker, out float chance))
@@ -1366,10 +1370,18 @@ public class Actor_Unit
 
     internal bool DefendStatusSpell(StatusSpell spell, Actor_Unit attacker)
     {
+        if (attacker.Unit.Side == (Unit.hiddenFixedSide ? Unit.Side : Unit.FixedSide) && !spell.Resistable) // Replace when there is an unresistable negative status
+        {
+            attacker.Unit.hiddenFixedSide = false;
+        }
         if (DefendSpellCheck(spell, attacker, out float chance))
         {
             State.GameManager.TacticalMode.Log.RegisterSpellHit(attacker.Unit, Unit, spell.SpellType, 0, chance);
             Unit.ApplyStatusEffect(spell.Type, spell.Effect(attacker, this), spell.Duration(attacker, this));
+            if (spell.Id == "charm")
+            {
+                UnitSprite.DisplayCharm();
+            }
             if (spell.Alraune)
             {
                 if (Unit.HasTrait(Traits.PollenProjector) == false)
@@ -1391,7 +1403,11 @@ public class Actor_Unit
             if (attacker.Unit.Side == Unit.Side)
                 attacker.Unit.GiveScaledExp(.25f, attacker.Unit.Level - Unit.Level);
             else
+            {
                 attacker.Unit.GiveExp(.25f);
+                UnitSprite.DisplayResist();
+            }
+                
             State.GameManager.TacticalMode.Log.RegisterSpellMiss(attacker.Unit, Unit, spell.SpellType, chance);
         }
 
@@ -1400,6 +1416,10 @@ public class Actor_Unit
 
     public bool Defend(Actor_Unit attacker, int damage, bool ranged, out float chance, bool canKill = true)
     {
+        if (attacker.Unit.Side == (Unit.hiddenFixedSide ? Unit.Side : Unit.FixedSide))       
+        {
+            attacker.Unit.hiddenFixedSide = false;
+        }
         State.GameManager.TacticalMode.AITimer = Config.TacticalAttackDelay;
         if (State.GameManager.CurrentScene == State.GameManager.TacticalMode && State.GameManager.TacticalMode.IsPlayerInControl == false && State.GameManager.TacticalMode.turboMode == false)
             State.GameManager.CameraCall(Position);
