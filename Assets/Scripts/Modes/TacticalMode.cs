@@ -2217,7 +2217,7 @@ Turns: {currentTurn}
                 AIAttacker = true;
                 if (surrender)
                 {
-                    foreach (Actor_Unit actor in units.Where(s => s.Unit.Side != defenderSide))
+                    foreach (Actor_Unit actor in units.Where(s => s.Unit.Side != defenderSide && unitControllableBySide(s, s.Unit.Side)))
                     {
                         actor.Surrendered = true;
                         actor.Movement = 0;

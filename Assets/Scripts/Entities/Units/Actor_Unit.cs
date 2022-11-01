@@ -1370,6 +1370,10 @@ public class Actor_Unit
         {
             State.GameManager.TacticalMode.Log.RegisterSpellHit(attacker.Unit, Unit, spell.SpellType, 0, chance);
             Unit.ApplyStatusEffect(spell.Type, spell.Effect(attacker, this), spell.Duration(attacker, this));
+            if (spell.Id == "charm")
+            {
+                UnitSprite.DisplayCharm();
+            }
             if (spell.Alraune)
             {
                 if (Unit.HasTrait(Traits.PollenProjector) == false)
@@ -1391,7 +1395,11 @@ public class Actor_Unit
             if (attacker.Unit.Side == Unit.Side)
                 attacker.Unit.GiveScaledExp(.25f, attacker.Unit.Level - Unit.Level);
             else
+            {
                 attacker.Unit.GiveExp(.25f);
+                UnitSprite.DisplayResist();
+            }
+                
             State.GameManager.TacticalMode.Log.RegisterSpellMiss(attacker.Unit, Unit, spell.SpellType, chance);
         }
 
