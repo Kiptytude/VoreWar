@@ -36,7 +36,8 @@ public class Actor_Unit
     int animationStep = 4;
     float animationUpdateTime;
     DisplayMode mode;
-    List<KeyValuePair<DisplayMode, float>> modeQueue = new List<KeyValuePair<DisplayMode, float>>();
+    [OdinSerialize]
+    public List<KeyValuePair<int, float>> modeQueue;
 
     private DisplayMode Mode
     {
@@ -253,6 +254,7 @@ public class Actor_Unit
     {
         unit.SetBreastSize(-1); //Resets to default
         Mode = DisplayMode.None;
+        modeQueue = new List<KeyValuePair<int, float>>();
         animationUpdateTime = 0;
         Position = new Vec2i(0, 0);
         Unit = unit;
@@ -260,13 +262,13 @@ public class Actor_Unit
         Targetable = true;
     }
 
-
     public Actor_Unit(Vec2i p, Unit unit)
     {
         if (unit.Predator)
             PredatorComponent = new PredatorComponent(this, unit);
         unit.SetBreastSize(-1); //Resets to default
         Mode = DisplayMode.None;
+        modeQueue = new List<KeyValuePair<int, float>>();
         animationUpdateTime = 0;
         Position = p;
         Unit = unit;
@@ -384,14 +386,14 @@ public class Actor_Unit
     {
         DisplayMode displayMode = DisplayMode.VoreSuccess;
         float time = 1f;
-        modeQueue.Add(new KeyValuePair<DisplayMode, float> (displayMode, time));
+        modeQueue.Add(new KeyValuePair<int, float> (((int)displayMode), time));
     }
 
     public void SetVoreFailMode()
     {
         DisplayMode displayMode = DisplayMode.VoreFail;
         float time = 1f;
-        modeQueue.Add(new KeyValuePair<DisplayMode, float>(displayMode, time));
+        modeQueue.Add(new KeyValuePair<int, float>((int)displayMode, time));
     }
 
     public void SetAbsorbtionMode()
@@ -1786,7 +1788,7 @@ public class Actor_Unit
                         if (Mode > DisplayMode.Attacking && Mode < DisplayMode.VoreSuccess && modeQueue.Count > 0)
                         {
                             animationUpdateTime = modeQueue.FirstOrDefault().Value;
-                            Mode = modeQueue.FirstOrDefault().Key;
+                            Mode = (DisplayMode)modeQueue.FirstOrDefault().Key;                                        // This casting back and forth saves dealing with accessibility hassles.
                             modeQueue.RemoveAt(0);
                         }
                         else
@@ -1803,7 +1805,7 @@ public class Actor_Unit
                     if (modeQueue.Count > 0)
                     {
                         animationUpdateTime = modeQueue.FirstOrDefault().Value;
-                        Mode = modeQueue.FirstOrDefault().Key;
+                        Mode = (DisplayMode)modeQueue.FirstOrDefault().Key;
                         modeQueue.RemoveAt(0);
                     } else
                     {

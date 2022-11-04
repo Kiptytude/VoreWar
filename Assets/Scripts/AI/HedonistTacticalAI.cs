@@ -490,7 +490,7 @@ public class HedonistTacticalAI : ITacticalAI
 
         foreach (Actor_Unit unit in actors)
         {
-            if (unit.Targetable == true && unit.Unit.Side == AISide && !unit.Surrendered && unit.HasBelly && !unit.ReceivedRub) // includes self
+            if (unit.Targetable == true && !TacticalUtilities.TreatAsHostile(actor, unit) && !unit.Surrendered && unit.PredatorComponent.PreyCount > 0 && !unit.ReceivedRub) // includes self
             {
                 int distance = unit.Position.GetNumberOfMovesDistance(position);
                 if (distance - 1 + (actor.MaxMovement() / 3) <= moves)

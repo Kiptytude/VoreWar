@@ -3132,8 +3132,8 @@ Turns: {currentTurn}
     private bool unitControllableBySide(Actor_Unit unit, int side)
     {
         bool correctSide = unit.Unit.Side == side;
-        bool controlOverriden = unit.Unit.GetStatusEffect(StatusEffectType.Charmed) != null || unit.Unit.FixedSide != side;
-        return correctSide && !controlOverriden;
+        bool controlOverridden = unit.Unit.GetStatusEffect(StatusEffectType.Charmed) != null || unit.Unit.FixedSide != side;
+        return correctSide && !controlOverridden;
     }
 
     internal void VoreAttack(Actor_Unit actor, Actor_Unit unit)
