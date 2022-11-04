@@ -366,8 +366,11 @@ FodyWeavers.xsd
 !*.unity
 !*.png
 !*.jpg
+.sav
 /Temp
 /UserData/Saves
 /.vscode
 *.csproj
 *.sln
+/UserData/EditedRaces*.dat
+/UserData/createsettings*.txt

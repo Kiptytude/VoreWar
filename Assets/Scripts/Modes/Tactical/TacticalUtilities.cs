@@ -329,7 +329,7 @@ static class TacticalUtilities
         int effectiveActorSide = actor.Unit.FixedSide;
         if (actor.Unit.GetStatusEffect(StatusEffectType.Charmed) != null)
             effectiveActorSide = (int)actor.Unit.GetStatusEffect(StatusEffectType.Charmed).Strength;
-        if (target.Unit.GetStatusEffect(StatusEffectType.Charmed) != null && effectiveActorSide == (int)actor.Unit.GetStatusEffect(StatusEffectType.Charmed)?.Strength)
+        if (target.Unit.GetStatusEffect(StatusEffectType.Charmed) != null && effectiveActorSide == (int)target.Unit.GetStatusEffect(StatusEffectType.Charmed)?.Strength)
             return false;
         if (State.GameManager.PureTactical)
         {

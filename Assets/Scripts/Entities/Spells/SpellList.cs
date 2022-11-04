@@ -388,8 +388,8 @@ static class SpellList
             Resistable = true,
             OnExecute = (a, t) =>
             {
-                if(a.CastStatusSpell(Charm, t))
-                    TacticalGraphicalEffects.CreateHeartProjectile(a.Position, t.Position, t);
+                a.CastStatusSpell(Charm, t);
+                TacticalGraphicalEffects.CreateHeartProjectile(a.Position, t.Position, t);
             },
         };
         SpellDict[SpellTypes.Charm] = Charm;

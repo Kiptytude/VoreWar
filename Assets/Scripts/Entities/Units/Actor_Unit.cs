@@ -952,8 +952,6 @@ public class Actor_Unit
     {
         if (Movement < 2 || Unit.HasTrait(Traits.Pounce) == false)
             return false;
-        if (target.Unit.Side == Unit.Side)
-            return false;
         var landingZone = PounceAt(target);
         if (landingZone != null)
         {

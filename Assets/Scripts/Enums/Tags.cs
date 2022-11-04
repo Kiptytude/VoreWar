@@ -214,6 +214,7 @@ public enum Traits
     IdealSustenance,
     EfficientGuts,
     WastefulProcessing,
+    Charmer,
 
 
     //Everything after this is a cheat trait
@@ -246,7 +247,6 @@ public enum Traits
     PredConverter,
     PredRebirther,
     SeductiveTouch,
-    Charmer,
 
     // Growth-related section
 	Growth,
