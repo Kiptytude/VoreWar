@@ -925,7 +925,7 @@ public class TacticalAI : ITacticalAI
                     {
                         if (spell is StatusSpell status && splashTarget.Unit.GetStatusEffect(status.Type) != null)
                             continue;
-                        if (splashTarget.Unit.Side == actor.Unit.Side)
+                        if (!TacticalUtilities.TreatAsHostile(actor, splashTarget))
                             friendlies++;
                         else if (splashTarget.Surrendered == false)
                             enemies++;

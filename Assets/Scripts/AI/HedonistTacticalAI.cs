@@ -44,7 +44,10 @@ public class HedonistTacticalAI : ITacticalAI
 
     bool didAction;
     bool foundPath;
+    [OdinSerialize]
     List<Actor_Unit> actors;
+    [OdinSerialize]
+    int enemySide;
     [OdinSerialize]
     readonly TacticalTileType[,] tiles;
     [OdinSerialize]
@@ -79,6 +82,8 @@ public class HedonistTacticalAI : ITacticalAI
         this.tiles = tiles;
         this.actors = actors;
         this.defendingVillage = defendingVillage;
+        var enemies = actors.Where(s => s.Unit.Side != AISide).ToList();
+        enemySide = enemies[0].Unit.Side;
     }
 
     public void TurnAI()
@@ -171,7 +176,7 @@ public class HedonistTacticalAI : ITacticalAI
 
                 // This fails to accurately consider units that already started with less than full health, but I find that worth it in exchange for recognizing the peril in having many half digested and wounded units
                 // Also viable retreat plan for 1 man armies and somesuch 
-                // (Would go great with dragon monster packs, now that I think about it) (((they lowkey need their own AI where the kobolds serve and rub them and the dragons sometimes devour them for heals O?O)))
+                // (Would go great with dragon monster packs, now that I think about it) (((they lowkey need their own AI where the kobolds serve and rub them and the dragons sometimes devour them for heals OwO)))
                 if (aIisAttacker)
                 {
                     enemyLoss = State.GameManager.TacticalMode.StartingDefenderPower - enemyPower * enemies.Count;
@@ -277,7 +282,7 @@ public class HedonistTacticalAI : ITacticalAI
         didAction = false; // Very important fix: surrounded retreaters sometimes just skipped doing attacks because this was never set to false in or before "fightwithoutmoving"
 
         path = null;
-        if (retreating && actor.Unit.Type != UnitType.Summon && actor.Unit.Type != UnitType.SpecialMercenary && actor.Unit.HasTrait(Traits.Fearless) == false)
+        if (retreating && actor.Unit.Type != UnitType.Summon && actor.Unit.Type != UnitType.SpecialMercenary && actor.Unit.HasTrait(Traits.Fearless) == false && actor.Unit.GetStatusEffect(StatusEffectType.Charmed) == null && TacticalUtilities.GetPreferredSide(actor, AISide, enemySide) == AISide)
         {
             int retreatY;
             if (State.GameManager.TacticalMode.IsDefender(actor) == false)
@@ -442,7 +447,13 @@ public class HedonistTacticalAI : ITacticalAI
         {
             if (targets[0].distance < 2)
             {
+                int before = actor.Movement;
                 actor.BellyRub(targets[0].actor);
+                if (actor.Movement == before) // The issue that caused this was fixed, so it's now a failsafe that should never actually run.
+                {
+                    targets.RemoveAt(0);
+                    continue;
+                }
                 didAction = true;
                 return;
                 //spareAP -= cost;
@@ -643,7 +654,7 @@ public class HedonistTacticalAI : ITacticalAI
             foreach (Actor_Unit unit in actors)
             {
 
-                if (unit.Targetable && unit.Unit.Side != AISide && unit.Bulk() <= cap)
+                if (unit.Targetable && TacticalUtilities.TreatAsHostile(actor, unit) && unit.Bulk() <= cap)
                 {
                     int distance = unit.Position.GetNumberOfMovesDistance(position);
                     if (distance <= movement || anyDistance)
@@ -793,7 +804,7 @@ public class HedonistTacticalAI : ITacticalAI
             foreach (Actor_Unit unit in actors)
             {
 
-                if (unit.Targetable && unit.Unit.Side != AISide && unit.Bulk() <= cap && TacticalUtilities.FreeSpaceAroundTarget(unit.Position, actor))
+                if (unit.Targetable && TacticalUtilities.TreatAsHostile(actor, unit) && unit.Bulk() <= cap && TacticalUtilities.FreeSpaceAroundTarget(unit.Position, actor))
                 {
                     int distance = unit.Position.GetNumberOfMovesDistance(position);
                     if (distance <= 2 + moves)
@@ -874,7 +885,7 @@ public class HedonistTacticalAI : ITacticalAI
 
         foreach (Actor_Unit unit in actors)
         {
-            if (unit.Targetable == true && TacticalUtilities.FreeSpaceAroundTarget(unit.Position, actor) && unit.Unit.Side != AISide && (unit.Surrendered == false || (onlySurrendered && lackPredators) || currentTurn > 150))
+            if (unit.Targetable == true && TacticalUtilities.FreeSpaceAroundTarget(unit.Position, actor) && TacticalUtilities.TreatAsHostile(actor, unit) && (unit.Surrendered == false || (onlySurrendered && lackPredators) || currentTurn > 150))
             {
                 int distance = unit.Position.GetNumberOfMovesDistance(position);
                 if (distance <= 2 + moves)
@@ -966,7 +977,7 @@ public class HedonistTacticalAI : ITacticalAI
         {
             if (target?.Unit == null) //If this doesn't prevent exceptions I might have to just try/catch this function.  
                 continue;
-            if (target.Targetable == true && target.Unit.Side != AISide && (target.Surrendered == false || (onlySurrendered && lackPredators) || currentTurn > 150))
+            if (target.Targetable == true && TacticalUtilities.TreatAsHostile(actor, target) && (target.Surrendered == false || (onlySurrendered && lackPredators) || currentTurn > 150))
             {
                 int distance = target.Position.GetNumberOfMovesDistance(position);
                 float chance = target.GetAttackChance(actor, true, true);
@@ -1056,7 +1067,7 @@ public class HedonistTacticalAI : ITacticalAI
 
         foreach (Actor_Unit unit in actors)
         {
-            if (unit.Targetable == true && unit.Unit.Side != AISide && (unit.Surrendered == false || (onlySurrendered && lackPredators) || currentTurn > 150))
+            if (unit.Targetable == true && TacticalUtilities.TreatAsHostile(actor, unit) && (unit.Surrendered == false || (onlySurrendered && lackPredators) || currentTurn > 150))
             {
 
                 int distance = unit.Position.GetNumberOfMovesDistance(position);
@@ -1257,7 +1268,7 @@ public class HedonistTacticalAI : ITacticalAI
             }
             else
             {
-                if (targets[0].actor.Position.GetNumberOfMovesDistance(actor.Position) < actor.Movement) //discard the clearly impossible
+                if (targets[0].actor.Position.GetNumberOfMovesDistance(actor.Position) <= actor.Movement + spell.Range.Max) //discard the clearly impossible
                 {
                     MoveToAndAction(actor, targets[0].actor.Position, spell.Range.Max, actor.Movement, () => spell.TryCast(actor, targets[0].actor));
                     if (foundPath && path.Path.Count() < actor.Movement)
@@ -1281,7 +1292,7 @@ public class HedonistTacticalAI : ITacticalAI
         {
             if (spell is StatusSpell statusSpell && unit.Unit.GetStatusEffect(statusSpell.Type) != null)
                 continue; //Don't recast the same spell on the same unit
-            if (unit.Unit.Side != AISide && spell.AcceptibleTargets.Contains(AbilityTargets.Enemy))
+            if (TacticalUtilities.TreatAsHostile(actor, unit) && spell.AcceptibleTargets.Contains(AbilityTargets.Enemy))
             {
                 if (spell.AreaOfEffect > 0)
                 {
@@ -1291,15 +1302,18 @@ public class HedonistTacticalAI : ITacticalAI
                     int enemies = 0;
                     foreach (var splashTarget in TacticalUtilities.UnitsWithinTiles(unit.Position, spell.AreaOfEffect))
                     {
-                        if (splashTarget.Unit.Side == actor.Unit.Side)
+
+                        if (spell is StatusSpell status && splashTarget.Unit.GetStatusEffect(status.Type) != null)
+                            continue;
+                        if (!TacticalUtilities.TreatAsHostile(actor, splashTarget))
                             friendlies++;
-                        else
+                        else if (splashTarget.Surrendered == false)
                             enemies++;
                     }
                     int net = enemies - friendlies;
                     if (net < 1)
                         continue;
-                    targets.Add(new PotentialTarget(unit, net, distance, 4, chance));
+                    targets.Add(new PotentialTarget(unit, net, distance, 4, net * 1000 + chance));
                 }
                 if (unit.Targetable == true && unit.Surrendered == false)
                 {
@@ -1310,7 +1324,7 @@ public class HedonistTacticalAI : ITacticalAI
                 }
             }
 
-            else if (unit.Unit.Side == AISide && spell.AcceptibleTargets.Contains(AbilityTargets.Ally))
+            else if (!TacticalUtilities.TreatAsHostile(actor, unit) && spell.AcceptibleTargets.Contains(AbilityTargets.Ally))
             {
                 if (spell == SpellList.Mending && (100 * unit.Unit.HealthPct) > 84)
                     continue;

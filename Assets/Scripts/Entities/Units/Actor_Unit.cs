@@ -1526,7 +1526,7 @@ public class Actor_Unit
         {
             possible.Add(1);
         }
-        if (target.PredatorComponent.VisibleFullness > 0 || target.PredatorComponent.Stomach2ndFullness > 0)
+        if (target.PredatorComponent.WombFullness > 0 || target.PredatorComponent.CombinedStomachFullness > 0)
         {
             possible.Add(0);
         }
@@ -1549,22 +1549,16 @@ public class Actor_Unit
             case 0:
                 prey = target.PredatorComponent.GetDirectPrey().FirstOrDefault(p => p.Location.Equals(PreyLocation.stomach) || p.Location.Equals(PreyLocation.stomach2) || p.Location.Equals(PreyLocation.anal) || p.Location.Equals(PreyLocation.womb));
                 if (prey == null) break;
-                SetRubMode();
-                target.SetRubbedMode();
                 TacticalUtilities.Log.RegisterBellyRub(Unit, target.Unit, prey.Unit, 1f);
                 break;
             case 1:
                 prey = target.PredatorComponent.GetDirectPrey().FirstOrDefault(p => p.Location.Equals(PreyLocation.breasts) || p.Location.Equals(PreyLocation.leftBreast) || p.Location.Equals(PreyLocation.rightBreast));
                 if (prey == null) break;
-                SetRubMode();
-                target.SetRubbedMode();
                 TacticalUtilities.Log.RegisterBreastRub(Unit, target.Unit, prey.Unit, 1f);
                 break;
             case 2:
                 prey = target.PredatorComponent.GetDirectPrey().FirstOrDefault(p => p.Location.Equals(PreyLocation.balls));
                 if (prey == null) break;
-                SetRubMode();
-                target.SetRubbedMode();
                 TacticalUtilities.Log.RegisterBallMassage(Unit, target.Unit, prey.Unit, 1f);
                 break;
             default:
@@ -1572,9 +1566,10 @@ public class Actor_Unit
         }
          if (!State.GameManager.TacticalMode.turboMode)
         {
+            SetRubMode();
+            target.SetRubbedMode();
             GameObject.Instantiate(State.GameManager.TacticalMode.HandPrefab, new Vector3(target.Position.x + UnityEngine.Random.Range(-0.2F, 0.2F), target.Position.y + 0.1F + UnityEngine.Random.Range(-0.1F, 0.1F)), new Quaternion());
             State.GameManager.TacticalMode.AITimer = Config.TacticalVoreDelay;
-
         }
         target.DigestCheck();
         if (Unit.HasTrait(Traits.PleasurableTouch))
@@ -1892,7 +1887,7 @@ public class Actor_Unit
             }
         }
 
-        if (Config.DamageNumbers == false)
+        if (Config.DamageNumbers == false && !State.GameManager.TacticalMode.turboMode)
         {
             Mode = DisplayMode.Injured;
             animationUpdateTime = 1.0F;
