@@ -2,6 +2,7 @@ using OdinSerializer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using static TacticalAI;
 
 public class HedonistTacticalAI : ITacticalAI
 {
@@ -55,18 +56,19 @@ public class HedonistTacticalAI : ITacticalAI
     [OdinSerialize]
     int targetsEaten;
     [OdinSerialize]
-    public TacticalAI.RetreatConditions retreatPlan;
+    public RetreatConditions retreatPlan;
     [OdinSerialize]
     bool retreating;
     [OdinSerialize]
     readonly bool defendingVillage;
     [OdinSerialize]
     int currentTurn = 0;
+    [OdinSerialize]
+    public bool foreignTurn;
 
     AIPlottedPath path;
 
-
-    public TacticalAI.RetreatConditions RetreatPlan
+    RetreatConditions ITacticalAI.RetreatPlan
     {
         get { return retreatPlan; }
         set
@@ -75,6 +77,14 @@ public class HedonistTacticalAI : ITacticalAI
         }
     }
 
+
+    bool ITacticalAI.ForeignTurn {
+        get
+        {
+            return foreignTurn;
+        }
+        set => foreignTurn = value;
+    }
 
     public HedonistTacticalAI(List<Actor_Unit> actors, TacticalTileType[,] tiles, int AISide, bool defendingVillage = false)
     {
@@ -218,7 +228,7 @@ public class HedonistTacticalAI : ITacticalAI
         }
         foreach (Actor_Unit actor in actors)
         {
-            if (actor.Targetable == true && actor.Unit.Side == AISide && actor.Movement > 0)
+            if (actor.Targetable == true && actor.Unit.Side == AISide && (foreignTurn ? !TacticalUtilities.IsUnitControlledByPlayer(actor.Unit) : true) && actor.Movement > 0)
             {
                 if (path != null && path.Actor == actor)
                 {
@@ -490,7 +500,7 @@ public class HedonistTacticalAI : ITacticalAI
 
         foreach (Actor_Unit unit in actors)
         {
-            if (unit.Targetable == true && !TacticalUtilities.TreatAsHostile(actor, unit) && !unit.Surrendered && unit.PredatorComponent.PreyCount > 0 && !unit.ReceivedRub) // includes self
+            if (unit.Targetable == true && !TacticalUtilities.TreatAsHostile(actor, unit) && unit.Unit.GetStatusEffect(StatusEffectType.Charmed) == null && !unit.Surrendered && unit.PredatorComponent.PreyCount > 0 && !unit.ReceivedRub) // includes self
             {
                 int distance = unit.Position.GetNumberOfMovesDistance(position);
                 if (distance - 1 + (actor.MaxMovement() / 3) <= moves)
@@ -1230,6 +1240,8 @@ public class HedonistTacticalAI : ITacticalAI
 
         Spell spell = actor.Unit.UseableSpells[State.Rand.Next(actor.Unit.UseableSpells.Count())];
 
+        if (spell == SpellList.Charm && actor.Unit.GetStatusEffect(StatusEffectType.Charmed) != null) // Charmed units should not use charm. Trust me.
+            return;
         if (spell.ManaCost > actor.Unit.Mana)
             return;
         if (spell == SpellList.Resurrection)

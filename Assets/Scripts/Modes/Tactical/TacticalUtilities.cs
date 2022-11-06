@@ -222,25 +222,21 @@ static class TacticalUtilities
         }
 
     }
-
-
-    internal static bool IsUnitControlledByAIEnemy(Unit unit)
-    {
-        int defenderSide = State.GameManager.TacticalMode.GetDefenderSide();
-        bool aiDefender = State.GameManager.TacticalMode.AIDefender;
-        bool aiAttacker = State.GameManager.TacticalMode.AIAttacker;
-        if (aiAttacker && aiDefender)
-            return false;
-        return (unit.FixedSide == defenderSide ? aiDefender : aiAttacker);
-    }
     internal static bool IsUnitControlledByPlayer(Unit unit)
     {
+        if (unit.GetStatusEffect(StatusEffectType.Charmed) != null)  // Charmed units may fight for the player, but they are always AI controlled
+            return false;
         int defenderSide = State.GameManager.TacticalMode.GetDefenderSide();
+        int attackerSide = State.GameManager.TacticalMode.GetAttackerSide();
         bool aiDefender = State.GameManager.TacticalMode.AIDefender;
         bool aiAttacker = State.GameManager.TacticalMode.AIAttacker;
-        if (aiAttacker && aiDefender)
-            return false;
-        return (unit.FixedSide == defenderSide ? !aiDefender : !aiAttacker);
+        if (State.GameManager.PureTactical)
+        {
+            return !aiAttacker && attackerSide == unit.FixedSide || !aiDefender && defenderSide == unit.FixedSide;
+        } else
+        {
+            return State.World.GetEmpireOfSide(unit.FixedSide)?.StrategicAI == null;
+        }
     }
 
     static internal bool AppropriateVoreTarget (Actor_Unit pred, Actor_Unit prey)

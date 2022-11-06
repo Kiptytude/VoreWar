@@ -170,7 +170,7 @@ static class StoredLogTexts
         bool ActorLeader(EventLog s) => s.Unit.Type == UnitType.Leader;
         bool TargetHumanoid(EventLog s) => s.Target.Race < Race.Vagrants || s.Target.Race >= Race.Selicia;
         bool CanAddressPlayer(EventLog s) => Config.FourthWallBreakType == FourthWallBreakType.On ||
-                                                TacticalUtilities.IsUnitControlledByAIEnemy(s.Unit) && Config.FourthWallBreakType == FourthWallBreakType.EnemyOnly ||
+                                                !TacticalUtilities.IsUnitControlledByPlayer(s.Unit) && Config.FourthWallBreakType == FourthWallBreakType.EnemyOnly ||
                                                 TacticalUtilities.IsUnitControlledByPlayer(s.Unit) && Config.FourthWallBreakType == FourthWallBreakType.FriendlyOnly;
 
         SwallowMessages = new List<EventString>()

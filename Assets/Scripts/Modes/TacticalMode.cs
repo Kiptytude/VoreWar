@@ -162,6 +162,7 @@ public class TacticalMode : SceneBase
     ITacticalAI currentAI;
     ITacticalAI attackerAI;
     ITacticalAI defenderAI;
+    ITacticalAI foreignAI;
 
     public double StartingAttackerPower;
     public double StartingDefenderPower;
@@ -2152,9 +2153,9 @@ Turns: {currentTurn}
             if (AIDefender == false)
             {
                 if (defenderRace == Race.FeralLions)
-                    defenderAI = new HedonistTacticalAI(units, tiles, armies[1].Side);
+                    defenderAI = new HedonistTacticalAI(units, tiles, defenderSide);
                 else
-                    defenderAI = new TacticalAI(units, tiles, armies[1].Side);
+                    defenderAI = new TacticalAI(units, tiles, defenderSide);
                 if (SkipUI.AllowRetreat.isOn)
                     defenderAI.RetreatPlan = new TacticalAI.RetreatConditions(.2f, 0);
                 AIDefender = true;
@@ -2170,9 +2171,9 @@ Turns: {currentTurn}
             else if (AIAttacker == false)
             {
                 if ((armies[0]?.Empire?.ReplacedRace == Race.FeralLions))
-                    attackerAI = new HedonistTacticalAI(units, tiles, armies[0].Side);
+                    attackerAI = new HedonistTacticalAI(units, tiles, attackerSide);
                 else
-                    attackerAI = new TacticalAI(units, tiles, armies[0].Side);
+                    attackerAI = new TacticalAI(units, tiles, attackerSide);
                 if (SkipUI.AllowRetreat.isOn)
                     attackerAI.RetreatPlan = new TacticalAI.RetreatConditions(.2f, 0);
                 AIAttacker = true;
@@ -2457,6 +2458,7 @@ Turns: {currentTurn}
         }
         if (waitingForDialog)
             return;
+        var foreignUnits = units.Where(unit => unit.Unit.Side == activeSide && !TacticalUtilities.IsUnitControlledByPlayer(unit.Unit) && unit.Movement > 0).ToList();
         if (IsPlayerTurn)
         {
             if (RunningFriendlyAI)
@@ -2473,7 +2475,32 @@ Turns: {currentTurn}
                         RunningFriendlyAI = false;
                         EndTurn();
                     }
-                    if (AITimer == 0)
+                    if (AITimer <= 0)
+                        AITimer = Config.TacticalPlayerMovementDelay;
+                }
+            } else if (foreignAI != null || foreignUnits.Count() > 0)
+            {
+                var hedonistList = foreignUnits.Where(u => u.Unit.GetStatusEffect(StatusEffectType.Charmed) != null || u.Unit.Race == Race.FeralLions).ToList();
+                if (foreignAI == null || (foreignAI.GetType() == typeof(HedonistTacticalAI) && hedonistList.Count() == 0))
+                {
+                    if (hedonistList.Count() > 0)   
+                        foreignAI = new HedonistTacticalAI(units, tiles, activeSide);
+                    else
+                        foreignAI = new TacticalAI(units, tiles, activeSide);
+                }
+                foreignAI.ForeignTurn = true;
+                if (AITimer > 0)
+                {
+                    AITimer -= dt;
+                }
+                else
+                {
+                    //do AI processing
+                    if (foreignAI.RunAI() == false)
+                    {
+                        foreignAI = null;
+                    }
+                    if (AITimer <= 0)
                         AITimer = Config.TacticalPlayerMovementDelay;
                 }
             }
