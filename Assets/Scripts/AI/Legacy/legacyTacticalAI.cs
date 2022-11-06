@@ -28,6 +28,18 @@ namespace LegacyAI
             }
         }
 
+        [OdinSerialize]
+        public bool foreignTurn;
+
+        bool ITacticalAI.ForeignTurn
+        {
+            get
+            {
+                return foreignTurn;
+            }
+            set => foreignTurn = value;
+        }
+
         public LegacyTacticalAI(List<Actor_Unit> actors, TacticalTileType[,] tiles, int AIteam)
         {
             AISide = AIteam;

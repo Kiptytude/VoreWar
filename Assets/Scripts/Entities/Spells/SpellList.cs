@@ -382,7 +382,7 @@ static class SpellList
             AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy },
             Range = new Range(6),
             Duration = (a, t) => 2 + a.Unit.GetStat(Stat.Mind) / 10,
-            Effect = (a, t) => a.Unit.Side,
+            Effect = (a, t) => a.Unit.hiddenFixedSide ? a.Unit.Side : a.Unit.FixedSide,         // the unit will act to the best of its knowledge
             Type = StatusEffectType.Charmed,
             Tier = 3,
             Resistable = true,

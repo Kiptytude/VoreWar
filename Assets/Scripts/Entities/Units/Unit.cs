@@ -1861,6 +1861,7 @@ public class Unit
     {
         if (type == StatusEffectType.Poisoned && HasTrait(Traits.PoisonSpit))
             return;
+        StatusEffects.Remove(GetStatusEffect(type));                    // if null, nothing happens, otherwise status is effectively overwritten
         StatusEffects.Add(new StatusEffect(type, strength, duration));
     }
 

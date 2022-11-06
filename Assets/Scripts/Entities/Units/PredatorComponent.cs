@@ -899,8 +899,8 @@ public class PredatorComponent
             if (unit.HasTrait(Traits.Growth))
             {
                 unit.BaseScale += ((float)totalHeal / preyUnit.Unit.MaxHealth * .2d) * CalculateGrowthValue(preyUnit);
-                if (unit.BaseScale > 5)
-                    unit.BaseScale = 5.0d;
+                if (unit.BaseScale > Config.GrowthCap)
+                    unit.BaseScale = Config.GrowthCap;
             }
         }
         if (!(unit.Health < unit.MaxHealth))
@@ -922,7 +922,7 @@ public class PredatorComponent
         float predMass = unit.TraitBoosts.BulkMultiplier * State.RaceSettings.GetBodySize(unit.Race);
         float sizeDiff = (preyUnit.Unit.GetScale(2) * preyMass) / (unit.GetScale(2) * predMass);
         float preyBoosts = (((preyUnit.Unit.TraitBoosts.Outgoing.Nutrition - 1) * .2f) + 1f) * preyUnit.Unit.TraitBoosts.Outgoing.GrowthRate;
-        float predBoosts = (((unit.TraitBoosts.Incoming.Nutrition - 1) * .2f) + 1f) * unit.TraitBoosts.Incoming.GrowthRate;
+        float predBoosts = (((unit.TraitBoosts.Incoming.Nutrition - 1) * .2f) + 1f) * unit.TraitBoosts.Incoming.GrowthRate * Config.GrowthMod;
         return sizeDiff * preyBoosts * predBoosts;
     }
 
@@ -979,7 +979,8 @@ public class PredatorComponent
                 preyUnit.Actor.Surrendered = false;
                 FreeUnit(preyUnit.Actor);
                 TacticalUtilities.Log.RegisterBirth(unit, preyUnit.Unit, 1f);
-                actor.SetBirthMode();
+                if (!State.GameManager.TacticalMode.turboMode)
+                    actor.SetBirthMode();
                 return 0;
             }
             if (Location(preyUnit) == PreyLocation.womb && preyUnit.Unit.CanBeConverted() && preyUnit.Unit.Type != UnitType.Summon && preyUnit.Unit.Type != UnitType.Leader && preyUnit.Unit.Type != UnitType.SpecialMercenary && preyUnit.Unit.HasTrait(Traits.Eternal) == false && preyUnit.Unit.SavedCopy == null && unit.HasTrait(Traits.PredConverter) && unit.HasTrait(Traits.PredRebirther) == false && unit.HasTrait(Traits.PredGusher) == false)
@@ -991,12 +992,14 @@ public class PredatorComponent
                 preyUnit.Actor.Surrendered = false;
                 FreeUnit(preyUnit.Actor);
                 TacticalUtilities.Log.RegisterBirth(unit, preyUnit.Unit, 1f);
-                actor.SetBirthMode();
+                if (!State.GameManager.TacticalMode.turboMode)
+                    actor.SetBirthMode();
                 return 0;
             }
             State.GameManager.TacticalMode.TacticalStats.RegisterDigestion(unit.Side);
             TacticalUtilities.Log.RegisterDigest(unit, preyUnit.Unit, Location(preyUnit));
-            actor.SetDigestionMode();
+            if (!State.GameManager.TacticalMode.turboMode)
+                actor.SetDigestionMode();
             if (State.GameManager.TacticalMode.turboMode == false && Config.DigestionSkulls)
                 GameObject.Instantiate(State.GameManager.TacticalMode.SkullPrefab, new Vector3(actor.Position.x + UnityEngine.Random.Range(-0.2F, 0.2F), actor.Position.y + 0.1F + UnityEngine.Random.Range(-0.1F, 0.1F)), new Quaternion());
             Actor_Unit existingPredator = actor;
@@ -1196,7 +1199,8 @@ public class PredatorComponent
                     }
                     FreeUnit(preyUnit.Actor);
                     TacticalUtilities.Log.RegisterBirth(unit, preyUnit.Unit, 1f);
-                    actor.SetBirthMode();
+                    if (!State.GameManager.TacticalMode.turboMode)
+                        actor.SetBirthMode();
                     RemovePrey(preyUnit);
                     return 0;
                 }
@@ -1258,7 +1262,8 @@ public class PredatorComponent
                     }
                 }
                 AbsorptionEffect(preyUnit, Location(preyUnit));
-                actor.SetAbsorbtionMode();
+                if (!State.GameManager.TacticalMode.turboMode)
+                    actor.SetAbsorbtionMode();
                 CheckPredTraitAbsorption(preyUnit);
 
                 if (preyUnit.SubPrey?.Count() > 0) //Catches any dead prey that weren't already properly moved
@@ -2128,7 +2133,8 @@ public class PredatorComponent
             if (r < v)
             {
                 PerformConsume(target, action, preyType, v, delay);
-                actor.SetVoreSuccessMode();
+                if (!State.GameManager.TacticalMode.turboMode)
+                    actor.SetVoreSuccessMode();
                 if (unit.HasTrait(Traits.Tenacious))
                     unit.RemoveTenacious();
                 if (unit.HasTrait(Traits.FearsomeAppetite))
@@ -2141,7 +2147,8 @@ public class PredatorComponent
             }
             else
             {
-                actor.SetVoreFailMode();
+                if (!State.GameManager.TacticalMode.turboMode)
+                    actor.SetVoreFailMode();
                 if (actor.Unit.HasTrait(Traits.Biter))
                 {
                     int oldMP = actor.Movement;
@@ -2511,7 +2518,7 @@ public class PredatorComponent
                     rightHeal += CalcFeedValue(preyUnit, actor);
                 rightExp += CalcFeedBonus(preyUnit);
             }
-            if (leftHeal + rightHeal > 0)
+            if (leftHeal + rightHeal > 0 && !State.GameManager.TacticalMode.turboMode)
             {
                 target.SetSuckledMode();
                 actor.SetSuckleMode();
@@ -2531,7 +2538,7 @@ public class PredatorComponent
                     heal += CalcFeedValue(preyUnit, actor);
                 exp += CalcFeedBonus(preyUnit);
             }
-            if (heal > 0)
+            if (heal > 0 && !State.GameManager.TacticalMode.turboMode)
             {
                 target.SetSuckledMode();
                 actor.SetSuckleMode();
@@ -2550,9 +2557,12 @@ public class PredatorComponent
                 heal += CalcFeedValue(preyUnit, actor);
             exp += CalcFeedBonus(preyUnit);
         }
-        if (heal > 0) { 
-            target.SetSuckledMode();
-            actor.SetSuckleMode();
+        if (heal > 0) {
+            if (!State.GameManager.TacticalMode.turboMode)
+            {
+                target.SetSuckledMode();
+                actor.SetSuckleMode();
+            }   
         }
         return new int[] { heal, exp, 3 };
     }

@@ -2,6 +2,7 @@ using OdinSerializer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Policy;
 
 public class TacticalAI : ITacticalAI
 {
@@ -65,6 +66,17 @@ public class TacticalAI : ITacticalAI
     readonly bool defendingVillage;
     [OdinSerialize]
     int currentTurn = 0;
+    [OdinSerialize]
+    public bool foreignTurn;
+
+    bool ITacticalAI.ForeignTurn
+    {
+        get
+        {
+            return foreignTurn;
+        }
+        set => foreignTurn = value;
+    }
 
     AIPlottedPath path;
 
@@ -221,7 +233,7 @@ public class TacticalAI : ITacticalAI
         }
         foreach (Actor_Unit actor in actors)
         {
-            if (actor.Targetable == true && actor.Unit.Side == AISide && actor.Movement > 0)
+            if (actor.Targetable == true && actor.Unit.Side == AISide && (foreignTurn ? !TacticalUtilities.IsUnitControlledByPlayer(actor.Unit) : true) && actor.Movement > 0)
             {
                 if (path != null && path.Actor == actor)
                 {
@@ -925,7 +937,7 @@ public class TacticalAI : ITacticalAI
                     {
                         if (spell is StatusSpell status && splashTarget.Unit.GetStatusEffect(status.Type) != null)
                             continue;
-                        if (splashTarget.Unit.Side == actor.Unit.Side)
+                        if (!TacticalUtilities.TreatAsHostile(actor, splashTarget))
                             friendlies++;
                         else if (splashTarget.Surrendered == false)
                             enemies++;

@@ -170,7 +170,7 @@ static class StoredLogTexts
         bool ActorLeader(EventLog s) => s.Unit.Type == UnitType.Leader;
         bool TargetHumanoid(EventLog s) => s.Target.Race < Race.Vagrants || s.Target.Race >= Race.Selicia;
         bool CanAddressPlayer(EventLog s) => Config.FourthWallBreakType == FourthWallBreakType.On ||
-                                                TacticalUtilities.IsUnitControlledByAIEnemy(s.Unit) && Config.FourthWallBreakType == FourthWallBreakType.EnemyOnly ||
+                                                !TacticalUtilities.IsUnitControlledByPlayer(s.Unit) && Config.FourthWallBreakType == FourthWallBreakType.EnemyOnly ||
                                                 TacticalUtilities.IsUnitControlledByPlayer(s.Unit) && Config.FourthWallBreakType == FourthWallBreakType.FriendlyOnly;
 
         SwallowMessages = new List<EventString>()
@@ -1119,7 +1119,11 @@ static class StoredLogTexts
             priority: 11, targetRace: Race.FeralLions, conditional: s => s.Target != s.Unit, actorRace: Race.FeralLions),
             new EventString((i) => $"<b>{i.Unit.Name}</b> walks by <b>{i.Target.Name}</b> and gives {GPPHis(i.Target)} {(PreyDead(i) ? "sloshing" : "squirming")} belly some stimulating licks in passing.",
             priority: 11, targetRace: Race.FeralLions, conditional: s => s.Target != s.Unit, actorRace: Race.FeralLions),
-             new EventString((i) => $"<b>{i.Target.Name}</b> doesn't suspect the surprise attack, as <b>{i.Unit.Name}</b> playfully jumps on their back with a tight hug, chewing on their neck while kneading their belly into churning overtures.",
+            new EventString((i) => $"<b>{i.Unit.Name}</b> finds <b>{i.Target.Name}</b> lazing on {GPPHis(i.Target)} back and gives {GPPHis(i.Target)} {PreyLocStrings.ToSyn(i.preyLocation)} a vigorous nuzzle, pressing {GPPHis(i.Unit)} face into the tummy{((PreyDead(i) && Farts(i) && InStomach(i)) ? ", stirring the liquefied prey and causing a little bit of <b>" + i.Prey.Name + "</b> gas to be squished out of "+ GPPHis(i.Target) + " butt": "")}.",
+            priority: 11, targetRace: Race.FeralLions, conditional: s => s.Target != s.Unit, actorRace: Race.FeralLions),
+            new EventString((i) => $"<b>{i.Unit.Name}</b> partially lays {GPPHimself(i.Unit)} on top of <b>{i.Target.Name}</b> to passionately groom {GPPHis(i.Target)} capacious gut, causing {GPPHis(i.Target)} prey to be assaulted by a cascade of fresh gastric juices and fervid churning.",
+            priority: 11, targetRace: Race.FeralLions, conditional: s => s.Target != s.Unit, actorRace: Race.FeralLions),
+            new EventString((i) => $"<b>{i.Target.Name}</b> doesn't suspect the surprise attack, as <b>{i.Unit.Name}</b> playfully jumps on their back with a tight hug, chewing on their neck while kneading their belly into churning overtures.",
             priority: 11, targetRace: Race.FeralLions, conditional: s => s.Target != s.Unit, actorRace: Race.FeralLions),
             new EventString((i) => $"<b>{i.Unit.Name}</b> shoves <b>{i.Target.Name}</b> over and rolls {GPPHim(i.Target)} on {GPPHis(i.Target)} back, then lays {GPPHimself(i.Unit)} on top, squishing bellies together and making their gurgles vibrate eachother's prey.",
             priority: 11, conditional: s => TacticalUtilities.GetActorOf(s.Unit).HasBelly && s.Target != s.Unit, targetRace: Race.FeralLions, actorRace: Race.FeralLions),
