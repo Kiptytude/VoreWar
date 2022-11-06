@@ -192,6 +192,10 @@ static class Config
     internal static float WeightLossFractionBreasts => World.WeightLossFractionBreasts;
     internal static float WeightLossFractionBody => World.WeightLossFractionBody;
     internal static float WeightLossFractionDick => World.WeightLossFractionDick;
+    internal static float GrowthDecayIncreaseRate => World.GrowthDecayIncreaseRate;
+    internal static float GrowthDecayOffset => World.GrowthDecayOffset;
+    internal static float GrowthMod => World.GrowthMod;
+    internal static float GrowthCap => World.GrowthCap;
     internal static float FurryFraction => World.FurryFraction;
     internal static float CustomEventFrequency => World.CustomEventFrequency;
     internal static float TacticalWaterValue => World.TacticalWaterValue;
@@ -242,6 +246,7 @@ static class Config
 
     internal static bool WeightGain => World.GetValue("WeightGain");
     internal static bool WeightLoss => World.GetValue("WeightLoss");
+
     internal static bool FurryHandsAndFeet => World.GetValue("FurryHandsAndFeet");
     internal static bool FurryFluff => World.GetValue("FurryFluff");
     internal static bool FurryGenitals => World.GetValue("FurryGenitals");

@@ -534,7 +534,7 @@ public class TacticalMode : SceneBase
             defenderAI = new LegacyTacticalAI(units, tiles, defenderSide);
         else
         {
-            if (defender?.Empire?.ReplacedRace == Race.FeralLions || defender?.Empire?.Race == Race.FeralLions)
+            if (defender?.Empire?.ReplacedRace == Race.FeralLions)
                 defenderAI = new HedonistTacticalAI(units, tiles, defenderSide, village != null);
             else
                 defenderAI = new TacticalAI(units, tiles, defenderSide, village != null);
@@ -2143,38 +2143,20 @@ Turns: {currentTurn}
 
     internal void ProcessSkip(bool surrender, bool watchRest)
     {
+        var defenderRace = armies[1]?.Empire?.ReplacedRace ?? village?.Empire?.ReplacedRace ?? ((Race)defenderSide);
+        var attackerRace = armies[0]?.Empire?.ReplacedRace;
+
         manualSkip = true;
         if (IsPlayerTurn == false)
         {
             if (AIDefender == false)
             {
-                if ((armies[1]?.Empire?.ReplacedRace ?? village?.Empire?.ReplacedRace ?? ((Race)defenderSide)) == Race.FeralLions)
+                if (defenderRace == Race.FeralLions)
                     defenderAI = new HedonistTacticalAI(units, tiles, armies[1].Side);
                 else
                     defenderAI = new TacticalAI(units, tiles, armies[1].Side);
                 if (SkipUI.AllowRetreat.isOn)
-                    if (armies[1]?.Empire?.ReplacedRace == Race.Vagrants)
-                    {
-                        defenderAI.RetreatPlan = new TacticalAI.RetreatConditions(.2f, armies[1].Units.Count + 2);
-                    }
-                    else if (armies[1]?.Empire?.ReplacedRace == Race.FeralLions)
-                    {
-                        defenderAI.RetreatPlan = new TacticalAI.RetreatConditions(0, armies[1].Units.Count * 3, 0.9f);
-                    }
-                    else if (armies[1]?.Empire is MonsterEmpire)
-                    {
-                        if (armies[1].Units.Where(s => s.HasTrait(Traits.EvasiveBattler)).Count() / (float)armies[1].Units.Count > .8f) //If more than 80% has fast flee
-                            defenderAI.RetreatPlan = new TacticalAI.RetreatConditions(.05f, 0);
-                        else
-                            defenderAI.RetreatPlan = new TacticalAI.RetreatConditions(.025f, 0);
-                    }
-                    else
-                    {
-                        if (armies[1].Units.Where(s => s.HasTrait(Traits.EvasiveBattler)).Count() / (float)armies[1].Units.Count > .8f)
-                            defenderAI.RetreatPlan = new TacticalAI.RetreatConditions(.3f, 0);
-                        else
-                            defenderAI.RetreatPlan = new TacticalAI.RetreatConditions(.15f, 0);
-                    }
+                    defenderAI.RetreatPlan = new TacticalAI.RetreatConditions(.2f, 0);
                 AIDefender = true;
                 if (surrender)
                 {
@@ -2187,33 +2169,12 @@ Turns: {currentTurn}
             }
             else if (AIAttacker == false)
             {
-                if ((armies[0]?.Empire?.ReplacedRace ?? village?.Empire?.ReplacedRace ?? ((Race)defenderSide)) == Race.FeralLions)
+                if ((armies[0]?.Empire?.ReplacedRace == Race.FeralLions))
                     attackerAI = new HedonistTacticalAI(units, tiles, armies[0].Side);
                 else
-                attackerAI = new TacticalAI(units, tiles, armies[0].Side);
+                    attackerAI = new TacticalAI(units, tiles, armies[0].Side);
                 if (SkipUI.AllowRetreat.isOn)
-                    if (armies[0]?.Empire?.ReplacedRace == Race.Vagrants)
-                    {
-                        attackerAI.RetreatPlan = new TacticalAI.RetreatConditions(.2f, armies[0].Units.Count + 2);
-                    }
-                    else if (armies[0]?.Empire?.ReplacedRace == Race.FeralLions)
-                    {
-                        attackerAI.RetreatPlan = new TacticalAI.RetreatConditions(0, armies[0].Units.Count * 3, 0.9f);
-                    }
-                    else if (armies[0]?.Empire is MonsterEmpire)
-                    {
-                        if (armies[0].Units.Where(s => s.HasTrait(Traits.EvasiveBattler)).Count() / (float)armies[0].Units.Count > .8f) //If more than 80% has fast flee
-                            attackerAI.RetreatPlan = new TacticalAI.RetreatConditions(.05f, 0);
-                        else
-                            attackerAI.RetreatPlan = new TacticalAI.RetreatConditions(.025f, 0);
-                    }
-                    else
-                    {
-                        if (armies[0].Units.Where(s => s.HasTrait(Traits.EvasiveBattler)).Count() / (float)armies[0].Units.Count > .8f)
-                            attackerAI.RetreatPlan = new TacticalAI.RetreatConditions(.3f, 0);
-                        else
-                            attackerAI.RetreatPlan = new TacticalAI.RetreatConditions(.15f, 0);
-                    }
+                    attackerAI.RetreatPlan = new TacticalAI.RetreatConditions(.2f, 0);
                 AIAttacker = true;
                 if (surrender)
                 {
@@ -2230,65 +2191,23 @@ Turns: {currentTurn}
         }
         if (attackersTurn)
         {
-            if ((armies[0]?.Empire?.ReplacedRace ?? village?.Empire?.ReplacedRace ?? ((Race)defenderSide)) == Race.FeralLions)
-                attackerAI = new HedonistTacticalAI(units, tiles, armies[0].Side);
+            if ((armies[0]?.Empire?.ReplacedRace == Race.FeralLions))
+                attackerAI = new HedonistTacticalAI(units, tiles, activeSide);
             else
-                attackerAI = new TacticalAI(units, tiles, armies[0].Side);
+                attackerAI = new TacticalAI(units, tiles, activeSide);
             if (SkipUI.AllowRetreat.isOn)
-                if (armies[0]?.Empire?.ReplacedRace == Race.Vagrants)
-                {
-                    attackerAI.RetreatPlan = new TacticalAI.RetreatConditions(.2f, armies[0].Units.Count + 2);
-                }
-                else if (armies[0]?.Empire?.ReplacedRace == Race.FeralLions)
-                {
-                    attackerAI.RetreatPlan = new TacticalAI.RetreatConditions(0, armies[0].Units.Count * 3, 0.9f);
-                }
-                else if (armies[0]?.Empire is MonsterEmpire)
-                {
-                    if (armies[0].Units.Where(s => s.HasTrait(Traits.EvasiveBattler)).Count() / (float)armies[0].Units.Count > .8f) //If more than 80% has fast flee
-                        attackerAI.RetreatPlan = new TacticalAI.RetreatConditions(.05f, 0);
-                    else
-                        attackerAI.RetreatPlan = new TacticalAI.RetreatConditions(.025f, 0);
-                }
-                else
-                {
-                    if (armies[0].Units.Where(s => s.HasTrait(Traits.EvasiveBattler)).Count() / (float)armies[0].Units.Count > .8f)
-                        attackerAI.RetreatPlan = new TacticalAI.RetreatConditions(.3f, 0);
-                    else
-                        attackerAI.RetreatPlan = new TacticalAI.RetreatConditions(.15f, 0);
-                }
+                attackerAI.RetreatPlan = new TacticalAI.RetreatConditions(.2f, 0);
             AIAttacker = true;
             currentAI = attackerAI;
         }
         else
         {
             if ((armies[1]?.Empire?.ReplacedRace ?? village?.Empire?.ReplacedRace ?? ((Race)defenderSide)) == Race.FeralLions)
-                defenderAI = new HedonistTacticalAI(units, tiles, armies[1].Side);
+                defenderAI = new HedonistTacticalAI(units, tiles, activeSide);
             else
-                defenderAI = new TacticalAI(units, tiles, armies[1].Side);
+                defenderAI = new TacticalAI(units, tiles, activeSide);
             if (SkipUI.AllowRetreat.isOn)
-                if (armies[1]?.Empire?.ReplacedRace == Race.Vagrants)
-                {
-                    defenderAI.RetreatPlan = new TacticalAI.RetreatConditions(.2f, armies[1].Units.Count + 2);
-                }
-                else if (armies[1]?.Empire?.ReplacedRace == Race.FeralLions)
-                {
-                    defenderAI.RetreatPlan = new TacticalAI.RetreatConditions(0, armies[1].Units.Count * 3, 0.9f);
-                }
-                else if (armies[1]?.Empire is MonsterEmpire)
-                {
-                    if (armies[1].Units.Where(s => s.HasTrait(Traits.EvasiveBattler)).Count() / (float)armies[1].Units.Count > .8f) //If more than 80% has fast flee
-                        defenderAI.RetreatPlan = new TacticalAI.RetreatConditions(.05f, 0);
-                    else
-                        defenderAI.RetreatPlan = new TacticalAI.RetreatConditions(.025f, 0);
-                }
-                else
-                {
-                    if (armies[1].Units.Where(s => s.HasTrait(Traits.EvasiveBattler)).Count() / (float)armies[1].Units.Count > .8f)
-                        defenderAI.RetreatPlan = new TacticalAI.RetreatConditions(.3f, 0);
-                    else
-                        defenderAI.RetreatPlan = new TacticalAI.RetreatConditions(.15f, 0);
-                }
+                defenderAI.RetreatPlan = new TacticalAI.RetreatConditions(.2f, 0);
             AIDefender = true;
             currentAI = defenderAI;
         }

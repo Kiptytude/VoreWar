@@ -899,8 +899,8 @@ public class PredatorComponent
             if (unit.HasTrait(Traits.Growth))
             {
                 unit.BaseScale += ((float)totalHeal / preyUnit.Unit.MaxHealth * .2d) * CalculateGrowthValue(preyUnit);
-                if (unit.BaseScale > 5)
-                    unit.BaseScale = 5.0d;
+                if (unit.BaseScale > Config.GrowthCap)
+                    unit.BaseScale = Config.GrowthCap;
             }
         }
         if (!(unit.Health < unit.MaxHealth))
@@ -922,7 +922,7 @@ public class PredatorComponent
         float predMass = unit.TraitBoosts.BulkMultiplier * State.RaceSettings.GetBodySize(unit.Race);
         float sizeDiff = (preyUnit.Unit.GetScale(2) * preyMass) / (unit.GetScale(2) * predMass);
         float preyBoosts = (((preyUnit.Unit.TraitBoosts.Outgoing.Nutrition - 1) * .2f) + 1f) * preyUnit.Unit.TraitBoosts.Outgoing.GrowthRate;
-        float predBoosts = (((unit.TraitBoosts.Incoming.Nutrition - 1) * .2f) + 1f) * unit.TraitBoosts.Incoming.GrowthRate;
+        float predBoosts = (((unit.TraitBoosts.Incoming.Nutrition - 1) * .2f) + 1f) * unit.TraitBoosts.Incoming.GrowthRate * Config.GrowthMod;
         return sizeDiff * preyBoosts * predBoosts;
     }
 

@@ -555,7 +555,7 @@ public class InfoPanel
             if (unit.HasTrait(Traits.Frenzy) && unit.EnemiesKilledThisBattle > 0)
                 sbSecond.AppendLine($"Frenzy ({unit.EnemiesKilledThisBattle})");
             if (unit.HasTrait(Traits.Growth) && unit.BaseScale > 1)
-                sbSecond.AppendLine($"Growth ({Math.Round(unit.GetScale(),2)})");
+                sbSecond.AppendLine($"Growth ({Math.Round(unit.BaseScale,2)}x)");
             if (actor?.Slimed ?? false)
                 sbSecond.AppendLine("Slimed");
             if (actor?.Paralyzed ?? false)

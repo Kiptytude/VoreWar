@@ -18,6 +18,10 @@ public class ContentSettings : MonoBehaviour
     public Slider WeightLossFractionBreasts;
     public Slider WeightLossFractionBody;
     public Slider WeightLossFractionDick;
+    public InputField GrowthCap;
+    public InputField GrowthMod;
+    public InputField GrowthDecayOffset;
+    public InputField GrowthDecayIncreaseRate;
     public Toggle FurryHandsAndFeet;
     public Toggle FurryFluff;
     public Slider FurryFraction;
@@ -572,6 +576,10 @@ public class ContentSettings : MonoBehaviour
         Config.World.WeightLossFractionBreasts = PlayerPrefs.GetFloat("WeightLossFractionBreasts", .2f);
         Config.World.WeightLossFractionBody = PlayerPrefs.GetFloat("WeightLossFractionBody", .2f);
         Config.World.WeightLossFractionDick = PlayerPrefs.GetFloat("WeightLossFractionDick", .2f);
+        Config.World.GrowthCap = PlayerPrefs.GetFloat("GrowthCap", 5f);
+        Config.World.GrowthMod = PlayerPrefs.GetFloat("GrowthMod", 1f);
+        Config.World.GrowthDecayOffset = PlayerPrefs.GetFloat("GrowthDecayOffset", 0);
+        Config.World.GrowthDecayIncreaseRate = PlayerPrefs.GetFloat("GrowthDecayIncreaseRate", 0.04f);
         Config.World.TacticalTerrainFrequency = PlayerPrefs.GetFloat("TacticalTerrainFrequency", 10f);
         Config.World.TacticalWaterValue = PlayerPrefs.GetFloat("TacticalWaterValue", .29f);
         Config.World.BreastSizeModifier = PlayerPrefs.GetInt("BreastSizeModifier", 0);
@@ -677,6 +685,10 @@ public class ContentSettings : MonoBehaviour
         WeightLossFractionBreasts.value = Config.WeightLossFractionBreasts;
         WeightLossFractionBody.value = Config.WeightLossFractionBody;
         WeightLossFractionDick.value = Config.WeightLossFractionDick;
+        GrowthMod.text = Config.GrowthMod.ToString();
+        GrowthCap.text = Config.GrowthCap.ToString();
+        GrowthDecayOffset.text = Config.GrowthDecayOffset.ToString();   
+        GrowthDecayIncreaseRate.text = Config.GrowthDecayIncreaseRate.ToString();
         FurryFraction.value = Config.FurryFraction;
         TacticalWaterValue.value = Config.TacticalWaterValue;
         TacticalTerrainFrequency.value = Config.TacticalTerrainFrequency;
@@ -857,6 +869,22 @@ public class ContentSettings : MonoBehaviour
         Config.World.WeightLossFractionBreasts = WeightLossFractionBreasts.value;
         Config.World.WeightLossFractionBody = WeightLossFractionBody.value;
         Config.World.WeightLossFractionDick = WeightLossFractionDick.value;
+        if (float.TryParse(GrowthMod.text, out float gm))
+            Config.World.GrowthMod = gm;
+        else
+            Config.World.GrowthMod = 1;
+        if (float.TryParse(GrowthCap.text, out float gc))
+            Config.World.GrowthCap = gc;
+        else
+            Config.World.GrowthCap = 5f;
+        if (float.TryParse(GrowthDecayIncreaseRate.text, out float gir))
+            Config.World.GrowthDecayIncreaseRate = gir;
+        else
+            Config.World.GrowthDecayIncreaseRate = 0.04f;
+        if (float.TryParse(GrowthDecayOffset.text, out float gos))
+            Config.World.GrowthDecayOffset = gos;
+        else
+            Config.World.GrowthDecayOffset = 0f;
         Config.World.TacticalTerrainFrequency = TacticalTerrainFrequency.value;
         Config.World.TacticalWaterValue = TacticalWaterValue.value;
         Config.World.AutoSurrenderChance = AutoSurrenderChance.value;
@@ -1006,6 +1034,22 @@ public class ContentSettings : MonoBehaviour
         PlayerPrefs.SetFloat("WeightLossFractionBreasts", WeightLossFractionBreasts.value);
         PlayerPrefs.SetFloat("WeightLossFractionBody", WeightLossFractionBody.value);
         PlayerPrefs.SetFloat("WeightLossFractionDick", WeightLossFractionDick.value);
+        if (float.TryParse(GrowthDecayIncreaseRate.text, out float gir))
+            PlayerPrefs.SetFloat("GrowthDecayIncreaseRate", gir);
+        else
+            PlayerPrefs.SetFloat("GrowthDecayIncreaseRate", 0.04f);
+        if (float.TryParse(GrowthDecayOffset.text, out float gos))
+            PlayerPrefs.SetFloat("GrowthDecayOffset", gos);
+        else
+            PlayerPrefs.SetFloat("GrowthDecayOffset", 0);
+        if (float.TryParse(GrowthMod.text, out float gm))
+            PlayerPrefs.SetFloat("GrowthMod", gm);
+        else
+            PlayerPrefs.SetFloat("GrowthMod", 1f);
+        if (float.TryParse(GrowthCap.text, out float gc))
+            PlayerPrefs.SetFloat("GrowthCap", gc);
+        else
+            PlayerPrefs.SetFloat("GrowthCap", 5f);
         PlayerPrefs.SetFloat("TacticalWaterValue", TacticalWaterValue.value);
         PlayerPrefs.SetFloat("TacticalTerrainFrequency", TacticalTerrainFrequency.value);
         PlayerPrefs.SetFloat("OverallMonsterSpawnRateModifier", OverallMonsterSpawnRateModifier.value);
