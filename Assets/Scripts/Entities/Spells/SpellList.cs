@@ -419,6 +419,12 @@ static class SpellList
                         AvailableRaces.Add(Race.Vagrants);
                     Race summonRace = AvailableRaces[State.Rand.Next(AvailableRaces.Count())];
                     Unit unit = new Unit(a.Unit.Side, summonRace, (int)(a.Unit.Experience * .50f), true, UnitType.Summon);
+                    var actorCharm = a.Unit.GetStatusEffect(StatusEffectType.Charmed);
+                    if (actorCharm != null)
+                    {
+                        unit.ApplyStatusEffect(StatusEffectType.Charmed, actorCharm.Strength, actorCharm.Duration)
+                    }
+                        
                     StrategicUtilities.SpendLevelUps(unit);
                     State.GameManager.TacticalMode.AddUnitToBattle(unit, loc);
                 }
