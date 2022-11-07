@@ -776,7 +776,8 @@ static class RaceParameters
                 Traits.Dazzle,
                 Traits.Flight,
                 Traits.EnthrallingDepths,
-                Traits.PleasurableTouch
+                Traits.PleasurableTouch,
+                Traits.Charmer
             },
             RaceStats = new RaceStats()
             {
