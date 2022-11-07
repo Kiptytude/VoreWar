@@ -230,6 +230,18 @@ public class HedonistTacticalAI : ITacticalAI
         {
             if (actor.Targetable == true && actor.Unit.Side == AISide && (foreignTurn ? !TacticalUtilities.IsUnitControlledByPlayer(actor.Unit) : true) && actor.Movement > 0)
             {
+                if (TacticalUtilities.IsUnitControlledByPlayer(actor.Unit) && State.GameManager.TacticalMode.RunningFriendlyAI == false && !State.GameManager.TacticalMode.IgnorePseudo)
+                {
+                    if (State.GameManager.TacticalMode.SkipPseudo)
+                    {
+                        actor.Movement = 0;
+                        return true;
+                    }
+                    State.GameManager.TacticalMode.PseudoTurn = true;
+                    State.GameManager.TacticalMode.StatusUI.EndTurn.interactable = true;
+                    return true;
+                }
+                State.GameManager.TacticalMode.PseudoTurn = false;
                 if (path != null && path.Actor == actor)
                 {
                     if (retreating && actor.Movement == 1 && TacticalUtilities.TileContainsMoreThanOneUnit(actor.Position.x, actor.Position.y) == false)

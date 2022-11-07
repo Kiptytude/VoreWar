@@ -5,6 +5,7 @@ using TacticalDecorations;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Tilemaps;
+using static UnityEngine.UI.CanvasScaler;
 
 public class TacticalMode : SceneBase
 {
@@ -133,7 +134,9 @@ public class TacticalMode : SceneBase
     internal ChoiceOption FledReturn;
     bool waitingForDialog;
 
-    private bool pseudoTurn = false;
+    public bool PseudoTurn = false;
+    public bool IgnorePseudo = false;
+    public bool SkipPseudo = false;
 
     internal int currentTurn = 1;
 
@@ -325,7 +328,7 @@ public class TacticalMode : SceneBase
         if (SelectedUnit == null)
             return;
         SelectedUnit.Movement = startingMP;
-        Translator.SetTranslator(SelectedUnit.UnitSprite.transform, SelectedUnit.Position, startingLocation, .2f, State.GameManager.TacticalMode.IsPlayerTurn);
+        Translator.SetTranslator(SelectedUnit.UnitSprite.transform, SelectedUnit.Position, startingLocation, .2f, State.GameManager.TacticalMode.IsPlayerTurn || PseudoTurn);
         SelectedUnit.SetPos(startingLocation);
         DirtyPack = true;
         RebuildInfo();
@@ -2005,7 +2008,7 @@ Turns: {currentTurn}
         }
     }
 
-    bool ButtonsInteractable => IsPlayerTurn == true && RunningFriendlyAI == false && queuedPath == null && paused == false;
+    bool ButtonsInteractable => (IsPlayerTurn || PseudoTurn) == true && (RunningFriendlyAI || foreignAI != null) == false && queuedPath == null && paused == false;
 
 
 
@@ -2040,6 +2043,10 @@ Turns: {currentTurn}
                 case 3:
                     if (State.TutorialMode && State.GameManager.TutorialScript.step < 6)
                         return;
+                    if (PseudoTurn)
+                    {
+                        IgnorePseudo = true;
+                    } else
                     RunningFriendlyAI = true;
                     break;
                 case 4:
@@ -2266,7 +2273,7 @@ Turns: {currentTurn}
         bool canStillMove = false;
         for (int i = 0; i < units.Count; i++)
         {
-            if (unitControllableBySide(units[i],activeSide) && units[i].Targetable && units[i].Movement > 0)
+            if (TacticalUtilities.IsUnitControlledByPlayer(units[i].Unit) && units[i].Targetable && units[i].Movement > 0)
             {
                 canStillMove = true;
                 break;
@@ -2605,7 +2612,7 @@ Turns: {currentTurn}
                 if (remainingLockedPanelTime <= 0)
                     InfoPanel.RefreshTacticalUnitInfo(actor);
 
-                if (actor.Unit.Side != activeSide && SelectedUnit != null && SelectedUnit.Targetable)
+                if (!TacticalUtilities.IsUnitControlledByPlayer(actor.Unit) && SelectedUnit != null && SelectedUnit.Targetable)
                 {
                     //write chance
                     switch (ActionMode)
@@ -2870,7 +2877,7 @@ Turns: {currentTurn}
         {
             if (currentIndex >= units.Count)
                 currentIndex -= units.Count;
-            if (units[currentIndex].Unit.Side == activeSide && units[currentIndex].Targetable && units[currentIndex].Movement > 0)
+            if (TacticalUtilities.IsUnitControlledByPlayer(units[currentIndex].Unit) && units[currentIndex].Targetable && units[currentIndex].Movement > 0)
             {
                 if (type == NextUnitType.Any || (type == NextUnitType.Melee && units[currentIndex].BestMelee.Damage > 2) || (type == NextUnitType.Ranged && units[currentIndex].BestRanged != null))
                 {
@@ -2942,7 +2949,7 @@ Turns: {currentTurn}
     void ProcessLeftClick(int x, int y)
     {
         RightClickMenu.CloseAll();
-        if (IsPlayerTurn == false || queuedPath != null)
+        if ((!IsPlayerTurn && !PseudoTurn) || queuedPath != null)
             return;
 
 
@@ -2958,7 +2965,7 @@ Turns: {currentTurn}
 
                 if (ActionMode == 0)
                 {
-                    if (unitControllableBySide(unit, activeSide))
+                    if (TacticalUtilities.IsUnitControlledByPlayer(unit.Unit))
                     {
 
                         if (SelectedUnit != units[i])
@@ -2973,7 +2980,7 @@ Turns: {currentTurn}
                     continue;
                 if (ActionMode == 1)
                 {
-                    if (!unitControllableBySide(unit, activeSide) || (Config.AllowInfighting && unit != SelectedUnit))
+                    if (!TacticalUtilities.IsUnitControlledByPlayer(unit.Unit) || (Config.AllowInfighting && unit != SelectedUnit))
                     {
                         MeleeAttack(SelectedUnit, unit);
                         return;
@@ -2982,7 +2989,7 @@ Turns: {currentTurn}
                 }
                 if (ActionMode == 2)
                 {
-                    if (!unitControllableBySide(unit, activeSide) || Config.AllowInfighting)
+                    if (!TacticalUtilities.IsUnitControlledByPlayer(unit.Unit) || Config.AllowInfighting)
                     {
                         RangedAttack(SelectedUnit, unit);
                         return;
@@ -3263,13 +3270,16 @@ Turns: {currentTurn}
 
     void EndTurn()
     {
-        if (pseudoTurn)
-        {
-            pseudoTurn = false;
-            return;
-        }
         if (waitingForDialog)
             return;
+        if (PseudoTurn)
+        {
+            SkipPseudo = true;
+            PseudoTurn = false;
+            StatusUI.EndTurn.interactable = false;
+            return;
+        }
+        SkipPseudo = false;
         if (Config.AutoUseAI && IsPlayerInControl && repeatingTurn == false)
         {
             repeatingTurn = true;
@@ -3277,6 +3287,7 @@ Turns: {currentTurn}
             return;
         }
         repeatingTurn = false;
+        IgnorePseudo = false;
         RightClickMenu.CloseAll();
         if (State.TutorialMode && State.GameManager.TutorialScript.step < 6)
             return;
@@ -4194,7 +4205,7 @@ Turns: {currentTurn}
                 MouseOver(x, y);
                 if (Input.GetMouseButtonDown(0))
                     ProcessLeftClick(x, y);
-                if (Input.GetMouseButtonDown(1) && SelectedUnit != null && SelectedUnit.Movement > 0 && IsPlayerTurn)
+                if (Input.GetMouseButtonDown(1) && SelectedUnit != null && SelectedUnit.Movement > 0 && (IsPlayerTurn || PseudoTurn))
                     ProcessRightClick(x, y);
                 if (Input.GetMouseButtonDown(2))
                     remainingLockedPanelTime = 1.5f;
@@ -4216,12 +4227,14 @@ Turns: {currentTurn}
         if (paused || State.GameManager.UnitEditor.gameObject.activeSelf)
             return;
         UpdateStatus(Time.deltaTime);
-        if (IsPlayerTurn)
+        if (IsPlayerTurn || PseudoTurn)
         {
             if (queuedPath != null)
                 return;
 
             if (RunningFriendlyAI)
+                return;
+            if (foreignAI != null)
                 return;
 
             if (SelectedUnit != null)
