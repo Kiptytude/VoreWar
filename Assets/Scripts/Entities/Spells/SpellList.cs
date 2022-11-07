@@ -422,7 +422,7 @@ static class SpellList
                     var actorCharm = a.Unit.GetStatusEffect(StatusEffectType.Charmed);
                     if (actorCharm != null)
                     {
-                        unit.ApplyStatusEffect(StatusEffectType.Charmed, actorCharm.Strength, actorCharm.Duration)
+                        unit.ApplyStatusEffect(StatusEffectType.Charmed, actorCharm.Strength, actorCharm.Duration);
                     }
                         
                     StrategicUtilities.SpendLevelUps(unit);
