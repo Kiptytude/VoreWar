@@ -24,8 +24,14 @@ public class TacticalMessageLog
 
     public bool SimpleText = false;
 
+    Unit defaultPrey;
+
     public TacticalMessageLog()
     {
+        defaultPrey = new Unit(Race.Humans);
+        defaultPrey.DefaultBreastSize = -1;
+        defaultPrey.DickSize = -1;
+        defaultPrey.Name = "[Redacted]";
         events = new List<EventLog>();
     }
 
@@ -783,7 +789,7 @@ public class TacticalMessageLog
             Type = MessageLogEvent.BellyRub,
             Unit = rubber,
             Target = target,
-            Prey = prey,
+            Prey = prey ?? defaultPrey,
             Odds = odds,
             preyLocation = PreyLocation.stomach,
         });
@@ -797,7 +803,7 @@ public class TacticalMessageLog
             Type = MessageLogEvent.BreastRub,
             Unit = rubber,
             Target = target,
-            Prey = prey,
+            Prey = prey ?? defaultPrey,
             Odds = odds,
             preyLocation = PreyLocation.breasts,
         });
@@ -811,7 +817,7 @@ public class TacticalMessageLog
             Type = MessageLogEvent.TailRub,
             Unit = predator,
             Target = prey,
-            Prey = prey,
+            Prey = prey ?? defaultPrey,
             Odds = odds,
             preyLocation = PreyLocation.tail,
         });
@@ -825,7 +831,7 @@ public class TacticalMessageLog
             Type = MessageLogEvent.BallMassage,
             Unit = rubber,
             Target = target,
-            Prey = prey,
+            Prey = prey ?? defaultPrey,
             Odds = odds
         });
         UpdateListing();
@@ -838,7 +844,7 @@ public class TacticalMessageLog
             Type = MessageLogEvent.Feed,
             Unit = predator,
             Target = target,
-            Prey = prey,
+            Prey = prey ?? defaultPrey,
             Odds = odds
         });
         UpdateListing();
@@ -851,7 +857,7 @@ public class TacticalMessageLog
             Type = MessageLogEvent.FeedCum,
             Unit = predator,
             Target = target,
-            Prey = prey,
+            Prey = prey ?? defaultPrey,
             Odds = odds
         });
         UpdateListing();
