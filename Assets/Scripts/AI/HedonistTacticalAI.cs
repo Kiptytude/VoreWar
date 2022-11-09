@@ -101,7 +101,7 @@ public class HedonistTacticalAI : ITacticalAI
         if (actors == null)
             actors = TacticalUtilities.Units;
         path = null;
-        onlySurrendered = actors.Where(s => s.Unit.Side != AISide && s.Unit.IsDead == false && s.Surrendered == false).Any() == false;
+        onlySurrendered = actors.Where(s => s.Unit.Side != AISide && s.Unit.IsDead == false && s.Surrendered == false && !s.Fled).Any() == false;
         var preds = actors.Where(s => s.Unit.Side == AISide && s.Unit.IsDead == false && s.PredatorComponent != null);
         lackPredators = preds.Any() == false;
         bool tooBig = true;

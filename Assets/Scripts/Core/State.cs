@@ -11,7 +11,7 @@ using UnityEngine;
 public static class State
 {
     static int saveErrors = 0;
-    public const string Version = "40A";
+    public const string Version = "40B";
     public static World World;
     public static Rand Rand = new Rand();
     public static NameGenerator NameGen;
@@ -723,8 +723,16 @@ public static class State
                 }
             }
 
-            if (string.Compare(World.SaveVersion, "40A") < 0)
+            if (string.Compare(World.SaveVersion, "40B") < 0)
             {
+                if (World.TacticalData != null)
+                {
+                    foreach (var unit in World.TacticalData.units)
+                    {
+                        unit.modeQueue = new List<KeyValuePair<int, float>>();
+                        unit.Unit.FixedSide = -1;
+                    }
+                }
 
                 if (World.AllActiveEmpires != null)
                 {
@@ -734,19 +742,18 @@ public static class State
                     }
 
                 }
-                else
+            }
+
+            if (World.TacticalData != null)
+            {
+                foreach (var unit in World.TacticalData.units)
                 {
-                    foreach (var unit in World.TacticalData.units)
-                    {
-                        if (unit.modeQueue == null)
-                        {
-                            unit.modeQueue = new List<KeyValuePair<int, float>>();
-                        }
-                    }
+                    if (unit.modeQueue == null)
+                        unit.modeQueue = new List<KeyValuePair<int, float>>();
                 }
             }
 
-            if (World.AllActiveEmpires != null)
+        if (World.AllActiveEmpires != null)
             {
                 foreach (Empire emp in World.AllActiveEmpires)
                 {
