@@ -206,7 +206,7 @@ class Ki : BlankSlate
 
         if (actor.GetBallSize(9, 0.48f) > 0) return null;
 
-        if (actor.PredatorComponent == null || actor.PredatorComponent.VisibleFullness == 0)
+        if (actor.Unit.Predator == false || actor.PredatorComponent.VisibleFullness == 0)
         {
             return null;
         }
@@ -270,7 +270,7 @@ class Ki : BlankSlate
 
     private static int BellySize(Actor_Unit actor)
     {
-        if (actor.PredatorComponent == null)
+        if (actor.Unit.Predator == false)
             return 0;
         int bellySize = actor.GetStomachSize(21, 0.66f);
 

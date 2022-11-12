@@ -19,7 +19,7 @@ class Ant : BlankSlate
 
     internal override Sprite BellySprite(Actor_Unit actor, GameObject belly) // Belly
     {
-        if (actor.PredatorComponent == null)
+        if (actor.Unit.Predator == false)
             return State.GameManager.SpriteDictionary.Ant[2];
 
         int size = actor.GetStomachSize(16, 0.75f);

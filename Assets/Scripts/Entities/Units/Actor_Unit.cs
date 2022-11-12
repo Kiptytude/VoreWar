@@ -264,8 +264,7 @@ public class Actor_Unit
 
     public Actor_Unit(Vec2i p, Unit unit)
     {
-        if (unit.Predator)
-            PredatorComponent = new PredatorComponent(this, unit);
+        PredatorComponent = new PredatorComponent(this, unit);
         unit.SetBreastSize(-1); //Resets to default
         Mode = DisplayMode.None;
         modeQueue = new List<KeyValuePair<int, float>>();
@@ -1442,15 +1441,14 @@ public class Actor_Unit
     }
 
     //This is the chance to be devoured, so it belongs here and not in PredatorComponent
-    public float GetDevourChance(Actor_Unit attacker, bool includeSecondaries = false, int skillBoost = 0)
+    public float GetDevourChance(Actor_Unit attacker, bool includeSecondaries = false, int skillBoost = 0, bool force = false)
     {
-        if (attacker?.PredatorComponent == null)
+        if (attacker?.Unit.Predator == false && !force)
         {
-            Debug.Log("This shouldn't have happened");
             return 0;
         }
 
-        if (Surrendered || (attacker.Unit.HasTrait(Traits.Endosoma) && attacker.Unit.Side == Unit.Side))
+        if (Surrendered || (attacker.Unit.HasTrait(Traits.Endosoma) && !TacticalUtilities.TreatAsHostile(attacker, this)))
             return 1f;
 
         float predVoracity = Mathf.Pow(15 + skillBoost + attacker.Unit.GetStat(Stat.Voracity), 1.5f);
@@ -1516,7 +1514,7 @@ public class Actor_Unit
     public bool BellyRub(Actor_Unit target)
     {
         Prey prey;
-        if (target.PredatorComponent == null)
+        if (target.Unit.Predator == false)
             return false;
         List<int> possible = new List<int>();
         int type;
@@ -1828,7 +1826,7 @@ public class Actor_Unit
                 }
             }
         }
-        if (PredatorComponent != null)
+        if (Unit.Predator)
             PredatorComponent.UpdateTransition();
     }
 
@@ -2039,7 +2037,7 @@ public class Actor_Unit
 
     internal void CastMaw(Spell spell, Actor_Unit target, Vec2i targetArea = null)
     {
-        if (PredatorComponent == null)
+        if (Unit.Predator == false)
             return;
         if (Unit.SpendMana(spell.ManaCost) == false)
             return;

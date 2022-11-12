@@ -107,7 +107,7 @@ namespace LegacyAI
 
         public bool RunPred(Actor_Unit actor)
         {
-            if (actor.PredatorComponent == null)
+            if (actor.Unit.Predator == false)
                 return false;
             int index = -1;
             int chance = 0;

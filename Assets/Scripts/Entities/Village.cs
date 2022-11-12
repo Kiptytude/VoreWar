@@ -633,13 +633,13 @@ public class Village
                         StrategicUtilities.CreateInvisibleTravelingArmy(unit.unit, closestFriendlyVillage, closestFriendlyVillage.Position.GetNumberOfMovesDistance(Position) / Config.ArmyMP);
                         continue;
                     }
-                    else if (unit.unit.Type == UnitType.Leader)
+                    else if (unit.unit == State.World.GetEmpireOfSide(unit.unit.Side).Leader)
                     {
                         unit.unit.Health = -9999;
                         continue;
                     }
                 }
-                if (unit.unit.Type == UnitType.Leader)
+                if (unit.unit == Empire.Leader)
                 {
                     var localArmy = StrategicUtilities.ArmyAt(Position);
                     if (localArmy != null && localArmy.Side == Side && localArmy.Units.Count() < localArmy.Empire.MaxArmySize)

@@ -1,4 +1,5 @@
 using LegacyAI;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TacticalDecorations;
@@ -1609,7 +1610,7 @@ Turns: {currentTurn}
 
         if (TacticalActionList.TargetedDictionary.TryGetValue(type, out var targetedAction))
         {
-            if (targetedAction.RequiresPred && actor.PredatorComponent == null)
+            if (targetedAction.RequiresPred && actor.Unit.Predator == false)
                 return false;
             if (targetedAction.OnExecute == null)
                 return false;
@@ -1716,11 +1717,11 @@ Turns: {currentTurn}
 
     void ShowCockVoreTransferPercentages(Actor_Unit actor)
     {
-        if (actor.PredatorComponent == null)
+        if (actor.Unit.Predator == false)
             return;
         foreach (Actor_Unit target in units)
         {
-            if (target.PredatorComponent == null)
+            if (target.Unit.Predator == false)
                 continue;
             if (target.Unit.Side == actor.Unit.Side && target.Surrendered == false)
             {
@@ -1759,7 +1760,7 @@ Turns: {currentTurn}
 
     void ShowBreastFeedPercentages(Actor_Unit actor)
     {
-        if (actor.PredatorComponent == null)
+        if (actor.Unit.Predator == false)
             return;
         foreach (Actor_Unit target in units)
         {
@@ -1780,7 +1781,7 @@ Turns: {currentTurn}
 
     void ShowCumFeedPercentages(Actor_Unit actor)
     {
-        if (actor.PredatorComponent == null)
+        if (actor.Unit.Predator == false)
             return;
         foreach (Actor_Unit target in units)
         {
@@ -1800,7 +1801,7 @@ Turns: {currentTurn}
 
     void ShowSucklePercentages(Actor_Unit actor)
     {
-        if (actor.PredatorComponent == null)
+        if (actor.Unit.Predator == false)
             return;
         foreach (Actor_Unit target in units)
         {
@@ -2034,7 +2035,7 @@ Turns: {currentTurn}
                         }
                     break;
                 case 2:
-                    if (SelectedUnit != null && SelectedUnit.Targetable && SelectedUnit.PredatorComponent != null)
+                    if (SelectedUnit != null && SelectedUnit.Targetable && SelectedUnit.Unit.Predator)
                         if (SelectedUnit.Movement > 0)
                         {
                             ActionMode = 3;
@@ -2254,7 +2255,7 @@ Turns: {currentTurn}
         {
             if (SelectedUnit == null || SelectedUnit.Targetable == false || SelectedUnit.Movement < targetedAction.MinimumMP)
                 return;
-            if (targetedAction.RequiresPred && SelectedUnit.PredatorComponent == null)
+            if (targetedAction.RequiresPred && SelectedUnit.Unit.Predator == false)
                 return;
             lastSpecial = specialType;
             specialType = mode;
@@ -2810,7 +2811,7 @@ Turns: {currentTurn}
             StatusUI.ZeroAPButton.interactable = true;
             StatusUI.MeleeButton.interactable = SelectedUnit.BestMelee != null;
             StatusUI.RangedButton.interactable = SelectedUnit.BestRanged != null;
-            StatusUI.VoreButton.interactable = SelectedUnit.PredatorComponent != null;
+            StatusUI.VoreButton.interactable = SelectedUnit.Unit.Predator;
             StatusUI.UndoMovement.interactable = startingLocation != null && (startingLocation != SelectedUnit.Position || startingMP > SelectedUnit.Movement);
             if (voreTypes.Count == 1)
             {
@@ -3410,7 +3411,7 @@ Turns: {currentTurn}
                 {
                     foreach (var prey in RetreatedDigestors[i].PredatorComponent.GetAllPrey())
                     {
-                        if (prey.Unit.Side == RetreatedDigestors[i].Unit.Side && prey.Actor.Fled == false)
+                        if (TacticalUtilities.TreatAsHostile(RetreatedDigestors[i], prey.Actor) && prey.Actor.Fled == false)
                         {
                             RetreatUnit(prey.Actor, prey.Unit.Side == defenderSide);
                         }
@@ -3499,7 +3500,7 @@ Turns: {currentTurn}
         {
             foreach (Actor_Unit actor in units)
             {
-                if (actor.PredatorComponent == null)
+                if (actor.Unit.Predator == false)
                     continue;
                 foreach (var prey in actor.PredatorComponent.GetDirectPrey().Where(s => s.Unit.HasTrait(Traits.TheGreatEscape)).ToList())
                 {
@@ -3910,7 +3911,7 @@ Turns: {currentTurn}
                             remainingDefenders += preyCount;
                             if (actor.Unit.HasTrait(Traits.Endosoma))
                             {
-                                remainingDefenders -= actor.PredatorComponent.GetDirectPrey().Where(s => s.Unit.Side == actor.Unit.Side || s.Unit.HasTrait(Traits.TheGreatEscape)).Count();
+                                remainingDefenders -= actor.PredatorComponent.GetDirectPrey().Where(s => !TacticalUtilities.TreatAsHostile(actor, s.Actor) || s.Unit.HasTrait(Traits.TheGreatEscape)).Count();
                             }
                             else
                             {
@@ -3932,7 +3933,7 @@ Turns: {currentTurn}
                             remainingAttackers += preyCount;
                             if (actor.Unit.HasTrait(Traits.Endosoma))
                             {
-                                remainingAttackers -= actor.PredatorComponent.GetDirectPrey().Where(s => s.Unit.Side == actor.Unit.Side || s.Unit.HasTrait(Traits.TheGreatEscape)).Count();
+                                remainingAttackers -= actor.PredatorComponent.GetDirectPrey().Where(s => !TacticalUtilities.TreatAsHostile(actor, s.Actor) || s.Unit.HasTrait(Traits.TheGreatEscape)).Count();
                             }
                             else
                             {

@@ -51,8 +51,8 @@ public class InfoPanel
         StringBuilder sb = new StringBuilder();
         StringBuilder sb2 = new StringBuilder();
         BuildStatus(sb2, actor.Unit);
-        BuildStats(sb, actor.Unit, actor.PredatorComponent != null, actor);
-        if (actor.PredatorComponent != null)
+        BuildStats(sb, actor.Unit, actor.Unit.Predator, actor);
+        if (actor.Unit.Predator)
             BuildPredStat(sb, actor);
         if (parentMenu == "unitEditor")
         {

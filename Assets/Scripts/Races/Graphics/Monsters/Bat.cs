@@ -83,7 +83,7 @@ class Bat : BlankSlate
     {
         if (actor.Unit.HasDick)
         {
-            if (actor.PredatorComponent == null)
+            if (actor.Unit.Predator == false)
                 return State.GameManager.SpriteDictionary.Bat[31];
 
             if (actor.PredatorComponent.BallsFullness <= 0) return State.GameManager.SpriteDictionary.Bat[28];
@@ -126,7 +126,7 @@ class Bat : BlankSlate
 
     internal override Sprite BellySprite(Actor_Unit actor, GameObject belly)
     {
-        if (actor.PredatorComponent == null)
+        if (actor.Unit.Predator == false)
             return null;
         if (actor.HasBelly)
         {

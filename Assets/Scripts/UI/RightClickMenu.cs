@@ -204,7 +204,7 @@ public class RightClickMenu : MonoBehaviour
                 if (actor.Unit.HasTrait(Traits.Endosoma))
                 {
                     float devChance;
-                    if (actor.PredatorComponent != null)
+                    if (actor.Unit.Predator)
                         devChance = Mathf.Round(100 * target.GetDevourChance(actor, true));
                     else
                         devChance = 0;
@@ -244,7 +244,7 @@ public class RightClickMenu : MonoBehaviour
 
 
         float devourChance;
-        if (actor.PredatorComponent != null)
+        if (actor.Unit.Predator)
             devourChance = Mathf.Round(100 * target.GetDevourChance(actor, true));
         else
             devourChance = 0;
@@ -342,9 +342,9 @@ public class RightClickMenu : MonoBehaviour
         }
 
 
-        if (actor.PredatorComponent != null)
+        if (actor.Unit.Predator)
         {
-            if (data.Target.PredatorComponent != null)
+            if (data.Target.Unit.Predator)
                 data.DevourChance = Mathf.Round(100 * data.Target.PredatorComponent.GetVoreStealChance(data.Actor));
             currentButton = AddKTCommands(actor, currentButton, data);
         }
@@ -354,7 +354,7 @@ public class RightClickMenu : MonoBehaviour
 
     private int AddVore(Actor_Unit actor, int currentButton, CommandData data)
     {
-        if (actor.PredatorComponent != null)
+        if (actor.Unit.Predator)
         {
             var voreTypes = State.RaceSettings.GetVoreTypes(actor.Unit.Race);
             if (voreTypes.Contains(VoreType.Oral))
@@ -397,7 +397,7 @@ public class RightClickMenu : MonoBehaviour
     {
         if (TacticalActionList.TargetedDictionary.TryGetValue(actionType, out var targetedAction))
         {
-            if (targetedAction.AppearConditional(data.Actor) && (targetedAction.RequiresPred == false || data.Actor.PredatorComponent != null))
+            if (targetedAction.AppearConditional(data.Actor) && (targetedAction.RequiresPred == false || data.Actor.Unit.Predator))
             {
                 Buttons[currentButton].onClick.AddListener(() => targetedAction.OnExecute(data.Actor, data.Target));
                 Buttons[currentButton].onClick.AddListener(FinishAction);
@@ -494,7 +494,7 @@ public class RightClickMenu : MonoBehaviour
 
 
         float devourChance;
-        if (actor.PredatorComponent != null)
+        if (actor.Unit.Predator)
             devourChance = Mathf.Round(100 * target.GetDevourChance(actor, true));
         else
             devourChance = 0;
@@ -514,7 +514,7 @@ public class RightClickMenu : MonoBehaviour
         if (range < 2 || range > 4)
             PounceButtons[currentButton].interactable = false;
         currentButton++;
-        if (actor.PredatorComponent != null)
+        if (actor.Unit.Predator)
         {
             var voreTypes = State.RaceSettings.GetVoreTypes(actor.Unit.Race);
             if (voreTypes.Contains(VoreType.Oral))
@@ -548,7 +548,7 @@ public class RightClickMenu : MonoBehaviour
     {
         if (TacticalActionList.TargetedDictionary.TryGetValue(type, out var targetedAction))
         {
-            if (targetedAction.AppearConditional(data.Actor) && (targetedAction.RequiresPred == false || data.Actor.PredatorComponent != null))
+            if (targetedAction.AppearConditional(data.Actor) && (targetedAction.RequiresPred == false || data.Actor.Unit.Predator))
             {
                 PounceButtons[currentButton].onClick.AddListener(() => data.Actor.VorePounce(data.Target, type));
                 PounceButtons[currentButton].onClick.AddListener(FinishAction);
@@ -589,7 +589,7 @@ public class RightClickMenu : MonoBehaviour
                     Buttons[currentButton].GetComponentInChildren<Text>().text = $"Feed Cum";
                     currentButton++;
                 }
-                if (actor.PredatorComponent.CanTransfer() && data.Target.PredatorComponent != null)
+                if (actor.PredatorComponent.CanTransfer() && data.Target.Unit.Predator)
                 {
                     Buttons[currentButton].onClick.AddListener(() => data.Actor.PredatorComponent.TransferAttempt(data.Target));
                     Buttons[currentButton].onClick.AddListener(FinishAction);
@@ -602,7 +602,7 @@ public class RightClickMenu : MonoBehaviour
                     currentButton++;
                 }
             }
-            else if (data.Actor.Unit != data.Target.Unit && data.Target.PredatorComponent != null)
+            else if (data.Actor.Unit != data.Target.Unit && data.Target.Unit.Predator)
             {
                 if (actor.PredatorComponent.CanVoreSteal(data.Target))
                 {

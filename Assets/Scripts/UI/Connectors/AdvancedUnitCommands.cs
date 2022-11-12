@@ -31,7 +31,7 @@ public class AdvancedUnitCommands : MonoBehaviour
 
         foreach (var action in TacticalActionList.TargetedActions)
         {
-            if (action.AppearConditional(actor) && (action.RequiresPred == false || actor.PredatorComponent != null))
+            if (action.AppearConditional(actor) && (action.RequiresPred == false || actor.Unit.Predator))
             {
                 if (action.Name == "Tail Vore" && actor.Unit.Race == Race.Terrorbird)
                     SetButton("Crop Vore", action.OnClicked, action.ButtonColor);

@@ -58,6 +58,7 @@ public class Recruit_Mode : SceneBase
         Self,
         Ally,
         Observer,
+        Infiltrator
     }
 
     public void BeginWithoutVillage(Empire actingEmpire, Army startArmy, ActivatingEmpire activatingEmpire)
@@ -218,26 +219,36 @@ public class Recruit_Mode : SceneBase
         if (selectedIndex != -1 && army?.Units.Count() > selectedIndex)
             unit = army?.Units[selectedIndex];
         ArmyUI.Rename.interactable = validUnit && unit.Type != UnitType.SpecialMercenary;
-        ArmyUI.Shop.interactable = activatingEmpire != ActivatingEmpire.Observer && validUnit && unit != null && unit.FixedGear == false;
-        ArmyUI.Dismiss.interactable = activatingEmpire != ActivatingEmpire.Observer && validUnit && unit != null && unit.Type != UnitType.Leader;
-        ArmyUI.ConfigAutoLevelUp.interactable = activatingEmpire != ActivatingEmpire.Observer && validUnit;
+        ArmyUI.Shop.interactable = activatingEmpire < ActivatingEmpire.Observer && validUnit && unit != null && unit.FixedGear == false;
+        var dismissText = ArmyUI.Dismiss.gameObject.GetComponentInChildren(typeof(Text)) as Text;
+
+        if (unit != null && unit.FixedSide == empire.Side && activatingEmpire > ActivatingEmpire.Ally)
+        {
+            dismissText.text = "Exfiltrate";
+            ArmyUI.Dismiss.interactable = true;
+        } else
+        {
+            dismissText.text = "Dismiss";
+            ArmyUI.Dismiss.interactable = activatingEmpire < ActivatingEmpire.Observer && validUnit && unit != null && unit != army?.Empire.Leader;
+        }
+        ArmyUI.ConfigAutoLevelUp.interactable = activatingEmpire < ActivatingEmpire.Observer && validUnit;
         ArmyUI.Customizer.interactable = validUnit;
         if (village != null)
-            RecruitUI.ImprintUnit.interactable = validUnit && activatingEmpire == ActivatingEmpire.Self && unit.Type != UnitType.SpecialMercenary && unit.Type != UnitType.Leader;
+            RecruitUI.ImprintUnit.interactable = validUnit && activatingEmpire == ActivatingEmpire.Self && unit.Type != UnitType.SpecialMercenary && unit != army?.Empire.Leader;
     }
 
     public void RefreshRecruitPanelButtons()
     {
-        RecruitUI.CheapUpgrade.gameObject.SetActive(true);
-        RecruitUI.HireSoldier.gameObject.SetActive(true);
-        RecruitUI.HireVillageMerc.gameObject.SetActive(true);
-        RecruitUI.RecruitSoldier.gameObject.SetActive(true);
-        RecruitUI.StockWeapons.interactable = (activatingEmpire != ActivatingEmpire.Observer || failedToMakeFriendlyArmy) && village.Empire == empire;
+        RecruitUI.CheapUpgrade.gameObject.SetActive(activatingEmpire < ActivatingEmpire.Observer);
+        RecruitUI.HireSoldier.gameObject.SetActive(activatingEmpire < ActivatingEmpire.Observer);
+        RecruitUI.HireVillageMerc.gameObject.SetActive(activatingEmpire < ActivatingEmpire.Observer);
+        RecruitUI.RecruitSoldier.gameObject.SetActive(activatingEmpire < ActivatingEmpire.Observer);
+        RecruitUI.StockWeapons.interactable = (activatingEmpire < ActivatingEmpire.Observer || failedToMakeFriendlyArmy) && village.Empire == empire;
         RecruitUI.CheapUpgrade.interactable = activatingEmpire == ActivatingEmpire.Self && army.Units.Count > 0;
         RecruitUI.RecruitSoldier.interactable = activatingEmpire == ActivatingEmpire.Self && (village.GetTotalPop() > 3) && army.Units.Count < army.MaxSize;
         RecruitUI.HireSoldier.interactable = activatingEmpire == ActivatingEmpire.Self && village.GetRecruitables().Count > 0 && (village.GetTotalPop() > 3) && army.Units.Count < army.MaxSize;
         RecruitUI.HireVillageMerc.interactable = activatingEmpire == ActivatingEmpire.Self && (village.Mercenaries?.Count > 0 || village.Adventurers?.Count > 0) && army.Units.Count < army.MaxSize;
-        RecruitUI.VillageView.interactable = (activatingEmpire != ActivatingEmpire.Observer || failedToMakeFriendlyArmy) && village.GetTotalPop() > 0 && village.Empire == empire;
+        RecruitUI.VillageView.interactable = (activatingEmpire < ActivatingEmpire.Observer || failedToMakeFriendlyArmy) && village.GetTotalPop() > 0 && village.Empire == empire;
 
         RecruitUI.ResurrectLeader.gameObject.SetActive(activatingEmpire != ActivatingEmpire.Observer && empire.Leader != null && empire.Leader.Health <= 0);
     }
@@ -1219,7 +1230,7 @@ public class Recruit_Mode : SceneBase
                 $"Items: {merc.Unit.GetItem(0)?.Name} {merc.Unit.GetItem(1)?.Name}\n" +
                 $"Str: {merc.Unit.GetStatBase(Stat.Strength)} Dex: { merc.Unit.GetStatBase(Stat.Dexterity)} Agility: {merc.Unit.GetStatBase(Stat.Agility)}\n" +
                 $"Mind: {merc.Unit.GetStatBase(Stat.Mind)} Will: { merc.Unit.GetStatBase(Stat.Will)} Endurance: {merc.Unit.GetStatBase(Stat.Endurance)}\n";
-            if (actor.PredatorComponent != null)
+            if (actor.Unit.Predator)
                 text.text += $"Vore: {merc.Unit.GetStatBase(Stat.Voracity)} Stomach: { merc.Unit.GetStatBase(Stat.Stomach)}";
             string gender;
 
@@ -1297,7 +1308,7 @@ public class Recruit_Mode : SceneBase
                 $"Items: {merc.Unit.GetItem(0)?.Name} {merc.Unit.GetItem(1)?.Name}\n" +
                  $"Str: {merc.Unit.GetStatBase(Stat.Strength)} Dex: { merc.Unit.GetStatBase(Stat.Dexterity)} Agility: {merc.Unit.GetStatBase(Stat.Agility)}\n" +
                 $"Mind: {merc.Unit.GetStatBase(Stat.Mind)} Will: { merc.Unit.GetStatBase(Stat.Will)} Endurance: {merc.Unit.GetStatBase(Stat.Endurance)}\n";
-            if (actor.PredatorComponent != null)
+            if (actor.Unit.Predator)
                 text.text += $"Vore: {merc.Unit.GetStatBase(Stat.Voracity)} Stomach: { merc.Unit.GetStatBase(Stat.Stomach)}";
             string gender;
 
@@ -1350,7 +1361,7 @@ public class Recruit_Mode : SceneBase
                 $"Items: {unit.GetItem(0)?.Name} {unit.GetItem(1)?.Name}\n" +
                 $"Str: {unit.GetStatBase(Stat.Strength)} Dex: { unit.GetStatBase(Stat.Dexterity)} Agility: {unit.GetStatBase(Stat.Agility)}\n" +
                 $"Mind: {unit.GetStatBase(Stat.Mind)} Will: { unit.GetStatBase(Stat.Will)} Endurance: {unit.GetStatBase(Stat.Endurance)}\n";
-            if (actor.PredatorComponent != null)
+            if (actor.Unit.Predator)
                 text.text += $"Vore: {unit.GetStatBase(Stat.Voracity)} Stomach: { unit.GetStatBase(Stat.Stomach)}";
             string gender;
 
@@ -1399,6 +1410,12 @@ public class Recruit_Mode : SceneBase
         if (army.Units.Count > selectedIndex)
         {
             Unit unit = army.Units[selectedIndex];
+            var dismissText = ArmyUI.Dismiss.gameObject.GetComponentInChildren(typeof(Text)) as Text;
+            if(dismissText.text == "Exfiltrate")
+            {
+                Exfiltrate(unit);
+                return;
+            }
             if (unit != null)
             {
                 army.Units.Remove(unit);
@@ -1409,7 +1426,7 @@ public class Recruit_Mode : SceneBase
                     {
                         if (village.GetTotalPop() == 0)
                         {
-                            if (unit.Race >= Race.Selicia)
+                            if (unit.Race >= Race.Selicia) // ??              ...Whatever, works fine
                                 village.Race = State.World.GetEmpireOfSide(army.Side).ReplacedRace;
                             else
                                 village.Race = unit.Race;
@@ -1429,6 +1446,52 @@ public class Recruit_Mode : SceneBase
             Select(selectedIndex - 1);
         else
             Select(0);
+    }
+
+    private void Exfiltrate(Unit unit)
+    { 
+        Army destinationArmy = null;
+        foreach (Army a in empire.Armies)
+        {
+            if (a.Position.GetDistance(army.Position) < 2 && a.Units.Count < a.MaxSize)
+            {
+                destinationArmy = a;
+            }
+        } 
+        if (destinationArmy == null)
+        {
+            if (empire.Armies.Count() >= Config.MaxArmies)
+            {
+                State.GameManager.CreateMessageBox("You already have the maximum number of armies and no existing one with free space is adjacent.");
+                return;
+            }
+            bool foundSpot = false;
+            int x = 0;
+            int y = 0;
+            for (int i = 0; i < 50; i++)
+            {
+                x = State.Rand.Next(army.Position.x - 1, army.Position.x + 2);
+                y = State.Rand.Next(army.Position.y - 1, army.Position.y + 2);
+
+                if (StrategicUtilities.IsTileClear(new Vec2i(x, y)))
+                {
+                    foundSpot = true;
+                    break;
+                }
+            }
+            if (foundSpot) { 
+                Vec2i destLoc = new Vec2i(x, y);
+                destinationArmy = new Army(empire, new Vec2i(destLoc.x, destLoc.y), unit.FixedSide);
+            } else
+            {
+                    State.GameManager.CreateMessageBox("Couldn't find a free space for the unit to exfiltrate to.");
+                    return;
+            }
+        }
+        army.Units.Remove(unit);
+        destinationArmy.Units.Add(unit);
+        empire.Armies.Add(destinationArmy);
+        State.GameManager.SwitchToStrategyMode();
     }
 
     public void SetUpDisplay()

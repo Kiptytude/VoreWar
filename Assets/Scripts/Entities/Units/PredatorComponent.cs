@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEditor.Experimental.UIElements.GraphView;
 using UnityEngine;
 
 public enum PreyLocation
@@ -314,7 +315,7 @@ public class PredatorComponent
         get
         {
             if (unit.HasTrait(Traits.Endosoma))
-                return prey.Where(s => s.Unit.Side != unit.Side || s.Unit.IsDead).Count();
+                return prey.Where(s => TacticalUtilities.TreatAsHostile(actor, s.Actor) || s.Unit.IsDead).Count();
             return prey.Count;
         }
     }
@@ -636,7 +637,7 @@ public class PredatorComponent
             return false;
         if (actor.Movement == 0)
             return false;
-        if (actor.PredatorComponent == null)
+        if (actor.Unit.Predator == false)
             return false;
         var alives = prey.Where(s => s.Unit.IsDead == false && s.Unit.Side == unit.Side).ToArray();
         if (alives.Length == 0)
@@ -646,7 +647,7 @@ public class PredatorComponent
         var target = alives[State.Rand.Next(alives.Length)];
         if (TacticalUtilities.OpenTile(location, target.Actor) == false)
             return false;
-        if (!unit.HasTrait(Traits.Endosoma) || target.Unit.Side != actor.Unit.Side)
+        if (!unit.HasTrait(Traits.Endosoma) || TacticalUtilities.TreatAsHostile(actor, target.Actor))
             unit.GiveScaledExp(-4, unit.Level - target.Unit.Level, true);
         target.Actor.SetPos(location);
         target.Actor.Visible = true;
@@ -872,7 +873,7 @@ public class PredatorComponent
                     actor.PredatorComponent.birthStatBoost--;
                 }
             }
-            if (unit.HasTrait(Traits.Endosoma) && preyUnit.Unit.Side == unit.Side && preyUnit.Unit.IsDead == false)
+            if (unit.HasTrait(Traits.Endosoma) && !TacticalUtilities.TreatAsHostile(actor, preyUnit.Actor) && preyUnit.Unit.IsDead == false)
             {
                 if (unit.HasTrait(Traits.HealingBelly))
                     preyDamage = Math.Min(unit.MaxHealth / -10, -1);
@@ -2050,7 +2051,7 @@ public class PredatorComponent
 
                 if (target.Unit.Side == unit.Side)
                     State.GameManager.TacticalMode.TacticalStats.RegisterAllyVore(unit.Side);
-                if (target.Unit.Side != unit.Side || !unit.HasTrait(Traits.Endosoma))
+                if (TacticalUtilities.TreatAsHostile(actor, target) || !unit.HasTrait(Traits.Endosoma))
                 {
                     unit.GiveScaledExp(4 * target.Unit.ExpMultiplier, unit.Level - target.Unit.Level, true);
                 }
@@ -2165,7 +2166,7 @@ public class PredatorComponent
 
             }
 
-            if (bit == false && (target.Surrendered || (unit.HasTrait(Traits.Endosoma) && target.Unit.Side == unit.Side)))
+            if (bit == false && (target.Surrendered || (unit.HasTrait(Traits.Endosoma) && !TacticalUtilities.TreatAsHostile(actor, target))))
                 actor.Movement = Math.Max(actor.Movement - 2, 0);
             else
             {
@@ -2204,7 +2205,7 @@ public class PredatorComponent
         target.Visible = false;
         target.Targetable = false;
         State.GameManager.TacticalMode.DirtyPack = true;
-        if (target.Unit.Side != unit.Side || !unit.HasTrait(Traits.Endosoma))
+        if (TacticalUtilities.TreatAsHostile(actor,target) || !unit.HasTrait(Traits.Endosoma))
         {
             unit.GiveScaledExp(4 * target.Unit.ExpMultiplier, unit.Level - target.Unit.Level, true);
         }
@@ -2403,7 +2404,7 @@ public class PredatorComponent
 
     public int[] GetSuckle(Actor_Unit target)
     {
-        if (actor.PredatorComponent == null || target.PredatorComponent == null)
+        if (actor.Unit.Predator == false || target.Unit.Predator == false)
             return new int[] { 0, 0 };
         if (Config.KuroTenkoEnabled && Config.FeedingType != FeedingType.None)
         {
@@ -2427,7 +2428,7 @@ public class PredatorComponent
 
     public bool Suckle(Actor_Unit target)
     {
-        if (target.Position.GetNumberOfMovesDistance(actor.Position) > 1 || target.PredatorComponent == null)
+        if (target.Position.GetNumberOfMovesDistance(actor.Position) > 1 || target.Unit.Predator == false)
         {
             return false;
         }
@@ -2574,7 +2575,7 @@ public class PredatorComponent
         {
             return 0f;
         }
-        if (attacker.PredatorComponent == null)
+        if (attacker.Unit.Predator == false)
         {
             Debug.Log("This shouldn't have happened");
             return 0;
@@ -2625,7 +2626,7 @@ public class PredatorComponent
 
     private Prey GetVoreSteal(Actor_Unit target)
     {
-        if (actor.PredatorComponent == null || target.PredatorComponent == null)
+        if (actor.Unit.Predator == false || target.Unit.Predator == false)
             return null;
 
         if (target.Position.GetNumberOfMovesDistance(actor.Position) > 1)
@@ -2961,7 +2962,7 @@ public class PredatorComponent
 
     public bool TransferAttempt(Actor_Unit target)
     {
-        if (actor.PredatorComponent == null || target.PredatorComponent == null)
+        if (actor.Unit.Predator == false || target.Unit.Predator == false)
             return false;
         if (target.Unit.Side != actor.Unit.Side || target.Surrendered)
         {

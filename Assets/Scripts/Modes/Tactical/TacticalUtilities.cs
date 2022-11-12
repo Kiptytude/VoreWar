@@ -327,9 +327,6 @@ static class TacticalUtilities
         {
             return effectiveTargetSide != effectiveActorSide;
         }
-       
-        if (actor.Unit.GetStatusEffect(StatusEffectType.Charmed) != null)
-            effectiveActorSide = (int)actor.Unit.GetStatusEffect(StatusEffectType.Charmed).Strength;
         if (effectiveActorSide == effectiveTargetSide)
             return false;
         int aISideHostility = 0;
@@ -378,7 +375,7 @@ static class TacticalUtilities
                     }
             }
             preferredSide = enemySideHostility >= aISideHostility ? friendlySide : opponentSide;
-            unpreferredSide = enemySideHostility >= aISideHostility ? opponentSide : friendlySide;
+            unpreferredSide = preferredSide == friendlySide ? opponentSide : friendlySide;
         }
         else
         {
@@ -664,7 +661,7 @@ static class TacticalUtilities
                 $"Items: {actor.Unit.GetItem(0)?.Name} {actor.Unit.GetItem(1)?.Name}\n" +
                 $"Str: {actor.Unit.GetStatBase(Stat.Strength)} Dex: { actor.Unit.GetStatBase(Stat.Dexterity)} Agility: {actor.Unit.GetStatBase(Stat.Agility)}\n" +
                 $"Mind: {actor.Unit.GetStatBase(Stat.Mind)} Will: { actor.Unit.GetStatBase(Stat.Will)} Endurance: {actor.Unit.GetStatBase(Stat.Endurance)}\n";
-            if (actor.PredatorComponent != null)
+            if (actor.Unit.Predator)
                 text.text += $"Vore: {actor.Unit.GetStatBase(Stat.Voracity)} Stomach: { actor.Unit.GetStatBase(Stat.Stomach)}";
             actor.UpdateBestWeapons();
             sprite.UpdateSprites(actor);

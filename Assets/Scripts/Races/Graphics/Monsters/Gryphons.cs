@@ -51,7 +51,7 @@ class Gryphon : BlankSlate
 
     internal override void SetBaseOffsets(Actor_Unit actor)
     {
-        if (actor.PredatorComponent != null && actor.PredatorComponent.IsUnitOfSpecificationInPrey(Race.Selicia, true, PreyLocation.stomach, PreyLocation.womb) && actor.GetStomachSize(16) == 16)
+        if (actor.Unit.Predator && actor.PredatorComponent.IsUnitOfSpecificationInPrey(Race.Selicia, true, PreyLocation.stomach, PreyLocation.womb) && actor.GetStomachSize(16) == 16)
         {
             AddOffset(Body, 0, 30 * .625f);
             AddOffset(Head, 0, 30 * .625f);
@@ -66,7 +66,7 @@ class Gryphon : BlankSlate
             AddOffset(Dick, 0, 30 * .625f);
             AddOffset(Balls, 20 * .625f, 10 * .625f);
         }
-        else if (actor.PredatorComponent != null && actor.PredatorComponent.IsUnitOfSpecificationInPrey(Race.Selicia, false, PreyLocation.stomach, PreyLocation.womb) && actor.GetStomachSize(16, .8f) == 16)
+        else if (actor.Unit.Predator && actor.PredatorComponent.IsUnitOfSpecificationInPrey(Race.Selicia, false, PreyLocation.stomach, PreyLocation.womb) && actor.GetStomachSize(16, .8f) == 16)
         {
             AddOffset(Body, 0, 20 * .625f);
             AddOffset(Head, 0, 20 * .625f);
@@ -81,7 +81,7 @@ class Gryphon : BlankSlate
             AddOffset(Dick, 0, 20 * .625f);
             AddOffset(Balls, 20 * .625f, 0);
         }
-        else if (actor.PredatorComponent != null && actor.PredatorComponent.IsUnitOfSpecificationInPrey(Race.Selicia, false, PreyLocation.stomach, PreyLocation.womb) && actor.GetStomachSize(16, .9f) == 16)
+        else if (actor.Unit.Predator && actor.PredatorComponent.IsUnitOfSpecificationInPrey(Race.Selicia, false, PreyLocation.stomach, PreyLocation.womb) && actor.GetStomachSize(16, .9f) == 16)
         {
             AddOffset(Body, 0, 10 * .625f);
             AddOffset(Head, 0, 10 * .625f);
@@ -390,7 +390,7 @@ class Gryphon : BlankSlate
 
     internal override Sprite BellySprite(Actor_Unit actor, GameObject belly)
     {
-        if (actor.PredatorComponent == null || actor.HasBelly == false)
+        if (actor.Unit.Predator == false || actor.HasBelly == false)
             return null;
         if (position == Position.Sitting)
         {

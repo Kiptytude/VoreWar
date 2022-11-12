@@ -53,7 +53,7 @@ class Catfish : BlankSlate
 
     internal override void SetBaseOffsets(Actor_Unit actor)
     {
-        if (actor.PredatorComponent != null && actor.PredatorComponent.IsUnitOfSpecificationInPrey(Race.Selicia, true, PreyLocation.stomach) && actor.GetStomachSize(20) == 20)
+        if (actor.Unit.Predator && actor.PredatorComponent.IsUnitOfSpecificationInPrey(Race.Selicia, true, PreyLocation.stomach) && actor.GetStomachSize(20) == 20)
         {
             AddOffset(Body, 0, 10 * .625f);
             AddOffset(Head, 0, 10 * .625f);
@@ -67,7 +67,7 @@ class Catfish : BlankSlate
             AddOffset(Eyes, 0, 10 * .625f);
             AddOffset(SecondaryEyes, 0, 10 * .625f);
         }
-        else if (actor.PredatorComponent != null && actor.PredatorComponent.IsUnitOfSpecificationInPrey(Race.Selicia, false, PreyLocation.stomach) && actor.GetStomachSize(20, .8f) == 20)
+        else if (actor.Unit.Predator && actor.PredatorComponent.IsUnitOfSpecificationInPrey(Race.Selicia, false, PreyLocation.stomach) && actor.GetStomachSize(20, .8f) == 20)
         {
             AddOffset(Body, 0, 6 * .625f);
             AddOffset(Head, 0, 6 * .625f);
@@ -81,7 +81,7 @@ class Catfish : BlankSlate
             AddOffset(Eyes, 0, 6 * .625f);
             AddOffset(SecondaryEyes, 0, 6 * .625f);
         }
-        else if (actor.PredatorComponent != null && actor.PredatorComponent.IsUnitOfSpecificationInPrey(Race.Selicia, false, PreyLocation.stomach) && actor.GetStomachSize(20, .9f) == 20)
+        else if (actor.Unit.Predator && actor.PredatorComponent.IsUnitOfSpecificationInPrey(Race.Selicia, false, PreyLocation.stomach) && actor.GetStomachSize(20, .9f) == 20)
         {
             AddOffset(Body, 0, 3 * .625f);
             AddOffset(Head, 0, 3 * .625f);

@@ -262,7 +262,6 @@ class UnitEditor : UnitCustomizer
         {
             Unit.Predator = false;
             actor.PredatorComponent?.FreeAnyAlivePrey();
-            actor.PredatorComponent = null;
         }
 
         actor.Unit.InitializeTraits();

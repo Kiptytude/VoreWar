@@ -355,7 +355,7 @@ class Mantis : BlankSlate
 
     internal override Sprite BellySprite(Actor_Unit actor, GameObject belly)
     {
-        if (actor.PredatorComponent == null || actor.HasBelly == false)
+        if (actor.Unit.Predator == false || actor.HasBelly == false)
             return null;
         if (position == Position.Eating)
         {

@@ -29,7 +29,7 @@ class Dragonfly : BlankSlate
 	
     internal override Sprite BellySprite(Actor_Unit actor, GameObject belly) // Belly
     {
-        if (actor.PredatorComponent == null)
+        if (actor.Unit.Predator == false)
             return null;
         if (actor.PredatorComponent.IsUnitOfSpecificationInPrey(Race.Selicia, true, PreyLocation.stomach))
         {

@@ -321,9 +321,9 @@ public class UnitSprite : MonoBehaviour
                 if (Config.AllianceSquaresDarkness == 3)
                 {
                     if (activeTurn && actor.Movement > 0)
-                        FlexibleSquare.color = new Color(0.6f, 0, 0.9f, 1);
+                        FlexibleSquare.color = new Color(0.65f, 0, 0.9f, 1);
                     else
-                        FlexibleSquare.color = new Color(0.25f, 0, 0.45f, 1);
+                        FlexibleSquare.color = new Color(0.35f, 0, 0.40f, 1);
                 }
                 else
                     FlexibleSquare.color = new Color(0.45f, 0f, 0.75f, alpha);

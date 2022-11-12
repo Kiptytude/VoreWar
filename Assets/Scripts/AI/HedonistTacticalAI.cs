@@ -102,7 +102,7 @@ public class HedonistTacticalAI : ITacticalAI
             actors = TacticalUtilities.Units;
         path = null;
         onlySurrendered = actors.Where(s => s.Unit.Side != AISide && s.Unit.IsDead == false && s.Surrendered == false && !s.Fled).Any() == false;
-        var preds = actors.Where(s => s.Unit.Side == AISide && s.Unit.IsDead == false && s.PredatorComponent != null);
+        var preds = actors.Where(s => s.Unit.Side == AISide && s.Unit.IsDead == false && s.Unit.Predator);
         lackPredators = preds.Any() == false;
         bool tooBig = true;
         if (onlySurrendered)
@@ -424,7 +424,7 @@ public class HedonistTacticalAI : ITacticalAI
 
     private int CheckVorePounce(Actor_Unit actor, Vec2i position, int ap)
     {
-        if (actor.PredatorComponent == null)
+        if (actor.Unit.Predator == false)
             return -1;
         List<PotentialTarget> targets = GetListOfPotentialVorePouncePrey(actor, position, ap);
         if (!targets.Any())
@@ -530,7 +530,7 @@ public class HedonistTacticalAI : ITacticalAI
     void FightWithoutMoving(Actor_Unit actor)
     {
         List<PotentialTarget> targets;
-        if (actor.PredatorComponent != null)
+        if (actor.Unit.Predator)
         {
             targets = GetListOfPotentialPrey(actor, false, actor.Position, actor.Movement);
             while (targets.Any())
@@ -578,7 +578,7 @@ public class HedonistTacticalAI : ITacticalAI
     int CheckPred(Actor_Unit actor, Vec2i position, int ap, bool anyDistance = false)
     {
         int distance = -1;
-        if (actor.PredatorComponent == null)
+        if (actor.Unit.Predator == false)
             return -1;
         List<PotentialTarget> targets = GetListOfPotentialPrey(actor, anyDistance, position, ap);
         if (!targets.Any())
@@ -614,7 +614,7 @@ public class HedonistTacticalAI : ITacticalAI
     void RunPred(Actor_Unit actor, bool anyDistance = false)
     {
 
-        if (actor.PredatorComponent == null)
+        if (actor.Unit.Predator == false)
             return;
         List<PotentialTarget> targets = GetListOfPotentialPrey(actor, anyDistance, actor.Position, actor.Movement);
         if (!targets.Any())
@@ -777,7 +777,7 @@ public class HedonistTacticalAI : ITacticalAI
 
     void RunVorePounce(Actor_Unit actor)
     {
-        if (actor.PredatorComponent == null)
+        if (actor.Unit.Predator == false)
             return;
         List<PotentialTarget> targets = GetListOfPotentialVorePouncePrey(actor, actor.Position, actor.Movement);
         if (!targets.Any())

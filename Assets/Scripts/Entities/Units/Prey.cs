@@ -46,7 +46,7 @@ class Prey
 
     public void UpdateEscapeRate()
     {
-        if (Actor.Surrendered || (Predator.Unit.HasTrait(Traits.Endosoma) && Predator.Unit.Side == Unit.Side))
+        if (Actor.Surrendered || (Predator.Unit.HasTrait(Traits.Endosoma) && !TacticalUtilities.TreatAsHostile(Predator, Actor)))
         {
             EscapeRate = 0;
             return;

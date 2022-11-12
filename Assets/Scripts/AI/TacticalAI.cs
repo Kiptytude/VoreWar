@@ -106,7 +106,7 @@ public class TacticalAI : ITacticalAI
             actors = TacticalUtilities.Units;
         path = null;
         onlySurrendered = actors.Where(s => s.Unit.Side != AISide && s.Unit.IsDead == false && s.Surrendered == false && !s.Fled).Any() == false;
-        var preds = actors.Where(s => s.Unit.Side == AISide && s.Unit.IsDead == false && s.PredatorComponent != null);
+        var preds = actors.Where(s => s.Unit.Side == AISide && s.Unit.IsDead == false && s.Unit.Predator);
         lackPredators = preds.Any() == false;
         bool tooBig = true;
         if (onlySurrendered)
@@ -378,7 +378,7 @@ public class TacticalAI : ITacticalAI
     void FightWithoutMoving(Actor_Unit actor)
     {
         List<PotentialTarget> targets;
-        if (actor.PredatorComponent != null)
+        if (actor.Unit.Predator)
         {
             targets = GetListOfPotentialPrey(actor, false);
             while (targets.Any())
@@ -426,7 +426,7 @@ public class TacticalAI : ITacticalAI
     void RunPred(Actor_Unit actor, bool anyDistance = false)
     {
 
-        if (actor.PredatorComponent == null)
+        if (actor.Unit.Predator == false)
             return;
         List<PotentialTarget> targets = GetListOfPotentialPrey(actor, anyDistance);
         if (!targets.Any())
@@ -581,7 +581,7 @@ public class TacticalAI : ITacticalAI
 
     void RunVorePounce(Actor_Unit actor)
     {
-        if (actor.PredatorComponent == null)
+        if (actor.Unit.Predator == false)
             return;
         List<PotentialTarget> targets = GetListOfPotentialVorePouncePrey(actor);
         if (!targets.Any())

@@ -84,7 +84,7 @@ public class UnitInfoPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
             else
             {
                 nameInstances = 0;
-                if (Actor?.PredatorComponent != null)
+                if ((bool)(Actor?.Unit.Predator))
                 {
                     foreach (var prey in Actor.PredatorComponent.GetAllPrey())
                     {
@@ -116,7 +116,7 @@ public class UnitInfoPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
     void DisplayInfoFor(string name)
     {
-        if (Actor?.PredatorComponent == null)
+        if (Actor?.Unit.Predator == false)
             return;
         foreach (var prey in Actor.PredatorComponent.GetAllPrey())
         {
@@ -130,7 +130,7 @@ public class UnitInfoPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     void DisplayInfoFor(string name, int instance)
     {
         int count = 0;
-        if (Actor?.PredatorComponent == null)
+        if (Actor?.Unit.Predator == false)
             return;
         foreach (var prey in Actor.PredatorComponent.GetAllPrey())
         {

@@ -80,7 +80,7 @@ static class TacticalActionList
             requiresPred: false,
             conditional: (a) => true,
             onClicked: () => State.GameManager.TacticalMode.TrySetSpecialMode(SpecialAction.BellyRub),
-            onExecute: (a, t) => { return t.PredatorComponent != null ? a.BellyRub(t) : false; }));
+            onExecute: (a, t) => { return t.Unit.Predator ? a.BellyRub(t) : false; }));
         TargetedDictionary[SpecialAction.BellyRub] = TargetedActions.Last();
 
         TargetedActions.Add(new TargetedTacticalAction(
@@ -143,7 +143,7 @@ static class TacticalActionList
         TargetedActions.Add(new TargetedTacticalAction(
             name: "Vore Steal",
             requiresPred: true,
-            conditional: (a) => Config.TransferAllowed == true && Config.KuroTenkoEnabled == true && a.PredatorComponent != null,
+            conditional: (a) => Config.TransferAllowed == true && Config.KuroTenkoEnabled == true && a.Unit.Predator,
             onClicked: () => State.GameManager.TacticalMode.TrySetSpecialMode(SpecialAction.StealVore),
             onExecute: (a, t) => a.PredatorComponent.VoreStealAttempt(t)));
         TargetedDictionary[SpecialAction.StealVore] = TargetedActions.Last();
@@ -185,7 +185,7 @@ static class TacticalActionList
         TargetedActions.Add(new TargetedTacticalAction(
             name: "Vore Pounce",
             requiresPred: true,
-            conditional: (a) => a.Unit.HasTrait(Traits.Pounce) && a.PredatorComponent != null,
+            conditional: (a) => a.Unit.HasTrait(Traits.Pounce) && a.Unit.Predator,
             onClicked: () => State.GameManager.TacticalMode.TrySetSpecialMode(SpecialAction.PounceVore),
             onExecute: (a, t) => a.VorePounce(t),
             minimumMp: 2));

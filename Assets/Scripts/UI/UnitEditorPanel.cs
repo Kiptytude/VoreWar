@@ -12,7 +12,9 @@ public class UnitEditorPanel : CustomizerPanel
     public TMP_Dropdown RaceDropdown;
     public TMP_Dropdown TraitDropdown;
     public TMP_Dropdown[] ItemDropdown;
-    public TMP_Dropdown[] SpellDropdown;
+    public TMP_Dropdown[] SpellDropdown; 
+    public TMP_Dropdown AlignmentDropdown;
+    public Toggle HiddenToggle;
     public UnitInfoPanel InfoPanel;
     public TextMeshProUGUI TraitList;
     public Slider ExpBar;
@@ -28,6 +30,7 @@ public class UnitEditorPanel : CustomizerPanel
     Dictionary<Traits, int> traitDict;
     Dictionary<int, string> itemDict;
     Dictionary<string, int> itemReverseDict;
+    Dictionary<int, Empire> empireDict;
 
     public TMP_InputField TraitsText;
 
@@ -92,7 +95,42 @@ public class UnitEditorPanel : CustomizerPanel
             }
             SpellDropdown[i].RefreshShownValue();
         }
+        SetupAllignment();
+    }
 
+    private void SetupAllignment()
+    {
+        empireDict = new Dictionary<int, Empire>();
+        AlignmentDropdown.options.Add(new TMP_Dropdown.OptionData("Default"));
+        if (State.World?.MainEmpires != null)
+        {
+            var mainEmps = State.World.MainEmpires;
+            for (int i = 0; i < mainEmps.Count; i++)
+            {
+                if (mainEmps[i].Side >= 700)
+                    continue;
+                AlignmentDropdown.options.Add(new TMP_Dropdown.OptionData(mainEmps[i].Name));
+                empireDict[i + 1] = mainEmps[i];
+            }
+            
+            if (State.World.MonsterEmpires != null)
+            {
+                var monsterEmps = State.World.MonsterEmpires;
+                for (int i = 0; i < monsterEmps.Count(); i++)
+                {
+                    if (monsterEmps[i].Side >= 700)
+                        continue;
+                    AlignmentDropdown.options.Add(new TMP_Dropdown.OptionData(monsterEmps[i].Name));
+                    empireDict[i + mainEmps.Count + 1] = monsterEmps[i];
+                }
+            }
+        }
+        else
+        {
+            AlignmentDropdown.options.Add(new TMP_Dropdown.OptionData("Defender"));
+            AlignmentDropdown.options.Add(new TMP_Dropdown.OptionData("Attacker"));
+        }
+        AlignmentDropdown.RefreshShownValue();
     }
 
     EditStatButton CreateNewButton(Stat stat, Action<Stat, int> statAction, Action<Stat, int> levelAction, Action<Stat, int> manualSetAction)
@@ -146,12 +184,23 @@ public class UnitEditorPanel : CustomizerPanel
         else
             RaceDropdown.value = 0;
         RaceDropdown.captionText.text = actor.Unit.Race.ToString();
+        AlignmentDropdown.captionText.text = DetermineAllignment(actor);
+        HiddenToggle.isOn = actor.Unit.hiddenFixedSide;
         PopulateItems();
         TraitList.text = UnitEditor.Unit.ListTraits();
         SwapAlignment.gameObject.SetActive(State.GameManager.CurrentScene == State.GameManager.TacticalMode);
         ChangeUnitButtons(actor.Unit);
         UpdateButtons();
         
+    }
+
+    private string DetermineAllignment(Actor_Unit actor)
+    {
+        if (State.World?.MainEmpires != null)
+        {
+            return State.World.GetEmpireOfSide(actor.Unit.FixedSide).Name;
+        } else
+            return actor.Unit.FixedSide == State.GameManager.TacticalMode.GetDefenderSide() ? "Defender" : "Attacker";
     }
 
     public void Open(Unit unit)
@@ -179,6 +228,7 @@ public class UnitEditorPanel : CustomizerPanel
         PopulateItems();
         TraitList.text = UnitEditor.Unit.ListTraits();
         SwapAlignment.gameObject.SetActive(State.GameManager.CurrentScene == State.GameManager.TacticalMode);
+        
         ChangeUnitButtons(unit);
         UpdateButtons();
     }
@@ -315,6 +365,32 @@ public class UnitEditorPanel : CustomizerPanel
         UnitEditor.ChangeItem(slot, newItem);
         UnitEditor.RefreshView();
 
+    }
+
+    public void ChangeAlignment()
+    {
+        if (UnitEditor.Unit == null)
+            return;
+
+        if (AlignmentDropdown.options[AlignmentDropdown.value].text == "Default")
+            UnitEditor.Unit.FixedSide = -1;
+        else if (AlignmentDropdown.options[AlignmentDropdown.value].text == "Defender")
+            UnitEditor.Unit.FixedSide = State.GameManager.TacticalMode.GetDefenderSide();
+        else if (AlignmentDropdown.options[AlignmentDropdown.value].text == "Attacker")
+            UnitEditor.Unit.FixedSide = State.GameManager.TacticalMode.GetAttackerSide();
+        else if (State.World?.MainEmpires != null)
+        {
+            UnitEditor.Unit.FixedSide = empireDict[AlignmentDropdown.value].Side;
+        }
+        ToggleHidden();
+    }
+
+    public void ToggleHidden()
+    {
+        if (UnitEditor.Unit == null)
+            return;
+        UnitEditor.Unit.hiddenFixedSide = HiddenToggle.isOn;
+        UnitEditor.RefreshView();
     }
 
     public void RandomizeUnit()

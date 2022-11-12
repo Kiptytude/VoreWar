@@ -288,7 +288,7 @@ class Vipers : DefaultRaceData
 
     protected override Sprite BodyAccentSprite2(Actor_Unit actor) // second stomach = tail
     {
-        if (actor.PredatorComponent == null)
+        if (actor.Unit.Predator == false)
             return null;
         int size2;
         if (Config.LamiaUseTailAsSecondBelly && (actor.PredatorComponent.Stomach2ndFullness > 0 || actor.PredatorComponent.TailFullness > 0))
@@ -415,7 +415,7 @@ class Vipers : DefaultRaceData
     
     protected override Sprite BodyAccentSprite8(Actor_Unit actor) // middle tail B
     {
-        if (actor.PredatorComponent == null)
+        if (actor.Unit.Predator == false)
             return null;
         int size2;
         if (Config.LamiaUseTailAsSecondBelly && (actor.PredatorComponent.Stomach2ndFullness > 0 || actor.PredatorComponent.TailFullness > 0))

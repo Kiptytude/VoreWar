@@ -1798,6 +1798,28 @@ public class StrategyMode : SceneBase
                 }
             }
 
+            foreach (Army army in StrategicUtilities.GetAllArmies().Where(s => (s.Side != ActingEmpire.Side && s.Empire.IsEnemy(ActingEmpire) || s.Side != ActingEmpire.Side && s.Empire.IsNeutral(ActingEmpire)) && ContainsFriendly(s)))
+            {
+                if (army.Position.GetDistance(clickLocation) < 1)
+                {
+                    Village village = StrategicUtilities.GetVillageAt(army.Position);
+                    if (village != null)
+                    {
+                        State.GameManager.ActivateRecruitMode(village, ActingEmpire, Recruit_Mode.ActivatingEmpire.Infiltrator);
+                    }
+                    else
+                    {
+                        MercenaryHouse house = StrategicUtilities.GetMercenaryHouseAt(army.Position);
+                        if (house != null)
+                            State.GameManager.ActivateRecruitMode(house, ActingEmpire, army, Recruit_Mode.ActivatingEmpire.Infiltrator);
+                        else
+                            State.GameManager.ActivateRecruitMode(ActingEmpire, army, Recruit_Mode.ActivatingEmpire.Infiltrator);
+                    }
+                    return;
+
+                }
+            }
+
             for (int i = 0; i < State.World.Villages.Length; i++)
             {
                 if (State.World.Villages[i].Position.GetDistance(clickLocation) == 0)
@@ -1818,6 +1840,11 @@ public class StrategyMode : SceneBase
 
             SelectedArmy = null;
         }
+    }
+
+    private bool ContainsFriendly(Army s)
+    {
+        return s.Units.Any(u => u.FixedSide == ActingEmpire.Side || State.World.GetEmpireOfSide(u.FixedSide).IsAlly(ActingEmpire));
     }
 
     bool ProcessClickWithoutEmpire(int x, int y)

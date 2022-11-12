@@ -140,19 +140,19 @@ class Mermen : DefaultRaceData
 
     internal override void SetBaseOffsets(Actor_Unit actor)
     {
-        if (actor.PredatorComponent != null && actor.GetStomachSize(16) > 5)
+        if (actor.Unit.Predator && actor.GetStomachSize(16) > 5)
         {
             AddOffset(Belly, 0, 13);
             AddOffset(Dick, 0, 7);
             AddOffset(Balls, 0, 7);
         }
-        else if (actor.PredatorComponent != null && actor.GetStomachSize(16) > 3)
+        else if (actor.Unit.Predator && actor.GetStomachSize(16) > 3)
         {
             AddOffset(Belly, 0, 12);
             AddOffset(Dick, 0, 7);
             AddOffset(Balls, 0, 7);
         }
-        else if (actor.PredatorComponent != null && actor.GetStomachSize(16) > 2)
+        else if (actor.Unit.Predator && actor.GetStomachSize(16) > 2)
         {
             AddOffset(Belly, 0, 11);
             AddOffset(Dick, 0, 7);
