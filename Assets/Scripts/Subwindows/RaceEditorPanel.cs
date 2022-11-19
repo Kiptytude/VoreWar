@@ -6,6 +6,7 @@ using System.Linq;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Text;
+using UnityEngine.EventSystems;
 
 public class RaceEditorPanel : MonoBehaviour
 {
@@ -52,6 +53,8 @@ public class RaceEditorPanel : MonoBehaviour
     public InputField MinStomach;
     public InputField MaxStomach;
 
+    public InputField PowerAdjustment;
+
     public Toggle OverrideClothed;
     public Slider ClothedFraction;
     public Toggle OverrideWeight;
@@ -78,11 +81,12 @@ public class RaceEditorPanel : MonoBehaviour
 
     public TMP_Dropdown RaceAIDropdown;
 
+    public TextMeshProUGUI InfoText;
+
     List<Traits> CurrentTraits;
 
 
     Race PreviousRace = (Race)(-1);
-
 
     internal void ShowPanel()
     {
@@ -322,6 +326,8 @@ public class RaceEditorPanel : MonoBehaviour
                 item.Stats.Stomach.Roll = 1 + Convert.ToInt32(MaxStomach.text) - item.Stats.Stomach.Minimum;
                 if (item.Stats.Stomach.Roll < 1) item.Stats.Strength.Roll = 1;
 
+                item.PowerAdjustment = Convert.ToSingle(PowerAdjustment.text);
+
                 item.FemaleTraits = TextToTraitList(FemaleTraits.text);
                 item.MaleTraits = TextToTraitList(MaleTraits.text);
                 item.HermTraits = TextToTraitList(HermTraits.text);
@@ -330,7 +336,7 @@ public class RaceEditorPanel : MonoBehaviour
         }
         catch
         {
-            State.GameManager.CreateMessageBox("There's a input box that's not filled in");
+            State.GameManager.CreateMessageBox("There's an input box that's not filled in");
         }
 
     }
@@ -464,6 +470,8 @@ public class RaceEditorPanel : MonoBehaviour
             MaxVoracity.text = (item.Stats.Voracity.Minimum + item.Stats.Voracity.Roll - 1).ToString();
             MinStomach.text = item.Stats.Stomach.Minimum.ToString();
             MaxStomach.text = (item.Stats.Stomach.Minimum + item.Stats.Stomach.Roll - 1).ToString();
+
+            PowerAdjustment.text = racePar.PowerAdjustment.ToString();
 
             FemaleTraits.text = TraitListToText(item.FemaleTraits);
             MaleTraits.text = TraitListToText(item.MaleTraits);

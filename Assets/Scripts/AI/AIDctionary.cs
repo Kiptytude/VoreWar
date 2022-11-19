@@ -4,7 +4,8 @@ using System.Collections.Generic;
 public enum RaceAI
 {
     Standard,
-    Hedonist
+    Hedonist,
+    ServantRace
 }
 public static class RaceAIType
 {
@@ -12,6 +13,7 @@ public static class RaceAIType
     {
         { RaceAI.Standard, typeof(StandardTacticalAI)},
         { RaceAI.Hedonist, typeof(HedonistTacticalAI)},
+        { RaceAI.ServantRace, typeof(RaceServantTacticalAI)},
 
     };
     

@@ -306,6 +306,9 @@ class RaceSettingsItem
     [OdinSerialize]
     internal RaceAI RaceAI;
 
+    [OdinSerialize]
+    internal float PowerAdjustment;
+
 
 
     //[OdinSerialize]
@@ -368,6 +371,8 @@ class RaceSettingsItem
         FavoredStat = racePar.FavoredStat;
 
         RaceAI = racePar.RaceAI;
+
+        PowerAdjustment = racePar.PowerAdjustment;
 
         //DisplayGraphics = race;
 

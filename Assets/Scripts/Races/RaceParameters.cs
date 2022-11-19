@@ -900,12 +900,13 @@ static class RaceParameters
             HasTail = true,
             FavoredStat = Stat.Agility,
             RacialTraits = new List<Traits>()
-        {
+            {
                 Traits.ProlificBreeder,
                 Traits.EasyToVore,
                 Traits.Replaceable,
-        },
+            },
             RaceDescription = "",
+            RaceAI = RaceAI.ServantRace
         };
 
         DewSprite = new RaceTraits()

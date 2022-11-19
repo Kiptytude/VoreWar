@@ -1,6 +1,7 @@
 using OdinSerializer;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 public abstract class TacticalAI : ITacticalAI
@@ -48,11 +49,11 @@ public abstract class TacticalAI : ITacticalAI
     protected bool didAction;
     protected bool foundPath;
     [OdinSerialize]
-    List<Actor_Unit> actors;
+    protected List<Actor_Unit> actors;
     [OdinSerialize]
     protected int enemySide;
     [OdinSerialize]
-    readonly TacticalTileType[,] tiles;
+    protected readonly TacticalTileType[,] tiles;
     [OdinSerialize]
     protected readonly int AISide;
     [OdinSerialize]
@@ -62,7 +63,7 @@ public abstract class TacticalAI : ITacticalAI
     [OdinSerialize]
     protected bool retreating;
     [OdinSerialize]
-    readonly bool defendingVillage;
+    protected readonly bool defendingVillage;
     [OdinSerialize]
     protected int currentTurn = 0;
     [OdinSerialize]
@@ -90,7 +91,7 @@ public abstract class TacticalAI : ITacticalAI
     }
 
     public TacticalAI(List<Actor_Unit> actors, TacticalTileType[,] tiles, int AISide, bool defendingVillage = false)
-    {
+    {      
         this.AISide = AISide;
         this.tiles = tiles;
         this.actors = actors;
@@ -220,7 +221,7 @@ public abstract class TacticalAI : ITacticalAI
         }
     }
 
-    public bool RunAI()
+    public virtual bool RunAI()
     {
         if (actors == null)
             actors = TacticalUtilities.Units;
@@ -291,7 +292,7 @@ public abstract class TacticalAI : ITacticalAI
 
     protected abstract void GetNewOrder(Actor_Unit actor);
 
-    protected int CheckActionEconomyOfActorFromPositionWithAP(Actor_Unit actor, Vec2i position, int ap)
+    protected virtual int CheckActionEconomyOfActorFromPositionWithAP(Actor_Unit actor, Vec2i position, int ap)
     {
         int apRequired = -1;
         if (actor.Unit.HasTrait(Traits.Pounce) && ap >= 2)
@@ -329,7 +330,7 @@ public abstract class TacticalAI : ITacticalAI
         return ap;
     }
 
-    protected int CheckVorePounce(Actor_Unit actor, Vec2i position, int ap)
+    protected virtual int CheckVorePounce(Actor_Unit actor, Vec2i position, int ap)
     {
         if (actor.PredatorComponent == null)
             return -1;
@@ -358,7 +359,7 @@ public abstract class TacticalAI : ITacticalAI
         return -1;
     }
 
-    protected void RunBellyRub(Actor_Unit actor, int spareAP)
+    protected virtual void RunBellyRub(Actor_Unit actor, int spareAP)
     {
         int cost = actor.MaxMovement() / 3;
         List<PotentialTarget> targets = GetListOfPotentialRubTargets(actor, actor.Position, spareAP);
@@ -413,7 +414,7 @@ public abstract class TacticalAI : ITacticalAI
         //}
     }
 
-    protected List<PotentialTarget> GetListOfPotentialRubTargets(Actor_Unit actor, Vec2i position, int moves)
+    protected virtual List<PotentialTarget> GetListOfPotentialRubTargets(Actor_Unit actor, Vec2i position, int moves)
     {
         List<PotentialTarget> targets = new List<PotentialTarget>();
 
@@ -434,7 +435,7 @@ public abstract class TacticalAI : ITacticalAI
         return targets.OrderByDescending(t => t.utility).ToList();
     }
 
-    protected void FightWithoutMoving(Actor_Unit actor)
+    protected virtual void FightWithoutMoving(Actor_Unit actor)
     {
         List<PotentialTarget> targets;
         if (actor.PredatorComponent != null)
@@ -482,7 +483,7 @@ public abstract class TacticalAI : ITacticalAI
         }
     }
 
-    protected int CheckPred(Actor_Unit actor, Vec2i position, int ap, bool anyDistance = false)
+    protected virtual int CheckPred(Actor_Unit actor, Vec2i position, int ap, bool anyDistance = false)
     {
         int distance = -1;
         if (actor.PredatorComponent == null)
@@ -518,7 +519,7 @@ public abstract class TacticalAI : ITacticalAI
         return -1;
     }
 
-    protected void RunPred(Actor_Unit actor, bool anyDistance = false)
+    protected virtual void RunPred(Actor_Unit actor, bool anyDistance = false)
     {
 
         if (actor.PredatorComponent == null)
@@ -573,7 +574,7 @@ public abstract class TacticalAI : ITacticalAI
         }
     }
 
-    protected List<PotentialTarget> GetListOfPotentialPrey(Actor_Unit actor, bool anyDistance, Vec2i position, int movement)
+    protected virtual List<PotentialTarget> GetListOfPotentialPrey(Actor_Unit actor, bool anyDistance, Vec2i position, int movement)
     {
         List<PotentialTarget> targets = new List<PotentialTarget>();
         //check if we have at least 1 unit of capacity free
@@ -608,7 +609,7 @@ public abstract class TacticalAI : ITacticalAI
         return targets;
     }
 
-    protected void WalkToYBand(Actor_Unit actor, int y)
+    protected virtual void WalkToYBand(Actor_Unit actor, int y)
     {
         var tempPath = TacticalPathfinder.GetPathToY(actor.Position, actor.Unit.HasTrait(Traits.Flight), y, actor);
         if (tempPath == null || tempPath.Count == 0)
@@ -625,7 +626,7 @@ public abstract class TacticalAI : ITacticalAI
         }
     }
 
-    protected void MoveToAndAction(Actor_Unit actor, Vec2i p, int howClose, int maxDistance, Action action)
+    protected virtual void MoveToAndAction(Actor_Unit actor, Vec2i p, int howClose, int maxDistance, Action action)
     {
         var tempPath = TacticalPathfinder.GetPath(actor.Position, p, howClose, actor, maxDistance);
         if (tempPath == null || tempPath.Count == 0)
@@ -642,7 +643,7 @@ public abstract class TacticalAI : ITacticalAI
         }
     }
 
-    protected int CheckMoveTo(Actor_Unit actor, Vec2i actorPosition, Vec2i p, int howClose, int maxDistance)
+    protected virtual int CheckMoveTo(Actor_Unit actor, Vec2i actorPosition, Vec2i p, int howClose, int maxDistance)
     {
         var tempPath = TacticalPathfinder.GetPath(actorPosition, p, howClose, actor, maxDistance);
         if (tempPath == null || tempPath.Count == 0)
@@ -653,14 +654,14 @@ public abstract class TacticalAI : ITacticalAI
         }
     }
 
-    protected void RandomWalkAndEndTurn(Actor_Unit actor)
+    protected virtual void RandomWalkAndEndTurn(Actor_Unit actor)
     {
         RandomWalk(actor);
         actor.ClearMovement();
         didAction = true;
     }
 
-    protected bool RandomWalk(Actor_Unit actor)
+    protected virtual bool RandomWalk(Actor_Unit actor)
     {
 
         int r = State.Rand.Next(8);
@@ -682,7 +683,7 @@ public abstract class TacticalAI : ITacticalAI
         return true;
     }
 
-    protected void RunVorePounce(Actor_Unit actor)
+    protected virtual void RunVorePounce(Actor_Unit actor)
     {
         if (actor.PredatorComponent == null)
             return;
@@ -723,7 +724,7 @@ public abstract class TacticalAI : ITacticalAI
         }
     }
 
-    protected List<PotentialTarget> GetListOfPotentialVorePouncePrey(Actor_Unit actor, Vec2i position, int moves)
+    protected virtual List<PotentialTarget> GetListOfPotentialVorePouncePrey(Actor_Unit actor, Vec2i position, int moves)
     {
         List<PotentialTarget> targets = new List<PotentialTarget>();
         //check if we have at least 1 unit of capacity free
@@ -754,7 +755,7 @@ public abstract class TacticalAI : ITacticalAI
         return targets;
     }
 
-    protected int CheckMeleePounce(Actor_Unit actor, Vec2i position, int ap)
+    protected virtual int CheckMeleePounce(Actor_Unit actor, Vec2i position, int ap)
     {
         List<PotentialTarget> targets = GetListOfPotentialPounceTargets(actor, position, ap);
         if (!targets.Any())
@@ -781,7 +782,7 @@ public abstract class TacticalAI : ITacticalAI
         return -1;
     }
 
-    protected void RunMeleePounce(Actor_Unit actor)
+    protected virtual void RunMeleePounce(Actor_Unit actor)
     {
         List<PotentialTarget> targets = GetListOfPotentialPounceTargets(actor, actor.Position, actor.Movement);
         if (!targets.Any())
@@ -808,7 +809,7 @@ public abstract class TacticalAI : ITacticalAI
         }
     }
 
-    protected List<PotentialTarget> GetListOfPotentialPounceTargets(Actor_Unit actor, Vec2i position, int moves)
+    protected virtual List<PotentialTarget> GetListOfPotentialPounceTargets(Actor_Unit actor, Vec2i position, int moves)
     {
         List<PotentialTarget> targets = new List<PotentialTarget>();
 
@@ -827,7 +828,7 @@ public abstract class TacticalAI : ITacticalAI
         return targets.OrderByDescending(t => t.utility).ToList();
     }
 
-    protected int CheckRanged(Actor_Unit actor, Vec2i position, int ap)
+    protected virtual int CheckRanged(Actor_Unit actor, Vec2i position, int ap)
     {
         List<PotentialTarget> targets = GetListOfPotentialRangedTargets(actor, position);
         if (!targets.Any() || actor.BestRanged == null || actor.Unit.GetBestRanged() == null)
@@ -858,7 +859,7 @@ public abstract class TacticalAI : ITacticalAI
         return -1;
     }
 
-    protected void RunRanged(Actor_Unit actor)
+    protected virtual void RunRanged(Actor_Unit actor)
     {
         List<PotentialTarget> targets = GetListOfPotentialRangedTargets(actor, actor.Position);
         if (!targets.Any() || actor.BestRanged == null || actor.Unit.GetBestRanged() == null)
@@ -898,7 +899,7 @@ public abstract class TacticalAI : ITacticalAI
         }
     }
 
-    protected List<PotentialTarget> GetListOfPotentialRangedTargets(Actor_Unit actor, Vec2i position) // Adapted all the potential target checks to allow for positions aside from the actor's location
+    protected virtual List<PotentialTarget> GetListOfPotentialRangedTargets(Actor_Unit actor, Vec2i position) // Adapted all the potential target checks to allow for positions aside from the actor's location
     {
         List<PotentialTarget> targets = new List<PotentialTarget>();
         if (actor.BestRanged == null) return targets; //This shouldn't happen, but just in case
@@ -917,7 +918,7 @@ public abstract class TacticalAI : ITacticalAI
         return targets.OrderByDescending(t => t.utility).ToList();
     }
 
-    protected int CheckMelee(Actor_Unit actor, Vec2i position, int ap)
+    protected virtual int CheckMelee(Actor_Unit actor, Vec2i position, int ap)
     {
         List<PotentialTarget> targets = GetListOfPotentialMeleeTargets(actor, position, ap);
         if (!targets.Any())
@@ -945,7 +946,7 @@ public abstract class TacticalAI : ITacticalAI
     }
 
 
-    protected void RunMelee(Actor_Unit actor)
+    protected virtual void RunMelee(Actor_Unit actor)
     {
         List<PotentialTarget> targets = GetListOfPotentialMeleeTargets(actor, actor.Position, actor.Movement);
         if (!targets.Any())
@@ -990,7 +991,7 @@ public abstract class TacticalAI : ITacticalAI
         }
     }
 
-    protected List<PotentialTarget> GetListOfPotentialMeleeTargets(Actor_Unit actor, Vec2i position, int moves)
+    protected virtual List<PotentialTarget> GetListOfPotentialMeleeTargets(Actor_Unit actor, Vec2i position, int moves)
     {
         List<PotentialTarget> targets = new List<PotentialTarget>();
 
@@ -1018,7 +1019,7 @@ public abstract class TacticalAI : ITacticalAI
         return targets.OrderByDescending(t => t.utility).ToList();
     }
 
-    protected void TryResurrect(Actor_Unit actor)
+    protected virtual void TryResurrect(Actor_Unit actor)
     {
         if (actor.Unit.UseableSpells == null || actor.Unit.UseableSpells.Any() == false)
             return;
@@ -1053,7 +1054,7 @@ public abstract class TacticalAI : ITacticalAI
 
 
     }
-    protected int CheckResurrect(Actor_Unit actor, Vec2i position, int ap)
+    protected virtual int CheckResurrect(Actor_Unit actor, Vec2i position, int ap)
     {
         if (actor.Unit.UseableSpells == null || actor.Unit.UseableSpells.Any() == false)
             return -1;
@@ -1088,7 +1089,7 @@ public abstract class TacticalAI : ITacticalAI
 
     }
 
-    protected int CheckSpells(Actor_Unit actor, Vec2i position, int ap)
+    protected virtual int CheckSpells(Actor_Unit actor, Vec2i position, int ap)
     {
         if (actor.Unit.UseableSpells == null || actor.Unit.UseableSpells.Any() == false)
             return -1;
@@ -1149,7 +1150,7 @@ public abstract class TacticalAI : ITacticalAI
         return -1;
     }
 
-    protected void RunSpells(Actor_Unit actor)
+    protected virtual void RunSpells(Actor_Unit actor)
     {
         if (actor.Unit.UseableSpells == null || actor.Unit.UseableSpells.Any() == false)
             return;
@@ -1215,7 +1216,7 @@ public abstract class TacticalAI : ITacticalAI
         }
     }
 
-    protected List<PotentialTarget> GetListOfPotentialSpellTargets(Actor_Unit actor, Spell spell, Vec2i position)
+    protected virtual List<PotentialTarget> GetListOfPotentialSpellTargets(Actor_Unit actor, Spell spell, Vec2i position)
     {
         List<PotentialTarget> targets = new List<PotentialTarget>();
 
@@ -1278,7 +1279,7 @@ public abstract class TacticalAI : ITacticalAI
 
 
 
-    protected bool IsRanged(Actor_Unit actor)
+    protected virtual bool IsRanged(Actor_Unit actor)
     {
         return actor.BestRanged != null;
     }

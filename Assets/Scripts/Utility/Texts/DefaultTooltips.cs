@@ -649,6 +649,10 @@ Does not retroactively affect already created units.";
             case 255:
                 return "Makes more grown units decay at a different pace. This value is how much extra decay 1 factor of growth adds.\n" +
                     "For example, default is 0.04 (4%), which would be +2% decay at 1.5x growth, or +4% at 2x growth.";
+            case 256:
+                return "Modifies how mighty the game thinks the Race is (Affects power calculations).\n" +
+                    "A way to make your balance changes known to the AI, or deliberately make it misjudge. " +
+                    "In the default balance, this value ranges from 0.5 (compy) to 12 (dragon).";
             default:
                 return "";
         }
