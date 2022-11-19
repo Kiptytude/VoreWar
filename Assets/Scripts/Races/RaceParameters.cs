@@ -900,12 +900,13 @@ static class RaceParameters
             HasTail = true,
             FavoredStat = Stat.Agility,
             RacialTraits = new List<Traits>()
-        {
+            {
                 Traits.ProlificBreeder,
                 Traits.EasyToVore,
                 Traits.Replaceable,
-        },
+            },
             RaceDescription = "",
+            RaceAI = RaceAI.ServantRace
         };
 
         DewSprite = new RaceTraits()
@@ -1672,14 +1673,15 @@ static class RaceParameters
                 Stomach = new RaceStats.StatRange(18, 24),
             },
             RacialTraits = new List<Traits>()
-        {
+            {
                 Traits.Biter,
                 Traits.Pounce,
                 Traits.Ravenous,
                 Traits.TasteForBlood,
                 Traits.PleasurableTouch,
-        },
-            RaceDescription = $"They were probably following a migration of gazelle before they came upon this land.\nMuch older texts claim they are the children of Raha, another world's godess of pleasure. She spread her blessing to this realm, and in exchange, these kitties are feeling right at home digesting the natives."
+            },
+            RaceDescription = $"They were probably following a migration of gazelle before they came upon this land.\nMuch older texts claim they are the children of Raha, another world's godess of pleasure. She spread her blessing to this realm, and in exchange, these kitties are feeling right at home digesting the natives.",
+            RaceAI = RaceAI.Hedonist,
         };
 
         SpitterSlugs = new RaceTraits()
@@ -2532,6 +2534,8 @@ internal class RaceTraits
     /// Controls the size of the body, used for determining how much space they take up in a belly
     /// </summary>
     internal int BodySize;
+    
+    internal RaceAI RaceAI;
     /// <summary>
     /// Controls the base stomach size, at 12 stomach, the capacity will equal this value, and increases or decreases linearly
     /// </summary>

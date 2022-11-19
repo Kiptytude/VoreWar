@@ -16,7 +16,7 @@ namespace LegacyAI
         List<PathNode> path;
         Actor_Unit pathIsFor;
 
-        public TacticalAI.RetreatConditions RetreatPlan
+        public StandardTacticalAI.RetreatConditions RetreatPlan
         {
             get
             {

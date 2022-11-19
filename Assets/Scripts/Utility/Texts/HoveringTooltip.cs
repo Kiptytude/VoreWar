@@ -64,6 +64,25 @@ public class HoveringTooltip : MonoBehaviour
         transform.position = Input.mousePosition + new Vector3(xAdjust, 0, 0);
     }
 
+    public void UpdateInformationAIOnly(string[] words)
+    {
+        string description = GetAIDescription(words);
+        if (description == "")
+        {
+            gameObject.SetActive(false);
+            return;
+        }
+        rect.sizeDelta = new Vector2(500, 200);
+        gameObject.SetActive(true);
+        remainingFrames = 3;
+        text.text = description;
+        float xAdjust = 10;
+        float exceeded = Input.mousePosition.x + (rect.rect.width * Screen.width / 1920) - Screen.width;
+        if (exceeded > 0)
+            xAdjust = -exceeded;
+        transform.position = Input.mousePosition + new Vector3(xAdjust, 0, 0);
+    }
+
     public void UpdateInformation(string[] words, Unit unit, Actor_Unit actor)
     {
         string description = GetDescription(words, unit, actor);
@@ -132,6 +151,15 @@ public class HoveringTooltip : MonoBehaviour
                     return $"{AllSpells[i].Description}\nRange: {AllSpells[i].Range.Min}-{AllSpells[i].Range.Max}\nMana Cost: {AllSpells[i].ManaCost}\nTargets: {string.Join(", ", AllSpells[i].AcceptibleTargets)}";
                 }
             }
+        }
+        return "";
+    }
+
+    string GetAIDescription(string[] words)
+    {
+        if (Enum.TryParse(words[2], out RaceAI ai))
+        {
+            return GetAIData(ai);
         }
         return "";
     }
@@ -488,5 +516,40 @@ public class HoveringTooltip : MonoBehaviour
                 return "Allows the casting of the Charm spell once per battle";
         }
         return "<b>This trait needs a tooltip!</b>";
+    }
+
+    public static string GetAIData(RaceAI ai)
+    {
+        switch (ai)
+        {
+            case RaceAI.Standard:
+                return "Straightforward battlers";
+            case RaceAI.Hedonist:
+                return "Will try to find the time for massaging any prey-filled parts on their comrades or their own body.\nDon't be fooled – this is deceptively efficient.";
+            case RaceAI.ServantRace:
+                return "Acts Subservient towards units of the most powerful race on their side, flocking to rub those individuals.\n" +
+                    "Racial superiority is based on eminence.";
+        }
+        return "<b>This AI needs a tooltip!</b>";
+    }
+
+    internal void UpdateInformationDefaultTooltip(int value)
+    {
+       
+        string description = DefaultTooltips.Tooltip(value);
+        if (description == "")
+        {
+            gameObject.SetActive(false);
+            return;
+        }
+        rect.sizeDelta = new Vector2(500, 200);
+        gameObject.SetActive(true);
+        remainingFrames = 999;
+        text.text = description;
+        float xAdjust = 10;
+        float exceeded = Input.mousePosition.x + (rect.rect.width * Screen.width / 1920) - Screen.width;
+        if (exceeded > 0)
+            xAdjust = -exceeded;
+        transform.position = Input.mousePosition + new Vector3(xAdjust, 0, 0);
     }
 }
