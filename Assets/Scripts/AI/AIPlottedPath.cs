@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-class AIPlottedPath
+public class AIPlottedPath
 {
     internal Actor_Unit Actor;
     internal Action Action;

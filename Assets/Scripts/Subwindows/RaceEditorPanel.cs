@@ -76,6 +76,8 @@ public class RaceEditorPanel : MonoBehaviour
 
     public TMP_Dropdown FavoredStat;
 
+    public TMP_Dropdown RaceAIDropdown;
+
     List<Traits> CurrentTraits;
 
 
@@ -137,6 +139,16 @@ public class RaceEditorPanel : MonoBehaviour
 
             }
         }
+
+        if (RaceAIDropdown.options?.Any() == false)
+        {
+            foreach (RaceAI raceAI in ((RaceAI[])Enum.GetValues(typeof(RaceAI))))
+            {
+                RaceAIDropdown.options.Add(new TMP_Dropdown.OptionData(raceAI.ToString()));
+            }
+            RaceAIDropdown.RefreshShownValue();
+        }
+
         LoadRace();
         UpdateInteractable();
 
@@ -216,6 +228,7 @@ public class RaceEditorPanel : MonoBehaviour
                 item.furryFraction = FurryFraction.value;
 
                 item.BannerType = BannerType.value;
+                item.RaceAI = (RaceAI)RaceAIDropdown.value;
 
                 item.overrideClothes = OverrideClothed.isOn;
                 item.clothedFraction = ClothedFraction.value;
@@ -382,6 +395,9 @@ public class RaceEditorPanel : MonoBehaviour
             FurryFraction.value = item.furryFraction;
 
             BannerType.value = item.BannerType;
+
+            RaceAIDropdown.value = (int)item.RaceAI;
+            RaceAIDropdown.RefreshShownValue();
 
             OverrideClothed.isOn = item.overrideClothes;
             ClothedFraction.value = item.clothedFraction;

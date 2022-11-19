@@ -1,6 +1,8 @@
 using LegacyAI;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using TacticalDecorations;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -450,11 +452,11 @@ public class TacticalMode : SceneBase
         StartingAttackerPower = StrategicUtilities.UnitValue(armies[0].Units);
         StartingDefenderPower = StrategicUtilities.UnitValue(defenders.Concat(garrison).Select(s => s.Unit).ToList());
 
-
+        Race defenderRace = defender?.Empire?.ReplacedRace ?? village.Empire?.Race ?? (Race)defenderSide;
+        Race attackerRace = invader.Empire?.ReplacedRace ?? (Race)invader.Side;
         if (Config.Defections && !State.GameManager.PureTactical)
         {
-            Race defenderRace = defender?.Empire?.ReplacedRace ?? village.Empire?.Race ?? (Race)defenderSide;
-            Race attackerRace = invader.Empire?.ReplacedRace ?? (Race)invader.Side;
+            
 
             foreach (Actor_Unit actor in attackers)
             {
@@ -499,10 +501,9 @@ public class TacticalMode : SceneBase
             attackerAI = new LegacyTacticalAI(units, tiles, armies[0].Side);
         else
         {
-            if (invader.Empire.ReplacedRace == Race.FeralLions)
-                attackerAI = new HedonistTacticalAI(units, tiles, armies[0].Side);
-            else
-                attackerAI = new TacticalAI(units, tiles, armies[0].Side);
+            object[] argArray = { units, tiles, armies[0].Side, false };
+            RaceAI rai = State.RaceSettings.GetRaceAI(attackerRace);
+            attackerAI = Activator.CreateInstance(RaceAIType.Dict[rai], args: argArray) as TacticalAI;
             if (State.GameManager.PureTactical == false && Config.NoAIRetreat == false)
             {
                 if (invader.Empire.Race == Race.Vagrants)
@@ -535,10 +536,9 @@ public class TacticalMode : SceneBase
             defenderAI = new LegacyTacticalAI(units, tiles, defenderSide);
         else
         {
-            if (defender?.Empire?.ReplacedRace == Race.FeralLions)
-                defenderAI = new HedonistTacticalAI(units, tiles, defenderSide, village != null);
-            else
-                defenderAI = new TacticalAI(units, tiles, defenderSide, village != null);
+            object[] argArray = { units, tiles, defenderSide, village != null };
+            RaceAI rai = State.RaceSettings.GetRaceAI(defenderRace);
+            defenderAI = Activator.CreateInstance(RaceAIType.Dict[rai], args: argArray) as TacticalAI;
             if (State.GameManager.PureTactical == false && Config.NoAIRetreat == false)
             {
                 if (defender != null && defender?.Empire.Race == Race.Vagrants)
@@ -987,8 +987,8 @@ Turns: {currentTurn}
         CreateActors();
 
         ActionMode = 0;
-        string attackerController = AIAttacker == false ? "Player" : attackerAI is TacticalAI ? "Full AI" : (attackerAI is HedonistTacticalAI ? "Hedonist AI" : "Legacy AI");
-        string defenderController = AIDefender == false ? "Player" : defenderAI is TacticalAI ? "Full AI" : (defenderAI is HedonistTacticalAI ? "Hedonist AI" : "Legacy AI");
+        string attackerController = AIAttacker == false ? "Player" : attackerAI is StandardTacticalAI ? "Full AI" : (attackerAI is HedonistTacticalAI ? "Hedonist AI" : "Legacy AI");
+        string defenderController = AIDefender == false ? "Player" : defenderAI is StandardTacticalAI ? "Full AI" : (defenderAI is HedonistTacticalAI ? "Hedonist AI" : "Legacy AI");
 
         StatusUI.AttackerText.text = $"{AttackerName} - ({attackerController})";
         StatusUI.DefenderText.text = $"{DefenderName} - ({defenderController})";
@@ -2152,10 +2152,9 @@ Turns: {currentTurn}
         {
             if (AIDefender == false)
             {
-                if (defenderRace == Race.FeralLions)
-                    defenderAI = new HedonistTacticalAI(units, tiles, defenderSide);
-                else
-                    defenderAI = new TacticalAI(units, tiles, defenderSide);
+                object[] argArray = { units, tiles, defenderSide, false };
+                RaceAI rai = State.RaceSettings.GetRaceAI(defenderRace);
+                defenderAI = Activator.CreateInstance(RaceAIType.Dict[rai], args: argArray) as TacticalAI;
                 if (SkipUI.AllowRetreat.isOn)
                     defenderAI.RetreatPlan = new TacticalAI.RetreatConditions(.2f, 0);
                 AIDefender = true;
@@ -2170,10 +2169,9 @@ Turns: {currentTurn}
             }
             else if (AIAttacker == false)
             {
-                if ((armies[0]?.Empire?.ReplacedRace == Race.FeralLions))
-                    attackerAI = new HedonistTacticalAI(units, tiles, attackerSide);
-                else
-                    attackerAI = new TacticalAI(units, tiles, attackerSide);
+                object[] argArray = { units, tiles, attackerSide, false };
+                RaceAI rai = State.RaceSettings.GetRaceAI((Race)attackerRace);
+                attackerAI = Activator.CreateInstance(RaceAIType.Dict[rai], args: argArray) as TacticalAI;
                 if (SkipUI.AllowRetreat.isOn)
                     attackerAI.RetreatPlan = new TacticalAI.RetreatConditions(.2f, 0);
                 AIAttacker = true;
@@ -2192,10 +2190,9 @@ Turns: {currentTurn}
         }
         if (attackersTurn)
         {
-            if ((armies[0]?.Empire?.ReplacedRace == Race.FeralLions))
-                attackerAI = new HedonistTacticalAI(units, tiles, activeSide);
-            else
-                attackerAI = new TacticalAI(units, tiles, activeSide);
+            object[] argArray = { units, tiles, activeSide, false };
+            RaceAI rai = State.RaceSettings.GetRaceAI((Race)attackerRace);
+            attackerAI = Activator.CreateInstance(RaceAIType.Dict[rai],args:argArray) as TacticalAI;
             if (SkipUI.AllowRetreat.isOn)
                 attackerAI.RetreatPlan = new TacticalAI.RetreatConditions(.2f, 0);
             AIAttacker = true;
@@ -2203,10 +2200,9 @@ Turns: {currentTurn}
         }
         else
         {
-            if ((armies[1]?.Empire?.ReplacedRace ?? village?.Empire?.ReplacedRace ?? ((Race)defenderSide)) == Race.FeralLions)
-                defenderAI = new HedonistTacticalAI(units, tiles, activeSide);
-            else
-                defenderAI = new TacticalAI(units, tiles, activeSide);
+            object[] argArray = { units, tiles, activeSide, false };
+            RaceAI rai = State.RaceSettings.GetRaceAI(defenderRace);
+            defenderAI = Activator.CreateInstance(RaceAIType.Dict[rai], args: argArray) as TacticalAI;
             if (SkipUI.AllowRetreat.isOn)
                 defenderAI.RetreatPlan = new TacticalAI.RetreatConditions(.2f, 0);
             AIDefender = true;
@@ -2480,13 +2476,15 @@ Turns: {currentTurn}
                 }
             } else if (foreignAI != null || foreignUnits.Count() > 0)
             {
-                var hedonistList = foreignUnits.Where(u => u.Unit.GetStatusEffect(StatusEffectType.Charmed) != null || u.Unit.Race == Race.FeralLions).ToList();
-                if (foreignAI == null || (foreignAI.GetType() == typeof(HedonistTacticalAI) && hedonistList.Count() == 0))
+                Type desiredAIType;
+                if (foreignUnits.Count() > 0)
+                    desiredAIType = foreignUnits[0].Unit.GetStatusEffect(StatusEffectType.Charmed) != null ? typeof(HedonistTacticalAI) : RaceAIType.Dict[State.RaceSettings.GetRaceAI(foreignUnits[0].Unit.Race)];
+                else
+                    desiredAIType = typeof(StandardTacticalAI);
+                if (foreignAI == null || (foreignAI.GetType() != desiredAIType))
                 {
-                    if (hedonistList.Count() > 0)   
-                        foreignAI = new HedonistTacticalAI(units, tiles, activeSide);
-                    else
-                        foreignAI = new TacticalAI(units, tiles, activeSide);
+                    object[] argArray = { units, tiles, activeSide, false };
+                    foreignAI = Activator.CreateInstance(desiredAIType, args: argArray) as TacticalAI;
                 }
                 foreignAI.ForeignTurn = true;
                 if (AITimer > 0)

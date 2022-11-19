@@ -110,11 +110,13 @@ class RaceSettings
         return RaceParameters.GetRaceTraits(race).StomachSize;
     }
 
-    internal List<Traits> GetRaceTraits(Race race)
+    internal List<Traits> GetRaceTraits(Race? race)
     {
-        if (Races.ContainsKey(race))
-            return Get(race).RaceTraits;
-        return RaceParameters.GetRaceTraits(race).RacialTraits;
+        if (race == null)
+            return null;
+        if (Races.ContainsKey((Race)race))
+            return Get((Race)race).RaceTraits;
+        return RaceParameters.GetRaceTraits((Race)race).RacialTraits;
     }
 
     internal List<Traits> GetMaleRaceTraits(Race race)
@@ -159,6 +161,15 @@ class RaceSettings
             return Get(race).InnateSpell;
         }
         return SpellTypes.None;
+    }
+
+    internal RaceAI GetRaceAI(Race race)
+    {
+        if (Races.ContainsKey(race))
+        {
+            return Get(race).RaceAI;
+        }
+        return RaceAI.Standard;
     }
 
     internal string ListTraits(Race race)
@@ -292,6 +303,9 @@ class RaceSettingsItem
     [OdinSerialize]
     internal SpellTypes InnateSpell;
 
+    [OdinSerialize]
+    internal RaceAI RaceAI;
+
 
 
     //[OdinSerialize]
@@ -353,6 +367,7 @@ class RaceSettingsItem
         FavoredStatSet = true;
         FavoredStat = racePar.FavoredStat;
 
+        RaceAI = racePar.RaceAI;
 
         //DisplayGraphics = race;
 

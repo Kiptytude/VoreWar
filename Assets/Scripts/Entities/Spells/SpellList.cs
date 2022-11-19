@@ -687,7 +687,7 @@ static class SpellList
 }
 
 
-class Spell
+public class Spell
 {
     internal string Name;
     internal string Id;
