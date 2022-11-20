@@ -2,6 +2,7 @@ using OdinSerializer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using static UnityEngine.UI.CanvasScaler;
 
 public class RaceServantTacticalAI : HedonistTacticalAI
 {
@@ -12,11 +13,11 @@ public class RaceServantTacticalAI : HedonistTacticalAI
     protected override List<PotentialTarget> GetListOfPotentialRubTargets(Actor_Unit actor, Vec2i position, int moves)
     {
         List<PotentialTarget> targets = new List<PotentialTarget>();
-        Race masterRace = GetStrongestRaceOnBattlefield();
+        Race masterRace = GetStrongestFriendlyRaceOnBattlefield(actor);
 
         if (actor.Unit.Race == masterRace) return targets; // Don't serve your own race
 
-        List<Actor_Unit> masters = actors.Where(a => a.Unit.Race == GetStrongestRaceOnBattlefield()).ToList();
+        List<Actor_Unit> masters = actors.Where(a => a.Unit.Race == masterRace).ToList();
 
         foreach (Actor_Unit unit in masters)
         {
@@ -35,8 +36,8 @@ public class RaceServantTacticalAI : HedonistTacticalAI
         return targets.OrderByDescending(t => t.utility).ToList();
     }
 
-    private Race GetStrongestRaceOnBattlefield()
+    private Race GetStrongestFriendlyRaceOnBattlefield(Actor_Unit unit)
     {
-        return actors.OrderByDescending(a => RaceParameters.GetRaceTraits(a.Unit.Race).PowerAdjustment).First().Unit.Race;
+        return actors.Where(a => !TacticalUtilities.TreatAsHostile(unit, a)).OrderByDescending(a => State.RaceSettings.Get(a.Unit.Race).PowerAdjustment == 0 ? RaceParameters.GetTraitData(a.Unit).PowerAdjustment : State.RaceSettings.Get(a.Unit.Race).PowerAdjustment).First().Unit.Race;
     }
 }

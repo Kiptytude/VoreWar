@@ -503,11 +503,15 @@ static class StrategicUtilities
             double effectiveLevelBoost = (army.LeaderIfInArmy()?.GetStatBase(Stat.Leadership) ?? 0) / 10 * .5;
             foreach (Unit unit in army.Units)
             {
-                var racePar = RaceParameters.GetTraitData(unit);
+                var racePower = State.RaceSettings.Get(unit.Race).PowerAdjustment;
+                if (racePower == 0)
+                {
+                    racePower = RaceParameters.GetTraitData(unit).PowerAdjustment;
+                }
                 double weaponFactor;
                 if (unit.GetBestRanged() != null) weaponFactor = 1.5 / 4 * unit.GetBestRanged().Damage;
                 else weaponFactor = unit.GetBestMelee().Damage / 4f;
-                power += weaponFactor * racePar.PowerAdjustment * (((unit.GetScale()-1)*0.9)+1) * Math.Pow(1.2, unit.Level - 1 + effectiveLevelBoost + (unit.GetStatBase(Stat.Leadership) > 0 ? 3 : 0));
+                power += weaponFactor * racePower * (((unit.GetScale()-1)*0.9)+1) * Math.Pow(1.2, unit.Level - 1 + effectiveLevelBoost + (unit.GetStatBase(Stat.Leadership) > 0 ? 3 : 0));
 
             }
             finalPower = count * power;
@@ -528,11 +532,15 @@ static class StrategicUtilities
             double effectiveLevelBoost = (units.Where(s => s.GetStat(Stat.Leadership) > 0).FirstOrDefault()?.GetStatBase(Stat.Leadership) ?? 0) / 10 * .5f;
             foreach (Unit unit in units)
             {
-                var racePar = RaceParameters.GetTraitData(unit);
+                var racePower = State.RaceSettings.Get(unit.Race).PowerAdjustment;
+                if (racePower == 0)
+                {
+                    racePower = RaceParameters.GetTraitData(unit).PowerAdjustment;
+                }
                 double weaponFactor;
                 if (unit.GetBestRanged() != null) weaponFactor = 1.5 / 4 * unit.GetBestRanged().Damage;
                 else weaponFactor = unit.GetBestMelee().Damage / 4f;
-                power += weaponFactor * racePar.PowerAdjustment * (((unit.GetScale()-1)*0.9)+1) * Math.Pow(1.2, unit.Level - 1 + effectiveLevelBoost + (unit.GetStatBase(Stat.Leadership) > 0 ? 3 : 0));
+                power += weaponFactor * racePower * (((unit.GetScale()-1)*0.9)+1) * Math.Pow(1.2, unit.Level - 1 + effectiveLevelBoost + (unit.GetStatBase(Stat.Leadership) > 0 ? 3 : 0));
             }
             finalPower = count * power;
         }
@@ -551,11 +559,15 @@ static class StrategicUtilities
         {
             foreach (Unit unit in units)
             {
-                var racePar = RaceParameters.GetTraitData(unit);
+                var racePower = State.RaceSettings.Get(unit.Race).PowerAdjustment;
+                if (racePower == 0)
+                {
+                    racePower = RaceParameters.GetTraitData(unit).PowerAdjustment;
+                }
                 double weaponFactor;
                 if (unit.GetBestRanged() != null) weaponFactor = 1.5 / 4 * unit.GetBestRanged().Damage;
                 else weaponFactor = unit.GetBestMelee().Damage / 4;
-                value += weaponFactor * racePar.PowerAdjustment * Math.Pow(1.2, unit.Level - 1 + (unit.GetStatBase(Stat.Leadership) > 0 ? 3 : 0));
+                value += weaponFactor * racePower * Math.Pow(1.2, unit.Level - 1 + (unit.GetStatBase(Stat.Leadership) > 0 ? 3 : 0));
             }
         }
         return value;

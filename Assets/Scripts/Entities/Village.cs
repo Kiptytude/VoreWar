@@ -1325,10 +1325,14 @@ public class Village
             }
         }
 
-        var racePar = RaceParameters.GetTraitData(merc.Unit);
+        var power = State.RaceSettings.Get(merc.Unit.Race).PowerAdjustment;
+        if (power == 0)
+        {
+            power = RaceParameters.GetTraitData(merc.Unit).PowerAdjustment;
+        }
         StrategicUtilities.SetAIClass(merc.Unit);
         StrategicUtilities.SpendLevelUps(merc.Unit);
-        merc.Cost = (int)((25 + extraCost + State.Rand.Next(15) + (.04 * exp)) * UnityEngine.Random.Range(0.8f, 1.2f) * racePar.PowerAdjustment);
+        merc.Cost = (int)((25 + extraCost + State.Rand.Next(15) + (.04 * exp)) * UnityEngine.Random.Range(0.8f, 1.2f) * power);
         merc.Title = $"{race} - Adventurer";
         return merc;
     }
@@ -1385,10 +1389,14 @@ public class Village
             }
         }
 
-        var racePar = RaceParameters.GetTraitData(merc.Unit);
+        var power = State.RaceSettings.Get(merc.Unit.Race).PowerAdjustment;
+        if (power == 0)
+        {
+            power = RaceParameters.GetTraitData(merc.Unit).PowerAdjustment;
+        }
         StrategicUtilities.SetAIClass(merc.Unit);
         StrategicUtilities.SpendLevelUps(merc.Unit);
-        merc.Cost = (int)((25 + extraCost + State.Rand.Next(15) + (.12 * exp)) * UnityEngine.Random.Range(0.8f, 1.2f) * racePar.PowerAdjustment);
+        merc.Cost = (int)((25 + extraCost + State.Rand.Next(15) + (.12 * exp)) * UnityEngine.Random.Range(0.8f, 1.2f) * power);
         merc.Title = $"{race} - Mercenary";
         return merc;
     }
