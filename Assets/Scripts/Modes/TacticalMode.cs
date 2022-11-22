@@ -1000,9 +1000,8 @@ Turns: {currentTurn}
         CreateActors();
 
         ActionMode = 0;
-        string attackerController = AIAttacker == false ? "Player" : attackerAI is StandardTacticalAI ? "Full AI" : (attackerAI is HedonistTacticalAI ? "Hedonist AI" : "Legacy AI");
-        string defenderController = AIDefender == false ? "Player" : defenderAI is StandardTacticalAI ? "Full AI" : (defenderAI is HedonistTacticalAI ? "Hedonist AI" : "Legacy AI");
-
+        string attackerController = AIAttacker == false ? "Player(Atk)" : "AI(Atk)";
+        string defenderController = AIDefender == false ? "Player(Def)" : "AI(Def)";
         StatusUI.AttackerText.text = $"{AttackerName} - ({attackerController})";
         StatusUI.DefenderText.text = $"{DefenderName} - ({defenderController})";
 
