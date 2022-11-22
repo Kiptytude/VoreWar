@@ -78,7 +78,15 @@ public class WorldConfig
     internal float WeightLossFractionBody = 0;
     [OdinSerialize]
     internal float WeightLossFractionDick = 0;
-    
+    [OdinSerialize]
+    internal float GrowthDecayIncreaseRate = 0.04f;
+    [OdinSerialize]
+    internal float GrowthDecayOffset = 0f;
+    [OdinSerialize]
+    internal float GrowthMod = 1f;
+    [OdinSerialize]
+    internal float GrowthCap = 5f;
+
     [OdinSerialize]
     internal float AutoSurrenderChance = 1;
 

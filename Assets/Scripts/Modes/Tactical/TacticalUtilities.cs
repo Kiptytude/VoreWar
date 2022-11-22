@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 using UnityEngine.UI;
 
 static class TacticalUtilities
@@ -222,25 +218,21 @@ static class TacticalUtilities
         }
 
     }
-
-
-    internal static bool IsUnitControlledByAIEnemy(Unit unit)
-    {
-        int defenderSide = State.GameManager.TacticalMode.GetDefenderSide();
-        bool aiDefender = State.GameManager.TacticalMode.AIDefender;
-        bool aiAttacker = State.GameManager.TacticalMode.AIAttacker;
-        if (aiAttacker && aiDefender)
-            return false;
-        return (unit.Side == defenderSide ? aiDefender : aiAttacker);
-    }
     internal static bool IsUnitControlledByPlayer(Unit unit)
     {
+        if (unit.GetStatusEffect(StatusEffectType.Charmed) != null)  // Charmed units may fight for the player, but they are always AI controlled
+            return false;
         int defenderSide = State.GameManager.TacticalMode.GetDefenderSide();
+        int attackerSide = State.GameManager.TacticalMode.GetAttackerSide();
         bool aiDefender = State.GameManager.TacticalMode.AIDefender;
         bool aiAttacker = State.GameManager.TacticalMode.AIAttacker;
-        if (aiAttacker && aiDefender)
-            return false;
-        return (unit.Side == defenderSide ? !aiDefender : !aiAttacker);
+        if (State.GameManager.PureTactical)
+        {
+            return !aiAttacker && attackerSide == unit.FixedSide || !aiDefender && defenderSide == unit.FixedSide;
+        } else
+        {
+            return State.World.GetEmpireOfSide(unit.FixedSide)?.StrategicAI == null;
+        }
     }
 
     static internal bool AppropriateVoreTarget (Actor_Unit pred, Actor_Unit prey)
@@ -249,11 +241,198 @@ static class TacticalUtilities
             return false;
         if (pred.Unit.Side == prey.Unit.Side)
         {
-            if (prey.Surrendered || pred.Unit.HasTrait(Traits.Cruel) || Config.AllowInfighting || pred.Unit.HasTrait(Traits.Endosoma))
+            if (prey.Surrendered || pred.Unit.HasTrait(Traits.Cruel) || Config.AllowInfighting || pred.Unit.HasTrait(Traits.Endosoma) || TreatAsHostile(pred, prey))
                 return true;
             return false;
         }
         return true;
+    }
+
+    static public int GetPreferredSide(Actor_Unit actor, int sideA, int sideB)
+    {
+        int effectiveActorSide = actor.Unit.FixedSide;
+        if (actor.Unit.GetStatusEffect(StatusEffectType.Charmed) != null)
+            effectiveActorSide = (int)actor.Unit.GetStatusEffect(StatusEffectType.Charmed).Strength;
+        if (State.GameManager.PureTactical)
+        {
+            return effectiveActorSide;
+        }
+       
+        int aISideHostility = 0;
+        int enemySideHostility = 0;
+        int preferredSide;
+        int unpreferredSide;
+        if (effectiveActorSide != sideA)
+        {
+            if (effectiveActorSide != sideB)
+            {
+                switch (RelationsManager.GetRelation(effectiveActorSide, sideB).Type)
+                {
+                    case RelationState.Allied:
+                        {
+                            enemySideHostility = 1;
+                            break;
+                        }
+                    case RelationState.Neutral:
+                        {
+                            enemySideHostility = 2;
+                            break;
+                        }
+                    case RelationState.Enemies:
+                        {
+                            enemySideHostility = 3;
+                            break;
+                        }
+                }
+            }
+            switch (RelationsManager.GetRelation(effectiveActorSide, sideA).Type)
+            {
+                case RelationState.Allied:
+                    {
+                        aISideHostility = 1;
+                        break;
+                    }
+                case RelationState.Neutral:
+                    {
+                        aISideHostility = 2;
+                        break;
+                    }
+                case RelationState.Enemies:
+                    {
+                        aISideHostility = 3;
+                        break;
+                    }
+            }
+            return enemySideHostility >= aISideHostility ? sideA : sideB;
+        }
+        else
+        {
+            return sideA;
+        }
+    }
+
+    static public bool TreatAsHostile(Actor_Unit actor, Actor_Unit target)
+    {
+        if (actor == target) return false;
+        int friendlySide = actor.Unit.Side;
+        int defenderSide = State.GameManager.TacticalMode.GetDefenderSide();
+        int opponentSide = friendlySide == defenderSide ? State.GameManager.TacticalMode.GetAttackerSide() : defenderSide;
+        int effectiveTargetSide = (target.Unit.hiddenFixedSide && target.Unit.FixedSide != actor.Unit.FixedSide) ? target.Unit.Side : target.Unit.FixedSide;
+        int effectiveActorSide = actor.Unit.FixedSide;
+        if (actor.Unit.GetStatusEffect(StatusEffectType.Charmed) != null)
+            effectiveActorSide = (int)actor.Unit.GetStatusEffect(StatusEffectType.Charmed).Strength;
+        if (target.Unit.GetStatusEffect(StatusEffectType.Charmed) != null && effectiveActorSide == (int)target.Unit.GetStatusEffect(StatusEffectType.Charmed)?.Strength)
+            return false;
+        if (State.GameManager.PureTactical)
+        {
+            return effectiveTargetSide != effectiveActorSide;
+        }
+       
+        if (actor.Unit.GetStatusEffect(StatusEffectType.Charmed) != null)
+            effectiveActorSide = (int)actor.Unit.GetStatusEffect(StatusEffectType.Charmed).Strength;
+        if (effectiveActorSide == effectiveTargetSide)
+            return false;
+        int aISideHostility = 0;
+        int enemySideHostility = 0;
+        int preferredSide;
+        int unpreferredSide;
+        if (effectiveActorSide != friendlySide)
+        {
+            if (effectiveActorSide != opponentSide)
+            {
+                switch (RelationsManager.GetRelation(effectiveActorSide, opponentSide).Type)
+                {
+                    case RelationState.Allied:
+                        {
+                            enemySideHostility = 1;
+                            break;
+                        }
+                    case RelationState.Neutral:
+                        {
+                            enemySideHostility = 2;
+                            break;
+                        }
+                    case RelationState.Enemies:
+                        {
+                            enemySideHostility = 3;
+                            break;
+                        }
+                }
+            }
+            switch (RelationsManager.GetRelation(effectiveActorSide, friendlySide).Type)
+            {
+                case RelationState.Allied:
+                    {
+                        aISideHostility = 1;
+                        break;
+                    }
+                case RelationState.Neutral:
+                    {
+                        aISideHostility = 2;
+                        break;
+                    }
+                case RelationState.Enemies:
+                    {
+                        aISideHostility = 3;
+                        break;
+                    }
+            }
+            preferredSide = enemySideHostility >= aISideHostility ? friendlySide : opponentSide;
+            unpreferredSide = enemySideHostility >= aISideHostility ? opponentSide : friendlySide;
+        }
+        else
+        {
+            preferredSide = friendlySide;
+            unpreferredSide = opponentSide;
+        }
+
+        int targetSideHostilityP = 0;
+        int targetSideHostilityUP = 0;
+        if (preferredSide != effectiveTargetSide)
+        {
+            switch (RelationsManager.GetRelation(preferredSide, effectiveTargetSide).Type)
+            {
+                case RelationState.Allied:
+                    {
+                        targetSideHostilityP = 1;
+                        break;
+                    }
+                case RelationState.Neutral:
+                    {
+                        targetSideHostilityP = 2;
+                        break;
+                    }
+                case RelationState.Enemies:
+                    {
+                        targetSideHostilityP = 3;
+                        break;
+                    }
+            }
+
+        }
+        if (unpreferredSide != effectiveTargetSide)
+        {
+            switch (RelationsManager.GetRelation(unpreferredSide, effectiveTargetSide).Type)
+            {
+                case RelationState.Allied:
+                    {
+                        targetSideHostilityUP = 1;
+                        break;
+                    }
+                case RelationState.Neutral:
+                    {
+                        targetSideHostilityUP = 2;
+                        break;
+                    }
+                case RelationState.Enemies:
+                    {
+                        targetSideHostilityUP = 3;
+                        break;
+                    }
+            }
+
+        }
+        return targetSideHostilityP >= targetSideHostilityUP;
     }
 
     static public bool OpenTile(Vec2i vec, Actor_Unit actor) => OpenTile(vec.x, vec.y, actor);

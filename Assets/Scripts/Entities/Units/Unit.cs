@@ -34,6 +34,19 @@ public class Unit
     [OdinSerialize]
     public int Side;
     [OdinSerialize]
+    private int _fixedSide = -1;
+    public int FixedSide
+    {
+        get
+        { 
+           return (_fixedSide == -1) ? Side : _fixedSide; 
+        }
+        set => _fixedSide = value;
+    }
+    [OdinSerialize]
+    public bool hiddenFixedSide = false;
+
+    [OdinSerialize]
     public Race Race;
     [OdinSerialize]
     public int Health;
@@ -1848,6 +1861,7 @@ public class Unit
     {
         if (type == StatusEffectType.Poisoned && HasTrait(Traits.PoisonSpit))
             return;
+        StatusEffects.Remove(GetStatusEffect(type));                    // if null, nothing happens, otherwise status is effectively overwritten
         StatusEffects.Add(new StatusEffect(type, strength, duration));
     }
 
@@ -1868,6 +1882,7 @@ public class Unit
         if (HasEffect(StatusEffectType.Shaken)) ret++;
         if (HasEffect(StatusEffectType.Webbed)) ret++;
         if (HasEffect(StatusEffectType.WillingPrey)) ret++;
+        if (HasEffect(StatusEffectType.Charmed)) ret++;
 
         bool HasEffect(StatusEffectType type)
         {

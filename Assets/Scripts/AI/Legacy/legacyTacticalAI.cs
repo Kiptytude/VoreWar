@@ -16,7 +16,7 @@ namespace LegacyAI
         List<PathNode> path;
         Actor_Unit pathIsFor;
 
-        public TacticalAI.RetreatConditions RetreatPlan
+        public StandardTacticalAI.RetreatConditions RetreatPlan
         {
             get
             {
@@ -26,6 +26,18 @@ namespace LegacyAI
             set
             {
             }
+        }
+
+        [OdinSerialize]
+        public bool foreignTurn;
+
+        bool ITacticalAI.ForeignTurn
+        {
+            get
+            {
+                return foreignTurn;
+            }
+            set => foreignTurn = value;
         }
 
         public LegacyTacticalAI(List<Actor_Unit> actors, TacticalTileType[,] tiles, int AIteam)

@@ -39,9 +39,9 @@ public class ExceptionHandler : MonoBehaviour
                     if (exceptionCount == 0)
                     {
                         if (Application.platform == RuntimePlatform.OSXPlayer)
-                            State.GameManager.CreateFullScreenMessageBox($"The first Exception of this session was just logged to recentexceptions.txt, you'll probably want to notify Aurilika with the contents of that file so it can be fixed.  As this is a mac and mac exception logs don't seem to be writing correctly at the moment, you can take a screenshot of this screen and send it to Aurilika instead.  \nFull Details: {type}: {condition}\nVersion :{State.Version}\n{stackTrace}");
+                            State.GameManager.CreateFullScreenMessageBox($"The first Exception of this session was just logged to recentexceptions.txt, you'll probably want to notify a dev on the VoreWar Discord or GitHub with the contents of that file so it can be fixed.  As this is a mac and mac exception logs don't seem to be writing correctly at the moment, you can take a screenshot of this screen and send it instead.  \nFull Details: {type}: {condition}\nVersion :{State.Version}\n{stackTrace}");
                         else
-                            State.GameManager.CreateMessageBox("The first Exception of this session was just logged to recentexceptions.txt, you'll probably want to notify Aurilika with the contents of that file so it can be fixed");
+                            State.GameManager.CreateMessageBox("The first Exception of this session was just logged to recentexceptions.txt, you'll probably want to notify a dev on the VoreWar Discord or GitHub with the contents of that file so it can be fixed");
                     }
 
                     writer.WriteLine($"{type}: {condition}\nVersion :{State.Version}\n{stackTrace}");

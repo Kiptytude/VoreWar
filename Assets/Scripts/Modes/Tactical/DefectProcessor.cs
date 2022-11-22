@@ -43,9 +43,9 @@ class DefectProcessor
 
     internal void AttackerDefectCheck(Actor_Unit actor, Race otherRace)
     {
-        if (actor.Unit.Race != otherRace || actor.Unit.ImmuneToDefections || actor.Unit.HasTrait(Traits.Loyal))
+        if (actor.Unit.Race != otherRace || actor.Unit.ImmuneToDefections || actor.Unit.HasTrait(Traits.Camaraderie))
             return;
-        if (State.Rand.NextDouble() < .15f - (.05f * (actor.Unit.GetStat(Stat.Will) - 10) / 10))
+        if (actor.Unit.HasTrait(Traits.RaceLoyal) || State.Rand.NextDouble() < .15f - (.05f * (actor.Unit.GetStat(Stat.Will) - 10) / 10))
         {
             DefectedAttackers++;
             
@@ -66,9 +66,9 @@ class DefectProcessor
 
     internal void DefenderDefectCheck(Actor_Unit actor, Race otherRace)
     {
-        if (actor.Unit.Race != otherRace || actor.Unit.ImmuneToDefections || actor.Unit.HasTrait(Traits.Loyal))
+        if (actor.Unit.Race != otherRace || actor.Unit.ImmuneToDefections || actor.Unit.HasTrait(Traits.Camaraderie))
             return;
-        if (State.Rand.NextDouble() < .15f - (.05f * (actor.Unit.GetStat(Stat.Will) - 10) / 10))
+        if (actor.Unit.HasTrait(Traits.RaceLoyal) || State.Rand.NextDouble() < .15f - (.05f * (actor.Unit.GetStat(Stat.Will) - 10) / 10))
         {
             actor.Unit.Side = attacker.Side;
             DefectedDefenders++;
@@ -87,9 +87,9 @@ class DefectProcessor
 
     internal void GarrisonDefectCheck(Actor_Unit actor, Race otherRace)
     {
-        if (actor.Unit.Race != otherRace || actor.Unit.ImmuneToDefections || actor.Unit.HasTrait(Traits.Loyal))
+        if (actor.Unit.Race != otherRace || actor.Unit.ImmuneToDefections || actor.Unit.HasTrait(Traits.Camaraderie))
             return;
-        if (State.Rand.NextDouble() < (2 - village.Happiness / 66) * .15f - (.05f * (actor.Unit.GetStat(Stat.Will) - 10) / 10))
+        if (actor.Unit.HasTrait(Traits.RaceLoyal) || State.Rand.NextDouble() < (2 - village.Happiness / 66) * .15f - (.05f * (actor.Unit.GetStat(Stat.Will) - 10) / 10))
         {            
             actor.Unit.Side = attacker.Side;
             village.GetRecruitables().Remove(actor.Unit);

@@ -36,7 +36,8 @@ public class Actor_Unit
     int animationStep = 4;
     float animationUpdateTime;
     DisplayMode mode;
-    List<KeyValuePair<DisplayMode, float>> modeQueue = new List<KeyValuePair<DisplayMode, float>>();
+    [OdinSerialize]
+    public List<KeyValuePair<int, float>> modeQueue;
 
     private DisplayMode Mode
     {
@@ -253,6 +254,7 @@ public class Actor_Unit
     {
         unit.SetBreastSize(-1); //Resets to default
         Mode = DisplayMode.None;
+        modeQueue = new List<KeyValuePair<int, float>>();
         animationUpdateTime = 0;
         Position = new Vec2i(0, 0);
         Unit = unit;
@@ -260,13 +262,13 @@ public class Actor_Unit
         Targetable = true;
     }
 
-
     public Actor_Unit(Vec2i p, Unit unit)
     {
         if (unit.Predator)
             PredatorComponent = new PredatorComponent(this, unit);
         unit.SetBreastSize(-1); //Resets to default
         Mode = DisplayMode.None;
+        modeQueue = new List<KeyValuePair<int, float>>();
         animationUpdateTime = 0;
         Position = p;
         Unit = unit;
@@ -304,6 +306,11 @@ public class Actor_Unit
             unit.SingleUseSpells.Add(SpellList.Petrify.SpellType);
             unit.UpdateSpells();
         }
+        if (unit.HasTrait(Traits.Charmer) && State.World?.ItemRepository != null) //protection for the create strat screen
+        {
+            unit.SingleUseSpells.Add(SpellList.Charm.SpellType);
+            unit.UpdateSpells();
+    }
     }
 
     public void GenerateSpritePrefab(Transform folder)
@@ -379,14 +386,14 @@ public class Actor_Unit
     {
         DisplayMode displayMode = DisplayMode.VoreSuccess;
         float time = 1f;
-        modeQueue.Add(new KeyValuePair<DisplayMode, float> (displayMode, time));
+        modeQueue.Add(new KeyValuePair<int, float> (((int)displayMode), time));
     }
 
     public void SetVoreFailMode()
     {
         DisplayMode displayMode = DisplayMode.VoreFail;
         float time = 1f;
-        modeQueue.Add(new KeyValuePair<DisplayMode, float>(displayMode, time));
+        modeQueue.Add(new KeyValuePair<int, float>((int)displayMode, time));
     }
 
     public void SetAbsorbtionMode()
@@ -947,8 +954,6 @@ public class Actor_Unit
     {
         if (Movement < 2 || Unit.HasTrait(Traits.Pounce) == false)
             return false;
-        if (target.Unit.Side == Unit.Side)
-            return false;
         var landingZone = PounceAt(target);
         if (landingZone != null)
         {
@@ -1365,6 +1370,10 @@ public class Actor_Unit
         {
             State.GameManager.TacticalMode.Log.RegisterSpellHit(attacker.Unit, Unit, spell.SpellType, 0, chance);
             Unit.ApplyStatusEffect(spell.Type, spell.Effect(attacker, this), spell.Duration(attacker, this));
+            if (spell.Id == "charm")
+            {
+                UnitSprite.DisplayCharm();
+            }
             if (spell.Alraune)
             {
                 if (Unit.HasTrait(Traits.PollenProjector) == false)
@@ -1386,7 +1395,11 @@ public class Actor_Unit
             if (attacker.Unit.Side == Unit.Side)
                 attacker.Unit.GiveScaledExp(.25f, attacker.Unit.Level - Unit.Level);
             else
+            {
                 attacker.Unit.GiveExp(.25f);
+                UnitSprite.DisplayResist();
+            }
+                
             State.GameManager.TacticalMode.Log.RegisterSpellMiss(attacker.Unit, Unit, spell.SpellType, chance);
         }
 
@@ -1515,7 +1528,7 @@ public class Actor_Unit
         {
             possible.Add(1);
         }
-        if (target.PredatorComponent.VisibleFullness > 0 || target.PredatorComponent.Stomach2ndFullness > 0)
+        if (target.PredatorComponent.WombFullness > 0 || target.PredatorComponent.CombinedStomachFullness > 0)
         {
             possible.Add(0);
         }
@@ -1538,22 +1551,16 @@ public class Actor_Unit
             case 0:
                 prey = target.PredatorComponent.GetDirectPrey().FirstOrDefault(p => p.Location.Equals(PreyLocation.stomach) || p.Location.Equals(PreyLocation.stomach2) || p.Location.Equals(PreyLocation.anal) || p.Location.Equals(PreyLocation.womb));
                 if (prey == null) break;
-                SetRubMode();
-                target.SetRubbedMode();
                 TacticalUtilities.Log.RegisterBellyRub(Unit, target.Unit, prey.Unit, 1f);
                 break;
             case 1:
                 prey = target.PredatorComponent.GetDirectPrey().FirstOrDefault(p => p.Location.Equals(PreyLocation.breasts) || p.Location.Equals(PreyLocation.leftBreast) || p.Location.Equals(PreyLocation.rightBreast));
                 if (prey == null) break;
-                SetRubMode();
-                target.SetRubbedMode();
                 TacticalUtilities.Log.RegisterBreastRub(Unit, target.Unit, prey.Unit, 1f);
                 break;
             case 2:
                 prey = target.PredatorComponent.GetDirectPrey().FirstOrDefault(p => p.Location.Equals(PreyLocation.balls));
                 if (prey == null) break;
-                SetRubMode();
-                target.SetRubbedMode();
                 TacticalUtilities.Log.RegisterBallMassage(Unit, target.Unit, prey.Unit, 1f);
                 break;
             default:
@@ -1561,9 +1568,10 @@ public class Actor_Unit
         }
          if (!State.GameManager.TacticalMode.turboMode)
         {
+            SetRubMode();
+            target.SetRubbedMode();
             GameObject.Instantiate(State.GameManager.TacticalMode.HandPrefab, new Vector3(target.Position.x + UnityEngine.Random.Range(-0.2F, 0.2F), target.Position.y + 0.1F + UnityEngine.Random.Range(-0.1F, 0.1F)), new Quaternion());
             State.GameManager.TacticalMode.AITimer = Config.TacticalVoreDelay;
-
         }
         target.DigestCheck();
         if (Unit.HasTrait(Traits.PleasurableTouch))
@@ -1780,7 +1788,7 @@ public class Actor_Unit
                         if (Mode > DisplayMode.Attacking && Mode < DisplayMode.VoreSuccess && modeQueue.Count > 0)
                         {
                             animationUpdateTime = modeQueue.FirstOrDefault().Value;
-                            Mode = modeQueue.FirstOrDefault().Key;
+                            Mode = (DisplayMode)modeQueue.FirstOrDefault().Key;                                        // This casting back and forth saves dealing with accessibility hassles.
                             modeQueue.RemoveAt(0);
                         }
                         else
@@ -1797,7 +1805,7 @@ public class Actor_Unit
                     if (modeQueue.Count > 0)
                     {
                         animationUpdateTime = modeQueue.FirstOrDefault().Value;
-                        Mode = modeQueue.FirstOrDefault().Key;
+                        Mode = (DisplayMode)modeQueue.FirstOrDefault().Key;
                         modeQueue.RemoveAt(0);
                     } else
                     {
@@ -1881,7 +1889,7 @@ public class Actor_Unit
             }
         }
 
-        if (Config.DamageNumbers == false)
+        if (Config.DamageNumbers == false && !State.GameManager.TacticalMode.turboMode)
         {
             Mode = DisplayMode.Injured;
             animationUpdateTime = 1.0F;

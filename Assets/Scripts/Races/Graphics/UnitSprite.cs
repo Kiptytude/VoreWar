@@ -102,6 +102,13 @@ public class UnitSprite : MonoBehaviour
         FinishDisplayedTextSetup();
     }
 
+    public void DisplayCharm()
+    {
+        DamageIndicator.faceColor = Color.magenta;
+        DamageIndicator.text = "Charmed!";
+        FinishDisplayedTextSetup();
+    }
+
     public void DisplayDazzle()
     {
         DamageIndicator.faceColor = Color.red;

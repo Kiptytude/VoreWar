@@ -16,6 +16,10 @@ public class DisplayTooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitH
             State.GameManager.Start_Mode.CreateStrategicGame.ChangeToolTip(value);
         else if (State.GameManager.Start_Mode.CreateTacticalGame.gameObject.activeSelf)
             State.GameManager.Start_Mode.CreateTacticalGame.ChangeToolTip(value);
+        else if (State.GameManager.Menu.RaceEditor.gameObject.activeSelf)
+        {
+            State.GameManager.HoveringTooltip.UpdateInformationDefaultTooltip(value);
+        }
         
     }
 
@@ -29,6 +33,9 @@ public class DisplayTooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitH
             State.GameManager.Start_Mode.CreateStrategicGame.ChangeToolTip(0);
         else if (State.GameManager.Start_Mode.CreateTacticalGame.gameObject.activeSelf)
             State.GameManager.Start_Mode.CreateTacticalGame.ChangeToolTip(0);
-        
+        else if (State.GameManager.Menu.RaceEditor.gameObject.activeSelf)
+        {
+            State.GameManager.HoveringTooltip.gameObject.SetActive(false);
+        }
     }
 }

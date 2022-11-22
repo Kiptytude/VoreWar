@@ -12,4 +12,5 @@ public class TacticalEffectPrefabList : MonoBehaviour
     public GameObject SpiderWeb;
     public GameObject GlueBomb;
     public GameObject PoisonCloud;
+    public GameObject Charm;
 }

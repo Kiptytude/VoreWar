@@ -64,6 +64,25 @@ public class HoveringTooltip : MonoBehaviour
         transform.position = Input.mousePosition + new Vector3(xAdjust, 0, 0);
     }
 
+    public void UpdateInformationAIOnly(string[] words)
+    {
+        string description = GetAIDescription(words);
+        if (description == "")
+        {
+            gameObject.SetActive(false);
+            return;
+        }
+        rect.sizeDelta = new Vector2(500, 200);
+        gameObject.SetActive(true);
+        remainingFrames = 3;
+        text.text = description;
+        float xAdjust = 10;
+        float exceeded = Input.mousePosition.x + (rect.rect.width * Screen.width / 1920) - Screen.width;
+        if (exceeded > 0)
+            xAdjust = -exceeded;
+        transform.position = Input.mousePosition + new Vector3(xAdjust, 0, 0);
+    }
+
     public void UpdateInformation(string[] words, Unit unit, Actor_Unit actor)
     {
         string description = GetDescription(words, unit, actor);
@@ -132,6 +151,15 @@ public class HoveringTooltip : MonoBehaviour
                     return $"{AllSpells[i].Description}\nRange: {AllSpells[i].Range.Min}-{AllSpells[i].Range.Max}\nMana Cost: {AllSpells[i].ManaCost}\nTargets: {string.Join(", ", AllSpells[i].AcceptibleTargets)}";
                 }
             }
+        }
+        return "";
+    }
+
+    string GetAIDescription(string[] words)
+    {
+        if (Enum.TryParse(words[2], out RaceAI ai))
+        {
+            return GetAIData(ai);
         }
         return "";
     }
@@ -424,8 +452,10 @@ public class HoveringTooltip : MonoBehaviour
                 return "Allows using the pollen cloud ability once per battle, which attempts to inflict a few status effects in a 3x3 area for a small mana cost.  This trait also makes the unit immune to most of the statuses from this ability.";
             case Traits.Webber:
                 return "Allows using the web ability once per battle, which attempts to inflict the webbed status for 3 turns, which lowers AP to 1, and reduces stats.";
-            case Traits.Loyal:
+            case Traits.Camaraderie:
                 return "Prevents the unit from defecting to rejoin its race if that option is enabled.";
+            case Traits.RaceLoyal:
+                return "Unit will defect to rejoin its race at every opportunity if that option is enabled.";
             case Traits.WillingRace:
                 return "Gives the whole race the willing prey spell effect permanently, which makes them easier to eat, and changes some of the dialogue.";
             case Traits.InfiniteAssimilation:
@@ -478,10 +508,48 @@ public class HoveringTooltip : MonoBehaviour
                 return "Each absorbtion makes this unit grow in size, but the effect slowly degrades outside battle.\n(Cheat Trait)";
             case Traits.PermanentGrowth:
                 return "An accessory trait to Growth that makes growth gained permanent.  (Does nothing without the Growth trait)\n(Cheat Trait)";
-                return "Each absorption makes this unit grow in size, but the effect slowly degrades outside battle.\n(Cheat Trait)";
             case Traits.Berserk:
                 return "If the unit is reduced below half health by an attack, will go berserk, greating increasing its strength and voracity for 3 turns.\nCan only occur once per battle.";
+            case Traits.SynchronizedEvolution:
+                return "Any trait this unit assimilates is received by all members of their race. (requires Assimilate or InfiniteAssimilation)\n(Cheat Trait)";
+            case Traits.Charmer:
+                return "Allows the casting of the Charm spell once per battle";
         }
         return "<b>This trait needs a tooltip!</b>";
+    }
+
+    public static string GetAIData(RaceAI ai)
+    {
+        switch (ai)
+        {
+            case RaceAI.Standard:
+                return "Straightforward battlers";
+            case RaceAI.Hedonist:
+                return "Will try to find the time for massaging any prey-filled parts on their comrades or their own body.\nDon't be fooled – this is deceptively efficient.";
+            case RaceAI.ServantRace:
+                return "Acts Subservient towards units of the most powerful race on their side, flocking to rub those individuals.\n" +
+                    "Racial superiority is based on eminence.";
+        }
+        return "<b>This AI needs a tooltip!</b>";
+    }
+
+    internal void UpdateInformationDefaultTooltip(int value)
+    {
+       
+        string description = DefaultTooltips.Tooltip(value);
+        if (description == "")
+        {
+            gameObject.SetActive(false);
+            return;
+        }
+        rect.sizeDelta = new Vector2(500, 200);
+        gameObject.SetActive(true);
+        remainingFrames = 999;
+        text.text = description;
+        float xAdjust = 10;
+        float exceeded = Input.mousePosition.x + (rect.rect.width * Screen.width / 1920) - Screen.width;
+        if (exceeded > 0)
+            xAdjust = -exceeded;
+        transform.position = Input.mousePosition + new Vector3(xAdjust, 0, 0);
     }
 }

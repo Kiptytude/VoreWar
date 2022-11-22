@@ -40,6 +40,7 @@ static class SpellList
     static internal readonly StatusSpell Speed;
     static internal readonly StatusSpell Valor;
     static internal readonly StatusSpell Predation;
+    static internal readonly StatusSpell Charm;
 
     static internal readonly DamageSpell IceBlast;
     static internal readonly DamageSpell Pyre;
@@ -372,6 +373,27 @@ static class SpellList
         };
         SpellDict[SpellTypes.Maw] = Maw;
 
+        Charm = new StatusSpell()
+        {
+            Name = "Charm",
+            Id = "charm",
+            SpellType = SpellTypes.Charm,
+            Description = "Has a chance to temporarily make an enemy fight for the caster.",
+            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy },
+            Range = new Range(6),
+            Duration = (a, t) => 2 + a.Unit.GetStat(Stat.Mind) / 10,
+            Effect = (a, t) => a.Unit.hiddenFixedSide ? a.Unit.Side : a.Unit.FixedSide,         // the unit will act to the best of its knowledge
+            Type = StatusEffectType.Charmed,
+            Tier = 3,
+            Resistable = true,
+            OnExecute = (a, t) =>
+            {
+                a.CastStatusSpell(Charm, t);
+                TacticalGraphicalEffects.CreateHeartProjectile(a.Position, t.Position, t);
+            },
+        };
+        SpellDict[SpellTypes.Charm] = Charm;
+
         Summon = new Spell()
         {
             Name = "Summon",
@@ -397,6 +419,12 @@ static class SpellList
                         AvailableRaces.Add(Race.Vagrants);
                     Race summonRace = AvailableRaces[State.Rand.Next(AvailableRaces.Count())];
                     Unit unit = new Unit(a.Unit.Side, summonRace, (int)(a.Unit.Experience * .50f), true, UnitType.Summon);
+                    var actorCharm = a.Unit.GetStatusEffect(StatusEffectType.Charmed);
+                    if (actorCharm != null)
+                    {
+                        unit.ApplyStatusEffect(StatusEffectType.Charmed, actorCharm.Strength, actorCharm.Duration);
+                    }
+                        
                     StrategicUtilities.SpendLevelUps(unit);
                     State.GameManager.TacticalMode.AddUnitToBattle(unit, loc);
                 }
@@ -659,7 +687,7 @@ static class SpellList
 }
 
 
-class Spell
+public class Spell
 {
     internal string Name;
     internal string Id;

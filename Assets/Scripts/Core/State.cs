@@ -1,15 +1,17 @@
 ﻿using OdinSerializer;
+using OdinSerializer.Utilities;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using UnityEngine;
 
 public static class State
 {
     static int saveErrors = 0;
-    public const string Version = "40";
+    public const string Version = "40B";
     public static World World;
     public static Rand Rand = new Rand();
     public static NameGenerator NameGen;
@@ -300,17 +302,17 @@ public static class State
                 {
                     World.GetEmpireOfSide(701).Name = "Bandits";
                 }
-        /*         if (World.GetEmpireOfSide(702) == null)
-                {
-                    World.MainEmpires.Add(new Empire(new Empire.ConstructionArgs(702, Color.red, new Color(.6f, 0, 0), 5, StrategyAIType.Basic, TacticalAIType.Full, 702, 16, 16)));
-                    World.RefreshEmpires();
-                }
-                else
-                {
-                    World.GetEmpireOfSide(702).Name = "Outcasts";
-                    if (World.EmpireOrder.Where(s => s.Side == 702).Any() == false)
-                        World.EmpireOrder.Add(World.GetEmpireOfSide(702));
-                } */
+                /*         if (World.GetEmpireOfSide(702) == null)
+                        {
+                            World.MainEmpires.Add(new Empire(new Empire.ConstructionArgs(702, Color.red, new Color(.6f, 0, 0), 5, StrategyAIType.Basic, TacticalAIType.Full, 702, 16, 16)));
+                            World.RefreshEmpires();
+                        }
+                        else
+                        {
+                            World.GetEmpireOfSide(702).Name = "Outcasts";
+                            if (World.EmpireOrder.Where(s => s.Side == 702).Any() == false)
+                                World.EmpireOrder.Add(World.GetEmpireOfSide(702));
+                        } */
                 if (string.Compare(World.SaveVersion, "30") < 0)
                 {
                     if (World.AllActiveEmpires != null)
@@ -702,7 +704,7 @@ public static class State
                         }
                     }
                 }
-                
+
             }
 
             if (string.Compare(World.SaveVersion, "39") < 0)
@@ -721,7 +723,37 @@ public static class State
                 }
             }
 
-            if (World.AllActiveEmpires != null)
+            if (string.Compare(World.SaveVersion, "40B") < 0)
+            {
+                if (World.TacticalData != null)
+                {
+                    foreach (var unit in World.TacticalData.units)
+                    {
+                        unit.modeQueue = new List<KeyValuePair<int, float>>();
+                        unit.Unit.FixedSide = -1;
+                    }
+                }
+
+                if (World.AllActiveEmpires != null)
+                {
+                    foreach (var unit in StrategicUtilities.GetAllUnits())
+                    {
+                        unit.FixedSide = -1;
+                    }
+
+                }
+            }
+
+            if (World.TacticalData != null)
+            {
+                foreach (var unit in World.TacticalData.units)
+                {
+                    if (unit.modeQueue == null)
+                        unit.modeQueue = new List<KeyValuePair<int, float>>();
+                }
+            }
+
+        if (World.AllActiveEmpires != null)
             {
                 foreach (Empire emp in World.AllActiveEmpires)
                 {
