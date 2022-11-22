@@ -300,7 +300,7 @@ public class UnitSprite : MonoBehaviour
         else
             alpha = 0;
 
-        if (actor.Unit.FixedSide != actor.Unit.Side)
+        if (actor.Unit.FixedSide != actor.Unit.Side && TacticalUtilities.PlayerCanSeeTrueSide(actor))
         {
             if (BlueColored)
             {

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
@@ -750,7 +751,19 @@ static class TacticalUtilities
 
     }
 
+    static public bool PlayerCanSeeTrueSide(Actor_Unit actor)
+    {
+        if (!actor.Unit.hiddenFixedSide || IsUnitControlledByPlayer(actor.Unit)) return true;
 
+        foreach (Empire playerEmp in State.World.MainEmpires.Where(s => s.StrategicAI == null))
+        {
+            if (RelationsManager.GetRelation(actor.Unit.FixedSide, playerEmp.Side).Type == RelationState.Allied)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 
 
 }
