@@ -471,7 +471,12 @@ public class RaceEditorPanel : MonoBehaviour
             MinStomach.text = item.Stats.Stomach.Minimum.ToString();
             MaxStomach.text = (item.Stats.Stomach.Minimum + item.Stats.Stomach.Roll - 1).ToString();
 
-            PowerAdjustment.text = racePar.PowerAdjustment.ToString();
+            var powerAdj = item.PowerAdjustment;
+            if (powerAdj == 0f)
+            {
+                powerAdj = racePar.PowerAdjustment;
+            }
+            PowerAdjustment.text = powerAdj.ToString();
 
             FemaleTraits.text = TraitListToText(item.FemaleTraits);
             MaleTraits.text = TraitListToText(item.MaleTraits);

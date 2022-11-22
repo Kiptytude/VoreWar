@@ -140,10 +140,14 @@ public class MercenaryHouse
             }
         }
 
-        var racePar = RaceParameters.GetTraitData(merc.Unit);
+        var power = State.RaceSettings.Get(merc.Unit.Race).PowerAdjustment;
+        if (power == 0)
+        {
+            power = RaceParameters.GetTraitData(merc.Unit).PowerAdjustment;
+        }
         StrategicUtilities.SetAIClass(merc.Unit);
         StrategicUtilities.SpendLevelUps(merc.Unit);
-        merc.Cost = (int)((25 + State.Rand.Next(15) + (.12 * exp)) * Random.Range(0.8f, 1.2f) * racePar.PowerAdjustment);
+        merc.Cost = (int)((25 + State.Rand.Next(15) + (.12 * exp)) * Random.Range(0.8f, 1.2f) * power);
         merc.Title = $"{race} - Mercenary";
         
         return merc;
@@ -157,12 +161,15 @@ public class MercenaryHouse
         merc.Unit = new Unit(0, race, exp, true, UnitType.SpecialMercenary, true)
         {
             FixedGear = true
-        };        
+        };
 
-        var racePar = RaceParameters.GetTraitData(merc.Unit);
+        var power = State.RaceSettings.Get(merc.Unit.Race).PowerAdjustment; 
+        if (power == 0) {
+            power = RaceParameters.GetTraitData(merc.Unit).PowerAdjustment;
+        }
         StrategicUtilities.SetAIClass(merc.Unit);
         StrategicUtilities.SpendLevelUps(merc.Unit);
-        merc.Cost = (int)((20 + State.Rand.Next(15) + (.12 * exp)) * racePar.PowerAdjustment);
+        merc.Cost = (int)((20 + State.Rand.Next(15) + (.12 * exp)) * power);
         return merc;
     }
 
