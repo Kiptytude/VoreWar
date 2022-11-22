@@ -84,7 +84,7 @@ public class UnitInfoPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
             else
             {
                 nameInstances = 0;
-                if (Actor?.PredatorComponent != null)
+                if (Actor?.Unit != null && (bool)Actor?.Unit.Predator)
                 {
                     foreach (var prey in Actor.PredatorComponent.GetAllPrey())
                     {

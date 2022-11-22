@@ -1944,6 +1944,9 @@ static class StoredLogTexts
             priority: 9, conditional: s=> Friendly(s) && ActorHumanoid(s)),
             new EventString((i) => $"<b>{i.Unit.Name}</b> laughs. With <b>{i.Target.Name}</b> out of the way, everything will become much easier for {GPPHim(i.Unit)}.",
             priority: 9, conditional: s=> Friendly(s) && ActorHumanoid(s)),
+
+            new EventString((i) => $"<b>{i.Unit.Name}</b> just wanted to try out this endosoma thing with <b>{i.Target.Name}</b>, but as {GPPHe(i.Unit)} feels {GPPHim(i.Target)} melt into gut mush, {GPPHe(i.Unit)} understands that {GPPHis(i.Unit)} body doesn't discriminate between foods based on allegiance.",
+            priority: 9, conditional: s=> Friendly(s) && InStomach(s)),
             //vagrant pred
             new EventString((i) => $"The silhouette of <b>{i.Target.Name}</b> inside <b>{i.Unit.Name}</b> loses coherency and dissolves into {i.preyLocation.ToFluid()}.",
             actorRace: Race.Vagrants, priority: 10),
