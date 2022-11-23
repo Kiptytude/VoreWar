@@ -2307,11 +2307,6 @@ static class StoredLogTexts
             new EventString((i) => $"<b>{i.Target.Name}</b> pokes, prods and massages <b>{ApostrophizeWithOrWithoutS(i.Unit.Name)}</b> ballsack from the inside, nearly bringing {GPPHim(i.Unit)} to orgasm several times. Frustrated, <b>{i.Unit.Name}</b> decides to take matters in {GPPHis(i.Unit)} own hands, soon unleashing a massive load of all the pent-up semen... in which {GPPHis(i.Unit)} prey escapes.",priority:25, conditional: InBalls),
             new EventString((i) => $"Suddenly, <b>{ApostrophizeWithOrWithoutS(i.Unit.Name)}</b> cock expands to immense size and releases <b>{i.Target.Name}</b> back into the world. Before <b>{i.Unit.Name}</b> could react, his prey, slippery from cum covering it, escapes.",priority:25, conditional: InBalls),
         };
-
-        BreastFeedMessages = new List<EventString>()
-        {
-            new EventString((i) => $"<b>{i.Target.Name}</b> suckles on {(i.Unit == i.Target ? GPPHis(i.Target) + "own" : i.Target.Name + "'s")} full breasts, eagerly gulping down a mouthful of {PreyLocStrings.ToFluid(PreyLocation.breasts)}.",priority:8),
-        };
     }
 
 }
