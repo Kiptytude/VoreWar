@@ -299,7 +299,7 @@ public class TacticalMessageLog
                     string message = "";
                     if (action.Damage != 0 && action.Bonus == 0)
                         message = $"<b>{action.Unit.Name}</b> <color=blue>healed {action.Damage}</color> from the milk.";
-                    else if (action.Unit.Health != action.Unit.MaxHealth && action.Bonus != 0)
+                    else if (action.Damage != 0 && action.Bonus != 0)
                         message = $"<b>{action.Unit.Name}</b> <color=blue>healed {action.Damage}</color> and <color=blue>gained {action.Bonus} experience</color> from the milk.";
                     else
                         message = $"<b>{action.Unit.Name}</b> <color=blue>gained {action.Bonus} experience</color> from the milk.";

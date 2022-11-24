@@ -144,7 +144,7 @@ public class UnitSprite : MonoBehaviour
         FinishDisplayedTextSetup();
     }
 
-    public void DisplayDamage(int damage, bool spellDamage = false)
+    public void DisplayDamage(int damage, bool spellDamage = false, bool expGain = false)
     {
         if (State.GameManager.TacticalMode.turboMode)
             return;
@@ -152,8 +152,16 @@ public class UnitSprite : MonoBehaviour
             return;
         if (damage > 0)
         {
-            DamageIndicator.faceColor = Color.red;
-            DamageIndicator.text = $"-{damage}";
+            if (expGain)
+            {
+                DamageIndicator.faceColor = Color.yellow;
+                DamageIndicator.text = $"+{damage}";
+            }
+            else
+            {
+                DamageIndicator.faceColor = Color.red;
+                DamageIndicator.text = $"-{damage}";
+            }
         }
         else if (damage < 0)
         {
