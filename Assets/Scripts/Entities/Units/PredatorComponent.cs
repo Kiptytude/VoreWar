@@ -972,20 +972,11 @@ public class PredatorComponent
 
         if (preyUnit.Unit.IsThisCloseToDeath(preyDamage))
         {
-            if ((Location(preyUnit) == PreyLocation.womb || Config.KuroTenkoConvertsAllTypes) && preyUnit.Unit.CanBeConverted() && Config.KuroTenkoEnabled && unit.HasTrait(Traits.PredGusher) == false && (Config.UBConversion == UBConversion.Both || Config.UBConversion == UBConversion.ConversionOnly) && preyUnit.Unit.Type != UnitType.Summon && preyUnit.Unit.Type != UnitType.Leader && preyUnit.Unit.Type != UnitType.SpecialMercenary && preyUnit.Unit.HasTrait(Traits.Eternal) == false && preyUnit.Unit.SavedCopy == null)
-            {
-                preyUnit.Unit.Health = preyUnit.Unit.MaxHealth / 2;
-                preyUnit.Actor.Movement = 0;
-                if (preyUnit.Unit.Side != unit.Side)
-                    State.GameManager.TacticalMode.SwitchAlignment(preyUnit.Actor);
-                preyUnit.Actor.Surrendered = false;
-                FreeUnit(preyUnit.Actor);
-                TacticalUtilities.Log.RegisterBirth(unit, preyUnit.Unit, 1f);
-                if (!State.GameManager.TacticalMode.turboMode)
-                    actor.SetBirthMode();
-                return 0;
-            }
-            if (Location(preyUnit) == PreyLocation.womb && preyUnit.Unit.CanBeConverted() && preyUnit.Unit.Type != UnitType.Summon && preyUnit.Unit.Type != UnitType.Leader && preyUnit.Unit.Type != UnitType.SpecialMercenary && preyUnit.Unit.HasTrait(Traits.Eternal) == false && preyUnit.Unit.SavedCopy == null && unit.HasTrait(Traits.PredConverter) && unit.HasTrait(Traits.PredRebirther) == false && unit.HasTrait(Traits.PredGusher) == false)
+            if (preyUnit.Unit.CanBeConverted() &&
+             (Location(preyUnit) == PreyLocation.womb || Config.KuroTenkoConvertsAllTypes) &&
+             (Config.KuroTenkoEnabled && (Config.UBConversion == UBConversion.Both || Config.UBConversion == UBConversion.ConversionOnly) || unit.HasTrait(Traits.PredConverter)) &&
+             !unit.HasTrait(Traits.PredRebirther) &&
+             !unit.HasTrait(Traits.PredGusher))
             {
                 preyUnit.Unit.Health = preyUnit.Unit.MaxHealth / 2;
                 preyUnit.Actor.Movement = 0;
@@ -1012,14 +1003,13 @@ public class PredatorComponent
                 preyUnit.Actor.Movement = 0;
                 if (preyUnit.Unit.Side != unit.Side)
                     State.GameManager.TacticalMode.SwitchAlignment(preyUnit.Actor);
+                preyUnit.Actor.Surrendered = false;
                 if (Config.FriendlyRegurgitation)
                 {
                     State.GameManager.TacticalMode.TacticalStats.RegisterRegurgitation(unit.Side);
-                    TacticalUtilities.Log.RegisterRegurgitated(unit, preyUnit.Unit, Location(preyUnit));
                     FreeUnit(preyUnit.Actor);
+                    TacticalUtilities.Log.RegisterRegurgitated(unit, preyUnit.Unit, Location(preyUnit));
                 }
-
-                preyUnit.Actor.Surrendered = false;
                 State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"{preyUnit.Unit.Name} converted from one side to another thanks to {unit.Name}'s converting digestion trait.");
                 return 0;
             }
@@ -1166,7 +1156,11 @@ public class PredatorComponent
             }
             if (preyUnit.Unit.IsDeadAndOverkilledBy(preyUnit.Unit.MaxHealth))
             {
-                if ((Location(preyUnit) == PreyLocation.womb || Config.KuroTenkoConvertsAllTypes) && preyUnit.Unit.CanBeConverted() && ((Config.KuroTenkoEnabled && (Config.UBConversion == UBConversion.Both || Config.UBConversion == UBConversion.RebirthOnly)) || unit.HasTrait(Traits.PredRebirther)) && (Config.SpecialMercsCanConvert || unit.Race < Race.Selicia) && unit.HasTrait(Traits.PredGusher) == false)
+                if (preyUnit.Unit.CanBeConverted() &&
+                 (Location(preyUnit) == PreyLocation.womb || Config.KuroTenkoConvertsAllTypes) &&
+                 ((Config.KuroTenkoEnabled && (Config.UBConversion == UBConversion.Both || Config.UBConversion == UBConversion.RebirthOnly)) || unit.HasTrait(Traits.PredRebirther)) &&
+                 (Config.SpecialMercsCanConvert || unit.Race < Race.Selicia) &&
+                 !unit.HasTrait(Traits.PredGusher))
                 {
                     preyUnit.Unit.Health = preyUnit.Unit.MaxHealth / 2;
                     preyUnit.Actor.Movement = 0;
