@@ -346,14 +346,19 @@ public class TacticalMessageLog
     private string GenerateBreastRubMessage(EventLog action)
     {
         if (SimpleText)
-            return $"<b>{action.Unit.Name}</b> massages <b>{(action.Unit == action.Target ? GPPHis(action.Target) : action.Target.Name)}</b>'s full breasts.";
+            return $"<b>{action.Unit.Name}</b> massages {(action.Unit == action.Target ? GPPHis(action.Target) : "<b>" + action.Target.Name + "</b>'s")} full breasts.";
         return GetStoredMessage(StoredLogTexts.MessageTypes.BreastRubMessages, action);
     }
 
     private string GenerateTailRubMessage(EventLog action)
     {
         if (SimpleText)
-            return $"<b>{action.Unit.Name}</b> massages <b>{(action.Unit == action.Target ? GPPHis(action.Target) : action.Target.Name)}</b>'s stuffed tail.";
+        {
+            if (action.Unit.Race == Race.Terrorbird)
+                return $"<b>{action.Unit.Name}</b> massages {(action.Unit == action.Target ? GPPHis(action.Target) : "<b>" + action.Target.Name + "</b>'s")} filled crop.";
+            else
+                return $"<b>{action.Unit.Name}</b> massages {(action.Unit == action.Target ? GPPHis(action.Target) : "<b>" + action.Target.Name + "</b>'s")} stuffed tail.";
+        }
         return GetStoredMessage(StoredLogTexts.MessageTypes.TailRubMessages, action);
     }
 
@@ -361,7 +366,7 @@ public class TacticalMessageLog
     private string GenerateBallMassageMessage(EventLog action)
     {
         if (SimpleText)
-            return $"<b>{action.Unit.Name}</b> massages <b>{(action.Unit == action.Target ? GPPHis(action.Target) : action.Target.Name)}</b>'s full scrotum.";
+            return $"<b>{action.Unit.Name}</b> massages {(action.Unit == action.Target ? GPPHis(action.Target) : "<b>" + action.Target.Name + "</b>'s")} full scrotum.";
         return GetStoredMessage(StoredLogTexts.MessageTypes.BallMassageMessages, action);
     }
 
