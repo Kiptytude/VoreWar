@@ -291,6 +291,8 @@ public enum Traits
     WastefulProcessing,
     /// <summary>Allows unit to use <b>Charm</b>, an attack changes a target's allegience once per battle.</summary>
     Charmer,
+    /// <summary>Unit can only cock vore or unbirth pery if the prey is 1/3 the size of this unit, but Diminishment does not fade while prey is inside this unit's cock or womb.</summary>
+    TightNethers,
 
 
     //Everything after this is a cheat trait

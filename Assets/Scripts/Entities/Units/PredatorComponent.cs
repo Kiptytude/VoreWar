@@ -1949,9 +1949,9 @@ public class PredatorComponent
         List<VoreType> voreTypes = new List<VoreType>();
         if (allowedVoreTypes.Contains(VoreType.Oral) && Config.OralWeight > 0)
             options.Add(VoreType.Oral, Config.OralWeight);
-        if (allowedVoreTypes.Contains(VoreType.Unbirth) && unit.CanUnbirth && Config.UnbirthWeight > 0)
+        if (allowedVoreTypes.Contains(VoreType.Unbirth) && unit.CanUnbirth && Config.UnbirthWeight > 0 && (actor.BodySize() >= target.BodySize() * 3 || !actor.Unit.HasTrait(Traits.TightNethers)))
             options.Add(VoreType.Unbirth, Config.UnbirthWeight);
-        if (allowedVoreTypes.Contains(VoreType.CockVore) && unit.CanCockVore && Config.CockWeight > 0)
+        if (allowedVoreTypes.Contains(VoreType.CockVore) && unit.CanCockVore && Config.CockWeight > 0 && (actor.BodySize() >= target.BodySize() * 3 || !actor.Unit.HasTrait(Traits.TightNethers)))
             options.Add(VoreType.CockVore, Config.CockWeight);
         if (allowedVoreTypes.Contains(VoreType.BreastVore) && unit.CanBreastVore && Config.BreastWeight > 0)
             options.Add(VoreType.BreastVore, Config.BreastWeight);
@@ -2095,7 +2095,7 @@ public class PredatorComponent
             return false;
 
 
-        if (target.Bulk() <= FreeCap())
+        if (target.Bulk() <= FreeCap() && (actor.BodySize() >= target.BodySize() * 3 || !actor.Unit.HasTrait(Traits.TightNethers) || (preyType != PreyLocation.womb && preyType != PreyLocation.balls)))
         {
             bool bit = false;
             if (target.Unit.HasTrait(Traits.Dazzle) && target.Surrendered == false)
