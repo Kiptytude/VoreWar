@@ -41,6 +41,20 @@ public class HedonistTacticalAI : TacticalAI
 
         //do action
 
+        if (Config.KuroTenkoEnabled && actor.PredatorComponent != null)
+        {
+            if (actor.PredatorComponent.CanFeed())
+            {
+                RunFeed(actor, "breast", true);
+                if (foundPath || didAction) return;
+            }
+            if (actor.PredatorComponent.CanFeedCum())
+            {
+                RunFeed(actor, "cock", true);
+                if (foundPath || didAction) return;
+            }
+        }
+
         int spareMp = CheckActionEconomyOfActorFromPositionWithAP(actor, actor.Position, actor.Movement);
         int thirdMovement = actor.MaxMovement() / 3;
         if (spareMp >= thirdMovement)
@@ -86,6 +100,22 @@ public class HedonistTacticalAI : TacticalAI
             RunMelee(actor);
         if (foundPath || didAction) return;
 
+        if (Config.KuroTenkoEnabled && actor.PredatorComponent != null)
+        {
+            if ((Config.FeedingType == FeedingType.Both || Config.FeedingType == FeedingType.BreastfeedOnly) && actor.PredatorComponent.CanFeed())
+            {
+                RunFeed(actor, "breast");
+                if (foundPath || didAction) return;
+            }
+            if ((Config.FeedingType == FeedingType.Both || Config.FeedingType == FeedingType.CumFeedOnly) && actor.PredatorComponent.CanFeedCum())
+            {
+                RunFeed(actor, "cock");
+                if (foundPath || didAction) return;
+            }
+            RunSuckle(actor);
+            if (foundPath || didAction) return;
+        }
+
         RunBellyRub(actor, actor.Movement);
         if (foundPath || didAction) return;
         //Search for surrendered targets outside of vore range
@@ -94,5 +124,4 @@ public class HedonistTacticalAI : TacticalAI
         if (foundPath || didAction) return;
         actor.ClearMovement();
     }
-
 }
