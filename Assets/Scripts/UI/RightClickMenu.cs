@@ -622,7 +622,7 @@ public class RightClickMenu : MonoBehaviour
                     currentButton++;
                 }
             }
-            if (actor.PredatorComponent.CanSuckle() && actor.PredatorComponent.GetSuckle(data.Target)[0] != 0)
+            if (actor.PredatorComponent.CanSuckle() && actor.PredatorComponent.GetSuckle(data.Target)[0] + actor.PredatorComponent.GetSuckle(data.Target)[1] != 0)
             {
                 Buttons[currentButton].onClick.AddListener(() => data.Actor.PredatorComponent.Suckle(data.Target));
                 Buttons[currentButton].onClick.AddListener(FinishAction);
