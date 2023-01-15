@@ -1568,7 +1568,7 @@ Turns: {currentTurn}
     }
 
 
-    void ShowVoreHitPercentages(Actor_Unit actor)
+    void ShowVoreHitPercentages(Actor_Unit actor, bool genital = false)
     {
         foreach (Actor_Unit target in units)
         {
@@ -1578,7 +1578,7 @@ Turns: {currentTurn}
                 continue;
             Vec2i pos = target.Position;
             target.UnitSprite.HitPercentagesDisplayed(true);
-            if (actor.PredatorComponent.FreeCap() < target.Bulk())
+            if (actor.PredatorComponent.FreeCap() < target.Bulk() || (actor.BodySize() < target.BodySize() * 3 && actor.Unit.HasTrait(Traits.TightNethers) && genital))
                 target.UnitSprite.DisplayHitPercentage(target.GetDevourChance(actor, true), Color.yellow);
             else if (actor.Position.GetNumberOfMovesDistance(target.Position) < 2)
                 target.UnitSprite.DisplayHitPercentage(target.GetDevourChance(actor, true), Color.red);
@@ -1644,6 +1644,8 @@ Turns: {currentTurn}
         {
             case SpecialAction.Unbirth:
             case SpecialAction.CockVore:
+                ShowVoreHitPercentages(actor, true);
+                break;
             case SpecialAction.TailVore:
             case SpecialAction.AnalVore:
             case SpecialAction.BreastVore:

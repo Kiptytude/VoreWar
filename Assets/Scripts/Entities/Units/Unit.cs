@@ -1964,6 +1964,15 @@ public class Unit
         {
             if (eff.Type == StatusEffectType.BladeDance || eff.Type == StatusEffectType.Tenacious)
                 continue;
+            var actor = TacticalUtilities.Units.Where(s => s.Unit == this).FirstOrDefault();
+            var pred = actor.SelfPrey?.Predator;
+            if (pred != null && eff.Type == StatusEffectType.Diminished)
+            {
+                if (pred.Unit.HasTrait(Traits.TightNethers) && (actor.SelfPrey.Location == PreyLocation.balls || actor.SelfPrey.Location == PreyLocation.womb))
+                {
+                    continue;
+                }
+            }
             eff.Duration -= 1;
             if (eff.Duration <= 0)
             {
@@ -1974,10 +1983,8 @@ public class Unit
                     var still = GetStatusEffect(StatusEffectType.Diminished);
                     if (still == null)
                     {
-                        var actor = TacticalUtilities.Units.Where(s => s.Unit == this).FirstOrDefault();
                         if (actor != null)
                         {
-                            var pred = actor.SelfPrey?.Predator;
                             if (pred != null)
                             {
                                 State.GameManager.TacticalMode.Log.RegisterDiminishmentExpiration(pred.Unit, this, actor.SelfPrey.Location);
@@ -1992,10 +1999,8 @@ public class Unit
                     var still = GetStatusEffect(StatusEffectType.WillingPrey);
                     if (still == null)
                     {
-                        var actor = TacticalUtilities.Units.Where(s => s.Unit == this).FirstOrDefault();
                         if (actor != null)
                         {
-                            var pred = actor.SelfPrey?.Predator;
                             if (pred != null)
                             {
                                 State.GameManager.TacticalMode.Log.RegisterCurseExpiration(pred.Unit, this, actor.SelfPrey.Location);
@@ -2007,9 +2012,48 @@ public class Unit
                 }
             }
         }
-
-
-
     }
 
+    public void Shrink()
+    {
+        if (HasTrait(Traits.Titanic) && HasTrait(Traits.Colossal) && HasTrait(Traits.Huge) && HasTrait(Traits.Large))
+            RemoveTrait(Traits.Large);
+        else if (HasTrait(Traits.Titanic) && HasTrait(Traits.Colossal) && HasTrait(Traits.Huge))
+            RemoveTrait(Traits.Huge);
+        else if (HasTrait(Traits.Titanic) && HasTrait(Traits.Colossal))
+        {
+            RemoveTrait(Traits.Titanic);
+            AddTrait(Traits.Huge);
+        }
+        else if (HasTrait(Traits.Colossal) && HasTrait(Traits.Huge))
+        {
+            RemoveTrait(Traits.Colossal);
+            RemoveTrait(Traits.Huge);
+            AddTrait(Traits.Titanic);
+        }
+        else if (HasTrait(Traits.Titanic))
+        {
+            AddTrait(Traits.Colossal);
+            RemoveTrait(Traits.Titanic);
+        }
+        else if (HasTrait(Traits.Colossal))
+        {
+            RemoveTrait(Traits.Colossal);
+            AddTrait(Traits.Huge);
+        }
+        else if (HasTrait(Traits.Huge))
+        {
+            RemoveTrait(Traits.Huge);
+            AddTrait(Traits.Large);
+        }
+        else if (HasTrait(Traits.Large))
+            RemoveTrait(Traits.Large);
+        else if (HasTrait(Traits.Small))
+        {
+            RemoveTrait(Traits.Small);
+            AddTrait(Traits.Tiny);
+        }
+        else
+            AddTrait(Traits.Small);
+    }
 }
