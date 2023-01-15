@@ -2389,12 +2389,11 @@ public class PredatorComponent
         {
             if (target.PredatorComponent.PreyInLocation(PreyLocation.breasts, false) + target.PredatorComponent.PreyInLocation(PreyLocation.leftBreast, false) + target.PredatorComponent.PreyInLocation(PreyLocation.rightBreast, false) + target.PredatorComponent.PreyInLocation(PreyLocation.balls, false) == 0)
                 return new int[] { 0, 0 };
-            bool rng = State.Rand.NextDouble() >= 0.5f;
             if (Config.SucklingPermission == SucklingPermission.AlwaysBreast || Config.FeedingType == FeedingType.BreastfeedOnly)
                 return target.PredatorComponent.CalcFeedValue(actor, "breast").Item1;
             if (Config.SucklingPermission == SucklingPermission.AlwaysCock || Config.FeedingType == FeedingType.CumFeedOnly)
                 return target.PredatorComponent.CalcFeedValue(actor, "cock").Item1;
-            if (Config.SucklingPermission == SucklingPermission.Auto || Config.SucklingPermission == SucklingPermission.Random && !rng)
+            if (Config.SucklingPermission == SucklingPermission.Auto || Config.SucklingPermission == SucklingPermission.Random)
                 return target.PredatorComponent.CalcFeedValue(actor, "any").Item1;
 
         }
