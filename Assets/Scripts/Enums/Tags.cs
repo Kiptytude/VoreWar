@@ -181,9 +181,9 @@ public enum Traits
     /// <summary>Prevents unit from defecting.</summary>
     Camaraderie,
     /// <summary>Forces unit to always defect to its race's side.</summary>
-    RaceLoyal,
+    RaceLoyal = 144,
     /// <summary>Unit's movement is reduced by 25%, but movement penalties from prey are halved and minimum movement is raised to 2.</summary>
-    SlowMovement,
+    SlowMovement = 90,
     /// <summary>Unit's movement is reduced by 45%, but movement penalties from prey are nullified and minimum movement is raised to 2.</summary>
     VerySlowMovement,
     /// <summary>No healing is provided when absordbing this unit, and there is a 1/8 chance of being poisoned when attacking this unit.</summary>
@@ -289,7 +289,7 @@ public enum Traits
     EfficientGuts,
     /// <summary>Unit absorbs prey 50% faster, but healing recieved from absorption is halved.</summary>
     WastefulProcessing,
-    /// <summary>Allows unit to use <b>Charm</b>, an attack changes a target's allegience once per battle.</summary>
+    /// <summary>Allows unit to use <b>Charm</b>, an attack that changes a target's allegience once per battle.</summary>
     Charmer,
     /// <summary>Unit can only cock vore or unbirth pery if the prey is 1/3 the size of this unit, but Diminishment does not fade while prey is inside this unit's cock or womb.</summary>
     TightNethers,
