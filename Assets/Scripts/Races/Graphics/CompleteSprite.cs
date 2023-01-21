@@ -36,6 +36,10 @@ public enum SpriteType
     BreastShadow,
     Dick,
     Balls,
+    Pussy,
+    PussyIn,
+    Anus,
+    AnusIn,
     Mouth,
     Clothing,
     Clothing2,
@@ -100,6 +104,10 @@ class CompleteSprite
         if (spriteType == SpriteType.Belly && animatedType != null)
             sprites[typeInt] = new SpriteContainer(animatedType, folder, spriteType.ToString(), 0, 0, null);
         else if (spriteType == SpriteType.Balls && animatedType != null)
+            sprites[typeInt] = new SpriteContainer(animatedType, folder, spriteType.ToString(), 0, 0, null);
+        else if (spriteType == SpriteType.Breasts && animatedType != null)
+            sprites[typeInt] = new SpriteContainer(animatedType, folder, spriteType.ToString(), 0, 0, null);
+        else if (spriteType == SpriteType.SecondaryBreasts && animatedType != null)
             sprites[typeInt] = new SpriteContainer(animatedType, folder, spriteType.ToString(), 0, 0, null);
         else
             sprites[typeInt] = new SpriteContainer(type, folder, spriteType.ToString(), 0, 0, null);
@@ -337,11 +345,19 @@ class CompleteSprite
         {
             SetSprite(SpriteType.Dick, race.Dick);
             SetSprite(SpriteType.Balls, race.Balls);
+            SetSprite(SpriteType.Pussy, race.Pussy);
+            SetSprite(SpriteType.PussyIn, race.PussyIn);
+            SetSprite(SpriteType.Anus, race.Anus);
+            SetSprite(SpriteType.AnusIn, race.AnusIn);
         }
         else
         {
             HideSprite(SpriteType.Dick);
             HideSprite(SpriteType.Balls);
+            HideSprite(SpriteType.Pussy);
+            HideSprite(SpriteType.PussyIn);
+            HideSprite(SpriteType.Anus);
+            HideSprite(SpriteType.AnusIn);
         }       
         race.SetBaseOffsets(actor);
         overallOffset = race.WholeBodyOffset;
@@ -376,6 +392,10 @@ class CompleteSprite
         UpdatePosition(SpriteType.SecondaryBreasts, race.SecondaryBreasts);
         UpdatePosition(SpriteType.Dick, race.Dick);
         UpdatePosition(SpriteType.Balls, race.Balls);
+        UpdatePosition(SpriteType.Pussy, race.Pussy);
+        UpdatePosition(SpriteType.PussyIn, race.PussyIn);
+        UpdatePosition(SpriteType.Anus, race.Anus);
+        UpdatePosition(SpriteType.AnusIn, race.AnusIn);
 
         if (sprites[(int)SpriteType.BackWeapon] != null)
         {

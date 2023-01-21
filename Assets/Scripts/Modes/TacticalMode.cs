@@ -2464,6 +2464,21 @@ Turns: {currentTurn}
                 {
                     unit.UnitSprite.AnimateBalls(unit.PredatorComponent.PreyNearLocation(PreyLocation.balls, true) * 0.0022f);
                 }
+
+                if (unit.PredatorComponent?.BreastFullness > 0 && unit.PredatorComponent?.AlivePrey > 0)
+                {
+                    unit.UnitSprite.AnimateBoobs(unit.PredatorComponent.PreyNearLocation(PreyLocation.breasts, true) * 0.0022f);
+                }
+
+                if (unit.PredatorComponent?.LeftBreastFullness > 0 && unit.PredatorComponent?.AlivePrey > 0)
+                {
+                    unit.UnitSprite.AnimateBoobs(unit.PredatorComponent.PreyNearLocation(PreyLocation.leftBreast, true) * 0.0022f);
+                }
+
+                if (unit.PredatorComponent?.RightBreastFullness > 0 && unit.PredatorComponent?.AlivePrey > 0)
+                {
+                    unit.UnitSprite.AnimateSecondBoobs(unit.PredatorComponent.PreyNearLocation(PreyLocation.rightBreast, true) * 0.0022f);
+                }
             }
         }
         if (waitingForDialog)
