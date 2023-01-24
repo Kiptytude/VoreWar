@@ -58,7 +58,58 @@ public class UnitCustomizer
         LastIndex
     }
 
-
+    public string HairColorLookup(int colorNumber)
+    {
+        switch (colorNumber)
+        {
+            case 0:
+                return "Black";
+            case 1:
+                return "Cream";
+            case 2:
+                return "Orange";
+            case 3:
+                return "Blonde";
+            case 4:
+                return "Pink";
+            case 5:
+                return "Brown";
+            case 6:
+                return "Dark Gray";
+            case 7:
+                return "Yellow";
+            case 8:
+                return "Red";
+            case 9:
+                return "Maroon";
+            case 10:
+                return "Light Gray";
+            case 11:
+                return "Purple";
+            case 12:
+                return "Teal";
+            case 13:
+                return "Grape";
+            case 14:
+                return "Blue";
+            case 15:
+                return "Lime";
+            case 16:
+                return "Light Blue";
+            case 17:
+                return "Silver";
+            case 18:
+                return "Fire";
+            case 19:
+                return "Bubblegum";
+            case 20:
+                return "Bright Red";
+            case 21:
+                return "Tangerine";
+            default:
+                return colorNumber.ToString();
+        }
+    }
 
     public UnitCustomizer(Unit unit, CustomizerPanel UI)
     {
@@ -186,6 +237,15 @@ public class UnitCustomizer
 
         switch (unit.Race)
         {
+            case Race.Cats:
+            case Race.Dogs:
+            case Race.Foxes:
+            case Race.Wolves:
+            case Race.Bunnies:
+            case Race.Tigers:
+                buttons[(int)ButtonTypes.HairColor].Label.text = "Hair Color: " + HairColorLookup(Unit.HairColor);
+                buttons[(int)ButtonTypes.BodyAccessoryColor].Label.text = "Fur Color: " + HairColorLookup(Unit.AccessoryColor);
+                break;
             case Race.Imps:
                 Imp();
                 break;
@@ -406,21 +466,6 @@ public class UnitCustomizer
                 buttons[(int)ButtonTypes.ClothingExtraType1].Label.text = "Panties";
                 buttons[(int)ButtonTypes.ClothingExtraType2].Label.text = "Stockings";
                 buttons[(int)ButtonTypes.ClothingExtraType3].Label.text = "Shoes";
-                break;
-
-		case Race.Vargul:
-                buttons[(int)ButtonTypes.BodyAccessoryType].Label.text = "Body Pattern Type";
-                buttons[(int)ButtonTypes.BodyAccentTypes1].Label.text = "Ear Type";
-                buttons[(int)ButtonTypes.BodyAccentTypes2].Label.text = "Head Pattern Type";
-                buttons[(int)ButtonTypes.BodyAccentTypes3].Label.text = "Mask On/Off (for armors)";
-                buttons[(int)ButtonTypes.BodyAccessoryColor].Label.text = "Body Pattern Colors";
-                buttons[(int)ButtonTypes.ExtraColor1].Label.text = "Armor Details Color";
-                break;
-
-            case Race.FeralLions:
-                buttons[(int)ButtonTypes.Skintone].Label.text = "Fur Color";
-                buttons[(int)ButtonTypes.HairStyle].Label.text = "Mane Style";
-                buttons[(int)ButtonTypes.HairColor].Label.text = "Mane Color";
                 break;
         }
     }
@@ -713,6 +758,10 @@ public class UnitCustomizer
     void ChangeHairColor(int change)
     {
         Unit.HairColor = (RaceData.HairColors + Unit.HairColor + change) % RaceData.HairColors;
+        if (Unit.Race == Race.Cats | Unit.Race == Race.Dogs | Unit.Race == Race.Bunnies | Unit.Race == Race.Wolves | Unit.Race == Race.Foxes | Unit.Race == Race.Tigers)
+        {
+            buttons[(int)ButtonTypes.HairColor].Label.text = "Hair Color: " + HairColorLookup(Unit.HairColor);
+        }
         RefreshView();
     }
 
@@ -767,6 +816,8 @@ public class UnitCustomizer
     void ChangeBodyAccessoryColor(int change)
     {
         Unit.AccessoryColor = (RaceData.AccessoryColors + Unit.AccessoryColor + change) % RaceData.AccessoryColors;
+        if (Unit.Race == Race.Cats | Unit.Race == Race.Dogs | Unit.Race == Race.Bunnies | Unit.Race == Race.Wolves | Unit.Race == Race.Foxes | Unit.Race == Race.Tigers)
+            buttons[(int)ButtonTypes.BodyAccessoryColor].Label.text = "Fur Color: " + HairColorLookup(Unit.AccessoryColor);
         RefreshView();
     }
 
