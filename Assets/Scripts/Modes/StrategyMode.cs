@@ -1363,7 +1363,7 @@ public class StrategyMode : SceneBase
         {
             StringBuilder sb = new StringBuilder();
             int unitCount = SelectedArmy.Units.Count;
-            sb.AppendLine($"this army has {unitCount} units");
+            sb.Append($"This army has {unitCount} units");
             trainCost = new int[7];
             trainExp = new int[7];
 
@@ -1377,13 +1377,13 @@ public class StrategyMode : SceneBase
 
             List<string> options = new List<string>();
 
-            if (maxTrainLevel >= 1) options.Add($"Steady Training - {trainExp[0]} xp, cost {trainCost[0]}");
-            if (maxTrainLevel >= 2) options.Add($"Involved Training - {trainExp[1]} xp, cost {trainCost[1]}");
-            if (maxTrainLevel >= 3) options.Add($"Heavy Training - {trainExp[2]} xp, cost {trainCost[2]}");
-            if (maxTrainLevel >= 4) options.Add($"Advanced Training - {trainExp[3]} xp, cost {trainCost[3]}");
-            if (maxTrainLevel >= 5) options.Add($"Extreme Training - {trainExp[4]} xp, cost {trainCost[4]}");
-            if (maxTrainLevel >= 6) options.Add($"Hero Training - {trainExp[5]} xp, cost {trainCost[5]}");
-            if (maxTrainLevel >= 7) options.Add($"Godly Training - {trainExp[6]} xp, cost {trainCost[6]}");
+            if (maxTrainLevel >= 1) options.Add($"Steady Training - {trainExp[0]} EXP, {trainCost[0]}G");
+            if (maxTrainLevel >= 2) options.Add($"Involved Training - {trainExp[1]} EXP, {trainCost[1]}G");
+            if (maxTrainLevel >= 3) options.Add($"Heavy Training - {trainExp[2]} EXP, {trainCost[2]}G");
+            if (maxTrainLevel >= 4) options.Add($"Advanced Training - {trainExp[3]} EXP, {trainCost[3]}G");
+            if (maxTrainLevel >= 5) options.Add($"Extreme Training - {trainExp[4]} EXP, {trainCost[4]}G");
+            if (maxTrainLevel >= 6) options.Add($"Hero Training - {trainExp[5]} EXP, {trainCost[5]}G");
+            if (maxTrainLevel >= 7) options.Add($"Godly Training - {trainExp[6]} EXP, {trainCost[6]}G");
             
             TrainUI.TrainingLevel.ClearOptions();
             TrainUI.TrainingLevel.AddOptions(options);
