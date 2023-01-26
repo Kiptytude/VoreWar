@@ -472,23 +472,18 @@ DevourThisTurn = true;
     internal int TrainingGetCost(int level)
     {
         int cost = 2;
-
         for (int i = 1; i <= level; i++)
         {
             cost += 12 * i;
         }
-
         cost *= Units.Count;
         return cost;
     }
 
     internal int TrainingGetExpValue(int level)
     {
-        int xpGain = 4;
-        for (int i = 1; i <= level; i++)
-        {
-            xpGain += 6 * i;
-        }
+        int xpGain = (int)Mathf.Ceil(Config.ExperiencePerLevel / 2f);
+        xpGain += ((int)Mathf.Ceil(Config.ExperiencePerLevel / 2f) + Config.AdditionalExperiencePerLevel) * level;
         return xpGain;
     }
 
