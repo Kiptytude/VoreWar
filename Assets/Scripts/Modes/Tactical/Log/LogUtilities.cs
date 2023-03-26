@@ -123,6 +123,13 @@ static class LogUtilities
     /// <returns></returns>
     internal static string IsAre(Unit unit) => (unit.GetPronoun(5) == "plural" ? "are" : "is");
 
+    /// <summary>
+    /// Returns "was" or "were" based on plurality of given unit.
+    /// </summary>
+    /// <param name="unit"></param>
+    /// <returns></returns>
+    internal static string WasWere(Unit unit) => (unit.GetPronoun(5) == "plural" ? "were" : "was");
+
     internal static string PluralForPart(PreyLocation location)
     {
         switch (location)

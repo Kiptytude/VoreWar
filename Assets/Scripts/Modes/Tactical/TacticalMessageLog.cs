@@ -252,9 +252,9 @@ public class TacticalMessageLog
                 return GetStoredMessage(StoredLogTexts.MessageTypes.TransferMessages, action);
             case MessageLogEvent.VoreStealSuccess:
                 return GetStoredMessage(StoredLogTexts.MessageTypes.VoreStealMessages, action);
-            //return $"<b>{action.Target.Name}</b> gently pushes down <b>{action.Unit.Name}</b> as {GPPHe(action.Target)} straddles {GPPHim(action.Unit)}. As {GPPHe(action.Target)} rides {GPPHim(action.Unit)}, {GPPHe(action.Unit)} cums, shooting {GPPHis(action.Unit)} prey straight into {GPPHis(action.Target)} {action.preyLocation.ToSyn()}. {odds}";
+            //return $"<b>{action.Target.Name}</b> gently pushes down <b>{action.Unit.Name}</b> as {GPPHe(action.Target)} straddles {GPPHim(action.Unit)}. As {GPPHe(action.Target)} rides {GPPHim(action.Unit)}, {GPPHe(action.Unit)} cums, shooting {GPPHis(action.Unit)} prey straight into {GPPHis(action.Target)} {action.preyLocation.ToSyn()}.{odds}";
             case MessageLogEvent.TransferFail:
-                return $"<b>{action.Unit.Name}</b> is a bit too quick, and {GPPHis(action.Unit)} prey gets partially released";
+                return $"<b>{action.Unit.Name}</b> is a bit too quick, and {GPPHis(action.Unit)} prey gets partially released.";
             case MessageLogEvent.VoreStealFail:
                 if (action.oldLocation == PreyLocation.breasts || action.oldLocation == PreyLocation.leftBreast || action.oldLocation == PreyLocation.rightBreast)
                     return $"<b>{action.Target.Name}</b> shoves <b>{action.Unit.Name}</b> off of {GPPHim(action.Target)} before {GPPHe(action.Unit)} can suck <b>{action.Prey.Name}</b> out of {GPPHis(action.Target)} breasts.";
@@ -266,18 +266,18 @@ public class TacticalMessageLog
                 return GetStoredMessage(StoredLogTexts.MessageTypes.CumFeedMessages, action);
             case MessageLogEvent.Suckle:
                 if (action.preyLocation == PreyLocation.breasts || action.preyLocation == PreyLocation.leftBreast || action.preyLocation == PreyLocation.rightBreast)
-                    return $"<b>{action.Unit.Name}</b> hugs <b>{action.Target.Name}</b>, pinning {GPPHis(action.Target)} arms to {GPPHis(action.Target)} sides as {GPPHe(action.Unit)} starts sucking on {GPPHis(action.Target)} breasts! {odds}";
+                    return $"<b>{action.Unit.Name}</b> hugs <b>{action.Target.Name}</b>, pinning {GPPHis(action.Target)} arms to {GPPHis(action.Target)} sides as {GPPHe(action.Unit)} starts sucking on {GPPHis(action.Target)} breasts!{odds}";
                 else
-                    return $"<b>{action.Unit.Name}</b> knocks down <b>{action.Target.Name}</b> and begins sucking {GPPHis(action.Target)} rod. {odds}";
+                    return $"<b>{action.Unit.Name}</b> knocks down <b>{action.Target.Name}</b> and begins sucking {GPPHis(action.Target)} rod.{odds}";
             case MessageLogEvent.SuckleFail:
                 if (action.preyLocation == PreyLocation.breasts || action.preyLocation == PreyLocation.leftBreast || action.preyLocation == PreyLocation.rightBreast)
-                    return $"<b>{action.Unit.Name}</b> hugs <b>{action.Target.Name}</b>, but {GPPHe(action.Target)} breaks free from {GPPHis(action.Unit)} hold before {action.Unit.Name} can do anything! {odds}";
+                    return $"<b>{action.Unit.Name}</b> hugs <b>{action.Target.Name}</b>, but {GPPHe(action.Target)} breaks free from {GPPHis(action.Unit)} hold before {action.Unit.Name} can do anything!{odds}";
                 else
-                    return $"<b>{action.Unit.Name}</b> tries to knock down <b>{action.Target.Name}</b> but {action.Target.Name} stands {GPPHis(action.Target)} ground! {odds}";
+                    return $"<b>{action.Unit.Name}</b> tries to knock down <b>{action.Target.Name}</b>, but {action.Target.Name} stands {GPPHis(action.Target)} ground!{odds}";
             case MessageLogEvent.Birth:
-                return $"With a loud grunt <b>{action.Unit.Name}</b> pushes <b>{action.Target.Name}</b> from {GPPHis(action.Unit)} womb, and breathes a sigh of relief.{odds}";
+                return $"With a loud grunt, <b>{action.Unit.Name}</b> pushes <b>{action.Target.Name}</b> from {GPPHis(action.Unit)} womb, and breathes a sigh of relief.{odds}";
             case MessageLogEvent.Resist:
-                return $"<b>{action.Unit.Name}</b> tried to vore <b>{action.Target.Name}</b>, but was fought off{odds}";
+                return $"<b>{action.Unit.Name}</b> tried to vore <b>{action.Target.Name}</b>, but was fought off.{odds}";
             case MessageLogEvent.Kill:
                 return GenerateKillMessage(action);
             case MessageLogEvent.Digest:
@@ -287,7 +287,7 @@ public class TacticalMessageLog
             case MessageLogEvent.Escape:
                 return GenerateEscapeMessage(action, odds);
             case MessageLogEvent.PartialEscape:
-                return $"<b>{action.Target.Name}</b> escaped from <b>{action.Unit.Name}</b>'s second stomach, only to find {GPPHimself(action.Target)} back in the first stomach. {odds}";
+                return $"<b>{action.Target.Name}</b> escaped from <b>{action.Unit.Name}</b>'s second stomach, only to find {GPPHimself(action.Target)} back in the first stomach.{odds}";
             case MessageLogEvent.Freed:
                 return $"<b>{action.Target.Name}</b> was freed because <b>{action.Unit.Name}</b> died.";
             //$"<b>{action.Target.Name}</b> sees insides of {action.preyLocation.ToSyn()} around him melting, only to find {GPPHimself(action.Target)} <b>{action.Unit.Name}</b>'s {action.preyLocation.ToSyn()}{odds}"
@@ -299,7 +299,7 @@ public class TacticalMessageLog
                     string message = "";
                     if (action.Damage != 0 && action.Bonus == 0)
                         message = $"<b>{action.Unit.Name}</b> <color=blue>healed {action.Damage}</color> from the milk.";
-                    else if (action.Unit.Health != action.Unit.MaxHealth && action.Bonus != 0)
+                    else if (action.Damage != 0 && action.Bonus != 0)
                         message = $"<b>{action.Unit.Name}</b> <color=blue>healed {action.Damage}</color> and <color=blue>gained {action.Bonus} experience</color> from the milk.";
                     else
                         message = $"<b>{action.Unit.Name}</b> <color=blue>gained {action.Bonus} experience</color> from the milk.";
@@ -319,7 +319,7 @@ public class TacticalMessageLog
             case MessageLogEvent.RandomDigestion:
                 return GenerateRandomDigestionMessage(action);
             case MessageLogEvent.Dazzle:
-                return $"<b>{action.Unit.Name}</b> was dazzled by <b>{action.Target.Name}</b>, the distraction wasting {GPPHis(action.Unit)} turn. {odds}";
+                return $"<b>{action.Unit.Name}</b> was dazzled by <b>{action.Target.Name}</b>, the distraction wasting {GPPHis(action.Unit)} turn.{odds}";
             case MessageLogEvent.SpellHit:
                 msg = GenerateSpellHitMessage((SpellLog)action);
                 msg = msg += odds;
@@ -346,14 +346,19 @@ public class TacticalMessageLog
     private string GenerateBreastRubMessage(EventLog action)
     {
         if (SimpleText)
-            return $"<b>{action.Unit.Name}</b> massages <b>{(action.Unit == action.Target ? GPPHis(action.Target) : action.Target.Name)}</b>'s full breasts.";
+            return $"<b>{action.Unit.Name}</b> massages {(action.Unit == action.Target ? GPPHis(action.Target) : "<b>" + action.Target.Name + "</b>'s")} full breasts.";
         return GetStoredMessage(StoredLogTexts.MessageTypes.BreastRubMessages, action);
     }
 
     private string GenerateTailRubMessage(EventLog action)
     {
         if (SimpleText)
-            return $"<b>{action.Unit.Name}</b> massages <b>{(action.Unit == action.Target ? GPPHis(action.Target) : action.Target.Name)}</b>'s stuffed tail.";
+        {
+            if (action.Unit.Race == Race.Terrorbird)
+                return $"<b>{action.Unit.Name}</b> massages {(action.Unit == action.Target ? GPPHis(action.Target) : "<b>" + action.Target.Name + "</b>'s")} filled crop.";
+            else
+                return $"<b>{action.Unit.Name}</b> massages {(action.Unit == action.Target ? GPPHis(action.Target) : "<b>" + action.Target.Name + "</b>'s")} stuffed tail.";
+        }
         return GetStoredMessage(StoredLogTexts.MessageTypes.TailRubMessages, action);
     }
 
@@ -361,7 +366,7 @@ public class TacticalMessageLog
     private string GenerateBallMassageMessage(EventLog action)
     {
         if (SimpleText)
-            return $"<b>{action.Unit.Name}</b> massages <b>{(action.Unit == action.Target ? GPPHis(action.Target) : action.Target.Name)}</b>'s full scrotum.";
+            return $"<b>{action.Unit.Name}</b> massages {(action.Unit == action.Target ? GPPHis(action.Target) : "<b>" + action.Target.Name + "</b>'s")} full scrotum.";
         return GetStoredMessage(StoredLogTexts.MessageTypes.BallMassageMessages, action);
     }
 
@@ -444,12 +449,12 @@ public class TacticalMessageLog
         switch (rand)
         {
             case 0: return $"<b>{action.Unit.Name}</b> killed <b>{action.Target.Name}</b> with {GPPHis(action.Unit)} {GetWeaponTrueName(action.Weapon, action.Unit)}.";
-            case 1: return $"<b>{action.Target.Name}</b> was brought down by <b>{action.Unit.Name}'s</b> {GetWeaponTrueName(action.Weapon, action.Unit)}.";
-            case 2: return $"<b>{action.Target.Name}'s</b> fight came to an end by <b>{action.Unit.Name}'s</b> {GetWeaponTrueName(action.Weapon, action.Unit)}.";
+            case 1: return $"<b>{action.Target.Name}</b> was brought down by <b>{action.Unit.Name}</b>'s {GetWeaponTrueName(action.Weapon, action.Unit)}.";
+            case 2: return $"<b>{action.Target.Name}</b>'s fight was brought to an end by <b>{action.Unit.Name}</b>'s {GetWeaponTrueName(action.Weapon, action.Unit)}.";
             case 3:
                 if (action.Weapon.Range > 1) return $"<b>{action.Target.Name}</b> was struck down by an accurate hit of <b>{action.Unit.Name}'s</b> {GetWeaponTrueName(action.Weapon, action.Unit)}.";
                 else return $"<b>{action.Unit.Name}</b> struck <b>{action.Target.Name}</b> down with a skilled strike of {GPPHis(action.Unit)} {GetWeaponTrueName(action.Weapon, action.Unit)}.";
-            case 4: return $"<b>{action.Target.Name}'s</b> was slain by <b>{action.Unit.Name}</b> wielding {GPPHis(action.Unit)} {GetWeaponTrueName(action.Weapon, action.Unit)}.";
+            case 4: return $"<b>{action.Target.Name}</b> was slain by <b>{action.Unit.Name}</b> wielding {GPPHis(action.Unit)} {GetWeaponTrueName(action.Weapon, action.Unit)}.";
             default: return $"<b>{action.Unit.Name}</b> put an end to <b>{action.Target.Name}</b> with {GPPHis(action.Unit)} {GetWeaponTrueName(action.Weapon, action.Unit)}.";
         }
     }
@@ -467,7 +472,7 @@ public class TacticalMessageLog
     private string GenerateBVSwallowMessage(EventLog action)
     {
         if (SimpleText)
-            return $"<b>{action.Unit.Name}</b> Breast vores <b>{action.Target.Name}</b>.";
+            return $"<b>{action.Unit.Name}</b> breast vores <b>{action.Target.Name}</b>.";
         return GetStoredMessage(StoredLogTexts.MessageTypes.BreastVoreMessages, action);
     }
 
@@ -497,7 +502,7 @@ public class TacticalMessageLog
         {
             return GetRandomStringFrom(
                 $"<b>{action.Unit.Name}</b>’s stomach expands violently as {GPPHis(action.Unit)} previously diminutive prey reverts to {GPPHis(action.Target)} regular size.",
-                $"<b>{action.Unit.Name}</b> falls onto the ground as {GPPHis(action.Unit)} belly is suddenly filled with a full sized {action.Target.Race}. {GPPHe(action.Unit)} rubs {GPPHis(action.Unit)} engorged gut before standing once more.",
+                $"<b>{action.Unit.Name}</b> falls onto the ground as {GPPHis(action.Unit)} belly is suddenly filled with a full-sized {action.Target.Race}. {GPPHe(action.Unit)} rubs {GPPHis(action.Unit)} engorged gut before standing once more.",
                 $"<b>{action.Unit.Name}</b> had been eagerly waiting for {GPPHis(action.Unit)} tiny meal to revert to its regular size. When {GPPHis(action.Unit)} gut finally expands, the air is filled with {GPPHis(action.Unit)} cries of pleasure and a great sloshing.",
                 $"<b>{action.Unit.Name}</b>’s tummy nearly bursts as <b>{action.Target.Name}</b> reverts to {GPPHis(action.Target)} usual size."
                 );
@@ -506,7 +511,7 @@ public class TacticalMessageLog
         {
             return GetRandomStringFrom(
                 $"<b>{action.Unit.Name}</b>’s {PreyLocStrings.ToSyn(action.preyLocation)} expands violently as {GPPHis(action.Unit)} previously diminutive prey reverts to {GPPHis(action.Target)} regular size.",
-                $"<b>{action.Unit.Name}</b> had been eagerly waiting for {GPPHis(action.Unit)} tiny meal to revert to its regular size. When {GPPHis(action.Unit)} {PreyLocStrings.ToSyn(action.preyLocation)} finally expands and the air is filled with {GPPHis(action.Unit)} cries of pleasure and a great sloshing."
+                $"<b>{action.Unit.Name}</b> had been eagerly waiting for {GPPHis(action.Unit)} tiny meal to revert to its regular size. When {GPPHis(action.Unit)} {PreyLocStrings.ToSyn(action.preyLocation)} finally expands, the air is filled with {GPPHis(action.Unit)} cries of pleasure and a great sloshing."
             );
         }
 
@@ -516,7 +521,7 @@ public class TacticalMessageLog
     {
         if (SimpleText)
         {
-            return $"<b>{action.Target.Name}</b> escaped from <b>{action.Unit.Name}</b>'s {action.preyLocation.ToSyn()}. {odds}";
+            return $"<b>{action.Target.Name}</b> escaped from <b>{action.Unit.Name}</b>'s {action.preyLocation.ToSyn()}.{odds}";
         }
         if (action.preyLocation == PreyLocation.stomach)
         {
@@ -524,7 +529,7 @@ public class TacticalMessageLog
                 $"From within <b>{action.Unit.Name}</b>’s gurgling gut, <b>{action.Target.Name}</b> remembers all the loved ones that would miss {GPPHim(action.Target)} and with this incentive forces {GPPHis(action.Target)} way out.{odds}",
                 $"<b>{action.Unit.Name}</b>’s stomach finds something particularly disagreeable with how <b>{action.Target.Name}</b> tastes. With a wretched gag, <b>{action.Target.Name}</b> is expelled from <b>{action.Unit.Name}</b>’s tummy.{odds}",
                 $"The rampant indigestion caused by <b>{action.Target.Name}</b>’s incessant struggles causes <b>{action.Unit.Name}</b> to reluctantly release {GPPHis(action.Unit)} stubborn prey.{odds}",
-                $"<b>{action.Target.Name}</b>’s determination proves greater than the strength of <b>{action.Unit.Name}</b>’s constitution as {GPPHe(action.Target)} free{SIfSingular(action.Target)} {GPPHimself(action.Unit)} from {GPPHis(action.Unit)} fleshy prison.{odds}",
+                $"<b>{action.Target.Name}</b>’s determination proves greater than the strength of <b>{action.Unit.Name}</b>’s constitution as {GPPHe(action.Target)} free{SIfSingular(action.Target)} {GPPHimself(action.Target)} from {GPPHis(action.Target)} fleshy prison.{odds}",
                 $"<b>{action.Target.Name}</b> claws {GPPHis(action.Target)} way up <b>{action.Unit.Name}</b>’s throat and is able to pull {GPPHimself(action.Target)} free.{odds}",
                 $"<b>{action.Unit.Name}</b> can feel the tip of a weapon stabbing at {GPPHis(action.Unit)} insides. Panicking, the worried predator spits <b>{action.Target.Name}</b> up quickly.{odds}",
                 $"<b>{action.Target.Name}</b> tricks {GPPHis(action.Target)} would-be predator with a heartfelt sob story. <b>{action.Unit.Name}</b> believes it and naïvely lets the clever prey climb out of {GPPHis(action.Unit)} gullet.{odds}",
@@ -536,11 +541,11 @@ public class TacticalMessageLog
         else
         {
             return GetRandomStringFrom(
-                $"<b>{action.Target.Name}</b> escaped from <b>{action.Unit.Name}</b>'s {action.preyLocation.ToSyn()}{odds}",
-                $"From within <b>{action.Unit.Name}</b>’s, <b>{action.Target.Name}</b> remembers all the loved ones that would miss {GPPHim(action.Target)} and with this incentive forces {GPPHis(action.Target)} way out.",
-                $"<b>{action.Target.Name}</b>’s determination proves greater than the strength of <b>{action.Unit.Name}</b>’s constitution as {GPPHe(action.Target)} free{SIfSingular(action.Target)} {GPPHimself(action.Unit)} from {GPPHis(action.Unit)} fleshy prison.",
-                $"<b>{action.Unit.Name}</b> can feel the tip of a weapon stabbing at {GPPHis(action.Unit)} insides. Panicking, the worried predator spits <b>{action.Target.Name}</b> up quickly.",
-                $"<b>{action.Target.Name}</b> tricks {GPPHis(action.Target)} would-be predator with a heartfelt sob story. <b>{action.Unit.Name}</b> believes it and naïvely lets the clever prey climb back out."
+                $"<b>{action.Target.Name}</b> escaped from <b>{action.Unit.Name}</b>'s {action.preyLocation.ToSyn()}.{odds}",
+                $"From within <b>{action.Unit.Name}</b>’s {action.preyLocation.ToSyn()}, <b>{action.Target.Name}</b> remembers all the loved ones that would miss {GPPHim(action.Target)}, and with this incentive forces {GPPHis(action.Target)} way out.{odds}",
+                $"<b>{action.Target.Name}</b>’s determination proves greater than the strength of <b>{action.Unit.Name}</b>’s constitution as {GPPHe(action.Target)} free{SIfSingular(action.Target)} {GPPHimself(action.Target)} from {GPPHis(action.Target)} fleshy prison.{odds}",
+                $"<b>{action.Unit.Name}</b> can feel the tip of a weapon stabbing at {GPPHis(action.Unit)} insides. Panicking, the worried predator spits <b>{action.Target.Name}</b> up quickly.{odds}",
+                $"<b>{action.Target.Name}</b> tricks {GPPHis(action.Target)} would-be predator with a heartfelt sob story. <b>{action.Unit.Name}</b> believes it and naïvely lets the clever prey climb back out.{odds}"
                 );
         }
 
@@ -554,28 +559,28 @@ public class TacticalMessageLog
     private string GenerateUBSwallowMessage(EventLog action)
     {
         if (SimpleText)
-            return $"<b>{action.Unit.Name}</b> Unbirths <b>{action.Target.Name}</b>.";
+            return $"<b>{action.Unit.Name}</b> unbirths <b>{action.Target.Name}</b>.";
         return GetStoredMessage(StoredLogTexts.MessageTypes.UnbirthMessages, action);
     }
 
     private string GenerateTVSwallowMessage(EventLog action)
     {
         if (SimpleText)
-            return $"<b>{action.Unit.Name}</b> Tail vores <b>{action.Target.Name}</b>.";
+            return $"<b>{action.Unit.Name}</b> tail vores <b>{action.Target.Name}</b>.";
         return GetStoredMessage(StoredLogTexts.MessageTypes.TailVoreMessages, action);
     }
 
     private string GenerateAVSwallowMessage(EventLog action)
     {
         if (SimpleText)
-            return $"<b>{action.Unit.Name}</b> Anal vores <b>{action.Target.Name}</b>.";
+            return $"<b>{action.Unit.Name}</b> anal vores <b>{action.Target.Name}</b>.";
         return GetStoredMessage(StoredLogTexts.MessageTypes.AnalVoreMessages, action);
     }
 
     private string GenerateCVSwallowMessage(EventLog action)
     {
         if (SimpleText)
-            return $"<b>{action.Unit.Name}</b> Cock vores <b>{action.Target.Name}</b>.";
+            return $"<b>{action.Unit.Name}</b> cock vores <b>{action.Target.Name}</b>.";
         return GetStoredMessage(StoredLogTexts.MessageTypes.CockVoreMessages, action);
     }
 
@@ -587,26 +592,28 @@ public class TacticalMessageLog
 
     private string GenerateDigestionLowHealthMessage(EventLog action)
     {
-
         if (Config.Scat && (action.preyLocation == PreyLocation.stomach || action.preyLocation == PreyLocation.stomach2) && State.Rand.Next(5) == 0)
         {
             return GetRandomStringFrom(
-                $"<b>{action.Target.Name}</b> is well on his way to becoming <b>{action.Unit.Name}</b>'s poop.",
+                $"<b>{action.Target.Name}</b> is well on {GPPHis(action.Target)} way to becoming <b>{action.Unit.Name}</b>'s poop.",
                 $"<b>{action.Target.Name}</b> is increasingly falling apart into a foul mess, waiting to be flushed into <b>{action.Unit.Name}</b>'s intestines.",
                 $"<b>{action.Target.Name}</b> doesn’t have the fortitude left to resist {GPPHis(action.Target)} destiny as a {GetRaceDescSingl(action.Unit)}'s next bowel movement anymore.",
                 $"<b>{action.Unit.Name}</b> can feel <b>{action.Target.Name}</b>'s struggles getting weaker, kindly reminding {GPPHim(action.Target)} that if {GPPHe(action.Target)} fail{SIfSingular(action.Target)} to escape {GPPHeIs(action.Target)} getting melted into turds.",
                 $"<b>{action.Unit.Name}</b>’s {action.preyLocation.ToSyn()} rumbles ominously while telling <b>{action.Target.Name}</b> that {GPPHe(action.Unit)} will enjoy shitting {GPPHim(action.Target)} out later.");
         }
         if (Config.HardVoreDialog && Random.Range(0, 5) == 0)
-            GetRandomStringFrom($"<b>{action.Unit.Name}</b> hears {GPPHis(action.Unit)} {action.preyLocation.ToSyn()} gurgle intensely. {GPPHe(action.Unit)} feels <b>{action.Target.Name}</b> begin to slip under {GPPHis(action.Unit)} turbulent acids.",
-                                $"<b>{action.Unit.Name}</b>'s {action.preyLocation.ToSyn()} glurts and blorts, {GPPHis(action.Unit)} {GetPredDesc(action.Target)} prey starting to break down. <b>{action.Target.Name}</b> seems doomed.");
-
-
+        {
+            string loc = action.preyLocation.ToSyn();
+            string locs = (loc.EndsWith("s") ? "" : "s");
+            GetRandomStringFrom($"<b>{action.Unit.Name}</b> hears {GPPHis(action.Unit)} {loc} gurgle{locs} intensely. {Capitalize(GPPHe(action.Unit))} feels <b>{action.Target.Name}</b> begin to slip under {GPPHis(action.Unit)} turbulent acids.",
+                                $"<b>{action.Unit.Name}</b>'s {loc} glurt{locs} and blort{locs}, {GPPHis(action.Unit)} {GetPredDesc(action.Target)} prey starting to break down. <b>{action.Target.Name}</b> seems doomed.");
+        }
         int ran = Random.Range(0, 9);
         switch (ran)
         {
             case 0:
-                return $"<b>{action.Target.Name}</b> feels weak, <b>{action.Unit.Name}</b>'s {action.preyLocation.ToSyn()} is overwhelming.";
+                string loc = action.preyLocation.ToSyn();
+                return $"<b>{action.Target.Name}</b> feels weak; <b>{action.Unit.Name}</b>'s {loc + (loc.EndsWith("s") ? " are" : " is")} overwhelming.";
             case 1:
                 return $"<b>{action.Target.Name}</b> is about to give up fighting <b>{action.Unit.Name}</b>'s {action.preyLocation.ToSyn()}.";
             case 2:
@@ -629,7 +636,7 @@ public class TacticalMessageLog
     private string GenerateDigestionDeathMessage(EventLog action)
     {
         if (SimpleText)
-            return $"<b>{action.Unit.Name}</b> digested <b>{action.Target.Name}</b>";
+            return $"<b>{action.Unit.Name}</b> digested <b>{action.Target.Name}</b>.";
 
         return GetStoredMessage(StoredLogTexts.MessageTypes.DigestionDeathMessages, action);
     }
@@ -637,7 +644,7 @@ public class TacticalMessageLog
     private string GenerateGreatEscapeKeepMessage(EventLog action)
     {
         if (SimpleText)
-            return $"<b>{action.Unit.Name}</b> held <b>{action.Target.Name}</b> without digesting them.";
+            return $"<b>{action.Unit.Name}</b> held <b>{action.Target.Name}</b> without digesting {GPPHim(action.Target)}.";
 
         return GetStoredMessage(StoredLogTexts.MessageTypes.GreatEscapeKeep, action);
     }
@@ -653,7 +660,7 @@ public class TacticalMessageLog
     private string GenerateAbsorptionMessage(EventLog action)
     {
         if (SimpleText)
-            return $"<b>{action.Unit.Name}</b> finished absorbing the leftover nutrients from <b>{action.Target.Name}</b>";
+            return $"<b>{action.Unit.Name}</b> finished absorbing the leftover nutrients from <b>{action.Target.Name}</b>.";
         return GetStoredMessage(StoredLogTexts.MessageTypes.AbsorptionMessages, action);
 
     }

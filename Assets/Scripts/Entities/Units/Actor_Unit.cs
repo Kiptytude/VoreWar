@@ -1536,6 +1536,10 @@ public class Actor_Unit
         {
             possible.Add(2);
         }
+        if (target.PredatorComponent.TailFullness > 0)
+        {
+            possible.Add(3);
+        }
 
         if (possible.Count == 0)
             return false;
@@ -1562,6 +1566,11 @@ public class Actor_Unit
                 prey = target.PredatorComponent.GetDirectPrey().FirstOrDefault(p => p.Location.Equals(PreyLocation.balls));
                 if (prey == null) break;
                 TacticalUtilities.Log.RegisterBallMassage(Unit, target.Unit, prey.Unit, 1f);
+                break;
+            case 3:
+                prey = target.PredatorComponent.GetDirectPrey().FirstOrDefault(p => p.Location.Equals(PreyLocation.tail));
+                if (prey == null) break;
+                TacticalUtilities.Log.RegisterTailRub(Unit, target.Unit, prey.Unit, 1f);
                 break;
             default:
                 break;

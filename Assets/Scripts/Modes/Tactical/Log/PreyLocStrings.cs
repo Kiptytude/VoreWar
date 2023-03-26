@@ -3,7 +3,8 @@
 public static class PreyLocStrings
 {
     static readonly List<string> wombSyn = new List<string>() { "womb", "lower belly", "pussy", "slit", "muff", "cunt" };
-    static readonly List<string> breastSyn = new List<string>() { "breasts", "bosom", "bust", "mammaries", "boobs", "cleavage", "tits" };    
+    static readonly List<string> breastSyn = new List<string>() { "breasts", "bosom", "bust", "mammaries", "boobs", "cleavage", "tits" };
+    static readonly List<string> breastSynPlural = new List<string>() { "breasts", "mammaries", "boobs", "tits" };    
     static readonly List<string> ballsSyn = new List<string>() { "balls", "scrotum", "testicles", "nuts", "orbs", "nutsack" };
     static readonly List<string> stomachSyn = new List<string>() { "gut", "stomach", "belly", "tummy", "middle" };
     static readonly List<string> analSyn = new List<string>() { "butt", "ass", "bottom", "backside", "bum", "rear", "rump", "booty", "tush" };
@@ -62,6 +63,11 @@ public static class PreyLocStrings
     public static string ToCockSyn()
     {
         return genRandom(cockSyn);
+    }
+
+    public static string ToBreastSynPlural()
+    {
+        return genRandom(breastSynPlural);
     }
 
     public static string ToFluid(this PreyLocation preyLocation)
