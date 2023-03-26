@@ -1171,6 +1171,14 @@ public class Actor_Unit
                     TacticalGraphicalEffects.CreateProjectile(this, target);
                     State.GameManager.TacticalMode.TacticalStats.RegisterHit(BestRanged, Mathf.Min(damage, remainingHealth), Unit.Side);
                     TacticalUtilities.Log.RegisterHit(Unit, target.Unit, weapon, damage, chance);
+                    if (Unit.FixedSide == TacticalUtilities.GetMindControlSide(target.Unit))
+                    {
+                        StatusEffect charm = target.Unit.GetStatusEffect(StatusEffectType.Charmed);
+                        if (charm != null)
+                        {
+                            target.Unit.StatusEffects.Remove(charm);                // betrayal dispels charm
+                        }
+                    }
                     Unit.GiveScaledExp(2 * target.Unit.ExpMultiplier, Unit.Level - target.Unit.Level);
                     if (target.Unit.IsDead)
                     {
@@ -1231,6 +1239,14 @@ public class Actor_Unit
                     State.GameManager.SoundManager.PlayMeleeHit(target);
                     State.GameManager.TacticalMode.TacticalStats.RegisterHit(BestMelee, Mathf.Min(damage, remainingHealth), Unit.Side);
                     TacticalUtilities.Log.RegisterHit(Unit, target.Unit, weapon, damage, chance);
+                    if (Unit.FixedSide == TacticalUtilities.GetMindControlSide(target.Unit))
+                    {
+                        StatusEffect charm = target.Unit.GetStatusEffect(StatusEffectType.Charmed);
+                        if (charm != null)
+                        {
+                            target.Unit.StatusEffects.Remove(charm);                // betrayal dispels charm
+                        }
+                    }
                     CreateHitEffects(target);
                     Unit.GiveScaledExp(2 * target.Unit.ExpMultiplier, Unit.Level - target.Unit.Level);
                     if (target.Unit.IsDead)
@@ -1347,6 +1363,14 @@ public class Actor_Unit
             State.GameManager.TacticalMode.TacticalStats.RegisterHit(spell, Mathf.Min(damage, Unit.Health), attacker.Unit.Side);
             Damage(damage, true);
             State.GameManager.TacticalMode.Log.RegisterSpellHit(attacker.Unit, Unit, spell.SpellType, damage, chance);
+            if (attacker.Unit.FixedSide == TacticalUtilities.GetMindControlSide(Unit))
+            {
+                StatusEffect charm = Unit.GetStatusEffect(StatusEffectType.Charmed);
+                if (charm != null)
+                {
+                    Unit.StatusEffects.Remove(charm);                // betrayal dispels charm
+                }
+            }
             attacker.Unit.GiveScaledExp(1 * Unit.ExpMultiplier, Unit.Level - Unit.Level);
             if (Unit.IsDead)
             {

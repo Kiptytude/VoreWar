@@ -420,7 +420,7 @@ public abstract class TacticalAI : ITacticalAI
 
         foreach (Actor_Unit unit in actors)
         {
-            if (unit.Targetable == true && unit.PredatorComponent != null && !TacticalUtilities.TreatAsHostile(actor, unit) && unit.Unit.GetStatusEffect(StatusEffectType.Charmed) == null && !unit.Surrendered && unit.PredatorComponent?.PreyCount > 0 && !unit.ReceivedRub) // includes self
+            if (unit.Targetable == true && unit.PredatorComponent != null && !TacticalUtilities.TreatAsHostile(actor, unit) && TacticalUtilities.GetMindControlSide(unit.Unit) == -1 && !unit.Surrendered && unit.PredatorComponent?.PreyCount > 0 && !unit.ReceivedRub) // includes self
             {
                 int distance = unit.Position.GetNumberOfMovesDistance(position);
                 if (distance - 1 + (actor.MaxMovement() / 3) <= moves)
@@ -1160,7 +1160,7 @@ public abstract class TacticalAI : ITacticalAI
 
         Spell spell = actor.Unit.UseableSpells[State.Rand.Next(actor.Unit.UseableSpells.Count())];
 
-        if (spell == SpellList.Charm && actor.Unit.GetStatusEffect(StatusEffectType.Charmed) != null) // Charmed units should not use charm. Trust me.
+        if (spell == SpellList.Charm && TacticalUtilities.GetMindControlSide(actor.Unit) != -1) // Charmed units should not use charm. Trust me.
             return;
         if (spell.ManaCost > actor.Unit.Mana)
             return;

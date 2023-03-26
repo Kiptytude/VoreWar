@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
@@ -220,7 +221,7 @@ static class TacticalUtilities
     }
     internal static bool IsUnitControlledByPlayer(Unit unit)
     {
-        if (unit.GetStatusEffect(StatusEffectType.Charmed) != null)  // Charmed units may fight for the player, but they are always AI controlled
+        if (GetMindControlSide(unit) != -1)  // Charmed units may fight for the player, but they are always AI controlled
             return false;
         int defenderSide = State.GameManager.TacticalMode.GetDefenderSide();
         int attackerSide = State.GameManager.TacticalMode.GetAttackerSide();
@@ -255,9 +256,7 @@ static class TacticalUtilities
 
     static public int GetPreferredSide(Actor_Unit actor, int sideA, int sideB)
     {
-        int effectiveActorSide = actor.Unit.FixedSide;
-        if (actor.Unit.GetStatusEffect(StatusEffectType.Charmed) != null)
-            effectiveActorSide = (int)actor.Unit.GetStatusEffect(StatusEffectType.Charmed).Strength;
+        int effectiveActorSide = GetMindControlSide(actor.Unit) != -1 ? GetMindControlSide(actor.Unit) : actor.Unit.FixedSide;
         if (State.GameManager.PureTactical)
         {
             return effectiveActorSide;
@@ -323,18 +322,13 @@ static class TacticalUtilities
         int defenderSide = State.GameManager.TacticalMode.GetDefenderSide();
         int opponentSide = friendlySide == defenderSide ? State.GameManager.TacticalMode.GetAttackerSide() : defenderSide;
         int effectiveTargetSide = (target.Unit.hiddenFixedSide && target.Unit.FixedSide != actor.Unit.FixedSide) ? target.Unit.Side : target.Unit.FixedSide;
-        int effectiveActorSide = actor.Unit.FixedSide;
-        if (actor.Unit.GetStatusEffect(StatusEffectType.Charmed) != null)
-            effectiveActorSide = (int)actor.Unit.GetStatusEffect(StatusEffectType.Charmed).Strength;
-        if (target.Unit.GetStatusEffect(StatusEffectType.Charmed) != null && effectiveActorSide == (int)target.Unit.GetStatusEffect(StatusEffectType.Charmed)?.Strength)
+        int effectiveActorSide = GetMindControlSide(actor.Unit) != -1 ? GetMindControlSide(actor.Unit) : actor.Unit.FixedSide;
+        if (GetMindControlSide(target.Unit) == effectiveActorSide)
             return false;
         if (State.GameManager.PureTactical)
         {
             return effectiveTargetSide != effectiveActorSide;
         }
-       
-        if (actor.Unit.GetStatusEffect(StatusEffectType.Charmed) != null)
-            effectiveActorSide = (int)actor.Unit.GetStatusEffect(StatusEffectType.Charmed).Strength;
         if (effectiveActorSide == effectiveTargetSide)
             return false;
         int aISideHostility = 0;
@@ -438,6 +432,13 @@ static class TacticalUtilities
 
         }
         return targetSideHostilityP >= targetSideHostilityUP;
+    }
+
+    static public int GetMindControlSide(Unit unit)
+    {
+        if (unit.GetStatusEffect(StatusEffectType.Charmed) != null)
+            return (int)(unit.GetStatusEffect(StatusEffectType.Charmed).Strength);
+        return -1;
     }
 
     static public bool OpenTile(Vec2i vec, Actor_Unit actor) => OpenTile(vec.x, vec.y, actor);

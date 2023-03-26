@@ -8,6 +8,7 @@ using TacticalDecorations;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Tilemaps;
+using static UnityEngine.UI.CanvasScaler;
 
 public class TacticalMode : SceneBase
 {
@@ -2504,7 +2505,7 @@ Turns: {currentTurn}
             {
                 Type desiredAIType;
                 if (foreignUnits.Count() > 0)
-                    desiredAIType = foreignUnits[0].Unit.GetStatusEffect(StatusEffectType.Charmed) != null ? typeof(HedonistTacticalAI) : RaceAIType.Dict[State.RaceSettings.GetRaceAI(foreignUnits[0].Unit.Race)];
+                    desiredAIType = TacticalUtilities.GetMindControlSide(foreignUnits[0].Unit) != -1 ? typeof(HedonistTacticalAI) : RaceAIType.Dict[State.RaceSettings.GetRaceAI(foreignUnits[0].Unit.Race)];
                 else
                     desiredAIType = typeof(StandardTacticalAI);
                 if (foreignAI == null || (foreignAI.GetType() != desiredAIType))
@@ -3102,7 +3103,7 @@ Turns: {currentTurn}
     private bool unitControllableBySide(Actor_Unit unit, int side)
     {
         bool correctSide = unit.Unit.Side == side;
-        bool controlOverridden = unit.Unit.GetStatusEffect(StatusEffectType.Charmed) != null || unit.Unit.FixedSide != side;
+        bool controlOverridden = TacticalUtilities.GetMindControlSide(unit.Unit) != -1 || unit.Unit.FixedSide != side;
         return correctSide && !controlOverridden;
     }
 

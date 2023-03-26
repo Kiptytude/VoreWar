@@ -2117,6 +2117,14 @@ public class PredatorComponent
             if (r < v)
             {
                 PerformConsume(target, action, preyType, v, delay);
+                if (actor.Unit.FixedSide == TacticalUtilities.GetMindControlSide(target.Unit))
+                {
+                    StatusEffect charm = target.Unit.GetStatusEffect(StatusEffectType.Charmed);
+                    if (charm != null)
+                    {
+                        target.Unit.StatusEffects.Remove(charm);                // betrayal dispels charm
+                    }
+                }
                 if (!State.GameManager.TacticalMode.turboMode)
                     actor.SetVoreSuccessMode();
                 if (unit.HasTrait(Traits.Tenacious))
@@ -2203,6 +2211,14 @@ public class PredatorComponent
     {
         //State.GameManager.SoundManager.PlaySwallow(PreyLocation.stomach, actor);
         //TacticalUtilities.Log.RegisterVore(unit, target.Unit, v);
+        if (actor.Unit.FixedSide == TacticalUtilities.GetMindControlSide(target.Unit))
+        {
+            StatusEffect charm = target.Unit.GetStatusEffect(StatusEffectType.Charmed);
+            if (charm != null)
+            {
+                target.Unit.StatusEffects.Remove(charm);                // betrayal dispels charm
+            }
+        }
         AddToStomach(preyref, v);
     }
 

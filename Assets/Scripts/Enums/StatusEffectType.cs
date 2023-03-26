@@ -43,7 +43,7 @@ public enum StatusEffectType
     Tenacious,
     /// <summary>Doubles Strength and Voracity.</summary>
     Berserk,
-    /// <summary>Forces affected unit to be controlled by AI and act as opposing side.</summary>
+    /// <summary>Forces affected unit to be controlled by AI and act as the caster's side.</summary>
     Charmed,
 }
 
