@@ -195,6 +195,27 @@ public class HoveringTooltip : MonoBehaviour
                     return $"Provides a stat boost for all friendly units\nStat value: {unit.GetStatBase(Stat.Leadership)}";
             }
         }
+        if (Enum.TryParse(words[2], out Race race))
+        {
+            if (unit == null) //Protector for the add a race screen
+                return "";
+            var racePar = RaceParameters.GetTraitData(unit);
+            var bodySize = State.RaceSettings.GetBodySize(race);
+            var stomachSize = State.RaceSettings.GetStomachSize(race);
+            //return $"{race}\n{racePar.RaceDescription}\nBody Size: {State.RaceSettings.GetBodySize(race)}\nBase Stomach Size: {State.RaceSettings.GetStomachSize(race)}\nFavored Stat: {racePar.FavoredStat}\nDefault Traits:\n{State.RaceSettings.ListTraits(race)}";
+            return $"{race}\n{racePar.RaceDescription}\nRace Body Size: {bodySize}\nCurrent Bulk: {actor?.Bulk()}\nBase Stomach Size: {stomachSize}\nFavored Stat: {State.RaceSettings.GetFavoredStat(race)}";
+        }
+
+        if (unit != null && words[2] == InfoPanel.RaceSingular(unit))
+        {
+            race = unit.Race;
+            var racePar = RaceParameters.GetTraitData(unit);
+            var bodySize = State.RaceSettings.GetBodySize(race);
+            var stomachSize = State.RaceSettings.GetStomachSize(race);
+            //return $"{race}\n{racePar.RaceDescription}\nBody Size: {State.RaceSettings.GetBodySize(race)}\nBase Stomach Size: {State.RaceSettings.GetStomachSize(race)}\nFavored Stat: {racePar.FavoredStat}\nDefault Traits:\n{State.RaceSettings.ListTraits(race)}";
+            return $"{race}\n{racePar.RaceDescription}\nRace Body Size: {bodySize}\nCurrent Bulk: {actor?.Bulk()}\nBase Stomach Size: {stomachSize}\nFavored Stat: {State.RaceSettings.GetFavoredStat(race)}";
+        }
+
         if (Enum.TryParse(words[2], out Traits trait))
         {
             return GetTraitData(trait);
@@ -257,7 +278,8 @@ public class HoveringTooltip : MonoBehaviour
                         return $"Unit cannot perform any actions, but is easy to hit, takes half damage from attacks and is bulky to eat.\nTurns Remaining: {effect.Duration}";
                     case StatusEffectType.Berserk:
                         return $"Unit is berserk, its strength and voracity are greatly increased for a brief period\nTurns Remaining: {effect.Duration}";
-
+                    case StatusEffectType.Charmed:
+                        return $"Unit fights for the unit that charmed it.";
                 }
             }
         }
@@ -286,28 +308,6 @@ public class HoveringTooltip : MonoBehaviour
                 }
             }
         }
-
-        if (Enum.TryParse(words[2], out Race race))
-        {
-            if (unit == null) //Protector for the add a race screen
-                return "";
-            var racePar = RaceParameters.GetTraitData(unit);
-            var bodySize = State.RaceSettings.GetBodySize(race);
-            var stomachSize = State.RaceSettings.GetStomachSize(race);
-            //return $"{race}\n{racePar.RaceDescription}\nBody Size: {State.RaceSettings.GetBodySize(race)}\nBase Stomach Size: {State.RaceSettings.GetStomachSize(race)}\nFavored Stat: {racePar.FavoredStat}\nDefault Traits:\n{State.RaceSettings.ListTraits(race)}";
-            return $"{race}\n{racePar.RaceDescription}\nRace Body Size: {bodySize}\nCurrent Bulk: {actor?.Bulk()}\nBase Stomach Size: {stomachSize}\nFavored Stat: {State.RaceSettings.GetFavoredStat(race)}";
-        }
-
-        if (unit != null && words[2] == InfoPanel.RaceSingular(unit))
-        {
-            race = unit.Race;
-            var racePar = RaceParameters.GetTraitData(unit);
-            var bodySize = State.RaceSettings.GetBodySize(race);
-            var stomachSize = State.RaceSettings.GetStomachSize(race);
-            //return $"{race}\n{racePar.RaceDescription}\nBody Size: {State.RaceSettings.GetBodySize(race)}\nBase Stomach Size: {State.RaceSettings.GetStomachSize(race)}\nFavored Stat: {racePar.FavoredStat}\nDefault Traits:\n{State.RaceSettings.ListTraits(race)}";
-            return $"{race}\n{racePar.RaceDescription}\nRace Body Size: {bodySize}\nCurrent Bulk: {actor?.Bulk()}\nBase Stomach Size: {stomachSize}\nFavored Stat: {State.RaceSettings.GetFavoredStat(race)}";
-        }
-
 
         {
             List<Spell> AllSpells = SpellList.SpellDict.Select(s => s.Value).ToList();
