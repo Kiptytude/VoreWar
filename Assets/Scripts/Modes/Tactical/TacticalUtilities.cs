@@ -226,6 +226,11 @@ static class TacticalUtilities
         int attackerSide = State.GameManager.TacticalMode.GetAttackerSide();
         bool aiDefender = State.GameManager.TacticalMode.AIDefender;
         bool aiAttacker = State.GameManager.TacticalMode.AIAttacker;
+        if (State.GameManager.TacticalMode.CheatAttackerControl && unit.Side == attackerSide)
+            return true;
+        if (State.GameManager.TacticalMode.CheatDefenderControl && unit.Side == defenderSide)
+            return true;
+        
         if (State.GameManager.PureTactical)
         {
             return !aiAttacker && attackerSide == unit.FixedSide || !aiDefender && defenderSide == unit.FixedSide;

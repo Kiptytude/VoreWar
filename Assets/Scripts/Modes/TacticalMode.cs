@@ -152,7 +152,12 @@ public class TacticalMode : SceneBase
     int activeSide;
 
     public bool AIAttacker;
+
+    public bool CheatAttackerControl;
+
     public bool AIDefender;
+
+    public bool CheatDefenderControl;
 
     internal string AttackerName = null;
     internal string DefenderName = null;
@@ -761,8 +766,16 @@ public class TacticalMode : SceneBase
         return summonedUnits;
     }
 
-    internal void DisableAttackerAI() => AIAttacker = false;
-    internal void DisableDefenderAI() => AIDefender = false;
+    internal void DisableAttackerAI()
+    {
+        AIAttacker = false;
+        CheatAttackerControl = true;
+    }
+    internal void DisableDefenderAI()
+    {
+        AIDefender = false;
+        CheatDefenderControl = true;
+    }
 
     internal void ClearNames()
     {
@@ -1002,8 +1015,8 @@ Turns: {currentTurn}
         ActionMode = 0;
         string attackerController = AIAttacker == false ? "Player(Atk)" : "AI(Atk)";
         string defenderController = AIDefender == false ? "Player(Def)" : "AI(Def)";
-        StatusUI.AttackerText.text = $"{AttackerName} - ({attackerController})";
-        StatusUI.DefenderText.text = $"{DefenderName} - ({defenderController})";
+        StatusUI.AttackerText.text = $"{AttackerName} - {attackerController}";
+        StatusUI.DefenderText.text = $"{DefenderName} - {defenderController}";
 
         if (attackersTurn)
         {
