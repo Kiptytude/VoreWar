@@ -514,6 +514,8 @@ public class HoveringTooltip : MonoBehaviour
                 return "Any trait this unit assimilates is received by all members of their race. (requires Assimilate or InfiniteAssimilation)\n(Cheat Trait)";
             case Traits.Charmer:
                 return "Allows the casting of the Charm spell once per battle";
+            case Traits.HypnoticGas:
+                return "Can emit Gas that turns foes into subservient non-combatants.";
         }
         return "<b>This trait needs a tooltip!</b>";
     }
@@ -529,6 +531,9 @@ public class HoveringTooltip : MonoBehaviour
             case RaceAI.ServantRace:
                 return "Acts Subservient towards units of the most powerful race on their side, flocking to rub those individuals.\n" +
                     "Racial superiority is based on eminence.";
+            case RaceAI.NonCombatant:
+                return "Won't use weapons or offensive spells, but supports combatants with beneficial spells and bodily services.";
+
         }
         return "<b>This AI needs a tooltip!</b>";
     }

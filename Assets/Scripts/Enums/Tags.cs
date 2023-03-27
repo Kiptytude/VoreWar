@@ -10,360 +10,361 @@ using System.Threading.Tasks;
 public enum Traits
 {
     /// <summary>Unit gains +1 melee attack and +1 ranged attack, reducing the MP used by a melee or ranged attack.</summary>
-    DoubleAttack,
+    DoubleAttack = 0,
     /// <summary>Unit requires 30% less experience to level up.</summary>
-    Clever,
+    Clever = 1,
     /// <summary>Unit requires 40% more experience to level up.</summary>
-    Foolish,
+    Foolish = 2,
     /// <summary>Unit takes 1 less damage from all attacks.</summary>
-    Resilient,
+    Resilient = 3,
     /// <summary>Unit deals 20% more melee damage.</summary>
-    StrongMelee,
+    StrongMelee = 4,
     /// <summary>Unit deals 20% less melee damage.</summary>
-    WeakAttack,
+    WeakAttack = 5,
     /// <summary>Unit is 25% easier to vore.</summary>
-    EasyToVore,
+    EasyToVore = 6,
     /// <summary>Unit's Strength is boosted when adajcent to an ally. A second adjacent ally will increase the boost.</summary>
-    PackStrength,
+    PackStrength = 7,
     /// <summary>Unit's Dexterity is boosted when adajcent to an ally. A second adjacent ally will increase the boost.</summary>
-    PackDexterity,
+    PackDexterity = 8,
     /// <summary>Unit's Voracity is boosted when adajcent to an ally. A second adjacent ally will increase the boost.</summary>
-    PackVoracity,
+    PackVoracity = 9,
     /// <summary>Unit's Defense is boosted when adajcent to an ally. A second adjacent ally will increase the boost.</summary>
-    PackDefense,
+    PackDefense = 10,
     /// <summary>Unit's Will is boosted when adajcent to an ally. A second adjacent ally will increase the boost.</summary>
-    PackWill,
+    PackWill = 11,
     /// <summary>Unit's Mind is boosted when adajcent to an ally. A second adjacent ally will increase the boost.</summary>
-    PackMind,
+    PackMind = 12,
     /// <summary>Unit's Stomach is boosted when adajcent to an ally. A second adjacent ally will increase the boost.</summary>
-    PackStomach,
-
+    PackStomach = 13,
     /// <summary>Unit's stats are boosted when adajcent to an ally. A second adjacent ally will increase the boost.</summary>
-    PackTactics,
+    PackTactics = 14,
     /// <summary>Doubles unit's escape rate.</summary>
     EscapeArtist = 20,
     /// <summary>Doubles unit's digestion rate.</summary>
-    FastDigestion,
+    FastDigestion = 21,
     /// <summary>Halves unit's digestion rate.</summary>
-    SlowDigestion,
+    SlowDigestion = 22,
     /// <summary>Unit gains 20% redution to damage taken and is 33% harder to vore after ending turn with more than 0 MP.</summary>
-    DefensiveStance,
+    DefensiveStance = 23,
     /// <summary>Adjacent units' dodge chances are reduced by 20%.</summary>
-    Intimidating,
+    Intimidating = 24,
     /// <summary>Unit's stats increase when health is lower (max 11% boost).</summary>
-    ThrillSeeker,
+    ThrillSeeker = 25,
     /// <summary>Unit has 75% increased vore chance when without prey.</summary>
-    Ravenous,
+    Ravenous = 26,
     /// <summary>Unit's stats are boosted by 10% per kill each battle.</summary>
-    Frenzy,
+    Frenzy = 27,
     /// <summary>Unit gains 10% global dodge chance.</summary>
-    ArtfulDodge,
+    ArtfulDodge = 28,
     /// <summary>When levelling up, any stat can be boosted and 2 random stats are increased by 1 extra point.</summary>
-    AdeptLearner,
+    AdeptLearner = 29,
     /// <summary>Unit takes 30% less damage from ranged attacks and 30% more damage from melee attacks.</summary>
-    Tempered,
+    Tempered = 30,
     /// <summary>Doubles chance for prey to escape from this unit.</summary>
-    Nauseous,
+    Nauseous = 31,
     /// <summary>Healing provided from digesting unit is doubled.</summary>
-    Tasty,
+    Tasty = 32,
     /// <summary>Healing provided from digesting unit is reduced by 80%.</summary>
-    Disgusting,
+    Disgusting = 33,
     /// <summary>Unit can flee from battle on 4th turn.</summary>
-    EvasiveBattler,
+    EvasiveBattler = 34,
     /// <summary>Breeding rate decreased by 30%.</summary>
-    SlowBreeder,
+    SlowBreeder = 35,
     /// <summary>Breeding rate increased by 75%.</summary>
-    ProlificBreeder,
+    ProlificBreeder = 36,
     /// <summary>Unit can fly through other units otherwise impassable tiles and only consumes 1 MP per tile.</summary>
-    Flight,
+    Flight = 37,
     /// <summary>Allows unit to pounce to attack or vore nearby units.</summary>
-    Pounce,
+    Pounce = 38,
     /// <summary>Unit has 50% chance to slime target for 1 turn when attacking, halving their MP.</summary>
-    BoggingSlime,
+    BoggingSlime = 39,
     /// <summary>Unit takes 25% reduced range damage and 20% reduced melee damage, but is 15% easier to vore.</summary>
-    GelatinousBody,
+    GelatinousBody = 40,
     /// <summary>Unit gains +1 melee attack, reducing the MP used by a melee attack.</summary>
-    Maul,
+    Maul = 41,
     /// <summary>When unit fails a vore attack, unit instead bites target, dealing damage equivalent to that of the basic melee weapon.</summary>
-    Biter,
+    Biter = 42,
     /// <summary>Unit cannot vore, but experience gained is increased by 15% and healing while in towns is doubled.</summary>
-    Prey,
+    Prey = 43,
     /// <summary>Unit may stun target for 1 turn when attacking. First stun is 10% chance, with lower chances the more time the unit has been stunned.</summary>
-    Paralyzer,
+    Paralyzer = 44,
     /// <summary>If at least half of an army has this trait, all non-water tiles can be traversed by the army for 1 MP.</summary>
-    Pathfinder,
+    Pathfinder = 45,
     /// <summary>Unit has 1/8 chance to summon additional units of race at start of battle.</summary>
-    AstralCall,
+    AstralCall = 46,
     /// <summary>Reduces chance to vore unit by 30%, and halves digestion damage taken by unit.</summary>
-    MetalBody,
+    MetalBody = 47,
     /// <summary>Adjacent units' stats are reduced by 8%.</summary>
-    TentacleHarassment,
+    TentacleHarassment = 48,
     /// <summary>Nullifies movement and dodge penalites from having prey.</summary>
-    BornToMove,
+    BornToMove = 49,
     /// <summary>Unit has an additional equipment slot.</summary>
-    Resourceful,
+    Resourceful = 50,
     /// <summary>Unit knocks back melee targets or deals 20% more damage if target has no room to be knocked back.</summary>
-    ForcefulBlow,
+    ForcefulBlow = 51,
     /// <summary>Halves digestion damage taken by unit, and unit is immune to first turn of digestion damage.</summary>
-    AcidResistant,
+    AcidResistant = 52,
     /// <summary>Doubles digestion damage taken by unit.</summary>
-    SoftBody,
+    SoftBody = 53,
     /// <summary>Unit has a much greater chance to evade ranged attacks. (The exact math is complicated, but should decrease hit chance by up to 50%.)</summary>
-    KeenReflexes,
+    KeenReflexes = 54,
     /// <summary>Tree tiles are treated as valid movement tiles for unit.</summary>
-    NimbleClimber,
+    NimbleClimber = 55,
     /// <summary>Unit gains +1 vore attack, reducing the MP used by a vore attack.</summary>
-    StrongGullet,
+    StrongGullet = 56,
     /// <summary>Unit deals trple melee damage and is forced to use <b>Claws</b> weapon, which has 2 base damage.</summary>
-    Feral,
+    Feral = 57,
     /// <summary>Unit has two stomachs. Oral/anal prey will become trapped in second stomach after 2 turns, escaping second stomach moves prey to first stomach and allows 7 turns to escape again before being moved back to second stomach.</summary>
-    DualStomach,
+    DualStomach = 58,
     /// <summary>Attacks against unit may fail based on attacker's and unit's will score (max 80% fail chance).</summary>
-    Dazzle,
+    Dazzle = 59,
     /// <summary>Unit gains +4 movement for the first two turns of a battle.</summary>
-    Charge,
+    Charge = 60,
     /// <summary>Allows unit to cast a random spell once per battle.</summary>
-    MadScience,
+    MadScience = 61,
     /// <summary>Halves unit's escape chance.</summary>
-    Lethargic,
+    Lethargic = 62,
     /// <summary>Allows usage of a strong attack that can vore.</summary>
-    ShunGokuSatsu,
+    ShunGokuSatsu = 63,
     /// <summary>Unit will respawn after battle if killed.</summary>
-    Eternal,
+    Eternal = 64,
     /// <summary>Unit is immune to first 20 turns of digestion damage.</summary>
-    AcidImmunity,
+    AcidImmunity = 65,
     /// <summary>When killed, unit will respawn as new unit of same race with half of the original unit's experience.</summary>
-    Replaceable,
+    Replaceable = 66,
     /// <summary>Unit will not regurgitate prey, and Regurgitate command is disabled.</summary>
-    Greedy,
+    Greedy = 67,
     /// <summary>Unit can vore units up to 4 tiles away, with lowers odds the further away the target is.</summary>
-    RangedVore,
+    RangedVore = 68,
     /// <summary>Pounces deal additional damage (max 2x) when unit has prey, as well as debuffing unit's dodge chance (max -80%).</summary>
-    HeavyPounce,
+    HeavyPounce = 69,
     /// <summary>Allows unit to eat non-surrendered allies.</summary>
-    Cruel,
+    Cruel = 70,
     /// <summary>Increases unit's scale by 50%.</summary>
-    Large,
+    Large = 71,
     /// <summary>Reduces unit's scale by 2/3.</summary>
-    Small,
+    Small = 72,
     /// <summary>Increases unit's chance to evade spells by 20%.</summary>
-    MagicResistance,
+    MagicResistance = 73,
     /// <summary>Increases unit's spell success rate by 20%.</summary>
-    MagicProwess,
+    MagicProwess = 74,
     /// <summary>Unit gains <b>Empowered</b> buff after digesting a victim.</summary>
-    MetabolicSurge,
+    MetabolicSurge = 75,
     /// <summary>Doubles prey absorption rate.</summary>
-    FastAbsorption,
+    FastAbsorption = 76,
     /// <summary>Halves prey absorption rate.</summary>
-    SlowAbsorption,
+    SlowAbsorption = 77,
     /// <summary>Prey is afflicted with <b>Prey's Curse</b>.</summary>
-    EnthrallingDepths,
+    EnthrallingDepths = 78,
     /// <summary>Debuffs nearby foes when voring a unit.</summary>
-    FearsomeAppetite,
+    FearsomeAppetite = 79,
     /// <summary>Allows a weaker, 3-tile attack.</summary>
-    TailStrike,
+    TailStrike = 80,
     /// <summary>Unit does not digest friendly units.</summary>
-    Endosoma,
+    Endosoma = 81,
     /// <summary>Halves chance for unit's prey to escape.</summary>
-    IronGut,
+    IronGut = 82,
     /// <summary>Reduces chance for unit's prey to escape by 15%.</summary>
-    SteadyStomach,
+    SteadyStomach = 83,
     /// <summary>Attacks from unit may inflict a non-stackable poison effect.</summary>
-    Stinger,
+    Stinger = 84,
     /// <summary>Unit's race suffers a permanent <b>Prey's Curse</b> effect.</summary>
-    WillingRace,
+    WillingRace = 85,
     /// <summary>Unit's bulk is increased by 75%. Does not boost stats.</summary>
-    Bulky,
+    Bulky = 86,
     /// <summary>Allows unit to use <b>Pollen Cloud</b>, a 3x3 status-inflicting attack once per battle.</summary>
-    PollenProjector,
+    PollenProjector = 87,
     /// <summary>Allows unit to use <b>Web</b>, an attack that reduces movement and stats once per battle.</summary>
-    Webber,
+    Webber = 88,
     /// <summary>Prevents unit from defecting.</summary>
-    Camaraderie,
+    Camaraderie = 89,
     /// <summary>Forces unit to always defect to its race's side.</summary>
-    RaceLoyal,
+    RaceLoyal = 144,
     /// <summary>Unit's movement is reduced by 25%, but movement penalties from prey are halved and minimum movement is raised to 2.</summary>
-    SlowMovement,
+    SlowMovement = 90,
     /// <summary>Unit's movement is reduced by 45%, but movement penalties from prey are nullified and minimum movement is raised to 2.</summary>
-    VerySlowMovement,
+    VerySlowMovement = 91,
     /// <summary>No healing is provided when absordbing this unit, and there is a 1/8 chance of being poisoned when attacking this unit.</summary>
-    Toxic,
+    Toxic = 92,
     /// <summary>Allows unit to use <b>Glue Bomb</b>, an attack that reduces movement once per battle.</summary>
-    GlueBomb,
+    GlueBomb = 93,
     /// <summary>Unit takes 25% less ranged damage.</summary>
-    HardSkin,
+    HardSkin = 94,
     /// <summary>Unit recovers health when melee attacking equivalent to 12% of damage dealt, minimum 1.</summary>
-    Vampirism,
+    Vampirism = 95,
     /// <summary>When killing another unit, this unit will recieve one of the following buffs: Valor, Mending, Fast, Shielded, or Predation.</summary>
-    TasteForBlood,
+    TasteForBlood = 96,
     /// <summary>When this unit rubs a unit's belly, the effect is doubled.</summary>
-    PleasurableTouch,
+    PleasurableTouch = 97,
     /// <summary>Doubles unit's max capacity.</summary>
-    StretchyInsides,
+    StretchyInsides = 98,
     /// <summary>Unit gains +1 ranged attack, reducing the MP used by a ranged attack.</summary>
-    QuickShooter,
+    QuickShooter = 99,
     /// <summary>Unit gains +1 spell attack, reducing the MP used by a spell attack.</summary>
-    FastCaster,
+    FastCaster = 100,
     /// <summary>Unit deals 20% less damage with ranged attacks.</summary>
-    RangedIneptitude,
+    RangedIneptitude = 101,
     /// <summary>Unit deals 20% more damage with ranged attacks.</summary>
-    KeenShot,
+    KeenShot = 102,
     /// <summary>Unit takes 25% less damage from fire attacks.</summary>
-    HotBlooded,
+    HotBlooded = 103,
     /// <summary>When levelling up, any stat can be boosted.</summary>
-    FocusedDevelopment,
+    FocusedDevelopment = 104,
     /// <summary>Unit's maximum mana is increased by 50%, and units absorbing this unit will recover mana equivalent to 40% of the digestion damage to this unit.</summary>
-    ManaRich,
+    ManaRich = 105,
     /// <summary>When absorbing prey, this unit will recover mana equivalent to 40% of the digestion damage dealt, but healing from the absorbed unit is reducued by 40%.</summary>
-    ManaDrain,
+    ManaDrain = 106,
     /// <summary>
     /// Unit deals 40% more damage with attacks, takes 25% less damage from melee and ranged attacks, and is half as likely to miss,
     ///  but unit's movement is reduced by 20% and escape chance by 75%, and unit is 2.5x easier to vore. This trait is spread to the predator when this unit is digested.
     /// </summary>
-    CursedMark,
+    CursedMark = 107,
     /// <summary>Unit is 20% harder to vore, but 60% less likely to escape.</summary>
-    Slippery,
+    Slippery = 108,
     /// <summary>Unit regenerates 2 HP per turn, but provides triple the healing when absorbed.</summary>
-    HealingBlood,
+    HealingBlood = 109,
     /// <summary>Allows unit to use <b>Poison Spit</b>, an attack deals damage and inflicts a short, strong damage-over-time effect once per battle.</summary>
-    PoisonSpit,
+    PoisonSpit = 110,
     /// <summary>Unit digests and absorbs prey 75% slower.</summary>
-    SlowMetabolism,
+    SlowMetabolism = 111,
     /// <summary>Unit has a 4/5 chance to respawn after battle if killed.</summary>
-    LuckySurvival,
+    LuckySurvival = 112,
     /// <summary>Unit deals up to 40% more damage with weapons based on how low target's health is, as well as an additional 10% per negative status effect the target has.</summary>
-    SenseWeakness,
+    SenseWeakness = 113,
     /// <summary>Unit gains a stack of Blade Dance when landing a melee attack and loses a stack when hit with a melee attck. Each stack boosts Strength by 2 and Agility by 1.</summary>
-    BladeDance,
+    BladeDance = 114,
     /// <summary>Unit gains +1 melee attack when without prey, but takes 25% more damage from attacks.</summary>
-    LightFrame,
+    LightFrame = 115,
     /// <summary>Unit gains +1 movement and 25% melee and vore dodge chance, but takes 20% more damage from melee attacks.</summary>
-    Featherweight,
+    Featherweight = 116,
     /// <summary>Unit's stats are boosted by 50%.</summary>
-    PeakCondition,
+    PeakCondition = 117,
     /// <summary>Unit's stats are boosted by 20%.</summary>
-    Fit,
+    Fit = 118,
     /// <summary>Unit's stats are lowered by 20%.</summary>
-    Illness,
+    Illness = 119,
     /// <summary>Unit's stats are lowered by 50%.</summary>
-    Diseased,
+    Diseased = 120,
     /// <summary>Unit has 1/8 chance to summon ants at start of battle.</summary>
-    AntPheromones,
+    AntPheromones = 121,
     /// <summary>Unit cannot flee or surrender.</summary>
-    Fearless,
+    Fearless = 122,
     /// <summary>Unit's movement is reduced by 15%, melee damage by 10% and melee accuracy by 30%.</summary>
-    Clumsy,
+    Clumsy = 123,
     /// <summary>Unit will respawn after battle if digested.</summary>
-    Reformer,
+    Reformer = 124,
     /// <summary>Unit will respawn after battle unless digested.</summary>
-    Reanimator,
+    Reanimator = 125,
     /// <summary>Unit's first attack will deal 5x damage, or first vore attack will have 3.25 odds each battle.</summary>
-    AllOutFirstStrike,
+    AllOutFirstStrike = 126,
     /// <summary>If a missed vore from this unit triggers a bite, the tharget will also be poisoned and inflicted with Shaken.</summary>
-    VenomousBite,
+    VenomousBite = 127,
     /// <summary>Allows unit to use <b>Petrify</b>, an attack that petrifies the target once per battle.</summary>
-    Petrifier,
+    Petrifier = 128,
     /// <summary>Unit deals 50% more melee damage and has a 50% higher chance to vore poisoned targets.</summary>
-    VenomShock,
+    VenomShock = 129,
     /// <summary>Unit will not escape predators once vored.</summary>
-    Submissive,
+    Submissive = 130,
     /// <summary>Odds to vore this unit are increased by 1000x.</summary>
-    Defenseless,
+    Defenseless = 131,
     /// <summary>Unit gains a stack of Tenacity when hit with or missing an attack and loses 5 stacks when landing an attack or voring a target. Each stack boosts Strength, Agility and Voracity by 10%.</summary>
-    Tenacious,
+    Tenacious = 132,
     /// <summary>Unit will never convert or rebirth unbirthed prey.</summary>
-    PredGusher,
+    PredGusher = 133,
     /// <summary>When unit breastfeeds, experience gain will be boosted up to 100% based on prey's level and body size.</summary>
-    Honeymaker,
+    Honeymaker = 134,
     /// <summary>When unit feeds, health gain will be boosted and AP used will be decreased.</summary>
-    WetNurse,
+    WetNurse = 135,
     /// <summary>Unit will be counted as fled if digested.</summary>
-    TheGreatEscape,
+    TheGreatEscape = 136,
     /// <summary>Unit is afflicted by <b>Berserk</b> status when fallling below half health.</summary>
-    Berserk,
+    Berserk = 137,
     /// <summary>Unit is absorbed 50% quicker.</summary>
-    HighlyAbsorbable,
+    HighlyAbsorbable = 138,
     /// <summary>Unit is absorbed 100% quicker and provides 50% more healing.</summary>
-    IdealSustenance,
+    IdealSustenance = 139,
     /// <summary>Unit recieves 50% more healing when absorbing prey.</summary>
-    EfficientGuts,
+    EfficientGuts = 140,
     /// <summary>Unit absorbs prey 50% faster, but healing recieved from absorption is halved.</summary>
-    WastefulProcessing,
+    WastefulProcessing = 141,
     /// <summary>Allows unit to use <b>Charm</b>, an attack changes a target's allegience once per battle.</summary>
-    Charmer,
+    Charmer = 143,
 
 
     //Everything after this is a cheat trait
+    /// <summary>Can emit Gas that turns foes into subservient non-combatants.</summary>
+    HypnoticGas = 290,
     /// <summary>Cheat Trait: Unit gains +10 movement and +5 attacks of any type.</summary>
     LightningSpeed = 242,
     /// <summary>Cheat Trait: Unit is digested 75% slower, is immune to first 5 turns of digestion damage, takes 25% less damage from melee and ranged attacks, gains +2 attacks of any type, +3 to all stats and +7 to 2 random stats on level up and any stat can be boosted when levelling up.</summary>
-    DivineBloodline,
+    DivineBloodline = 243,
     /// <summary>Cheat Trait: Unit gains 5x experience from vore and 5x experience from absorption.</summary>   
-    GeneEater,
+    GeneEater = 244,
     /// <summary>Cheat Trait: Unit fully digests prey by the end of the turn they are vored.</summary>   
-    InstantDigestion,
+    InstantDigestion = 245,
     /// <summary>Cheat Trait: Unit fully absorbs prey by the end of the turn they are digested.</summary>   
-    InstantAbsorption,
+    InstantAbsorption = 246,
     /// <summary>Cheat Trait: Prey cannot escape from unit.</summary>   
-    Inescapable,
+    Inescapable = 247,
     /// <summary>Cheat Trait: Unit's vore attacks have 100% success rate.</summary>   
-    Irresistable,
+    Irresistable = 248,
     /// <summary>Cheat Trait: Increases unit's scale by 3x.</summary>
-    Titanic,
+    Titanic = 249,
     /// <summary>Cheat Trait: Decreases unit's scale by 1/3.</summary>
-    Tiny,
+    Tiny = 250,
     /// <summary>Cheat Trait: Heals 10% of friendly prey's HP each turn.</summary>
-    HealingBelly,
+    HealingBelly = 251,
     /// <summary>Cheat Trait: Unit gains random trait from prey upon absorption. When this occurs, unit loses this trait unless unit had less than 5 traits beforehand.</summary>
-    Assimilate,
+    Assimilate = 252,
     /// <summary>Cheat Trait: Unit gains random trait from prey upon absorption. If unit has already gained 3 traits this way, the new trait replace the oldest trait.</summary>
-    AdaptiveBiology,
+    AdaptiveBiology = 253,
     /// <summary>Cheat Trait: Increases unit's scale by 3x.</summary>
-    Huge,
+    Huge = 254,
     /// <summary>Cheat Trait: Increases unit's scale by 2.5x.</summary>
-    Colossal,
+    Colossal = 255,
     /// <summary>Cheat Trait: Doubles experience gained by unit.</summary>
-    AdaptiveTactics,
+    AdaptiveTactics = 256,
     /// <summary>Cheat Trait: Unit gains +1 to all stats for every 4 non-vore kills.</summary>
-    KillerKnowledge,
+    KillerKnowledge = 257,
     /// <summary>Cheat Trait: Unit gains random trait from prey upon absorption.</summary>
-    InfiniteAssimilation,
+    InfiniteAssimilation = 258,
     /// <summary>Cheat Trait: Unit grants random trait from prey to unit's race upon absorption.</summary>
-    SynchronizedEvolution,
+    SynchronizedEvolution = 276,
     /// <summary>Cheat Trait: Unit has 50% chance to convert digested prey to its side.</summary>
-    DigestionConversion,
+    DigestionConversion = 259,
     /// <summary>Cheat Trait: Unit has 50% chance to rebirth digested prey to its race and side.</summary>
-    DigestionRebirth,
+    DigestionRebirth = 260,
     /// <summary>Cheat Trait: Unit gains +1 to all stats for every 4 digestions.</summary>
-    EssenceAbsorption,
+    EssenceAbsorption = 261,
     /// <summary>Cheat Trait: Increases unit's max capacity by 1000x.</summary>
-    UnlimitedCapacity,
+    UnlimitedCapacity = 262,
     /// <summary>Cheat Trait: Unit is unable to be vored.</summary>
-    Inedible,
+    Inedible = 263,
     /// <summary>Unit will always convert unbirthed prey.</summary>
-    PredConverter,
+    PredConverter = 264,
     /// <summary>Unit will always rebirth unbirthed prey.</summary>
-    PredRebirther,
+    PredRebirther = 265,
     /// <summary>When this unit rubs the belly of a foe that has not been attacked in the last turn, there is a chance for that foe to be stunned or switch sides.</summary>
-    SeductiveTouch,
+    SeductiveTouch = 266,
 
     // Growth-related section
     /// <summary>Unit increases in size when absorbing prey.</summary>
-	Growth,
+	Growth = 267,
     /// <summary>Unit's absorption growth is 50% faster.</summary>
-    IncreasedGrowth,
+    IncreasedGrowth = 268,
     /// <summary>Unit's absorption growth is 2x faster.</summary>
-    DoubleGrowth,
+    DoubleGrowth = 269,
     /// <summary>Unit's absorption growth decays 50% slower.</summary>
-    PersistentGrowth,
+    PersistentGrowth = 270,
     /// <summary>Unit's absorption growth does not decay.</summary>
-    PermanentGrowth,
+    PermanentGrowth = 271,
     /// <summary>Unit's absorption growth is 50% slower.</summary>
-    MinorGrowth,
+    MinorGrowth = 272,
     /// <summary>Unit's absorption growth is 20% slower.</summary>
-    SlowedGrowth,
+    SlowedGrowth = 273,
     /// <summary>Unit's absorption growth decays 2x as fast.</summary>
-    FleetingGrowth,
+    FleetingGrowth = 274,
     /// <summary>Doubles healing provided when absorbing unit and increases growth provided by 50%.</summary>
-    ProteinRich,
+    ProteinRich = 275,
 }

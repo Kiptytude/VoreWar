@@ -45,5 +45,7 @@ public enum StatusEffectType
     Berserk,
     /// <summary>Forces affected unit to be controlled by AI and act as the caster's side.</summary>
     Charmed,
+    /// <summary>Affected units are unable to do anything but servicing the caster's side, who can also swallow them as easily as surrendered units</summary>
+    Hypnotized,
 }
 

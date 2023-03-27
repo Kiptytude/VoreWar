@@ -310,7 +310,12 @@ public class Actor_Unit
         {
             unit.SingleUseSpells.Add(SpellList.Charm.SpellType);
             unit.UpdateSpells();
-    }
+        }
+        if (unit.HasTrait(Traits.HypnoticGas) && State.World?.ItemRepository != null) //protection for the create strat screen
+        {
+            unit.SingleUseSpells.Add(SpellList.HypnoGas.SpellType);
+            unit.UpdateSpells();
+        }
     }
 
     public void GenerateSpritePrefab(Transform folder)
@@ -1390,6 +1395,10 @@ public class Actor_Unit
 
     internal bool DefendStatusSpell(StatusSpell spell, Actor_Unit attacker)
     {
+        if (spell.Id == "hypno-fart" && Unit.FixedSide == attacker.Unit.FixedSide)
+        {
+            return false;
+        }
         if (DefendSpellCheck(spell, attacker, out float chance))
         {
             State.GameManager.TacticalMode.Log.RegisterSpellHit(attacker.Unit, Unit, spell.SpellType, 0, chance);
@@ -1397,6 +1406,10 @@ public class Actor_Unit
             if (spell.Id == "charm")
             {
                 UnitSprite.DisplayCharm();
+            }
+            if (spell.Id == "hypno-fart")
+            {
+                UnitSprite.DisplayHypno();
             }
             if (spell.Alraune)
             {
@@ -1462,7 +1475,7 @@ public class Actor_Unit
             return 0;
         }
 
-        if (Surrendered || (attacker.Unit.HasTrait(Traits.Endosoma) && attacker.Unit.Side == Unit.Side))
+        if (Surrendered || (attacker.Unit.HasTrait(Traits.Endosoma) && attacker.Unit.Side == Unit.Side) || Unit.GetStatusEffect(StatusEffectType.Hypnotized)?.Strength == attacker.Unit.FixedSide)
             return 1f;
 
         float predVoracity = Mathf.Pow(15 + skillBoost + attacker.Unit.GetStat(Stat.Voracity), 1.5f);
@@ -1569,7 +1582,7 @@ public class Actor_Unit
             return false;
         if (target.ReceivedRub)
             return false;
-        if (target.Unit.Side != Unit.Side && !(Unit.HasTrait(Traits.SeductiveTouch) || Config.CanUseStomachRubOnEnemies))
+        if (target.Unit.Side != Unit.Side && !(Unit.HasTrait(Traits.SeductiveTouch) || Config.CanUseStomachRubOnEnemies || TacticalUtilities.GetMindControlSide(Unit) != -1))
             return false;
         target.ReceivedRub = true;
         int index = Random.Range(0, possible.Count - 1);

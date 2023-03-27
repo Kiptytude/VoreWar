@@ -109,6 +109,13 @@ public class UnitSprite : MonoBehaviour
         FinishDisplayedTextSetup();
     }
 
+    public void DisplayHypno()
+    {
+        DamageIndicator.faceColor = Color.green;
+        DamageIndicator.text = "Hypnotized!";
+        FinishDisplayedTextSetup();
+    }
+
     public void DisplayDazzle()
     {
         DamageIndicator.faceColor = Color.red;
@@ -159,9 +166,9 @@ public class UnitSprite : MonoBehaviour
             }
             else
             {
-                DamageIndicator.faceColor = Color.red;
-                DamageIndicator.text = $"-{damage}";
-            }
+            DamageIndicator.faceColor = Color.red;
+            DamageIndicator.text = $"-{damage}";
+        }
         }
         else if (damage < 0)
         {
@@ -384,8 +391,4 @@ public class UnitSprite : MonoBehaviour
         HealthBar.gameObject.SetActive(false);
         CompleteSprite.ApplyDeadEffect();
     }
-
-
-
-
 }

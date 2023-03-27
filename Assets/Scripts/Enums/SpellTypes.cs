@@ -40,6 +40,7 @@ public enum SpellTypes
     GlueBomb = 72,
     ViperPoison = 73,
     Petrify = 74,
+    HypnoGas = 75,
 
     ViperDamage = 110,
 

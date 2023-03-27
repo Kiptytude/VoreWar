@@ -247,7 +247,7 @@ static class TacticalUtilities
             return false;
         if (pred.Unit.Side == prey.Unit.Side)
         {
-            if (prey.Surrendered || pred.Unit.HasTrait(Traits.Cruel) || Config.AllowInfighting || pred.Unit.HasTrait(Traits.Endosoma) || TreatAsHostile(pred, prey))
+            if (prey.Surrendered || pred.Unit.HasTrait(Traits.Cruel) || Config.AllowInfighting || pred.Unit.HasTrait(Traits.Endosoma) || TreatAsHostile(pred, prey) || prey.Unit.GetStatusEffect(StatusEffectType.Hypnotized)?.Strength == pred.Unit.FixedSide)
                 return true;
             return false;
         }
@@ -436,6 +436,8 @@ static class TacticalUtilities
 
     static public int GetMindControlSide(Unit unit)
     {
+        if (unit.GetStatusEffect(StatusEffectType.Hypnotized) != null)
+            return (int)(unit.GetStatusEffect(StatusEffectType.Hypnotized).Strength);
         if (unit.GetStatusEffect(StatusEffectType.Charmed) != null)
             return (int)(unit.GetStatusEffect(StatusEffectType.Charmed).Strength);
         return -1;

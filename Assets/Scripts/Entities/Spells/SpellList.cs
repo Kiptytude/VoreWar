@@ -63,6 +63,7 @@ static class SpellList
     static internal readonly StatusSpell Web;
     static internal readonly StatusSpell GlueBomb;
     static internal readonly StatusSpell Petrify;
+    static internal readonly StatusSpell HypnoGas;
 
     static internal readonly DamageSpell ViperPoisonDamage;
     static internal readonly StatusSpell ViperPoisonStatus;
@@ -680,6 +681,55 @@ static class SpellList
 
         };
         SpellDict[SpellTypes.Petrify] = Petrify;
+
+        HypnoGas = new StatusSpell()
+        {
+            Name = "Hypnotic Gas",
+            Id = "hypno-fart",
+            SpellType = SpellTypes.HypnoGas,
+            Description = "Applies Hypnotized in a 4x4 area centered on the caster",
+            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Tile, AbilityTargets.Enemy },
+            Range = new Range(1),
+            Duration = (a, t) => 5,
+            Effect = (a, t) => a.Unit.hiddenFixedSide ? a.Unit.Side : a.Unit.FixedSide,
+            AreaOfEffect = 1,
+            Type = StatusEffectType.Hypnotized,
+            Tier = 0,
+            Resistable = true,
+            ResistanceMult = 0.5f,
+            OnExecute = (a, t) =>
+            {
+                a.CastStatusSpell(HypnoGas, t);
+                if(Config.FartOnAbsorb)
+                {
+                    a.SetPredMode(PreyLocation.anal);
+                    State.GameManager.SoundManager.PlayFart(a);
+                }
+                else if (Config.BurpFraction > 0)
+                {
+                    a.SetPredMode(PreyLocation.stomach);
+                    State.GameManager.SoundManager.PlayBurp(a);
+                }
+                TacticalGraphicalEffects.CreateGasCloud(t.Position);
+            },
+            OnExecuteTile = (a, loc) =>
+            {
+                a.CastStatusSpell(HypnoGas, null, loc);
+                if (Config.FartOnAbsorb)
+                {
+                    a.SetPredMode(PreyLocation.anal);
+                    State.GameManager.SoundManager.PlayFart(a);
+                }
+                else if (Config.BurpFraction > 0)
+                {
+                    a.SetPredMode(PreyLocation.stomach);
+                    State.GameManager.SoundManager.PlayBurp(a);
+                }
+                TacticalGraphicalEffects.CreateGasCloud(loc);
+            }
+
+        };
+        SpellDict[SpellTypes.HypnoGas] = HypnoGas;
 
     }
 

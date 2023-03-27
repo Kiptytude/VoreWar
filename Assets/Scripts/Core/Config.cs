@@ -324,7 +324,7 @@ static class Config
     public static float BurpFraction => World.BurpFraction;
     public static float FartFraction => World.FartFraction;
     internal static bool BurpOnDigest => World.GetValue("BurpOnDigest");
-    internal static bool FartOnAbsorb => World.GetValue("FartOnAbsorb");
+    public static bool FartOnAbsorb => World.GetValue("FartOnAbsorb");
 
     internal static bool WinterActive()
     {

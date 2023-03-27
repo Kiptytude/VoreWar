@@ -8,7 +8,6 @@ using TacticalDecorations;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Tilemaps;
-using static UnityEngine.UI.CanvasScaler;
 
 public class TacticalMode : SceneBase
 {
@@ -848,7 +847,7 @@ Turns: {currentTurn}
         Type desiredAIType;
         if (nextUnit != null)
         {
-            desiredAIType = RaceAIType.Dict[State.RaceSettings.GetRaceAI(nextUnit.Unit.Race)];
+            desiredAIType = TacticalUtilities.GetMindControlSide(nextUnit.Unit) != -1 ? GetAITypeForMindControledUnit(nextUnit.Unit) : RaceAIType.Dict[State.RaceSettings.GetRaceAI(nextUnit.Unit.Race)];
         }
         else
             desiredAIType = typeof(StandardTacticalAI);
@@ -2505,7 +2504,7 @@ Turns: {currentTurn}
             {
                 Type desiredAIType;
                 if (foreignUnits.Count() > 0)
-                    desiredAIType = TacticalUtilities.GetMindControlSide(foreignUnits[0].Unit) != -1 ? typeof(HedonistTacticalAI) : RaceAIType.Dict[State.RaceSettings.GetRaceAI(foreignUnits[0].Unit.Race)];
+                    desiredAIType = TacticalUtilities.GetMindControlSide(foreignUnits[0].Unit) != -1 ? GetAITypeForMindControledUnit(foreignUnits[0].Unit) : RaceAIType.Dict[State.RaceSettings.GetRaceAI(foreignUnits[0].Unit.Race)];
                 else
                     desiredAIType = typeof(StandardTacticalAI);
                 if (foreignAI == null || (foreignAI.GetType() != desiredAIType))
@@ -2585,8 +2584,14 @@ Turns: {currentTurn}
 
     }
 
-
-
+    public Type GetAITypeForMindControledUnit(Unit unit)
+    {
+        if (unit.GetStatusEffect(StatusEffectType.Hypnotized) != null)
+            return typeof(NonCombatantTacticalAI);
+        if (unit.GetStatusEffect(StatusEffectType.Charmed) != null)
+            return typeof(HedonistTacticalAI);
+        return typeof(HedonistTacticalAI);
+    }
 
     void AI(float dt)
     {
