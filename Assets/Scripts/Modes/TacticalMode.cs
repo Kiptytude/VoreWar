@@ -158,7 +158,12 @@ public class TacticalMode : SceneBase
     int activeSide;
 
     public bool AIAttacker;
+
+    public bool CheatAttackerControl;
+
     public bool AIDefender;
+
+    public bool CheatDefenderControl;
 
     internal string AttackerName = null;
     internal string DefenderName = null;
@@ -769,8 +774,16 @@ public class TacticalMode : SceneBase
         return summonedUnits;
     }
 
-    internal void DisableAttackerAI() => AIAttacker = false;
-    internal void DisableDefenderAI() => AIDefender = false;
+    internal void DisableAttackerAI()
+    {
+        AIAttacker = false;
+        CheatAttackerControl = true;
+    }
+    internal void DisableDefenderAI()
+    {
+        AIDefender = false;
+        CheatDefenderControl = true;
+    }
 
     internal void ClearNames()
     {
@@ -842,7 +855,7 @@ Turns: {currentTurn}
         Type desiredAIType;
         if (nextUnit != null)
         {
-            desiredAIType = RaceAIType.Dict[State.RaceSettings.GetRaceAI(nextUnit.Unit.Race)];
+            desiredAIType = TacticalUtilities.GetMindControlSide(nextUnit.Unit) != -1 ? GetAITypeForMindControledUnit(nextUnit.Unit) : RaceAIType.Dict[State.RaceSettings.GetRaceAI(nextUnit.Unit.Race)];
         }
         else
             desiredAIType = typeof(StandardTacticalAI);
@@ -1010,8 +1023,8 @@ Turns: {currentTurn}
         ActionMode = 0;
         string attackerController = AIAttacker == false ? "Player(Atk)" : "AI(Atk)";
         string defenderController = AIDefender == false ? "Player(Def)" : "AI(Def)";
-        StatusUI.AttackerText.text = $"{AttackerName} - ({attackerController})";
-        StatusUI.DefenderText.text = $"{DefenderName} - ({defenderController})";
+        StatusUI.AttackerText.text = $"{AttackerName} - {attackerController}";
+        StatusUI.DefenderText.text = $"{DefenderName} - {defenderController}";
 
         if (attackersTurn)
         {
@@ -2503,7 +2516,7 @@ Turns: {currentTurn}
             {
                 Type desiredAIType;
                 if (foreignUnits.Count() > 0)
-                    desiredAIType = foreignUnits[0].Unit.GetStatusEffect(StatusEffectType.Charmed) != null ? typeof(HedonistTacticalAI) : RaceAIType.Dict[State.RaceSettings.GetRaceAI(foreignUnits[0].Unit.Race)];
+                    desiredAIType = TacticalUtilities.GetMindControlSide(foreignUnits[0].Unit) != -1 ? GetAITypeForMindControledUnit(foreignUnits[0].Unit) : RaceAIType.Dict[State.RaceSettings.GetRaceAI(foreignUnits[0].Unit.Race)];
                 else
                     desiredAIType = typeof(StandardTacticalAI);
                 if (foreignAI == null || (foreignAI.GetType() != desiredAIType))
@@ -2583,8 +2596,14 @@ Turns: {currentTurn}
 
     }
 
-
-
+    public Type GetAITypeForMindControledUnit(Unit unit)
+    {
+        if (unit.GetStatusEffect(StatusEffectType.Hypnotized) != null)
+            return typeof(NonCombatantTacticalAI);
+        if (unit.GetStatusEffect(StatusEffectType.Charmed) != null)
+            return typeof(HedonistTacticalAI);
+        return typeof(HedonistTacticalAI);
+    }
 
     void AI(float dt)
     {
@@ -3101,7 +3120,7 @@ Turns: {currentTurn}
     private bool unitControllableBySide(Actor_Unit unit, int side)
     {
         bool correctSide = unit.Unit.Side == side;
-        bool controlOverridden = unit.Unit.GetStatusEffect(StatusEffectType.Charmed) != null || unit.Unit.FixedSide != side;
+        bool controlOverridden = TacticalUtilities.GetMindControlSide(unit.Unit) != -1 || unit.Unit.FixedSide != side;
         return correctSide && !controlOverridden;
     }
 

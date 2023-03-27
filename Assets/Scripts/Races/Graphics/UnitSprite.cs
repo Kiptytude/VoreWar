@@ -109,6 +109,13 @@ public class UnitSprite : MonoBehaviour
         FinishDisplayedTextSetup();
     }
 
+    public void DisplayHypno()
+    {
+        DamageIndicator.faceColor = Color.green;
+        DamageIndicator.text = "Hypnotized!";
+        FinishDisplayedTextSetup();
+    }
+
     public void DisplayDazzle()
     {
         DamageIndicator.faceColor = Color.red;
@@ -144,7 +151,7 @@ public class UnitSprite : MonoBehaviour
         FinishDisplayedTextSetup();
     }
 
-    public void DisplayDamage(int damage, bool spellDamage = false)
+    public void DisplayDamage(int damage, bool spellDamage = false, bool expGain = false)
     {
         if (State.GameManager.TacticalMode.turboMode)
             return;
@@ -152,8 +159,16 @@ public class UnitSprite : MonoBehaviour
             return;
         if (damage > 0)
         {
+            if (expGain)
+            {
+                DamageIndicator.faceColor = Color.yellow;
+                DamageIndicator.text = $"+{damage}";
+            }
+            else
+            {
             DamageIndicator.faceColor = Color.red;
             DamageIndicator.text = $"-{damage}";
+        }
         }
         else if (damage < 0)
         {
@@ -406,8 +421,4 @@ public class UnitSprite : MonoBehaviour
         HealthBar.gameObject.SetActive(false);
         CompleteSprite.ApplyDeadEffect();
     }
-
-
-
-
 }

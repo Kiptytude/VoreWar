@@ -217,12 +217,17 @@ static class TacticalUtilities
     }
     internal static bool IsUnitControlledByPlayer(Unit unit)
     {
-        if (unit.GetStatusEffect(StatusEffectType.Charmed) != null)  // Charmed units may fight for the player, but they are always AI controlled
+        if (GetMindControlSide(unit) != -1)  // Charmed units may fight for the player, but they are always AI controlled
             return false;
         int defenderSide = State.GameManager.TacticalMode.GetDefenderSide();
         int attackerSide = State.GameManager.TacticalMode.GetAttackerSide();
         bool aiDefender = State.GameManager.TacticalMode.AIDefender;
         bool aiAttacker = State.GameManager.TacticalMode.AIAttacker;
+        if (State.GameManager.TacticalMode.CheatAttackerControl && unit.Side == attackerSide)
+            return true;
+        if (State.GameManager.TacticalMode.CheatDefenderControl && unit.Side == defenderSide)
+            return true;
+        
         if (State.GameManager.PureTactical)
         {
             return !aiAttacker && attackerSide == unit.FixedSide || !aiDefender && defenderSide == unit.FixedSide;
@@ -238,7 +243,7 @@ static class TacticalUtilities
             return false;
         if (pred.Unit.Side == prey.Unit.Side)
         {
-            if (prey.Surrendered || pred.Unit.HasTrait(Traits.Cruel) || Config.AllowInfighting || pred.Unit.HasTrait(Traits.Endosoma) || TreatAsHostile(pred, prey))
+            if (prey.Surrendered || pred.Unit.HasTrait(Traits.Cruel) || Config.AllowInfighting || pred.Unit.HasTrait(Traits.Endosoma) || TreatAsHostile(pred, prey) || prey.Unit.GetStatusEffect(StatusEffectType.Hypnotized)?.Strength == pred.Unit.FixedSide)
                 return true;
             return false;
         }
@@ -247,9 +252,7 @@ static class TacticalUtilities
 
     static public int GetPreferredSide(Actor_Unit actor, int sideA, int sideB)
     {
-        int effectiveActorSide = actor.Unit.FixedSide;
-        if (actor.Unit.GetStatusEffect(StatusEffectType.Charmed) != null)
-            effectiveActorSide = (int)actor.Unit.GetStatusEffect(StatusEffectType.Charmed).Strength;
+        int effectiveActorSide = GetMindControlSide(actor.Unit) != -1 ? GetMindControlSide(actor.Unit) : actor.Unit.FixedSide;
         if (State.GameManager.PureTactical)
         {
             return effectiveActorSide;
@@ -315,10 +318,8 @@ static class TacticalUtilities
         int defenderSide = State.GameManager.TacticalMode.GetDefenderSide();
         int opponentSide = friendlySide == defenderSide ? State.GameManager.TacticalMode.GetAttackerSide() : defenderSide;
         int effectiveTargetSide = (target.Unit.hiddenFixedSide && target.Unit.FixedSide != actor.Unit.FixedSide) ? target.Unit.Side : target.Unit.FixedSide;
-        int effectiveActorSide = actor.Unit.FixedSide;
-        if (actor.Unit.GetStatusEffect(StatusEffectType.Charmed) != null)
-            effectiveActorSide = (int)actor.Unit.GetStatusEffect(StatusEffectType.Charmed).Strength;
-        if (target.Unit.GetStatusEffect(StatusEffectType.Charmed) != null && effectiveActorSide == (int)target.Unit.GetStatusEffect(StatusEffectType.Charmed)?.Strength)
+        int effectiveActorSide = GetMindControlSide(actor.Unit) != -1 ? GetMindControlSide(actor.Unit) : actor.Unit.FixedSide;
+        if (GetMindControlSide(target.Unit) == effectiveActorSide)
             return false;
         if (State.GameManager.PureTactical)
         {
@@ -427,6 +428,15 @@ static class TacticalUtilities
 
         }
         return targetSideHostilityP >= targetSideHostilityUP;
+    }
+
+    static public int GetMindControlSide(Unit unit)
+    {
+        if (unit.GetStatusEffect(StatusEffectType.Hypnotized) != null)
+            return (int)(unit.GetStatusEffect(StatusEffectType.Hypnotized).Strength);
+        if (unit.GetStatusEffect(StatusEffectType.Charmed) != null)
+            return (int)(unit.GetStatusEffect(StatusEffectType.Charmed).Strength);
+        return -1;
     }
 
     static public bool OpenTile(Vec2i vec, Actor_Unit actor) => OpenTile(vec.x, vec.y, actor);

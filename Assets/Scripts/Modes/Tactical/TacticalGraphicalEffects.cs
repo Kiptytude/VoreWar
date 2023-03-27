@@ -209,6 +209,15 @@ static class TacticalGraphicalEffects
 
     }
 
+    internal static void CreateGasCloud(Vec2i location)
+    {
+        if (State.GameManager.TacticalMode.turboMode)
+            return;
+        var prefab = State.GameManager.TacticalEffectPrefabList.GasCloud;   
+        Object.Instantiate(prefab, new Vector3(location.x, location.y, 0), new Quaternion());
+
+    }
+
     internal static void CreateGlueBomb(Vec2i startLocation, Vec2i endLocation)
     {
         if (State.GameManager.TacticalMode.turboMode)

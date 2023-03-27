@@ -310,6 +310,11 @@ public class Actor_Unit
             unit.SingleUseSpells.Add(SpellList.Charm.SpellType);
             unit.UpdateSpells();
         }
+        if (unit.HasTrait(Traits.HypnoticGas) && State.World?.ItemRepository != null) //protection for the create strat screen
+        {
+            unit.SingleUseSpells.Add(SpellList.HypnoGas.SpellType);
+            unit.UpdateSpells();
+        }
     }
 
     public void GenerateSpritePrefab(Transform folder)
@@ -1170,6 +1175,14 @@ public class Actor_Unit
                     TacticalGraphicalEffects.CreateProjectile(this, target);
                     State.GameManager.TacticalMode.TacticalStats.RegisterHit(BestRanged, Mathf.Min(damage, remainingHealth), Unit.Side);
                     TacticalUtilities.Log.RegisterHit(Unit, target.Unit, weapon, damage, chance);
+                    if (Unit.FixedSide == TacticalUtilities.GetMindControlSide(target.Unit))
+                    {
+                        StatusEffect charm = target.Unit.GetStatusEffect(StatusEffectType.Charmed);
+                        if (charm != null)
+                        {
+                            target.Unit.StatusEffects.Remove(charm);                // betrayal dispels charm
+                        }
+                    }
                     Unit.GiveScaledExp(2 * target.Unit.ExpMultiplier, Unit.Level - target.Unit.Level);
                     if (target.Unit.IsDead)
                     {
@@ -1230,6 +1243,14 @@ public class Actor_Unit
                     State.GameManager.SoundManager.PlayMeleeHit(target);
                     State.GameManager.TacticalMode.TacticalStats.RegisterHit(BestMelee, Mathf.Min(damage, remainingHealth), Unit.Side);
                     TacticalUtilities.Log.RegisterHit(Unit, target.Unit, weapon, damage, chance);
+                    if (Unit.FixedSide == TacticalUtilities.GetMindControlSide(target.Unit))
+                    {
+                        StatusEffect charm = target.Unit.GetStatusEffect(StatusEffectType.Charmed);
+                        if (charm != null)
+                        {
+                            target.Unit.StatusEffects.Remove(charm);                // betrayal dispels charm
+                        }
+                    }
                     CreateHitEffects(target);
                     Unit.GiveScaledExp(2 * target.Unit.ExpMultiplier, Unit.Level - target.Unit.Level);
                     if (target.Unit.IsDead)
@@ -1350,6 +1371,14 @@ public class Actor_Unit
             State.GameManager.TacticalMode.TacticalStats.RegisterHit(spell, Mathf.Min(damage, Unit.Health), attacker.Unit.Side);
             Damage(damage, true);
             State.GameManager.TacticalMode.Log.RegisterSpellHit(attacker.Unit, Unit, spell.SpellType, damage, chance);
+            if (attacker.Unit.FixedSide == TacticalUtilities.GetMindControlSide(Unit))
+            {
+                StatusEffect charm = Unit.GetStatusEffect(StatusEffectType.Charmed);
+                if (charm != null)
+                {
+                    Unit.StatusEffects.Remove(charm);                // betrayal dispels charm
+                }
+            }
             attacker.Unit.GiveScaledExp(1 * Unit.ExpMultiplier, Unit.Level - Unit.Level);
             if (Unit.IsDead)
             {
@@ -1369,6 +1398,10 @@ public class Actor_Unit
 
     internal bool DefendStatusSpell(StatusSpell spell, Actor_Unit attacker)
     {
+        if (spell.Id == "hypno-fart" && Unit.FixedSide == attacker.Unit.FixedSide)
+        {
+            return false;
+        }
         if (attacker.Unit.Side == (Unit.hiddenFixedSide ? Unit.Side : Unit.FixedSide) && !spell.Resistable) // Replace when there is an unresistable negative status
         {
             attacker.Unit.hiddenFixedSide = false;
@@ -1380,6 +1413,10 @@ public class Actor_Unit
             if (spell.Id == "charm")
             {
                 UnitSprite.DisplayCharm();
+            }
+            if (spell.Id == "hypno-fart")
+            {
+                UnitSprite.DisplayHypno();
             }
             if (spell.Alraune)
             {
@@ -1448,7 +1485,7 @@ public class Actor_Unit
             return 0;
         }
 
-        if (Surrendered || (attacker.Unit.HasTrait(Traits.Endosoma) && !TacticalUtilities.TreatAsHostile(attacker, this)))
+        if (Surrendered || (attacker.Unit.HasTrait(Traits.Endosoma) && !TacticalUtilities.TreatAsHostile(attacker, this) || Unit.GetStatusEffect(StatusEffectType.Hypnotized)?.Strength == attacker.Unit.FixedSide)
             return 1f;
 
         float predVoracity = Mathf.Pow(15 + skillBoost + attacker.Unit.GetStat(Stat.Voracity), 1.5f);
@@ -1546,12 +1583,16 @@ public class Actor_Unit
         {
             possible.Add(2);
         }
+        if (target.PredatorComponent.TailFullness > 0)
+        {
+            possible.Add(3);
+        }
 
         if (possible.Count == 0)
             return false;
         if (target.ReceivedRub)
             return false;
-        if (target.Unit.Side != Unit.Side && !(Unit.HasTrait(Traits.SeductiveTouch) || Config.CanUseStomachRubOnEnemies))
+        if (target.Unit.Side != Unit.Side && !(Unit.HasTrait(Traits.SeductiveTouch) || Config.CanUseStomachRubOnEnemies || TacticalUtilities.GetMindControlSide(Unit) != -1))
             return false;
         target.ReceivedRub = true;
         int index = Random.Range(0, possible.Count - 1);
@@ -1572,6 +1613,11 @@ public class Actor_Unit
                 prey = target.PredatorComponent.GetDirectPrey().FirstOrDefault(p => p.Location.Equals(PreyLocation.balls));
                 if (prey == null) break;
                 TacticalUtilities.Log.RegisterBallMassage(Unit, target.Unit, prey.Unit, 1f);
+                break;
+            case 3:
+                prey = target.PredatorComponent.GetDirectPrey().FirstOrDefault(p => p.Location.Equals(PreyLocation.tail));
+                if (prey == null) break;
+                TacticalUtilities.Log.RegisterTailRub(Unit, target.Unit, prey.Unit, 1f);
                 break;
             default:
                 break;

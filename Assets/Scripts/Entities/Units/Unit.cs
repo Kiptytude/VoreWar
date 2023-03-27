@@ -1883,6 +1883,7 @@ public class Unit
         if (HasEffect(StatusEffectType.Webbed)) ret++;
         if (HasEffect(StatusEffectType.WillingPrey)) ret++;
         if (HasEffect(StatusEffectType.Charmed)) ret++;
+        if (HasEffect(StatusEffectType.Hypnotized)) ret++;
 
         bool HasEffect(StatusEffectType type)
         {

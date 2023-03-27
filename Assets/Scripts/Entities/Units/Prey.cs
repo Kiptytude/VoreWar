@@ -1,9 +1,5 @@
 ﻿using OdinSerializer;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 class Prey
@@ -46,7 +42,7 @@ class Prey
 
     public void UpdateEscapeRate()
     {
-        if (Actor.Surrendered || (Predator.Unit.HasTrait(Traits.Endosoma) && !TacticalUtilities.TreatAsHostile(Predator, Actor)))
+        if (Actor.Surrendered || (Predator.Unit.HasTrait(Traits.Endosoma) && !TacticalUtilities.TreatAsHostile(Predator, Actor) || Unit.GetStatusEffect(StatusEffectType.Hypnotized)?.Strength == Predator.Unit.FixedSide)
         {
             EscapeRate = 0;
             return;

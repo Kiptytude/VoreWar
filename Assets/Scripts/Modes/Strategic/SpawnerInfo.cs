@@ -50,7 +50,7 @@ class SpawnerInfo
         Team = team;
         SpawnAttempts = spawnAttempts;
         AddOnRace = addOnRace;
-        Confidence = confidence;
+        Confidence = confidence == 0 ? 6 : confidence;
         MinArmySize = minArmySize;
         MaxArmySize = maxArmySize;
         TurnOrder = turnOrder;
