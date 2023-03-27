@@ -347,6 +347,10 @@ public enum Traits
     PredRebirther = 265,
     /// <summary>When this unit rubs the belly of a foe that has not been attacked in the last turn, there is a chance for that foe to be stunned or switch sides.</summary>
     SeductiveTouch = 266,
+    /// <summary>No matter which army this unit is in, it only has true allegiance to itself.</summary>
+    Untamable = 291,
+    /// <summary></summary>
+    Turned = 292,
 
     // Growth-related section
     /// <summary>Unit increases in size when absorbing prey.</summary>

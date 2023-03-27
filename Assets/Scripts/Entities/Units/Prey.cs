@@ -42,7 +42,7 @@ class Prey
 
     public void UpdateEscapeRate()
     {
-        if (Actor.Surrendered || (Predator.Unit.HasTrait(Traits.Endosoma) && !TacticalUtilities.TreatAsHostile(Predator, Actor) || Unit.GetStatusEffect(StatusEffectType.Hypnotized)?.Strength == Predator.Unit.FixedSide)
+        if (Actor.Surrendered || (Predator.Unit.HasTrait(Traits.Endosoma) && !TacticalUtilities.TreatAsHostile(Predator, Actor) || Unit.GetStatusEffect(StatusEffectType.Hypnotized)?.Strength == Predator.Unit.FixedSide))
         {
             EscapeRate = 0;
             return;

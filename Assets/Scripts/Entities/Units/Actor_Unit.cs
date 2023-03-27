@@ -1485,7 +1485,7 @@ public class Actor_Unit
             return 0;
         }
 
-        if (Surrendered || (attacker.Unit.HasTrait(Traits.Endosoma) && !TacticalUtilities.TreatAsHostile(attacker, this) || Unit.GetStatusEffect(StatusEffectType.Hypnotized)?.Strength == attacker.Unit.FixedSide)
+        if (Surrendered || (attacker.Unit.HasTrait(Traits.Endosoma) && !TacticalUtilities.TreatAsHostile(attacker, this) || Unit.GetStatusEffect(StatusEffectType.Hypnotized)?.Strength == attacker.Unit.FixedSide))
             return 1f;
 
         float predVoracity = Mathf.Pow(15 + skillBoost + attacker.Unit.GetStat(Stat.Voracity), 1.5f);
