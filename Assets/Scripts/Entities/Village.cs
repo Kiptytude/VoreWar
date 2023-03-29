@@ -1305,7 +1305,7 @@ public class Village
             canVore = false;
         int extraCost = 0;
         int exp = GetStartingXp() + (int)(highestExp * .3f) + State.Rand.Next(10);
-        merc.Unit = new Unit(0, race, exp, canVore, UnitType.Adventurer, true);
+        merc.Unit = new Unit((int)race, race, exp, canVore, UnitType.Adventurer, true);
         if (race < Race.Vagrants && merc.Unit.FixedGear == false)
         {
             if (merc.Unit.Items[0] == null)
@@ -1345,7 +1345,7 @@ public class Village
 
         int extraCost = 0;
         int exp = (int)(highestExp * .8f) + State.Rand.Next(10);
-        merc.Unit = new Unit(0, race, exp, true, UnitType.Mercenary, true);
+        merc.Unit = new Unit((int)race, race, exp, true, UnitType.Mercenary, true);
         if (race < Race.Vagrants && merc.Unit.FixedGear == false)
         {
             if (merc.Unit.Items[0] == null)

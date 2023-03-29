@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.SocialPlatforms;
 using UnityScript.Macros;
 
 public class Actor_Unit
@@ -691,7 +692,7 @@ public class Actor_Unit
        return (float)attackStat / (attackStat + (defenseStat * (1 + shift)));
     }
 
-    internal float GetMagicChance(Actor_Unit attacker, Spell currentSpell)
+    internal float GetMagicChance(Actor_Unit attacker, Spell currentSpell, float modifier = 0)
     {
         int attackStat = attacker.Unit.GetStat(Stat.Mind);
         int defenseStat = Unit.GetStat(Stat.Will);
@@ -700,7 +701,7 @@ public class Actor_Unit
             defenseStat = (int)(defenseStat * currentSpell.ResistanceMult);
         }
 
-        float shift = Unit.TraitBoosts.Incoming.MagicShift + attacker.Unit.TraitBoosts.Outgoing.MagicShift;
+        float shift = Unit.TraitBoosts.Incoming.MagicShift + attacker.Unit.TraitBoosts.Outgoing.MagicShift + modifier;
         return (float)attackStat / (attackStat + (defenseStat * (1 + shift)));
     }
 
@@ -743,7 +744,7 @@ public class Actor_Unit
     //}
 
 
-    public float GetAttackChance(Actor_Unit attacker, bool ranged, bool includeSecondaries = false)
+    public float GetAttackChance(Actor_Unit attacker, bool ranged, bool includeSecondaries = false, float mod = 0)
     {
         int attack;
         if (ranged)
@@ -782,9 +783,9 @@ public class Actor_Unit
             defenderBonusShift += .05f * (range - 2);
 
         if (ranged)
-            defenderBonusShift += Unit.TraitBoosts.Incoming.RangedShift + attacker.Unit.TraitBoosts.Outgoing.RangedShift;
+            defenderBonusShift += Unit.TraitBoosts.Incoming.RangedShift + attacker.Unit.TraitBoosts.Outgoing.RangedShift + mod;
         else
-            defenderBonusShift += Unit.TraitBoosts.Incoming.MeleeShift + attacker.Unit.TraitBoosts.Outgoing.MeleeShift;
+            defenderBonusShift += Unit.TraitBoosts.Incoming.MeleeShift + attacker.Unit.TraitBoosts.Outgoing.MeleeShift + mod;
 
         if (Unit.HasTrait(Traits.AllOutFirstStrike))
         {
@@ -1348,13 +1349,12 @@ public class Actor_Unit
         }
     }
 
-    internal bool DefendSpellCheck(Spell spell, Actor_Unit attacker, out float chance)
+    internal bool DefendSpellCheck(Spell spell, Actor_Unit attacker, out float chance, float mod = 0)
     {
         State.GameManager.TacticalMode.AITimer = Config.TacticalAttackDelay;
         if (State.GameManager.CurrentScene == State.GameManager.TacticalMode && State.GameManager.TacticalMode.IsPlayerInControl == false && State.GameManager.TacticalMode.turboMode == false)
             State.GameManager.CameraCall(Position);
-        chance = spell.Resistable ? GetMagicChance(attacker, spell) : 1;
-
+        chance = spell.Resistable ? GetMagicChance(attacker, spell, mod) : 1;
         float r = (float)State.Rand.NextDouble();
         return r < chance;
 
@@ -1362,13 +1362,17 @@ public class Actor_Unit
 
     internal bool DefendDamageSpell(DamageSpell spell, Actor_Unit attacker, int damage)
     {
-        if (attacker.Unit.Side == (Unit.hiddenFixedSide ? Unit.Side : Unit.FixedSide))
+        bool sneakAttack = false;
+        if (attacker.Unit.Side == Unit.GetApparentSide())
         {
             attacker.Unit.hiddenFixedSide = false;
+            sneakAttack = true;
+            damage *= 3;
+            State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<color = purple>{attacker.Unit.Name} sneak-attacked {Unit.Name}!");
         }
         if (Unit.IsDead)
             return false;
-        if (DefendSpellCheck(spell, attacker, out float chance))
+        if (DefendSpellCheck(spell, attacker, out float chance, sneakAttack ? -0.3f : 0f))
         {
             damage = (int)(damage * attacker.Unit.TraitBoosts.Outgoing.MagicDamage * Unit.TraitBoosts.Incoming.MagicDamage);
             if (spell.DamageType == DamageTypes.Fire)
@@ -1409,11 +1413,14 @@ public class Actor_Unit
         {
             return false;
         }
-        if (attacker.Unit.Side == (Unit.hiddenFixedSide ? Unit.Side : Unit.FixedSide) && !spell.Resistable) // Replace when there is an unresistable negative status
+        bool sneakAttack = false;
+        if (attacker.Unit.Side == Unit.GetApparentSide() && !spell.Resistable) // Replace when there is an unresistable negative status
         {
             attacker.Unit.hiddenFixedSide = false;
+            sneakAttack = true;
+            State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<color = purple>{attacker.Unit.Name} sneak-attacked {Unit.Name}!");
         }
-        if (DefendSpellCheck(spell, attacker, out float chance))
+        if (DefendSpellCheck(spell, attacker, out float chance, sneakAttack ? -0.3f : 0f))
         {
             State.GameManager.TacticalMode.Log.RegisterSpellHit(attacker.Unit, Unit, spell.SpellType, 0, chance);
             Unit.ApplyStatusEffect(spell.Type, spell.Effect(attacker, this), spell.Duration(attacker, this));
@@ -1459,14 +1466,18 @@ public class Actor_Unit
 
     public bool Defend(Actor_Unit attacker, int damage, bool ranged, out float chance, bool canKill = true)
     {
-        if (attacker.Unit.Side == (Unit.hiddenFixedSide ? Unit.Side : Unit.FixedSide))       
+        bool sneakAttack = false;
+        if (attacker.Unit.Side == Unit.GetApparentSide())       
         {
             attacker.Unit.hiddenFixedSide = false;
+            sneakAttack = true;
+            State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<color = purple>{attacker.Unit.Name} sneak-attacked {Unit.Name}!");
+            damage *= 3;
         }
         State.GameManager.TacticalMode.AITimer = Config.TacticalAttackDelay;
         if (State.GameManager.CurrentScene == State.GameManager.TacticalMode && State.GameManager.TacticalMode.IsPlayerInControl == false && State.GameManager.TacticalMode.turboMode == false)
             State.GameManager.CameraCall(Position);
-        chance = GetAttackChance(attacker, ranged);
+        chance = GetAttackChance(attacker, ranged, mod: sneakAttack ? -2f : 0f);
 
         float r = (float)State.Rand.NextDouble();
         if (r < chance)

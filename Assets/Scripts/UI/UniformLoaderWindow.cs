@@ -94,7 +94,7 @@ public class UniformLoaderWindow : MonoBehaviour
                 rejectMessage = "Only for Males";
             else
                 rejectMessage = "Unspecified Error";
-            tempUnit = new Unit(0, uniformData.Race, 0, false, uniformData.Type);           
+            tempUnit = new Unit((int)uniformData.Race, uniformData.Race, 0, false, uniformData.Type);           
             uniformData.CopyToUnit(tempUnit);
             Actor_Unit actor = new Actor_Unit(new Vec2i(0, 0), tempUnit);
             sprite.UpdateSprites(actor);

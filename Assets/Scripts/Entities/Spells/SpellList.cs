@@ -385,7 +385,7 @@ static class SpellList
             AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy },
             Range = new Range(6),
             Duration = (a, t) => 2 + a.Unit.GetStat(Stat.Mind) / 10,
-            Effect = (a, t) => a.Unit.hiddenFixedSide ? a.Unit.Side : a.Unit.FixedSide,         // the unit will act to the best of its knowledge
+            Effect = (a, t) => a.Unit.GetApparentSide(t.Unit),         // the unit will act to the best of its knowledge
             Type = StatusEffectType.Charmed,
             Tier = 3,
             Resistable = true,
@@ -693,7 +693,7 @@ static class SpellList
             AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Tile, AbilityTargets.Enemy },
             Range = new Range(1),
             Duration = (a, t) => 5,
-            Effect = (a, t) => a.Unit.hiddenFixedSide ? a.Unit.Side : a.Unit.FixedSide,
+            Effect = (a, t) => a.Unit.GetApparentSide(t.Unit),
             AreaOfEffect = 1,
             Type = StatusEffectType.Hypnotized,
             Tier = 0,

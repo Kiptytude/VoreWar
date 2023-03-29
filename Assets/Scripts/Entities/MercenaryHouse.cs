@@ -98,7 +98,7 @@ public class MercenaryHouse
 
 
         int exp = (int)(highestExp * .8f) + State.Rand.Next(10);
-        merc.Unit = new Unit(0, race, exp, true, UnitType.Mercenary, true);
+        merc.Unit = new Unit((int)race, race, exp, true, UnitType.Mercenary, true);
         if (race < Race.Vagrants && merc.Unit.FixedGear == false)
         {
             if (merc.Unit.Items[0] == null)
@@ -158,7 +158,7 @@ public class MercenaryHouse
         MercenaryContainer merc = new MercenaryContainer();
 
         int exp = (int)(highestExp * .8f);
-        merc.Unit = new Unit(0, race, exp, true, UnitType.SpecialMercenary, true)
+        merc.Unit = new Unit((int)race, race, exp, true, UnitType.SpecialMercenary, true)
         {
             FixedGear = true
         };

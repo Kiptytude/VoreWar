@@ -463,6 +463,8 @@ public class Unit
         ReloadTraits();
         raceData.RandomCustom(this);
         InitializeTraits();
+        RefreshSecrecy();
+        InitializeFixedSide(side);
 
         if (HasTrait(Traits.Resourceful))
         {
@@ -1062,6 +1064,22 @@ public class Unit
         PhysicalDefenseOdds = new List<IPhysicalDefenseOdds>();
 
         RecalculateStatBoosts();
+    }
+
+    internal void RefreshSecrecy()
+    {
+        if (HasTrait(Traits.Disguiser))
+            hiddenFixedSide = true;       
+    }
+    internal void InitializeFixedSide(int side)
+    {
+        if (_fixedSide > -1) return;
+        if(HasTrait(Traits.Untamable) || HasTrait(Traits.Disguiser))
+        {
+            FixedSide = side;
+            return;
+        }
+        FixedSide = -1;
     }
 
     public bool HasTrait(Traits tag)
@@ -1905,6 +1923,13 @@ public class Unit
             return GetStatusEffect(type) != null;
         }
         return ret;
+    }
+
+    public int GetApparentSide(Unit viewer = null)
+    {
+        if (viewer?.FixedSide == FixedSide)
+            return FixedSide;
+        return hiddenFixedSide ? Side : FixedSide;
     }
 
     internal void AddBladeDance()

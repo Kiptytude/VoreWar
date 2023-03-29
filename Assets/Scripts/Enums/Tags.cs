@@ -292,6 +292,12 @@ public enum Traits
     Charmer = 143,
     /// <summary>Allows unit to attempt force-feeding itself to another unit at will.</summary>
     ForceFeeder = 145,
+    /// <summary>No matter which army this unit is in, it is no secret that it will act for the good of its original side when it comes down to it.</summary>
+    Untamable = 146,
+
+    //Hidden Traits
+    /// <summary>When an Army consists only of units with this trait, it moves undetected and can infiltrate the enemy. In battle, the disguiser can retreat on the opponent's side to do the same</summary>
+    Disguiser = 200,
 
 
     //Everything after this is a cheat trait
@@ -349,10 +355,6 @@ public enum Traits
     PredRebirther = 265,
     /// <summary>When this unit rubs the belly of a foe that has not been attacked in the last turn, there is a chance for that foe to be stunned or switch sides.</summary>
     SeductiveTouch = 266,
-    /// <summary>No matter which army this unit is in, it only has true allegiance to itself.</summary>
-    Untamable = 291,
-    /// <summary></summary>
-    Turned = 292,
 
     // Growth-related section
     /// <summary>Unit increases in size when absorbing prey.</summary>

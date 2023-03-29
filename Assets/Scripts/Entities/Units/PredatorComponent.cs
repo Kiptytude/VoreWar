@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.Experimental.UIElements.GraphView;
 using UnityEngine;
 
 public enum PreyLocation
@@ -1047,13 +1048,13 @@ public class PredatorComponent
                 unit.AddPermanentTrait(Traits.CursedMark);
                 preyUnit.Unit.RemoveTrait(Traits.CursedMark);
             }
-            if (preyUnit.Unit.HasTrait(Traits.Turned))
-            {
-                unit.AddPermanentTrait(Traits.Turned);
-                unit.FixedSide = preyUnit.Unit.FixedSide;
-                unit.hiddenFixedSide = true;
-                preyUnit.Unit.RemoveTrait(Traits.Turned);
-            }
+            //if (preyUnit.Unit.HasTrait(Traits.Turned))
+            //{
+            //    unit.AddPermanentTrait(Traits.Turned);
+            //    unit.FixedSide = preyUnit.Unit.FixedSide;
+            //    unit.hiddenFixedSide = true;
+            //    preyUnit.Unit.RemoveTrait(Traits.Turned);
+            //}
             unit.DigestedUnits++;
             if (unit.HasTrait(Traits.EssenceAbsorption) && unit.DigestedUnits % 4 == 0)
                 unit.GeneralStatIncrease(1);
@@ -2018,12 +2019,19 @@ public class PredatorComponent
 
     internal bool MagicConsume(Spell spell, Actor_Unit target)
     {
+        bool sneakAttack = false;
+        if (actor.Unit.Side == target.Unit.GetApparentSide() && !actor.Unit.HasTrait(Traits.Endosoma))
+        { 
+                actor.Unit.hiddenFixedSide = false;
+                sneakAttack = true;
+                State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<color = purple>{actor.Unit.Name} sneak-attacked {target.Unit.Name}!");
+        }
         State.GameManager.TacticalMode.AITimer = Config.TacticalVoreDelay;
         if (State.GameManager.CurrentScene == State.GameManager.TacticalMode && State.GameManager.TacticalMode.IsPlayerInControl == false && State.GameManager.TacticalMode.turboMode == false)
             State.GameManager.CameraCall(target.Position);
         if (target.Unit == unit)
             return false;
-        if (target.DefendSpellCheck(spell, actor, out float chance) == false)
+        if (target.DefendSpellCheck(spell, actor, out float chance, mod: sneakAttack ? -0.3f : 0f) == false)
         {
             State.GameManager.TacticalMode.Log.RegisterSpellMiss(unit, target.Unit, spell.SpellType, chance);
             return false;
@@ -2033,7 +2041,7 @@ public class PredatorComponent
         {
             //actor.SetPredMode(preyType);
             float r = (float)State.Rand.NextDouble();
-            float v = target.GetDevourChance(actor, skillBoost: actor.Unit.GetStat(Stat.Mind));
+            float v = target.GetDevourChance(actor, skillBoost: actor.Unit.GetStat(Stat.Mind) + (sneakAttack ? 3 : 0));
             if (r < v)
             {
                 if (target.Unit.IsDead == false)
@@ -2099,7 +2107,6 @@ public class PredatorComponent
         if (target.Unit == unit)
             return false;
 
-
         if (target.Bulk() <= FreeCap())
         {
             bool bit = false;
@@ -2116,9 +2123,11 @@ public class PredatorComponent
                 }
             }
             actor.SetPredMode(preyType);
-            if (actor.Unit.Side == (target.Unit.hiddenFixedSide ? target.Unit.Side : target.Unit.FixedSide) && !actor.Unit.HasTrait(Traits.Endosoma))
+            if (actor.Unit.Side == target.Unit.GetApparentSide() && !actor.Unit.HasTrait(Traits.Endosoma))
             {
                 actor.Unit.hiddenFixedSide = false;
+                boost += 3;
+                State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<color = purple>{actor.Unit.Name} sneak-attacked {target.Unit.Name}!");
             }
             float r = (float)State.Rand.NextDouble();
             float v = target.GetDevourChance(actor, skillBoost: boost);
@@ -2217,7 +2226,7 @@ public class PredatorComponent
 
     void MagicDevour(Actor_Unit target, float v, Prey preyref)
     {
-        if (actor.Unit.Side == (target.Unit.hiddenFixedSide ? target.Unit.Side : target.Unit.FixedSide) && !actor.Unit.HasTrait(Traits.Endosoma))
+        if (actor.Unit.Side == target.Unit.GetApparentSide() && !actor.Unit.HasTrait(Traits.Endosoma))
         {
             actor.Unit.hiddenFixedSide = false;
         }
