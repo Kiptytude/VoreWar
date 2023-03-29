@@ -290,10 +290,12 @@ public enum Traits
     WastefulProcessing = 141,
     /// <summary>Allows unit to use <b>Charm</b>, an attack changes a target's allegience once per battle.</summary>
     Charmer = 143,
+    /// <summary>Allows unit to attempt force-feeding itself to another unit at will.</summary>
+    ForceFeeder = 145,
 
 
     //Everything after this is a cheat trait
-    /// <summary>Can emit Gas that turns foes into subservient non-combatants.</summary>
+    /// <summary>Can emit Gas that turns foes into subservient non-combatants once per battle.</summary>
     HypnoticGas = 290,
     /// <summary>Cheat Trait: Unit gains +10 movement and +5 attacks of any type.</summary>
     LightningSpeed = 242,

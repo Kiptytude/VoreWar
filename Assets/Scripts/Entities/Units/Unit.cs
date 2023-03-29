@@ -256,6 +256,9 @@ public class Unit
     [OdinSerialize]
     internal List<SpellTypes> SingleUseSpells = new List<SpellTypes>();
 
+    [OdinSerialize]
+    internal List<SpellTypes> MultiUseSpells = new List<SpellTypes>();  // This is so much more straightforward than adding Special Actions
+
     internal List<Spell> UseableSpells
     {
         get
@@ -1808,6 +1811,18 @@ public class Unit
         if (SingleUseSpells?.Any() ?? false)
         {
             foreach (var spellType in SingleUseSpells)
+            {
+                if (SpellList.SpellDict.TryGetValue(spellType, out Spell spell))
+                {
+                    UseableSpells.Add(spell);
+                }
+            }
+
+        }
+
+        if (MultiUseSpells?.Any() ?? false)
+        {
+            foreach (var spellType in MultiUseSpells)
             {
                 if (SpellList.SpellDict.TryGetValue(spellType, out Spell spell))
                 {

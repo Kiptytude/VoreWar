@@ -64,11 +64,13 @@ static class SpellList
     static internal readonly StatusSpell GlueBomb;
     static internal readonly StatusSpell Petrify;
     static internal readonly StatusSpell HypnoGas;
+    static internal readonly Spell ForceFeed;
 
     static internal readonly DamageSpell ViperPoisonDamage;
     static internal readonly StatusSpell ViperPoisonStatus;
 
     static internal Dictionary<SpellTypes, Spell> SpellDict;
+
 
     static SpellList()
     {
@@ -687,7 +689,7 @@ static class SpellList
             Name = "Hypnotic Gas",
             Id = "hypno-fart",
             SpellType = SpellTypes.HypnoGas,
-            Description = "Applies Hypnotized in a 4x4 area centered on the caster",
+            Description = "Applies Hypnotized in a 4x4 area centered on the caster. Hypnotized units become noncombatants that serve the caster's side.",
             AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Tile, AbilityTargets.Enemy },
             Range = new Range(1),
             Duration = (a, t) => 5,
@@ -730,6 +732,36 @@ static class SpellList
 
         };
         SpellDict[SpellTypes.HypnoGas] = HypnoGas;
+
+        ForceFeed = new Spell()
+        {
+            Name = "Force Feed",
+            Id = "force-feed",
+            SpellType = SpellTypes.ForceFeed,
+            Description = "",
+            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy, AbilityTargets.Ally },
+            Range = new Range(1),
+            Tier = 0,
+            Resistable = true,
+            OnExecute = (a, t) =>
+            {
+                if (a != t && a.CastSpell(ForceFeed, null))
+                {
+                    float r = (float)State.Rand.NextDouble();
+                    if (r < t.GetPureStatClashChance(a.Unit.GetStat(Stat.Dexterity), t.Unit.GetStat(Stat.Endurance), .1f))
+                    {
+                        State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"{a.Unit.Name} forces {LogUtilities.GPPHimself(a.Unit)} down {LogUtilities.ApostrophizeWithOrWithoutS(t.Unit.Name)} gullet.");
+                        t.PredatorComponent.ForceConsume(a);
+                    }
+                    else
+                    {
+                        State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"{t.Unit.Name} blocks {LogUtilities.ApostrophizeWithOrWithoutS(a.Unit.Name)} force feeding attempt.");
+                    }
+                }
+               
+            },
+        };
+        SpellDict[SpellTypes.ForceFeed] = ForceFeed;
 
     }
 

@@ -516,6 +516,8 @@ public class HoveringTooltip : MonoBehaviour
                 return "Allows the casting of the Charm spell once per battle";
             case Traits.HypnoticGas:
                 return "Can emit Gas that turns foes into subservient non-combatants.";
+            case Traits.ForceFeeder:
+                return "Allows unit to attempt force-feeding itself to another unit at will.";
         }
         return "<b>This trait needs a tooltip!</b>";
     }

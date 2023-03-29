@@ -43,6 +43,6 @@ public enum SpellTypes
     HypnoGas = 75,
 
     ViperDamage = 110,
-
+    ForceFeed = 111,
 }
 

@@ -275,6 +275,7 @@ public class Actor_Unit
         Targetable = true;
         RestoreMP();
         unit.SingleUseSpells = new List<SpellTypes>();
+        unit.MultiUseSpells = new List<SpellTypes>();
         if (unit.HasTrait(Traits.MadScience) && State.World?.ItemRepository != null) //protection for the create strat screen
         {
             unit.SingleUseSpells.Add(((SpellBook)State.World.ItemRepository.GetRandomBook(1, 4)).ContainedSpell);
@@ -313,6 +314,12 @@ public class Actor_Unit
         if (unit.HasTrait(Traits.HypnoticGas) && State.World?.ItemRepository != null) //protection for the create strat screen
         {
             unit.SingleUseSpells.Add(SpellList.HypnoGas.SpellType);
+            unit.UpdateSpells();
+        }
+        // Multi-use section
+        if (unit.HasTrait(Traits.ForceFeeder) && State.World?.ItemRepository != null) //protection for the create strat screen
+        {
+            unit.MultiUseSpells.Add(SpellList.ForceFeed.SpellType);
             unit.UpdateSpells();
         }
     }

@@ -3079,6 +3079,25 @@ public class PredatorComponent
         }
     }
 
+    internal void ForceConsume(Actor_Unit target)
+    {
+        if (target.Unit.IsDead == false)
+            AlivePrey++;
+        State.GameManager.TacticalMode.TacticalStats.RegisterVore(unit.Side);
 
+        if (target.Unit.Side == unit.Side)
+            State.GameManager.TacticalMode.TacticalStats.RegisterAllyVore(unit.Side);
+        target.Visible = false;
+        target.Targetable = false;
+        State.GameManager.TacticalMode.DirtyPack = true;
+        if (TacticalUtilities.TreatAsHostile(actor, target) || !unit.HasTrait(Traits.Endosoma))
+        {
+            unit.GiveScaledExp(4 * target.Unit.ExpMultiplier, unit.Level - target.Unit.Level, true);
+        }
+        target.Movement = 0;
+        Prey preyref = new Prey(target, actor, target.PredatorComponent?.prey);
+        prey.Add(preyref);
+        UpdateFullness();
+    }
 }
 
