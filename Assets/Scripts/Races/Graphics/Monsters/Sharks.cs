@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -84,7 +80,7 @@ class Sharks : BlankSlate
 
     protected override Sprite HeadSprite(Actor_Unit actor)
     {
-        if (actor.Unit.Level> 15)
+        if (actor.Unit.Level > 15)
             return State.GameManager.SpriteDictionary.Shark[29];
         else
             return null;

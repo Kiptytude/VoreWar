@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
 
 public struct Range
 {
@@ -427,7 +424,7 @@ static class SpellList
                     {
                         unit.ApplyStatusEffect(StatusEffectType.Charmed, actorCharm.Strength, actorCharm.Duration);
                     }
-                        
+
                     StrategicUtilities.SpendLevelUps(unit);
                     State.GameManager.TacticalMode.AddUnitToBattle(unit, loc);
                 }
@@ -538,11 +535,11 @@ static class SpellList
             Damage = (a, t) => 5 + a.Unit.GetStat(Stat.Mind) / 10,
             OnExecute = (a, t) =>
             {
-                
+
             },
             OnExecuteTile = (a, l) =>
             {
-              
+
             },
         };
         SpellDict[SpellTypes.ViperDamage] = ViperPoisonDamage;
@@ -678,7 +675,7 @@ static class SpellList
             ResistanceMult = .9f,
             OnExecute = (a, t) =>
             {
-                a.CastStatusSpell(Petrify, t);                
+                a.CastStatusSpell(Petrify, t);
             },
 
         };
@@ -702,7 +699,7 @@ static class SpellList
             OnExecute = (a, t) =>
             {
                 a.CastStatusSpell(HypnoGas, t);
-                if(Config.FartOnAbsorb)
+                if (Config.FartOnAbsorb)
                 {
                     a.SetPredMode(PreyLocation.anal);
                     State.GameManager.SoundManager.PlayFart(a);
@@ -739,7 +736,7 @@ static class SpellList
             Id = "force-feed",
             SpellType = SpellTypes.ForceFeed,
             Description = "",
-            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy, AbilityTargets.Ally },
+            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy },
             Range = new Range(1),
             Tier = 0,
             Resistable = true,
@@ -751,6 +748,7 @@ static class SpellList
                     if (r < t.GetPureStatClashChance(a.Unit.GetStat(Stat.Dexterity), t.Unit.GetStat(Stat.Endurance), .1f))
                     {
                         State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"{a.Unit.Name} forces {LogUtilities.GPPHimself(a.Unit)} down {LogUtilities.ApostrophizeWithOrWithoutS(t.Unit.Name)} gullet.");
+                        a.Movement = 0;
                         t.PredatorComponent.ForceConsume(a);
                     }
                     else
@@ -758,7 +756,7 @@ static class SpellList
                         State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"{t.Unit.Name} blocks {LogUtilities.ApostrophizeWithOrWithoutS(a.Unit.Name)} force feeding attempt.");
                     }
                 }
-               
+
             },
         };
         SpellDict[SpellTypes.ForceFeed] = ForceFeed;

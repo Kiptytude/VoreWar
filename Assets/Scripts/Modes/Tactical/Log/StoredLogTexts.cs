@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static TacticalMessageLog;
 using static LogUtilities;
+using static TacticalMessageLog;
 
 static class StoredLogTexts
 {
@@ -2249,7 +2247,7 @@ static class StoredLogTexts
             new EventString((i) => $"<b>{i.Target.Name}</b> deliriously beckons <b>{i.Unit.Name}</b> and begins playing with {GPPHis(i.Unit)} penis before feasting on {GPPHis(i.Unit)} {PreyLocStrings.ToFluid(PreyLocation.balls)}.",priority: 10, conditional: s => ReqTargetCompatibleLewd(s)),
             new EventString((i) => $"<b>{i.Unit.Name}</b> unloads {GPPHis(i.Unit)} {PreyLocStrings.ToFluid(PreyLocation.balls)} into <b>{ApostrophizeWithOrWithoutS(i.Target.Name)}</b> mouth.",priority: 8),
         };
-       
+
         GreatEscapeKeepMessages = new List<EventString>()
         {
             new EventString((i) => $"<b>{i.Unit.Name}</b> jiggles their {PreyLocStrings.ToSyn(i.preyLocation)} with <b>{i.Target.Name}</b> stashed inside. \"What are you waiting for in there?\" - {GPPHe(i.Unit)} asks, annoyed.",priority:25, conditional: HasGreatEscape),

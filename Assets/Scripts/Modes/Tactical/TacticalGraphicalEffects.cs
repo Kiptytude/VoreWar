@@ -1,9 +1,4 @@
-﻿
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 
 static class TacticalGraphicalEffects
 {
@@ -123,7 +118,7 @@ static class TacticalGraphicalEffects
         else if (actor.Unit.Race == Race.SpitterSlugs)
             return State.GameManager.SpriteDictionary.SpitterSlug[10];
         else if (actor.Unit.Race == Race.Bats)
-            return State.GameManager.SpriteDictionary.Demibats1[132];       
+            return State.GameManager.SpriteDictionary.Demibats1[132];
         else if (actor.Unit.Race == Race.Panthers)
         {
             if (weapon.Graphic == 4)
@@ -137,7 +132,7 @@ static class TacticalGraphicalEffects
                 return State.GameManager.SpriteDictionary.Bees1[89];
             else if (weapon.Graphic == 6)
                 return State.GameManager.SpriteDictionary.Bees1[89];
-        } 
+        }
         else if (actor.Unit.Race == Race.Merfolk && weapon.Graphic == 4 || weapon.Graphic == 6)
             return State.GameManager.SpriteDictionary.Slimes[17];
         else if (actor.Unit.Race == Race.Vipers)
@@ -213,7 +208,7 @@ static class TacticalGraphicalEffects
     {
         if (State.GameManager.TacticalMode.turboMode)
             return;
-        var prefab = State.GameManager.TacticalEffectPrefabList.GasCloud;   
+        var prefab = State.GameManager.TacticalEffectPrefabList.GasCloud;
         Object.Instantiate(prefab, new Vector3(location.x, location.y, 0), new Quaternion());
 
     }

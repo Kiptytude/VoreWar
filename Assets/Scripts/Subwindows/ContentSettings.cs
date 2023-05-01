@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 public class ContentSettings : MonoBehaviour
 {
@@ -27,7 +25,7 @@ public class ContentSettings : MonoBehaviour
     public Slider FurryFraction;
     public Toggle FriendlyRegurgitation;
 
-    public Slider FogDistance; 
+    public Slider FogDistance;
 
     public Toggle HairMatchesFur;
     public Toggle MaleHairForFemales;
@@ -715,7 +713,7 @@ public class ContentSettings : MonoBehaviour
         WeightLossFractionDick.value = Config.WeightLossFractionDick;
         GrowthMod.text = Config.GrowthMod.ToString();
         GrowthCap.text = Config.GrowthCap.ToString();
-        GrowthDecayOffset.text = Config.GrowthDecayOffset.ToString();   
+        GrowthDecayOffset.text = Config.GrowthDecayOffset.ToString();
         GrowthDecayIncreaseRate.text = Config.GrowthDecayIncreaseRate.ToString();
         FurryFraction.value = Config.FurryFraction;
         TacticalWaterValue.value = Config.TacticalWaterValue;
@@ -882,7 +880,7 @@ public class ContentSettings : MonoBehaviour
                         }
                     }
                 }
-               
+
             }
         }
         foreach (ToggleObject toggle in Toggles)

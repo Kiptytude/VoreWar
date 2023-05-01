@@ -1,10 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 class Raptor : BlankSlate
 {
-    RaceFrameList frameListTail = new RaceFrameList(new int[24] { 0, 4, 5, 6, 5, 4, 0, 3, 2, 1, 2, 3, 0, 4, 5, 6, 5, 4, 0, 3, 2, 1, 2, 3}, new float[24] { 0.8f, 0.5f, 0.5f, 0.8f, 0.5f, 0.5f, 0.8f, 0.5f, 0.5f, 0.8f, 0.5f, 0.5f, 0.8f, 0.5f, 0.5f, 0.8f, 0.5f, 0.5f, 0.8f, 0.5f, 0.5f, 0.8f, 0.5f, 0.5f });
+    RaceFrameList frameListTail = new RaceFrameList(new int[24] { 0, 4, 5, 6, 5, 4, 0, 3, 2, 1, 2, 3, 0, 4, 5, 6, 5, 4, 0, 3, 2, 1, 2, 3 }, new float[24] { 0.8f, 0.5f, 0.5f, 0.8f, 0.5f, 0.5f, 0.8f, 0.5f, 0.5f, 0.8f, 0.5f, 0.5f, 0.8f, 0.5f, 0.5f, 0.8f, 0.5f, 0.5f, 0.8f, 0.5f, 0.5f, 0.8f, 0.5f, 0.5f });
 
     public Raptor()
     {
@@ -12,7 +11,7 @@ class Raptor : BlankSlate
         CanBeGender = new List<Gender>() { Gender.Male };
         SkinColors = ColorMap.LizardColorCount;
         ExtraColors1 = ColorMap.LizardColorCount;
-        Body = new SpriteExtraInfo(8, BodySprite, (s) => ColorMap.GetLizardColor(s.Unit.SkinColor)); 
+        Body = new SpriteExtraInfo(8, BodySprite, (s) => ColorMap.GetLizardColor(s.Unit.SkinColor));
         Belly = new SpriteExtraInfo(7, null, (s) => ColorMap.GetLizardColor(s.Unit.SkinColor));
         BodyAccent = new SpriteExtraInfo(3, BodyAccentSprite, (s) => ColorMap.GetLizardColor(s.Unit.SkinColor)); // Legs
         BodyAccent2 = new SpriteExtraInfo(10, BodyAccentSprite2, (s) => ColorMap.GetLizardColor(s.Unit.ExtraColor1)); // Body Stripes

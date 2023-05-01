@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 class Crypters : DefaultRaceData
@@ -38,7 +34,7 @@ class Crypters : DefaultRaceData
         BackWeapon = null;
         BodySize = new SpriteExtraInfo(6, BodySizeSprite, WhiteColored);
         Breasts = null;
-        
+
         Dick = null;
         Balls = null;
 
@@ -50,9 +46,9 @@ class Crypters : DefaultRaceData
         AvoidedMouthTypes = 0;
         AvoidedEyeTypes = 0;
 
-        
 
-       
+
+
     }
 
     internal override void RandomCustom(Unit unit)

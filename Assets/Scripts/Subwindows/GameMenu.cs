@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
-using System.Text;
 using UnityEngine.UI;
 
 public class GameMenu : MonoBehaviour
@@ -113,7 +111,7 @@ public class GameMenu : MonoBehaviour
             else
                 CloseMenu();
         }
-     
+
     }
 
     public void MainMenu()
@@ -122,7 +120,7 @@ public class GameMenu : MonoBehaviour
         {
             State.GameManager.StrategyMode.ClearData();
         }
-        State.GameManager.SwitchToMainMenu();        
+        State.GameManager.SwitchToMainMenu();
         CloseMenu();
     }
 

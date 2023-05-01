@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-enum Neighbor
+﻿enum Neighbor
 {
     North,
     NorthEast,
@@ -232,12 +226,12 @@ class StrategicTileLogic
             {
                 temptiles[x, y] = originalTiles[x, y];
                 tiles[x, y] = originalTiles[x, y];
-                underTiles[x, y] = (StrategicTileType) 99;
+                underTiles[x, y] = (StrategicTileType)99;
             }
         }
         newtiles = new StrategicTileType[tiles.GetLength(0), tiles.GetLength(1)];
         overTiles = new StrategicTileType[tiles.GetLength(0), tiles.GetLength(1)];
-       
+
         for (int x = 0; x < tiles.GetLength(0); x++)
         {
             for (int y = 0; y < tiles.GetLength(1); y++)
@@ -263,7 +257,7 @@ class StrategicTileLogic
 
 
                     continue;
-                }               
+                }
 
             }
         }
@@ -273,7 +267,7 @@ class StrategicTileLogic
         {
             for (int y = 0; y < tiles.GetLength(1); y++)
             {
-                if (overTiles[x,y] != 0)
+                if (overTiles[x, y] != 0)
                 {
                     underTiles[x, y] = tiles[x, y];
                     int type = DetermineType(new Vec2(x, y), tiles[x, y]);
@@ -284,13 +278,13 @@ class StrategicTileLogic
                 else if (Config.HardLava)
                 {
                     if (tiles[x, y] == StrategicTileType.lava)
-                        overTiles[x, y] = StrategicTileType.lava;                    
+                        overTiles[x, y] = StrategicTileType.lava;
                     if (tiles[x, y] == StrategicTileType.volcanic)
                         overTiles[x, y] = StrategicTileType.volcanic;
 
                 }
                 switch (tiles[x, y])
-                {                 
+                {
                     case StrategicTileType.ice:
                         {
                             int type = DetermineType(new Vec2(x, y), StrategicTileType.ice);
@@ -333,7 +327,7 @@ class StrategicTileLogic
     {
         Wanted yes;
         Wanted no;
-        if (inverted)           
+        if (inverted)
         {
             yes = Wanted.No;
             no = Wanted.Yes;
@@ -343,7 +337,7 @@ class StrategicTileLogic
             yes = Wanted.Yes;
             no = Wanted.No;
         }
-       
+
 
         Wanted any = Wanted.DontCare;
         if (AreaCheck(pos, type, new DirectionalInfo(no, any, yes, yes, yes, any, no, any))) return 0;

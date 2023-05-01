@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 class Demibats : DefaultRaceData
@@ -138,7 +135,7 @@ class Demibats : DefaultRaceData
         }
 
         unit.BodyAccentType1 = 0;
-        
+
         if (Config.WinterActive())
         {
             if (State.Rand.Next(2) == 0)
@@ -224,10 +221,10 @@ class Demibats : DefaultRaceData
     {
         if (actor.Unit.BodyAccentType1 == 3 || (!actor.Unit.Furry && (actor.Unit.ClothingType == 3 || actor.Unit.ClothingType == 8 || actor.Unit.ClothingType == 9 || (actor.Unit.ClothingType == 12 && !actor.Unit.HasBreasts))))
             return null;
-        return Sprites[101 + actor.Unit.BodyAccentType1 + (actor.Unit.Furry ? 3 : 0)];;
+        return Sprites[101 + actor.Unit.BodyAccentType1 + (actor.Unit.Furry ? 3 : 0)]; ;
     }
 
-protected override Sprite BodyAccentSprite4(Actor_Unit actor) => Sprites[88 + actor.Unit.EyeType + (actor.Unit.Furry ? 6 : 0)]; // eyebrows
+    protected override Sprite BodyAccentSprite4(Actor_Unit actor) => Sprites[88 + actor.Unit.EyeType + (actor.Unit.Furry ? 6 : 0)]; // eyebrows
 
     protected override Sprite BodyAccentSprite5(Actor_Unit actor) // wings main animated
     {
@@ -506,7 +503,7 @@ protected override Sprite BodyAccentSprite4(Actor_Unit actor) => Sprites[88 + ac
             Dick.layer = 11;
             return null;
         }
-        
+
         if (Dick.GetPalette == null)
         {
             Dick.GetPalette = (s) => FurryColor(s);
@@ -1054,7 +1051,7 @@ protected override Sprite BodyAccentSprite4(Actor_Unit actor) => Sprites[88 + ac
                 clothing1.GetSprite = null;
                 clothing3.GetSprite = (s) => State.GameManager.SpriteDictionary.Demibats4[141 + actor.Unit.BodySize];
             }
-            
+
             if (actor.HasBelly)
             {
                 clothing2.GetSprite = (s) => null;

@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 static class RelationsManager
@@ -37,7 +34,7 @@ static class RelationsManager
                     if (State.World.Relations.ContainsKey(side))
                         State.World.Relations[side].Remove(targetSide);
                 }
-                    
+
             }
         }
     }

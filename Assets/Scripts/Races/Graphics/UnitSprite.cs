@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -166,9 +165,9 @@ public class UnitSprite : MonoBehaviour
             }
             else
             {
-            DamageIndicator.faceColor = Color.red;
-            DamageIndicator.text = $"-{damage}";
-        }
+                DamageIndicator.faceColor = Color.red;
+                DamageIndicator.text = $"-{damage}";
+            }
         }
         else if (damage < 0)
         {
@@ -214,7 +213,7 @@ public class UnitSprite : MonoBehaviour
 
         if (lastHealth != actor.Unit.Health)
             UpdateHealthBar(actor);
-     
+
 
         if (goalScale.x > GraphicsFolder.localScale.x)
         {
@@ -315,7 +314,7 @@ public class UnitSprite : MonoBehaviour
         else
             alpha = 0;
 
-        if (actor.Unit.FixedSide != actor.Unit.Side && TacticalUtilities.PlayerCanSeeTrueSide(actor))
+        if (actor.Unit.FixedSide != actor.Unit.Side && TacticalUtilities.PlayerCanSeeTrueSide(actor.Unit))
         {
             if (BlueColored)
             {
@@ -328,7 +327,7 @@ public class UnitSprite : MonoBehaviour
                             FlexibleSquare.color = new Color(0.75f, 0.40f, 0, 1);
                     }
                     else
-                        FlexibleSquare.color = new Color(0.45f, 0f, 0.75f, alpha);
+                        FlexibleSquare.color = new Color(0.8f, 0.5f, 0f, alpha);
                 }
             }
             else

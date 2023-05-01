@@ -1,7 +1,6 @@
 using OdinSerializer;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using UnityEngine;
 
@@ -38,8 +37,8 @@ public class Unit
     public int FixedSide
     {
         get
-        { 
-           return (_fixedSide == -1) ? Side : _fixedSide; 
+        {
+            return (_fixedSide == -1) ? Side : _fixedSide;
         }
         set => _fixedSide = value;
     }
@@ -274,6 +273,11 @@ public class Unit
 
     internal bool HasDick => DickSize > -1;
     internal bool HasBreasts => DefaultBreastSize > -1;
+
+    public bool IsInfiltratingSide(int side)
+    {
+        return side == Side && Side != FixedSide && hiddenFixedSide;
+    }
 
     internal Gender GetGender()
     {
@@ -1068,13 +1072,13 @@ public class Unit
 
     internal void RefreshSecrecy()
     {
-        if (HasTrait(Traits.Disguiser))
-            hiddenFixedSide = true;       
+        if (HasTrait(Traits.Infiltrator))
+            hiddenFixedSide = true;
     }
     internal void InitializeFixedSide(int side)
     {
         if (_fixedSide > -1) return;
-        if(HasTrait(Traits.Untamable) || HasTrait(Traits.Disguiser))
+        if (HasTrait(Traits.Untamable) || HasTrait(Traits.Infiltrator))
         {
             FixedSide = side;
             return;

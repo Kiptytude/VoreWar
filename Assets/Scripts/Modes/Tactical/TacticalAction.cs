@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 struct AcceptibleTargets
@@ -29,7 +27,7 @@ class TargetedTacticalAction
     internal Func<Actor_Unit, Actor_Unit, bool> OnExecute;
     internal Func<Actor_Unit, Vec2i, bool> OnExecuteLocation;
 
-    public TargetedTacticalAction(string name, bool requiresPred, Predicate<Actor_Unit> conditional,  Action onClicked, Func<Actor_Unit, Actor_Unit, bool> onExecute, Func<Actor_Unit, Vec2i, bool> onExecuteLocation = null, int minimumMp = 1, Color color = default)
+    public TargetedTacticalAction(string name, bool requiresPred, Predicate<Actor_Unit> conditional, Action onClicked, Func<Actor_Unit, Actor_Unit, bool> onExecute, Func<Actor_Unit, Vec2i, bool> onExecuteLocation = null, int minimumMp = 1, Color color = default)
     {
         Name = name;
         RequiresPred = requiresPred;

@@ -1,10 +1,6 @@
 ﻿using OdinSerializer;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 
 class StoredClassWeight
@@ -61,7 +57,7 @@ static class CustomAutoLevel
         {
             State.GameManager.CreateMessageBox("Couldn't save Custom Auto Levels to file for some reason");
         }
-       
+
     }
 
     internal static StoredClassWeight GetByName(string name)

@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.UI;
 
 public class TacticalStatusPanel : MonoBehaviour
@@ -19,5 +18,5 @@ public class TacticalStatusPanel : MonoBehaviour
     public Button ZeroAPButton;
     public Button SkipToEndButton;
     public Button UndoMovement;
-    public GameObject ButtonSelection; 
+    public GameObject ButtonSelection;
 }

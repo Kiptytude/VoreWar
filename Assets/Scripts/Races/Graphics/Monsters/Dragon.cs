@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 
 class Dragon : BlankSlate
 {
@@ -274,7 +269,7 @@ class Dragon : BlankSlate
     {
         switch (position)
         {
-           
+
             case Position.Standing:
                 return Sprites[47];
             case Position.StandingCrouch:
@@ -290,7 +285,7 @@ class Dragon : BlankSlate
             return null;
         if (actor.PredatorComponent?.BallsFullness > 0)
         {
-			AddOffset(Balls, 0, 1 * .625f);			
+            AddOffset(Balls, 0, 1 * .625f);
             if (actor.PredatorComponent.IsUnitOfSpecificationInPrey(Race.Selicia, true, PreyLocation.balls))
                 return Sprites[91];
             else if (actor.PredatorComponent.IsUnitOfSpecificationInPrey(Race.Selicia, false, PreyLocation.balls))

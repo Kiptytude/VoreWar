@@ -1,11 +1,9 @@
 ﻿using OdinSerializer;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
-using UnityEngine.UI;
 using static LogUtilities;
 using Random = UnityEngine.Random;
 
@@ -551,7 +549,8 @@ public class TacticalMessageLog
                                         $"<b>{action.Target.Name}</b> becomes terrified as the acids begin to tear into {GPPHis(action.Target)} flesh and in a sudden bout of panic forces <b>{action.Unit.Name}</b> to throw {GPPHim(action.Target)} up.{odds}",
                                         $"<b>{action.Unit.Name}</b> watches with concern as {GPPHis(action.Unit)} belly suddenly lets out an angry roar. <b>{action.Target.Name}</b> had kept a number of inedible herbs for just this occasion and as they break down they force the belly to expel its contents.{odds}"
                                         );
-            } else // Prey Feral
+            }
+            else // Prey Feral
             {
                 if (action.Unit.Race < Race.Vagrants || action.Unit.Race >= Race.Selicia) // Pred Humanoid
                     return GetRandomStringFrom(
@@ -577,7 +576,7 @@ public class TacticalMessageLog
 
                                         );
             }
-           
+
         }
         else
         {

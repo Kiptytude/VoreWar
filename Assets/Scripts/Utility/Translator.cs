@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 
 
 public class Translator
@@ -19,7 +14,7 @@ public class Translator
 
     public void UpdateLocation()
     {
-       
+
         if (IsActive)
         {
             if (transform == null)
@@ -50,10 +45,10 @@ public class Translator
                 if (State.GameManager.StrategyMode.IsPlayerTurn == false)
                     State.GameManager.CameraCall(transform.position);
             }
-                
-           
+
+
         }
-     
+
     }
 
     public void SetTranslator(Transform trans, Vec2i start, Vec2i end, float AIMoveRate, bool PlayerMove)

@@ -1,12 +1,10 @@
 ﻿using UnityEngine;
-using System.Collections;
-using UnityEngine.UI;
 
 public class ShopPanel : MonoBehaviour
 {
     //public GameObject ButtonPrefab;    
-    public GameObject BuyPrefab;    
-    public GameObject SellPrefab;    
+    public GameObject BuyPrefab;
+    public GameObject SellPrefab;
     public ShopBuyPanel[] BuyPanels;
     public ShopSellPanel[] SellPanels;
     //[HideInInspector]

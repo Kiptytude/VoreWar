@@ -1,11 +1,8 @@
 ﻿using OdinSerializer;
-using OdinSerializer.Utilities;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Text;
 using UnityEngine;
 
 public static class State
@@ -753,7 +750,7 @@ public static class State
                 }
             }
 
-        if (World.AllActiveEmpires != null)
+            if (World.AllActiveEmpires != null)
             {
                 foreach (Empire emp in World.AllActiveEmpires)
                 {

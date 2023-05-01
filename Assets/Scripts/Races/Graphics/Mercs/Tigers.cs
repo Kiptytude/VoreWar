@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 
 class Tigers : DefaultRaceData
 {
@@ -13,7 +8,7 @@ class Tigers : DefaultRaceData
         BodyAccent5 = new SpriteExtraInfo(6, BodyAccentSprite5, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.Fur, s.Unit.AccessoryColor));
         BaseBody = true;
 
-        AllowedMainClothingTypes.Insert(0, RaceSpecificClothing.TigerSpecial);      
+        AllowedMainClothingTypes.Insert(0, RaceSpecificClothing.TigerSpecial);
     }
 
     internal override void RandomCustom(Unit unit)

@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 public class EmpireReport : MonoBehaviour
@@ -97,7 +95,7 @@ public class EmpireReport : MonoBehaviour
                 continue;
             Reports[currentIndex].gameObject.SetActive(spawner.Enabled);
             Reports[currentIndex].Contact.gameObject.SetActive(false);
-         
+
             Reports[currentIndex].EmpireStatus.text = $"{empire.Name}  Villages: {State.World.Villages.Where(s => s.Side == empire.Side).Count()} Armies : {empire.Armies.Count()} ";
             if (empire.IsAlly(State.World.ActingEmpire) || Config.CheatExtraStrategicInfo || State.GameManager.StrategyMode.OnlyAIPlayers)
             {
@@ -142,13 +140,13 @@ public class EmpireReport : MonoBehaviour
                         break;
                 }
             }
-            string allies = Allies.Count() > 0 ? $"Allies:<color=blue> { string.Join(", ", Allies)}</color>" : "";
-            string neutrals = Neutral.Count() > 0 ? $"Neutral: { string.Join(", ", Neutral)}" : "";
+            string allies = Allies.Count() > 0 ? $"Allies:<color=blue> {string.Join(", ", Allies)}</color>" : "";
+            string neutrals = Neutral.Count() > 0 ? $"Neutral: {string.Join(", ", Neutral)}" : "";
             string enemies;
             if (Enemies.Count > 6)
                 enemies = "Enemies: <color=red>all others</color>";
             else
-                enemies = Enemies.Count() > 0 ? $"Enemies: <color=red>{ string.Join(", ", Enemies)}</color>" : "";
+                enemies = Enemies.Count() > 0 ? $"Enemies: <color=red>{string.Join(", ", Enemies)}</color>" : "";
 
             sb.AppendLine($"{emp.Name} - {allies} {neutrals} {enemies} ");
         }

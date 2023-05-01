@@ -123,7 +123,7 @@ namespace LegacyAI
                         Actor_Unit unit = actors[i];
                         if (unit.Unit.Side != AISide && unit.Bulk() <= cap)
                         {
-                            int c = (int) (100 * unit.GetDevourChance(actor, true));
+                            int c = (int)(100 * unit.GetDevourChance(actor, true));
                             if (c > 50 && c > chance && TacticalUtilities.FreeSpaceAroundTarget(actors[i].Position, actor) && unit.AIAvoidEat <= 0)
                             {
                                 chance = c;
@@ -157,7 +157,7 @@ namespace LegacyAI
         }
 
         bool Walkto(Actor_Unit actor, Vec2i p)
-        {            
+        {
             path = TacticalPathfinder.GetPath(actor.Position, p, 1, actor);
             if (path == null || path.Count == 0)
             {
@@ -317,9 +317,9 @@ namespace LegacyAI
 
         }
 
-        
 
-       
+
+
         bool IsRanged(Actor_Unit actor) => actor.Unit.GetBestRanged() != null;
 
 

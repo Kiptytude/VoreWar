@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 public class EmpireBoosts
 {
     internal int WealthAdd = 0;

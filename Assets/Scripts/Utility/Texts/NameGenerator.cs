@@ -315,7 +315,7 @@ public class NameGenerator
             "Okavangu",
             "Zenobia"
         };
-            catTownNames = new List<string>
+        catTownNames = new List<string>
         {
             "Pyramid of Indulgence",
             "Catro",
@@ -751,7 +751,7 @@ public class NameGenerator
             "Wanderer's Hideout",
             "Blackened Den"
         };
-        
+
         deerTownNames = new List<string>
         {
             "Artemis Woods",

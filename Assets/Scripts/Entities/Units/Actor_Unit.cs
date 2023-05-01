@@ -2,10 +2,8 @@
 using OdinSerializer;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.Experimental.UIElements.GraphView;
 using UnityEngine;
-using UnityEngine.Networking;
-using UnityEngine.SocialPlatforms;
-using UnityScript.Macros;
 
 public class Actor_Unit
 {
@@ -398,7 +396,7 @@ public class Actor_Unit
     {
         DisplayMode displayMode = DisplayMode.VoreSuccess;
         float time = 1f;
-        modeQueue.Add(new KeyValuePair<int, float> (((int)displayMode), time));
+        modeQueue.Add(new KeyValuePair<int, float>(((int)displayMode), time));
     }
 
     public void SetVoreFailMode()
@@ -675,7 +673,7 @@ public class Actor_Unit
     public bool IsBeingSuckled => Mode == DisplayMode.Suckled;
     public bool IsRubbing => Mode == DisplayMode.Rubbing;
     public bool IsBeingRubbed => Mode == DisplayMode.Rubbed;
-    
+
 
 
 
@@ -689,11 +687,15 @@ public class Actor_Unit
 
     public float GetPureStatClashChance(int attackStat, int defenseStat, float shift) // generic AF
     {
-       return (float)attackStat / (attackStat + (defenseStat * (1 + shift)));
+        return (float)attackStat / (attackStat + (defenseStat * (1 + shift)));
     }
 
     internal float GetMagicChance(Actor_Unit attacker, Spell currentSpell, float modifier = 0)
     {
+        if (attacker.Unit.GetApparentSide(Unit) == Unit.GetApparentSide() && attacker.Unit.IsInfiltratingSide(Unit.GetApparentSide())) // sneakAttack
+        {
+            modifier -= 0.3f;
+        }
         int attackStat = attacker.Unit.GetStat(Stat.Mind);
         int defenseStat = Unit.GetStat(Stat.Will);
         if (currentSpell?.Resistable ?? false) //Skips if no spell is specified since that only involves AI calcs
@@ -794,6 +796,10 @@ public class Actor_Unit
             else
                 defenderBonusShift += 4;
         }
+        if (attacker.Unit.GetApparentSide(Unit) == Unit.GetApparentSide() && attacker.Unit.IsInfiltratingSide(Unit.GetApparentSide())) // sneakAttack
+        {
+            defenderBonusShift += 2;
+        }
 
         defenderBonusShift -= Unit.TraitBoosts.DodgeLossFromWeightMultiplier * 0.1f * PredatorComponent?.Fullness ?? 0;
 
@@ -871,7 +877,7 @@ public class Actor_Unit
             damage = (int)(damageScalar * (BestRanged?.Damage ?? 2) * (60 + Unit.GetStat(Stat.Dexterity)) / 60);
             if (target.Unit.HasTrait(Traits.Resilient))
                 damage--;
-            
+
         }
         else
         {
@@ -919,7 +925,10 @@ public class Actor_Unit
             if (target.Unit.HasTrait(Traits.Resilient))
                 damage--;
         }
-        
+        if (Unit.GetApparentSide(target.Unit) == target.Unit.GetApparentSide() && Unit.IsInfiltratingSide(target.Unit.GetApparentSide())) // sneakAttack
+        {
+            damage *= 3;
+        }
         if (damage < 1)
             damage = 1;
         return damage;
@@ -1048,7 +1057,9 @@ public class Actor_Unit
     {
         if (Movement < 1 || Unit.HasTrait(Traits.ShunGokuSatsu) == false)
             return false;
-        if (target.Unit.Side == Unit.Side)
+        List<AbilityTargets> targetTypes = new List<AbilityTargets>();
+        targetTypes.Add(AbilityTargets.Enemy);
+        if (TacticalUtilities.MeetsQualifier(targetTypes, this, target))
             return false;
         if (target.Position.GetNumberOfMovesDistance(Position) > 1)
             return false;
@@ -1056,7 +1067,7 @@ public class Actor_Unit
         int damage = 2 * WeaponDamageAgainstTarget(target, false);
         if (damage >= target.Unit.Health)
             damage = target.Unit.Health - 1;
-        if (target.Defend(this, damage, false, out float chance))
+        if (target.Defend(this, ref damage, false, out float chance))
         {
             if (State.GameManager.TacticalMode.TacticalSoundBlocked() == false)
             {
@@ -1085,7 +1096,9 @@ public class Actor_Unit
     {
         if (Movement < 1 || Unit.HasTrait(Traits.TailStrike) == false)
             return false;
-        if (target.Unit.Side == Unit.Side)
+        List<AbilityTargets> targetTypes = new List<AbilityTargets>();
+        targetTypes.Add(AbilityTargets.Enemy);
+        if (TacticalUtilities.MeetsQualifier(targetTypes, this, target))
             return false;
         if (target.Position.GetNumberOfMovesDistance(Position) != 1)
             return false;
@@ -1170,7 +1183,7 @@ public class Actor_Unit
                 int damage = WeaponDamageAgainstTarget(target, true, multiplier: damageMultiplier);
 
                 State.GameManager.SoundManager.PlaySwing(this);
-                if (target.Defend(this, damage, true, out float chance, canKill))
+                if (target.Defend(this, ref damage, true, out float chance, canKill))
                 {
                     foreach (IAttackStatusEffect trait in Unit.AttackStatusEffects)
                     {
@@ -1230,7 +1243,7 @@ public class Actor_Unit
                     Movement = 0;
                 int remainingHealth = target.Unit.Health;
                 int damage = WeaponDamageAgainstTarget(target, false, multiplier: damageMultiplier, forceBite);
-                if (target.Defend(this, damage, false, out float chance, canKill))
+                if (target.Defend(this, ref damage, false, out float chance, canKill))
                 {
                     foreach (IAttackStatusEffect trait in Unit.AttackStatusEffects)
                     {
@@ -1362,17 +1375,15 @@ public class Actor_Unit
 
     internal bool DefendDamageSpell(DamageSpell spell, Actor_Unit attacker, int damage)
     {
-        bool sneakAttack = false;
-        if (attacker.Unit.Side == Unit.GetApparentSide())
+        if (attacker.Unit.GetApparentSide(Unit) == Unit.GetApparentSide() && attacker.Unit.IsInfiltratingSide(Unit.GetApparentSide()))
         {
             attacker.Unit.hiddenFixedSide = false;
-            sneakAttack = true;
             damage *= 3;
-            State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<color = purple>{attacker.Unit.Name} sneak-attacked {Unit.Name}!");
+            State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<color=purple>{attacker.Unit.Name} sneak-attacked {Unit.Name}!</color>");
         }
         if (Unit.IsDead)
             return false;
-        if (DefendSpellCheck(spell, attacker, out float chance, sneakAttack ? -0.3f : 0f))
+        if (DefendSpellCheck(spell, attacker, out float chance))
         {
             damage = (int)(damage * attacker.Unit.TraitBoosts.Outgoing.MagicDamage * Unit.TraitBoosts.Incoming.MagicDamage);
             if (spell.DamageType == DamageTypes.Fire)
@@ -1414,11 +1425,11 @@ public class Actor_Unit
             return false;
         }
         bool sneakAttack = false;
-        if (attacker.Unit.Side == Unit.GetApparentSide() && !spell.Resistable) // Replace when there is an unresistable negative status
+        if (attacker.Unit.GetApparentSide(Unit) == Unit.GetApparentSide() && attacker.Unit.IsInfiltratingSide(Unit.GetApparentSide()))     // Replace when there is an unresistable negative status
         {
             attacker.Unit.hiddenFixedSide = false;
             sneakAttack = true;
-            State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<color = purple>{attacker.Unit.Name} sneak-attacked {Unit.Name}!");
+            State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<color=purple>{attacker.Unit.Name} sneak-attacked {Unit.Name}!</color>");
         }
         if (DefendSpellCheck(spell, attacker, out float chance, sneakAttack ? -0.3f : 0f))
         {
@@ -1441,7 +1452,7 @@ public class Actor_Unit
                     Unit.ApplyStatusEffect(StatusEffectType.WillingPrey, 0, 3);
                 }
             }
-            if (attacker.Unit.Side == Unit.Side)
+            if (TacticalUtilities.MeetsQualifier(spell.AcceptibleTargets, attacker, this))
                 attacker.Unit.GiveScaledExp(1, attacker.Unit.Level - Unit.Level);
             else
                 attacker.Unit.GiveExp(1);
@@ -1457,27 +1468,24 @@ public class Actor_Unit
                 attacker.Unit.GiveExp(.25f);
                 UnitSprite.DisplayResist();
             }
-                
+
             State.GameManager.TacticalMode.Log.RegisterSpellMiss(attacker.Unit, Unit, spell.SpellType, chance);
         }
 
         return false;
     }
 
-    public bool Defend(Actor_Unit attacker, int damage, bool ranged, out float chance, bool canKill = true)
+    public bool Defend(Actor_Unit attacker, ref int damage, bool ranged, out float chance, bool canKill = true)
     {
-        bool sneakAttack = false;
-        if (attacker.Unit.Side == Unit.GetApparentSide())       
+        if (attacker.Unit.GetApparentSide(Unit) == Unit.GetApparentSide() && attacker.Unit.IsInfiltratingSide(Unit.GetApparentSide()))
         {
             attacker.Unit.hiddenFixedSide = false;
-            sneakAttack = true;
-            State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<color = purple>{attacker.Unit.Name} sneak-attacked {Unit.Name}!");
-            damage *= 3;
+            State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<color=purple>{attacker.Unit.Name} sneak-attacked {Unit.Name}!</color>");
         }
         State.GameManager.TacticalMode.AITimer = Config.TacticalAttackDelay;
         if (State.GameManager.CurrentScene == State.GameManager.TacticalMode && State.GameManager.TacticalMode.IsPlayerInControl == false && State.GameManager.TacticalMode.turboMode == false)
             State.GameManager.CameraCall(Position);
-        chance = GetAttackChance(attacker, ranged, mod: sneakAttack ? -2f : 0f);
+        chance = GetAttackChance(attacker, ranged);
 
         float r = (float)State.Rand.NextDouble();
         if (r < chance)
@@ -1502,8 +1510,7 @@ public class Actor_Unit
         {
             return 0;
         }
-
-        if (Surrendered || (attacker.Unit.HasTrait(Traits.Endosoma) && !TacticalUtilities.TreatAsHostile(attacker, this) || Unit.GetStatusEffect(StatusEffectType.Hypnotized)?.Strength == attacker.Unit.FixedSide))
+        if (Surrendered || (attacker.Unit.HasTrait(Traits.Endosoma) && (Unit.FixedSide == attacker.Unit.GetApparentSide(Unit)) || Unit.GetStatusEffect(StatusEffectType.Hypnotized)?.Strength == attacker.Unit.FixedSide))
             return 1f;
 
         float predVoracity = Mathf.Pow(15 + skillBoost + attacker.Unit.GetStat(Stat.Voracity), 1.5f);
@@ -1533,6 +1540,11 @@ public class Actor_Unit
 
         defenderScore /= Unit.TraitBoosts.Incoming.VoreOddsMult;
         attackerScore *= attacker.Unit.TraitBoosts.Outgoing.VoreOddsMult;
+
+        if (attacker.Unit.GetApparentSide(Unit) == Unit.GetApparentSide() && attacker.Unit.IsInfiltratingSide(Unit.GetApparentSide())) // sneakAttack
+        {
+            attackerScore *= 3;
+        }
 
         if (attacker.Unit.HasTrait(Traits.VenomShock) && Unit.GetStatusEffect(StatusEffectType.Poisoned) != null)
             attackerScore *= 1.5f;
@@ -1610,7 +1622,7 @@ public class Actor_Unit
             return false;
         if (target.ReceivedRub)
             return false;
-        if (target.Unit.Side != Unit.Side && !(Unit.HasTrait(Traits.SeductiveTouch) || Config.CanUseStomachRubOnEnemies || TacticalUtilities.GetMindControlSide(Unit) != -1))
+        if ((target.Unit.GetApparentSide() != Unit.GetApparentSide() && target.Unit.GetApparentSide() != Unit.FixedSide) && !(Unit.HasTrait(Traits.SeductiveTouch) || Config.CanUseStomachRubOnEnemies || TacticalUtilities.GetMindControlSide(Unit) != -1))
             return false;
         target.ReceivedRub = true;
         int index = Random.Range(0, possible.Count - 1);
@@ -1640,7 +1652,7 @@ public class Actor_Unit
             default:
                 break;
         }
-         if (!State.GameManager.TacticalMode.turboMode)
+        if (!State.GameManager.TacticalMode.turboMode)
         {
             SetRubMode();
             target.SetRubbedMode();
@@ -1678,13 +1690,13 @@ public class Actor_Unit
             }
             if (seduce)
             {
-                var strings = new [] {$"<b>{target.Unit.Name}</b> decides to swap sides because <b>{Unit.Name}</b>'s rubs are just that sublime!",
+                var strings = new[] {$"<b>{target.Unit.Name}</b> decides to swap sides because <b>{Unit.Name}</b>'s rubs are just that sublime!",
                         $"<b>{target.Unit.Name}</b> joins <b>{Unit.Name}</b>'s side to get more of those irresistable scritches later!",
                         $"The way <b>{Unit.Name}</b> touches {LogUtilities.GPPHim(target.Unit)} moves something other than {LogUtilities.GPPHis(target.Unit)} prey-filled innards in <b>{target.Unit.Name}</b>, making {LogUtilities.GPPHim(target.Unit)} join {LogUtilities.GPPHim(Unit)}.",
                         $"<b>{Unit.Name}</b> makes <b>{target.Unit.Name}</b> feel incredible, rearranging {LogUtilities.GPPHis(target.Unit)} priorities in this conflict...",
                         $"<b>{target.Unit.Name}</b> slowly returns from a world of pure bliss and decides to stick with <b>{Unit.Name}</b> after all."};
                 if (target.Unit.Race == Race.Dogs)
-                strings.Append($"<b>{Unit.Name}</b>’s attentive massage of <b>{target.Unit.Name}</b>’s stuffed midsection convinces the voracious canine to make {LogUtilities.GPPHim(Unit)} {LogUtilities.GPPHis(target.Unit)} master no matter the cost.");
+                    strings.Append($"<b>{Unit.Name}</b>’s attentive massage of <b>{target.Unit.Name}</b>’s stuffed midsection convinces the voracious canine to make {LogUtilities.GPPHim(Unit)} {LogUtilities.GPPHis(target.Unit)} master no matter the cost.");
                 target.UnitSprite.DisplaySeduce();
                 State.GameManager.TacticalMode.Log.RegisterMiscellaneous(
                         LogUtilities.GetRandomStringFrom(strings)
@@ -1881,7 +1893,8 @@ public class Actor_Unit
                         animationUpdateTime = modeQueue.FirstOrDefault().Value;
                         Mode = (DisplayMode)modeQueue.FirstOrDefault().Key;
                         modeQueue.RemoveAt(0);
-                    } else
+                    }
+                    else
                     {
                         animationUpdateTime = 0;
                         Mode = 0;

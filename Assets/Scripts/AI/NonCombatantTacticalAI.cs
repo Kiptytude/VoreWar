@@ -1,9 +1,5 @@
-using OdinSerializer;
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using static UnityEngine.UI.CanvasScaler;
 
 public class NonCombatantTacticalAI : RaceServantTacticalAI
 {
@@ -18,7 +14,7 @@ public class NonCombatantTacticalAI : RaceServantTacticalAI
 
         path = null;
         List<Actor_Unit> masters = actors.Where(a => RaceAIType.Dict[State.RaceSettings.GetRaceAI(a.Unit.Race)] != typeof(NonCombatantTacticalAI) && !TacticalUtilities.TreatAsHostile(actor, a)).ToList();
-        if ((retreating && actor.Unit.Type != UnitType.Summon && actor.Unit.Type != UnitType.SpecialMercenary && actor.Unit.HasTrait(Traits.Fearless) == false && TacticalUtilities.GetMindControlSide(actor.Unit) == -1 && TacticalUtilities.GetPreferredSide(actor, AISide, enemySide) == AISide)
+        if ((retreating && actor.Unit.Type != UnitType.Summon && actor.Unit.Type != UnitType.SpecialMercenary && actor.Unit.HasTrait(Traits.Fearless) == false && TacticalUtilities.GetMindControlSide(actor.Unit) == -1 && TacticalUtilities.GetPreferredSide(actor.Unit, AISide, enemySide) == AISide)
             || masters.Count == 0)
         {
             int retreatY;
@@ -55,7 +51,7 @@ public class NonCombatantTacticalAI : RaceServantTacticalAI
 
         TryResurrect(actor);
 
-        
+
         RunSpells(actor);
         if (path != null)
             return;
@@ -72,7 +68,7 @@ public class NonCombatantTacticalAI : RaceServantTacticalAI
     {
         List<PotentialTarget> targets = new List<PotentialTarget>();
 
-        List<Actor_Unit> masters = actors.Where(a => RaceAIType.Dict[State.RaceSettings.GetRaceAI(a.Unit.Race)] != typeof (NonCombatantTacticalAI)).ToList();
+        List<Actor_Unit> masters = actors.Where(a => RaceAIType.Dict[State.RaceSettings.GetRaceAI(a.Unit.Race)] != typeof(NonCombatantTacticalAI)).ToList();
 
         foreach (Actor_Unit unit in masters)
         {
@@ -98,6 +94,7 @@ public class NonCombatantTacticalAI : RaceServantTacticalAI
 
         List<Spell> friendlySpells = actor.Unit.UseableSpells.Where(s => s.AcceptibleTargets.Contains(AbilityTargets.Ally)).ToList();
 
+        if (friendlySpells.Any() == false) return;
 
         Spell spell = friendlySpells[State.Rand.Next(friendlySpells.Count())];
 
@@ -110,7 +107,7 @@ public class NonCombatantTacticalAI : RaceServantTacticalAI
 
         if (State.GameManager.TacticalMode.IsOnlyOneSideVisible())
             return;
-    
+
         List<PotentialTarget> targets = GetListOfPotentialSpellTargets(actor, spell, actor.Position);
         if (!targets.Any())
             return;

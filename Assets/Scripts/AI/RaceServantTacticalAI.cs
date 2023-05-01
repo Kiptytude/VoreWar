@@ -1,8 +1,5 @@
-using OdinSerializer;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using static UnityEngine.UI.CanvasScaler;
 
 public class RaceServantTacticalAI : HedonistTacticalAI
 {

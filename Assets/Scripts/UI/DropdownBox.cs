@@ -1,8 +1,7 @@
-﻿using UnityEngine;
-using System.Collections;
-using System;
-using UnityEngine.UI;
+﻿using System;
 using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class RaceDropdownBox : MonoBehaviour
 {
@@ -16,7 +15,7 @@ public class RaceDropdownBox : MonoBehaviour
     {
         YesAction = action;
         Yes.GetComponentInChildren<Text>().text = yesText;
-        No.GetComponentInChildren<Text>().text = noText;        
+        No.GetComponentInChildren<Text>().text = noText;
         NoAction = noAction;
     }
 
@@ -39,7 +38,7 @@ public class RaceDropdownBox : MonoBehaviour
         }
         else
             Debug.LogWarning("Couldn't separate the race correctly!");
-        
+
         Destroy(gameObject);
     }
 

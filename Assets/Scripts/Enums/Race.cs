@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public enum Race : int
+﻿public enum Race : int
 {
     //Rough system is 0 starts main races, 50 starts mercs, 100 starts monsters, 170 starts unique mercs
     Cats = 0,

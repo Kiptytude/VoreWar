@@ -1,10 +1,7 @@
 ﻿using OdinSerializer;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 public class UniformObject
 {
@@ -125,7 +122,7 @@ static class UniformDataStorer
         }
 
     }
-    
+
     static internal List<UniformData> GetIncompatibleCustomizations(Unit unit)
     {
         return GetIncompatibleCustomizations(unit.Race, unit.Type, unit.GetGender());

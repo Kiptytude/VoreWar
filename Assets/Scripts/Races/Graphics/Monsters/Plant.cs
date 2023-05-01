@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 class Plant : BlankSlate
@@ -38,7 +34,7 @@ class Plant : BlankSlate
         if (actor.HasBelly == false)
             return null;
         if ((actor.PredatorComponent?.IsUnitOfSpecificationInPrey(Race.Selicia, true, PreyLocation.stomach) ?? false) && actor.GetStomachSize(15, 1) == 15)
-            return State.GameManager.SpriteDictionary.Plant[15];			
+            return State.GameManager.SpriteDictionary.Plant[15];
         return State.GameManager.SpriteDictionary.Plant[6 + actor.GetStomachSize(8)];
     }
 }

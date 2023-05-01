@@ -1,5 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Diagnostics;
+using System.Linq;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class ArmyExchanger : MonoBehaviour

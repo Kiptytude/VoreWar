@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 public class ArrowEffect : MonoBehaviour
 {
-    
+
     public GameObject Arrow;
 
     internal Vector2 StartLocation;
@@ -50,7 +46,7 @@ public class ArrowEffect : MonoBehaviour
         Arrow.transform.localRotation = Quaternion.Euler(0, 0, angle);
     }
 
-    
+
 
     private void Update()
     {

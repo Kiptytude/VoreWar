@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -30,7 +26,7 @@ public class StrategicTileDictionary : MonoBehaviour
         WaterFloat = CreateTiles(WaterFloatSprites);
         GrassFloat = CreateTiles(GrassFloatSprites);
         Objects = CreateTiles(ObjectSprites);
-     
+
 
 
         Tile[] CreateTiles(Sprite[] sprites)

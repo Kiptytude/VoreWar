@@ -1,9 +1,8 @@
-﻿using UnityEngine;
-using System.Collections;
-using UnityEngine.UI;
-using TMPro;
-using System;
+﻿using System;
 using System.Linq;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class CheatMenu : MonoBehaviour
 {
@@ -60,7 +59,7 @@ public class CheatMenu : MonoBehaviour
                     EmpireReplaced.options.Add(new TMP_Dropdown.OptionData(empire.Name));
                 }
             }
-           
+
 
             if (Config.GoblinCaravans)
             {
@@ -137,13 +136,13 @@ public class CheatMenu : MonoBehaviour
         {
             Empire monsterEmp = State.World.MonsterEmpires.Where(s => s.Name == EmpireReplaced.captionText.text).FirstOrDefault();
             if (Enum.TryParse(ReplacementRace.captionText.text, out Race monRace))
-            {               
+            {
                 monsterEmp.ReplacedRace = monRace;
             }
-               
+
             return;
         }
-            
+
         if (Enum.TryParse(ReplacementRace.captionText.text, out Race race))
         {
             foreach (Village village in State.World.Villages.Where(s => s.Side == emp.Side))

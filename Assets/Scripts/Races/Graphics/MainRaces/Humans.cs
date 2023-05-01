@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 class Humans : DefaultRaceData
@@ -30,7 +27,7 @@ class Humans : DefaultRaceData
         BeardStyles = 7;
 
         ExtendedBreastSprites = true;
-        
+
         Body = new SpriteExtraInfo(4, BodySprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.RedSkin, s.Unit.SkinColor));
         Head = new SpriteExtraInfo(6, HeadSprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.RedSkin, s.Unit.SkinColor));
         BodyAccessory = new SpriteExtraInfo(7, AccessorySprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.RedSkin, s.Unit.SkinColor)); // Ears
@@ -242,7 +239,7 @@ class Humans : DefaultRaceData
     internal override void RandomCustom(Unit unit)
     {
         base.RandomCustom(unit);
-        
+
 
         if (unit.HasDick && unit.HasBreasts)
         {
@@ -442,15 +439,15 @@ class Humans : DefaultRaceData
 
     protected override Sprite MouthSprite(Actor_Unit actor)
     {
-         if (actor.IsEating || actor.IsAttacking)
+        if (actor.IsEating || actor.IsAttacking)
             return null;
-         else
+        else
             return Sprites3[108 + actor.Unit.MouthType];
     }
 
     protected override Sprite HairSprite(Actor_Unit actor)
     {
-         return Sprites2[71 + 2 * actor.Unit.HairStyle];
+        return Sprites2[71 + 2 * actor.Unit.HairStyle];
     }
 
     protected override Sprite HairSprite2(Actor_Unit actor)
@@ -873,7 +870,7 @@ class Humans : DefaultRaceData
                 clothing2.GetSprite = null;
                 clothing3.GetSprite = null;
             }
-            
+
             clothing2.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.RedSkin, actor.Unit.SkinColor);
             clothing3.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.RedSkin, actor.Unit.SkinColor);
 
@@ -1003,7 +1000,7 @@ class Humans : DefaultRaceData
                 clothing2.GetSprite = null;
                 clothing3.GetSprite = null;
             }
-            
+
             clothing2.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.RedSkin, actor.Unit.SkinColor);
             clothing3.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.RedSkin, actor.Unit.SkinColor);
 
@@ -1199,7 +1196,7 @@ class Humans : DefaultRaceData
                 clothing2.GetSprite = null;
                 clothing3.GetSprite = null;
             }
-            
+
             clothing2.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.RedSkin, actor.Unit.SkinColor);
             clothing3.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.RedSkin, actor.Unit.SkinColor);
 
@@ -2432,7 +2429,7 @@ class Humans : DefaultRaceData
                 clothing1.GetSprite = (s) => State.GameManager.SpriteDictionary.HumenPants[6 + 2 * actor.Unit.BodySize + (actor.GetStomachSize(31, 0.7f) > 3 ? 1 : 0)];
                 clothing2.GetSprite = (s) => State.GameManager.SpriteDictionary.HumenPants[25 + (actor.GetStomachSize(31, 0.7f) > 3 ? 2 : 0)];
             }
-            
+
             base.Configure(sprite, actor);
         }
     }

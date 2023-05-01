@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace CruxClothing
 {
     class NecklaceGold : ClothingAccessory
     {
         public NecklaceGold()
-        {            
+        {
             clothing1 = new SpriteExtraInfo(13, null, WhiteColored);
             clothing2 = new SpriteExtraInfo(0, null, WhiteColored);
         }

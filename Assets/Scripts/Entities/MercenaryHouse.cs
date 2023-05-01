@@ -1,5 +1,4 @@
 ﻿using OdinSerializer;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -86,7 +85,7 @@ public class MercenaryHouse
             }
             else
                 break;
-        } 
+        }
     }
 
 
@@ -108,7 +107,7 @@ public class MercenaryHouse
                 else
                     merc.Unit.Items[0] = State.World.ItemRepository.GetItem(ItemType.Axe);
             }
-            
+
             int r = State.Rand.Next(4);
             switch (r)
             {
@@ -149,7 +148,7 @@ public class MercenaryHouse
         StrategicUtilities.SpendLevelUps(merc.Unit);
         merc.Cost = (int)((25 + State.Rand.Next(15) + (.12 * exp)) * Random.Range(0.8f, 1.2f) * power);
         merc.Title = $"{race} - Mercenary";
-        
+
         return merc;
     }
 
@@ -163,8 +162,9 @@ public class MercenaryHouse
             FixedGear = true
         };
 
-        var power = State.RaceSettings.Get(merc.Unit.Race).PowerAdjustment; 
-        if (power == 0) {
+        var power = State.RaceSettings.Get(merc.Unit.Race).PowerAdjustment;
+        if (power == 0)
+        {
             power = RaceParameters.GetTraitData(merc.Unit).PowerAdjustment;
         }
         StrategicUtilities.SetAIClass(merc.Unit);

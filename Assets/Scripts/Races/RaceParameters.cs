@@ -1,9 +1,5 @@
 ﻿using OdinSerializer;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 static class RaceParameters
 {
@@ -270,7 +266,7 @@ static class RaceParameters
             case Race.FeralLizards:
                 return FeralLizards;
             case Race.Monitors:
-                return Monitors;    
+                return Monitors;
             case Race.Schiwardez:
                 return Schiwardez;
             case Race.Terrorbird:
@@ -1986,7 +1982,7 @@ static class RaceParameters
         },
             RaceDescription = ""
         };
-        
+
         Gazelle = new RaceTraits()
         {
             BodySize = 18,
@@ -2534,7 +2530,7 @@ internal class RaceTraits
     /// Controls the size of the body, used for determining how much space they take up in a belly
     /// </summary>
     internal int BodySize;
-    
+
     internal RaceAI RaceAI;
     /// <summary>
     /// Controls the base stomach size, at 12 stomach, the capacity will equal this value, and increases or decreases linearly

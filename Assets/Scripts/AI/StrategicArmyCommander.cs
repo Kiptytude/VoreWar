@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 public enum AIMode
 {
@@ -251,7 +249,7 @@ class StrategicArmyCommander
             {
                 army.Units.Add(merc.Unit);
                 merc.Unit.Side = army.Side;
-                empire.SpendGold(merc.Cost);                
+                empire.SpendGold(merc.Cost);
                 MercenaryHouse.UniqueMercs.Remove(merc);
             }
         }
@@ -328,7 +326,7 @@ class StrategicArmyCommander
 
     void Attack(Army army, float MaxDefenderStrength)
     {
-        foreach (Army hostileArmy in StrategicUtilities.GetAllHostileArmies(empire).Where(s => s.ArmyPower > 2 * army.ArmyPower).Where(s => s.Position.GetNumberOfMovesDistance(army.Position) < 4))
+        foreach (Army hostileArmy in StrategicUtilities.GetAllHostileArmies(empire).Where(s => s.ArmyPower > 2 * army.ArmyPower).Where(s => s.Position.GetNumberOfMovesDistance(army.Position) < 4 && !s.Units.All(u => u.HasTrait(Traits.Infiltrator))))
         {
             Vec2i[] closeVillagePositions = Villages.Where(s => s.Position.GetNumberOfMovesDistance(army.Position) < 7 && StrategicUtilities.ArmyAt(s.Position) == null).Select(s => s.Position).ToArray();
             if (closeVillagePositions != null && closeVillagePositions.Length > 0)
@@ -365,7 +363,7 @@ class StrategicArmyCommander
 
         foreach (Army hostileArmy in StrategicUtilities.GetAllHostileArmies(empire))
         {
-            if (StrategicUtilities.ArmyPower(hostileArmy) < MaxDefenderStrength * StrategicUtilities.ArmyPower(army) && hostileArmy.InVillageIndex == -1)
+            if (!hostileArmy.Units.All(u => u.HasTrait(Traits.Infiltrator)) && StrategicUtilities.ArmyPower(hostileArmy) < MaxDefenderStrength * StrategicUtilities.ArmyPower(army) && hostileArmy.InVillageIndex == -1)
             {
                 potentialTargets.Add(hostileArmy.Position);
                 if (hostileArmy.Side >= 100 || hostileArmy.Side == (int)Race.Goblins) //If Monster

@@ -17,6 +17,6 @@ public static class RaceAIType
         { RaceAI.ServantRace, typeof(RaceServantTacticalAI)},
         { RaceAI.NonCombatant, typeof(NonCombatantTacticalAI)},
     };
-    
-    
+
+
 }

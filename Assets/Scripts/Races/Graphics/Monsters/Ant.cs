@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 class Ant : BlankSlate
@@ -26,7 +22,7 @@ class Ant : BlankSlate
 
         if (size == 16 && actor.PredatorComponent.IsUnitOfSpecificationInPrey(Race.Selicia, true, PreyLocation.stomach))
         {
-                return State.GameManager.SpriteDictionary.Ant[19];
+            return State.GameManager.SpriteDictionary.Ant[19];
         }
 
         if (size == 16 && actor.PredatorComponent.IsUnitOfSpecificationInPrey(Race.Selicia, false, PreyLocation.stomach))

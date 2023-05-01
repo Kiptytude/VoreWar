@@ -1,11 +1,10 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Reflection;
-using UnityEngine.UI;
-using TMPro;
-using System;
-using System.Linq;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class VariableEditor : MonoBehaviour
 {
@@ -369,7 +368,7 @@ public class VariableEditor : MonoBehaviour
             }
             var input = obj.GetComponentInChildren<TMP_InputField>();
             if (input != null)
-            {               
+            {
                 if (int.TryParse(input.text, out int result))
                 {
                     var attr = EditingObject.GetType().GetField(obj.name)?.GetCustomAttribute(typeof(IntegerRangeAttribute));

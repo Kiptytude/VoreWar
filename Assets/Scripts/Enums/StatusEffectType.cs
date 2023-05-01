@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-
-public enum StatusEffectType
+﻿public enum StatusEffectType
 {
     /// <summary>Reduces damage taken from attacks by 25%.</summary>
     Shielded,

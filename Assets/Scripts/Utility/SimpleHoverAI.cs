@@ -1,7 +1,5 @@
-﻿using UnityEngine;
-using System.Collections;
-using TMPro;
-using UnityEngine.EventSystems;
+﻿using TMPro;
+using UnityEngine;
 
 public class SimpleHoverAI : MonoBehaviour
 {
@@ -28,7 +26,7 @@ public class SimpleHoverAI : MonoBehaviour
             }
             State.GameManager.HoveringTooltip.UpdateInformationAIOnly(words);
         }
-        
+
     }
 
 }

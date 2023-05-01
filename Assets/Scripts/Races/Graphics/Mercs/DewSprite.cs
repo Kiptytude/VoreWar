@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 class DewSprite : BlankSlate
@@ -17,7 +13,7 @@ class DewSprite : BlankSlate
         CanBeGender = new List<Gender>() { Gender.Female };
         Body = new SpriteExtraInfo(4, BodySprite, WhiteColored);
         BodyAccent = new SpriteExtraInfo(11, BodyAccentSprite, WhiteColored);
-      
+
         Hair = new SpriteExtraInfo(8, HairSprite, WhiteColored);
         Head = new SpriteExtraInfo(6, HeadSprite, WhiteColored);
         Mouth = new SpriteExtraInfo(7, MouthSprite, WhiteColored);
@@ -88,7 +84,7 @@ class DewSprite : BlankSlate
             case 1:
                 return Sprites[51];
             case 2:
-                return Sprites[40]; 
+                return Sprites[40];
             case 3:
                 return Sprites[39];
             case 4:

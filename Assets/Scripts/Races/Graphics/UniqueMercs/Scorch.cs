@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 class Scorch : BlankSlate
@@ -10,7 +6,7 @@ class Scorch : BlankSlate
     public Scorch()
     {
         CanBeGender = new List<Gender>() { Gender.Male };
-		GentleAnimation = true;
+        GentleAnimation = true;
         Body = new SpriteExtraInfo(1, BodySprite, WhiteColored);
         BodyAccent = new SpriteExtraInfo(3, BodyAccentSprite, WhiteColored);
         Belly = new SpriteExtraInfo(2, null, WhiteColored);
@@ -34,8 +30,8 @@ class Scorch : BlankSlate
         {
             if (actor.PredatorComponent.VisibleFullness > 4)
                 return State.GameManager.SpriteDictionary.Scorch[7];
-		}
-		
+        }
+
         return actor.HasBelly ? State.GameManager.SpriteDictionary.Scorch[3 + actor.GetStomachSize(3)] : null;
     }
 }

@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 static class StrategicUtilities
 {
-    private  static Dictionary<Trait, double[][]> TraitPowerFactors = new Dictionary<Trait, double[][]>();
+    private static Dictionary<Trait, double[][]> TraitPowerFactors = new Dictionary<Trait, double[][]>();
     public static Army[] GetAllArmies(bool excludeMonsters = false)
     {
         List<Army> armies = new List<Army>();
@@ -511,7 +509,7 @@ static class StrategicUtilities
                 double weaponFactor;
                 if (unit.GetBestRanged() != null) weaponFactor = 1.5 / 4 * unit.GetBestRanged().Damage;
                 else weaponFactor = unit.GetBestMelee().Damage / 4f;
-                power += weaponFactor * racePower * (((unit.GetScale()-1)*0.9)+1) * Math.Pow(1.2, unit.Level - 1 + effectiveLevelBoost + (unit.GetStatBase(Stat.Leadership) > 0 ? 3 : 0));
+                power += weaponFactor * racePower * (((unit.GetScale() - 1) * 0.9) + 1) * Math.Pow(1.2, unit.Level - 1 + effectiveLevelBoost + (unit.GetStatBase(Stat.Leadership) > 0 ? 3 : 0));
 
             }
             finalPower = count * power;
@@ -540,7 +538,7 @@ static class StrategicUtilities
                 double weaponFactor;
                 if (unit.GetBestRanged() != null) weaponFactor = 1.5 / 4 * unit.GetBestRanged().Damage;
                 else weaponFactor = unit.GetBestMelee().Damage / 4f;
-                power += weaponFactor * racePower * (((unit.GetScale()-1)*0.9)+1) * Math.Pow(1.2, unit.Level - 1 + effectiveLevelBoost + (unit.GetStatBase(Stat.Leadership) > 0 ? 3 : 0));
+                power += weaponFactor * racePower * (((unit.GetScale() - 1) * 0.9) + 1) * Math.Pow(1.2, unit.Level - 1 + effectiveLevelBoost + (unit.GetStatBase(Stat.Leadership) > 0 ? 3 : 0));
             }
             finalPower = count * power;
         }

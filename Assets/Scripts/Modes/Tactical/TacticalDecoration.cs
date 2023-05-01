@@ -1,9 +1,4 @@
-﻿using OdinSerializer;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 
 
@@ -145,12 +140,12 @@ namespace TacticalDecorations
 
         };
 
-    
-   
+
+
         internal static TacDecType[] Bones = new TacDecType[] { TacDecType.DesertBones1, TacDecType.DesertBones2, TacDecType.DesertBones3, TacDecType.DesertBones4 };
         internal static TacDecType[] Rocks = new TacDecType[] { TacDecType.DesertRocks1, TacDecType.DesertRocks2, TacDecType.DesertRocks3, TacDecType.DesertRocks4, TacDecType.DesertRocks5, TacDecType.DesertRocks6, TacDecType.DesertRocks7, TacDecType.DesertRocks8 };
         internal static TacDecType[] Cactus = new TacDecType[] { TacDecType.DesertCactus1, TacDecType.DesertCactus2, TacDecType.DesertCactus3, TacDecType.DesertCactus4, TacDecType.DesertCactus5 };
-        
+
 
         internal static TacDecType[] GrassEnvironment = new TacDecType[] { TacDecType.GrassBush, TacDecType.GrassFlowers1, TacDecType.GrassFlowers2, TacDecType.GrassFlowers3, TacDecType.GrassSmallRock1, TacDecType.GrassSmallRock2, TacDecType.GrassTree1, TacDecType.GrassTree2, TacDecType.GrassMediumRock, TacDecType.GrassHugeRock, TacDecType.GrassBirchTree1, TacDecType.GrassBirchTree2 };
         internal static TacDecType[] GrassPureTrees = new TacDecType[] { TacDecType.GrassTree1, TacDecType.GrassTree2, TacDecType.GrassBirchTree1, TacDecType.GrassBirchTree2 };

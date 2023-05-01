@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 
 public class Rand
@@ -13,7 +9,7 @@ public class Rand
     {
         return rand.Next();
     }
-       
+
 
     internal int Next(int maxValue)
     {

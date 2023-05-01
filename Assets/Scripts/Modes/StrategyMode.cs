@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
-using TMPro;
 
 public class StrategyMode : SceneBase
 {
@@ -310,8 +310,11 @@ public class StrategyMode : SceneBase
         Village village = StrategicUtilities.GetVillageAt(location);
         if (village != null && village.Empire.IsEnemy(left.Empire))
         {
-            State.GameManager.CreateMessageBox("Can't split armies onto an enemy village");
-            return;
+            if (!left.Units.All(u => u.HasTrait(Traits.Infiltrator)))
+            {
+                State.GameManager.CreateMessageBox("Can't split armies onto an enemy village");
+                return;
+            }
         }
         Army right = StrategicUtilities.ArmyAt(location);
         if (right == null)
@@ -363,6 +366,7 @@ public class StrategyMode : SceneBase
     public void RedrawArmies()
     {
         ClearArmies();
+
         foreach (Empire empire in State.World.AllActiveEmpires)
         {
             foreach (Army army in empire.Armies)
@@ -491,13 +495,13 @@ public class StrategyMode : SceneBase
                                 break;
                             case StrategicDoodadType.SpawnerGazelle:
                                 Spawners.Add(new MonsterSpawnerLocation(new Vec2i(i, j), Race.Gazelle));
-                                break; 
+                                break;
                             case StrategicDoodadType.SpawnerEarthworm:
                                 Spawners.Add(new MonsterSpawnerLocation(new Vec2i(i, j), Race.Earthworms));
-                                break; 
+                                break;
                             case StrategicDoodadType.SpawnerFeralLizards:
                                 Spawners.Add(new MonsterSpawnerLocation(new Vec2i(i, j), Race.FeralLizards));
-                                break; 
+                                break;
                             case StrategicDoodadType.SpawnerMonitor:
                                 Spawners.Add(new MonsterSpawnerLocation(new Vec2i(i, j), Race.Monitors));
                                 break;
@@ -548,7 +552,7 @@ public class StrategyMode : SceneBase
                 FogOfWar.ClearAllTiles();
                 FogOfWar.gameObject.SetActive(false);
             }
-
+            UpdateVisibility();
             return;
         }
         FogOfWar.gameObject.SetActive(true);
@@ -563,6 +567,17 @@ public class StrategyMode : SceneBase
         FogSystem.UpdateFog(LastHumanEmpire, State.World.Villages, StrategicUtilities.GetAllArmies(), currentVillageTiles, currentClaimableTiles);
     }
 
+    void UpdateVisibility()
+    {
+        foreach (Army army in StrategicUtilities.GetAllHostileArmies(LastHumanEmpire))
+        {
+            var spr = army.Banner?.GetComponent<MultiStageBanner>();
+            if (spr != null)
+                spr.gameObject.SetActive(!army.Units.All(u => u.HasTrait(Traits.Infiltrator)) || army.Units.Any(u => u.FixedSide == LastHumanEmpire.Side));
+            var spr2 = army.Sprite;
+            if (spr2 != null) spr2.enabled = !army.Units.All(u => u.HasTrait(Traits.Infiltrator)) || army.Units.Any(u => u.FixedSide == LastHumanEmpire.Side);
+        }
+    }
 
     public void RedrawTiles()
     {
@@ -724,7 +739,7 @@ public class StrategyMode : SceneBase
             currentClaimableTiles.Add(villColored);
             currentClaimableTiles.Add(villShield);
             currentClaimableTiles.Add(villShieldInner);
-    }
+        }
 
 
         if (Config.FogOfWar)
@@ -746,7 +761,10 @@ public class StrategyMode : SceneBase
 
     public void Regenerate()
     {
-
+        if (LastHumanEmpire == null)
+        {
+            LastHumanEmpire = State.World.MainEmpires.Where(s => s.StrategicAI == null).FirstOrDefault();
+        }
         foreach (Empire empire in State.World.AllActiveEmpires)
         {
             empire.ArmyCleanup();
@@ -1013,6 +1031,37 @@ public class StrategyMode : SceneBase
                         else if (ExchangerUI.RightArmy.Units.Count == 0)
                         {
                             ExchangerUI.RightArmy.ItemStock.TransferAllItems(ExchangerUI.LeftArmy.ItemStock);
+                        }
+                        if (ExchangerUI.RightArmy.Units.All(u => u.HasTrait(Traits.Infiltrator)))
+                        {
+                            Village village = StrategicUtilities.GetVillageAt(ExchangerUI.RightArmy.Position);
+                            if (village != null && village.Empire.IsEnemy(ExchangerUI.LeftArmy.Empire)) { 
+                                ExchangerUI.RightArmy.Units.ForEach(unit => {
+                                    village.GetRecruitables().Add(unit);
+                                });
+                                ExchangerUI.RightArmy.Empire.Armies.Remove(ExchangerUI.RightArmy);
+                                ExchangerUI.RightArmy.Empire.ArmiesCreated--;
+                            }
+                            else
+                            {
+                                MercenaryHouse mercHouse = StrategicUtilities.GetMercenaryHouseAt(ExchangerUI.RightArmy.Position);
+                                if (mercHouse != null) { 
+                                    ExchangerUI.RightArmy.Units.ForEach(unit => {
+                                        MercenaryContainer merc = new MercenaryContainer();
+                                        merc.Unit = unit;
+                                        merc.Title = $"{unit.Race} - Mercenary";
+                                        var power = State.RaceSettings.Get(merc.Unit.Race).PowerAdjustment;
+                                        if (power == 0)
+                                        {
+                                            power = RaceParameters.GetTraitData(merc.Unit).PowerAdjustment;
+                                        }
+                                        merc.Cost = (int)((25 + State.Rand.Next(15) + (.12 * unit.Experience)) * UnityEngine.Random.Range(0.8f, 1.2f) * power);
+                                        mercHouse.Mercenaries.Add(merc);
+                                    });
+                                }
+                                ExchangerUI.RightArmy.Empire.Armies.Remove(ExchangerUI.RightArmy);
+                                ExchangerUI.RightArmy.Empire.ArmiesCreated--;
+                            }
                         }
                         Regenerate();
                         subWindowUp = false;
@@ -1384,7 +1433,7 @@ public class StrategyMode : SceneBase
             if (maxTrainLevel >= 5) options.Add($"Extreme Training - {trainExp[4]} xp, cost {trainCost[4]}");
             if (maxTrainLevel >= 6) options.Add($"Hero Training - {trainExp[5]} xp, cost {trainCost[5]}");
             if (maxTrainLevel >= 7) options.Add($"Godly Training - {trainExp[6]} xp, cost {trainCost[6]}");
-            
+
             TrainUI.TrainingLevel.ClearOptions();
             TrainUI.TrainingLevel.AddOptions(options);
             if (TrainUI.TrainingLevel.value >= maxTrainLevel)
@@ -1970,7 +2019,7 @@ public class StrategyMode : SceneBase
         if ((Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl)) && Input.GetKeyDown(KeyCode.Z))
         {
             if (UndoButton.gameObject.activeSelf)
-            UndoButton.onClick.Invoke();
+                UndoButton.onClick.Invoke();
         }
 
         UndoButton.gameObject.SetActive(UndoMoves.Any());
@@ -2336,7 +2385,7 @@ public class StrategyMode : SceneBase
         }
         else
         {
-            if (Config.FogOfWar && FogSystem.FoggedTile[armyAtCursor.Position.x, armyAtCursor.Position.y])
+            if (Config.FogOfWar && FogSystem.FoggedTile[armyAtCursor.Position.x, armyAtCursor.Position.y] || (armyAtCursor.Banner != null && !armyAtCursor.Banner.gameObject.activeSelf))
                 return;
             StringBuilder sb = new StringBuilder();
             sb = ArmyToolTip(armyAtCursor);
@@ -2413,7 +2462,7 @@ public class StrategyMode : SceneBase
 
     public override void CleanUp()
     {
-       
+
 
     }
 }

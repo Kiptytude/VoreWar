@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 class Dragonfly : BlankSlate
@@ -11,22 +7,22 @@ class Dragonfly : BlankSlate
 
     public Dragonfly()
     {
-		CanBeGender = new List<Gender>() { Gender.None };
-		
+        CanBeGender = new List<Gender>() { Gender.None };
+
         SkinColors = ColorPaletteMap.GetPaletteCount(ColorPaletteMap.SwapType.Dragonfly);
-		GentleAnimation = true;
+        GentleAnimation = true;
         BodyAccent = new SpriteExtraInfo(2, BodyAccentSprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.Dragonfly, s.Unit.SkinColor)); // Wings
         Body = new SpriteExtraInfo(1, BodySprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.Dragonfly, s.Unit.SkinColor)); // Body
         Head = new SpriteExtraInfo(3, HeadSprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.Dragonfly, s.Unit.SkinColor)); // Head
         Belly = new SpriteExtraInfo(0, null, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.Dragonfly, s.Unit.SkinColor)); // Belly
     }
 
-	internal void SetUpAnimations(Actor_Unit actor)
+    internal void SetUpAnimations(Actor_Unit actor)
     {
         actor.AnimationController.frameLists = new AnimationController.FrameList[] {
             new AnimationController.FrameList(State.Rand.Next(0, 3), 0, true)};  // Wing controller. Index 0.
     }
-	
+
     internal override Sprite BellySprite(Actor_Unit actor, GameObject belly) // Belly
     {
         if (actor.Unit.Predator == false)
@@ -40,22 +36,22 @@ class Dragonfly : BlankSlate
         if (!actor.HasBelly)
             return State.GameManager.SpriteDictionary.Dragonfly[6];
         return State.GameManager.SpriteDictionary.Dragonfly[7 + actor.GetStomachSize(19)];
-    } 
+    }
 
     protected override Sprite BodySprite(Actor_Unit actor) // Body
     {
 
-	    if (actor.AnimationController.frameLists == null) SetUpAnimations(actor);
+        if (actor.AnimationController.frameLists == null) SetUpAnimations(actor);
 
-		return State.GameManager.SpriteDictionary.Dragonfly[2];
+        return State.GameManager.SpriteDictionary.Dragonfly[2];
 
-	}
+    }
 
     protected override Sprite HeadSprite(Actor_Unit actor) // Head
     {
-		if (actor.IsOralVoring || actor.IsAttacking) return State.GameManager.SpriteDictionary.Dragonfly[1];
-        
-		return State.GameManager.SpriteDictionary.Dragonfly[0];
+        if (actor.IsOralVoring || actor.IsAttacking) return State.GameManager.SpriteDictionary.Dragonfly[1];
+
+        return State.GameManager.SpriteDictionary.Dragonfly[0];
     }
 
     protected override Sprite BodyAccentSprite(Actor_Unit actor) // Wings

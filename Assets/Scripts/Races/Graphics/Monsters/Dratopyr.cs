@@ -1,12 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 class Dratopyr : BlankSlate
 {
     RaceFrameList frameListTail = new RaceFrameList(new int[8] { 2, 1, 0, 1, 2, 3, 4, 3 }, new float[8] { 0.55f, 0.55f, 0.75f, 0.55f, 0.55f, 0.55f, 0.75f, 0.55f });
     RaceFrameList frameListEyes = new RaceFrameList(new int[3] { 1, 2, 1 }, new float[3] { 0.3f, 0.3f, 0.3f });
-    RaceFrameList frameListShake = new RaceFrameList(new int[5] { 0, 1, 0, 2, 0}, new float[5] { 0.6f, 0.6f, 0.6f, 0.6f, 0.6f });
+    RaceFrameList frameListShake = new RaceFrameList(new int[5] { 0, 1, 0, 2, 0 }, new float[5] { 0.6f, 0.6f, 0.6f, 0.6f, 0.6f });
     RaceFrameList frameListWings = new RaceFrameList(new int[4] { 0, 1, 2, 1 }, new float[4] { 0.3f, 0.3f, 0.3f, 0.3f });
     RaceFrameList frameListEars = new RaceFrameList(new int[18] { 0, 1, 2, 1, 0, 1, 0, 1, 2, 1, 2, 1, 0, 1, 2, 1, 2, 1 }, new float[18] { 2.2f, 0.3f, 0.5f, 0.2f, 0.8f, 0.3f, 1.5f, 0.9f, 1.3f, 0.6f, 0.4f, 0.3f, 2.2f, 1.5f, 0.6f, 0.3f, 0.8f, 0.2f });
 
@@ -266,7 +265,7 @@ class Dratopyr : BlankSlate
 
         else if (actor.PredatorComponent?.IsUnitOfSpecificationInPrey(Race.Selicia, false, PreyLocation.balls) ?? false)
         {
-            
+
             if (ballSize > 19) return State.GameManager.SpriteDictionary.Dratopyr[96 + shake];
             if (ballSize > 17) return State.GameManager.SpriteDictionary.Dratopyr[93 + shake];
             if (ballSize > 15) return State.GameManager.SpriteDictionary.Dratopyr[90 + shake];
@@ -348,7 +347,7 @@ class Dratopyr : BlankSlate
             else return State.GameManager.SpriteDictionary.Dratopyr[171];
         }
 
-            return null;
+        return null;
     }
 
     internal override Sprite BellySprite(Actor_Unit actor, GameObject belly)

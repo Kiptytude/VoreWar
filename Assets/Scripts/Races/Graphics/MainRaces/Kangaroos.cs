@@ -1,9 +1,6 @@
 ﻿using KangarooClothes;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 class Kangaroos : DefaultRaceData
@@ -83,7 +80,7 @@ class Kangaroos : DefaultRaceData
     internal override void RandomCustom(Unit unit)
     {
         base.RandomCustom(unit);
-        
+
         if (unit.Type == UnitType.Mercenary)
         {
             if (State.Rand.Next(3) == 0)
@@ -161,8 +158,8 @@ class Kangaroos : DefaultRaceData
                 return State.GameManager.SpriteDictionary.Kangaroos[137 + actor.GetBallSize(10)];
             }
             return State.GameManager.SpriteDictionary.Kangaroos[50 + actor.Unit.DickSize];
-        }          
-        
+        }
+
         return null;
     }
 
@@ -252,7 +249,7 @@ class Kangaroos : DefaultRaceData
         return SpriteForAccessory(actor, ref acc);
     }
 
-     protected override Sprite BodyAccentSprite4(Actor_Unit actor)
+    protected override Sprite BodyAccentSprite4(Actor_Unit actor)
     {
         Accessory acc = null;
         if (actor.Unit.Items == null || actor.Unit.Items.Length < 2)
@@ -262,7 +259,7 @@ class Kangaroos : DefaultRaceData
         return SpriteForAccessory(actor, ref acc);
     }
 
-     protected override Sprite BodyAccentSprite5(Actor_Unit actor)
+    protected override Sprite BodyAccentSprite5(Actor_Unit actor)
     {
         Accessory acc = null;
         if (actor.Unit.Items == null || actor.Unit.Items.Length < 3)
@@ -326,15 +323,15 @@ class Kangaroos : DefaultRaceData
 
     protected override Sprite HeadSprite(Actor_Unit actor)
     {
-        if (actor.Unit.Level> 15)
+        if (actor.Unit.Level > 15)
             return State.GameManager.SpriteDictionary.Kangaroos[114];
-        else if (actor.Unit.Level> 10)
+        else if (actor.Unit.Level > 10)
             return State.GameManager.SpriteDictionary.Kangaroos[113];
-        else if (actor.Unit.Level> 7)
+        else if (actor.Unit.Level > 7)
             return State.GameManager.SpriteDictionary.Kangaroos[112];
-        else if (actor.Unit.Level> 5)
+        else if (actor.Unit.Level > 5)
             return State.GameManager.SpriteDictionary.Kangaroos[111];
-        else if (actor.Unit.Level> 3)
+        else if (actor.Unit.Level > 3)
             return State.GameManager.SpriteDictionary.Kangaroos[110];
         return null;
     }

@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using OdinSerializer;
 using UnityEngine;
-using OdinSerializer;
 
 class BoneInfo
 {

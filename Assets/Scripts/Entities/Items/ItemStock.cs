@@ -1,9 +1,6 @@
 ﻿using OdinSerializer;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 
 class ItemStock
@@ -74,13 +71,13 @@ class ItemStock
                     for (int i = 0; i < item.Value; i++)
                     {
                         items.Add(item.Key);
-                    }                    
+                    }
                 }
             }
         }
         return items;
     }
-    internal List <ItemType> SellAllWeaponsAndAccessories(Empire empire)
+    internal List<ItemType> SellAllWeaponsAndAccessories(Empire empire)
     {
         if (Items == null)
             Items = new Dictionary<ItemType, int>();

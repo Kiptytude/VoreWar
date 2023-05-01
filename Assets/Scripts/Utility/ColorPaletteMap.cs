@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 public static class ColorPaletteMap
@@ -340,7 +337,7 @@ public static class ColorPaletteMap
             swap = new ColorSwapPalette(swapDict, clear);
             MouthColorSwaps.Add(swap);
         }
-        
+
         map = State.GameManager.PaletteDictionary.Skin;
         for (int pixelY = 0; pixelY < map.height; pixelY++)
         {
@@ -568,7 +565,7 @@ public static class ColorPaletteMap
                 [255] = map.GetPixel(0, pixelY),
             };
             ColorSwapPalette swap = new ColorSwapPalette(swapDict);
-            OldImpDarkSwaps.Add(swap);            
+            OldImpDarkSwaps.Add(swap);
         }
 
         {
@@ -1760,9 +1757,9 @@ public static class ColorPaletteMap
             Dictionary<int, Color> swapDict = new Dictionary<int, Color>
             {
                 [87] = map.GetPixel(2, pixelY),
-                [91] = map.GetPixel(1, pixelY), 
+                [91] = map.GetPixel(1, pixelY),
                 [108] = map.GetPixel(0, pixelY),
-                
+
             };
             ColorSwapPalette swap = new ColorSwapPalette(swapDict);
             FeralLionsManeSwaps.Add(swap);

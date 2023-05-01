@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 class Kobolds : BlankSlate
@@ -62,7 +59,7 @@ class Kobolds : BlankSlate
     {
         if (actor.Unit.Predator)
         {
-            float ballsYOffset = 0;            
+            float ballsYOffset = 0;
             int ballSize = actor.Unit.DickSize + actor.GetBallSize(16 - actor.Unit.DickSize);
             if (ballSize == 13) ballsYOffset = 14;
             if (ballSize == 14) ballsYOffset = 16;
@@ -355,7 +352,7 @@ class Kobolds : BlankSlate
     {
         public LoinCloth()
         {
-            
+
             clothing1 = new SpriteExtraInfo(10, null, null);
         }
 

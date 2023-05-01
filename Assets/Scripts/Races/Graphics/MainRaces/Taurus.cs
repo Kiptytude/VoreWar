@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TaurusClothes;
 using UnityEngine;
 
@@ -54,7 +51,7 @@ class Taurus : DefaultRaceData
         {
             TaurusClothingTypes.Overall,
             TaurusClothingTypes.Shirt,
-            TaurusClothingTypes.Bikini,            
+            TaurusClothingTypes.Bikini,
             TaurusClothingTypes.LeaderOutfit,
             TaurusClothingTypes.HolidayOutfit,
         };

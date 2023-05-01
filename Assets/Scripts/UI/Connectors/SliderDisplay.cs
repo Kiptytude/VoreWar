@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Assets.Scripts.UI.Connectors 
+namespace Assets.Scripts.UI.Connectors
 {
     public class SliderDisplay : MonoBehaviour
     {
@@ -16,7 +12,7 @@ namespace Assets.Scripts.UI.Connectors
 
         private void Start()
         {
-            DisplayText.text = Math.Round(Slider.value,3).ToString();
+            DisplayText.text = Math.Round(Slider.value, 3).ToString();
         }
 
         public void UpdateValue()

@@ -1,8 +1,6 @@
 ﻿using OdinSerializer;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 internal class ClothingDiscards
@@ -41,7 +39,7 @@ internal class ClothingDiscards
 
         if (AllClothes.Any() == false)
         {
-            AllClothes = new List<MainClothing>();            
+            AllClothes = new List<MainClothing>();
             AllClothes.AddRange(ClothingTypes.All);
             AllClothes.AddRange(RaceSpecificClothing.All);
             AllClothes.AddRange(TaurusClothes.TaurusClothingTypes.All);
@@ -87,7 +85,7 @@ internal class ClothingDiscards
             AllClothes.AddRange(Races.Vargul.AllowedMainClothingTypes);
             AllClothes.AddRange(Races.Vargul.AllowedWaistTypes);
             AllClothes = AllClothes.Distinct().ToList();
-        }        
+        }
         var clothingType = AllClothes.Where(s => s.Type == type).FirstOrDefault();
         if (clothingType == null)
             return;

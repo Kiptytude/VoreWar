@@ -1,7 +1,6 @@
 using OdinSerializer;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 public abstract class TacticalAI : ITacticalAI
@@ -43,8 +42,9 @@ public abstract class TacticalAI : ITacticalAI
         }
     }
 
-    protected bool onlySurrendered;
+    protected bool onlySurrenderedEnemies;
     protected bool lackPredators;
+    protected bool onlyForeignTroopsLeft;
 
     protected bool didAction;
     protected bool foundPath;
@@ -91,7 +91,7 @@ public abstract class TacticalAI : ITacticalAI
     }
 
     public TacticalAI(List<Actor_Unit> actors, TacticalTileType[,] tiles, int AISide, bool defendingVillage = false)
-    {      
+    {
         this.AISide = AISide;
         this.tiles = tiles;
         this.actors = actors;
@@ -104,11 +104,13 @@ public abstract class TacticalAI : ITacticalAI
         if (actors == null)
             actors = TacticalUtilities.Units;
         path = null;
-        onlySurrendered = actors.Where(s => s.Unit.Side != AISide && s.Unit.IsDead == false && s.Surrendered == false && !s.Fled).Any() == false;
+        var actorsThatMatter = actors.Where(a => a.Targetable && a.Unit.IsDead == false && a.Surrendered == false && a.Unit.Side == AISide);
+        onlyForeignTroopsLeft = actorsThatMatter.All(a => TacticalUtilities.GetPreferredSide(a.Unit, enemySide, AISide) == enemySide);
+        onlySurrenderedEnemies = actors.Where(s => s.Unit.Side != AISide && s.Unit.IsDead == false && s.Surrendered == false && !s.Fled).Any() == false;
         var preds = actors.Where(s => s.Unit.Side == AISide && s.Unit.IsDead == false && s.Unit.Predator);
         lackPredators = preds.Any() == false;
         bool tooBig = true;
-        if (onlySurrendered)
+        if (onlySurrenderedEnemies)
         {
             var enemies = actors.Where(s => s.Unit.Side != AISide && s.Unit.IsDead == false);
             foreach (var actor in preds)
@@ -129,7 +131,7 @@ public abstract class TacticalAI : ITacticalAI
 
         if (retreatPlan != null && currentTurn >= 4)
         {
-            if (currentTurn >= 8 && retreatPlan.targetsEaten > 0 && retreatPlan.targetsEaten <= targetsEaten && onlySurrendered == false)
+            if (currentTurn >= 8 && retreatPlan.targetsEaten > 0 && retreatPlan.targetsEaten <= targetsEaten && onlySurrenderedEnemies == false)
             {
                 if (retreating == false)
                 {
@@ -245,7 +247,7 @@ public abstract class TacticalAI : ITacticalAI
                     State.GameManager.TacticalMode.StatusUI.EndTurn.interactable = true;
                     return true;
                 }
-                    State.GameManager.TacticalMode.PseudoTurn = false;
+                State.GameManager.TacticalMode.PseudoTurn = false;
                 if (path != null && path.Actor == actor)
                 {
                     if (retreating && actor.Movement == 1 && TacticalUtilities.TileContainsMoreThanOneUnit(actor.Position.x, actor.Position.y) == false)
@@ -293,8 +295,10 @@ public abstract class TacticalAI : ITacticalAI
                 }
                 else
                 {
+                    if (onlyForeignTroopsLeft)
+                        HandleLeftoverForeigns(actor);
                     GetNewOrder(actor);
-                    return true;
+                    return true; 
                 }
             }
         }
@@ -553,19 +557,22 @@ public abstract class TacticalAI : ITacticalAI
             {
                 if (actor.Unit.HasTrait(Traits.RangedVore))
                 {
-                    MoveToAndAction(actor, targets[0].actor.Position, 1, 999, () => {
+                    MoveToAndAction(actor, targets[0].actor.Position, 1, 999, () =>
+                    {
                         if (actor.PredatorComponent.UsePreferredVore(targets[0].actor))
                             targetsEaten++;
                     }); //If anydistance is off, this will already be limited to the units move radius
                     if (foundPath && path.Path.Count() < actor.Movement)
                         break;
-                    MoveToAndAction(actor, targets[0].actor.Position, 4, 999, () => {
+                    MoveToAndAction(actor, targets[0].actor.Position, 4, 999, () =>
+                    {
                         if (actor.PredatorComponent.UsePreferredVore(targets[0].actor))
                             targetsEaten++;
                     }); //If anydistance is off, this will already be limited to the units move radius                                      
                 }
                 else
-                    MoveToAndAction(actor, targets[0].actor.Position, 1, 999, () => {
+                    MoveToAndAction(actor, targets[0].actor.Position, 1, 999, () =>
+                    {
                         if (actor.PredatorComponent.UsePreferredVore(targets[0].actor))
                             targetsEaten++;
                     }); //If anydistance is off, this will already be limited to the units move radius
@@ -827,7 +834,7 @@ public abstract class TacticalAI : ITacticalAI
 
         foreach (Actor_Unit unit in actors)
         {
-            if (unit.Targetable == true && TacticalUtilities.FreeSpaceAroundTarget(unit.Position, actor) && TacticalUtilities.TreatAsHostile(actor, unit) && (unit.Surrendered == false || (onlySurrendered && lackPredators) || currentTurn > 150))
+            if (unit.Targetable == true && TacticalUtilities.FreeSpaceAroundTarget(unit.Position, actor) && TacticalUtilities.TreatAsHostile(actor, unit) && (unit.Surrendered == false || (onlySurrenderedEnemies && lackPredators) || currentTurn > 150))
             {
                 int distance = unit.Position.GetNumberOfMovesDistance(position);
                 if (distance <= 2 + moves)
@@ -919,7 +926,7 @@ public abstract class TacticalAI : ITacticalAI
         {
             if (target?.Unit == null) //If this doesn't prevent exceptions I might have to just try/catch this function.  
                 continue;
-            if (target.Targetable == true && TacticalUtilities.TreatAsHostile(actor, target) && (target.Surrendered == false || (onlySurrendered && lackPredators) || currentTurn > 150))
+            if (target.Targetable == true && TacticalUtilities.TreatAsHostile(actor, target) && (target.Surrendered == false || (onlySurrenderedEnemies && lackPredators) || currentTurn > 150))
             {
                 int distance = target.Position.GetNumberOfMovesDistance(position);
                 float chance = target.GetAttackChance(actor, true, true);
@@ -1009,7 +1016,7 @@ public abstract class TacticalAI : ITacticalAI
 
         foreach (Actor_Unit unit in actors)
         {
-            if (unit.Targetable == true && TacticalUtilities.TreatAsHostile(actor, unit) && (unit.Surrendered == false || (onlySurrendered && lackPredators) || currentTurn > 150))
+            if (unit.Targetable == true && TacticalUtilities.TreatAsHostile(actor, unit) && (unit.Surrendered == false || (onlySurrenderedEnemies && lackPredators) || currentTurn > 150))
             {
 
                 int distance = unit.Position.GetNumberOfMovesDistance(position);
@@ -1294,6 +1301,17 @@ public abstract class TacticalAI : ITacticalAI
     protected virtual bool IsRanged(Actor_Unit actor)
     {
         return actor.BestRanged != null;
+    }
+
+    public virtual void HandleLeftoverForeigns(Actor_Unit actor) // You are facing an army that's actually your allies. Everyone that wasn't a friend on your side of the battlefield is dead. What do you do?
+    {
+       if (actor.Unit.HasTrait(Traits.Infiltrator)) // You were there to cause the enemy a headache, get right back to it!
+        {
+            retreating = true;                      // Will hopefully cause inattentive opponents to have these sneaking right back into their cities
+            return;
+        }
+        // I guess currently in all other cases you'd wanna defect
+        State.GameManager.TacticalMode.SwitchAlignment(actor);
     }
 
 

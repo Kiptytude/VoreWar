@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -123,7 +122,11 @@ public class RightClickMenu : MonoBehaviour
 
     public void CreateButtons(Actor_Unit actor, Actor_Unit target)
     {
-
+        bool sneakAttack = false;
+        if (actor.Unit.GetApparentSide(target.Unit) == target.Unit.GetApparentSide() && actor.Unit.IsInfiltratingSide(target.Unit.GetApparentSide()))
+        {
+            sneakAttack = true;
+        }
         //var racePar = RaceParameters.GetTraitData(actor.Unit.Race);
         int currentButton = 0;
         const int ButtonCount = MaxButtons;
@@ -177,7 +180,7 @@ public class RightClickMenu : MonoBehaviour
         }
 
 
-        if (target.Unit.Side == actor.Unit.Side)
+        if ((target.Unit.GetApparentSide(actor.Unit) == actor.Unit.GetApparentSide() || target.Unit.GetApparentSide(actor.Unit) == actor.Unit.FixedSide))
         {
             foreach (Spell spell in actor.Unit.UseableSpells)
             {
@@ -219,36 +222,13 @@ public class RightClickMenu : MonoBehaviour
                     currentButton = AddVore(actor, currentButton, data2);
                 }
                 ActivateButtons(currentButton);
-                return;
             }
         }
-        Buttons[currentButton].onClick.AddListener(() => State.GameManager.TacticalMode.MeleeAttack(actor, target));
-        Buttons[currentButton].onClick.AddListener(FinishAction);
-        int damage = actor.WeaponDamageAgainstTarget(target, false);
-        Buttons[currentButton].GetComponentInChildren<Text>().text = $"Melee Attack {Math.Round(100 * target.GetAttackChance(actor, false, true))}% {(damage >= target.Unit.Health ? "Kill" : $"{damage} dmg")} ";
-        if (range != 1)
-            Buttons[currentButton].interactable = false;
-        currentButton++;
-
-
-        if (actor.BestRanged != null)
-        {
-            Buttons[currentButton].onClick.AddListener(() => State.GameManager.TacticalMode.RangedAttack(actor, target));
-            Buttons[currentButton].onClick.AddListener(FinishAction);
-            damage = actor.WeaponDamageAgainstTarget(target, true);
-            Buttons[currentButton].GetComponentInChildren<Text>().text = $"Ranged Attack {Math.Round(100 * target.GetAttackChance(actor, true, true))}% {(damage >= target.Unit.Health ? "Kill" : $"{damage} dmg")} ";
-            if (actor.BestRanged.Omni == false && (range < 2 || range > actor.BestRanged.Range))
-                Buttons[currentButton].interactable = false;
-            currentButton++;
-        }
-
-
         float devourChance;
         if (actor.Unit.Predator)
             devourChance = Mathf.Round(100 * target.GetDevourChance(actor, true));
         else
             devourChance = 0;
-
         CommandData data = new CommandData()
         {
             Actor = actor,
@@ -256,55 +236,78 @@ public class RightClickMenu : MonoBehaviour
             Range = range,
             DevourChance = devourChance
         };
-
-        if (actor.Unit.UseableSpells != null)
+        int damage = actor.WeaponDamageAgainstTarget(target, false);
+        if (!(target.Unit.GetApparentSide(actor.Unit) == actor.Unit.FixedSide && target.Unit.GetApparentSide(actor.Unit) == actor.Unit.GetApparentSide()))
         {
-            foreach (Spell spell in actor.Unit.UseableSpells)
-            {
-                if (spell.AcceptibleTargets.Contains(AbilityTargets.Enemy))
-                {
-                    if (spell == SpellList.Maw)
-                        currentButton = AddSpell(spell, actor, target, currentButton, range, target.GetMagicChance(actor, spell) * target.GetDevourChance(actor, skillBoost: actor.Unit.GetStat(Stat.Mind)));
-                    else
-                        currentButton = AddSpell(spell, actor, target, currentButton, range, target.GetMagicChance(actor, spell));
-                }
-            }
-        }
+            Buttons[currentButton].onClick.AddListener(() => State.GameManager.TacticalMode.MeleeAttack(actor, target));
+            Buttons[currentButton].onClick.AddListener(FinishAction);
+            Buttons[currentButton].GetComponentInChildren<Text>().text = $"Melee Attack {Math.Round(100 * target.GetAttackChance(actor, false, true))}% {(damage >= target.Unit.Health ? "Kill" : $"{damage} dmg")} ";
+            if (range != 1)
+                Buttons[currentButton].interactable = false;
+            currentButton++;
 
 
-        if (actor.Unit.HasTrait(Traits.Pounce))
-        {
-            Buttons[currentButton].onClick.AddListener(() => CreatePounceButtons(actor, target));
-            if (actor.Movement > 1)
+            if (actor.BestRanged != null)
             {
-                Buttons[currentButton].GetComponentInChildren<Text>().text = "Pounces =>";
-                var trigger = Buttons[currentButton].gameObject.AddComponent<EventTrigger>();
-                EventTrigger.Entry entry = new EventTrigger.Entry
-                {
-                    eventID = EventTriggerType.PointerEnter
-                };
-                entry.callback.AddListener((s) => { CreatePounceButtons(actor, target); });
-                trigger.triggers.Add(entry);
-                entry = new EventTrigger.Entry
-                {
-                    eventID = EventTriggerType.PointerExit
-                };
-                entry.callback.AddListener((s) => { Invoke("QueueCloseLoop", .25f); });
-                trigger.triggers.Add(entry);
-                if (range < 2 || range > 4)
+                Buttons[currentButton].onClick.AddListener(() => State.GameManager.TacticalMode.RangedAttack(actor, target));
+                Buttons[currentButton].onClick.AddListener(FinishAction);
+                damage = actor.WeaponDamageAgainstTarget(target, true);
+                Buttons[currentButton].GetComponentInChildren<Text>().text = $"Ranged Attack {Math.Round(100 * target.GetAttackChance(actor, true, true))}% {(damage >= target.Unit.Health ? "Kill" : $"{damage} dmg")} ";
+                if (actor.BestRanged.Omni == false && (range < 2 || range > actor.BestRanged.Range))
                     Buttons[currentButton].interactable = false;
                 currentButton++;
             }
-            else
-            {
-                Buttons[currentButton].GetComponentInChildren<Text>().text = "Pounces (No AP)";
-                Buttons[currentButton].interactable = false;
-                currentButton++;
-            }           
 
+
+            if (actor.Unit.UseableSpells != null)
+            {
+                foreach (Spell spell in actor.Unit.UseableSpells)
+                {
+                    if (spell.AcceptibleTargets.Contains(AbilityTargets.Enemy))
+                    {
+                        if (spell == SpellList.Maw)
+                            currentButton = AddSpell(spell, actor, target, currentButton, range, target.GetMagicChance(actor, spell) * target.GetDevourChance(actor, skillBoost: actor.Unit.GetStat(Stat.Mind)));
+                        else
+                            currentButton = AddSpell(spell, actor, target, currentButton, range, target.GetMagicChance(actor, spell));
+                    }
+                }
+            }
+
+
+            if (actor.Unit.HasTrait(Traits.Pounce))
+            {
+                Buttons[currentButton].onClick.AddListener(() => CreatePounceButtons(actor, target));
+                if (actor.Movement > 1)
+                {
+                    Buttons[currentButton].GetComponentInChildren<Text>().text = "Pounces =>";
+                    var trigger = Buttons[currentButton].gameObject.AddComponent<EventTrigger>();
+                    EventTrigger.Entry entry = new EventTrigger.Entry
+                    {
+                        eventID = EventTriggerType.PointerEnter
+                    };
+                    entry.callback.AddListener((s) => { CreatePounceButtons(actor, target); });
+                    trigger.triggers.Add(entry);
+                    entry = new EventTrigger.Entry
+                    {
+                        eventID = EventTriggerType.PointerExit
+                    };
+                    entry.callback.AddListener((s) => { Invoke("QueueCloseLoop", .25f); });
+                    trigger.triggers.Add(entry);
+                    if (range < 2 || range > 4)
+                        Buttons[currentButton].interactable = false;
+                    currentButton++;
+                }
+                else
+                {
+                    Buttons[currentButton].GetComponentInChildren<Text>().text = "Pounces (No AP)";
+                    Buttons[currentButton].interactable = false;
+                    currentButton++;
+                }
+
+            }
         }
 
-	if (target.Unit.Side != actor.Unit.Side && 
+        if ((target.Unit.GetApparentSide(actor.Unit) != actor.Unit.GetApparentSide() && target.Unit.GetApparentSide(actor.Unit) != actor.Unit.FixedSide) &&
             (Config.CanUseStomachRubOnEnemies || actor.Unit.HasTrait(Traits.SeductiveTouch)))
         {
             Buttons[currentButton].onClick.AddListener(() => actor.BellyRub(target));
@@ -315,7 +318,7 @@ public class RightClickMenu : MonoBehaviour
                 Buttons[currentButton].GetComponentInChildren<Text>().text = "Belly Rub\nAlready rubbed";
             }
             else
-                Buttons[currentButton].GetComponentInChildren<Text>().text = "Belly Rub" + (actor.Unit.HasTrait(Traits.SeductiveTouch) ? " (Seduce " + Math.Round(100 * target.GetPureStatClashChance(actor.Unit.GetStat(Stat.Dexterity), target.Unit.GetStat(Stat.Will), .1f)) + "%)" :  "");
+                Buttons[currentButton].GetComponentInChildren<Text>().text = "Belly Rub" + (actor.Unit.HasTrait(Traits.SeductiveTouch) ? " (Seduce " + Math.Round(100 * target.GetPureStatClashChance(actor.Unit.GetStat(Stat.Dexterity), target.Unit.GetStat(Stat.Will), .1f)) + "%)" : "");
             if (range != 1 || !(target.PredatorComponent?.Fullness > 0))                                     // Still can't rub empty bellies
                 Buttons[currentButton].interactable = false;
             currentButton++;
@@ -510,7 +513,7 @@ public class RightClickMenu : MonoBehaviour
         PounceButtons[currentButton].onClick.AddListener(() => actor.MeleePounce(target));
         PounceButtons[currentButton].onClick.AddListener(FinishAction);
         int damage = actor.WeaponDamageAgainstTarget(target, false);
-        PounceButtons[currentButton].GetComponentInChildren<Text>().text = $"Melee Pounce {Math.Round(100 * target.GetAttackChance(actor, false, true))}% {(damage >= target.Unit.Health ? "Kill" : $"{ damage} dmg")}";
+        PounceButtons[currentButton].GetComponentInChildren<Text>().text = $"Melee Pounce {Math.Round(100 * target.GetAttackChance(actor, false, true))}% {(damage >= target.Unit.Health ? "Kill" : $"{damage} dmg")}";
         if (range < 2 || range > 4)
             PounceButtons[currentButton].interactable = false;
         currentButton++;

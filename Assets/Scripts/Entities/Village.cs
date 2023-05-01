@@ -2,7 +2,6 @@ using OdinSerializer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.NetworkInformation;
 using UnityEngine;
 
 
@@ -19,6 +18,7 @@ public class Village
 
     [OdinSerialize]
     public int Side { get; private set; }
+
     [OdinSerialize]
     public Race Race { get; set; }
     [OdinSerialize]
@@ -301,10 +301,10 @@ public class Village
             {
                 float currentHappiness = Happiness;
                 ChangeOwner(raceEmp.Side);
-                Happiness = currentHappiness;                
+                Happiness = currentHappiness;
                 RelationsManager.CityReturned(tempOwner, raceEmp);
                 return;
-            }          
+            }
         }
 
 
@@ -1122,7 +1122,7 @@ public class Village
     }
 
     /// <summary>
-    /// The same as Recruit Player unit, only it automatically tries hiring from the adventurers/mercs/hireables first
+    /// The same as Recruit Player unit, only it automatically tries hiring from the infiltrators/adventurers/mercs/hireables first
     /// </summary>
     internal Unit RecruitAIUnit(Empire empire, Army army)
     {
@@ -1132,6 +1132,20 @@ public class Village
         {
             if (army.Units.Count < army.MaxSize)
             {
+                if (VillagePopulation.GetRecruitables().Where(rec => rec.IsInfiltratingSide(Side)).Count() > 0 && army.Side == Side)
+                {
+                    Unit unit = VillagePopulation.GetRecruitables().Where(rec => rec.IsInfiltratingSide(Side)).OrderByDescending(s => s.Experience).First();
+
+                    var startingExp = GetStartingXp();
+                    if (unit.Experience < startingExp)
+                        unit.SetExp(startingExp);
+                    unit.AddTraits(GetTraitsToAdd());
+                    army.Units.Add(unit);
+                    unit.Side = army.Side;
+                    empire.SpendGold(Config.ArmyCost);
+                    VillagePopulation.RemoveHireable(unit);
+                    return unit;
+                }
                 if (Adventurers?.Count > 0)
                 {
                     MercenaryContainer merc = Adventurers.OrderByDescending(s => s.Unit.Experience).First();

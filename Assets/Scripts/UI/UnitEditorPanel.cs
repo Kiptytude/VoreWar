@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,7 +10,7 @@ public class UnitEditorPanel : CustomizerPanel
     public TMP_Dropdown RaceDropdown;
     public TMP_Dropdown TraitDropdown;
     public TMP_Dropdown[] ItemDropdown;
-    public TMP_Dropdown[] SpellDropdown; 
+    public TMP_Dropdown[] SpellDropdown;
     public TMP_Dropdown AlignmentDropdown;
     public Toggle HiddenToggle;
     public UnitInfoPanel InfoPanel;
@@ -112,7 +110,7 @@ public class UnitEditorPanel : CustomizerPanel
                 AlignmentDropdown.options.Add(new TMP_Dropdown.OptionData(mainEmps[i].Name));
                 empireDict[i + 1] = mainEmps[i];
             }
-            
+
             if (State.World.MonsterEmpires != null)
             {
                 var monsterEmps = State.World.MonsterEmpires;
@@ -191,7 +189,7 @@ public class UnitEditorPanel : CustomizerPanel
         SwapAlignment.gameObject.SetActive(State.GameManager.CurrentScene == State.GameManager.TacticalMode);
         ChangeUnitButtons(actor.Unit);
         UpdateButtons();
-        
+
     }
 
     private string DetermineAllignment(Actor_Unit actor)
@@ -199,7 +197,8 @@ public class UnitEditorPanel : CustomizerPanel
         if (State.World?.MainEmpires != null)
         {
             return State.World.GetEmpireOfSide(actor.Unit.FixedSide).Name;
-        } else
+        }
+        else
             return actor.Unit.FixedSide == State.GameManager.TacticalMode.GetDefenderSide() ? "Defender" : "Attacker";
     }
 
@@ -228,7 +227,7 @@ public class UnitEditorPanel : CustomizerPanel
         PopulateItems();
         TraitList.text = UnitEditor.Unit.ListTraits();
         SwapAlignment.gameObject.SetActive(State.GameManager.CurrentScene == State.GameManager.TacticalMode);
-        
+
         ChangeUnitButtons(unit);
         UpdateButtons();
     }
@@ -347,7 +346,7 @@ public class UnitEditorPanel : CustomizerPanel
                 SpellDropdown[i].value = 0;
             SpellDropdown[i].RefreshShownValue();
         }
-        
+
     }
 
     public void ChangeItem(int slot)
@@ -429,7 +428,7 @@ public class UnitEditorPanel : CustomizerPanel
             UnitEditor.Unit.ModifyStat(stat, s - UnitEditor.Unit.GetStatBase(stat));
             UnitEditor.RefreshStats();
             UpdateButtons();
-            }, "Change", "Cancel", $"Modify {stat}?", 6);
+        }, "Change", "Cancel", $"Modify {stat}?", 6);
     }
 
     public void AddTraitsText()

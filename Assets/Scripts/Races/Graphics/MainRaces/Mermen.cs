@@ -1,9 +1,5 @@
 ﻿using MermenClothing;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 class Mermen : DefaultRaceData
@@ -126,7 +122,7 @@ class Mermen : DefaultRaceData
                 unit.HairStyle = State.Rand.Next(6);
             }
         }
-        
+
         unit.BodyAccentType2 = State.Rand.Next(BodyAccentTypes2);
         unit.BodyAccentType4 = State.Rand.Next(BodyAccentTypes4);
 
@@ -165,7 +161,7 @@ class Mermen : DefaultRaceData
             AddOffset(Balls, 0, 7);
         }
     }
-    
+
     internal override int BreastSizes => 8;
 
     protected override Sprite BodySprite(Actor_Unit actor)
@@ -190,7 +186,7 @@ class Mermen : DefaultRaceData
     }
 
     protected override Sprite AccessorySprite(Actor_Unit actor) => Sprites[72 + actor.Unit.SpecialAccessoryType]; //ears
-    
+
     protected override Sprite BodyAccentSprite(Actor_Unit actor) // fish tail
     {
         if (actor.Unit.HasBreasts)
@@ -239,13 +235,13 @@ class Mermen : DefaultRaceData
             return Sprites[23];
         return Sprites[24 + actor.Unit.MouthType];
     }
-    
+
     protected override Sprite HairSprite(Actor_Unit actor) => Sprites[84 + actor.Unit.HairStyle];
 
     protected override Sprite HairSprite2(Actor_Unit actor) => Sprites[96 + actor.Unit.HairStyle];
 
     protected override Sprite EyesSprite(Actor_Unit actor) => Sprites[108 + actor.Unit.EyeType];
-    
+
     protected override Sprite WeaponSprite(Actor_Unit actor)
     {
         if (actor.Unit.HasWeapon && actor.Surrendered == false)
@@ -267,14 +263,14 @@ class Mermen : DefaultRaceData
             return null;
         }
     }
-    
+
     protected override Sprite BreastsSprite(Actor_Unit actor) => actor.Unit.HasBreasts ? Sprites[120 + actor.Unit.BreastSize] : null;
-    
+
 }
 
 namespace MermenClothing
 {
-    
+
     class MermenTop1 : MainClothing
     {
         public MermenTop1()
@@ -495,7 +491,7 @@ namespace MermenClothing
             base.Configure(sprite, actor);
         }
     }
-    
+
     class MermenFishTailLink1 : MainClothing
     {
         public MermenFishTailLink1()
@@ -625,7 +621,7 @@ namespace MermenClothing
             base.Configure(sprite, actor);
         }
     }
-    
+
     class MermenShell1 : ClothingAccessory
     {
         public MermenShell1()

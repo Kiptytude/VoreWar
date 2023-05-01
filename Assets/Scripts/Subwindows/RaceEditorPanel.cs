@@ -1,12 +1,10 @@
-﻿using UnityEngine;
-using System.Collections;
-using TMPro;
-using System;
-using System.Linq;
-using UnityEngine.UI;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
-using UnityEngine.EventSystems;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class RaceEditorPanel : MonoBehaviour
 {
@@ -367,7 +365,7 @@ public class RaceEditorPanel : MonoBehaviour
         return traits;
     }
 
-  
+
 
     public static string TraitListToText(List<Traits> traits)
     {

@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -67,10 +64,9 @@ class FogSystem
         {
             var spr = army.Banner?.GetComponent<MultiStageBanner>();
             if (spr != null)
-                spr.gameObject.SetActive(!FoggedTile[army.Position.x, army.Position.y]);
+                spr.gameObject.SetActive((!FoggedTile[army.Position.x, army.Position.y] && !army.Units.All(u => u.HasTrait(Traits.Infiltrator))) || army.Units.Any(u => u.FixedSide == playerEmpire.Side));
             var spr2 = army.Sprite;
-            if (spr2 != null) spr2.enabled = !FoggedTile[army.Position.x, army.Position.y];
-
+            if (spr2 != null) spr2.enabled = (!FoggedTile[army.Position.x, army.Position.y] && !army.Units.All(u => u.HasTrait(Traits.Infiltrator))) || army.Units.Any(u => u.FixedSide == playerEmpire.Side);
         }
 
         if (currentVillageTiles != null)

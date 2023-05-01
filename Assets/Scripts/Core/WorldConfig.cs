@@ -1,9 +1,6 @@
 ﻿using OdinSerializer;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 
 public class WorldConfig
@@ -142,8 +139,8 @@ public class WorldConfig
     internal SucklingPermission SucklingPermission = 0;
 
     [OdinSerialize]
-    internal DiplomacyScale DiplomacyScale = 0; 
-    
+    internal DiplomacyScale DiplomacyScale = 0;
+
     [OdinSerialize]
     internal Config.SeasonalType WinterStuff = 0;
 
@@ -156,7 +153,7 @@ public class WorldConfig
     internal int MonsterConquestTurns;
 
     [OdinSerialize]
-    internal int BreastSizeModifier = 0;    
+    internal int BreastSizeModifier = 0;
     [OdinSerialize]
     internal int HermBreastSizeModifier = 0;
     [OdinSerialize]
@@ -194,7 +191,7 @@ public class WorldConfig
     [OdinSerialize]
     internal int AnalWeight = 1;
 
-    
+
 
     internal bool GetValue(string name)
     {
@@ -241,7 +238,7 @@ public class WorldConfig
             if (value.SpawnAttempts == 0) value.SpawnAttempts = 1;
             return value;
         }
-        
+
         return null;
     }
 
@@ -259,7 +256,7 @@ public class WorldConfig
 
     internal void ResetDictionary()
     {
-        
+
         Toggles = new Dictionary<string, bool>
         {
             ["RaceTraitsEnabled"] = true,

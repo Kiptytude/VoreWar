@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class PaletteDictionary : MonoBehaviour
 {
@@ -52,7 +51,7 @@ public class PaletteDictionary : MonoBehaviour
     public Texture2D SharkSkin;
     public Texture2D EarthwormSkin;
     public Texture2D KomodosSkin;
-	public Texture2D Horsepalettes;
+    public Texture2D Horsepalettes;
     public Texture2D CockatriceSkin;
     public Texture2D DeerSkin;
     public Texture2D DeerLeaf;

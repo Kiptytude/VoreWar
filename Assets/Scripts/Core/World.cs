@@ -1,9 +1,7 @@
 ﻿using MapObjects;
 using OdinSerializer;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 
 public class World
@@ -121,9 +119,9 @@ public class World
         MainEmpires.Last().ReplacedRace = Race.Tigers;
         MainEmpires.Add(new Empire(new Empire.ConstructionArgs(701, UnityEngine.Color.red, new UnityEngine.Color(.6f, 0, 0), 5, StrategyAIType.Basic, TacticalAIType.Full, 701, 16, 16)));
         MainEmpires.Last().Name = "Bandits";
-/*         MainEmpires.Add(new Empire(new Empire.ConstructionArgs(702, UnityEngine.Color.red, new UnityEngine.Color(.6f, 0, 0), 5, StrategyAIType.Basic, TacticalAIType.Full, 702, 16, 16)));
-        MainEmpires.Last().Name = "Outcasts";
-        MainEmpires.Last().ReplacedRace = Race.Tigers; */
+        /*         MainEmpires.Add(new Empire(new Empire.ConstructionArgs(702, UnityEngine.Color.red, new UnityEngine.Color(.6f, 0, 0), 5, StrategyAIType.Basic, TacticalAIType.Full, 702, 16, 16)));
+                MainEmpires.Last().Name = "Outcasts";
+                MainEmpires.Last().ReplacedRace = Race.Tigers; */
         UpdateBanditLimits();
         crazyBuildings = args.crazyBuildings;
         VillageBuildingList.SetBuildings(crazyBuildings);
@@ -155,8 +153,8 @@ public class World
         int minArmySize = 48;
         foreach (var empire in MainEmpires)
         {
-            
-            
+
+
             if (empire.Side < 100)
             {
                 if (empire.KnockedOut)
@@ -171,7 +169,7 @@ public class World
                 empire.MaxArmySize = minArmySize;
                 empire.MaxGarrisonSize = minGarrison;
             }
-           
+
 
 
         }
@@ -194,16 +192,16 @@ public class World
                         empire.Armies.Add(army);
                         army.SetEmpire(empire);
                     }
-                }                
+                }
                 if (oldMons.Length < i) //Not sure how this would trigger, but this conditional is intended to stop an exception that's happening.  
                 {
                     empire.ReplacedRace = oldMons[i].ReplacedRace;
                     i++;
                 }
-                
+
             }
         }
-        
+
     }
 
     internal void InitializeMonsters()

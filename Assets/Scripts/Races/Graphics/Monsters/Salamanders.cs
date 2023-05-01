@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 class Salamander : BlankSlate
@@ -145,7 +141,7 @@ class Salamander : BlankSlate
     }
 
     protected override Sprite EyesSprite(Actor_Unit actor) => Sprites[4 + actor.Unit.EyeType];
-    
+
     internal override Sprite BellySprite(Actor_Unit actor, GameObject belly)
     {
         if (actor.HasBelly == false)
@@ -161,5 +157,5 @@ class Salamander : BlankSlate
         }
         return Sprites[53 + actor.GetStomachSize(16)];
     }
-    
+
 }

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Random = UnityEngine.Random;
 
 static class LogUtilities
@@ -65,7 +63,7 @@ static class LogUtilities
     /// </summary>
     /// <param name="unit"></param>
     /// <returns></returns>
-    internal static string GPPHeWas(Unit unit) =>    unit.GetPronoun(0) + (unit.GetPronoun(5) == "plural" ? " were" : " was");
+    internal static string GPPHeWas(Unit unit) => unit.GetPronoun(0) + (unit.GetPronoun(5) == "plural" ? " were" : " was");
 
     /// <summary>
     /// Returns given unit's accusative pronoun.<br></br>(e.g. him/her/them)
@@ -178,7 +176,7 @@ static class LogUtilities
         var preyChanceMap = new Dictionary<Actor_Unit, float>();
         foreach (Actor_Unit prey in preyList)
         {
-           float chance = prey.GetDevourChance(TacticalUtilities.Units.Where(actor => actor.Unit == unit)?.FirstOrDefault(), true);
+            float chance = prey.GetDevourChance(TacticalUtilities.Units.Where(actor => actor.Unit == unit)?.FirstOrDefault(), true);
             preyChanceMap.Add(prey, chance);
         }
         var primePrey = preyChanceMap.OrderBy(x => x.Value).LastOrDefault();
@@ -358,7 +356,7 @@ static class LogUtilities
             case Race.Dragon:
                 return GetRandomStringFrom("formerly apex predator", "delicious dragon", "ex-predator"); ////new 
             case Race.FeralLions:
-                return GetRandomStringFrom("roaring", "once-vicious", "formerly-fearsome"); 
+                return GetRandomStringFrom("roaring", "once-vicious", "formerly-fearsome");
             default:
                 return "tasty";
         }
@@ -431,7 +429,7 @@ static class LogUtilities
             case Race.Selicia:
                 return GetRandomStringFrom("wide mawed", "smooth scaled", "stretchy", "huge", "impressive", "all-too-eager", "mighty");
             case Race.Dragon:
-                return GetRandomStringFrom("apex predator", "hungry dragon", "voracious dragon"); 
+                return GetRandomStringFrom("apex predator", "hungry dragon", "voracious dragon");
             case Race.FeralLions:
                 return GetRandomStringFrom("indulgent", "greedily snarling", "voracious", "capacious", "insatiable", "dominant", "pleased"); ////new 
             default:
@@ -460,7 +458,7 @@ static class LogUtilities
             case Race.Bunnies:
                 return GetRandomStringFrom("bunny", GetGenderString(unit, "doe", "buck", "lagomorph"), "rabbit");
             case Race.Deer:
-                return GetRandomStringFrom(GetGenderString(unit, GetRandomStringFrom("doe","roe"), GetRandomStringFrom("buck", "stag","hart"), "cervid"), "faun", "deer");
+                return GetRandomStringFrom(GetGenderString(unit, GetRandomStringFrom("doe", "roe"), GetRandomStringFrom("buck", "stag", "hart"), "cervid"), "faun", "deer");
             case Race.Lizards:
                 return GetRandomStringFrom("lizard", "reptile", "reptilian");
             case Race.Slimes:
@@ -552,7 +550,7 @@ static class LogUtilities
             case Race.Frogs:
                 return GetRandomStringFrom("demi-frog", "amphibian", "frog"); ////new, many thanks to Flame_Valxsarion             
             case Race.FeralLions:
-                return GetRandomStringFrom("feline", GetGenderString(unit, "lioness", "lion", "lion"), "leonine", "kitty"); 
+                return GetRandomStringFrom("feline", GetGenderString(unit, "lioness", "lion", "lion"), "leonine", "kitty");
             default:
                 return "creature";
         }
@@ -587,8 +585,8 @@ static class LogUtilities
             else if (weapon.Name == "Claw") return "Claws";
         }
         else if (unit.Race == Race.Goblins)
-        {           
-            if (weapon.Name == "Mace") return "Cleaver" ;
+        {
+            if (weapon.Name == "Mace") return "Cleaver";
             else if (weapon.Name == "Axe") return "Sharpened Cleaver";
             else if (weapon.Name == "Simple Bow") return "Derringer";
             else if (weapon.Name == "Compound Bow") return "Pepperbox Pistol";
@@ -674,77 +672,77 @@ static class LogUtilities
             else if (weapon.Name == "Compound Bow") return "Plasma Rifle";
         }
         else if (unit.Race == Race.Sergal)
-        { 
+        {
             if (weapon.Name == "Mace") return "Lance";
             else if (weapon.Name == "Axe") return "Twin Glaive";
             else if (weapon.Name == "Simple Bow") return "Speargun";
             else if (weapon.Name == "Compound Bow") return "Prototype Railgun"; ////changed to "prototype railgun", thanks to Flame_Valxsarion
         }
         else if (unit.Race == Race.Bees)
-        { 
+        {
             if (weapon.Name == "Mace") return "Honeycomb Mace";
             else if (weapon.Name == "Axe") return "Quad Punch Claws";
             else if (weapon.Name == "Simple Bow") return "Javelin";
             else if (weapon.Name == "Compound Bow") return "War Javelin";
         }
         else if (unit.Race == Race.Driders)
-        { 
+        {
             if (weapon.Name == "Mace") return "Dagger";
             else if (weapon.Name == "Axe") return "Short Sword";
             else if (weapon.Name == "Simple Bow") return "Pistol Crossbow";
             else if (weapon.Name == "Compound Bow") return "Crossbow";
         }
         else if (unit.Race == Race.Alraune)
-        { 
+        {
             if (weapon.Name == "Mace") return "Vine Whip";
             else if (weapon.Name == "Axe") return "Stem Blade";
             else if (weapon.Name == "Simple Bow") return "Unbloomed Corolla";
             else if (weapon.Name == "Compound Bow") return "Blooming Flower";
         }
         else if (unit.Race == Race.Bats)
-        { 
+        {
             if (weapon.Name == "Mace") return "Push Dagger";
             else if (weapon.Name == "Axe") return "Claw Katar";
             else if (weapon.Name == "Simple Bow") return "Iron Throwing Knife";
             else if (weapon.Name == "Compound Bow") return "Steel Throwing Knife";
         }
         else if (unit.Race == Race.Panthers)
-        { 
+        {
             if (weapon.Name == "Mace") return "Karambit";
             else if (weapon.Name == "Axe") return "Kukri";
             else if (weapon.Name == "Simple Bow") return "Chakram";
             else if (weapon.Name == "Compound Bow") return "Onzil";
         }
         else if (unit.Race == Race.Merfolk)
-        { 
+        {
             if (weapon.Name == "Mace") return "Crude Trident";
             else if (weapon.Name == "Axe") return "Royal Trident";
             else if (weapon.Name == "Simple Bow") return "Scepter";
             else if (weapon.Name == "Compound Bow") return "Orb Staff";
         }
         else if (unit.Race == Race.Ants)
-        { 
+        {
             if (weapon.Name == "Mace") return "Barbed Spear";
             else if (weapon.Name == "Axe") return "Quad Blades";
             else if (weapon.Name == "Simple Bow") return "Simple Bow";
             else if (weapon.Name == "Compound Bow") return "Compound Bow";
         }
         else if (unit.Race == Race.Avians)
-        { 
+        {
             if (weapon.Name == "Mace") return "Knife";
             else if (weapon.Name == "Axe") return "Sword";
             else if (weapon.Name == "Simple Bow") return "Short Bow";
             else if (weapon.Name == "Compound Bow") return "Crossbow";
         }
         else if (unit.Race == Race.Sharks)
-        { 
+        {
             if (weapon.Name == "Mace") return "Sabre";
             else if (weapon.Name == "Axe") return "Cutlass";
             else if (weapon.Name == "Simple Bow") return "Harpoon";
             else if (weapon.Name == "Compound Bow") return "Speargun";
         }
         else if (unit.Race == Race.Frogs)
-        { 
+        {
             if (weapon.Name == "Mace") return "Mace";
             else if (weapon.Name == "Axe") return "Axe";
             else if (weapon.Name == "Simple Bow") return "Slingshot";
@@ -752,7 +750,7 @@ static class LogUtilities
             else if (weapon.Name == "Claw") return "Fist";
         }
         else if (unit.Race == Race.Hippos)
-        { 
+        {
             if (weapon.Name == "Mace") return "Tribal Knife";
             else if (weapon.Name == "Axe") return "Axe";
             else if (weapon.Name == "Simple Bow") return "Simple Bow";
@@ -760,7 +758,7 @@ static class LogUtilities
             else if (weapon.Name == "Claw") return "Fist";
         }
         else if (unit.Race == Race.Kobolds)
-        { 
+        {
             if (weapon.Name == "Mace") return "Pickax";
             else if (weapon.Name == "Axe") return "Pickax";
             else if (weapon.Name == "Simple Bow") return "Dart";

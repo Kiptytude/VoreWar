@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using System.Text;
-using TMPro;
 using UnityEngine.UI;
 
 public class InfoPanel
@@ -80,7 +79,7 @@ public class InfoPanel
         UnitInfoPanel.HealthBar.GetComponentInChildren<Text>().text = $"Health: {actor.Health}/{actor.MaxHealth}";
         UnitInfoPanel.ManaBar.GetComponentInChildren<Text>().text = $"Mana: {actor.Mana}/{actor.MaxMana}";
         if (actor.ExperienceRequiredForNextLevel != 0)
-            UnitInfoPanel.ExpBar.value = (actor.Experience - actor.GetExperienceRequiredForLevel(actor.Level - 1)) / (actor.ExperienceRequiredForNextLevel - actor.GetExperienceRequiredForLevel(actor.Level - 1)) ;
+            UnitInfoPanel.ExpBar.value = (actor.Experience - actor.GetExperienceRequiredForLevel(actor.Level - 1)) / (actor.ExperienceRequiredForNextLevel - actor.GetExperienceRequiredForLevel(actor.Level - 1));
         else
             UnitInfoPanel.ExpBar.value = 1;
         UnitInfoPanel.HealthBar.value = actor.HealthPct;
@@ -312,7 +311,7 @@ public class InfoPanel
         return unit.Race.ToString(); //Updated this so a new race will return the race's name, instead of nothing
     }
 
-        public static string RaceSingular(Empire empire)
+    public static string RaceSingular(Empire empire)
     {
         if (empire?.ReplacedRace >= Race.Selicia)
             return "";
@@ -367,7 +366,7 @@ public class InfoPanel
             case Race.Goblins:
                 return "Goblin";
             case Race.Succubi:
-                return "Succubus";            
+                return "Succubus";
             case Race.Alligators:
                 return "Alligator";
             case Race.Puca:
@@ -555,7 +554,7 @@ public class InfoPanel
             if (unit.HasTrait(Traits.Frenzy) && unit.EnemiesKilledThisBattle > 0)
                 sbSecond.AppendLine($"Frenzy ({unit.EnemiesKilledThisBattle})");
             if (unit.HasTrait(Traits.Growth) && unit.BaseScale > 1)
-                sbSecond.AppendLine($"Growth ({Math.Round(unit.BaseScale,2)}x)");
+                sbSecond.AppendLine($"Growth ({Math.Round(unit.BaseScale, 2)}x)");
             if (actor?.Slimed ?? false)
                 sbSecond.AppendLine("Slimed");
             if (actor?.Paralyzed ?? false)

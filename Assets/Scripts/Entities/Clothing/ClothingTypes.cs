@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 class BikiniTop : MainClothing
@@ -330,8 +327,8 @@ class Rags : MainClothing
                 spr = 7;
         }
 
-        if ((blocksDick || inFrontOfDick) && Config.CockVoreHidesClothes && actor.PredatorComponent?.BallsFullness > 0)       
-            clothing1.GetSprite = null;        
+        if ((blocksDick || inFrontOfDick) && Config.CockVoreHidesClothes && actor.PredatorComponent?.BallsFullness > 0)
+            clothing1.GetSprite = null;
         else
             clothing1.GetSprite = (s) => State.GameManager.SpriteDictionary.Rags[spr];
 

@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 class Demiants : DefaultRaceData
@@ -10,7 +7,7 @@ class Demiants : DefaultRaceData
     readonly Sprite[] Sprites = State.GameManager.SpriteDictionary.Demiants1;
     readonly Sprite[] Sprites2 = State.GameManager.SpriteDictionary.Demiants2;
     readonly Sprite[] Sprites3 = State.GameManager.SpriteDictionary.Demiants3;
-    
+
     readonly DemiantRags Rags;
 
     bool oversize = false;
@@ -52,7 +49,7 @@ class Demiants : DefaultRaceData
         BreastShadow = null;
         Dick = new SpriteExtraInfo(11, DickSprite, WhiteColored);
         Balls = new SpriteExtraInfo(10, BallsSprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.DemiantSkin, s.Unit.SkinColor)); // Balls (white)
-        
+
         Rags = new DemiantRags();
 
         AllowedMainClothingTypes = new List<MainClothing>()
@@ -85,7 +82,7 @@ class Demiants : DefaultRaceData
     internal override void RandomCustom(Unit unit)
     {
         base.RandomCustom(unit);
-        
+
         unit.AccessoryColor = unit.SkinColor;
 
         if (unit.HasDick && unit.HasBreasts)
@@ -121,7 +118,7 @@ class Demiants : DefaultRaceData
 
     internal override int DickSizes => 8;
     internal override int BreastSizes => 8;
-    
+
     protected override Sprite BodySprite(Actor_Unit actor) // Lower Body(black)
     {
         if (actor.Unit.HasBreasts)
@@ -777,7 +774,7 @@ class Demiants : DefaultRaceData
     }
 
     class Cuirass : MainClothing
-    { 
+    {
         public Cuirass()
         {
             DiscardSprite = State.GameManager.SpriteDictionary.Demiants3[138];
@@ -860,7 +857,7 @@ class Demiants : DefaultRaceData
     {
         public DemiantRags()
         {
-            DiscardSprite = State.GameManager.SpriteDictionary.Rags[23];            
+            DiscardSprite = State.GameManager.SpriteDictionary.Rags[23];
             inFrontOfDick = true;
             coversBreasts = false;
             Type = 207;
@@ -918,7 +915,7 @@ class Demiants : DefaultRaceData
                     clothing1.GetSprite = (s) => State.GameManager.SpriteDictionary.Demiants3[16];
             }
             else clothing1.GetSprite = null;
-            
+
             if (actor.Unit.HasBreasts)
             {
                 clothing2.GetSprite = (s) => State.GameManager.SpriteDictionary.Demiants3[9 + actor.Unit.BodySize];
@@ -959,7 +956,7 @@ class Demiants : DefaultRaceData
                     clothing1.GetSprite = (s) => State.GameManager.SpriteDictionary.Demiants3[26];
             }
             else clothing1.GetSprite = (s) => State.GameManager.SpriteDictionary.Demiants3[24];
-            
+
             if (actor.Unit.HasBreasts)
             {
                 clothing2.GetSprite = (s) => State.GameManager.SpriteDictionary.Demiants3[18 + actor.Unit.BodySize];
@@ -1045,5 +1042,5 @@ class Demiants : DefaultRaceData
         }
     }
 
-   
+
 }

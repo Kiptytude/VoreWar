@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 
@@ -185,7 +182,7 @@ public class TutorialScript
             {
                 warned = true;
                 State.GameManager.CreateMessageBox("Something has gone wrong, let the developer know that there was an error in step " + step + " of the tutorial and what you were doing that may have caused it, if known");
-            }            
+            }
         }
     }
 

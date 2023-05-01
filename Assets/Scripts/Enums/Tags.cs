@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-/// <summary>
+﻿/// <summary>
 /// The list of possible unit traits
 /// </summary>
 public enum Traits
@@ -296,8 +290,8 @@ public enum Traits
     Untamable = 146,
 
     //Hidden Traits
-    /// <summary>When an Army consists only of units with this trait, it moves undetected and can infiltrate the enemy. In battle, the disguiser can retreat on the opponent's side to do the same</summary>
-    Disguiser = 200,
+    /// <summary>When an Army consists only of units with this trait, it moves undetected and can infiltrate the enemy by using "exchange" on their village or a mercanary house.</summary>
+    Infiltrator = 200,
 
 
     //Everything after this is a cheat trait

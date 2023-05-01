@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -190,7 +188,7 @@ public class HoveringTooltip : MonoBehaviour
                     return $"Affects total health, also reduces damage from acid, has a minor role in escape chance.\n{StatData(Stat.Endurance)}";
                 case Stat.Stomach:
                     return $"Affects stomach capacity and digestion rate.  Also helps keep prey from escaping.\n{StatData(Stat.Stomach)}\n" +
-                        $"{((bool)actor?.Unit.Predator ? $"Used Capacity: {Math.Round(actor.PredatorComponent.GetBulkOfPrey(), 2) }\n" : "")}Max Capacity: {Math.Round(State.RaceSettings.GetStomachSize(unit.Race) * (unit.GetStat(Stat.Stomach) / 12f * unit.TraitBoosts.CapacityMult), 1)}";
+                        $"{((bool)actor?.Unit.Predator ? $"Used Capacity: {Math.Round(actor.PredatorComponent.GetBulkOfPrey(), 2)}\n" : "")}Max Capacity: {Math.Round(State.RaceSettings.GetStomachSize(unit.Race) * (unit.GetStat(Stat.Stomach) / 12f * unit.TraitBoosts.CapacityMult), 1)}";
                 case Stat.Leadership:
                     return $"Provides a stat boost for all friendly units\nStat value: {unit.GetStatBase(Stat.Leadership)}";
             }
@@ -469,11 +467,11 @@ public class HoveringTooltip : MonoBehaviour
             case Traits.PoisonSpit:
                 return "Allows using the poison spit ability once per battle, which does damage in a 3x3 and attempts to apply a strong short term poison as well.  This trait also makes the unit immune to poison damage.";
             case Traits.DigestionConversion:
-                return "When a unit finishes digesting someone, there's a 50% chance they will then convert to the predator's side, and be healed to half of their max life.  Can't convert leaders, summons, or units with saved copies.\n(Cheat Trait)"; 
+                return "When a unit finishes digesting someone, there's a 50% chance they will then convert to the predator's side, and be healed to half of their max life.  Can't convert leaders, summons, or units with saved copies.\n(Cheat Trait)";
             case Traits.DigestionRebirth:
                 return "When a unit finishes digesting someone, there's a 50% chance they will then convert to the predator's side and change race to the predator's race, and be healed to half of their max life.  Can't convert leaders, summons, or units with saved copies.\n(Cheat Trait)";
             case Traits.SenseWeakness:
-                return "Unit does more melee/ranged damage against targets with less health, and also increases for every negative status effect the target has."; 
+                return "Unit does more melee/ranged damage against targets with less health, and also increases for every negative status effect the target has.";
             case Traits.BladeDance:
                 return "Unit gains a stack of blade dance every time they successfully hit their opponent with melee, and lose a stack every time they are hit with melee.  Each stack gives +2 strength and +1 agility.";
             case Traits.EssenceAbsorption:
@@ -542,7 +540,7 @@ public class HoveringTooltip : MonoBehaviour
 
     internal void UpdateInformationDefaultTooltip(int value)
     {
-       
+
         string description = DefaultTooltips.Tooltip(value);
         if (description == "")
         {

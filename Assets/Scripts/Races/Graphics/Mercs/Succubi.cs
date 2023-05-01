@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 class Succubi : DefaultRaceData
@@ -160,7 +157,7 @@ class Succubi : DefaultRaceData
                 else if (actor.GetStomachSize(15, 0.8f) == 15)
                     return State.GameManager.SpriteDictionary.Succubi[90];
                 else if (actor.GetStomachSize(15, 0.9f) == 15)
-                    return State.GameManager.SpriteDictionary.Succubi[89];            
+                    return State.GameManager.SpriteDictionary.Succubi[89];
             }
 
             if (actor.PredatorComponent.VisibleFullness > 4)

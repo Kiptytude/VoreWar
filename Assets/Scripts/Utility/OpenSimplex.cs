@@ -3,8 +3,6 @@
  * and heavily refactored to improve performance. */
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace Noise
@@ -68,7 +66,7 @@ namespace Noise
             }
 
 
-            
+
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -157,7 +155,7 @@ namespace Noise
             return value * NORM_2D;
         }
 
-   
+
         private class Contribution2
         {
             public double dx, dy;
@@ -173,6 +171,6 @@ namespace Noise
             }
         }
 
-      
+
     }
 }

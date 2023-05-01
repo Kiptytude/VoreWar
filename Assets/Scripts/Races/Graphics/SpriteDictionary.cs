@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class SpriteDictionary : MonoBehaviour
 {
@@ -11,7 +10,7 @@ public class SpriteDictionary : MonoBehaviour
     public Sprite[] Weapons;
 
     public Sprite[] BodyAccents;
-    
+
     public Sprite[] Eyes;
     public Sprite[] Legs;
     public Sprite[] Dicks;
@@ -48,7 +47,7 @@ public class SpriteDictionary : MonoBehaviour
     public Sprite[] LizardBikiniTop;
     public Sprite[] LizardCrossTop;
     public Sprite[] LizardLeader;
-    
+
     public Sprite[] LizardBone;
     public Sprite[] LizardLeather;
     public Sprite[] LizardCloth;
@@ -105,7 +104,7 @@ public class SpriteDictionary : MonoBehaviour
     public Sprite[] Gobbunderonepieces;
     public Sprite[] Gobboveronepieces;
     public Sprite[] Gobbohat;
-    
+
     public Sprite[] HumenFundertops;
     public Sprite[] HumenMundertops;
     public Sprite[] HumenFOnePieces;
@@ -208,7 +207,7 @@ public class SpriteDictionary : MonoBehaviour
     public Sprite[] Horse;
     public Sprite[] HorseClothing;
     public Sprite[] HorseExtras1;
-    
+
     public Sprite[] HumansBodySprites1;
     public Sprite[] HumansBodySprites2;
     public Sprite[] HumansBodySprites3;

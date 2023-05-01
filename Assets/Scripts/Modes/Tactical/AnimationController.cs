@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 
 public class AnimationController
 {
@@ -13,7 +9,7 @@ public class AnimationController
         public int currentFrame;
         public float currentTime;
         public bool currentlyActive;
-        
+
         public FrameList(int frame, float time, bool active)
         {
             currentFrame = frame;

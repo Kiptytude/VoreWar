@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor.Experimental.UIElements.GraphView;
 using UnityEngine;
 
 public enum PreyLocation
@@ -313,7 +312,7 @@ public class PredatorComponent
         get
         {
             if (unit.HasTrait(Traits.Endosoma))
-                return prey.Where(s => TacticalUtilities.TreatAsHostile(actor, s.Actor) || s.Unit.IsDead).Count();
+                return prey.Where(s => actor.Unit.GetApparentSide(s.Unit) != s.Unit.FixedSide || s.Unit.IsDead).Count();
             return prey.Count;
         }
     }
@@ -637,7 +636,7 @@ public class PredatorComponent
             return false;
         if (actor.Unit.Predator == false)
             return false;
-        var alives = prey.Where(s => s.Unit.IsDead == false && s.Unit.Side == unit.Side).ToArray();
+        var alives = prey.Where(s => s.Unit.IsDead == false && !TacticalUtilities.TreatAsHostile(actor, s.Actor)).ToArray();
         if (alives.Length == 0)
             alives = prey.Where(s => s.Unit.IsDead == false).ToArray();
         if (alives.Length == 0)
@@ -645,7 +644,7 @@ public class PredatorComponent
         var target = alives[State.Rand.Next(alives.Length)];
         if (TacticalUtilities.OpenTile(location, target.Actor) == false)
             return false;
-        if (!unit.HasTrait(Traits.Endosoma) || TacticalUtilities.TreatAsHostile(actor, target.Actor))
+        if (!unit.HasTrait(Traits.Endosoma) || !(target.Unit.FixedSide == unit.GetApparentSide(target.Unit)))
             unit.GiveScaledExp(-4, unit.Level - target.Unit.Level, true);
         target.Actor.SetPos(location);
         target.Actor.Visible = true;
@@ -662,8 +661,8 @@ public class PredatorComponent
     internal void FreeGreatEscapePrey(Prey preyUnit)
     {
         TacticalUtilities.Log.LogGreatEscapeFlee(unit, preyUnit.Unit, Location(preyUnit));
-        RemovePrey(preyUnit);        
-        preyUnit.Actor.SelfPrey = null;        
+        RemovePrey(preyUnit);
+        preyUnit.Actor.SelfPrey = null;
     }
 
     void FreePrey(Prey preyUnit, bool forcePop)
@@ -856,7 +855,7 @@ public class PredatorComponent
                 }
             }
 
-            if (actor.PredatorComponent.IsUnitInPrey(preyUnit.Actor, PreyLocation.womb) && actor.PredatorComponent.birthStatBoost > 0 && preyUnit.Unit.Side == unit.Side && Config.KuroTenkoEnabled && Config.CumGestation)
+            if (actor.PredatorComponent.IsUnitInPrey(preyUnit.Actor, PreyLocation.womb) && actor.PredatorComponent.birthStatBoost > 0 && preyUnit.Unit.GetApparentSide(unit) == unit.FixedSide && Config.KuroTenkoEnabled && Config.CumGestation)
             {
                 while (actor.PredatorComponent.birthStatBoost > 0)
                 {
@@ -873,7 +872,7 @@ public class PredatorComponent
                     actor.PredatorComponent.birthStatBoost--;
                 }
             }
-            if (unit.HasTrait(Traits.Endosoma) && !TacticalUtilities.TreatAsHostile(actor, preyUnit.Actor) && preyUnit.Unit.IsDead == false)
+            if (unit.HasTrait(Traits.Endosoma) && (preyUnit.Unit.FixedSide == unit.GetApparentSide(preyUnit.Unit)) && preyUnit.Unit.IsDead == false)
             {
                 if (unit.HasTrait(Traits.HealingBelly))
                     preyDamage = Math.Min(unit.MaxHealth / -10, -1);
@@ -885,7 +884,7 @@ public class PredatorComponent
                 preyUnit.Unit.InitializeTraits();
 
             }
-            else if (Config.FriendlyRegurgitation && unit.HasTrait(Traits.Greedy) == false && !TacticalUtilities.TreatAsHostile(actor, preyUnit.Actor) && TacticalUtilities.GetMindControlSide(preyUnit.Unit) == -1 && preyUnit.Unit.Health > 0 && preyUnit.Actor.Surrendered == false)
+            else if (Config.FriendlyRegurgitation && unit.HasTrait(Traits.Greedy) == false && preyUnit.Unit.GetApparentSide(actor.Unit) == actor.Unit.FixedSide && TacticalUtilities.GetMindControlSide(preyUnit.Unit) == -1 && preyUnit.Unit.Health > 0 && preyUnit.Actor.Surrendered == false)
             {
                 State.GameManager.TacticalMode.TacticalStats.RegisterRegurgitation(unit.Side);
                 TacticalUtilities.Log.RegisterRegurgitated(unit, preyUnit.Unit, Location(preyUnit));
@@ -1413,9 +1412,11 @@ public class PredatorComponent
                     RaceSettingsItem item = State.RaceSettings.Get(unit.Race);
                     item.RaceTraits.Add(possibleTraits[State.Rand.Next(possibleTraits.Length)]);
                     raceUpdated = true;
-                } else { 
-                 unit.AddPermanentTrait(possibleTraits[State.Rand.Next(possibleTraits.Length)]);
-                 updated = true;
+                }
+                else
+                {
+                    unit.AddPermanentTrait(possibleTraits[State.Rand.Next(possibleTraits.Length)]);
+                    updated = true;
                 }
             }
         }
@@ -2020,11 +2021,11 @@ public class PredatorComponent
     internal bool MagicConsume(Spell spell, Actor_Unit target)
     {
         bool sneakAttack = false;
-        if (actor.Unit.Side == target.Unit.GetApparentSide() && !actor.Unit.HasTrait(Traits.Endosoma))
-        { 
-                actor.Unit.hiddenFixedSide = false;
-                sneakAttack = true;
-                State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<color = purple>{actor.Unit.Name} sneak-attacked {target.Unit.Name}!");
+        if (actor.Unit.GetApparentSide(target.Unit) == target.Unit.GetApparentSide() && actor.Unit.IsInfiltratingSide(target.Unit.GetApparentSide()) && !actor.Unit.HasTrait(Traits.Endosoma))
+        {
+            actor.Unit.hiddenFixedSide = false;
+            sneakAttack = true;
+            State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<color=purple>{actor.Unit.Name} sneak-attacked {target.Unit.Name}!</color>");
         }
         State.GameManager.TacticalMode.AITimer = Config.TacticalVoreDelay;
         if (State.GameManager.CurrentScene == State.GameManager.TacticalMode && State.GameManager.TacticalMode.IsPlayerInControl == false && State.GameManager.TacticalMode.turboMode == false)
@@ -2041,7 +2042,7 @@ public class PredatorComponent
         {
             //actor.SetPredMode(preyType);
             float r = (float)State.Rand.NextDouble();
-            float v = target.GetDevourChance(actor, skillBoost: actor.Unit.GetStat(Stat.Mind) + (sneakAttack ? 3 : 0));
+            float v = target.GetDevourChance(actor, skillBoost: actor.Unit.GetStat(Stat.Mind));
             if (r < v)
             {
                 if (target.Unit.IsDead == false)
@@ -2050,7 +2051,7 @@ public class PredatorComponent
 
                 if (target.Unit.Side == unit.Side)
                     State.GameManager.TacticalMode.TacticalStats.RegisterAllyVore(unit.Side);
-                if (TacticalUtilities.TreatAsHostile(actor, target) || !unit.HasTrait(Traits.Endosoma))
+                if (!(target.Unit.FixedSide == unit.GetApparentSide(target.Unit)) || !unit.HasTrait(Traits.Endosoma))
                 {
                     unit.GiveScaledExp(4 * target.Unit.ExpMultiplier, unit.Level - target.Unit.Level, true);
                 }
@@ -2127,7 +2128,7 @@ public class PredatorComponent
             {
                 actor.Unit.hiddenFixedSide = false;
                 boost += 3;
-                State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<color = purple>{actor.Unit.Name} sneak-attacked {target.Unit.Name}!");
+                State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<color=purple>{actor.Unit.Name} sneak-attacked {target.Unit.Name}!</color>");
             }
             float r = (float)State.Rand.NextDouble();
             float v = target.GetDevourChance(actor, skillBoost: boost);
@@ -2174,7 +2175,7 @@ public class PredatorComponent
 
             }
 
-            if (bit == false && (target.Surrendered || (unit.HasTrait(Traits.Endosoma) && !TacticalUtilities.TreatAsHostile(actor, target)) || target.Unit.GetStatusEffect(StatusEffectType.Hypnotized)?.Strength == actor.Unit.FixedSide))
+            if (bit == false && (target.Surrendered || (unit.HasTrait(Traits.Endosoma) && (target.Unit.FixedSide == unit.GetApparentSide(target.Unit))) || target.Unit.GetStatusEffect(StatusEffectType.Hypnotized)?.Strength == actor.Unit.FixedSide))
                 actor.Movement = Math.Max(actor.Movement - 2, 0);
             else
             {
@@ -2213,7 +2214,7 @@ public class PredatorComponent
         target.Visible = false;
         target.Targetable = false;
         State.GameManager.TacticalMode.DirtyPack = true;
-        if (TacticalUtilities.TreatAsHostile(actor,target) || !unit.HasTrait(Traits.Endosoma))
+        if (!(target.Unit.FixedSide == unit.GetApparentSide(target.Unit)) || !unit.HasTrait(Traits.Endosoma))
         {
             unit.GiveScaledExp(4 * target.Unit.ExpMultiplier, unit.Level - target.Unit.Level, true);
         }
@@ -2395,7 +2396,7 @@ public class PredatorComponent
 
     public float GetSuckleChance(Actor_Unit target, bool includeSecondaries = false)
     {
-        if (target.Surrendered || actor.Unit.Side == target.Unit.Side)
+        if (target.Surrendered || actor.Unit.GetApparentSide() == target.Unit.FixedSide)
             return 1f;
         float predVoracity = Mathf.Pow(15 + actor.Unit.GetStat(Stat.Voracity), 1.5f);
         float predStrength = Mathf.Pow(15 + actor.Unit.GetStat(Stat.Strength), 1.5f);
@@ -2534,7 +2535,7 @@ public class PredatorComponent
             Debug.Log("This shouldn't have happened");
             return 0;
         }
-        if (actor.Surrendered || actor.Unit.Side == attacker.Unit.Side)
+        if (actor.Surrendered || actor.Unit.FixedSide == attacker.Unit.GetApparentSide(actor.Unit))
             return 1f;
 
         if (prey.Unit.HasTrait(Traits.Irresistable))
@@ -2754,7 +2755,7 @@ public class PredatorComponent
             foreach (Prey preyUnit in actor.PredatorComponent.balls.ToList())
                 if (preyUnit.Unit.IsDead)
                 {
-                	deadPrey.Add(preyUnit);
+                    deadPrey.Add(preyUnit);
                     healthUp += heatlhBoostCalc(preyUnit, target);
                     expUp += expBoostCalc(preyUnit);
                 }
@@ -2785,7 +2786,7 @@ public class PredatorComponent
         healthUp = Math.Min(healthUp, healthUpCap);
         if (!Config.OverhealEXP)
             expUp = 0;
-        return new Tuple<int[], List<Prey>> (new int[]{ healthUp, expUp, location }, deadPrey);
+        return new Tuple<int[], List<Prey>>(new int[] { healthUp, expUp, location }, deadPrey);
     }
 
     private int heatlhBoostCalc(Prey preyUnit, Actor_Unit target)
@@ -3099,7 +3100,7 @@ public class PredatorComponent
         target.Visible = false;
         target.Targetable = false;
         State.GameManager.TacticalMode.DirtyPack = true;
-        if (TacticalUtilities.TreatAsHostile(actor, target) || !unit.HasTrait(Traits.Endosoma))
+        if (!(target.Unit.FixedSide == unit.GetApparentSide(target.Unit)) || !unit.HasTrait(Traits.Endosoma))
         {
             unit.GiveScaledExp(4 * target.Unit.ExpMultiplier, unit.Level - target.Unit.Level, true);
         }

@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 
 public class FadeInFadeOut : MonoBehaviour
@@ -44,6 +43,6 @@ public class FadeInFadeOut : MonoBehaviour
             }
         }
     }
-        
+
 }
 

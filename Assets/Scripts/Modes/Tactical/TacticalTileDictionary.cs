@@ -1,7 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Linq;
+using UnityEngine;
 using UnityEngine.Tilemaps;
-using System.Linq;
 
 public class TacticalTileDictionary : MonoBehaviour
 {
@@ -57,7 +56,7 @@ public class TacticalTileDictionary : MonoBehaviour
                 temptiles[i].sprite = sprites[i];
             }
             return temptiles;
-        }       
+        }
     }
 
 }

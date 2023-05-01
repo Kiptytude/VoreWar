@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 class Catfish : BlankSlate
@@ -47,7 +43,7 @@ class Catfish : BlankSlate
     internal override void RandomCustom(Unit unit)
     {
         base.RandomCustom(unit);
-        
+
         unit.BodyAccentType1 = State.Rand.Next(BodyAccentTypes1);
     }
 
@@ -118,11 +114,11 @@ class Catfish : BlankSlate
             AddOffset(BodyAccent3, 60 * .625f, 0);
         }
     }
-    
+
     protected override Sprite BodySprite(Actor_Unit actor)
     {
         if (actor.AnimationController.frameLists == null) SetUpAnimations(actor);
-        
+
         if (actor.HasBelly == false)
             return Sprites[0];
         if (actor.PredatorComponent.IsUnitOfSpecificationInPrey(Race.Selicia, true, PreyLocation.stomach))
@@ -194,11 +190,11 @@ class Catfish : BlankSlate
     }
 
     protected override Sprite AccessorySprite(Actor_Unit actor) => Sprites[12 + actor.Unit.SpecialAccessoryType]; // Barbels
-    
+
     protected override Sprite BodyAccentSprite(Actor_Unit actor) => Sprites[28 + actor.Unit.BodyAccentType1]; // Dorsal fins
 
     protected override Sprite BodyAccentSprite2(Actor_Unit actor) => Sprites[18 + actor.Unit.SpecialAccessoryType]; // Barbels secondary
-    
+
     protected override Sprite BodyAccentSprite3(Actor_Unit actor) // tail
     {
         if (!actor.Targetable) return Sprites[1];

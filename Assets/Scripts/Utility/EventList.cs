@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -285,7 +282,7 @@ internal class EventList
                 {
                     var village = GetRandomVillage(empire.Side);
                     if (village == null || empire.Leader == null || empire.CapitalCity == null)
-                        return false;                    
+                        return false;
                     UI.MainText.text = $"Our vassal governing the territory near {village.Name} has become increasingly aggressive towards the capital. They believe that their accomplishments in managing the region have gone unrewarded. What should be done?";
                     UI.MainText.text += AddVillageInfo(village);
                     UI.FirstChoice.GetComponentInChildren<Text>().text = "They’re right. Their contributions to our people have been ignored for too long. [300 Gold]";
@@ -337,13 +334,13 @@ internal class EventList
                         }
                         if (empire.VillageCount < 3 || otherEmpire2 == null)
                             return false;
-                        
-                        var villages = State.World.Villages.Where(s => s.Side == empire.Side && s.Race != otherEmpire.ReplacedRace).OrderBy(s => s.Population).ToArray();                        
+
+                        var villages = State.World.Villages.Where(s => s.Side == empire.Side && s.Race != otherEmpire.ReplacedRace).OrderBy(s => s.Population).ToArray();
                         UI.MainText.text = $"The war between {otherEmpire.Name} and {otherEmpire2.Name} has intensified considerably. As such a number of {otherEmpire.Name} refugees have found their way to our border. The infirm and young make up the majority of this group. There are far too many to integrate easily into our communities. They are begging our border guards for entry into our nation. What shall be done?";
                         UI.MainText.text += AddVillageInfo(villages[0]); UI.MainText.text += AddVillageInfo(villages[0]);
                         UI.FirstChoice.GetComponentInChildren<Text>().text = $"Though it will be difficult for us, we must accommodate those in need. Move the villagers from the town with lowest population to another town. We shall give the town to these people in need.";
                         UI.FirstChoice.onClick.AddListener(() =>
-                        {                            
+                        {
                             if (villages.Length < 2)
                             {
                                 State.GameManager.CreateMessageBox($"The refugees mysteriously vanish (there were very few villages that weren't already the race of the refugees, so it cancels, instead of performing a nonsensical conversion on a village that was already that race)");
@@ -366,7 +363,7 @@ internal class EventList
 
                             villages[0].SubtractPopulation(99999);
                             villages[0].Race = otherEmpire.CapitalCity?.OriginalRace ?? otherEmpire.ReplacedRace;
-                            villages[0].AddPopulation(3 * villages[0].Maxpop / 4);                            
+                            villages[0].AddPopulation(3 * villages[0].Maxpop / 4);
                             villages[0].Happiness = 200;
                             State.GameManager.CreateMessageBox($"Though it will be difficult for us, we must accommodate those in need. Move the villagers from {villages[0].Name} to another town. We shall give the town to these people in need. (The town switches race, the refugees are very happy, but other towns happiness falls some)");
 
@@ -396,7 +393,7 @@ internal class EventList
                     var selfVillages = State.World.Villages.Where(s => s.Side == empire.Side && s.Race == empire.ReplacedRace);
                     var occupiedVillages = State.World.Villages.Where(s => s.Side == empire.Side && s.Race != empire.ReplacedRace);
                     if (village == null)
-                        return false;                    
+                        return false;
                     UI.MainText.text = $"Non-{empire.ReplacedRace} Citizens within our borders have become discontent with the way they’ve been treated and are demanding equal liberties. {empire.ReplacedRace} across the empire are violently opposed to such action. What shall be done?";
                     UI.FirstChoice.GetComponentInChildren<Text>().text = "All beneath our banner deserve equal respect. It shall be done.";
                     UI.FirstChoice.onClick.AddListener(() =>
@@ -817,7 +814,7 @@ internal class EventList
                     {
 
                         Unit unit = new Unit(empire.Side, race, village.GetStartingXp(), State.World.GetEmpireOfRace(race)?.CanVore ?? true);
-                        unit.DigestedUnits = State.Rand.Next(10,15);
+                        unit.DigestedUnits = State.Rand.Next(10, 15);
                         unit.AddPermanentTrait(Traits.EnthrallingDepths);
                         village.Happiness -= 10;
                         empire.CapitalCity.VillagePopulation.AddHireable(unit);
@@ -1550,7 +1547,7 @@ internal class EventList
                     UI.ThirdChoice.GetComponentInChildren<Text>().text = $"Such a fine example of voracity would make a fine war beast! Round up some civilians to sacrifice as a grand feast to earn the wolf's favour.";
                     UI.ThirdChoice.onClick.AddListener(() =>
                     {
-                        Unit unit = new Unit(empire.Side, Race.FeralWolves, village.GetStartingXp()*3, true);
+                        Unit unit = new Unit(empire.Side, Race.FeralWolves, village.GetStartingXp() * 3, true);
                         unit.AddPermanentTrait(Traits.Large);
                         unit.AddPermanentTrait(Traits.IronGut);
                         unit.AddPermanentTrait(Traits.StrongGullet);
@@ -1597,7 +1594,7 @@ internal class EventList
                             lion.GiveExp(lion.DigestedUnits * 10);
                             State.GameManager.CreateMessageBox($"Dear government,\n\nKitty would like to say thanks for the treat, but I think something about soldier equipment makes {(lion.GetPronoun(2))} gassy, heheh. Anyways, it's been feeling pretty noisy here for Kitty so we'll leave!\nXOXO Kitty and {youth.Name} \n\nOn the bright side, we could recover all the victims' valuables and the remaining citizens are thankful for our efforts.\n\nVillage Happiness +10, Gold +50, Garrison wiped out, Population -{(village.Maxpop / 6)}, The duo is still out there");
                             var armyName = $"Kitty and {youth.Name}";
-                            Empire kittyEmp = CreateFactionlessArmy(village, 57, new[]{lion, youth}, 10, armyName);
+                            Empire kittyEmp = CreateFactionlessArmy(village, 57, new[] { lion, youth }, 10, armyName);
                             kittyEmp.Name = armyName;
                         }
 
@@ -1622,7 +1619,7 @@ internal class EventList
                         var raceSingular = InfoPanel.RaceSingular(youth);
                         State.GameManager.CreateMessageBox($"The villagers aren't thrilled, but the so-called \"kitten\" and their little {raceSingular} friend continue to grow up alongside the people of {village.Name}. While only some of them learn to be merry with the ever more grown-up, less feisty feline in their midst, everyone knows not to question the disappearing neighbors or the well-rounded lion gut. Eventually, the duo leaves and goes on adventures in the surrounding lands.\n\n{village.Name} Population -{village.Maxpop / 3}, Happiness -15, The duo stays neutral to the empire");
                         var armyName = $"Kitty and {youth.Name}";
-                        Empire kittyEmp = CreateFactionlessArmy(village, 57, new[]{lion, youth}, 10, armyName);
+                        Empire kittyEmp = CreateFactionlessArmy(village, 57, new[] { lion, youth }, 10, armyName);
                         kittyEmp.Name = armyName;
                         RelationsManager.SetPeace(kittyEmp, empire);
                     });
@@ -1644,7 +1641,7 @@ internal class EventList
                         village.VillagePopulation.AddHireable(lion);
                         village.VillagePopulation.AddHireable(youth);
                         village.Happiness -= 40;
-                        State.GameManager.CreateMessageBox($"The people feel betrayed with how their government seems to extend its protection towards the beast and its keeper rather than them, as it devours more and more of them unhindered. On the bright side, Kitty grows up big and strong, and the duo can be recruited in {village.Name}.\n\n Happiness -40, Population -{village.Maxpop/2}");
+                        State.GameManager.CreateMessageBox($"The people feel betrayed with how their government seems to extend its protection towards the beast and its keeper rather than them, as it devours more and more of them unhindered. On the bright side, Kitty grows up big and strong, and the duo can be recruited in {village.Name}.\n\n Happiness -40, Population -{village.Maxpop / 2}");
                     });
                     UI.ThirdChoice.interactable = true;
                 }
@@ -1887,13 +1884,13 @@ internal class EventList
         switch (diff)
         {
             case RebelDifficulty.Easy:
-                count = village.MaxGarrisonSize/4 + State.Rand.Next(village.MaxGarrisonSize/4);
+                count = village.MaxGarrisonSize / 4 + State.Rand.Next(village.MaxGarrisonSize / 4);
                 break;
             case RebelDifficulty.Medium:
-                count = village.MaxGarrisonSize/2 + State.Rand.Next(village.MaxGarrisonSize/2);
+                count = village.MaxGarrisonSize / 2 + State.Rand.Next(village.MaxGarrisonSize / 2);
                 break;
             case RebelDifficulty.Hard:
-                count = village.MaxGarrisonSize - village.MaxGarrisonSize/4 + State.Rand.Next(village.MaxGarrisonSize - village.MaxGarrisonSize/4);
+                count = village.MaxGarrisonSize - village.MaxGarrisonSize / 4 + State.Rand.Next(village.MaxGarrisonSize - village.MaxGarrisonSize / 4);
                 break;
         }
         if (count == 0)
@@ -1956,13 +1953,13 @@ internal class EventList
         switch (diff)
         {
             case RebelDifficulty.Easy:
-                count = village.MaxGarrisonSize/4 + State.Rand.Next(village.MaxGarrisonSize/4);
+                count = village.MaxGarrisonSize / 4 + State.Rand.Next(village.MaxGarrisonSize / 4);
                 break;
             case RebelDifficulty.Medium:
-                count = village.MaxGarrisonSize/2 + State.Rand.Next(village.MaxGarrisonSize/2);
+                count = village.MaxGarrisonSize / 2 + State.Rand.Next(village.MaxGarrisonSize / 2);
                 break;
             case RebelDifficulty.Hard:
-                count = village.MaxGarrisonSize - village.MaxGarrisonSize/4 + State.Rand.Next(village.MaxGarrisonSize - village.MaxGarrisonSize/4);
+                count = village.MaxGarrisonSize - village.MaxGarrisonSize / 4 + State.Rand.Next(village.MaxGarrisonSize - village.MaxGarrisonSize / 4);
                 break;
         }
         if (count >= village.Population)
@@ -2022,8 +2019,9 @@ internal class EventList
                 loc = spot;
         }
     }
-    
-    Empire CreateFactionlessArmy(Village village, int bannerType, Unit[] units, int distance, string armyName) {
+
+    Empire CreateFactionlessArmy(Village village, int bannerType, Unit[] units, int distance, string armyName)
+    {
 
         Vec2 loc = new Vec2(0, 0);
         CheckTile(village.Position + new Vec2(-distance, 0));
@@ -2035,16 +2033,16 @@ internal class EventList
         CheckTile(village.Position + new Vec2(distance, -distance));
         CheckTile(village.Position + new Vec2(distance, distance));
 
-        if (loc.x == 0 && loc.y == 0) 
+        if (loc.x == 0 && loc.y == 0)
         {
-             for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 10; i++)
             {
                 loc.x = State.Rand.Next(Config.StrategicWorldSizeX);
                 loc.y = State.Rand.Next(Config.StrategicWorldSizeY);
 
                 if (StrategicUtilities.IsTileClear(loc))
                     break;
-                
+
             }
             Debug.Log("Could not place army");
             return null;
@@ -2064,14 +2062,14 @@ internal class EventList
         {
             unusedSide++;
         }
-        Empire pseudoEmp = new MonsterEmpire(new Empire.ConstructionArgs(unusedSide, UnityEngine.Color.white, UnityEngine.Color.white, bannerType, StrategyAIType.Monster, TacticalAIType.Full, 2000+unusedSide, 32, 0));
+        Empire pseudoEmp = new MonsterEmpire(new Empire.ConstructionArgs(unusedSide, UnityEngine.Color.white, UnityEngine.Color.white, bannerType, StrategyAIType.Monster, TacticalAIType.Full, 2000 + unusedSide, 32, 0));
         Army army = new Army(pseudoEmp, new Vec2i(loc.x, loc.y), unusedSide);
         army.Units = units.ToList();
         army.Name = armyName;
         pseudoEmp.ReplacedRace = army.Units[0].Race;
         pseudoEmp.Armies.Add(army);
         pseudoEmp.TurnOrder = 1337;
-        Config.World.SpawnerInfo[(Race)unusedSide]= new SpawnerInfo(true,1,0,0.4f,pseudoEmp.Team,0,false,9999,2,pseudoEmp.MaxArmySize,pseudoEmp.TurnOrder);
+        Config.World.SpawnerInfo[(Race)unusedSide] = new SpawnerInfo(true, 1, 0, 0.4f, pseudoEmp.Team, 0, false, 9999, 2, pseudoEmp.MaxArmySize, pseudoEmp.TurnOrder);
         State.World.AllActiveEmpires.Add(pseudoEmp);
         State.World.RefreshTurnOrder();
         return pseudoEmp;

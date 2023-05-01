@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 
 class Gryphon : BlankSlate
 {
@@ -421,7 +416,7 @@ class Gryphon : BlankSlate
         int bz = actor.GetBallSize(10, 1.5f);
         if (actor.Unit.HasDick == false || position == Position.Standing)
             return null;
-        if (actor.GetStomachSize(16) < 12 || sz < bz*2)
+        if (actor.GetStomachSize(16) < 12 || sz < bz * 2)
         {
             Balls.layer = 13;
             if (actor.PredatorComponent?.BallsFullness > 0)
@@ -471,5 +466,5 @@ class Gryphon : BlankSlate
         }
         return null;
     }
-    
+
 }

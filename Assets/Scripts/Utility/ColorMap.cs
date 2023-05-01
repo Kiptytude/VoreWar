@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public static class ColorMap
@@ -421,7 +420,7 @@ public static class ColorMap
     public static Color GetDratopyrWingColor(int i) => GetColor(DratopyrWingColors, i);
     public static Color GetDratopyrFleshColor(int i) => GetColor(DratopyrFleshColors, i);
     public static Color GetDratopyrEyeColor(int i) => GetColor(DratopyrEyeColors, i);
-  
+
 
     public static int HairColorCount => HairColors.Length;
     public static int EyeColorCount => EyeColors.Length;

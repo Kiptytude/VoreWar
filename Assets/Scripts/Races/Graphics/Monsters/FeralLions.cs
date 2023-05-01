@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 class FeralLions : BlankSlate
@@ -61,10 +57,10 @@ class FeralLions : BlankSlate
     {
         if (hindView)
         {
-            Body.layer = 15; 
+            Body.layer = 15;
             return Sprites[57];
         }
-        Body.layer = 3; 
+        Body.layer = 3;
         return Sprites[0];
     }
 
@@ -95,7 +91,7 @@ class FeralLions : BlankSlate
     protected override Sprite BodyAccentSprite(Actor_Unit actor) // Hind legs / Front legs hind view
     {
         BodyAccent.layer = hindView ? 1 : 8;
-        return hindView ? Sprites[48] : Sprites[11]; 
+        return hindView ? Sprites[48] : Sprites[11];
     }
 
     protected override Sprite BodyAccentSprite2(Actor_Unit actor) // Face
@@ -133,13 +129,13 @@ class FeralLions : BlankSlate
     {
         if (hindView)
             return null;
-        return actor.Unit.HairStyle == 0 ? null : actor.IsAttacking || actor.IsOralVoring || actor.IsAbsorbing || actor.DamagedColors ? Sprites[44] : Sprites[43]; 
+        return actor.Unit.HairStyle == 0 ? null : actor.IsAttacking || actor.IsOralVoring || actor.IsAbsorbing || actor.DamagedColors ? Sprites[44] : Sprites[43];
     }
 
     protected override Sprite BodyAccentSprite5(Actor_Unit actor) => hindView ? Sprites[88] : Sprites[12]; // Tailtip
     protected override Sprite BodyAccentSprite6(Actor_Unit actor) => !actor.IsAttacking && !actor.IsOralVoring ? null : Sprites[45];
 
-    protected override Sprite MouthSprite(Actor_Unit actor) => !actor.IsAttacking && !actor.IsOralVoring ? null : Sprites[89] ;
+    protected override Sprite MouthSprite(Actor_Unit actor) => !actor.IsAttacking && !actor.IsOralVoring ? null : Sprites[89];
 
     internal override Sprite BellySprite(Actor_Unit actor, GameObject belly)
     {
@@ -161,17 +157,17 @@ class FeralLions : BlankSlate
             if (actor.PredatorComponent.IsUnitOfSpecificationInPrey(Race.Selicia, true, PreyLocation.balls))
                 return hindView ? Sprites[84] : Sprites[25];
 
-            return hindView ? Sprites[76+actor.GetBallSize(7)] : Sprites[15 + actor.GetBallSize(9)];
+            return hindView ? Sprites[76 + actor.GetBallSize(7)] : Sprites[15 + actor.GetBallSize(9)];
         }
-        return hindView ? Sprites[75] :Sprites[14];
+        return hindView ? Sprites[75] : Sprites[14];
     }
 
     protected override Sprite DickSprite(Actor_Unit actor)
     {
         //if ((hindView ? actor.GetBallSize(8) : actor.GetBallSize(9)) > 2)
-            Dick.layer = hindView ? 15 : 6;
+        Dick.layer = hindView ? 15 : 6;
         //else 
-            //Dick.layer = hindView ? 19 : 6;
+        //Dick.layer = hindView ? 19 : 6;
         if (actor.Unit.HasDick == false)
             return null;
         if (actor.IsErect())

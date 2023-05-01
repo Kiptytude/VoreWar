@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 
 
 class Alligators : BlankSlate
@@ -146,12 +141,12 @@ class Alligators : BlankSlate
 
     protected override Sprite AccessorySprite(Actor_Unit actor) // Level bands. Checks from highest down, giving the first band that the unit has sufficient level for. If too low for everything, returns null.
     {
-        if (actor.Unit.Level> 19) return State.GameManager.SpriteDictionary.Alligators[44];
-        if (actor.Unit.Level> 17) return State.GameManager.SpriteDictionary.Alligators[43];
-        if (actor.Unit.Level> 14) return State.GameManager.SpriteDictionary.Alligators[42];
-        if (actor.Unit.Level> 11) return State.GameManager.SpriteDictionary.Alligators[41];
-        if (actor.Unit.Level> 8) return State.GameManager.SpriteDictionary.Alligators[40];
-        if (actor.Unit.Level> 4) return State.GameManager.SpriteDictionary.Alligators[39];
+        if (actor.Unit.Level > 19) return State.GameManager.SpriteDictionary.Alligators[44];
+        if (actor.Unit.Level > 17) return State.GameManager.SpriteDictionary.Alligators[43];
+        if (actor.Unit.Level > 14) return State.GameManager.SpriteDictionary.Alligators[42];
+        if (actor.Unit.Level > 11) return State.GameManager.SpriteDictionary.Alligators[41];
+        if (actor.Unit.Level > 8) return State.GameManager.SpriteDictionary.Alligators[40];
+        if (actor.Unit.Level > 4) return State.GameManager.SpriteDictionary.Alligators[39];
         return null;
     }
 

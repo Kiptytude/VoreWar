@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 public class DisplayTooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
@@ -20,7 +18,7 @@ public class DisplayTooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         {
             State.GameManager.HoveringTooltip.UpdateInformationDefaultTooltip(value);
         }
-        
+
     }
 
     public void OnPointerExit(PointerEventData eventData)

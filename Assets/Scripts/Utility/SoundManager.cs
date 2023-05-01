@@ -1,7 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
+using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
@@ -135,7 +134,7 @@ public class SoundManager : MonoBehaviour
 
     private void PlayLoop(AudioClip clip, AudioSource source)
     {
-       // Debug.Log(clip);
+        // Debug.Log(clip);
         source.clip = clip;
         source.Play();
     }
@@ -213,13 +212,13 @@ public class SoundManager : MonoBehaviour
 
         if (State.GameManager.TacticalMode.TacticalSoundBlocked())
             return;
-        
+
         AudioSource source = actor.UnitSprite.LoopSource;
 
         volume *= PositionSound(source, actor.UnitSprite.transform.position, loopFloor);
 
         source.volume = volume;
-        
+
         // Don't interrupt an existing source
 
         if (source.isPlaying)
@@ -248,11 +247,11 @@ public class SoundManager : MonoBehaviour
             return;
 
         AudioSource source = actor.UnitSprite.SfxSources[Random.Range(0, actor.UnitSprite.SfxSourcesCount)];
-        
+
         AudioClip clip = clips[Random.Range(0, clips.Length)];
 
         volume *= PositionSound(source, actor.UnitSprite.transform.position, sfxFloor);
-        
+
         PlaySfx(clip, source, volume);
     }
 }

@@ -163,7 +163,7 @@ public class Army
                 if (unit.BaseScale > extremum)
                     unit.BaseScale -= extremum - (extremum * ((1 - Config.GrowthDecayOffset) - Config.GrowthDecayIncreaseRate * (extremum - 1)));     // force the decay function to be monotonous
                 else
-                unit.BaseScale = Math.Max(1, unit.BaseScale*((1 - Config.GrowthDecayOffset) - Config.GrowthDecayIncreaseRate * (unit.BaseScale-1)));  // default decayIncreaseRate = 0.04f
+                    unit.BaseScale = Math.Max(1, unit.BaseScale * ((1 - Config.GrowthDecayOffset) - Config.GrowthDecayIncreaseRate * (unit.BaseScale - 1)));  // default decayIncreaseRate = 0.04f
             }
         }
         RefreshMovementMode();
@@ -300,7 +300,7 @@ public class Army
         {
             if (RemainingMP > 1)
             {
-                if (Banner != null)
+                if (Banner != null && Banner.gameObject.activeSelf)
                     State.GameManager.StrategyMode.Translator?.SetTranslator(Banner.transform, Position, pos, Config.StrategicAIMoveDelay, State.GameManager.StrategyMode.IsPlayerTurn);
                 else if (Sprite != null)
                     State.GameManager.StrategyMode.Translator?.SetTranslator(Sprite.transform, Position, pos, Config.StrategicAIMoveDelay, State.GameManager.StrategyMode.IsPlayerTurn);
@@ -317,7 +317,7 @@ public class Army
         if ((act == TileAction.Attack && RemainingMP > 0) || (act == TileAction.AttackTwoMP && RemainingMP > 1))
         {
             RemainingMP = 0;
-            if (Banner != null)
+            if (Banner != null && Banner.gameObject.activeSelf)
                 State.GameManager.StrategyMode.Translator?.SetTranslator(Banner.transform, Position, pos, Config.StrategicAIMoveDelay, State.GameManager.StrategyMode.IsPlayerTurn);
             else if (Sprite != null)
                 State.GameManager.StrategyMode.Translator?.SetTranslator(Sprite.transform, Position, pos, Config.StrategicAIMoveDelay, State.GameManager.StrategyMode.IsPlayerTurn);
@@ -330,10 +330,10 @@ public class Army
             if (State.GameManager.StrategyMode.IsPlayerTurn)
                 State.GameManager.StrategyMode.UndoMoves.Add(new StrategicMoveUndo(this, RemainingMP, new Vec2i(Position.x, Position.y)));
             RemainingMP -= 1;
-            if (Banner != null)
+            if (Banner != null && Banner.gameObject.activeSelf)
                 State.GameManager.StrategyMode.Translator?.SetTranslator(Banner.transform, Position, pos, Config.StrategicAIMoveDelay, State.GameManager.StrategyMode.IsPlayerTurn);
             else if (Sprite != null)
-                State.GameManager.StrategyMode.Translator?.SetTranslator(Sprite.transform, Position, pos, Config.StrategicAIMoveDelay, State.GameManager.StrategyMode.IsPlayerTurn);            
+                State.GameManager.StrategyMode.Translator?.SetTranslator(Sprite.transform, Position, pos, Config.StrategicAIMoveDelay, State.GameManager.StrategyMode.IsPlayerTurn);
             Position = pos;
             StrategicUtilities.TryClaim(pos, empire);
             return false;
@@ -454,7 +454,7 @@ public class Army
         if (numprey > 0)
         {
             RemainingMP = 0;
-DevourThisTurn = true;
+            DevourThisTurn = true;
             State.GameManager.StrategyMode.UndoMoves.Clear();
         }
         while (remainingPrey > 0)
