@@ -20,6 +20,7 @@ public class VariableEditor : MonoBehaviour
     public TextMeshProUGUI TooltipText;
 
     internal Dictionary<Traits, bool> TempDictionary;
+    internal List<Toggle> DictToggleList;
 
     internal const BindingFlags Bindings = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
 
@@ -172,6 +173,11 @@ public class VariableEditor : MonoBehaviour
                 TempDictionary = (Dictionary<Traits, bool>)field.GetValue(obj);
                 if (TempDictionary != null)
                 {
+                    var newObject = Instantiate(Toggle, Folder);
+                    var allToggle = newObject.GetComponent<Toggle>();
+                    newObject.name = $"ALL";
+                    allToggle.GetComponentInChildren<Text>().text = "ALL";
+                    DictToggleList = new List<Toggle>();
                     foreach (var entry in TempDictionary.OrderBy(s =>
                        {
                            return s.Key >= Traits.LightningSpeed ? "ZZZ" + s.ToString() : s.ToString();
@@ -182,7 +188,10 @@ public class VariableEditor : MonoBehaviour
                         newObj.name = $"UsingDictionary^{entry.Key}";
                         toggle.isOn = entry.Value;
                         toggle.GetComponentInChildren<Text>().text = entry.Key.ToString();
+                        DictToggleList.Add(toggle);
                     }
+                    allToggle.isOn = DictToggleList.All(t => t.isOn);
+                    allToggle.onValueChanged.AddListener(delegate { CheckAll(allToggle.isOn); });
                 }
                 //var newObj = Instantiate(Toggle, Folder);
                 //var toggle = newObj.GetComponent<Toggle>();
@@ -206,6 +215,12 @@ public class VariableEditor : MonoBehaviour
 
         }
     }
+
+    private void CheckAll(bool isOn)
+    {
+        DictToggleList.ForEach(t => t.isOn = isOn);
+    }
+
 
     //private void ProcessProperties<T>(T obj)
     //{
