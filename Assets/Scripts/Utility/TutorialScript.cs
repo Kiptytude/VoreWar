@@ -35,6 +35,7 @@ public class TutorialScript
         {
             actor.Unit.ClearAllTraits();
             actor.PredatorComponent = new PredatorComponent(actor, actor.Unit);
+            actor.Unit.Predator = true;
         }
 
 
