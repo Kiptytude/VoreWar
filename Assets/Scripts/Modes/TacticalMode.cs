@@ -3434,7 +3434,7 @@ Turns: {currentTurn}
                         CheckAlignment(child, units[i]);
                     }
                 }*/
-
+                units[i].ReceivedRub = false; // Hedonists now get just as much out of mind-control effects
                 units[i].DigestCheck(); //Done first so that freed units are checked properly below
 
             }

@@ -1249,6 +1249,8 @@ public class Unit
 
     protected void RecalculateStatBoosts()
     {
+        RefreshSecrecy();
+        InitializeFixedSide(Side);
         if (Tags == null)
             return;
 
@@ -1931,7 +1933,7 @@ public class Unit
 
     public int GetApparentSide(Unit viewer = null)
     {
-        if (viewer?.FixedSide == FixedSide)
+        if (TacticalUtilities.UnitCanSeeTrueSideOfTarget(viewer, this))
             return FixedSide;
         return hiddenFixedSide ? Side : FixedSide;
     }

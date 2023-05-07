@@ -1132,10 +1132,9 @@ public class Village
         {
             if (army.Units.Count < army.MaxSize)
             {
-                if (VillagePopulation.GetRecruitables().Where(rec => rec.IsInfiltratingSide(Side)).Count() > 0 && army.Side == Side)
+                if (VillagePopulation.GetRecruitables().Where(rec => rec.IsInfiltratingSide(Side)).Count() > 0 && army.Side == Side && State.Rand.Next(2) < 1)
                 {
                     Unit unit = VillagePopulation.GetRecruitables().Where(rec => rec.IsInfiltratingSide(Side)).OrderByDescending(s => s.Experience).First();
-
                     var startingExp = GetStartingXp();
                     if (unit.Experience < startingExp)
                         unit.SetExp(startingExp);

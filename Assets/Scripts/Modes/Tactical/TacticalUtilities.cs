@@ -323,7 +323,7 @@ static class TacticalUtilities
         int friendlySide = actor.Unit.Side;
         int defenderSide = State.GameManager.TacticalMode.GetDefenderSide();
         int opponentSide = friendlySide == defenderSide ? State.GameManager.TacticalMode.GetAttackerSide() : defenderSide;
-        int effectiveTargetSide = target.Unit.GetApparentSide();
+        int effectiveTargetSide = target.Unit.GetApparentSide(actor.Unit);
         int effectiveActorSide = GetMindControlSide(actor.Unit) != -1 ? GetMindControlSide(actor.Unit) : actor.Unit.FixedSide;
         if (GetMindControlSide(target.Unit) == effectiveActorSide)
             return false;
@@ -781,6 +781,26 @@ static class TacticalUtilities
             return true;
          }
         
+        return false;
+    }
+
+    static public bool UnitCanSeeTrueSideOfTarget(Unit viewer, Unit target)
+    {
+        if (!target.hiddenFixedSide || target.FixedSide == target.Side) return true;
+
+        if (State.World.MainEmpires == null) return false;
+
+        if (target.FixedSide == viewer.FixedSide)
+            return true;
+
+        if (RelationsManager.GetRelation(target.FixedSide, viewer.FixedSide).Type == RelationState.Allied)
+        {
+            return true;
+        }
+        // I was thinking about also giving units the insight of whatever side they're pretending to be on, but I think it' a good idea to "accidentally" kill "friendly" infiltrators
+        // on the opposing side anyway, if you can get away with it. And you can, since by the current logic only obvious and direct betrayal uncovers someone's guise.
+        // Well, and AOE, but that's due to cheese protection.
+
         return false;
     }
 
