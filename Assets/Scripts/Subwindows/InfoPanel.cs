@@ -546,7 +546,8 @@ public class InfoPanel
                 sb.AppendLine($"Digestions: {unit.DigestedUnits}");
             if (unit.TimesKilled > 0)
                 sb.AppendLine($"Deaths: {unit.TimesKilled}");
-            string traits = unit.ListTraits();
+            bool hideSecretTraits = State.World?.ItemRepository != null && (State.GameManager.StrategyMode?.LastHumanEmpire?.Side ?? unit.FixedSide) != unit.FixedSide; //protection for the create strat screen and pure tactical;
+            string traits = unit.ListTraits(hideSecretTraits);
             if (traits != "")
                 sb.AppendLine("Traits:\n" + traits);
             StringBuilder sbSecond = new StringBuilder();

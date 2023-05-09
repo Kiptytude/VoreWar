@@ -14,6 +14,7 @@ public static class State
     public static NameGenerator NameGen;
     public static GameManager GameManager;
     public static AssimilateList AssimilateList;
+    public static Dictionary<int, RandomizeList> RandomizeLists;
 
     internal static EventList EventList;
 
@@ -87,6 +88,12 @@ public static class State
         NameGen = new NameGenerator();
         EventList = new EventList();
         AssimilateList = new AssimilateList();
+        RandomizeLists = new Dictionary<int, RandomizeList>();
+        RandomizeLists.Add(-1, new RandomizeList());
+        foreach (Race race in (Race[])Enum.GetValues(typeof(Race)))
+        {
+            RandomizeLists.Add((int)race, new RandomizeList());
+        }
     }
 
     public static void SaveEditedRaces()

@@ -1144,14 +1144,15 @@ public class Unit
 
     }
 
-    internal string ListTraits()
+    internal string ListTraits(bool hideSecret = false)
     {
         if (Tags.Count == 0 && (PermanentTraits == null || PermanentTraits.Count == 0))
             return "";
         string ret = "";
         for (int i = 0; i < Tags.Count; i++)
         {
-            ret += Tags[i].ToString();
+            if (!(hideSecret && Tags[i] == Traits.Infiltrator))
+                ret += Tags[i].ToString();
             if (i + 1 < Tags.Count)
                 ret += "\n";
         }
@@ -1163,7 +1164,8 @@ public class Unit
             {
                 if (Tags.Contains(PermanentTraits[i]))
                     continue;
-                ret += PermanentTraits[i].ToString();
+                if (!(hideSecret && Tags[i] == Traits.Infiltrator))
+                    ret += PermanentTraits[i].ToString();
                 if (i + 1 < PermanentTraits.Count)
                     ret += "\n";
             }

@@ -655,6 +655,15 @@ public class RaceEditorPanel : MonoBehaviour
         UpdateInteractable();
     }
 
+    public void ChangeRandomizableTraits()
+    {
+        foreach (var entry in State.RandomizeLists)
+        {
+            entry.Value.Uninitialize();
+        }
+        State.RandomizeLists[(int)PreviousRace].Initialize((int)PreviousRace);
+        State.GameManager.VariableEditor.Open(State.RandomizeLists[(int)PreviousRace]);
+    }
 
 
 }

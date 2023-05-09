@@ -933,5 +933,30 @@ static class StrategicUtilities
 
     }
 
+    internal static void TryInfiltrateRandom(Army originArmy, Unit unit)
+    {
+        List<MercenaryContainer> destination = null;
+        var eligibleVillages = State.World.Villages.Where(v => v.NetBoosts.MercsPerTurnAdd > 0 && RelationsManager.GetRelation(v.Side,unit.Side).Type != RelationState.Allied).ToList();
+
+        if (eligibleVillages.Any() && State.Rand.Next(2) < 1)
+            destination = eligibleVillages[State.Rand.Next(eligibleVillages.Count())].Mercenaries;
+        else if (State.World.MercenaryHouses.Any() && State.Rand.Next(5) < 1)
+            destination = State.World.MercenaryHouses[State.Rand.Next(State.World.MercenaryHouses.Count())].Mercenaries;
+
+        if (destination != null)
+        {
+            MercenaryContainer merc = new MercenaryContainer();
+            merc.Unit = unit;
+            merc.Title = $"{unit.Race} - Mercenary";
+            var power = State.RaceSettings.Get(merc.Unit.Race).PowerAdjustment;
+            if (power == 0)
+            {
+                power = RaceParameters.GetTraitData(merc.Unit).PowerAdjustment;
+            }
+            merc.Cost = (int)((25 + State.Rand.Next(15) + (.12 * unit.Experience)) * UnityEngine.Random.Range(0.8f, 1.2f) * power);
+            destination.Add(merc);
+            originArmy.Units.Remove(unit);
+        }
+    }
 }
 

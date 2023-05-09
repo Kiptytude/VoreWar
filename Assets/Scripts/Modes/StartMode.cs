@@ -1,3 +1,4 @@
+using OdinSerializer.Utilities;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -72,6 +73,16 @@ public class StartMode : SceneBase
     {
         State.AssimilateList.Initialize();
         State.GameManager.VariableEditor.Open(State.AssimilateList);
+    }
+
+    public void ChangeRandomizableTraits(int raceInt)
+    {
+        foreach (var entry in State.RandomizeLists)
+        {
+            entry.Value.Uninitialize();
+        }
+        State.RandomizeLists[raceInt].Initialize();
+        State.GameManager.VariableEditor.Open(State.RandomizeLists[raceInt]);
     }
 
     public void ReturnToStart()

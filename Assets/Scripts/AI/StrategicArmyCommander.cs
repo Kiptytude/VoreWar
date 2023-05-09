@@ -109,6 +109,8 @@ class StrategicArmyCommander
             foreach (Unit unit in army.Units)
             {
                 StrategicUtilities.SpendLevelUps(unit);
+                if (unit.HasTrait(Traits.Infiltrator))
+                    StrategicUtilities.TryInfiltrateRandom(army, unit);
             }
 
             if (army.InVillageIndex > -1)

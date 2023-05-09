@@ -410,7 +410,14 @@ public class VariableEditor : MonoBehaviour
             State.GameManager.Menu.WorldSettingsUI.ShowSettings();
         }
         if (needSave)
-            State.AssimilateList.Save();
+        {
+            if (State.AssimilateList.Initialized)
+                State.AssimilateList.Save();
+            foreach (var entry in State.RandomizeLists.Where(li => li.Value.Initialized))
+            {
+                entry.Value.Save();
+            }
+        }
     }
 
     public void Close()
