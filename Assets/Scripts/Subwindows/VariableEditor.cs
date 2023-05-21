@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.IO;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -413,10 +414,6 @@ public class VariableEditor : MonoBehaviour
         {
             if (State.AssimilateList.Initialized)
                 State.AssimilateList.Save();
-            foreach (var entry in State.RandomizeLists.Where(li => li.Value.Initialized))
-            {
-                entry.Value.Save();
-            }
         }
     }
 

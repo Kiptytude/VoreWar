@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using UnityEngine;
 
 public static class State
@@ -14,7 +15,7 @@ public static class State
     public static NameGenerator NameGen;
     public static GameManager GameManager;
     public static AssimilateList AssimilateList;
-    public static Dictionary<int, RandomizeList> RandomizeLists;
+    public static List<RandomizeList> RandomizeLists;
 
     internal static EventList EventList;
 
@@ -77,6 +78,8 @@ public static class State
                 File.Copy($"{Application.streamingAssetsPath}{Path.DirectorySeparatorChar}femaleFeralLions.txt", $"{StorageDirectory}femaleFeralLions.txt");
             if (File.Exists($"{StorageDirectory}maleFeralLions.txt") == false)
                 File.Copy($"{Application.streamingAssetsPath}{Path.DirectorySeparatorChar}maleFeralLions.txt", $"{StorageDirectory}maleFeralLions.txt");
+            if (File.Exists($"{StorageDirectory}customTraits.txt") == false)
+                File.Copy($"{Application.streamingAssetsPath}{Path.DirectorySeparatorChar}customTraits.txt", $"{StorageDirectory}customTraits.txt");
         }
         catch
         {
@@ -88,11 +91,32 @@ public static class State
         NameGen = new NameGenerator();
         EventList = new EventList();
         AssimilateList = new AssimilateList();
-        RandomizeLists = new Dictionary<int, RandomizeList>();
-        RandomizeLists.Add(-1, new RandomizeList());
-        foreach (Race race in (Race[])Enum.GetValues(typeof(Race)))
+
+        Encoding encoding = Encoding.GetEncoding("iso-8859-1");
+        List<string> lines;
+        RandomizeLists = new List<RandomizeList>();
+        if (File.Exists($"{State.StorageDirectory}customTraits.txt"))
         {
-            RandomizeLists.Add((int)race, new RandomizeList());
+            var logFile = File.ReadAllLines($"{State.StorageDirectory}customTraits.txt", encoding);
+            if (logFile.Any())
+            {
+                lines = new List<string>(logFile);
+                int count = 0;
+                lines.ForEach(line =>
+                {
+                    count++;
+                    RandomizeList custom = new RandomizeList();
+                    line = new string(line
+                       .Where(c => !Char.IsWhiteSpace(c)).ToArray());
+                    string[] strings = line.Split(',');
+                    custom.id = int.Parse(strings[0]);
+                    custom.name = strings[1];
+                    custom.chance = float.Parse(strings[2]);
+                    custom.RandomTraits = strings[3].Split('|').ToList().ConvertAll(s => (Traits)int.Parse(s));
+                    RandomizeLists.Add(custom);
+                });
+            }
+               
         }
     }
 

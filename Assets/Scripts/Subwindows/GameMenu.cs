@@ -10,7 +10,7 @@ public class GameMenu : MonoBehaviour
     public SaveLoad SaveLoadScreen;
     public CheatMenu CheatMenu;
     public RaceEditorPanel RaceEditor;
-
+    public RandomizerTraitEditor RandomizerTraitEditor;
 
     public HelpPanel HelpUI;
 
@@ -66,6 +66,11 @@ public class GameMenu : MonoBehaviour
         Options.Open();
     }
 
+    public void OpenRandomizerTraits()
+    {
+        RandomizerTraitEditor.gameObject.SetActive(true);
+        RandomizerTraitEditor.Open();
+    }
     public void LoadHelp()
     {
         HelpUI.GenerateButtonsIfNeeded();

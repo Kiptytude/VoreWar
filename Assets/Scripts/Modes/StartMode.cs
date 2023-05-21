@@ -75,14 +75,9 @@ public class StartMode : SceneBase
         State.GameManager.VariableEditor.Open(State.AssimilateList);
     }
 
-    public void ChangeRandomizableTraits(int raceInt)
+    public void ChangeRandomizableTraits()
     {
-        foreach (var entry in State.RandomizeLists)
-        {
-            entry.Value.Uninitialize();
-        }
-        State.RandomizeLists[raceInt].Initialize();
-        State.GameManager.VariableEditor.Open(State.RandomizeLists[raceInt]);
+        State.GameManager.Menu.OpenRandomizerTraits();
     }
 
     public void ReturnToStart()

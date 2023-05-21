@@ -1,4 +1,5 @@
 using OdinSerializer;
+using OdinSerializer.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -1396,6 +1397,7 @@ public class Unit
                 Tags.Remove(trait);
             }
         }
+        RandomizeTraits();
         Tags = Tags.Distinct().ToList();
         if (Tags.Contains(Traits.Prey))
             Predator = false;
@@ -1407,6 +1409,32 @@ public class Unit
         if (Predator == false)
             Tags.Add(Traits.Prey);
         SetMaxItems();
+    }
+
+    private void RandomizeTraits()
+    {
+        var customs = Tags.Where(t => State.RandomizeLists.Any(rl => (Traits)rl.id == t));
+        customs.ForEach(ct =>
+        {
+            RandomizeList randomizeList = State.RandomizeLists.Single(rl => (Traits)rl.id == ct);
+            if (State.Rand.NextDouble() < randomizeList.chance)
+            {
+                var gainable = randomizeList.RandomTraits.Where(rt => !Tags.Contains(rt) && !PermanentTraits.Contains(rt)).ToList();
+                if (gainable.Count() > 0)
+                {
+                    var randomPick = gainable[State.Rand.Next(gainable.Count())];
+                    PermanentTraits.Add(randomPick);
+                    RemovedTraits?.Remove(randomPick); // Even if manually removed before, rng-sus' word is law
+                }
+            }
+            if (RemovedTraits == null)
+                RemovedTraits = new List<Traits>();
+            RemovedTraits.Add(ct);  // we don't want the random traits generating infinite traits
+        });
+        foreach (Traits trait in RemovedTraits)
+        {
+            Tags.Remove(trait);
+        }
     }
 
     public void SetSizeToDefault() => BreastSize = DefaultBreastSize;
