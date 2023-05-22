@@ -85,7 +85,7 @@ public class RandomizerTraitEditor : MonoBehaviour
             });
             rt.RemoveBtn.onClick.AddListener(() =>
             {
-                RandomizerTags.Remove(rt);
+                Remove(rt);
                 Destroy(rt.gameObject);
             });
             return rt;
@@ -114,16 +114,25 @@ public class RandomizerTraitEditor : MonoBehaviour
             });
             rt.RemoveBtn.onClick.AddListener(() =>
             {
-                RandomizerTags.Remove(rt);
+                Remove(rt);
                 Destroy(rt.gameObject);
             });
             return rt;
         }
     }
 
+    private void Remove(RandomizerTrait rt)
+    {
+        foreach (Race race in (Race[])Enum.GetValues(typeof(Race)))
+        {
+            RaceSettingsItem item = State.RaceSettings.Get(race);
+            item.RaceTraits.Remove((Traits)rt.id);
+        }
+        RandomizerTags.Remove(rt);
+    }
+
     public void Persist()
     {
-
         List<RandomizeList> randomizeLists = new List<RandomizeList>();
         RandomizerTags.ForEach(tag =>
         {

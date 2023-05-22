@@ -1008,7 +1008,7 @@ public class PredatorComponent
                     FreeUnit(preyUnit.Actor);
                     TacticalUtilities.Log.RegisterRegurgitated(unit, preyUnit.Unit, Location(preyUnit));
                 }
-                State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"{preyUnit.Unit.Name} converted from one side to another thanks to {unit.Name}'s converting digestion trait.");
+                State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"{preyUnit.Unit.Name} converted from one side to another thanks to {unit.Name}'s digestion conversion trait.");
                 return 0;
             }
             if (unit.HasTrait(Traits.DigestionRebirth) && State.Rand.Next(2) == 0 && preyUnit.Unit.CanBeConverted() && (Config.SpecialMercsCanConvert || unit.Race < Race.Selicia))
@@ -1047,13 +1047,17 @@ public class PredatorComponent
                 unit.AddPermanentTrait(Traits.CursedMark);
                 preyUnit.Unit.RemoveTrait(Traits.CursedMark);
             }
-            //if (preyUnit.Unit.HasTrait(Traits.Turned))
-            //{
-            //    unit.AddPermanentTrait(Traits.Turned);
-            //    unit.FixedSide = preyUnit.Unit.FixedSide;
-            //    unit.hiddenFixedSide = true;
-            //    preyUnit.Unit.RemoveTrait(Traits.Turned);
-            //}
+            if (preyUnit.Unit.HasTrait(Traits.Corruption))
+           {
+                actor.Corruption += preyUnit.Unit.GetStatTotal();
+                if (actor.Corruption >= unit.GetStatTotal())
+                {
+                    unit.AddPermanentTrait(Traits.Corruption);
+                    unit.FixedSide = preyUnit.Unit.FixedSide;
+                    unit.hiddenFixedSide = true;
+                }   
+                preyUnit.Unit.RemoveTrait(Traits.Corruption);
+            }
             unit.DigestedUnits++;
             if (unit.HasTrait(Traits.EssenceAbsorption) && unit.DigestedUnits % 4 == 0)
                 unit.GeneralStatIncrease(1);

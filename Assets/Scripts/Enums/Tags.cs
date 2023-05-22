@@ -288,6 +288,8 @@ public enum Traits
     ForceFeeder = 145,
     /// <summary>No matter which army this unit is in, it is no secret that it will act for the good of its original side when it comes down to it.</summary>
     Untamable = 146,
+    /// <summary>If a currupted unit is digested, the pred will build up corruption as a hidden status. Once corrupted prey with a stat total equal to that of the pred has been digested, they are under control of the side of the last-digested corrupted.</summary>
+    Corruption = 147,
 
     //Hidden Traits
     /// <summary>When an Army consists only of units with this trait, it moves undetected and can infiltrate the enemy by using "exchange" on their village or a mercanary house.</summary>

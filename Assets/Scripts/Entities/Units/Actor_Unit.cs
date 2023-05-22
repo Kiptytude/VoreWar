@@ -90,6 +90,9 @@ public class Actor_Unit
     public bool Paralyzed;
 
     [OdinSerialize]
+    public int Corruption;
+
+    [OdinSerialize]
     public bool KilledByDigestion;
 
     [OdinSerialize]

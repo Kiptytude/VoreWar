@@ -46,6 +46,8 @@ public class Unit
     [OdinSerialize]
     public bool hiddenFixedSide = false;
 
+    public List<Traits> secretTags = new List<Traits>() { Traits.Infiltrator, Traits.Corruption};
+
     [OdinSerialize]
     public Race Race;
     [OdinSerialize]
@@ -1152,7 +1154,7 @@ public class Unit
         string ret = "";
         for (int i = 0; i < Tags.Count; i++)
         {
-            if (!(hideSecret && Tags[i] == Traits.Infiltrator))
+            if (!(hideSecret && secretTags.Contains(Tags[i])))
                 ret += Tags[i].ToString();
             if (i + 1 < Tags.Count)
                 ret += "\n";
@@ -1165,7 +1167,7 @@ public class Unit
             {
                 if (Tags.Contains(PermanentTraits[i]))
                     continue;
-                if (!(hideSecret && Tags[i] == Traits.Infiltrator))
+                if (!(hideSecret && secretTags.Contains(Tags[i])))
                     ret += PermanentTraits[i].ToString();
                 if (i + 1 < PermanentTraits.Count)
                     ret += "\n";
@@ -1629,6 +1631,11 @@ public class Unit
             if (experience < 0)
                 experience = 0;
         }
+    }
+
+    public int GetStatTotal()
+    {
+        return Stats.Sum();
     }
 
     public void LevelDown()
