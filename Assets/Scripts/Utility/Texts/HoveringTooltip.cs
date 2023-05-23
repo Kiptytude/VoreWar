@@ -516,6 +516,8 @@ public class HoveringTooltip : MonoBehaviour
                 return "Can emit Gas that turns foes into subservient non-combatants.";
             case Traits.ForceFeeder:
                 return "Allows unit to attempt force-feeding itself to another unit at will.";
+            case Traits.Corruption:
+                return "If a currupted unit is digested, the pred will build up corruption as a hidden status. Once corrupted prey with a stat total equal to that of the pred has been digested, they are under control of the side of the last-digested corrupted.";
         }
         return "<b>This trait needs a tooltip!</b>";
     }

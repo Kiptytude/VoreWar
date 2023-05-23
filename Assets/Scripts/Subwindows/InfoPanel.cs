@@ -546,9 +546,7 @@ public class InfoPanel
                 sb.AppendLine($"Digestions: {unit.DigestedUnits}");
             if (unit.TimesKilled > 0)
                 sb.AppendLine($"Deaths: {unit.TimesKilled}");
-            bool hideSecretTraits = State.World?.ItemRepository != null && (State.GameManager.StrategyMode?.LastHumanEmpire?.Side ?? unit.FixedSide) != unit.FixedSide; //protection for the create strat screen and pure tactical;
-            string traits = unit.ListTraits(hideSecretTraits);
-            bool hideSecretStatus = State.World?.ItemRepository != null && (State.GameManager.StrategyMode?.LastHumanEmpire?.Side ?? unit.FixedSide) == unit.FixedSide;
+            string traits = unit.ListTraits(TacticalUtilities.IsUnitControlledByPlayer(unit));
             if (traits != "")
                 sb.AppendLine("Traits:\n" + traits);
             StringBuilder sbSecond = new StringBuilder();
@@ -561,8 +559,8 @@ public class InfoPanel
                 sbSecond.AppendLine("Slimed");
             if (actor?.Paralyzed ?? false)
                 sbSecond.AppendLine("Paralyzed");
-            if (actor?.Corruption > 0 && !hideSecretStatus)
-                sbSecond.AppendLine($"Corruption ({actor.Corruption})");
+            if (actor?.Corruption > 0 && !TacticalUtilities.IsUnitControlledByPlayer(unit))
+                sbSecond.AppendLine($"Corruption ({actor.Unit.GetStatTotal()}/{actor.Corruption})");
             if (unit.StatusEffects?.Any() ?? false)
             {
                 foreach (StatusEffectType type in (StatusEffectType[])Enum.GetValues(typeof(StatusEffectType)))

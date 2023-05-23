@@ -517,6 +517,8 @@ public class TacticalMode : SceneBase
         if (DefenderName == null)
             DefenderName = $"{armies[1]?.Empire?.Name ?? village?.Empire?.Name ?? ((Race)defenderSide).ToString()}";
 
+        currentAI = attackerAI;
+        IsPlayerTurn = !AIAttacker;
         GeneralSetup();
 
         if (defenders.Count <= 0 && garrison.Count <= 0)
@@ -556,9 +558,6 @@ public class TacticalMode : SceneBase
             InitRetreatConditions(defenderAI, defenders, defenderEmp, AIDefender);
 
         }
-
-        currentAI = attackerAI;
-        IsPlayerTurn = !AIAttacker;
 
         Log.RegisterNewTurn(AttackerName, 1);
 
