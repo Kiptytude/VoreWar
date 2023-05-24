@@ -104,7 +104,7 @@ public abstract class TacticalAI : ITacticalAI
         if (actors == null)
             actors = TacticalUtilities.Units;
         path = null;
-        var actorsThatMatter = actors.Where(a => a.Targetable && a.Unit.IsDead == false && a.Surrendered == false && a.Unit.Side == AISide);
+        var actorsThatMatter = actors.Where(a => a.Targetable && a.Unit.IsDead == false && a.Surrendered == false && a.Unit.Side == AISide && TacticalUtilities.GetMindControlSide(a.Unit) == -1);
         onlyForeignTroopsLeft = actorsThatMatter.All(a => TacticalUtilities.GetPreferredSide(a.Unit, enemySide, AISide) == enemySide);
         onlySurrenderedEnemies = actors.Where(s => s.Unit.Side != AISide && s.Unit.IsDead == false && s.Surrendered == false && !s.Fled).Any() == false;
         var preds = actors.Where(s => s.Unit.Side == AISide && s.Unit.IsDead == false && s.Unit.Predator);

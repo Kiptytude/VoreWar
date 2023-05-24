@@ -2,7 +2,6 @@
 using OdinSerializer;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor.Experimental.UIElements.GraphView;
 using UnityEngine;
 
 public class Actor_Unit
@@ -118,6 +117,9 @@ public class Actor_Unit
 
     [OdinSerialize]
     public bool HasAttackedThisCombat = false;
+
+    [OdinSerialize]
+    public bool allowedToDefect = false;
 
 
 

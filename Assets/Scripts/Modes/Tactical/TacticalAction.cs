@@ -48,8 +48,9 @@ class UntargetedTacticalAction
     internal Color ButtonColor;
     internal string Name;
     internal Action OnClicked;
+    internal Predicate<Actor_Unit> AppearConditional;
 
-    public UntargetedTacticalAction(string name, Action onClicked, Color color = default)
+    public UntargetedTacticalAction(string name, Action onClicked, Predicate<Actor_Unit> conditional, Color color = default)
     {
         Name = name;
         OnClicked = onClicked;
@@ -57,6 +58,7 @@ class UntargetedTacticalAction
             ButtonColor = new Color(.669f, .753f, 1);
         else
             ButtonColor = color;
+        AppearConditional = conditional;
     }
 }
 
@@ -221,8 +223,9 @@ static class TacticalActionList
 
 
 
-        UntargetedActions.Add(new UntargetedTacticalAction("Flee", () => State.GameManager.TacticalMode.ButtonCallback(10)));
-        UntargetedActions.Add(new UntargetedTacticalAction("Surrender", () => State.GameManager.TacticalMode.ButtonCallback(9), new Color(.9f, .65f, .65f)));
+        UntargetedActions.Add(new UntargetedTacticalAction("Flee", () => State.GameManager.TacticalMode.ButtonCallback(10), (a) => true));
+        UntargetedActions.Add(new UntargetedTacticalAction("Surrender", () => State.GameManager.TacticalMode.ButtonCallback(9), (a) => true, new Color(.9f, .65f, .65f)));
+        UntargetedActions.Add(new UntargetedTacticalAction("Defect", () => State.GameManager.TacticalMode.ButtonCallback(14), (a) => a.allowedToDefect));
     }
 }
 

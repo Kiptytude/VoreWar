@@ -1421,12 +1421,13 @@ public class Unit
             RandomizeList randomizeList = State.RandomizeLists.Single(rl => (Traits)rl.id == ct);
             if (State.Rand.NextDouble() < randomizeList.chance)
             {
-                var gainable = randomizeList.RandomTraits.Where(rt => !Tags.Contains(rt) && !PermanentTraits.Contains(rt)).ToList();
+                List<Traits> gainable = randomizeList.RandomTraits.Where(rt => !Tags.Contains(rt) && !PermanentTraits.Contains(rt)).ToList();
                 if (gainable.Count() > 0)
                 {
                     var randomPick = gainable[State.Rand.Next(gainable.Count())];
                     PermanentTraits.Add(randomPick);
                     RemovedTraits?.Remove(randomPick); // Even if manually removed before, rng-sus' word is law
+                    GivePrerequisiteTraits(randomPick, gainable);
                 }
             }
             if (RemovedTraits == null)
@@ -1436,6 +1437,20 @@ public class Unit
         foreach (Traits trait in RemovedTraits)
         {
             Tags.Remove(trait);
+        }
+    }
+
+    private void GivePrerequisiteTraits(Traits randomPick, List<Traits> gainable)
+    {
+        if (randomPick > Traits.Growth && randomPick <= Traits.FleetingGrowth && gainable.Contains(Traits.Growth))
+        {
+            PermanentTraits.Add(Traits.Growth);
+            RemovedTraits?.Remove(Traits.Growth);
+        }
+        if ( randomPick == Traits.HealingBelly && gainable.Contains(Traits.Endosoma))
+        {
+            PermanentTraits.Add(Traits.Endosoma);
+            RemovedTraits?.Remove(Traits.Endosoma);
         }
     }
 

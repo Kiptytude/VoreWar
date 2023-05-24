@@ -41,7 +41,8 @@ public class AdvancedUnitCommands : MonoBehaviour
 
         foreach (var action in TacticalActionList.UntargetedActions)
         {
-            SetButton(action.Name, action.OnClicked, action.ButtonColor, false);
+            if (action.AppearConditional(actor))
+                SetButton(action.Name, action.OnClicked, action.ButtonColor, false);
         }
 
         foreach (var spell in actor.Unit.UseableSpells)

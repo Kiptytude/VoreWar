@@ -288,8 +288,6 @@ public enum Traits
     ForceFeeder = 145,
     /// <summary>No matter which army this unit is in, it is no secret that it will act for the good of its original side when it comes down to it.</summary>
     Untamable = 146,
-    /// <summary>If a currupted unit is digested, the pred will build up corruption as a hidden status. Once corrupted prey with a stat total equal to that of the pred has been digested, they are under control of the side of the last-digested corrupted.</summary>
-    Corruption = 147,
 
     //Hidden Traits
     /// <summary>When an Army consists only of units with this trait, it moves undetected and can infiltrate the enemy by using "exchange" on their village or a mercanary house.</summary>
@@ -297,8 +295,6 @@ public enum Traits
 
 
     //Everything after this is a cheat trait
-    /// <summary>Can emit Gas that turns foes into subservient non-combatants once per battle.</summary>
-    HypnoticGas = 290,
     /// <summary>Cheat Trait: Unit gains +10 movement and +5 attacks of any type.</summary>
     LightningSpeed = 242,
     /// <summary>Cheat Trait: Unit is digested 75% slower, is immune to first 5 turns of digestion damage, takes 25% less damage from melee and ranged attacks, gains +2 attacks of any type, +3 to all stats and +7 to 2 random stats on level up and any stat can be boosted when levelling up.</summary>
@@ -349,8 +345,12 @@ public enum Traits
     PredConverter = 264,
     /// <summary>Unit will always rebirth unbirthed prey.</summary>
     PredRebirther = 265,
-    /// <summary>When this unit rubs the belly of a foe that has not been attacked in the last turn, there is a chance for that foe to be stunned or switch sides.</summary>
+    /// <summary>When this unit rubs the belly of a foe that has not been attacked in the last two turns, there is a chance for that foe to be stunned or switch sides.</summary>
     SeductiveTouch = 266,
+    /// <summary>Can emit Gas that turns foes into subservient non-combatants once per battle.</summary>
+    HypnoticGas = 290,
+    /// <summary>If a currupted unit is digested, the pred will build up corruption as a hidden status. Once corrupted prey with a stat total equal to that of the pred has been digested, they are under control of the side of the last-digested corrupted.</summary>
+    Corruption = 291,
 
     // Growth-related section
     /// <summary>Unit increases in size when absorbing prey.</summary>

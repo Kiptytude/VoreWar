@@ -493,6 +493,8 @@ public class TacticalMode : SceneBase
         foreach (Actor_Unit actor in units)
         {
             actor.Unit.EnemiesKilledThisBattle = 0;
+            actor.allowedToDefect = TacticalUtilities.GetPreferredSide(actor.Unit, actor.Unit.Side, actor.Unit.Side == attackerSide ? defenderSide : attackerSide) != actor.Unit.Side;
+
         }
 
 
@@ -516,10 +518,6 @@ public class TacticalMode : SceneBase
             AttackerName = $"{armies[0].Empire?.Name ?? ((Race)armies[0].Side).ToString()}";
         if (DefenderName == null)
             DefenderName = $"{armies[1]?.Empire?.Name ?? village?.Empire?.Name ?? ((Race)defenderSide).ToString()}";
-
-        currentAI = attackerAI;
-        IsPlayerTurn = !AIAttacker;
-        GeneralSetup();
 
         if (defenders.Count <= 0 && garrison.Count <= 0)
         {
@@ -558,6 +556,10 @@ public class TacticalMode : SceneBase
             InitRetreatConditions(defenderAI, defenders, defenderEmp, AIDefender);
 
         }
+
+        currentAI = attackerAI;
+        IsPlayerTurn = !AIAttacker;
+        GeneralSetup();
 
         Log.RegisterNewTurn(AttackerName, 1);
 
@@ -2196,6 +2198,12 @@ Turns: {currentTurn}
             ProcessSkip(SkipUI.Surrender.isOn, SkipUI.WatchRest.isOn);
 
         }
+        if (ID == 14)
+        {
+            if (SelectedUnit != null && SelectedUnit.Targetable)
+                SwitchAlignment(SelectedUnit);
+
+        }
 
     }
 
@@ -3433,7 +3441,7 @@ Turns: {currentTurn}
                         CheckAlignment(child, units[i]);
                     }
                 }*/
-                units[i].ReceivedRub = false; // Hedonists now get just as much out of mind-control effects
+                units[i].ReceivedRub = false; // Hedonists now get just as much benefit out of mind-control effects
                 units[i].DigestCheck(); //Done first so that freed units are checked properly below
 
             }
@@ -3445,6 +3453,7 @@ Turns: {currentTurn}
         {
             if (units[i].Unit.IsDead == false && units[i].Unit.Side == activeSide)
             {
+                units[i].allowedToDefect = TacticalUtilities.GetPreferredSide(units[i].Unit, activeSide, attackersTurn ? defenderSide : attackerSide) != activeSide;
                 units[i].NewTurn();
             }
             if (units[i].Unit.IsDead && units[i].Unit.Side == activeSide)
