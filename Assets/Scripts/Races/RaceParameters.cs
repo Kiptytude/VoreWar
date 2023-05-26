@@ -98,6 +98,7 @@ static class RaceParameters
     static readonly RaceTraits Zera;
     static readonly RaceTraits Auri;
     static readonly RaceTraits Erin;
+    static readonly RaceTraits Goodra;
 
     static Unit tempUnit;
 
@@ -303,6 +304,8 @@ static class RaceParameters
                 return Auri;
             case Race.Erin:
                 return Erin;
+			case Race.Goodra:
+                return Goodra;
             case (Race)700: //Singled out so that it doesn't make the debug message
                 return Default;
             case (Race)701:
@@ -2519,6 +2522,37 @@ static class RaceParameters
                 Traits.TheGreatEscape
             },
             RaceDescription = "An incredibly delicious angel catgirl.",
+        };
+		
+		Goodra = new RaceTraits()
+        {
+            BodySize = 32,
+            StomachSize = 50,
+            HasTail = true,
+            FavoredStat = Stat.Voracity,
+            AllowedVoreTypes = new List<VoreType> { VoreType.Oral },
+            ExpMultiplier = 6f,
+            PowerAdjustment = 12f,
+            RaceStats = new RaceStats()
+            {
+                Strength = new RaceStats.StatRange(16, 24),
+                Dexterity = new RaceStats.StatRange(6, 8),
+                Endurance = new RaceStats.StatRange(32, 40),
+                Mind = new RaceStats.StatRange(4, 6),
+                Will = new RaceStats.StatRange(8, 12),
+                Agility = new RaceStats.StatRange(4, 6),
+                Voracity = new RaceStats.StatRange(32, 40),
+                Stomach = new RaceStats.StatRange(12, 24),
+            },
+            RacialTraits = new List<Traits>()
+        {
+            Traits.BoggingSlime,
+            Traits.Endosoma,
+            Traits.Resilient,
+            Traits.SoftBody,
+            Traits.VerySlowMovement,
+        },
+            RaceDescription = "Goodra, the Slug Dragon Pokemon. Goodra are large soft dragon type pokemon coated in slime. They love to give hugs and often confuse friends from food."
         };
 
 
