@@ -2529,20 +2529,20 @@ static class RaceParameters
             BodySize = 32,
             StomachSize = 50,
             HasTail = true,
-            FavoredStat = Stat.Voracity,
+            FavoredStat = Stat.Stomach,
             AllowedVoreTypes = new List<VoreType> { VoreType.Oral },
             ExpMultiplier = 6f,
             PowerAdjustment = 12f,
             RaceStats = new RaceStats()
             {
                 Strength = new RaceStats.StatRange(16, 24),
-                Dexterity = new RaceStats.StatRange(6, 8),
+                Dexterity = new RaceStats.StatRange(8, 14),
                 Endurance = new RaceStats.StatRange(32, 40),
-                Mind = new RaceStats.StatRange(4, 6),
-                Will = new RaceStats.StatRange(8, 12),
-                Agility = new RaceStats.StatRange(4, 6),
-                Voracity = new RaceStats.StatRange(32, 40),
-                Stomach = new RaceStats.StatRange(12, 24),
+                Mind = new RaceStats.StatRange(12, 20),
+                Will = new RaceStats.StatRange(16, 24),
+                Agility = new RaceStats.StatRange(6, 10),
+                Voracity = new RaceStats.StatRange(16, 24),
+                Stomach = new RaceStats.StatRange(32, 40),
             },
             RacialTraits = new List<Traits>()
         {
@@ -2551,6 +2551,7 @@ static class RaceParameters
             Traits.Resilient,
             Traits.SoftBody,
             Traits.VerySlowMovement,
+			Traits.HardSkin
         },
             RaceDescription = "Goodra, the Slug Dragon Pokemon. Goodra are large soft dragon type pokemon coated in slime. They love to give hugs and often confuse friends from food."
         };

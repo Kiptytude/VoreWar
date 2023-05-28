@@ -8,7 +8,7 @@ using System.Text;
 
 public class World
 {
-    internal const int MonsterCount = 31;
+    internal const int MonsterCount = 32;
     [OdinSerialize]
     public int Turn = 1;
     [OdinSerialize]

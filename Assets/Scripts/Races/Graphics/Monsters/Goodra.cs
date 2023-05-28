@@ -12,7 +12,7 @@ class Goodra : BlankSlate
     public Goodra()
     {
         SkinColors = ColorPaletteMap.GetPaletteCount(ColorPaletteMap.SwapType.GoodraSkin);
-        EyeTypes = 5;
+        EyeTypes = 4;
         GentleAnimation = true;
         /*
         Body = new SpriteExtraInfo(1, BodySprite, WhiteColored); // Body
