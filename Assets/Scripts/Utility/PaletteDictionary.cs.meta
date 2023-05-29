@@ -10,7 +10,7 @@ MonoImporter:
   - Skin: {instanceID: 0}
   - Imps: {instanceID: 0}
   - ImpsDark: {instanceID: 0}
-  - Goblins: {instanceID: 0}
+  - Goblins: {fileID: 2800000, guid: 3670e6bd6863be047a34ab475ac2885b, type: 3}
   - Eyes: {instanceID: 0}
   - Earth: {instanceID: 0}
   - Lizards: {instanceID: 0}
@@ -55,12 +55,14 @@ MonoImporter:
   - KomodosSkin: {instanceID: 0}
   - Horsepalettes: {instanceID: 0}
   - CockatriceSkin: {instanceID: 0}
-  - DeerSkin: {instanceID: 0}
-  - DeerLeaf: {instanceID: 0}
+  - DeerSkin: {fileID: 2800000, guid: afbbc003f5465044e9032b3ba45bcf2d, type: 3}
+  - DeerLeaf: {fileID: 2800000, guid: 16a9e74ef49a0d0438491755dddd4a55, type: 3}
   - TerrorbirdSkin: {instanceID: 0}
+  - VargulSkin: {instanceID: 0}
   - FeralLionsFur: {fileID: 2800000, guid: b502da36f567ae64d96f25280355d1ca, type: 3}
   - FeralLionsEyes: {fileID: 2800000, guid: e2c7d51d621e65e4993ea642f33c8543, type: 3}
   - FeralLionsMane: {fileID: 2800000, guid: 3724e12438cff1346983a8f3e06db79a, type: 3}
+  - GoodraSkin: {fileID: 2800000, guid: fbb146a363cdde746a9ff02b9d91876f, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

@@ -281,6 +281,7 @@ public class SpriteDictionary : MonoBehaviour
     public Sprite[] Terrorbird;
     public Sprite[] Dratopyr;
     public Sprite[] FeralLions;
+    public Sprite[] Goodra;
 
 
 

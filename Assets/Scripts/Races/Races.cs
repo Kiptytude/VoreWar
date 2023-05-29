@@ -104,6 +104,8 @@ static class Races
     static internal Zera Zera = new Zera();
     static internal Auri Aurilika = new Auri();
     static internal Erin Erin = new Erin();
+    
+    static internal Goodra Goodra = new Goodra();
 
     static internal BlankSlate BlankSlate = new BlankSlate();
 
@@ -308,6 +310,8 @@ static class Races
                 return Erin;
             case Race.FeralLions:
                 return FeralLions;
+	    case Race.Goodra:
+                return Goodra;
         }
         UnityEngine.Debug.LogWarning("Couldn't find race, substituting the Blank Slate");
         return BlankSlate;
