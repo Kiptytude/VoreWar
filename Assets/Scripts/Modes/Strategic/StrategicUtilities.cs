@@ -197,6 +197,11 @@ static class StrategicUtilities
         return units;
     }
 
+    public static List<int> GetAllHumanSides()
+    {
+        return State.World.AllActiveEmpires.Where(emp => emp.StrategicAI == null).ToList().ConvertAll(emp => emp.Side);
+    }
+
     public static int Get80thExperiencePercentile()
     {
         int highestExp = 4;
@@ -933,10 +938,12 @@ static class StrategicUtilities
 
     }
 
-    internal static void TryInfiltrateRandom(Army originArmy, Unit unit)
+    internal static void TryInfiltrateRandomAsMerc(Army originArmy, Unit unit)
     {
         List<MercenaryContainer> destination = null;
-        var eligibleVillages = State.World.Villages.Where(v => v.NetBoosts.MercsPerTurnAdd > 0 && RelationsManager.GetRelation(v.Side,unit.Side).Type != RelationState.Allied).ToList();
+        var eligibleVillages = State.World.Villages.Where(v => v.NetBoosts.MercsPerTurnAdd > 0 && RelationsManager.GetRelation(v.Side,unit.Side).Type == RelationState.Enemies).ToList();
+        if (eligibleVillages.Count == 0)
+            eligibleVillages = State.World.Villages.Where(v => v.NetBoosts.MercsPerTurnAdd > 0 && RelationsManager.GetRelation(v.Side, unit.Side).Type == RelationState.Neutral).ToList();
 
         if (eligibleVillages.Any() && State.Rand.Next(2) < 1)
             destination = eligibleVillages[State.Rand.Next(eligibleVillages.Count())].Mercenaries;

@@ -664,6 +664,8 @@ public class Recruit_Mode : SceneBase
         empire.SpendGold(100);
         empire.Leader.LeaderLevelDown();
         empire.Leader.Health = empire.Leader.MaxHealth;
+        empire.Leader.FixedSide = empire.Side;
+        empire.Leader.Type = UnitType.Leader;
         if (village.GetStartingXp() > empire.Leader.Experience)
         {
             empire.Leader.SetExp(village.GetStartingXp());

@@ -54,6 +54,7 @@ static class SpellList
     static internal readonly StatusSpell Diminishment;
     //Raze
     static internal readonly Spell GateMaw;
+    static internal readonly Spell Reanimate;
     static internal readonly Spell Resurrection;
 
     static internal readonly StatusSpell AlraunePuff;
@@ -62,6 +63,7 @@ static class SpellList
     static internal readonly StatusSpell Petrify;
     static internal readonly StatusSpell HypnoGas;
     static internal readonly Spell ForceFeed;
+    static internal readonly Spell Bind;
 
     static internal readonly DamageSpell ViperPoisonDamage;
     static internal readonly StatusSpell ViperPoisonStatus;
@@ -419,7 +421,7 @@ static class SpellList
                         AvailableRaces.Add(Race.Vagrants);
                     Race summonRace = AvailableRaces[State.Rand.Next(AvailableRaces.Count())];
                     Unit unit = new Unit(a.Unit.Side, summonRace, (int)(a.Unit.Experience * .50f), true, UnitType.Summon);
-                    var actorCharm = a.Unit.GetStatusEffect(StatusEffectType.Charmed);
+                    var actorCharm = a.Unit.GetStatusEffect(StatusEffectType.Charmed) ?? a.Unit.GetStatusEffect(StatusEffectType.Hypnotized);
                     if (actorCharm != null)
                     {
                         unit.ApplyStatusEffect(StatusEffectType.Charmed, actorCharm.Strength, actorCharm.Duration);
@@ -487,6 +489,38 @@ static class SpellList
             OnExecuteTile = (a, l) => a.CastMaw(GateMaw, null, l),
         };
         SpellDict[SpellTypes.GateMaw] = GateMaw;
+
+        Reanimate = new Spell()
+        {
+            Name = "Reanimate",
+            Id = "Reanimate",
+            SpellType = SpellTypes.Reanimate,
+            Description = "Brings back any unit that died this battle as a summon under the caster's control",
+            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Tile },
+            Range = new Range(4),
+            Tier = 4,
+            Resistable = false,
+            OnExecuteTile = (a, loc) =>
+            {
+                var target = TacticalUtilities.FindUnitToReanimate(a);
+                if (target != null)
+                {
+                    if (TacticalUtilities.OpenTile(loc, null) && a.CastSpell(Reanimate, null))
+                    {
+                        if (State.GameManager.TacticalMode.IsPlayerInControl && State.GameManager.CurrentScene == State.GameManager.TacticalMode)
+                        {
+                            TacticalUtilities.CreateReanimationPanel(loc, a.Unit);
+                        }
+                        else
+                        {
+                            TacticalUtilities.Reanimate(loc, target, a.Unit);
+                        }
+                    }
+                }
+
+            },
+        };
+        SpellDict[SpellTypes.Reanimate] = Reanimate;
 
         Resurrection = new Spell()
         {
@@ -729,6 +763,21 @@ static class SpellList
 
         };
         SpellDict[SpellTypes.HypnoGas] = HypnoGas;
+
+        Bind = new Spell()
+        {
+            Name = "Bind/Resummon",
+            Id = "Bind",
+            SpellType = SpellTypes.Bind,
+            Description = "Allows to either take control of any summon, or re-summon the most recently bound one by targeting an empty space.",
+            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy, AbilityTargets.Ally, AbilityTargets.Tile },
+            Range = new Range(4),
+            Tier = 0,
+            Resistable = false,
+            OnExecute = (a, t) => a.CastBind(t),
+            OnExecuteTile = (a, l) => a.SummonBound(l),
+        };
+        SpellDict[SpellTypes.Bind] = Bind;
 
         ForceFeed = new Spell()
         {

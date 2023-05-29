@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEngine.UI.CanvasScaler;
 
 static class TacticalUtilities
 {
@@ -655,6 +656,12 @@ static class TacticalUtilities
         return actor;
     }
 
+    static internal Actor_Unit FindUnitToReanimate(Actor_Unit caster)
+    {
+        Actor_Unit actor = Units.Where(s => s.Unit.IsDead).OrderByDescending(s => s.Unit.Experience).FirstOrDefault();
+        return actor;
+    }
+
 
     internal static void CreateResurrectionPanel(Vec2i loc, int side)
     {
@@ -687,6 +694,37 @@ static class TacticalUtilities
         UnitPickerUI.gameObject.SetActive(true);
     }
 
+    internal static void CreateReanimationPanel(Vec2i loc, Unit unit)
+    {
+        int children = UnitPickerUI.ActorFolder.transform.childCount;
+        for (int i = children - 1; i >= 0; i--)
+        {
+            UnityEngine.Object.Destroy(UnitPickerUI.ActorFolder.transform.GetChild(i).gameObject);
+        }
+        Actor_Unit[] list = Units.Where(s => s.Unit.IsDead).OrderByDescending(s => s.Unit.Experience).ToArray();
+        foreach (Actor_Unit actor in list)
+        {
+            GameObject obj = UnityEngine.Object.Instantiate(UnitPickerUI.HiringUnitPanel, UnitPickerUI.ActorFolder);
+            UIUnitSprite sprite = obj.GetComponentInChildren<UIUnitSprite>();
+            Text text = obj.transform.GetChild(3).GetComponent<Text>();
+            text.text = $"Level: {actor.Unit.Level} Exp: {(int)actor.Unit.Experience}\n" +
+                $"Health : {100 * actor.Unit.HealthPct}%\n" +
+                $"Items: {actor.Unit.GetItem(0)?.Name} {actor.Unit.GetItem(1)?.Name}\n" +
+                $"Str: {actor.Unit.GetStatBase(Stat.Strength)} Dex: {actor.Unit.GetStatBase(Stat.Dexterity)} Agility: {actor.Unit.GetStatBase(Stat.Agility)}\n" +
+                $"Mind: {actor.Unit.GetStatBase(Stat.Mind)} Will: {actor.Unit.GetStatBase(Stat.Will)} Endurance: {actor.Unit.GetStatBase(Stat.Endurance)}\n";
+            if (actor.Unit.Predator)
+                text.text += $"Vore: {actor.Unit.GetStatBase(Stat.Voracity)} Stomach: {actor.Unit.GetStatBase(Stat.Stomach)}";
+            actor.UpdateBestWeapons();
+            sprite.UpdateSprites(actor);
+            sprite.Name.text = actor.Unit.Name;
+            Button button = obj.GetComponentInChildren<Button>();
+            button.onClick.AddListener(() => Reanimate(loc, actor, unit));
+            button.onClick.AddListener(() => UnitPickerUI.gameObject.SetActive(false));
+        }
+        UnitPickerUI.ActorFolder.GetComponent<RectTransform>().sizeDelta = new Vector2(0, 250 * (1 + (list.Length / 3)));
+        UnitPickerUI.gameObject.SetActive(true);
+    }
+
     internal static void Resurrect(Vec2i loc, Actor_Unit target)
     {
         var pred = FindPredator(target);
@@ -699,6 +737,37 @@ static class TacticalUtilities
         target.Targetable = true;
         target.SelfPrey = null;
         target.Surrendered = false;
+        UpdateActorLocations();
+        if (target.UnitSprite != null)
+        {
+            target.UnitSprite.transform.rotation = Quaternion.Euler(0, 0, 0);
+            target.UnitSprite.LevelText.gameObject.SetActive(true);
+            target.UnitSprite.FlexibleSquare.gameObject.SetActive(true);
+            target.UnitSprite.HealthBar.gameObject.SetActive(true);
+        }
+    }
+
+    internal static void Reanimate(Vec2i loc, Actor_Unit target, Unit caster)
+    {
+        var pred = FindPredator(target);
+        if (pred != null)
+            pred.PredatorComponent.FreeUnit(target, true);
+        target.Position.x = loc.x;
+        target.Position.y = loc.y;
+        target.Unit.Health = target.Unit.MaxHealth * 3 / 4;
+        target.Visible = true;
+        target.Targetable = true;
+        target.SelfPrey = null;
+        target.Surrendered = false;
+        target.Unit.Type = UnitType.Summon;
+        target.Unit.Side = caster.Side;
+        if (!target.Unit.HasTrait(Traits.Untamable))
+            target.Unit.FixedSide = caster.FixedSide;
+        var actorCharm = caster.GetStatusEffect(StatusEffectType.Charmed) ?? caster.GetStatusEffect(StatusEffectType.Hypnotized);
+        if (actorCharm != null)
+        {
+            target.Unit.ApplyStatusEffect(StatusEffectType.Charmed, actorCharm.Strength, actorCharm.Duration);
+        }
         UpdateActorLocations();
         if (target.UnitSprite != null)
         {
@@ -771,11 +840,13 @@ static class TacticalUtilities
     {
         if (!unit.hiddenFixedSide || unit.FixedSide == unit.Side) return true;
 
+        if (StrategicUtilities.GetAllHumanSides().Count > 1) return false;
+
         if (State.World.MainEmpires == null) 
             return unit.FixedSide == (!State.GameManager.TacticalMode.AIAttacker ? 
                 State.GameManager.TacticalMode.GetAttackerSide() : (!State.GameManager.TacticalMode.AIDefender ? State.GameManager.TacticalMode.GetDefenderSide() : unit.FixedSide));
 
-        if (unit.FixedSide == State.GameManager.StrategyMode.LastHumanEmpire.Side)
+        if (State.GameManager.StrategyMode.LastHumanEmpire?.Side == unit.FixedSide)
             return true;
 
         if (RelationsManager.GetRelation(unit.FixedSide, State.GameManager.StrategyMode.LastHumanEmpire.Side).Type == RelationState.Allied)

@@ -1066,6 +1066,7 @@ public class PredatorComponent
             if (unit.HasTrait(Traits.TasteForBlood))
                 actor.GiveRandomBoost();
             unit.EnemiesKilledThisBattle++;
+            preyUnit.Unit.KilledBy = unit;
             preyUnit.Unit.Kill();
             for (int i = 0; i < 20; i++)
             {

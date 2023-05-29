@@ -320,6 +320,16 @@ public class Actor_Unit
             unit.SingleUseSpells.Add(SpellList.HypnoGas.SpellType);
             unit.UpdateSpells();
         }
+        if (unit.HasTrait(Traits.Reanimator) && State.World?.ItemRepository != null) //protection for the create strat screen
+        {
+            unit.SingleUseSpells.Add(SpellList.Reanimate.SpellType);
+            unit.UpdateSpells();
+        }
+        if (unit.HasTrait(Traits.Binder) && State.World?.ItemRepository != null) //protection for the create strat screen
+        {
+            unit.SingleUseSpells.Add(SpellList.Bind.SpellType);
+            unit.UpdateSpells();
+        }
         // Multi-use section
         if (unit.HasTrait(Traits.ForceFeeder) && State.World?.ItemRepository != null) //protection for the create strat screen
         {
@@ -1316,6 +1326,7 @@ public class Actor_Unit
         if (target.Unit.Race == Race.Asura)
             Unit.EarnedMask = true;
         Unit.EnemiesKilledThisBattle++;
+        target.Unit.KilledBy = Unit;
         target.Unit.Kill();
         if (Unit.HasTrait(Traits.KillerKnowledge) && Unit.KilledUnits % 4 == 0)
             Unit.GeneralStatIncrease(1);
@@ -1333,6 +1344,7 @@ public class Actor_Unit
         if (target.Unit.Race == Race.Asura)
             Unit.EarnedMask = true;
         Unit.EnemiesKilledThisBattle++;
+        target.Unit.KilledBy = Unit;
         target.Unit.Kill();
         if (Unit.HasTrait(Traits.KillerKnowledge) && Unit.KilledUnits % 4 == 0)
             Unit.GeneralStatIncrease(1);
@@ -2275,5 +2287,61 @@ public class Actor_Unit
             Movement = 0;
 
         return hit;
+    }
+
+    internal bool CastBind(Actor_Unit t)
+    {
+        var spell = SpellList.Bind;
+        if (Unit.SpendMana(spell.ManaCost) == false || t.Unit.Type != UnitType.Summon)
+            return false;
+        State.GameManager.SoundManager.PlaySpellCast(spell, this);
+
+        Unit.BoundUnit = t;
+
+        t.Unit.Side = Unit.Side;
+        if (!t.Unit.HasTrait(Traits.Untamable))
+            t.Unit.FixedSide = Unit.FixedSide;
+
+        if (Unit.TraitBoosts.SpellAttacks > 1)
+        {
+            int movementFraction = 1 + MaxMovement() / Unit.TraitBoosts.SpellAttacks;
+            if (Movement > movementFraction)
+                Movement -= movementFraction;
+            else
+                Movement = 0;
+        }
+        else
+            Movement = 0;
+
+        return true;
+    }
+
+    internal bool SummonBound(Vec2i l)
+    {
+        var spell = SpellList.Bind;
+        if (Unit.SpendMana(spell.ManaCost) == false || Unit.BoundUnit == null)
+            return false;
+        State.GameManager.SoundManager.PlaySpellCast(spell, this);
+
+        if (TacticalUtilities.Units.Contains(Unit.BoundUnit))
+        {
+            TacticalUtilities.Reanimate(l, Unit.BoundUnit, Unit);
+            Unit.BoundUnit.Unit.Health = Unit.BoundUnit.Unit.MaxHealth;
+        }
+        else
+            State.GameManager.TacticalMode.AddUnitToBattle(Unit.BoundUnit.Unit, l);
+
+        if (Unit.TraitBoosts.SpellAttacks > 1)
+        {
+            int movementFraction = 1 + MaxMovement() / Unit.TraitBoosts.SpellAttacks;
+            if (Movement > movementFraction)
+                Movement -= movementFraction;
+            else
+                Movement = 0;
+        }
+        else
+            Movement = 0;
+
+        return true;
     }
 }

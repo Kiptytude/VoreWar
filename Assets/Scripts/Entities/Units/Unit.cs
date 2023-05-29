@@ -2,6 +2,7 @@ using OdinSerializer;
 using OdinSerializer.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using UnityEngine;
 
@@ -46,7 +47,7 @@ public class Unit
     [OdinSerialize]
     public bool hiddenFixedSide = false;
 
-    public List<Traits> secretTags = new List<Traits>() { Traits.Infiltrator, Traits.Corruption};
+    public List<Traits> secretTags = new List<Traits>() { Traits.Infiltrator, Traits.Corruption, Traits.Reincarnation, Traits.InfiniteReincarnation, Traits.Transmigration, Traits.InfiniteTransmigration, Traits.Untamable};
 
     [OdinSerialize]
     public Race Race;
@@ -230,6 +231,9 @@ public class Unit
 
     [OdinSerialize]
     public bool EarnedMask = false;
+
+    [OdinSerialize]
+    public Unit KilledBy;
 
     public override string ToString() => Name;
 
@@ -433,6 +437,9 @@ public class Unit
 
     internal Unit CurrentLeader;
 
+    [OdinSerialize]
+    public Actor_Unit BoundUnit;
+
 
     /// <summary>
     /// Creates an empty unit for various purposes
@@ -506,7 +513,27 @@ public class Unit
                 UniformDataStorer.ExternalCopyToUnit(available[State.Rand.Next(available.Count)], this);
             }
         }
+        ReincarnateCheck();
+    }
 
+    private void ReincarnateCheck()
+    {
+        if (State.World != null && State.World.Reincarnators != null && State.World.Reincarnators?.Count > 0 && Type != UnitType.SpecialMercenary && Type != UnitType.Summon)
+            if (State.World.Reincarnators.Where(r => r.Value == Race).Count() > 0 && State.Rand.Next(3) == 0)
+                Reincarnate(State.World.Reincarnators.Where(r => r.Value == Race).First());
+            else if (State.World.Reincarnators.Where(r => r.Value == (Race)(-1)).Count() > 0 && State.Rand.Next(3 * State.World.AllActiveEmpires.Count) == 0)
+                Reincarnate(State.World.Reincarnators.Where(r => r.Value == (Race)(-1)).First());
+    }
+
+    private void Reincarnate(KeyValuePair<Unit, Race> keyValuePair)
+    {
+        Unit pastLife = keyValuePair.Key;
+        Name = pastLife.Name;
+        experience = pastLife.Experience;
+        AddTraits(pastLife.GetTraits);
+        InnateSpells.AddRange(pastLife.InnateSpells);
+        FixedSide = pastLife.FixedSide;
+        hiddenFixedSide = true;
     }
 
     internal void SetGear(Race race)
@@ -1075,13 +1102,18 @@ public class Unit
 
     internal void RefreshSecrecy()
     {
-        if (HasTrait(Traits.Infiltrator))
+        if (HasTrait(Traits.Infiltrator) || HasTrait(Traits.Corruption))
             hiddenFixedSide = true;
     }
     internal void InitializeFixedSide(int side)
     {
         if (_fixedSide > -1) return;
-        if (HasTrait(Traits.Untamable) || HasTrait(Traits.Infiltrator))
+        if (HasTrait(Traits.Untamable))
+        {
+            FixedSide = State.World.GetEmpireOfRace(Race)?.Side ?? (int)Race;
+            return;
+        }
+        if (HasTrait(Traits.Infiltrator))
         {
             FixedSide = side;
             return;
@@ -1155,9 +1187,11 @@ public class Unit
         for (int i = 0; i < Tags.Count; i++)
         {
             if (!(hideSecret && secretTags.Contains(Tags[i])))
+            { 
                 ret += Tags[i].ToString();
-            if (i + 1 < Tags.Count)
-                ret += "\n";
+                if (i + 1 < Tags.Count)
+                    ret += "\n";
+            }
         }
         if (PermanentTraits != null && PermanentTraits.Count > 0)
         {

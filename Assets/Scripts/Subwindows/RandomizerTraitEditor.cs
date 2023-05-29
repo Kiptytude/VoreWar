@@ -152,7 +152,8 @@ public class RandomizerTraitEditor : MonoBehaviour
             }
             randomizeLists.Add(newCustom);
         });
-        State.RandomizeLists = randomizeLists;
+        State.RandomizeLists = new List<RandomizeList>();
+        State.RandomizeLists.AddRange(randomizeLists);
         string[] printable = randomizeLists.ConvertAll(item => item.ToString()).ToArray();
         File.WriteAllLines($"{State.StorageDirectory}customTraits.txt", printable);
         Close();

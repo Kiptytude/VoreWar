@@ -110,7 +110,7 @@ class StrategicArmyCommander
             {
                 StrategicUtilities.SpendLevelUps(unit);
                 if (unit.HasTrait(Traits.Infiltrator))
-                    StrategicUtilities.TryInfiltrateRandom(army, unit);
+                    StrategicUtilities.TryInfiltrateRandomAsMerc(army, unit);
             }
 
             if (army.InVillageIndex > -1)
@@ -566,6 +566,8 @@ class StrategicArmyCommander
     {
         empire.SpendGold(100);
         empire.Leader.Side = AISide;
+        empire.Leader.FixedSide = AISide;
+        empire.Leader.Type = UnitType.Leader;
         empire.Leader.LeaderLevelDown();
         empire.Leader.Health = empire.Leader.MaxHealth;
         if (village.GetStartingXp() > empire.Leader.Experience)

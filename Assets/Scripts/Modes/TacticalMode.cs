@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TacticalDecorations;
-using UnityEditor.Experimental.UIElements.GraphView;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Tilemaps;
@@ -3684,6 +3683,34 @@ Turns: {currentTurn}
                     }
                     actor.PredatorComponent?.PurgePrey();
                     units.Remove(actor);
+                }
+                else if ((actor.Unit.HasTrait(Traits.Transmigration) || actor.Unit.HasTrait(Traits.InfiniteTransmigration)) && actor.KilledByDigestion && actor.Unit.IsDead && actor.Unit.Type != UnitType.Summon)
+                {
+                    if (State.World.MainEmpires != null)
+                    {
+                        if (State.World.Reincarnators == null)
+                            State.World.Reincarnators = new Dictionary<Unit, Race>();
+                        if (!State.World.Reincarnators.ContainsKey(actor.Unit))
+                        {
+                            actor.Unit.FixedSide = actor.Unit.FixedSide;
+                            actor.Unit.RemoveTrait(Traits.Transmigration);
+                            State.World.Reincarnators.Add(actor.Unit, actor.Unit.KilledBy.Race);
+                        }
+                    }
+                }
+                else if ((actor.Unit.HasTrait(Traits.Reincarnation) || actor.Unit.HasTrait(Traits.InfiniteReincarnation)) && actor.Unit.IsDead && actor.Unit.Type != UnitType.Summon)
+                {
+                    if (State.World.MainEmpires != null)
+                    {
+                        if (State.World.Reincarnators == null)
+                            State.World.Reincarnators = new Dictionary<Unit, Race>();
+                        if (!State.World.Reincarnators.ContainsKey(actor.Unit))
+                        {
+                            actor.Unit.FixedSide = actor.Unit.FixedSide;
+                            actor.Unit.RemoveTrait(Traits.Reincarnation);
+                            State.World.Reincarnators.Add(actor.Unit, (Race)(-1));
+                        }
+                    } 
                 }
                 else if (actor.Fled)
                     units.Remove(actor);

@@ -97,8 +97,7 @@ public class RaceEditorPanel : MonoBehaviour
             RaceDropdown.RefreshShownValue();
         }
 
-        if (TraitDropdown.options?.Any() == false)
-        {
+        TraitDropdown.options.Clear();
             foreach (RandomizeList rl in State.RandomizeLists)
             {
                 TraitDropdown.options.Add(new TMP_Dropdown.OptionData(rl.name.ToString()));
@@ -111,7 +110,6 @@ public class RaceEditorPanel : MonoBehaviour
                 TraitDropdown.options.Add(new TMP_Dropdown.OptionData(traitId.ToString()));
             }
             TraitDropdown.RefreshShownValue();
-        }
 
         if (FavoredStat.options?.Any() == false)
         {
@@ -190,7 +188,7 @@ public class RaceEditorPanel : MonoBehaviour
                 RaceSettingsItem item = State.RaceSettings.Get(race);
                 item.RaceTraits.Add((Traits)State.RandomizeLists.Where(rl => rl.name == TraitDropdown.options[TraitDropdown.value].text).FirstOrDefault()?.id);
             }
-            
+            AddTrait();
         }
         if (Enum.TryParse(TraitDropdown.options[TraitDropdown.value].text, out Traits trait))
         {

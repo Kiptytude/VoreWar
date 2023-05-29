@@ -412,7 +412,7 @@ public class HoveringTooltip : MonoBehaviour
                 return "Allows usage of a powerful ability that does attacks and vore.  Can only be used every 3 turns";
             case Traits.Eternal:
                 return "(Cheat Trait) - This unit can never die.  If it is killed during a battle, it will be set to full hp and act as though it fled (will rejoin if the army wins, otherwise sets off for the closest town)";
-            case Traits.Reanimator:
+            case Traits.Revenant:
                 return "(Cheat Trait) - This unit can never die from weapons or spells, though digestion can kill it permanently.  If it is 'killed' during a battle, it will be set to full hp and act as though it fled (will rejoin if the army wins, otherwise sets off for the closest town) Note that these don't give immunity to digestion conversion unlike the pure eternal trait";
             case Traits.Reformer:
                 return "(Cheat Trait) - This unit can never die from being digested, but spells and weapons can kill it permanently.  If it is killed during a battle, it will be set to full hp and act as though it fled (will rejoin if the army wins, otherwise sets off for the closest town) Note that these don't give immunity to digestion conversion unlike the pure eternal trait";
@@ -518,6 +518,20 @@ public class HoveringTooltip : MonoBehaviour
                 return "Allows unit to attempt force-feeding itself to another unit at will.";
             case Traits.Corruption:
                 return "If a currupted unit is digested, the pred will build up corruption as a hidden status. Once corrupted prey with a stat total equal to that of the pred has been digested, they are under control of the side of the last-digested corrupted.";
+            case Traits.Reanimator:
+                return "Allows unit to use <b>Reanimate</b>, an attack that brings any unit back to life as the caster's summon, once per battle";
+            case Traits.Reincarnation:
+                return "Soon after this unit dies, one of the new Units that come into being will be a reincarnation of them.";
+            case Traits.Transmigration:
+                return "Soon after this unit is digested, one of the new Units that come into being as the pred's race will be a reincarnation of them.";
+            case Traits.InfiniteReincarnation:
+                return "Soon after this unit dies, one of the new Units that come into being will be a reincarnation of them.\nReincarnations will also have this trait(Cheat Trait)";
+            case Traits.InfiniteTransmigration:
+                return "Soon after this unit is digested, one of the new Units that come into being as the pred's race will be a reincarnation of them.\nReincarnations will also have this trait(Cheat Trait)";
+            case Traits.Untamable:
+                return "No matter which army this unit is in, it is only ever truly aligned with its race.";
+            case Traits.Binder:
+                return "Allows unit to either take control of any summon, or re-summon the most recently bound one once a battle.";
         }
         return "<b>This trait needs a tooltip!</b>";
     }

@@ -249,7 +249,7 @@ public enum Traits
     /// <summary>Unit will respawn after battle if digested.</summary>
     Reformer = 124,
     /// <summary>Unit will respawn after battle unless digested.</summary>
-    Reanimator = 125,
+    Revenant = 125,
     /// <summary>Unit's first attack will deal 5x damage, or first vore attack will have 3.25 odds each battle.</summary>
     AllOutFirstStrike = 126,
     /// <summary>If a missed vore from this unit triggers a bite, the tharget will also be poisoned and inflicted with Shaken.</summary>
@@ -286,12 +286,30 @@ public enum Traits
     Charmer = 143,
     /// <summary>Allows unit to attempt force-feeding itself to another unit at will.</summary>
     ForceFeeder = 145,
-    /// <summary>No matter which army this unit is in, it is no secret that it will act for the good of its original side when it comes down to it.</summary>
-    Untamable = 146,
+    /// <summary>Allows unit to use <b>Reanimate</b>, an attack that brings any unit back to life as the caster's summon, once per battle.</summary>
+    Reanimator = 146,
+    /// <summary>Allows unit to either take control of any summon, or re-summon the most recently bound one once a battle.</summary>
+    Binder = 147,
+
 
     //Hidden Traits
     /// <summary>When an Army consists only of units with this trait, it moves undetected and can infiltrate the enemy by using "exchange" on their village or a mercanary house.</summary>
     Infiltrator = 200,
+    /// <summary>No matter which army this unit is in, it is only ever truly aligned with its race.</summary>
+    Untamable = 201,
+    /// <summary>Soon after this unit dies, one of the new Units that come into being will be a reincarnation of them.</summary>
+    Reincarnation = 202,
+    /// <summary>Soon after this unit is digested, one of the new Units that come into being for the pred's race will be a reincarnation of them.</summary>
+    Transmigration = 203,
+
+    //Hidden Cheat Traits
+    /// <summary>If a currupted unit is digested, the pred will build up corruption as a hidden status. Once corrupted prey with a stat total equal to that of the pred has been digested, they are under control of the side of the last-digested corrupted.</summary>
+    Corruption = 291,
+    /// <summary>Soon after this unit dies, one of the new Units that come into being will be a reincarnation of them. The reincarnation will also have this trait.</summary>
+    InfiniteReincarnation = 292,
+    /// <summary>Soon after this unit is digested, one of the new Units that come into being as the pred's race will be a reincarnation of them. The reincarnation will also have this trait.</summary>
+    InfiniteTransmigration = 293,
+
 
 
     //Everything after this is a cheat trait
@@ -349,8 +367,6 @@ public enum Traits
     SeductiveTouch = 266,
     /// <summary>Can emit Gas that turns foes into subservient non-combatants once per battle.</summary>
     HypnoticGas = 290,
-    /// <summary>If a currupted unit is digested, the pred will build up corruption as a hidden status. Once corrupted prey with a stat total equal to that of the pred has been digested, they are under control of the side of the last-digested corrupted.</summary>
-    Corruption = 291,
 
     // Growth-related section
     /// <summary>Unit increases in size when absorbing prey.</summary>
