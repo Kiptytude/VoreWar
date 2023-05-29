@@ -55,7 +55,7 @@ internal class EventList
             empire.RecentEvents = new List<int>();
         for (int i = 0; i < 20; i++)
         {
-            int val = State.Rand.Next(28);
+            int val = State.Rand.Next(30);
             if (i < 17 && empire.RecentEvents.Contains(val))
                 continue;
             if (Config.EventsRepeat == false && empire.EventHappened.ContainsKey(val))
@@ -1642,6 +1642,94 @@ internal class EventList
                         village.VillagePopulation.AddHireable(youth);
                         village.Happiness -= 40;
                         State.GameManager.CreateMessageBox($"The people feel betrayed with how their government seems to extend its protection towards the beast and its keeper rather than them, as it devours more and more of them unhindered. On the bright side, Kitty grows up big and strong, and the duo can be recruited in {village.Name}.\n\n Happiness -40, Population -{village.Maxpop / 2}");
+                    });
+                    UI.ThirdChoice.interactable = true;
+                }
+                break;
+
+			case 28:
+                {
+                    Village village = GetRandomVillage(empire.Side);
+                    if (village == null)
+                        return false;
+                    UI.MainText.text = $"This morning it was discovered that a rancher at a {village.Name} terrorbird ranch has gone missing. This afternoon they were located inside the pens, unfortunately inside a terrorbird. The large squirming gut informs us they were ingested after feeding the birds ten days ago and that magic prevents them from digesting whilst on the job. The ranch needs some help with the regurgitation process. What should we do?";
+                    UI.FirstChoice.GetComponentInChildren<Text>().text = $"Aid the ranch immediately. Free the rancher from the terrorbird and if that can't be done cleanly prepare the rotissery spits.";
+                    UI.FirstChoice.onClick.AddListener(() =>
+                    {
+                        village.Happiness += 20;
+                        State.GameManager.CreateMessageBox($"The rancher is pleased and unharmed although their clothes were disolved over the week long digestion. {village.Name} is pleased!");
+                    });
+                    UI.FirstChoice.interactable = true;
+                    UI.SecondChoice.GetComponentInChildren<Text>().text = $"Undo the magic. The rancher proved they were weak by getting swallowed in the first place while the bird has earned its place in my empire!";
+                    UI.SecondChoice.onClick.AddListener(() =>
+                    {
+                        Unit unit = new Unit(empire.Side, Race.Terrorbird, village.GetStartingXp(), true);
+                        unit.AddPermanentTrait(Traits.IronGut);
+                        unit.DigestedUnits = 1;
+                        village.VillagePopulation.AddHireable(unit);
+                        village.SubtractPopulation(1);
+                        village.Happiness -= 5;
+                        State.GameManager.CreateMessageBox($"The engorged terrorbird is calmly taken back to the garrison where they are made comfortable. The ingested rancher is informed that they will be releases shortly and they curl up awaiting the enchantment needed to escape. After the spell is cast all is still for a few minutes util the rancher begins to feel soft. They squirm and writhe about inside the bird's stomach much to its pleasure. After 20 minutes of futile pleading the rancher grows silent and the terrorbird's stomach smooths out. The bird lets out a satisfied chirp with its belly sloshing the digested rancher inside. {unit.Name} the Terrorbird is available for recruitment at {village.Name}");
+                    });
+                    UI.SecondChoice.interactable = true;
+                    UI.ThirdChoice.GetComponentInChildren<Text>().text = $"Do not free him and offer to buy the terrorbird and the rancher's contract. We will keep the bird in a zoo as an attraction! Terrobirds are adorable when they aren't hungry!";
+                    UI.ThirdChoice.onClick.AddListener(() =>
+                    {
+                        village.SubtractPopulation(1);
+                        empire.AddGold(500);
+                        ChangeAllVillageHappiness(empire, 10);
+                        State.GameManager.CreateMessageBox($"The gurgling terrorbird stomach kindly asks you to reconsider but our pens are already signing the contracts. We recieve a modest up front fee and the bird with ingested rancher are shipped off to the {empire.CapitalCity} zoo. The Terror bird is well taken care of and enjoys being an attraction. She presents her belly to visitors so they can see the hand prints of her most prized catch. The Rancher will be sloshing in her stomach until the magic wears out and the rancher will be mashed into a nutricious sludge when the contract expires in 5 years.");
+                    });
+                    UI.ThirdChoice.interactable = true;
+                }
+                break;
+            case 29:
+                {
+                    Village village = GetRandomVillage(empire.Side);
+                    if (village == null)
+                        return false;
+                    UI.MainText.text = $"A patron of a local alchemist store was surprised to find that the cheerful clerk had been replaced with a small group of ineffective kobolds. The customer was extremely dissatisfied with the service and went looking for the store owner in the back. Instead of the kangaroo she instead found a very bloated kobold and the muffled voice of the alchemist calling out for help. The kobold has been aprehended but we're unsure as to the appropriate action to take on predatory business aquisitions.";
+                    UI.FirstChoice.GetComponentInChildren<Text>().text = $"Free the alchemist and send the kobold to whatever doom they may have earned.";
+                    UI.FirstChoice.onClick.AddListener(() =>
+                    {
+                        village.Happiness += 20;
+                        State.GameManager.CreateMessageBox($"The soft and partially digested alchemist is extremely greatful to not be kobold pudge. He returns home and the {village.Name} is pleased with your decision.");
+                    });
+                    UI.FirstChoice.interactable = true;
+                    UI.SecondChoice.GetComponentInChildren<Text>().text = $"As long as the kobold pays taxes on the property exchange it's not our business how they deal with the competition.";
+                    UI.SecondChoice.onClick.AddListener(() =>
+                    {
+                        Unit unit = new Unit(empire.Side, Race.Terrorbird, village.GetStartingXp(), true);
+                        unit.AddPermanentTrait(Traits.IronGut);
+                        unit.DigestedUnits = 1;
+                        village.VillagePopulation.AddHireable(unit);
+                        village.SubtractPopulation(1);
+                        village.Happiness -= 5;
+
+                        village.SubtractPopulation(1);
+                        village.Happiness -= 5;
+                        empire.AddGold(500);
+                        State.GameManager.CreateMessageBox($"The kobold grows a toothy grin upon hearing the news. At first he though himself in trouble with the law, now finds it on his side. The alchemist shouts in protest after hearing our decree and squirms and struggles inside the bulging kobold stomach. The guards that brough the kobold in are now helping him carry his massive stomach out of the room while the alchemist begs for help from anyone. The next day we recieve a very large payment in property tax as well as a gift of a bleached alchemist skull. It will go nicely on our wall as will the alchemist go nicely on the kobold after the nutricious alchemist chyme is absorbed. For now the kobold just jiggles.");
+                    });
+                    UI.SecondChoice.interactable = true;
+                    UI.ThirdChoice.GetComponentInChildren<Text>().text = $"This kobold and their cohorts were able to swallow something much larger than themselves individually. This is the kind of talent we need!";
+                    UI.ThirdChoice.onClick.AddListener(() =>
+                    {
+                        Unit unit;
+                        for (int x = 0; x < 2; x++)
+                        {
+                            unit = new Unit(empire.Side, Race.Kobolds, village.GetStartingXp(), true);
+                            unit.AddPermanentTrait(Traits.PackVoracity);
+                            unit.AddPermanentTrait(Traits.PackStomach);
+                            if (x == 0)
+                            {
+                                unit.DigestedUnits = 1;
+                            }
+                            village.VillagePopulation.AddHireable(unit);
+                        }
+                        village.SubtractPopulation(1);
+                        village.Happiness -= 5;
+                        State.GameManager.CreateMessageBox($"Three kobolds are available for hire at {village.Name}");
                     });
                     UI.ThirdChoice.interactable = true;
                 }

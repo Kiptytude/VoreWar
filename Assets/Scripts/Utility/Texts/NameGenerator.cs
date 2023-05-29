@@ -49,6 +49,9 @@ public class NameGenerator
     List<string> youngWyvernNames;
     List<string> gryphonNames;
     List<string> feralLionNames;
+	
+	List<string> goodraNames;
+	
     Dictionary<Race, List<string>> RaceMaleNames;
     Dictionary<Race, List<string>> RaceFemaleNames;
     Dictionary<Race, List<string>> RaceMonsterNames;
@@ -775,6 +778,30 @@ public class NameGenerator
             "Furfur",
             "Achlis"
         };
+		goodraNames = new List<string>
+        {
+            "Goodra",
+            "Sligoo",
+            "Goomy",
+            "Gooey",
+            "Hugs",
+            "Huggy",
+            "Slimy",
+            "Pudding",
+            "Gumdrops",
+            "Jelly",
+            "Dragooze",
+            "Escargoo",
+            "Squishy",
+            "Goober",
+            "Oozy",
+            "Goopy",
+            "Nuri",
+            "Dragoonite",
+            "Spygoo",
+            "Dragoo",
+            "Gooigi",
+        };
 
         Encoding encoding = Encoding.GetEncoding("iso-8859-1");
 
@@ -967,6 +994,9 @@ public class NameGenerator
                 break;
             case Race.Gryphons:
                 list = gryphonNames;
+                break;
+			case Race.Goodra:
+                list = goodraNames;
                 break;
         }
         if (list != null)

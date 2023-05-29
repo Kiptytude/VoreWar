@@ -94,6 +94,7 @@ public static class ColorPaletteMap
         FeralLionsFur,
         FeralLionsEyes,
         FeralLionsMane,
+	GoodraSkin
     }
 
     static Dictionary<SwapType, List<ColorSwapPalette>> Swaps;
@@ -233,6 +234,7 @@ public static class ColorPaletteMap
         List<ColorSwapPalette> FeralLionsFurSwaps = WireUp(SwapType.FeralLionsFur);
         List<ColorSwapPalette> FeralLionsEyesSwaps = WireUp(SwapType.FeralLionsEyes);
         List<ColorSwapPalette> FeralLionsManeSwaps = WireUp(SwapType.FeralLionsMane);
+	List<ColorSwapPalette> GoodraSkinSwaps = WireUp(SwapType.GoodraSkin);
 
         int[] NormalIndexes = { 81, 153, 198, 229, 255 };
         Texture2D map = State.GameManager.PaletteDictionary.SimpleHair;
@@ -1720,6 +1722,51 @@ public static class ColorPaletteMap
             ColorSwapPalette swap = new ColorSwapPalette(swapDict);
             TerrorbirdSkinSwaps.Add(swap);
         }
+		
+		map = State.GameManager.PaletteDictionary.GoodraSkin;
+        for (int pixelY = 0; pixelY < map.height; pixelY++)
+        {
+            Dictionary<int, Color> swapDict = new Dictionary<int, Color>
+            {
+                [34] = map.GetPixel(26, pixelY),
+                [42] = map.GetPixel(25, pixelY),
+                [43] = map.GetPixel(18, pixelY),
+                [52] = map.GetPixel(24, pixelY),
+                [53] = map.GetPixel(17, pixelY),
+                [66] = map.GetPixel(16, pixelY),
+                [75] = map.GetPixel(22, pixelY),
+                [80] = map.GetPixel(9, pixelY),
+                [89] = map.GetPixel(23, pixelY),
+                [91] = map.GetPixel(14, pixelY),
+                [93] = map.GetPixel(21, pixelY),
+                [99] = map.GetPixel(8, pixelY),
+                [103] = map.GetPixel(15, pixelY),
+                [112] = map.GetPixel(34, pixelY),
+                [113] = map.GetPixel(13, pixelY),
+                [115] = map.GetPixel(20, pixelY),
+                [123] = map.GetPixel(7, pixelY),
+                [130] = map.GetPixel(5, pixelY),
+                [135] = map.GetPixel(12, pixelY),
+                [139] = map.GetPixel(33, pixelY),
+                [140] = map.GetPixel(11, pixelY),
+                [147] = map.GetPixel(19, pixelY),
+                [154] = map.GetPixel(6, pixelY),
+                [162] = map.GetPixel(4, pixelY),
+                [168] = map.GetPixel(10, pixelY),
+                [173] = map.GetPixel(32, pixelY),
+                [194] = map.GetPixel(31, pixelY),
+                [201] = map.GetPixel(3, pixelY),
+                [202] = map.GetPixel(29, pixelY),
+                [205] = map.GetPixel(1, pixelY),
+                [215] = map.GetPixel(2, pixelY),
+                [251] = map.GetPixel(28, pixelY),
+                [252] = map.GetPixel(27, pixelY),
+                [255] = map.GetPixel(0, pixelY),
+            };
+            ColorSwapPalette swap = new ColorSwapPalette(swapDict);
+            GoodraSkinSwaps.Add(swap);
+        }
+		
         map = State.GameManager.PaletteDictionary.FeralLionsFur;
         for (int pixelY = 0; pixelY < map.height; pixelY++)
         {
