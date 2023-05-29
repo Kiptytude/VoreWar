@@ -214,6 +214,16 @@ class MonsterStrategicAI : IStrategicAI
                             army.Units.Add(new Unit(empire.Side, Race.Monitors, RandXp(baseXp), true));
                     }
                 }
+				else if (empire.ReplacedRace == Race.Goodra)
+                {
+                    for (int i = 0; i < count; i++)
+                    {
+                        if (spawner.AddOnRace && State.Rand.Next(5) == 0)
+                            army.Units.Add(new Unit(empire.Side, Race.Goodra, RandXp(baseXp), true));
+                        else
+                            army.Units.Add(new Unit(empire.Side, Race.Goodra, RandXp(baseXp), true));
+                    }
+                }
                 else if (empire.ReplacedRace == Race.FeralLions)
                 {
                     army.Units.Add(new Leader(empire.Side, Race.FeralLions, RandXp(baseXp*2)));

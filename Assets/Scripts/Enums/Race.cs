@@ -85,6 +85,7 @@ public enum Race : int
     Terrorbird = 135,
     Dratopyr = 136,
     FeralLions = 137,
+    Goodra = 138,
 
     Selicia = 170,
     Vision = 171,
