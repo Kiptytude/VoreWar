@@ -167,7 +167,7 @@ public class RightClickMenu : MonoBehaviour
                 Buttons[currentButton].GetComponentInChildren<Text>().text = "Belly Rub";
             currentButton++;
 
-            foreach (var action in TacticalActionList.UntargetedActions)
+            foreach (var action in TacticalActionList.UntargetedActions.Where(a => a.AppearConditional(actor)))
             {
                 Buttons[currentButton].onClick.AddListener(() => action.OnClicked());
                 Buttons[currentButton].onClick.AddListener(FinishAction);
