@@ -1058,9 +1058,9 @@ public class StrategyMode : SceneBase
                                         merc.Cost = (int)((25 + State.Rand.Next(15) + (.12 * unit.Experience)) * UnityEngine.Random.Range(0.8f, 1.2f) * power);
                                         mercHouse.Mercenaries.Add(merc);
                                     });
+                                    ExchangerUI.RightArmy.Empire.Armies.Remove(ExchangerUI.RightArmy);
+                                    ExchangerUI.RightArmy.Empire.ArmiesCreated--;
                                 }
-                                ExchangerUI.RightArmy.Empire.Armies.Remove(ExchangerUI.RightArmy);
-                                ExchangerUI.RightArmy.Empire.ArmiesCreated--;
                             }
                         }
                         Regenerate();

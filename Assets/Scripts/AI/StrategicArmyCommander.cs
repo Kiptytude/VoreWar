@@ -106,12 +106,14 @@ class StrategicArmyCommander
     {
         foreach (Army army in empire.Armies)
         {
+            var infiltrators = new List<Unit>();
             foreach (Unit unit in army.Units)
             {
                 StrategicUtilities.SpendLevelUps(unit);
-                if (unit.HasTrait(Traits.Infiltrator))
-                    StrategicUtilities.TryInfiltrateRandomAsMerc(army, unit);
+                if (unit.HasTrait(Traits.Infiltrator));
+                    infiltrators.Add(unit);
             }
+            infiltrators.ForEach(u => StrategicUtilities.TryInfiltrateRandomAsMerc(army, u));
 
             if (army.InVillageIndex > -1)
             {

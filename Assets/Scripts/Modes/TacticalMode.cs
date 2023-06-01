@@ -3694,6 +3694,8 @@ Turns: {currentTurn}
                         {
                             actor.Unit.FixedSide = actor.Unit.FixedSide;
                             actor.Unit.RemoveTrait(Traits.Transmigration);
+                            actor.Unit.RemoveTrait(Traits.Diseased);
+                            actor.Unit.RemoveTrait(Traits.Illness);
                             State.World.Reincarnators.Add(actor.Unit, actor.Unit.KilledBy.Race);
                         }
                     }
@@ -3708,6 +3710,8 @@ Turns: {currentTurn}
                         {
                             actor.Unit.FixedSide = actor.Unit.FixedSide;
                             actor.Unit.RemoveTrait(Traits.Reincarnation);
+                            actor.Unit.RemoveTrait(Traits.Diseased);
+                            actor.Unit.RemoveTrait(Traits.Illness);
                             State.World.Reincarnators.Add(actor.Unit, (Race)(-1));
                         }
                     } 

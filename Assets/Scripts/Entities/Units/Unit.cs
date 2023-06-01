@@ -1201,10 +1201,12 @@ public class Unit
             {
                 if (Tags.Contains(PermanentTraits[i]))
                     continue;
-                if (!(hideSecret && secretTags.Contains(Tags[i])))
+                if (!(hideSecret && secretTags.Contains(PermanentTraits[i])))
+                { 
                     ret += PermanentTraits[i].ToString();
-                if (i + 1 < PermanentTraits.Count)
-                    ret += "\n";
+                    if (i + 1 < PermanentTraits.Count)
+                        ret += "\n";
+                }
             }
         }
         return ret;
@@ -2019,7 +2021,7 @@ public class Unit
 
     public int GetApparentSide(Unit viewer = null)
     {
-        if (TacticalUtilities.UnitCanSeeTrueSideOfTarget(viewer, this))
+        if (viewer != null && TacticalUtilities.UnitCanSeeTrueSideOfTarget(viewer, this))
             return FixedSide;
         return hiddenFixedSide ? Side : FixedSide;
     }
