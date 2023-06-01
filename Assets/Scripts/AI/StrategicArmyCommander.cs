@@ -110,7 +110,7 @@ class StrategicArmyCommander
             foreach (Unit unit in army.Units)
             {
                 StrategicUtilities.SpendLevelUps(unit);
-                if (unit.HasTrait(Traits.Infiltrator));
+                if (unit.HasTrait(Traits.Infiltrator))
                     infiltrators.Add(unit);
             }
             infiltrators.ForEach(u => StrategicUtilities.TryInfiltrateRandomAsMerc(army, u));

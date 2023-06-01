@@ -878,8 +878,10 @@ public class PredatorComponent
                     preyDamage = Math.Min(unit.MaxHealth / -10, -1);
                 else
                     preyDamage = 0;
-                if (unit.HasTrait(Traits.InfiniteAssimilation) && unit.HasTrait(Traits.Endosoma) && !preyUnit.Unit.HasTrait(Traits.InfiniteAssimilation) && Config.KuroTenkoEnabled)
+                if (unit.HasTrait(Traits.InfiniteAssimilation) && !preyUnit.Unit.HasTrait(Traits.InfiniteAssimilation) && Config.KuroTenkoEnabled)
                     preyUnit.Unit.AddPermanentTrait(Traits.InfiniteAssimilation);
+                if (unit.HasTrait(Traits.Corruption) && !preyUnit.Unit.HasTrait(Traits.Corruption) && Config.KuroTenkoEnabled)
+                    preyUnit.Unit.AddPermanentTrait(Traits.Corruption);
                 preyUnit.Unit.ReloadTraits();
                 preyUnit.Unit.InitializeTraits();
 
@@ -980,6 +982,10 @@ public class PredatorComponent
                 preyUnit.Actor.Movement = 0;
                 if (preyUnit.Unit.Side != unit.Side)
                     State.GameManager.TacticalMode.SwitchAlignment(preyUnit.Actor);
+                if (!preyUnit.Unit.HasTrait(Traits.Untamable))
+                {
+                    preyUnit.Unit.FixedSide = unit.FixedSide;
+                }
                 preyUnit.Actor.Surrendered = false;
                 FreeUnit(preyUnit.Actor);
                 TacticalUtilities.Log.RegisterBirth(unit, preyUnit.Unit, 1f);
@@ -1001,6 +1007,10 @@ public class PredatorComponent
                 preyUnit.Actor.Movement = 0;
                 if (preyUnit.Unit.Side != unit.Side)
                     State.GameManager.TacticalMode.SwitchAlignment(preyUnit.Actor);
+                if (!preyUnit.Unit.HasTrait(Traits.Untamable))
+                {
+                    preyUnit.Unit.FixedSide = unit.FixedSide;
+                }
                 preyUnit.Actor.Surrendered = false;
                 if (Config.FriendlyRegurgitation)
                 {
@@ -1028,6 +1038,10 @@ public class PredatorComponent
                 preyUnit.Actor.Movement = 0;
                 if (preyUnit.Unit.Side != unit.Side)
                     State.GameManager.TacticalMode.SwitchAlignment(preyUnit.Actor);
+                if (!preyUnit.Unit.HasTrait(Traits.Untamable))
+                {
+                    preyUnit.Unit.FixedSide = unit.FixedSide;
+                }
                 if (Config.FriendlyRegurgitation)
                 {
                     State.GameManager.TacticalMode.TacticalStats.RegisterRegurgitation(unit.Side);
@@ -1176,6 +1190,10 @@ public class PredatorComponent
                     preyUnit.Actor.Movement = 0;
                     if (preyUnit.Unit.Side != unit.Side)
                         State.GameManager.TacticalMode.SwitchAlignment(preyUnit.Actor);
+                    if (!preyUnit.Unit.HasTrait(Traits.Untamable))
+                    {
+                        preyUnit.Unit.FixedSide = unit.FixedSide;
+                    }
                     preyUnit.Actor.Surrendered = false;
                     if (preyUnit.Unit.Race != unit.Race)
                     {

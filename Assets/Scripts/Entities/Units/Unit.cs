@@ -534,6 +534,7 @@ public class Unit
         InnateSpells.AddRange(pastLife.InnateSpells);
         FixedSide = pastLife.FixedSide;
         hiddenFixedSide = true;
+        State.World.Reincarnators.Remove(pastLife);
     }
 
     internal void SetGear(Race race)

@@ -945,7 +945,7 @@ static class StrategicUtilities
         if (eligibleVillages.Count == 0)
             eligibleVillages = State.World.Villages.Where(v => v.NetBoosts.MercsPerTurnAdd > 0 && RelationsManager.GetRelation(v.Side, unit.Side).Type == RelationState.Neutral).ToList();
 
-        if (eligibleVillages.Any() && State.Rand.Next(2) < 1)
+        if (eligibleVillages.Count() > 0 && State.Rand.Next(2) < 1)
             destination = eligibleVillages[State.Rand.Next(eligibleVillages.Count())].Mercenaries;
         else if (State.World.MercenaryHouses.Any() && State.Rand.Next(5) < 1)
             destination = State.World.MercenaryHouses[State.Rand.Next(State.World.MercenaryHouses.Count())].Mercenaries;
