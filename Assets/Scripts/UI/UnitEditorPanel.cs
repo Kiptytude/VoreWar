@@ -196,7 +196,7 @@ public class UnitEditorPanel : CustomizerPanel
     {
         if (State.World?.MainEmpires != null)
         {
-            return State.World.GetEmpireOfSide(actor.Unit.FixedSide).Name;
+            return State.World.GetEmpireOfSide(actor.Unit.FixedSide)?.Name ?? actor.Unit.Race.ToString();
         }
         else
             return actor.Unit.FixedSide == State.GameManager.TacticalMode.GetDefenderSide() ? "Defender" : "Attacker";

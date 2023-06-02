@@ -2,7 +2,6 @@ using OdinSerializer;
 using OdinSerializer.Utilities;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using UnityEngine;
 
@@ -534,6 +533,8 @@ public class Unit
         InnateSpells.AddRange(pastLife.InnateSpells);
         FixedSide = pastLife.FixedSide;
         hiddenFixedSide = true;
+        SavedCopy = pastLife.SavedCopy;
+        SavedVillage = pastLife.SavedVillage;
         State.World.Reincarnators.Remove(pastLife);
     }
 
@@ -1111,7 +1112,7 @@ public class Unit
         if (_fixedSide > -1) return;
         if (HasTrait(Traits.Untamable))
         {
-            FixedSide = State.World.GetEmpireOfRace(Race)?.Side ?? (int)Race;
+            FixedSide = State.World.GetEmpireOfRace(Race)?.Side ?? side;
             return;
         }
         if (HasTrait(Traits.Infiltrator))
@@ -1196,17 +1197,15 @@ public class Unit
         }
         if (PermanentTraits != null && PermanentTraits.Count > 0)
         {
-            if (ret != "")
-                ret += "\n";
             for (int i = 0; i < PermanentTraits.Count; i++)
             {
                 if (Tags.Contains(PermanentTraits[i]))
                     continue;
                 if (!(hideSecret && secretTags.Contains(PermanentTraits[i])))
-                { 
-                    ret += PermanentTraits[i].ToString();
-                    if (i + 1 < PermanentTraits.Count)
+                {
+                    if (ret != "")
                         ret += "\n";
+                    ret += PermanentTraits[i].ToString();
                 }
             }
         }
@@ -1494,6 +1493,21 @@ public class Unit
         {
             PermanentTraits.Add(Traits.Endosoma);
             RemovedTraits?.Remove(Traits.Endosoma);
+        }
+        if (randomPick == Traits.VenomousBite && gainable.Contains(Traits.Biter))
+        {
+            PermanentTraits.Add(Traits.Biter);
+            RemovedTraits?.Remove(Traits.Biter);
+        }
+        if (randomPick == Traits.SynchronizedEvolution && gainable.Contains(Traits.Assimilate))
+        {
+            PermanentTraits.Add(Traits.Assimilate);
+            RemovedTraits?.Remove(Traits.Assimilate);
+        }
+        if (randomPick == Traits.PredConverter || randomPick == Traits.PredRebirther || randomPick == Traits.PredGusher)
+        {
+            if (RaceParameters.GetRaceTraits(Race).AllowedVoreTypes.Contains(VoreType.Unbirth))
+                HasVagina = true;
         }
     }
 

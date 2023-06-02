@@ -794,15 +794,15 @@ static class SpellList
                 if (a != t && a.CastSpell(ForceFeed, null))
                 {
                     float r = (float)State.Rand.NextDouble();
-                    if (r < t.GetPureStatClashChance(a.Unit.GetStat(Stat.Dexterity), t.Unit.GetStat(Stat.Endurance), .1f))
+                    if (t.Unit.Predator && (r < t.GetPureStatClashChance(a.Unit.GetStat(Stat.Dexterity), t.Unit.GetStat(Stat.Endurance), .1f)))
                     {
-                        State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"{a.Unit.Name} forces {LogUtilities.GPPHimself(a.Unit)} down {LogUtilities.ApostrophizeWithOrWithoutS(t.Unit.Name)} gullet.");
+                        State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<b>{a.Unit.Name}</b> forces {LogUtilities.GPPHimself(a.Unit)} down <b>{LogUtilities.ApostrophizeWithOrWithoutS(t.Unit.Name)}</b> gullet.");
                         a.Movement = 0;
                         t.PredatorComponent.ForceConsume(a);
                     }
                     else
                     {
-                        State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"{t.Unit.Name} blocks {LogUtilities.ApostrophizeWithOrWithoutS(a.Unit.Name)} force feeding attempt.");
+                        State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<b>{a.Unit.Name}</b> blocks <b>{LogUtilities.ApostrophizeWithOrWithoutS(a.Unit.Name)}</b> force feeding attempt.");
                     }
                 }
 

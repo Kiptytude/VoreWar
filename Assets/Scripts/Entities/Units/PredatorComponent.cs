@@ -1,9 +1,7 @@
-﻿using CruxClothing;
-using OdinSerializer;
+﻿using OdinSerializer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditorInternal.VR;
 using UnityEngine;
 
 public enum PreyLocation

@@ -1303,15 +1303,16 @@ public abstract class TacticalAI : ITacticalAI
         return actor.BestRanged != null;
     }
 
-    public virtual void HandleLeftoverForeigns(Actor_Unit actor) // You are facing an army that's actually your allies. Everyone that wasn't a friend on your side of the battlefield is dead. What do you do?
+    public virtual void HandleLeftoverForeigns(Actor_Unit actor) 
     {
+
        if (actor.Unit.HasTrait(Traits.Infiltrator)) // You were there to cause the enemy a headache, get right back to it!
         {
             retreating = true;                      // Will hopefully cause inattentive opponents to have these sneaking right back into their cities
             return;
         }
-        // I guess currently in all other cases you'd wanna defect
-        State.GameManager.TacticalMode.SwitchAlignment(actor);
+        if (actor.allowedToDefect && !actor.Unit.hiddenFixedSide)
+            State.GameManager.TacticalMode.SwitchAlignment(actor);
     }
 
 

@@ -3697,6 +3697,8 @@ Turns: {currentTurn}
                             actor.Unit.RemoveTrait(Traits.Diseased);
                             actor.Unit.RemoveTrait(Traits.Illness);
                             State.World.Reincarnators.Add(actor.Unit, actor.Unit.KilledBy.Race);
+                            State.World.GetEmpireOfSide(actor.Unit.Side)?.Reports.Add(new StrategicReport($"{actor.Unit.Name} will reincarnate as a {InfoPanel.RaceSingular(actor.Unit.KilledBy)}.", new Vec2(0, 0)));
+
                         }
                     }
                 }
@@ -3713,12 +3715,13 @@ Turns: {currentTurn}
                             actor.Unit.RemoveTrait(Traits.Diseased);
                             actor.Unit.RemoveTrait(Traits.Illness);
                             State.World.Reincarnators.Add(actor.Unit, (Race)(-1));
+                            State.World.GetEmpireOfSide(actor.Unit.Side)?.Reports.Add(new StrategicReport($"{actor.Unit.Name} will reincarnate as a random race.", new Vec2(0, 0)));
                         }
                     } 
                 }
                 else if (actor.Fled)
                     units.Remove(actor);
-                else if (actor.Unit.IsDead && actor.Unit.SavedCopy != null)
+                else if (actor.Unit.IsDead && actor.Unit.SavedCopy != null && (!State.World.Reincarnators?.ContainsKey(actor.Unit) ?? true))
                 {
                     var emp = State.World.GetEmpireOfSide(actor.Unit.Side);
                     var vill = actor.Unit.SavedVillage;

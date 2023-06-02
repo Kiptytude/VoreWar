@@ -1893,7 +1893,9 @@ public class StrategyMode : SceneBase
 
     private bool ContainsFriendly(Army s)
     {
-        return s.Units.Any(u => u.FixedSide == ActingEmpire.Side || State.World.GetEmpireOfSide(u.FixedSide).IsAlly(ActingEmpire));
+        return s.Units.Any(u => {
+            return u.FixedSide == ActingEmpire.Side || (State.World.GetEmpireOfSide(u.FixedSide)?.IsAlly(ActingEmpire) ?? false);
+        });
     }
 
     bool ProcessClickWithoutEmpire(int x, int y)
