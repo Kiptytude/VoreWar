@@ -1450,6 +1450,12 @@ public class Unit
         SetMaxItems();
     }
 
+    public void ChangeRace(Race race)
+    {
+        Race = race;
+        fixedPredator = false;
+    }
+
     private void RandomizeTraits()
     {
         var customs = Tags.Where(t => State.RandomizeLists.Any(rl => (Traits)rl.id == t));

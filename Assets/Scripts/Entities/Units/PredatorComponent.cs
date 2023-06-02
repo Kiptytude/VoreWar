@@ -1,7 +1,9 @@
-﻿using OdinSerializer;
+﻿using CruxClothing;
+using OdinSerializer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditorInternal.VR;
 using UnityEngine;
 
 public enum PreyLocation
@@ -1026,7 +1028,7 @@ public class PredatorComponent
                 preyUnit.Unit.Health = preyUnit.Unit.MaxHealth / 2;
                 HashSet<Gender> set = new HashSet<Gender>(Races.GetRace(preyUnit.Unit.Race).CanBeGender);
                 bool equals = set.SetEquals(Races.GetRace(unit.Race).CanBeGender);
-                preyUnit.Unit.Race = unit.Race;
+                preyUnit.Unit.ChangeRace(unit.Race);
                 preyUnit.Unit.SetGear(unit.Race);
                 if (equals == false || Config.AlwaysRandomizeConverted)
                     preyUnit.Unit.TotalRandomizeAppearance();
@@ -1199,7 +1201,7 @@ public class PredatorComponent
                     {
                         HashSet<Gender> set = new HashSet<Gender>(Races.GetRace(preyUnit.Unit.Race).CanBeGender);
                         bool equals = set.SetEquals(Races.GetRace(unit.Race).CanBeGender);
-                        preyUnit.Unit.Race = unit.Race;
+                        preyUnit.Unit.ChangeRace(unit.Race);
                         preyUnit.Unit.SetGear(unit.Race);
                         if (equals == false || Config.AlwaysRandomizeConverted)
                             preyUnit.Unit.TotalRandomizeAppearance();
