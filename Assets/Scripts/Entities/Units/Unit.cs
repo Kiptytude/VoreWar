@@ -518,15 +518,30 @@ public class Unit
     private void ReincarnateCheck()
     {
         if (State.World != null && State.World.Reincarnators != null && State.World.Reincarnators?.Count > 0 && Type != UnitType.SpecialMercenary && Type != UnitType.Summon)
+        {
             if (State.World.Reincarnators.Where(r => r.Value == Race).Count() > 0 && State.Rand.Next(3) == 0)
-                Reincarnate(State.World.Reincarnators.Where(r => r.Value == Race).First());
-            else if (State.World.Reincarnators.Where(r => r.Value == (Race)(-1)).Count() > 0 && State.Rand.Next(3 * State.World.AllActiveEmpires.Count) == 0)
-                Reincarnate(State.World.Reincarnators.Where(r => r.Value == (Race)(-1)).First());
+                Reincarnate(State.World.Reincarnators.Where(r => r.Value == Race).First().Key);
+            else
+            {
+                var randomRaceReincarnators = State.World.Reincarnators.Where(r => r.Value <= (Race)(-1));
+            if (randomRaceReincarnators.Count() > 0)
+                {
+                    Unit reincarnator = null;
+                    randomRaceReincarnators.Reverse().ForEach(re =>
+                    {
+                        if (State.Rand.Next(Math.Max(6, StrategicUtilities.GetAllArmyUnits().Count() / 3)) == 0)
+                            reincarnator = re.Key;
+                    });
+                    if(reincarnator != null)
+                    Reincarnate(reincarnator);
+            }
+            }
+        }
     }
 
-    private void Reincarnate(KeyValuePair<Unit, Race> keyValuePair)
+    private void Reincarnate(Unit unit)
     {
-        Unit pastLife = keyValuePair.Key;
+        Unit pastLife = unit;
         Name = pastLife.Name;
         experience = pastLife.Experience;
         AddTraits(pastLife.GetTraits);

@@ -114,7 +114,7 @@ public class UnitInfoPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
     void DisplayInfoFor(string name)
     {
-        if (Actor?.Unit.Predator == false)
+        if (Actor?.Unit.Predator == false || Actor?.PredatorComponent == null)
             return;
         foreach (var prey in Actor.PredatorComponent.GetAllPrey())
         {

@@ -1074,7 +1074,7 @@ public class Actor_Unit
             return false;
         List<AbilityTargets> targetTypes = new List<AbilityTargets>();
         targetTypes.Add(AbilityTargets.Enemy);
-        if (TacticalUtilities.MeetsQualifier(targetTypes, this, target))
+        if (!TacticalUtilities.MeetsQualifier(targetTypes, this, target))
             return false;
         if (target.Position.GetNumberOfMovesDistance(Position) > 1)
             return false;

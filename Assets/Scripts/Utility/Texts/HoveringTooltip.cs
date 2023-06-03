@@ -188,7 +188,7 @@ public class HoveringTooltip : MonoBehaviour
                     return $"Affects total health, also reduces damage from acid, has a minor role in escape chance.\n{StatData(Stat.Endurance)}";
                 case Stat.Stomach:
                     return $"Affects stomach capacity and digestion rate.  Also helps keep prey from escaping.\n{StatData(Stat.Stomach)}\n" +
-                        $"{((bool)actor?.Unit.Predator ? $"Used Capacity: {Math.Round(actor.PredatorComponent.GetBulkOfPrey(), 2)}\n" : "")}Max Capacity: {Math.Round(State.RaceSettings.GetStomachSize(unit.Race) * (unit.GetStat(Stat.Stomach) / 12f * unit.TraitBoosts.CapacityMult), 1)}";
+                     State.World?.ItemRepository != null ? $"" :  $"{((bool)actor?.Unit.Predator && actor?.PredatorComponent != null ? $"Used Capacity: {Math.Round(actor.PredatorComponent.GetBulkOfPrey(), 2)}\n" : "")}Max Capacity: {Math.Round(State.RaceSettings.GetStomachSize(unit.Race) * (unit.GetStat(Stat.Stomach) / 12f * unit.TraitBoosts.CapacityMult), 1)}";
                 case Stat.Leadership:
                     return $"Provides a stat boost for all friendly units\nStat value: {unit.GetStatBase(Stat.Leadership)}";
             }

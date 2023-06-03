@@ -197,6 +197,22 @@ static class StrategicUtilities
         return units;
     }
 
+    public static List<Unit> GetAllArmyUnits(bool excludeMonsters = false)
+    {
+        if (State.World == null)
+        {
+            Debug.LogWarning("This really should not have happened!");
+            return new List<Unit>();
+        }
+
+        List<Unit> units = new List<Unit>();
+        foreach (Army army in GetAllArmies(excludeMonsters))
+        {
+            units.AddRange(army.Units);
+        }
+        return units;
+    }
+
     public static List<int> GetAllHumanSides()
     {
         return State.World.AllActiveEmpires.Where(emp => emp.StrategicAI == null).ToList().ConvertAll(emp => emp.Side);

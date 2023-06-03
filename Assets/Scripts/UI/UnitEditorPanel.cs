@@ -182,7 +182,7 @@ public class UnitEditorPanel : CustomizerPanel
         else
             RaceDropdown.value = 0;
         RaceDropdown.captionText.text = actor.Unit.Race.ToString();
-        AlignmentDropdown.captionText.text = DetermineAllignment(actor);
+        AlignmentDropdown.captionText.text = DetermineAllignment(actor.Unit);
         HiddenToggle.isOn = actor.Unit.hiddenFixedSide;
         PopulateItems();
         TraitList.text = UnitEditor.Unit.ListTraits();
@@ -192,14 +192,14 @@ public class UnitEditorPanel : CustomizerPanel
 
     }
 
-    private string DetermineAllignment(Actor_Unit actor)
+    private string DetermineAllignment(Unit unit)
     {
         if (State.World?.MainEmpires != null)
         {
-            return State.World.GetEmpireOfSide(actor.Unit.FixedSide)?.Name ?? actor.Unit.Race.ToString();
+            return State.World.GetEmpireOfSide(unit.FixedSide)?.Name ?? unit.Race.ToString();
         }
         else
-            return actor.Unit.FixedSide == State.GameManager.TacticalMode.GetDefenderSide() ? "Defender" : "Attacker";
+            return unit.FixedSide == State.GameManager.TacticalMode.GetDefenderSide() ? "Defender" : "Attacker";
     }
 
     public void Open(Unit unit)
@@ -224,10 +224,11 @@ public class UnitEditorPanel : CustomizerPanel
         }
         else
             RaceDropdown.value = 0;
+        AlignmentDropdown.captionText.text = DetermineAllignment(unit);
+        HiddenToggle.isOn = unit.hiddenFixedSide;
         PopulateItems();
         TraitList.text = UnitEditor.Unit.ListTraits();
         SwapAlignment.gameObject.SetActive(State.GameManager.CurrentScene == State.GameManager.TacticalMode);
-
         ChangeUnitButtons(unit);
         UpdateButtons();
     }
