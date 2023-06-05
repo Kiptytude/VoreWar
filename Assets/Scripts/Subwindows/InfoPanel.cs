@@ -235,8 +235,6 @@ public class InfoPanel
                 return "Voilin";
             case Race.FeralBats:
                 return "Bat";
-            case Race.Kobolds:
-                return "Kobolds";
             case Race.FeralFrogs:
                 return "Feral Frog";
             case Race.Dragon:
@@ -307,6 +305,8 @@ public class InfoPanel
                 return "Dratopyr";
             case Race.FeralLions:
                 return "Lion";
+            case Race.Kobolds:
+                return "Kobold";
         }
         return unit.Race.ToString(); //Updated this so a new race will return the race's name, instead of nothing
     }

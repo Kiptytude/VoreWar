@@ -26,8 +26,9 @@
     //Raze,
     Diminishment = 17,
     GateMaw = 18,
-    Resurrection = 19,
-    Reanimate = 20,
+    Reanimate = 19,
+    Resurrection = 20,
+
 
 
     AlraunePuff = 70,

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static UnityEngine.UI.CanvasScaler;
 
 static class StrategicUtilities
 {
@@ -954,19 +955,33 @@ static class StrategicUtilities
 
     }
 
-    internal static void TryInfiltrateRandomAsMerc(Army originArmy, Unit unit)
+    internal static void TryInfiltrateRandom(Army originArmy, Unit unit)
     {
-        List<MercenaryContainer> destination = null;
-        var eligibleVillages = State.World.Villages.Where(v => v.NetBoosts.MercsPerTurnAdd > 0 && RelationsManager.GetRelation(v.Side,unit.Side).Type == RelationState.Enemies).ToList();
+        List<MercenaryContainer> mercDestination = null;
+        List<Unit> destination = null;
+        var eligibleVillages = State.World.Villages.Where(v => (v.Empire.StrategicAI != null || v.NetBoosts.MercsPerTurnAdd > 0) && RelationsManager.GetRelation(v.Side,unit.Side).Type == RelationState.Enemies).ToList();
         if (eligibleVillages.Count == 0)
-            eligibleVillages = State.World.Villages.Where(v => v.NetBoosts.MercsPerTurnAdd > 0 && RelationsManager.GetRelation(v.Side, unit.Side).Type == RelationState.Neutral).ToList();
-
+            eligibleVillages = State.World.Villages.Where(v => (v.Empire.StrategicAI != null || v.NetBoosts.MercsPerTurnAdd > 0) && RelationsManager.GetRelation(v.Side, unit.Side).Type != RelationState.Allied).ToList();
+        if (eligibleVillages.Count == 0)
+            eligibleVillages = State.World.Villages.Where(v => RelationsManager.GetRelation(v.Side, unit.Side).Type != RelationState.Allied).ToList();
+        Village chosenVillage = null;
         if (eligibleVillages.Count() > 0 && State.Rand.Next(2) < 1)
-            destination = eligibleVillages[State.Rand.Next(eligibleVillages.Count())].Mercenaries;
-        else if (State.World.MercenaryHouses.Any() && State.Rand.Next(5) < 1)
-            destination = State.World.MercenaryHouses[State.Rand.Next(State.World.MercenaryHouses.Count())].Mercenaries;
+        {
+            chosenVillage = eligibleVillages[State.Rand.Next(eligibleVillages.Count())];
+            if (chosenVillage.Empire.StrategicAI == null && chosenVillage.NetBoosts.MercsPerTurnAdd > 0 )
+                mercDestination = chosenVillage.Mercenaries;
+            else destination = chosenVillage.GetRecruitables();
+        }
+        else if (State.World.MercenaryHouses.Any() && State.Rand.Next(10) < 1)
+            mercDestination = State.World.MercenaryHouses[State.Rand.Next(State.World.MercenaryHouses.Count())].Mercenaries;
 
         if (destination != null)
+        {
+            destination.Add(unit);
+            originArmy.Units.Remove(unit);
+            Debug.Log($"{unit.Name} has infiltrated {chosenVillage.Name}");
+        }
+        else if (mercDestination != null)
         {
             MercenaryContainer merc = new MercenaryContainer();
             merc.Unit = unit;
@@ -977,8 +992,40 @@ static class StrategicUtilities
                 power = RaceParameters.GetTraitData(merc.Unit).PowerAdjustment;
             }
             merc.Cost = (int)((25 + State.Rand.Next(15) + (.12 * unit.Experience)) * UnityEngine.Random.Range(0.8f, 1.2f) * power);
-            destination.Add(merc);
+            mercDestination.Add(merc);
             originArmy.Units.Remove(unit);
+            Debug.Log($"{unit.Name} has infiltrated {chosenVillage?.Name ?? ("a mercanary camp")}");
+        }
+    }
+
+    internal static void TryInfiltrate(Army originArmy, Unit unit, Village village)
+    {
+        List<MercenaryContainer> mercDestination = null;
+        List<Unit> destination = null;
+        if (village.Empire.StrategicAI == null && village.NetBoosts.MercsPerTurnAdd > 0)
+            mercDestination = village.Mercenaries;
+        else destination = village.GetRecruitables();
+   
+        if (destination != null)
+        {
+            destination.Add(unit);
+            originArmy.Units.Remove(unit);
+            Debug.Log($"{unit.Name} has infiltrated {village.Name}");
+        }
+        else if (mercDestination != null)
+        {
+            MercenaryContainer merc = new MercenaryContainer();
+            merc.Unit = unit;
+            merc.Title = $"{unit.Race} - Mercenary";
+            var power = State.RaceSettings.Get(merc.Unit.Race).PowerAdjustment;
+            if (power == 0)
+            {
+                power = RaceParameters.GetTraitData(merc.Unit).PowerAdjustment;
+            }
+            merc.Cost = (int)((25 + State.Rand.Next(15) + (.12 * unit.Experience)) * UnityEngine.Random.Range(0.8f, 1.2f) * power);
+            mercDestination.Add(merc);
+            originArmy.Units.Remove(unit);
+            Debug.Log($"{unit.Name} has infiltrated {village.Name}");
         }
     }
 }

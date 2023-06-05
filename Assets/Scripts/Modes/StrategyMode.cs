@@ -570,13 +570,15 @@ public class StrategyMode : SceneBase
 
     void UpdateVisibility()
     {
+        if (OnlyAIPlayers) return;
+        if (LastHumanEmpire == null) return; // Sometimes when loading, the above may not be enough
         foreach (Army army in StrategicUtilities.GetAllHostileArmies(LastHumanEmpire))
         {
             var spr = army.Banner?.GetComponent<MultiStageBanner>();
             if (spr != null)
-                spr.gameObject.SetActive(!army.Units.All(u => u.HasTrait(Traits.Infiltrator)) || army.Units.Any(u => u.FixedSide == LastHumanEmpire.Side));
+                spr.gameObject.SetActive(!army.Units.All(u => u.HasTrait(Traits.Infiltrator)) || (StrategicUtilities.GetAllHumanSides().Count() > 1 ? army.Units.Any(u => u.FixedSide == ActingEmpire.Side) : army.Units.Any(u => u.FixedSide == LastHumanEmpire.Side)));
             var spr2 = army.Sprite;
-            if (spr2 != null) spr2.enabled = !army.Units.All(u => u.HasTrait(Traits.Infiltrator)) || army.Units.Any(u => u.FixedSide == LastHumanEmpire.Side);
+            if (spr2 != null) spr2.enabled = !army.Units.All(u => u.HasTrait(Traits.Infiltrator)) || (StrategicUtilities.GetAllHumanSides().Count() > 1 ? army.Units.Any(u => u.FixedSide == ActingEmpire.Side) : army.Units.Any(u => u.FixedSide == LastHumanEmpire.Side));
         }
     }
 
@@ -1036,9 +1038,14 @@ public class StrategyMode : SceneBase
                         if (ExchangerUI.RightArmy.Units.All(u => u.HasTrait(Traits.Infiltrator)))
                         {
                             Village village = StrategicUtilities.GetVillageAt(ExchangerUI.RightArmy.Position);
-                            if (village != null && village.Empire.IsEnemy(ExchangerUI.LeftArmy.Empire)) { 
+                            if (village != null && village.Empire.IsEnemy(ExchangerUI.LeftArmy.Empire)) {
+                                var infilitrators = new List<Unit>();
                                 ExchangerUI.RightArmy.Units.ForEach(unit => {
-                                    village.GetRecruitables().Add(unit);
+                                    infilitrators.Add(unit);
+                                });
+                                infilitrators.ForEach(inf =>
+                                {
+                                    StrategicUtilities.TryInfiltrate(ExchangerUI.RightArmy, inf, village);
                                 });
                                 ExchangerUI.RightArmy.Empire.Armies.Remove(ExchangerUI.RightArmy);
                                 ExchangerUI.RightArmy.Empire.ArmiesCreated--;

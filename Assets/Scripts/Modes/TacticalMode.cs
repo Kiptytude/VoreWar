@@ -3525,8 +3525,9 @@ Turns: {currentTurn}
 
     internal bool IsOnlyOneSideVisible()
     {
-        int visibleAttackers = 0;
-        int visibleDefenders = 0;
+        List<Actor_Unit> visibleAttackers = new List<Actor_Unit>();
+        List<Actor_Unit> visibleDefenders = new List<Actor_Unit>();
+
         for (int i = 0; i < units.Count; i++)
         {
             if (units[i] != null && units[i].Fled == false)
@@ -3536,18 +3537,26 @@ Turns: {currentTurn}
                 {
                     if (actor.Unit.Side == armies[0].Side)
                     {
-                        visibleAttackers++;
+                        visibleAttackers.Add(actor);
                     }
                     else
                     {
-                        visibleDefenders++;
+                        visibleDefenders.Add(actor);
                     }
                 }
             }
         }
-        bool oneSideLeft = visibleAttackers == 0 || visibleDefenders == 0;
+        bool oneSideLeft = false;
+        if (visibleAttackers.Count() == 0)
+        {
+            oneSideLeft = !visibleDefenders.Any(vd => !vd.Unit.hiddenFixedSide && TacticalUtilities.GetPreferredSide(vd.Unit, defenderSide, attackerSide) == attackerSide); // They are probably still fighting in this case
+        }
+        if (visibleDefenders.Count() == 0)
+        {
+            oneSideLeft = !visibleAttackers.Any(vd => !vd.Unit.hiddenFixedSide && TacticalUtilities.GetPreferredSide(vd.Unit, attackerSide, defenderSide) == defenderSide); // They are probably still fighting in this case
+        }
         autoAdvanceTimer = AutoAdvanceRate;
-        AutoAdvanceText.SetActive(oneSideLeft);
+        AutoAdvanceText.SetActive(oneSideLeft && Config.AutoAdvance > Config.AutoAdvanceType.DoNothing);
         return oneSideLeft;
 
     }

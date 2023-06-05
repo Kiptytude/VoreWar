@@ -596,6 +596,8 @@ public abstract class TacticalAI : ITacticalAI
     protected virtual List<PotentialTarget> GetListOfPotentialPrey(Actor_Unit actor, bool anyDistance, Vec2i position, int movement)
     {
         List<PotentialTarget> targets = new List<PotentialTarget>();
+        if (State.GameManager.TacticalMode.IsOnlyOneSideVisible() && actor.Unit.IsInfiltratingSide(AISide)) // should prevent aggressive action while within a foreign army when the battle is basically over
+            return targets;
         //check if we have at least 1 unit of capacity free
         float cap = actor.PredatorComponent.FreeCap();
         if (cap >= 1)
@@ -748,7 +750,7 @@ public abstract class TacticalAI : ITacticalAI
         List<PotentialTarget> targets = new List<PotentialTarget>();
         //check if we have at least 1 unit of capacity free
         float cap = actor.PredatorComponent.FreeCap();
-        if (cap >= 1)
+        if (cap >= 1 && !(State.GameManager.TacticalMode.IsOnlyOneSideVisible() && actor.Unit.IsInfiltratingSide(AISide)))
         {
             foreach (Actor_Unit unit in actors)
             {
@@ -831,7 +833,8 @@ public abstract class TacticalAI : ITacticalAI
     protected virtual List<PotentialTarget> GetListOfPotentialPounceTargets(Actor_Unit actor, Vec2i position, int moves)
     {
         List<PotentialTarget> targets = new List<PotentialTarget>();
-
+        if (State.GameManager.TacticalMode.IsOnlyOneSideVisible() && actor.Unit.IsInfiltratingSide(AISide))
+            return targets;
         foreach (Actor_Unit unit in actors)
         {
             if (unit.Targetable == true && TacticalUtilities.FreeSpaceAroundTarget(unit.Position, actor) && TacticalUtilities.TreatAsHostile(actor, unit) && (unit.Surrendered == false || (onlySurrenderedEnemies && lackPredators) || currentTurn > 150))
@@ -922,6 +925,7 @@ public abstract class TacticalAI : ITacticalAI
     {
         List<PotentialTarget> targets = new List<PotentialTarget>();
         if (actor.BestRanged == null) return targets; //This shouldn't happen, but just in case
+        if (State.GameManager.TacticalMode.IsOnlyOneSideVisible() && actor.Unit.IsInfiltratingSide(AISide)) return targets;
         foreach (Actor_Unit target in actors)
         {
             if (target?.Unit == null) //If this doesn't prevent exceptions I might have to just try/catch this function.  
@@ -1013,7 +1017,8 @@ public abstract class TacticalAI : ITacticalAI
     protected virtual List<PotentialTarget> GetListOfPotentialMeleeTargets(Actor_Unit actor, Vec2i position, int moves)
     {
         List<PotentialTarget> targets = new List<PotentialTarget>();
-
+        if (State.GameManager.TacticalMode.IsOnlyOneSideVisible() && actor.Unit.IsInfiltratingSide(AISide))
+            return targets;
         foreach (Actor_Unit unit in actors)
         {
             if (unit.Targetable == true && TacticalUtilities.TreatAsHostile(actor, unit) && (unit.Surrendered == false || (onlySurrenderedEnemies && lackPredators) || currentTurn > 150))
@@ -1205,6 +1210,23 @@ public abstract class TacticalAI : ITacticalAI
                 }
             }
         }
+        if (spell == SpellList.Bind && actor.Unit.BoundUnit != null)
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    int x = State.Rand.Next(actor.Position.x - 2, actor.Position.x + 3);
+                    int y = State.Rand.Next(actor.Position.y - 2, actor.Position.y + 3);
+                    Vec2i loc = new Vec2i(x, y);
+                    if (TacticalUtilities.OpenTile(loc, null))
+                    {
+                        if (spell.TryCast(actor, loc))
+                        {
+                            didAction = true;
+                            return;
+                        }
+                    }
+                }
+        }
         List<PotentialTarget> targets = GetListOfPotentialSpellTargets(actor, spell, actor.Position);
         if (!targets.Any())
             return;
@@ -1238,7 +1260,8 @@ public abstract class TacticalAI : ITacticalAI
     protected virtual List<PotentialTarget> GetListOfPotentialSpellTargets(Actor_Unit actor, Spell spell, Vec2i position)
     {
         List<PotentialTarget> targets = new List<PotentialTarget>();
-
+        if (State.GameManager.TacticalMode.IsOnlyOneSideVisible() && actor.Unit.IsInfiltratingSide(AISide))
+            return targets;
         foreach (Actor_Unit unit in actors)
         {
             if (spell is StatusSpell statusSpell && unit.Unit.GetStatusEffect(statusSpell.Type) != null)
@@ -1266,12 +1289,11 @@ public abstract class TacticalAI : ITacticalAI
                         continue;
                     targets.Add(new PotentialTarget(unit, net, distance, 4, net * 1000 + chance));
                 }
-                if (unit.Targetable == true && unit.Surrendered == false)
+                if (unit.Targetable == true && unit.Surrendered == false && (spell == SpellList.Bind ? unit.Unit.Type == UnitType.Summon : true))
                 {
                     int distance = unit.Position.GetNumberOfMovesDistance(position);
                     float chance = unit.GetMagicChance(unit, spell);
                     targets.Add(new PotentialTarget(unit, chance, distance, 4));
-
                 }
             }
 
@@ -1284,7 +1306,7 @@ public abstract class TacticalAI : ITacticalAI
                     if (actor.Unit.GetStatusEffect(statSpell.Type) != null)
                         continue;
                 }
-                if (unit.Targetable == true && unit.Surrendered == false)
+                if (unit.Targetable == true && unit.Surrendered == false && (spell == SpellList.Bind ? unit.Unit.Type == UnitType.Summon : true))
                 {
                     int distance = unit.Position.GetNumberOfMovesDistance(position);
                     float chance = unit.GetMagicChance(unit, spell);

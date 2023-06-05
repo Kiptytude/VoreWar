@@ -838,7 +838,7 @@ public class Spell
         {
             int startMana = actor.Unit.Mana;
             OnExecuteTile(actor, location);
-            if (actor.Unit.SingleUseSpells?.Contains(SpellType) ?? false && actor.Unit.Mana != startMana)
+            if ((actor.Unit.SingleUseSpells?.Contains(SpellType) ?? false) && actor.Unit.Mana != startMana)
             {
                 actor.Unit.SingleUseSpells.Remove(SpellType);
                 actor.Unit.UpdateSpells();
@@ -853,7 +853,7 @@ public class Spell
         {
             int startMana = actor.Unit.Mana;
             OnExecute(actor, target);
-            if (actor.Unit.SingleUseSpells?.Contains(SpellType) ?? false && actor.Unit.Mana != startMana)
+            if ((actor.Unit.SingleUseSpells?.Contains(SpellType) ?? false) && actor.Unit.Mana != startMana)
             {
                 actor.Unit.SingleUseSpells.Remove(SpellType);
                 actor.Unit.UpdateSpells();

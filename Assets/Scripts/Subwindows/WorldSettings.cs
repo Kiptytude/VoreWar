@@ -142,6 +142,7 @@ public class WorldSettings : MonoBehaviour
             RelationsManager.ResetRelationTypes();
         State.World.RefreshTurnOrder();
         State.World.UpdateBanditLimits();
+        State.GameManager.StrategyMode?.CheckIfOnlyAIPlayers();
         gameObject.SetActive(false);
     }
 

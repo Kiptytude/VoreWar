@@ -46,7 +46,7 @@ public class Unit
     [OdinSerialize]
     public bool hiddenFixedSide = false;
 
-    public List<Traits> secretTags = new List<Traits>() { Traits.Infiltrator, Traits.Corruption, Traits.Reincarnation, Traits.InfiniteReincarnation, Traits.Transmigration, Traits.InfiniteTransmigration, Traits.Untamable};
+    public static List<Traits> secretTags = new List<Traits>() { Traits.Infiltrator, Traits.Corruption, Traits.Reincarnation, Traits.InfiniteReincarnation, Traits.Transmigration, Traits.InfiniteTransmigration, Traits.Untamable};
 
     [OdinSerialize]
     public Race Race;
@@ -1204,10 +1204,10 @@ public class Unit
         for (int i = 0; i < Tags.Count; i++)
         {
             if (!(hideSecret && secretTags.Contains(Tags[i])))
-            { 
-                ret += Tags[i].ToString();
-                if (i + 1 < Tags.Count)
+            {
+                if (ret != "")
                     ret += "\n";
+                ret += Tags[i].ToString();
             }
         }
         if (PermanentTraits != null && PermanentTraits.Count > 0)

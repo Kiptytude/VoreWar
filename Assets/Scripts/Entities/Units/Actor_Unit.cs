@@ -689,8 +689,7 @@ public class Actor_Unit
     public bool IsRubbing => Mode == DisplayMode.Rubbing;
     public bool IsBeingRubbed => Mode == DisplayMode.Rubbed;
 
-
-
+    public List<int> sidesAttackedThisBattle { get; set; }
 
     public float GetSpecialChance(SpecialAction action)
     {
@@ -1398,6 +1397,12 @@ public class Actor_Unit
             damage *= 3;
             State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<color=purple>{attacker.Unit.Name} sneak-attacked {Unit.Name}!</color>");
         }
+        if (attacker.Unit.GetApparentSide() != Unit.GetApparentSide())
+        {
+            if (attacker.sidesAttackedThisBattle == null)
+                attacker.sidesAttackedThisBattle = new List<int>();
+            attacker.sidesAttackedThisBattle.Add(Unit.GetApparentSide());
+        }
         if (Unit.IsDead)
             return false;
         if (DefendSpellCheck(spell, attacker, out float chance))
@@ -1447,6 +1452,12 @@ public class Actor_Unit
             attacker.Unit.hiddenFixedSide = false;
             sneakAttack = true;
             State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<color=purple>{attacker.Unit.Name} sneak-attacked {Unit.Name}!</color>");
+        }
+        if (attacker.Unit.GetApparentSide() != Unit.GetApparentSide())
+        {
+            if (attacker.sidesAttackedThisBattle == null)
+                attacker.sidesAttackedThisBattle = new List<int>();
+            attacker.sidesAttackedThisBattle.Add(Unit.GetApparentSide());
         }
         if (DefendSpellCheck(spell, attacker, out float chance, sneakAttack ? -0.3f : 0f))
         {
@@ -1498,6 +1509,12 @@ public class Actor_Unit
         {
             attacker.Unit.hiddenFixedSide = false;
             State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<color=purple>{attacker.Unit.Name} sneak-attacked {Unit.Name}!</color>");
+        }
+        if (attacker.Unit.GetApparentSide() != Unit.GetApparentSide())
+        {
+            if (attacker.sidesAttackedThisBattle == null)
+                attacker.sidesAttackedThisBattle = new List<int>();
+            attacker.sidesAttackedThisBattle.Add(Unit.GetApparentSide());
         }
         State.GameManager.TacticalMode.AITimer = Config.TacticalAttackDelay;
         if (State.GameManager.CurrentScene == State.GameManager.TacticalMode && State.GameManager.TacticalMode.IsPlayerInControl == false && State.GameManager.TacticalMode.turboMode == false)
@@ -1719,6 +1736,9 @@ public class Actor_Unit
                         LogUtilities.GetRandomStringFrom(strings)
                 );
                 State.GameManager.TacticalMode.SwitchAlignment(target);
+                if (!target.Unit.HasTrait(Traits.Untamable))
+                    target.Unit.FixedSide = Unit.FixedSide;
+                target.Unit.hiddenFixedSide = true;
             }
             else if (distract)
             {
@@ -2292,15 +2312,59 @@ public class Actor_Unit
     internal bool CastBind(Actor_Unit t)
     {
         var spell = SpellList.Bind;
-        if (Unit.SpendMana(spell.ManaCost) == false || t.Unit.Type != UnitType.Summon)
+        if (t.Unit.Type != UnitType.Summon)
             return false;
         State.GameManager.SoundManager.PlaySpellCast(spell, this);
+        if (Unit.SpendMana(spell.ManaCost) == false) return false;
+
+        var binder = TacticalUtilities.Units.Where(a => a.Unit.BoundUnit?.Unit == t.Unit).FirstOrDefault();
+        if (binder != null)
+        {
+           if (binder.Unit.GetStat(Stat.Mind) > Unit.GetStat(Stat.Mind))
+            {
+                State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<b>{Unit.Name}</b> tries to bind <b>{LogUtilities.ApostrophizeWithOrWithoutS(binder.Unit.Name)}</b> summon, but <b>{LogUtilities.ApostrophizeWithOrWithoutS(binder.Unit.Name)}</b> magic is stronger");
+                return false;
+            } else if (binder.Unit.GetStat(Stat.Mind) < Unit.GetStat(Stat.Mind))
+            {
+                State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"With {LogUtilities.GPPHis(Unit)} superior magic <b>{Unit.Name}</b> wrests control over the summoned {InfoPanel.RaceSingular(t.Unit)} from <b>{binder.Unit.Name}</b>.");
+                binder.Unit.BoundUnit = null;
+            }
+            else
+            {
+                State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<b>{Unit.Name}</b> and <b>{binder.Unit.Name}</b> both exert their magic for control over the summoned <b>{t.Unit.Name}</b>, but they are evenly matched! Suddenly there is a flash of light and both casters stagger for a moment. What happened?");
+                t.Unit.Type = UnitType.Adventurer;
+                binder.Unit.BoundUnit = null;
+                t.Unit.Name += " The Unbound";
+                t.Unit.AddTrait(Traits.PeakCondition);
+                int unusedSide = 703;
+                while (State.World.AllActiveEmpires?.Any(emp => emp.Side == unusedSide) ?? false)
+                {
+                    unusedSide++;
+                }
+                t.Unit.FixedSide = unusedSide;
+                t.Unit.AddTrait(Traits.Untamable);
+                t.Unit.AddTrait(Traits.Large);
+                t.Unit.GiveRawExp((int)(binder.Unit.Experience * 0.50 + Unit.Experience * 0.50));
+                StrategicUtilities.SpendLevelUps(t.Unit);
+                t.Unit.Health = t.Unit.MaxHealth;
+                if (binder.sidesAttackedThisBattle == null) binder.sidesAttackedThisBattle = new List<int>();
+                binder.sidesAttackedThisBattle.Add(unusedSide);
+                if (this.sidesAttackedThisBattle == null) this.sidesAttackedThisBattle = new List<int>();
+                this.sidesAttackedThisBattle.Add(unusedSide);
+                var obj = Object.Instantiate(State.GameManager.TacticalEffectPrefabList.ShunGokuSatsu);
+                obj.transform.SetPositionAndRotation(new Vector3(t.Position.x, t.Position.y), new Quaternion());
+                return true;
+            }
+        }
 
         Unit.BoundUnit = t;
 
-        t.Unit.Side = Unit.Side;
+        if (t.Unit.Side != Unit.Side) State.GameManager.TacticalMode.SwitchAlignment(t);
         if (!t.Unit.HasTrait(Traits.Untamable))
             t.Unit.FixedSide = Unit.FixedSide;
+        t.Movement = t.CurrentMaxMovement();
+        State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<b>{Unit.Name}</b> has bound <b>{t.Unit.Name}</b> to {LogUtilities.GPPHis(Unit)} will.");
+
 
         if (Unit.TraitBoosts.SpellAttacks > 1)
         {
@@ -2319,9 +2383,14 @@ public class Actor_Unit
     internal bool SummonBound(Vec2i l)
     {
         var spell = SpellList.Bind;
-        if (Unit.SpendMana(spell.ManaCost) == false || Unit.BoundUnit == null)
+        if (Unit.BoundUnit == null)
             return false;
-        State.GameManager.SoundManager.PlaySpellCast(spell, this);
+   
+
+        State.GameManager.SoundManager.PlaySpellCast(SpellList.Summon, this);
+        if (TacticalUtilities.Units.Contains(Unit.BoundUnit) && !Unit.BoundUnit.Unit.IsDead)
+            return false;
+        if (Unit.SpendMana(spell.ManaCost) == false) return false;
 
         if (TacticalUtilities.Units.Contains(Unit.BoundUnit))
         {
@@ -2330,6 +2399,8 @@ public class Actor_Unit
         }
         else
             State.GameManager.TacticalMode.AddUnitToBattle(Unit.BoundUnit.Unit, l);
+
+        State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<b>{Unit.Name}</b> re-summoned <b>{Unit.BoundUnit.Unit.Name}</b>.");
 
         if (Unit.TraitBoosts.SpellAttacks > 1)
         {

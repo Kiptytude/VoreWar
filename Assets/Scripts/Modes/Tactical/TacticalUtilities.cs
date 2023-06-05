@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEngine.UI.CanvasScaler;
 
 static class TacticalUtilities
 {
@@ -434,7 +431,7 @@ static class TacticalUtilities
             }
 
         }
-        return targetSideHostilityP >= targetSideHostilityUP;
+        return targetSideHostilityP >= targetSideHostilityUP || (target.sidesAttackedThisBattle?.Contains(preferredSide) ?? false) || (target.sidesAttackedThisBattle?.Contains(actor.Unit.FixedSide) ?? false);
     }
 
     static public int GetMindControlSide(Unit unit)
@@ -841,6 +838,7 @@ static class TacticalUtilities
         if (!unit.hiddenFixedSide || unit.FixedSide == unit.Side) return true;
 
         if (StrategicUtilities.GetAllHumanSides().Count > 1) return false;
+        if (StrategicUtilities.GetAllHumanSides().Count < 1) return true;
 
         if (State.World.MainEmpires == null) 
             return unit.FixedSide == (!State.GameManager.TacticalMode.AIAttacker ? 

@@ -507,7 +507,7 @@ public class HoveringTooltip : MonoBehaviour
             case Traits.PermanentGrowth:
                 return "An accessory trait to Growth that makes growth gained permanent.  (Does nothing without the Growth trait)\n(Cheat Trait)";
             case Traits.Berserk:
-                return "If the unit is reduced below half health by an attack, will go berserk, greating increasing its strength and voracity for 3 turns.\nCan only occur once per battle.";
+                return "If the unit is reduced below half health by an attack, will go berserk, greatly increasing its strength and voracity for 3 turns.\nCan only occur once per battle.";
             case Traits.SynchronizedEvolution:
                 return "Any trait this unit assimilates is received by all members of their race. (requires Assimilate or InfiniteAssimilation)\n(Cheat Trait)";
             case Traits.Charmer:
@@ -517,21 +517,23 @@ public class HoveringTooltip : MonoBehaviour
             case Traits.ForceFeeder:
                 return "Allows unit to attempt force-feeding itself to another unit at will.";
             case Traits.Corruption:
-                return "If a currupted unit is digested, the pred will build up corruption as a hidden status. Once corrupted prey with a stat total equal to that of the pred has been digested, they are under control of the side of the last-digested corrupted.";
+                return "If a currupted unit is digested, the pred will build up corruption as a hidden status. Once corrupted prey with a stat total equal to that of the pred has been digested, they are under control of the side of the last-digested corrupted.\n(Hidden Trait)";
             case Traits.Reanimator:
                 return "Allows unit to use <b>Reanimate</b>, an attack that brings any unit back to life as the caster's summon, once per battle";
             case Traits.Reincarnation:
-                return "Soon after this unit dies, one of the new Units that come into being will be a reincarnation of them.";
+                return "Soon after this unit dies, one of the new Units that come into being will be a reincarnation of them.\n(Hidden Trait)";
             case Traits.Transmigration:
-                return "Soon after this unit is digested, one of the new Units that come into being as the pred's race will be a reincarnation of them.";
+                return "Soon after this unit is digested, one of the new Units that come into being as the pred's race will be a reincarnation of them.\n(Hidden Trait)";
             case Traits.InfiniteReincarnation:
-                return "Soon after this unit dies, one of the new Units that come into being will be a reincarnation of them.\nReincarnations will also have this trait(Cheat Trait)";
+                return "Soon after this unit dies, one of the new Units that come into being will be a reincarnation of them.\nReincarnations will also have this trait (Hidden Trait)(Cheat Trait)";
             case Traits.InfiniteTransmigration:
-                return "Soon after this unit is digested, one of the new Units that come into being as the pred's race will be a reincarnation of them.\nReincarnations will also have this trait(Cheat Trait)";
+                return "Soon after this unit is digested, one of the new Units that come into being as the pred's race will be a reincarnation of them.\nReincarnations will also have this trait (Hidden Trait)(Cheat Trait)";
             case Traits.Untamable:
-                return "No matter which army this unit is in, it is only ever truly aligned with its race.";
+                return "No matter which army this unit is in, it is only ever truly aligned with its race. Only vore-based types of conversion are really effective\n(Hidden Trait)";
             case Traits.Binder:
                 return "Allows unit to either take control of any summon, or re-summon the most recently bound one once a battle.";
+            case Traits.Infiltrator:
+                return "Armies fully consisting of infiltrators are invisible to the enemy. Using 'Exchange' on an enemy village or a Mercenary camp will infiltrate it (For Player villages, infiltrating as a Mercenary will be preferred, otherwise as recruitables).\nWill also use conventional changes of allignment to go undercover\n(Hidden Trait)";
         }
         return "<b>This trait needs a tooltip!</b>";
     }

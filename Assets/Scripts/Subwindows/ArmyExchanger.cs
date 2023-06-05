@@ -254,9 +254,15 @@ public class ArmyExchanger : MonoBehaviour
         if (leftSelected >= LeftArmy.Units.Count || RightArmy.Units.Count == RightArmy.MaxSize)
             return;
 
-        if (LeftArmy.Units[rightSelected] == LeftArmy.Empire.Leader && LeftArmy.Side != RightArmy.Side)
+        if (LeftArmy.Units[leftSelected] == LeftArmy.Empire.Leader && LeftArmy.Side != RightArmy.Side)
         {
             State.GameManager.CreateMessageBox("Can't trade heroes between races");
+            return;
+        }
+        var village = StrategicUtilities.GetVillageAt(RightArmy.Position);
+        if (village != null && RightArmy.Empire != null && village.Empire.IsEnemy(RightArmy.Empire) && LeftArmy.Units[leftSelected] == LeftArmy.Empire.Leader)
+        {
+            State.GameManager.CreateMessageBox("Leaders can't infiltrate");
             return;
         }
         RightArmy.Units.Add(LeftArmy.Units[leftSelected]);

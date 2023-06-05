@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.Experimental.UIElements.GraphView;
 using UnityEngine;
 
 public enum PreyLocation
@@ -982,10 +983,10 @@ public class PredatorComponent
                 preyUnit.Actor.Movement = 0;
                 if (preyUnit.Unit.Side != unit.Side)
                     State.GameManager.TacticalMode.SwitchAlignment(preyUnit.Actor);
-                if (!preyUnit.Unit.HasTrait(Traits.Untamable))
-                {
+
+
                     preyUnit.Unit.FixedSide = unit.FixedSide;
-                }
+
                 preyUnit.Actor.Surrendered = false;
                 FreeUnit(preyUnit.Actor);
                 TacticalUtilities.Log.RegisterBirth(unit, preyUnit.Unit, 1f);
@@ -1007,12 +1008,11 @@ public class PredatorComponent
                 preyUnit.Actor.Movement = 0;
                 if (preyUnit.Unit.Side != unit.Side)
                     State.GameManager.TacticalMode.SwitchAlignment(preyUnit.Actor);
-                if (!preyUnit.Unit.HasTrait(Traits.Untamable))
-                {
+
                     preyUnit.Unit.FixedSide = unit.FixedSide;
-                }
+
                 preyUnit.Actor.Surrendered = false;
-                if (Config.FriendlyRegurgitation)
+                if (!unit.HasTrait(Traits.Greedy))
                 {
                     State.GameManager.TacticalMode.TacticalStats.RegisterRegurgitation(unit.Side);
                     FreeUnit(preyUnit.Actor);
@@ -1038,16 +1038,10 @@ public class PredatorComponent
                 preyUnit.Actor.Movement = 0;
                 if (preyUnit.Unit.Side != unit.Side)
                     State.GameManager.TacticalMode.SwitchAlignment(preyUnit.Actor);
-                if (!preyUnit.Unit.HasTrait(Traits.Untamable))
-                {
                     preyUnit.Unit.FixedSide = unit.FixedSide;
-                }
-                if (Config.FriendlyRegurgitation)
-                {
-                    State.GameManager.TacticalMode.TacticalStats.RegisterRegurgitation(unit.Side);
-                    TacticalUtilities.Log.RegisterRegurgitated(unit, preyUnit.Unit, Location(preyUnit));
+                  
+                    TacticalUtilities.Log.RegisterBirth(unit, preyUnit.Unit, 0.5f);
                     FreeUnit(preyUnit.Actor);
-                }
                 preyUnit.Actor.AnimationController = new AnimationController();
                 preyUnit.Actor.Surrendered = false;
                 preyUnit.Actor.Unit.ReloadTraits();
@@ -1067,7 +1061,8 @@ public class PredatorComponent
                 if (actor.Corruption >= unit.GetStatTotal())
                 {
                     unit.AddPermanentTrait(Traits.Corruption);
-                    unit.FixedSide = preyUnit.Unit.FixedSide;
+                    if (!unit.HasTrait(Traits.Untamable))
+                        unit.FixedSide = preyUnit.Unit.FixedSide;
                     unit.hiddenFixedSide = true;
                 }   
                 preyUnit.Unit.RemoveTrait(Traits.Corruption);
@@ -1190,10 +1185,8 @@ public class PredatorComponent
                     preyUnit.Actor.Movement = 0;
                     if (preyUnit.Unit.Side != unit.Side)
                         State.GameManager.TacticalMode.SwitchAlignment(preyUnit.Actor);
-                    if (!preyUnit.Unit.HasTrait(Traits.Untamable))
-                    {
+
                         preyUnit.Unit.FixedSide = unit.FixedSide;
-                    }
                     preyUnit.Actor.Surrendered = false;
                     if (preyUnit.Unit.Race != unit.Race)
                     {
@@ -2050,6 +2043,12 @@ public class PredatorComponent
             sneakAttack = true;
             State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<color=purple>{actor.Unit.Name} sneak-attacked {target.Unit.Name}!</color>");
         }
+        if (actor.Unit.GetApparentSide() != target.Unit.GetApparentSide())
+        {
+            if (actor.sidesAttackedThisBattle == null)
+                actor.sidesAttackedThisBattle = new List<int>();
+            actor.sidesAttackedThisBattle.Add(target.Unit.GetApparentSide());
+        }
         State.GameManager.TacticalMode.AITimer = Config.TacticalVoreDelay;
         if (State.GameManager.CurrentScene == State.GameManager.TacticalMode && State.GameManager.TacticalMode.IsPlayerInControl == false && State.GameManager.TacticalMode.turboMode == false)
             State.GameManager.CameraCall(target.Position);
@@ -2152,6 +2151,12 @@ public class PredatorComponent
                 actor.Unit.hiddenFixedSide = false;
                 boost += 3;
                 State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<color=purple>{actor.Unit.Name} sneak-attacked {target.Unit.Name}!</color>");
+            }
+            if (actor.Unit.GetApparentSide() != target.Unit.GetApparentSide())
+            {
+                if (actor.sidesAttackedThisBattle == null)
+                    actor.sidesAttackedThisBattle = new List<int>();
+                actor.sidesAttackedThisBattle.Add(target.Unit.GetApparentSide());
             }
             float r = (float)State.Rand.NextDouble();
             float v = target.GetDevourChance(actor, skillBoost: boost);

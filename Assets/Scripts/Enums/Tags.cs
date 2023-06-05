@@ -366,7 +366,7 @@ public enum Traits
     /// <summary>When this unit rubs the belly of a foe that has not been attacked in the last two turns, there is a chance for that foe to be stunned or switch sides.</summary>
     SeductiveTouch = 266,
     /// <summary>Can emit Gas that turns foes into subservient non-combatants once per battle.</summary>
-    HypnoticGas = 290,
+    HypnoticGas = 276,
 
     // Growth-related section
     /// <summary>Unit increases in size when absorbing prey.</summary>

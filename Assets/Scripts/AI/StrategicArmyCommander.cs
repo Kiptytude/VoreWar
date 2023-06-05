@@ -110,10 +110,10 @@ class StrategicArmyCommander
             foreach (Unit unit in army.Units)
             {
                 StrategicUtilities.SpendLevelUps(unit);
-                if (unit.HasTrait(Traits.Infiltrator))
+                if (unit.HasTrait(Traits.Infiltrator) && unit.Type != UnitType.Leader && unit.FixedSide == army.Side)
                     infiltrators.Add(unit);
             }
-            infiltrators.ForEach(u => StrategicUtilities.TryInfiltrateRandomAsMerc(army, u));
+            infiltrators.ForEach(u => StrategicUtilities.TryInfiltrateRandom(army, u));
 
             if (army.InVillageIndex > -1)
             {
