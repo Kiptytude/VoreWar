@@ -715,7 +715,10 @@ static class TacticalUtilities
             sprite.UpdateSprites(actor);
             sprite.Name.text = actor.Unit.Name;
             Button button = obj.GetComponentInChildren<Button>();
-            button.onClick.AddListener(() => Reanimate(loc, actor, unit));
+            button.onClick.AddListener(() => {
+                State.GameManager.SoundManager.PlaySpellCast(SpellList.Summon, actor);
+                Reanimate(loc, actor, unit);
+            });
             button.onClick.AddListener(() => UnitPickerUI.gameObject.SetActive(false));
         }
         UnitPickerUI.ActorFolder.GetComponent<RectTransform>().sizeDelta = new Vector2(0, 250 * (1 + (list.Length / 3)));

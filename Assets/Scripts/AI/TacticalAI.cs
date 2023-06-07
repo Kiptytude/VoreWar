@@ -1075,9 +1075,42 @@ public abstract class TacticalAI : ITacticalAI
                 }
             }
         }
-
-
     }
+
+    protected virtual void TryReanimate(Actor_Unit actor)
+    {
+        if (actor.Unit.UseableSpells == null || actor.Unit.UseableSpells.Any() == false)
+            return;
+        //var damageSpells = actor.Unit.UseableSpells.Where(s => s is DamageSpell);
+
+
+
+        Spell spell = actor.Unit.UseableSpells.Where(s => s.SpellType == SpellTypes.Reanimate).FirstOrDefault();
+        if (spell == null)
+            return;
+
+        if (spell.ManaCost > actor.Unit.Mana)
+            return;
+        if (TacticalUtilities.FindUnitToReanimate(actor) == null)
+            return;
+
+
+        for (int i = 0; i < 4; i++)
+        {
+            int x = State.Rand.Next(actor.Position.x - 2, actor.Position.x + 3);
+            int y = State.Rand.Next(actor.Position.y - 2, actor.Position.y + 3);
+            Vec2i loc = new Vec2i(x, y);
+            if (TacticalUtilities.OpenTile(loc, null))
+            {
+                if (spell.TryCast(actor, loc))
+                {
+                    didAction = true;
+                    return;
+                }
+            }
+        }
+    }
+
     protected virtual int CheckResurrect(Actor_Unit actor, Vec2i position, int ap)
     {
         if (actor.Unit.UseableSpells == null || actor.Unit.UseableSpells.Any() == false)
@@ -1093,6 +1126,41 @@ public abstract class TacticalAI : ITacticalAI
         if (spell.ManaCost > actor.Unit.Mana)
             return -1;
         if (TacticalUtilities.FindUnitToResurrect(actor) == null)
+            return -1;
+
+
+        for (int i = 0; i < 4; i++)
+        {
+            int x = State.Rand.Next(position.x - 2, position.x + 3);
+            int y = State.Rand.Next(position.y - 2, position.y + 3);
+            Vec2i loc = new Vec2i(x, y);
+            if (TacticalUtilities.OpenTile(loc, null))
+            {
+                if (actor.Unit.Mana >= spell.ManaCost && ap > 0)
+                {
+                    return 1;
+                }
+            }
+        }
+        return -1;
+
+    }
+
+    protected virtual int CheckReanimate(Actor_Unit actor, Vec2i position, int ap)
+    {
+        if (actor.Unit.UseableSpells == null || actor.Unit.UseableSpells.Any() == false)
+            return -1;
+        //var damageSpells = actor.Unit.UseableSpells.Where(s => s is DamageSpell);
+
+
+
+        Spell spell = actor.Unit.UseableSpells.Where(s => s.SpellType == SpellTypes.Reanimate).FirstOrDefault();
+        if (spell == null)
+            return -1;
+
+        if (spell.ManaCost > actor.Unit.Mana)
+            return -1;
+        if (TacticalUtilities.FindUnitToReanimate(actor) == null)
             return -1;
 
 
@@ -1189,6 +1257,8 @@ public abstract class TacticalAI : ITacticalAI
         if (spell.ManaCost > actor.Unit.Mana)
             return;
         if (spell == SpellList.Resurrection)
+            return;
+        if (spell == SpellList.Reanimate)
             return;
 
         if (State.GameManager.TacticalMode.IsOnlyOneSideVisible())

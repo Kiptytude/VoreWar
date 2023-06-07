@@ -513,7 +513,7 @@ public class HoveringTooltip : MonoBehaviour
             case Traits.Charmer:
                 return "Allows the casting of the Charm spell once per battle";
             case Traits.HypnoticGas:
-                return "Can emit Gas that turns foes into subservient non-combatants.";
+                return "Can emit Gas that turns foes into subservient non-combatants that are easy to vore and rub bellies. Units of the same race are unaffected.";
             case Traits.ForceFeeder:
                 return "Allows unit to attempt force-feeding itself to another unit at will.";
             case Traits.Corruption:

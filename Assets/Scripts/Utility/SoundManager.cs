@@ -37,6 +37,8 @@ public class SoundManager : MonoBehaviour
     private readonly Dictionary<string, AudioClip[]> SpellCasts = new Dictionary<string, AudioClip[]>();
     private readonly Dictionary<string, AudioClip[]> SpellHits = new Dictionary<string, AudioClip[]>();
 
+    private readonly Dictionary<string, AudioClip[]> MiscSounds = new Dictionary<string, AudioClip[]>();
+
     internal void PlaySwing(Actor_Unit actor) => RandomizeSfx(Swings, actor, combatVolume);
     internal void PlayArrowHit(Actor_Unit actor) => RandomizeSfx(ArrowHits, actor, combatVolume);
     internal void PlayMeleeHit(Actor_Unit actor) => RandomizeSfx(MeleeHits, actor, combatVolume);
@@ -129,6 +131,8 @@ public class SoundManager : MonoBehaviour
             SpellCasts[id] = Resources.LoadAll<AudioClip>($"audio{sep}spell{sep}{id}{sep}cast");
             SpellHits[id] = Resources.LoadAll<AudioClip>($"audio{sep}spell{sep}{id}{sep}hit");
         }
+        MiscSounds["unbound"] = Resources.LoadAll<AudioClip>($"audio{sep}spell{sep}unbound");
+
         InitSources();
     }
 
@@ -233,6 +237,34 @@ public class SoundManager : MonoBehaviour
 
     void RandomizeSfx(AudioClip[] clips, Actor_Unit actor, float volume)
     {
+        if (SoundEnabled == false)
+            return;
+        if (clips == null || clips.Length == 0)
+            return;
+
+        if (actor == null || actor.UnitSprite == null)
+        {
+            RandomizeSfxGlobal(clips, null, volume);
+            return;
+        }
+        if (State.GameManager.TacticalMode.TacticalSoundBlocked())
+            return;
+
+        AudioSource source = actor.UnitSprite.SfxSources[Random.Range(0, actor.UnitSprite.SfxSourcesCount)];
+
+        AudioClip clip = clips[Random.Range(0, clips.Length)];
+
+        volume *= PositionSound(source, actor.UnitSprite.transform.position, sfxFloor);
+
+        PlaySfx(clip, source, volume);
+    }
+
+    internal void PlayMisc(string name, Actor_Unit actor)
+    {
+        var volume = combatVolume;
+
+        AudioClip[] clips = MiscSounds[name];
+
         if (SoundEnabled == false)
             return;
         if (clips == null || clips.Length == 0)

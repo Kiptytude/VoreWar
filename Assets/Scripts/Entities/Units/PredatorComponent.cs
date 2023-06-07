@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor.Experimental.UIElements.GraphView;
 using UnityEngine;
 
 public enum PreyLocation
@@ -2146,7 +2145,7 @@ public class PredatorComponent
                 }
             }
             actor.SetPredMode(preyType);
-            if (actor.Unit.Side == target.Unit.GetApparentSide() && !actor.Unit.HasTrait(Traits.Endosoma))
+            if (actor.Unit.GetApparentSide(target.Unit) == target.Unit.GetApparentSide() && actor.Unit.IsInfiltratingSide(target.Unit.GetApparentSide()) && !actor.Unit.HasTrait(Traits.Endosoma))
             {
                 actor.Unit.hiddenFixedSide = false;
                 boost += 3;

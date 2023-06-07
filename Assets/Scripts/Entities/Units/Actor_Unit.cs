@@ -2322,7 +2322,7 @@ public class Actor_Unit
         {
            if (binder.Unit.GetStat(Stat.Mind) > Unit.GetStat(Stat.Mind))
             {
-                State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<b>{Unit.Name}</b> tries to bind <b>{LogUtilities.ApostrophizeWithOrWithoutS(binder.Unit.Name)}</b> summon, but <b>{LogUtilities.ApostrophizeWithOrWithoutS(binder.Unit.Name)}</b> magic is stronger");
+                State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<b>{Unit.Name}</b> tries to bind <b>{LogUtilities.ApostrophizeWithOrWithoutS(binder.Unit.Name)}</b> bound summon, <b>{t.Unit.Name}</b>, but <b>{LogUtilities.ApostrophizeWithOrWithoutS(binder.Unit.Name)}</b> magic is stronger");
                 return false;
             } else if (binder.Unit.GetStat(Stat.Mind) < Unit.GetStat(Stat.Mind))
             {
@@ -2331,19 +2331,20 @@ public class Actor_Unit
             }
             else
             {
+                State.GameManager.SoundManager.PlayMisc("unbound", this);
                 State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<b>{Unit.Name}</b> and <b>{binder.Unit.Name}</b> both exert their magic for control over the summoned <b>{t.Unit.Name}</b>, but they are evenly matched! Suddenly there is a flash of light and both casters stagger for a moment. What happened?");
                 t.Unit.Type = UnitType.Adventurer;
                 binder.Unit.BoundUnit = null;
                 t.Unit.Name += " The Unbound";
-                t.Unit.AddTrait(Traits.PeakCondition);
+                t.Unit.AddPermanentTrait(Traits.PeakCondition);
                 int unusedSide = 703;
                 while (State.World.AllActiveEmpires?.Any(emp => emp.Side == unusedSide) ?? false)
                 {
                     unusedSide++;
                 }
                 t.Unit.FixedSide = unusedSide;
-                t.Unit.AddTrait(Traits.Untamable);
-                t.Unit.AddTrait(Traits.Large);
+                t.Unit.AddPermanentTrait(Traits.Untamable);
+                t.Unit.AddPermanentTrait(Traits.Large);
                 t.Unit.GiveRawExp((int)(binder.Unit.Experience * 0.50 + Unit.Experience * 0.50));
                 StrategicUtilities.SpendLevelUps(t.Unit);
                 t.Unit.Health = t.Unit.MaxHealth;

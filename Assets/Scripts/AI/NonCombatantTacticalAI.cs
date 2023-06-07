@@ -50,6 +50,7 @@ public class NonCombatantTacticalAI : RaceServantTacticalAI
         }
 
         TryResurrect(actor);
+        TryReanimate(actor);
 
 
         RunSpells(actor);

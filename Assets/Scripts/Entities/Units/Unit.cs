@@ -1124,6 +1124,7 @@ public class Unit
     }
     internal void InitializeFixedSide(int side)
     {
+        if (State.World?.ItemRepository == null) return; //protection for the create strat screen
         if (_fixedSide > -1) return;
         if (HasTrait(Traits.Untamable))
         {

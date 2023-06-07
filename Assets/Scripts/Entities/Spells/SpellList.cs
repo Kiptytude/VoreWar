@@ -513,6 +513,7 @@ static class SpellList
                         }
                         else
                         {
+                            State.GameManager.SoundManager.PlaySpellCast(Summon, a);
                             TacticalUtilities.Reanimate(loc, target, a.Unit);
                         }
                     }
