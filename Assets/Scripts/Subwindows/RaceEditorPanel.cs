@@ -399,7 +399,7 @@ public class RaceEditorPanel : MonoBehaviour
 
 
 
-    public static string TraitListToText(List<Traits> traits)
+    public static string TraitListToText(List<Traits> traits, bool hideSecret = false)
     {
         if (traits == null)
             return "";
@@ -407,6 +407,7 @@ public class RaceEditorPanel : MonoBehaviour
         bool first = true;
         foreach (var trait in traits)
         {
+            if (hideSecret && Unit.secretTags.Contains(trait)) continue;
             if (first)
                 first = false;
             else

@@ -1248,7 +1248,7 @@ public class Recruit_Mode : SceneBase
                     gender = merc.Unit.GetGender().ToString();
                 text.text += $"\nCost: {merc.Cost} Gender: {gender}";
             }
-
+            text.text += "\nTraits: " + RaceEditorPanel.TraitListToText(merc.Unit.GetTraits, true);
 
             actor.UpdateBestWeapons();
             sprite.UpdateSprites(actor);
@@ -1326,6 +1326,7 @@ public class Recruit_Mode : SceneBase
                     gender = merc.Unit.GetGender().ToString();
                 text.text += $"\nCost: {merc.Cost} Gender: {gender}";
             }
+            text.text += "\nTraits: " + RaceEditorPanel.TraitListToText(merc.Unit.GetTraits, true);
 
             actor.UpdateBestWeapons();
             sprite.UpdateSprites(actor);
@@ -1374,6 +1375,7 @@ public class Recruit_Mode : SceneBase
                     gender = actor.Unit.GetGender().ToString();
                 text.text += $"\nGender: {gender}";
             }
+            text.text += "\nTraits: " + RaceEditorPanel.TraitListToText(actor.Unit.GetTraits, true);
 
             actor.UpdateBestWeapons();
             sprite.UpdateSprites(actor);
@@ -1382,7 +1384,7 @@ public class Recruit_Mode : SceneBase
             button.onClick.AddListener(() => Hire(unit));
             button.onClick.AddListener(() => Destroy(obj));
         }
-        HireUI.ActorFolder.GetComponent<RectTransform>().sizeDelta = new Vector2(0, 250 * (1 + (village.VillagePopulation.GetRecruitables().Count) / 3));
+        HireUI.ActorFolder.GetComponent<RectTransform>().sizeDelta = new Vector2(0, 300 * (1 + (village.VillagePopulation.GetRecruitables().Count) / 3));
         HireUI.gameObject.SetActive(true);
 
     }
