@@ -211,6 +211,10 @@ public class Army
     {
         foreach (Unit unit in Units.ToList())
         {
+            if (unit.Type == UnitType.Summon)
+            {
+                Units.Remove(unit);
+            }
             if (unit.IsDead)
             {
                 Units.Remove(unit);

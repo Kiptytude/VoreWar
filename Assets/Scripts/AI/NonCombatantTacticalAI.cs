@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using static UnityEngine.UI.CanvasScaler;
 
 public class NonCombatantTacticalAI : RaceServantTacticalAI
 {
@@ -69,7 +70,7 @@ public class NonCombatantTacticalAI : RaceServantTacticalAI
     {
         List<PotentialTarget> targets = new List<PotentialTarget>();
 
-        List<Actor_Unit> masters = actors.Where(a => RaceAIType.Dict[State.RaceSettings.GetRaceAI(a.Unit.Race)] != typeof(NonCombatantTacticalAI)).ToList();
+        List<Actor_Unit> masters = actors.Where(a => RaceAIType.Dict[State.RaceSettings.GetRaceAI(a.Unit.Race)] != typeof(NonCombatantTacticalAI) && TacticalUtilities.GetMindControlSide(a.Unit) == -1).ToList();
 
         foreach (Actor_Unit unit in masters)
         {

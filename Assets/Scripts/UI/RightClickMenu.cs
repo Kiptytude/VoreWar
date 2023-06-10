@@ -267,6 +267,8 @@ public class RightClickMenu : MonoBehaviour
                     {
                         if (spell == SpellList.Maw)
                             currentButton = AddSpell(spell, actor, target, currentButton, range, target.GetMagicChance(actor, spell) * target.GetDevourChance(actor, skillBoost: actor.Unit.GetStat(Stat.Mind)));
+                        else if (spell == SpellList.Bind && target.Unit.Type != UnitType.Summon)
+                            AddSpell(spell, actor, target, currentButton, range, 0);
                         else
                             currentButton = AddSpell(spell, actor, target, currentButton, range, target.GetMagicChance(actor, spell));
                     }

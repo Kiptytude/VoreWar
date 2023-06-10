@@ -32,7 +32,7 @@ public class MultiStageBanner : MonoBehaviour
         //Color TransparentPrimaryColor = new Color(empire.UnityColor.r, empire.UnityColor.g, empire.UnityColor.b, 0.5f);
         //Color TransparentSecondaryColor = new Color(empire.UnitySecondaryColor.r, empire.UnitySecondaryColor.g, empire.UnitySecondaryColor.b, 0.5f);
 
-        if (army.Units.All(u => u.HasTrait(Traits.Infiltrator)))
+        if (army.Units.All(u => u.HasTrait(Traits.Infiltrator) && !u.IsInfiltratingSide(u.Side)))
         {
             FullBannerLayer.color  = new Color(FullBannerLayer.color.r, FullBannerLayer.color.g, FullBannerLayer.color.b, 0.5f);
             InsigniaLayer.color = new Color(InsigniaLayer.color.r, InsigniaLayer.color.g, InsigniaLayer.color.b, 0.5f);

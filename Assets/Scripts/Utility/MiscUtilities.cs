@@ -12,6 +12,24 @@ static class MiscUtilities
         State.GameManager.StartCoroutine(ExecuteAfterTime(theDelegate, time));
     }
 
+    internal static void DelayedInvoke(Action<bool> regenerate, float v)
+    {
+        State.GameManager.StartCoroutine(ExecuteAfterTime(regenerate, v));
+    }
+
+    private static IEnumerator ExecuteAfterTime(Action<bool> action, float v)
+    {
+        yield return new WaitForSeconds(v);
+        try
+        {
+            action(false);
+        }
+        catch
+        {
+
+        }
+    }
+
     private static IEnumerator ExecuteAfterTime(Action action, float delay)
     {
         yield return new WaitForSeconds(delay);

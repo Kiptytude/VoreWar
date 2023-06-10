@@ -64,9 +64,9 @@ class FogSystem
         {
             var spr = army.Banner?.GetComponent<MultiStageBanner>();
             if (spr != null)
-                spr.gameObject.SetActive((!FoggedTile[army.Position.x, army.Position.y] && !army.Units.All(u => u.HasTrait(Traits.Infiltrator))) || army.Units.Any(u => u.FixedSide == playerEmpire.Side));
+                spr.gameObject.SetActive(!FoggedTile[army.Position.x, army.Position.y] && (!army.Units.All(u => u.HasTrait(Traits.Infiltrator)) || army.Units.Any(u => u.FixedSide == playerEmpire.Side)));
             var spr2 = army.Sprite;
-            if (spr2 != null) spr2.enabled = (!FoggedTile[army.Position.x, army.Position.y] && !army.Units.All(u => u.HasTrait(Traits.Infiltrator))) || army.Units.Any(u => u.FixedSide == playerEmpire.Side);
+            if (spr2 != null) spr2.enabled = !FoggedTile[army.Position.x, army.Position.y] && (!army.Units.All(u => u.HasTrait(Traits.Infiltrator)) || army.Units.Any(u => u.FixedSide == playerEmpire.Side));
         }
 
         if (currentVillageTiles != null)

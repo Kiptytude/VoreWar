@@ -2,6 +2,7 @@ using OdinSerializer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 public abstract class TacticalAI : ITacticalAI
 {
@@ -96,8 +97,7 @@ public abstract class TacticalAI : ITacticalAI
         this.tiles = tiles;
         this.actors = actors;
         this.defendingVillage = defendingVillage;
-        var enemies = actors.Where(s => s.Unit.Side != AISide).ToList();
-        enemySide = enemies[0].Unit.Side;
+        enemySide = State.GameManager.TacticalMode.GetAttackerSide() == AISide ? State.GameManager.TacticalMode.GetDefenderSide() : State.GameManager.TacticalMode.GetAttackerSide();
     }
     public void TurnAI()
     {
@@ -1336,6 +1336,7 @@ public abstract class TacticalAI : ITacticalAI
         {
             if (spell is StatusSpell statusSpell && unit.Unit.GetStatusEffect(statusSpell.Type) != null)
                 continue; //Don't recast the same spell on the same unit
+            var binder = actors.Where(a => a.Unit.BoundUnit?.Unit == unit.Unit).FirstOrDefault();
             if (TacticalUtilities.TreatAsHostile(actor, unit) && spell.AcceptibleTargets.Contains(AbilityTargets.Enemy))
             {
                 if (spell.AreaOfEffect > 0)
@@ -1359,14 +1360,13 @@ public abstract class TacticalAI : ITacticalAI
                         continue;
                     targets.Add(new PotentialTarget(unit, net, distance, 4, net * 1000 + chance));
                 }
-                if (unit.Targetable == true && unit.Surrendered == false && (spell == SpellList.Bind ? unit.Unit.Type == UnitType.Summon : true))
+                if (unit.Targetable == true && unit.Surrendered == false && (spell == SpellList.Bind ? unit.Unit.Type == UnitType.Summon && binder?.Unit.GetApparentSide(actor.Unit) != actor.Unit.FixedSide && binder?.Unit.FixedSide != actor.Unit.FixedSide : true))
                 {
                     int distance = unit.Position.GetNumberOfMovesDistance(position);
                     float chance = unit.GetMagicChance(unit, spell);
                     targets.Add(new PotentialTarget(unit, chance, distance, 4));
                 }
             }
-
             else if (!TacticalUtilities.TreatAsHostile(actor, unit) && spell.AcceptibleTargets.Contains(AbilityTargets.Ally))
             {
                 if (spell == SpellList.Mending && (100 * unit.Unit.HealthPct) > 84)
@@ -1376,7 +1376,7 @@ public abstract class TacticalAI : ITacticalAI
                     if (actor.Unit.GetStatusEffect(statSpell.Type) != null)
                         continue;
                 }
-                if (unit.Targetable == true && unit.Surrendered == false && (spell == SpellList.Bind ? unit.Unit.Type == UnitType.Summon : true))
+                if (unit.Targetable == true && unit.Surrendered == false && (spell == SpellList.Bind ? unit.Unit.Type == UnitType.Summon && binder?.Unit.GetApparentSide(actor.Unit) != actor.Unit.FixedSide && binder?.Unit.FixedSide != actor.Unit.FixedSide : true))
                 {
                     int distance = unit.Position.GetNumberOfMovesDistance(position);
                     float chance = unit.GetMagicChance(unit, spell);

@@ -407,7 +407,7 @@ public class RaceEditorPanel : MonoBehaviour
         bool first = true;
         foreach (var trait in traits)
         {
-            if (hideSecret && Unit.secretTags.Contains(trait)) continue;
+            if (hideSecret && Unit.secretTags.Contains(trait)) continue; // We even hide secret traits if they would be shown once purchased, otherwise if you read "Infiltrator" you already know it's safe.
             if (first)
                 first = false;
             else

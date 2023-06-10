@@ -291,7 +291,7 @@ static class StrategicUtilities
                 spawnerType = Config.MonsterConquest;
             if (enemy == null && village.Garrison == 0)
             {
-                if (army.Side >= 100)
+                if (army.Side >= 100 && army.Side <= 700)
                 {
                     if (spawnerType == Config.MonsterConquestType.IgnoreTowns)
                     {

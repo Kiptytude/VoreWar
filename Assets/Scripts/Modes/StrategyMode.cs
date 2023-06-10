@@ -367,11 +367,15 @@ public class StrategyMode : SceneBase
     public void RedrawArmies()
     {
         ClearArmies();
-
+        var armiesToReassign = new List<Army>();
         foreach (Empire empire in State.World.AllActiveEmpires)
         {
             foreach (Army army in empire.Armies)
             {
+                if (army.Units.Any() && !army.Units.Any(unit => unit.GetApparentSide() == army.Side))
+                {
+                    armiesToReassign.Add(army);
+                }
                 if (army.Side < 30)
                 {
                     if (army.BannerStyle > (int)BannerTypes.VoreWar && CustomBannerTest.Sprites[army.BannerStyle - 23] != null)
@@ -398,6 +402,10 @@ public class StrategyMode : SceneBase
                 }
 
             }
+        }
+        foreach (Army army in armiesToReassign)
+        {
+            ReassignArmyEmpire(army);
         }
         UpdateFog();
     }
@@ -528,6 +536,7 @@ public class StrategyMode : SceneBase
 
     public void UpdateArmyLocationsAndSprites()
     {
+        var armiesToReassign = new List<Army>();
         foreach (Empire empire in State.World.MainEmpires)
         {
             foreach (Army army in empire.Armies)
@@ -542,6 +551,101 @@ public class StrategyMode : SceneBase
             }
         }
         UpdateFog();
+    }
+
+    private void ReassignArmyEmpire(Army army)
+    {
+        var sidesRepresented = new Dictionary<int,int>();
+        army.Units.ForEach(unit =>
+        {
+            if (sidesRepresented.ContainsKey(unit.FixedSide))
+            {
+                sidesRepresented[unit.FixedSide]++;
+            }
+            else
+            {
+                sidesRepresented.Add(unit.FixedSide, 1);
+            }
+        });
+        
+        var finalSide = sidesRepresented.OrderByDescending(s => s.Value).First();
+        var emp = State.World.GetEmpireOfSide(finalSide.Key);
+        var pos = army.Position;
+        Vec2 loc = pos;
+        if (StrategicUtilities.GetVillageAt(pos) != null)
+        {
+            var distance = 1;
+            loc = new Vec2(0, 0);
+            CheckTile(pos + new Vec2(-distance, 0));
+            CheckTile(pos + new Vec2(0, distance));
+            CheckTile(pos + new Vec2(distance, 0));
+            CheckTile(pos + new Vec2(-distance, -distance));
+            CheckTile(pos + new Vec2(-distance, distance));
+            CheckTile(pos + new Vec2(0, -distance));
+            CheckTile(pos + new Vec2(distance, -distance));
+            CheckTile(pos + new Vec2(distance, distance));
+
+            if (loc.x == 0 && loc.y == 0)
+            {
+                for (int i = 0; i < 10; i++)
+                {
+                    loc.x = State.Rand.Next(Config.StrategicWorldSizeX);
+                    loc.y = State.Rand.Next(Config.StrategicWorldSizeY);
+
+                    if (StrategicUtilities.IsTileClear(loc))
+                        break;
+
+                }
+                Debug.Log("Could not place army");
+                return;
+            }
+            void CheckTile(Vec2 spot)
+            {
+                if (StrategicUtilities.IsTileClear(spot) == false)
+                    return;
+                if (loc.x == 0 && loc.y == 0)
+                    loc = spot;
+                else if (State.Rand.Next(4) == 0)
+                    loc = spot;
+            }
+        }
+        pos = new Vec2i(loc.x,loc.y);
+        if (emp != null)
+        {
+            var newArmy = new Army(emp, pos, emp.Side);
+            newArmy.Units = army.Units;
+            emp.Armies.Add(newArmy);
+        } else // we'll literally make up an empire on the spot. Should rarely happen
+        {
+            var monsterEmp = State.World.MonsterEmpires.Where(e => e.Race == army.Units.Where(u => u.FixedSide == finalSide.Key).FirstOrDefault()?.Race).FirstOrDefault();
+            if (monsterEmp != null) {
+                Empire brandNewEmp = new MonsterEmpire(new Empire.ConstructionArgs(finalSide.Key, UnityEngine.Color.white, UnityEngine.Color.white, monsterEmp.BannerType, StrategyAIType.Monster, TacticalAIType.Full, 2000 + finalSide.Key, monsterEmp.MaxArmySize, 0));
+                brandNewEmp.ReplacedRace = monsterEmp.Race;
+                brandNewEmp.TurnOrder = 1234;
+                brandNewEmp.Name = "Unbound " + monsterEmp.Name;
+                var newArmy = new Army(brandNewEmp, pos, brandNewEmp.Side);
+                newArmy.Units = army.Units;
+                brandNewEmp.Armies.Add(newArmy);
+                State.World.AllActiveEmpires.Add(brandNewEmp);
+                State.World.RefreshTurnOrder();
+                Config.World.SpawnerInfo[(Race)finalSide.Key] = new SpawnerInfo(true, 1, 0, 0.4f, brandNewEmp.Team, 0, false, 9999, 1, monsterEmp.MaxArmySize, brandNewEmp.TurnOrder);
+            }
+            else
+            {
+                Empire brandNewEmp = new Empire(new Empire.ConstructionArgs(finalSide.Key, UnityEngine.Random.ColorHSV(), UnityEngine.Random.ColorHSV(), 5, StrategyAIType.Advanced, TacticalAIType.Full, 2000 + finalSide.Key, State.World.MainEmpires[0].MaxArmySize, 0));
+                brandNewEmp.ReplacedRace = army.Units.Where(u => u.FixedSide == finalSide.Key).First().Race;
+                brandNewEmp.TurnOrder = 1432;
+                brandNewEmp.Name = "The Free";
+                var newArmy = new Army(brandNewEmp, pos, brandNewEmp.Side);
+                newArmy.Units = army.Units;
+                brandNewEmp.Armies.Add(newArmy);
+                State.World.AllActiveEmpires.Add(brandNewEmp);
+                State.World.MainEmpires.Add(brandNewEmp);
+                State.World.RefreshTurnOrder();
+            }
+        }
+        army.Empire.Armies.Remove(army);
+        RedrawArmies();
     }
 
     void UpdateFog()
@@ -576,9 +680,9 @@ public class StrategyMode : SceneBase
         {
             var spr = army.Banner?.GetComponent<MultiStageBanner>();
             if (spr != null)
-                spr.gameObject.SetActive(!army.Units.All(u => u.HasTrait(Traits.Infiltrator)) || (StrategicUtilities.GetAllHumanSides().Count() > 1 ? army.Units.Any(u => u.FixedSide == ActingEmpire.Side) : army.Units.Any(u => u.FixedSide == LastHumanEmpire.Side)));
+                spr.gameObject.SetActive(army.Side == LastHumanEmpire.Side || !army.Units.All(u => u.HasTrait(Traits.Infiltrator)) || (StrategicUtilities.GetAllHumanSides().Count() > 1 ? army.Units.Any(u => u.FixedSide == ActingEmpire.Side) : army.Units.Any(u => u.FixedSide == LastHumanEmpire.Side)));
             var spr2 = army.Sprite;
-            if (spr2 != null) spr2.enabled = !army.Units.All(u => u.HasTrait(Traits.Infiltrator)) || (StrategicUtilities.GetAllHumanSides().Count() > 1 ? army.Units.Any(u => u.FixedSide == ActingEmpire.Side) : army.Units.Any(u => u.FixedSide == LastHumanEmpire.Side));
+            if (spr2 != null) spr2.enabled = army.Side == LastHumanEmpire.Side || !army.Units.All(u => u.HasTrait(Traits.Infiltrator)) || (StrategicUtilities.GetAllHumanSides().Count() > 1 ? army.Units.Any(u => u.FixedSide == ActingEmpire.Side) : army.Units.Any(u => u.FixedSide == LastHumanEmpire.Side));
         }
     }
 
@@ -762,15 +866,17 @@ public class StrategyMode : SceneBase
         }
     }
 
-    public void Regenerate()
+    public void Regenerate(bool initialLoad = false)
     {
         if (LastHumanEmpire == null)
         {
             LastHumanEmpire = State.World.MainEmpires.Where(s => s.StrategicAI == null).FirstOrDefault();
         }
+        if (!initialLoad) { 
         foreach (Empire empire in State.World.AllActiveEmpires)
         {
-            empire.ArmyCleanup();
+            empire.ArmyCleanup(); 
+        }
         }
         ActingEmpire.CalcIncome(State.World.Villages);
         if (ActingEmpire.StrategicAI == null || OnlyAIPlayers || Config.CheatExtraStrategicInfo || State.World.MainEmpires.Where(s => s.IsAlly(ActingEmpire) && s.StrategicAI == null).Any())
@@ -1503,7 +1609,7 @@ public class StrategyMode : SceneBase
 
 
     void EndTurn()
-    {
+    {       
         UndoMoves.Clear();
         ActingEmpire.Reports.Clear();
         if (State.World.EmpireOrder == null || State.World.EmpireOrder.Count != State.World.AllActiveEmpires.Count)
@@ -1792,7 +1898,7 @@ public class StrategyMode : SceneBase
         }
         else
         {
-            foreach (Army army in ActingEmpire.Armies)
+            foreach (Army army in ActingEmpire.Armies.Where(a => ContainsFriendly(a)))
             {
                 if (army.Position.GetDistance(clickLocation) < 1)
                 {
@@ -1810,7 +1916,7 @@ public class StrategyMode : SceneBase
                 }
             }
 
-            foreach (Army army in StrategicUtilities.GetAllArmies().Where(s => s.Side == ActingEmpire.Side))
+            foreach (Army army in StrategicUtilities.GetAllArmies().Where(s => s.Side == ActingEmpire.Side && ContainsFriendly(s)))
             {
                 if (army.Position.GetDistance(clickLocation) < 1)
                 {
@@ -1833,7 +1939,7 @@ public class StrategyMode : SceneBase
 
 
 
-            foreach (Army army in StrategicUtilities.GetAllArmies().Where(s => s.Side != ActingEmpire.Side && s.Empire.IsAlly(ActingEmpire)))
+            foreach (Army army in StrategicUtilities.GetAllArmies().Where(s => s.Side != ActingEmpire.Side && s.Empire.IsAlly(ActingEmpire) && ContainsFriendly(s)))
             {
                 if (army.Position.GetDistance(clickLocation) < 1)
                 {

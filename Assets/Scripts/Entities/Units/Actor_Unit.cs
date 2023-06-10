@@ -2314,10 +2314,11 @@ public class Actor_Unit
         var spell = SpellList.Bind;
         if (t.Unit.Type != UnitType.Summon)
             return false;
-        State.GameManager.SoundManager.PlaySpellCast(spell, this);
+        var binder = TacticalUtilities.Units.Where(a => a.Unit.BoundUnit?.Unit == t.Unit).FirstOrDefault();
+        if (binder?.Unit.FixedSide == Unit.FixedSide) return false;
         if (Unit.SpendMana(spell.ManaCost) == false) return false;
 
-        var binder = TacticalUtilities.Units.Where(a => a.Unit.BoundUnit?.Unit == t.Unit).FirstOrDefault();
+        
         if (binder != null)
         {
            if (binder.Unit.GetStat(Stat.Mind) > Unit.GetStat(Stat.Mind))
@@ -2326,8 +2327,15 @@ public class Actor_Unit
                 return false;
             } else if (binder.Unit.GetStat(Stat.Mind) < Unit.GetStat(Stat.Mind))
             {
+                State.GameManager.SoundManager.PlaySpellCast(spell, this);
                 State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"With {LogUtilities.GPPHis(Unit)} superior magic <b>{Unit.Name}</b> wrests control over the summoned {InfoPanel.RaceSingular(t.Unit)} from <b>{binder.Unit.Name}</b>.");
                 binder.Unit.BoundUnit = null;
+                Unit.BoundUnit = t;
+
+                if (t.Unit.Side != Unit.Side) State.GameManager.TacticalMode.SwitchAlignment(t);
+                if (!t.Unit.HasTrait(Traits.Untamable))
+                    t.Unit.FixedSide = Unit.FixedSide;
+                t.Movement = t.CurrentMaxMovement();
             }
             else
             {
@@ -2343,29 +2351,32 @@ public class Actor_Unit
                     unusedSide++;
                 }
                 t.Unit.FixedSide = unusedSide;
+                State.GameManager.TacticalMode.SwitchAlignment(t);
                 t.Unit.AddPermanentTrait(Traits.Untamable);
                 t.Unit.AddPermanentTrait(Traits.Large);
                 t.Unit.GiveRawExp((int)(binder.Unit.Experience * 0.50 + Unit.Experience * 0.50));
                 StrategicUtilities.SpendLevelUps(t.Unit);
                 t.Unit.Health = t.Unit.MaxHealth;
+                t.Unit.RestoreMana(t.Unit.MaxMana);
                 if (binder.sidesAttackedThisBattle == null) binder.sidesAttackedThisBattle = new List<int>();
                 binder.sidesAttackedThisBattle.Add(unusedSide);
                 if (this.sidesAttackedThisBattle == null) this.sidesAttackedThisBattle = new List<int>();
                 this.sidesAttackedThisBattle.Add(unusedSide);
                 var obj = Object.Instantiate(State.GameManager.TacticalEffectPrefabList.ShunGokuSatsu);
                 obj.transform.SetPositionAndRotation(new Vector3(t.Position.x, t.Position.y), new Quaternion());
-                return true;
             }
+        } else
+        {
+            State.GameManager.SoundManager.PlaySpellCast(spell, this);
+
+            Unit.BoundUnit = t;
+
+            if (t.Unit.Side != Unit.Side) State.GameManager.TacticalMode.SwitchAlignment(t);
+            if (!t.Unit.HasTrait(Traits.Untamable))
+                t.Unit.FixedSide = Unit.FixedSide;
+            t.Movement = t.CurrentMaxMovement();
+            State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<b>{Unit.Name}</b> has bound <b>{t.Unit.Name}</b> to {LogUtilities.GPPHis(Unit)} will.");
         }
-
-        Unit.BoundUnit = t;
-
-        if (t.Unit.Side != Unit.Side) State.GameManager.TacticalMode.SwitchAlignment(t);
-        if (!t.Unit.HasTrait(Traits.Untamable))
-            t.Unit.FixedSide = Unit.FixedSide;
-        t.Movement = t.CurrentMaxMovement();
-        State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<b>{Unit.Name}</b> has bound <b>{t.Unit.Name}</b> to {LogUtilities.GPPHis(Unit)} will.");
-
 
         if (Unit.TraitBoosts.SpellAttacks > 1)
         {
@@ -2386,12 +2397,12 @@ public class Actor_Unit
         var spell = SpellList.Bind;
         if (Unit.BoundUnit == null)
             return false;
-   
 
-        State.GameManager.SoundManager.PlaySpellCast(SpellList.Summon, this);
         if (TacticalUtilities.Units.Contains(Unit.BoundUnit) && !Unit.BoundUnit.Unit.IsDead)
             return false;
         if (Unit.SpendMana(spell.ManaCost) == false) return false;
+
+        State.GameManager.SoundManager.PlaySpellCast(SpellList.Summon, this);
 
         if (TacticalUtilities.Units.Contains(Unit.BoundUnit))
         {

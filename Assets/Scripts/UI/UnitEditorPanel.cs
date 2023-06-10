@@ -119,7 +119,7 @@ public class UnitEditorPanel : CustomizerPanel
                     if (monsterEmps[i].Side >= 700)
                         continue;
                     AlignmentDropdown.options.Add(new TMP_Dropdown.OptionData(monsterEmps[i].Name));
-                    empireDict[i + mainEmps.Count + 1] = monsterEmps[i];
+                    empireDict[i + mainEmps.Count - 1] = monsterEmps[i];
                 }
             }
         }

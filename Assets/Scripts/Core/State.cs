@@ -879,7 +879,7 @@ public static class State
                 if (World.Relations == null)
                     RelationsManager.ResetRelations();
                 GameManager.ClearPureTactical();
-                GameManager.SwitchToStrategyMode();
+                GameManager.SwitchToStrategyMode(true);
                 GameManager.StrategyMode.GenericSetup();
                 GameManager.StrategyMode.CheckIfOnlyAIPlayers();
 

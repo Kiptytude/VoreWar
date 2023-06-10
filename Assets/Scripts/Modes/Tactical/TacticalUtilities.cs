@@ -2,6 +2,7 @@
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEngine.UI.CanvasScaler;
 
 static class TacticalUtilities
 {
@@ -233,7 +234,7 @@ static class TacticalUtilities
         }
         else
         {
-            if(State.World.GetEmpireOfSide(unit.FixedSide)?.StrategicAI == null)
+            if (State.World.GetEmpireOfSide(unit.FixedSide) != null && State.World.GetEmpireOfSide(unit.FixedSide)?.StrategicAI == null)
             {
                 return true;
             }
@@ -687,7 +688,7 @@ static class TacticalUtilities
             button.onClick.AddListener(() => Resurrect(loc, actor));
             button.onClick.AddListener(() => UnitPickerUI.gameObject.SetActive(false));
         }
-        UnitPickerUI.ActorFolder.GetComponent<RectTransform>().sizeDelta = new Vector2(0, 250 * (1 + (list.Length / 3)));
+        UnitPickerUI.ActorFolder.GetComponent<RectTransform>().sizeDelta = new Vector2(0, 300 * (1 + (list.Length / 3)));
         UnitPickerUI.gameObject.SetActive(true);
     }
 
@@ -721,7 +722,7 @@ static class TacticalUtilities
             });
             button.onClick.AddListener(() => UnitPickerUI.gameObject.SetActive(false));
         }
-        UnitPickerUI.ActorFolder.GetComponent<RectTransform>().sizeDelta = new Vector2(0, 250 * (1 + (list.Length / 3)));
+        UnitPickerUI.ActorFolder.GetComponent<RectTransform>().sizeDelta = new Vector2(0, 300 * (1 + (list.Length / 3)));
         UnitPickerUI.gameObject.SetActive(true);
     }
 
@@ -760,7 +761,7 @@ static class TacticalUtilities
         target.SelfPrey = null;
         target.Surrendered = false;
         target.Unit.Type = UnitType.Summon;
-        target.Unit.Side = caster.Side;
+        if (target.Unit.Side != caster.Side) State.GameManager.TacticalMode.SwitchAlignment(target);
         if (!target.Unit.HasTrait(Traits.Untamable))
             target.Unit.FixedSide = caster.FixedSide;
         var actorCharm = caster.GetStatusEffect(StatusEffectType.Charmed) ?? caster.GetStatusEffect(StatusEffectType.Hypnotized);
@@ -776,8 +777,7 @@ static class TacticalUtilities
             target.UnitSprite.FlexibleSquare.gameObject.SetActive(true);
             target.UnitSprite.HealthBar.gameObject.SetActive(true);
         }
-
-
+        State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<b>{caster.Name}</b> brought back <b>{target.Unit.Name}</b> as a summon.");
     }
 
     static internal bool MeetsQualifier(List<AbilityTargets> targets, Actor_Unit actor, Actor_Unit target)

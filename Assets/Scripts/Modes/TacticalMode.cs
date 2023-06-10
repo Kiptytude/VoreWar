@@ -151,7 +151,7 @@ public class TacticalMode : SceneBase
 
     bool attackersTurn;
     internal bool IsPlayerTurn;
-    internal bool IsPlayerInControl => IsPlayerTurn && RunningFriendlyAI == false;
+    internal bool IsPlayerInControl => PseudoTurn || (IsPlayerTurn && RunningFriendlyAI == false && foreignAI == null);
     int activeSide;
 
     public bool AIAttacker;
@@ -198,8 +198,8 @@ public class TacticalMode : SceneBase
 
     internal bool turboMode;
 
-    List<Actor_Unit> extraAttackers;
-    List<Actor_Unit> extraDefenders;
+    public List<Actor_Unit> extraAttackers;
+    public List<Actor_Unit> extraDefenders;
 
     List<Unit> retreatedAttackers;
     List<Unit> retreatedDefenders;
@@ -493,7 +493,6 @@ public class TacticalMode : SceneBase
         {
             actor.Unit.EnemiesKilledThisBattle = 0;
             actor.allowedToDefect = TacticalUtilities.GetPreferredSide(actor.Unit, actor.Unit.Side, actor.Unit.Side == attackerSide ? defenderSide : attackerSide) != actor.Unit.Side;
-
         }
 
 
@@ -1955,6 +1954,9 @@ Turns: {currentTurn}
             if (CurrentSpell == SpellList.Maw || CurrentSpell == SpellList.GateMaw)
                 magicChance *= target.GetDevourChance(actor, skillBoost: actor.Unit.GetStat(Stat.Mind));
 
+            if (CurrentSpell == SpellList.Bind && target.Unit.Type != UnitType.Summon)
+                magicChance = 0;
+
             Vec2i pos = target.Position;
             if (actor.Position.GetNumberOfMovesDistance(target.Position) <= CurrentSpell.Range.Max && (actor.Position.GetNumberOfMovesDistance(target.Position) >= CurrentSpell.Range.Min))
                 target.UnitSprite.DisplayHitPercentage(magicChance, Color.red, spellDamage);
@@ -2201,6 +2203,12 @@ Turns: {currentTurn}
         {
             if (SelectedUnit != null && SelectedUnit.Targetable)
                 SwitchAlignment(SelectedUnit);
+
+        }
+        if (ID == 15)
+        {
+            if (SelectedUnit != null && SelectedUnit.Targetable)
+                SelectedUnit.Unit.hiddenFixedSide = false;
 
         }
 
@@ -3452,7 +3460,8 @@ Turns: {currentTurn}
         {
             if (units[i].Unit.IsDead == false && units[i].Unit.Side == activeSide)
             {
-                units[i].allowedToDefect = TacticalUtilities.GetPreferredSide(units[i].Unit, activeSide, attackersTurn ? defenderSide : attackerSide) != activeSide;
+                units[i].allowedToDefect = TacticalUtilities.GetPreferredSide(units[i].Unit, activeSide, attackersTurn ? defenderSide : attackerSide) != activeSide
+                    || units.Any(u => u.Unit.Side != units[i].Unit.Side && !u.Unit.IsDead) && !units.Any(u => TacticalUtilities.TreatAsHostile(units[i], u) && !u.Unit.IsDead);
                 units[i].NewTurn();
             }
             if (units[i].Unit.IsDead && units[i].Unit.Side == activeSide)
@@ -3570,11 +3579,12 @@ Turns: {currentTurn}
         int remainingDefenders = 0;
 
         CalculateRemaining(ref remainingAttackers, ref remainingDefenders);
-
         if (remainingAttackers == 0 || remainingDefenders == 0)
         {
             foreach (Actor_Unit actor in units)
             {
+                if (!actor.Unit.IsDead && actor.TurnsSinceLastDamage < 2) return false;
+                if (!actor.Unit.IsDead && !actor.Unit.hiddenFixedSide && units.Any(u => !u.Unit.IsDead && TacticalUtilities.TreatAsHostile(actor, u))) return false;
                 if (actor.Unit.Predator == false)
                     continue;
                 foreach (var prey in actor.PredatorComponent.GetDirectPrey().Where(s => s.Unit.HasTrait(Traits.TheGreatEscape)).ToList())

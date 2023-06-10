@@ -83,16 +83,12 @@ static class RelationsManager
     {
         if (State.World.Relations == null)
             ResetRelations();
-        if (sideA == 700 || sideA == 701 || sideB == 700 || sideB == 701)
+        if (sideA >= 700 ||  sideB >= 700 )
         {
             if (sideA == sideB)
                 return new Relationship(0, 0);
             else
                 return new Relationship(-1, -1);
-        }
-        else if (sideA >= 100 || sideB >= 100)
-        {
-
         }
         if (State.World.Relations.TryGetValue(sideA, out var dict))
         {

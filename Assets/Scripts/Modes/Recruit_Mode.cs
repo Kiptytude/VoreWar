@@ -299,7 +299,7 @@ public class Recruit_Mode : SceneBase
                 GenText();
             }
         }
-
+        Select(army.Units.Count - 1);
     }
 
     void GenText()
