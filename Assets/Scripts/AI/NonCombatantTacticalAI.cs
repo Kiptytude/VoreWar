@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using static UnityEngine.UI.CanvasScaler;
 
 public class NonCombatantTacticalAI : RaceServantTacticalAI
 {
@@ -51,8 +50,6 @@ public class NonCombatantTacticalAI : RaceServantTacticalAI
         }
 
         TryResurrect(actor);
-        TryReanimate(actor);
-
 
         RunSpells(actor);
         if (path != null)
@@ -93,8 +90,10 @@ public class NonCombatantTacticalAI : RaceServantTacticalAI
     {
         if (actor.Unit.UseableSpells == null || actor.Unit.UseableSpells.Any() == false)
             return;
+        var friendlySpells = actor.Unit.UseableSpells.Where(sp => sp != SpellList.Resurrection && sp != SpellList.Reanimate && sp != SpellList.Bind && sp.ManaCost <= actor.Unit.Mana && sp.AcceptibleTargets.Contains(AbilityTargets.Ally)).ToList();
 
-        List<Spell> friendlySpells = actor.Unit.UseableSpells.Where(s => s.AcceptibleTargets.Contains(AbilityTargets.Ally)).ToList();
+        if (friendlySpells == null || friendlySpells.Any() == false)
+            return;
 
         if (friendlySpells.Any() == false) return;
 
@@ -103,8 +102,6 @@ public class NonCombatantTacticalAI : RaceServantTacticalAI
         if ((spell == SpellList.Charm || spell == SpellList.HypnoGas) && TacticalUtilities.GetMindControlSide(actor.Unit) != -1) // Charmed units should not use charm. Trust me.
             return;
         if (spell.ManaCost > actor.Unit.Mana)
-            return;
-        if (spell == SpellList.Resurrection)
             return;
 
         if (State.GameManager.TacticalMode.IsOnlyOneSideVisible())
@@ -138,5 +135,22 @@ public class NonCombatantTacticalAI : RaceServantTacticalAI
             }
             targets.RemoveAt(0);
         }
+    }
+
+    protected override int CheckActionEconomyOfActorFromPositionWithAP(Actor_Unit actor, Vec2i position, int ap)
+    {
+        int apRequired = -1;
+      
+        apRequired = CheckResurrect(actor, position, ap);
+        if (apRequired > 0)
+            return ap - apRequired;
+
+    
+        apRequired = CheckSpells(actor, position, ap);
+        if (apRequired > 0)
+            return ap - apRequired;
+
+        // Everything else is less important than belly rubs.
+        return ap;
     }
 }

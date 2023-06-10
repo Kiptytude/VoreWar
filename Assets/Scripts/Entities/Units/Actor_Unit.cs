@@ -3,6 +3,7 @@ using OdinSerializer;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static UnityEngine.UI.CanvasScaler;
 
 public class Actor_Unit
 {
@@ -2336,6 +2337,11 @@ public class Actor_Unit
                 if (!t.Unit.HasTrait(Traits.Untamable))
                     t.Unit.FixedSide = Unit.FixedSide;
                 t.Movement = t.CurrentMaxMovement();
+                var actorCharm = Unit.GetStatusEffect(StatusEffectType.Charmed) ?? Unit.GetStatusEffect(StatusEffectType.Hypnotized);
+                if (actorCharm != null)
+                {
+                    t.Unit.ApplyStatusEffect(StatusEffectType.Charmed, actorCharm.Strength, actorCharm.Duration);
+                }
             }
             else
             {
@@ -2375,6 +2381,11 @@ public class Actor_Unit
             if (!t.Unit.HasTrait(Traits.Untamable))
                 t.Unit.FixedSide = Unit.FixedSide;
             t.Movement = t.CurrentMaxMovement();
+            var actorCharm = Unit.GetStatusEffect(StatusEffectType.Charmed) ?? Unit.GetStatusEffect(StatusEffectType.Hypnotized);
+            if (actorCharm != null)
+            {
+                t.Unit.ApplyStatusEffect(StatusEffectType.Charmed, actorCharm.Strength, actorCharm.Duration);
+            }
             State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<b>{Unit.Name}</b> has bound <b>{t.Unit.Name}</b> to {LogUtilities.GPPHis(Unit)} will.");
         }
 
@@ -2410,9 +2421,15 @@ public class Actor_Unit
             Unit.BoundUnit.Unit.Health = Unit.BoundUnit.Unit.MaxHealth;
         }
         else
+        {
+            var actorCharm = Unit.GetStatusEffect(StatusEffectType.Charmed) ?? Unit.GetStatusEffect(StatusEffectType.Hypnotized);
+            if (actorCharm != null)
+            {
+                Unit.BoundUnit.Unit.ApplyStatusEffect(StatusEffectType.Charmed, actorCharm.Strength, actorCharm.Duration);
+            }
             State.GameManager.TacticalMode.AddUnitToBattle(Unit.BoundUnit.Unit, l);
-
-        State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<b>{Unit.Name}</b> re-summoned <b>{Unit.BoundUnit.Unit.Name}</b>.");
+            State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<b>{Unit.Name}</b> re-summoned <b>{Unit.BoundUnit.Unit.Name}</b>.");
+        }
 
         if (Unit.TraitBoosts.SpellAttacks > 1)
         {

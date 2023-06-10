@@ -55,6 +55,8 @@ public class StandardTacticalAI : TacticalAI
         TryResurrect(actor);
         TryReanimate(actor);
 
+        RunBind(actor);
+
 
         if (State.Rand.Next(2) == 0 || actor.Unit.HasWeapon == false)
             RunSpells(actor);

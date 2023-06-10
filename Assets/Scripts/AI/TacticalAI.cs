@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using static UnityEngine.UI.CanvasScaler;
 
 public abstract class TacticalAI : ITacticalAI
 {
@@ -322,6 +323,14 @@ public abstract class TacticalAI : ITacticalAI
             return ap - apRequired;
 
         apRequired = CheckResurrect(actor, position, ap);
+        if (apRequired > 0)
+            return ap - apRequired;
+
+        apRequired = CheckReanimate(actor, position, ap);
+        if (apRequired > 0)
+            return ap - apRequired;
+
+        apRequired = CheckBind(actor, position, ap);
         if (apRequired > 0)
             return ap - apRequired;
 
@@ -1181,40 +1190,187 @@ public abstract class TacticalAI : ITacticalAI
 
     }
 
-    protected virtual int CheckSpells(Actor_Unit actor, Vec2i position, int ap)
+    protected virtual void RunBind(Actor_Unit actor)
     {
-        if (actor.Unit.UseableSpells == null || actor.Unit.UseableSpells.Any() == false)
-            return -1;
-        //var damageSpells = actor.Unit.UseableSpells.Where(s => s is DamageSpell);
+        var spell = actor.Unit.UseableSpells.Find(s => s.SpellType == SpellTypes.Bind);
+        if (spell == null) return;
 
+        if (!actors.Any(a => a.Unit.Type == UnitType.Summon) && actor.Unit.BoundUnit == null)
+        {
+            return;
+        }
 
-
-        Spell spell = actor.Unit.UseableSpells[State.Rand.Next(actor.Unit.UseableSpells.Count())];
-
-        if (spell.ManaCost > actor.Unit.Mana)
-            return -1;
-        if (spell == SpellList.Resurrection)
-            return -1;
-
-        if (State.GameManager.TacticalMode.IsOnlyOneSideVisible())
-            return -1;
-        if (spell == SpellList.Summon) //Replace with better logic later
+        if (actor.Unit.BoundUnit != null && !actors.Any(a => !a.Unit.IsDead && a.Unit == actor.Unit.BoundUnit.Unit))
         {
             for (int i = 0; i < 4; i++)
             {
-                int x = State.Rand.Next(position.x - 2, position.x + 3);
-                int y = State.Rand.Next(position.y - 2, position.y + 3);
+                int x = State.Rand.Next(actor.Position.x - 2, actor.Position.x + 3);
+                int y = State.Rand.Next(actor.Position.y - 2, actor.Position.y + 3);
                 Vec2i loc = new Vec2i(x, y);
                 if (TacticalUtilities.OpenTile(loc, null))
                 {
-                    if (actor.Unit.Mana >= spell.ManaCost && ap > 0)
+                    if (spell.TryCast(actor, loc))
                     {
-                        return 1;
+                        didAction = true;
+                        return;
                     }
                 }
             }
         }
-        int distance = -1;
+        List<PotentialTarget> targets = new List<PotentialTarget>();
+        foreach (Actor_Unit unit in actors)
+        {
+            if (unit.Unit.Type == UnitType.Summon && TacticalUtilities.TreatAsHostile(actor, unit))
+            {
+                var prevBinder = actors.Where(a => a.Unit.BoundUnit?.Unit == unit.Unit).FirstOrDefault();
+
+                if (unit.Targetable == true && unit.Surrendered == false && prevBinder?.Unit.GetApparentSide(actor.Unit) != actor.Unit.FixedSide && prevBinder?.Unit.FixedSide != actor.Unit.FixedSide)
+                {
+                    int distance = unit.Position.GetNumberOfMovesDistance(actor.Position);
+                    float chance = unit.GetMagicChance(unit, spell);
+                    targets.Add(new PotentialTarget(unit, chance, distance, 4));
+                }
+            }
+        }
+        if (!targets.Any())
+        {
+            foreach (Actor_Unit unit in actors)
+            {
+                if (unit.Unit.Type == UnitType.Summon && !TacticalUtilities.TreatAsHostile(actor, unit))
+                {
+                    var prevBinder = actors.Where(a => a.Unit.BoundUnit?.Unit == unit.Unit).FirstOrDefault();
+
+                    if (unit.Targetable == true && unit.Surrendered == false && prevBinder?.Unit.GetApparentSide(actor.Unit) != actor.Unit.FixedSide && prevBinder?.Unit.FixedSide != actor.Unit.FixedSide)
+                    {
+                        int distance = unit.Position.GetNumberOfMovesDistance(actor.Position);
+                        float chance = unit.GetMagicChance(unit, spell);
+                        targets.Add(new PotentialTarget(unit, chance, distance, 4));
+                    }
+                }
+            }
+        }
+        if (!targets.Any())
+            return;
+        Actor_Unit reserveTarget = targets[0].actor;
+        while (targets.Any())
+        {
+            if (targets[0].distance <= spell.Range.Max)
+            {
+                spell.TryCast(actor, targets[0].actor);
+                didAction = true;
+                return;
+            }
+            else
+            {
+                if (targets[0].actor.Position.GetNumberOfMovesDistance(actor.Position) <= actor.Movement + spell.Range.Max) //discard the clearly impossible
+                {
+                    MoveToAndAction(actor, targets[0].actor.Position, spell.Range.Max, actor.Movement, () => spell.TryCast(actor, targets[0].actor));
+                    if (foundPath && path.Path.Count() < actor.Movement)
+                        return;
+                    else
+                    {
+                        foundPath = false;
+                        path = null;
+                    }
+                }
+            }
+            targets.RemoveAt(0);
+        }
+    }
+
+    protected virtual int CheckBind(Actor_Unit actor, Vec2i position, int ap)
+    {
+        var spell = actor.Unit.UseableSpells.Find(s => s.SpellType == SpellTypes.Bind);
+        if (spell == null) return -1;
+
+        if (!actors.Any(a => a.Unit.Type == UnitType.Summon) && actor.Unit.BoundUnit == null)
+        {
+            return -1;
+        }
+
+        if (actor.Unit.BoundUnit != null && !actors.Any(a => !a.Unit.IsDead && a.Unit == actor.Unit.BoundUnit.Unit))
+        {
+            return 1;
+        }
+        List<PotentialTarget> targets = new List<PotentialTarget>();
+        foreach (Actor_Unit unit in actors)
+        {
+            if (unit.Unit.Type == UnitType.Summon && TacticalUtilities.TreatAsHostile(actor, unit))
+            {
+                var prevBinder = actors.Where(a => a.Unit.BoundUnit?.Unit == unit.Unit).FirstOrDefault();
+
+                if (unit.Targetable == true && unit.Surrendered == false && prevBinder?.Unit.GetApparentSide(actor.Unit) != actor.Unit.FixedSide && prevBinder?.Unit.FixedSide != actor.Unit.FixedSide)
+                {
+                    int distance = unit.Position.GetNumberOfMovesDistance(actor.Position);
+                    float chance = unit.GetMagicChance(unit, spell);
+                    targets.Add(new PotentialTarget(unit, chance, distance, 4));
+                }
+            }
+        }
+        if (!targets.Any())
+        {
+            foreach (Actor_Unit unit in actors)
+            {
+                if (unit.Unit.Type == UnitType.Summon && !TacticalUtilities.TreatAsHostile(actor, unit))
+                {
+                    var prevBinder = actors.Where(a => a.Unit.BoundUnit?.Unit == unit.Unit).FirstOrDefault();
+
+                    if (unit.Targetable == true && unit.Surrendered == false && prevBinder?.Unit.GetApparentSide(actor.Unit) != actor.Unit.FixedSide && prevBinder?.Unit.FixedSide != actor.Unit.FixedSide)
+                    {
+                        int distance = unit.Position.GetNumberOfMovesDistance(actor.Position);
+                        float chance = unit.GetMagicChance(unit, spell);
+                        targets.Add(new PotentialTarget(unit, chance, distance, 4));
+                    }
+                }
+            }
+        }
+        if (!targets.Any())
+            return -1;
+        Actor_Unit reserveTarget = targets[0].actor;
+        while (targets.Any())
+        {
+            if (targets[0].distance <= spell.Range.Max)
+            {
+                if (actor.Unit.Mana >= spell.ManaCost && ap > 0)
+                {
+                    return 1;
+                }
+            }
+            else
+            {
+                if (targets[0].actor.Position.GetNumberOfMovesDistance(actor.Position) <= actor.Movement + spell.Range.Max) //discard the clearly impossible
+                {
+                    var distance = CheckMoveTo(actor, position, targets[0].actor.Position, 1, actor.Movement);
+                    if (distance < ap && distance >= 0)
+                        return distance + 1;
+                }
+            }
+            targets.RemoveAt(0);
+        }
+        return -1;
+    }
+
+
+    protected virtual int CheckSpells(Actor_Unit actor, Vec2i position, int ap)
+    {
+        if (actor.Unit.UseableSpells == null || actor.Unit.UseableSpells.Any() == false)
+            return -1;
+
+        var availableSpells = actor.Unit.UseableSpells.Where(sp => sp != SpellList.Resurrection && sp != SpellList.Reanimate && sp != SpellList.Bind && sp.ManaCost <= actor.Unit.Mana).ToList();
+
+        if (availableSpells == null || availableSpells.Any() == false)
+            return -1;
+
+        Spell spell = availableSpells[State.Rand.Next(availableSpells.Count())];
+
+        if (State.GameManager.TacticalMode.IsOnlyOneSideVisible())
+            return -1;
+        if (spell == SpellList.Summon) 
+        {
+            
+                        return 1;
+                    
+        }
         List<PotentialTarget> targets = GetListOfPotentialSpellTargets(actor, spell, position);
         if (!targets.Any())
             return -1;
@@ -1232,7 +1388,7 @@ public abstract class TacticalAI : ITacticalAI
             {
                 if (targets[0].actor.Position.GetNumberOfMovesDistance(actor.Position) < actor.Movement) //discard the clearly impossible
                 {
-                    distance = CheckMoveTo(actor, position, targets[0].actor.Position, 1, actor.Movement);
+                    var distance = CheckMoveTo(actor, position, targets[0].actor.Position, 1, actor.Movement);
                     if (distance < ap && distance >= 0)
                         return distance + 1;
                 }
@@ -1246,19 +1402,14 @@ public abstract class TacticalAI : ITacticalAI
     {
         if (actor.Unit.UseableSpells == null || actor.Unit.UseableSpells.Any() == false)
             return;
-        //var damageSpells = actor.Unit.UseableSpells.Where(s => s is DamageSpell);
+        var availableSpells = actor.Unit.UseableSpells.Where(sp => sp != SpellList.Resurrection && sp != SpellList.Reanimate && sp != SpellList.Bind && sp.ManaCost <= actor.Unit.Mana).ToList();
 
+        if (availableSpells == null || availableSpells.Any() == false)
+            return;
 
-
-        Spell spell = actor.Unit.UseableSpells[State.Rand.Next(actor.Unit.UseableSpells.Count())];
+        Spell spell = availableSpells[State.Rand.Next(availableSpells.Count())];
 
         if ((spell == SpellList.Charm || spell == SpellList.HypnoGas) && TacticalUtilities.GetMindControlSide(actor.Unit) != -1) // Charmed units should not use charm. Trust me.
-            return;
-        if (spell.ManaCost > actor.Unit.Mana)
-            return;
-        if (spell == SpellList.Resurrection)
-            return;
-        if (spell == SpellList.Reanimate)
             return;
 
         if (State.GameManager.TacticalMode.IsOnlyOneSideVisible())
@@ -1279,23 +1430,6 @@ public abstract class TacticalAI : ITacticalAI
                     }
                 }
             }
-        }
-        if (spell == SpellList.Bind && actor.Unit.BoundUnit != null)
-            {
-                for (int i = 0; i < 4; i++)
-                {
-                    int x = State.Rand.Next(actor.Position.x - 2, actor.Position.x + 3);
-                    int y = State.Rand.Next(actor.Position.y - 2, actor.Position.y + 3);
-                    Vec2i loc = new Vec2i(x, y);
-                    if (TacticalUtilities.OpenTile(loc, null))
-                    {
-                        if (spell.TryCast(actor, loc))
-                        {
-                            didAction = true;
-                            return;
-                        }
-                    }
-                }
         }
         List<PotentialTarget> targets = GetListOfPotentialSpellTargets(actor, spell, actor.Position);
         if (!targets.Any())
@@ -1336,7 +1470,7 @@ public abstract class TacticalAI : ITacticalAI
         {
             if (spell is StatusSpell statusSpell && unit.Unit.GetStatusEffect(statusSpell.Type) != null)
                 continue; //Don't recast the same spell on the same unit
-            var binder = actors.Where(a => a.Unit.BoundUnit?.Unit == unit.Unit).FirstOrDefault();
+            Actor_Unit binder = null;
             if (TacticalUtilities.TreatAsHostile(actor, unit) && spell.AcceptibleTargets.Contains(AbilityTargets.Enemy))
             {
                 if (spell.AreaOfEffect > 0)
@@ -1360,7 +1494,7 @@ public abstract class TacticalAI : ITacticalAI
                         continue;
                     targets.Add(new PotentialTarget(unit, net, distance, 4, net * 1000 + chance));
                 }
-                if (unit.Targetable == true && unit.Surrendered == false && (spell == SpellList.Bind ? unit.Unit.Type == UnitType.Summon && binder?.Unit.GetApparentSide(actor.Unit) != actor.Unit.FixedSide && binder?.Unit.FixedSide != actor.Unit.FixedSide : true))
+                if (unit.Targetable == true && unit.Surrendered == false)
                 {
                     int distance = unit.Position.GetNumberOfMovesDistance(position);
                     float chance = unit.GetMagicChance(unit, spell);
@@ -1376,7 +1510,7 @@ public abstract class TacticalAI : ITacticalAI
                     if (actor.Unit.GetStatusEffect(statSpell.Type) != null)
                         continue;
                 }
-                if (unit.Targetable == true && unit.Surrendered == false && (spell == SpellList.Bind ? unit.Unit.Type == UnitType.Summon && binder?.Unit.GetApparentSide(actor.Unit) != actor.Unit.FixedSide && binder?.Unit.FixedSide != actor.Unit.FixedSide : true))
+                if (unit.Targetable == true && unit.Surrendered == false)
                 {
                     int distance = unit.Position.GetNumberOfMovesDistance(position);
                     float chance = unit.GetMagicChance(unit, spell);

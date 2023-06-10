@@ -549,8 +549,8 @@ public class HoveringTooltip : MonoBehaviour
             case RaceAI.ServantRace:
                 return "Acts Subservient towards units of the most powerful race on their side, flocking to rub those individuals.\n" +
                     "Racial superiority is based on eminence.";
-            case RaceAI.NonCombatant:
-                return "Won't use weapons or offensive spells, but supports combatants with beneficial spells and bodily services.";
+            //case RaceAI.NonCombatant:
+            //    return "Won't use weapons or offensive spells, but supports combatants with beneficial spells and bodily services.";
 
         }
         return "<b>This AI needs a tooltip!</b>";

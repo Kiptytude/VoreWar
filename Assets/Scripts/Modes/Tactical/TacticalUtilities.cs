@@ -764,6 +764,7 @@ static class TacticalUtilities
         if (target.Unit.Side != caster.Side) State.GameManager.TacticalMode.SwitchAlignment(target);
         if (!target.Unit.HasTrait(Traits.Untamable))
             target.Unit.FixedSide = caster.FixedSide;
+
         var actorCharm = caster.GetStatusEffect(StatusEffectType.Charmed) ?? caster.GetStatusEffect(StatusEffectType.Hypnotized);
         if (actorCharm != null)
         {
