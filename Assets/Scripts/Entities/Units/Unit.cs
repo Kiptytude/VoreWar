@@ -2184,4 +2184,18 @@ public class Unit
 
     }
 
+    internal Traits RandomizeOne(RandomizeList randomizeList)
+    {
+        if (State.Rand.NextDouble() < randomizeList.chance)
+        {
+            List<Traits> gainable = randomizeList.RandomTraits.Where(rt => !Tags.Contains(rt) && !PermanentTraits.Contains(rt)).ToList();
+            if (gainable.Count() > 0)
+            {
+                var randomPick = gainable[State.Rand.Next(gainable.Count())];
+                GivePrerequisiteTraits(randomPick, gainable);
+                return randomPick;
+            }
+        }
+        return (Traits)(-1);
+    }
 }

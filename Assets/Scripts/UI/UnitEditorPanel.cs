@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CruxClothing;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -58,7 +59,12 @@ public class UnitEditorPanel : CustomizerPanel
 
         traitDict = new Dictionary<Traits, int>();
         int val2 = 0;
-
+        foreach (RandomizeList rl in State.RandomizeLists)
+        {
+            traitDict[(Traits)rl.id] = val2;
+            val2++;
+            TraitDropdown.options.Add(new TMP_Dropdown.OptionData(rl.name.ToString()));
+        }
         foreach (Traits traitId in ((Traits[])Enum.GetValues(typeof(Traits))).OrderBy(s =>
        {
            return s >= Traits.LightningSpeed ? "ZZZ" + s.ToString() : s.ToString();
@@ -404,7 +410,22 @@ public class UnitEditorPanel : CustomizerPanel
     {
         if (UnitEditor.Unit == null)
             return;
-
+        if (State.RandomizeLists.Any(rl => rl.name == TraitDropdown.options[TraitDropdown.value].text))
+        {
+            RandomizeList randomizeList = State.RandomizeLists.Single(rl => rl.name == TraitDropdown.options[TraitDropdown.value].text);
+            var resTrait = UnitEditor.Unit.RandomizeOne(randomizeList);
+            if (resTrait != (Traits)(-1))
+            {
+                UnitEditor.AddTrait(resTrait);
+                if (resTrait == Traits.Resourceful)
+                {
+                    UnitEditor.Unit.SetMaxItems();
+                    PopulateItems();
+                }
+                UnitEditor.RefreshActor();
+                TraitList.text = UnitEditor.Unit.ListTraits();
+            }
+        }
         if (Enum.TryParse(TraitDropdown.options[TraitDropdown.value].text, out Traits trait))
         {
             UnitEditor.AddTrait(trait);
@@ -436,7 +457,25 @@ public class UnitEditorPanel : CustomizerPanel
     {
         if (UnitEditor.Unit == null)
             return;
+        foreach (RandomizeList rl in (State.RandomizeLists))
+        {
+            if (TraitsText.text.ToLower().Contains(rl.name.ToString().ToLower()))
+            {
+                var resTrait = UnitEditor.Unit.RandomizeOne(rl);
+                if(resTrait != (Traits)(-1))
+                {
+                    UnitEditor.AddTrait(resTrait);
+                    if (resTrait == Traits.Resourceful)
+                    {
+                        UnitEditor.Unit.SetMaxItems();
+                        PopulateItems();
+                    }
+                    UnitEditor.RefreshActor();
+                    TraitList.text = UnitEditor.Unit.ListTraits();
+                }
 
+            }
+        }
         foreach (Traits trait in (Stat[])Enum.GetValues(typeof(Traits)))
         {
             if (TraitsText.text.ToLower().Contains(trait.ToString().ToLower()))
