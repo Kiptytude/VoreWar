@@ -290,6 +290,13 @@ public enum Traits
     Reanimator = 146,
     /// <summary>Allows unit to either take control of any summon, or re-summon the most recently bound one once a battle.</summary>
     Binder = 147,
+    /// <summary>Unit generates with a random Tier 1 Book.</summary>
+    BookWormI = 148,
+    /// <summary>Unit generates with a random Tier 2 Book.</summary>
+    BookWormII = 149,
+    /// <summary>Unit generates with a random Tier 3-4 Book.</summary>
+    BookWormIII = 150,
+
 
 
     //Hidden Traits

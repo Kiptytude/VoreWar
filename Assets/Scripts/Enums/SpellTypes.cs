@@ -21,14 +21,13 @@
     Maw = 13,
     Charm = 14,
     Summon = 15,
-    Enlarge = 16,
+    Reanimate = 16,
+    Enlarge = 17,
 
     //Raze,
-    Diminishment = 17,
-    GateMaw = 18,
-    Reanimate = 19,
+    Diminishment = 18,
+    GateMaw = 19,
     Resurrection = 20,
-
 
 
     AlraunePuff = 70,

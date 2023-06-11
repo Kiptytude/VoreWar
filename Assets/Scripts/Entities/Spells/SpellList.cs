@@ -435,6 +435,40 @@ static class SpellList
         };
         SpellDict[SpellTypes.Summon] = Summon;
 
+
+        Reanimate = new Spell()
+        {
+            Name = "Reanimate",
+            Id = "Reanimate",
+            SpellType = SpellTypes.Reanimate,
+            Description = "Brings back any unit that died this battle as a summon under the caster's control",
+            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Tile },
+            Range = new Range(4),
+            Tier = 3,
+            Resistable = false,
+            OnExecuteTile = (a, loc) =>
+            {
+                var target = TacticalUtilities.FindUnitToReanimate(a);
+                if (target != null)
+                {
+                    if (TacticalUtilities.OpenTile(loc, null) && a.CastSpell(Reanimate, null))
+                    {
+                        if (State.GameManager.TacticalMode.IsPlayerInControl && State.GameManager.CurrentScene == State.GameManager.TacticalMode)
+                        {
+                            TacticalUtilities.CreateReanimationPanel(loc, a.Unit);
+                        }
+                        else
+                        {
+                            State.GameManager.SoundManager.PlaySpellCast(Summon, a);
+                            TacticalUtilities.Reanimate(loc, target, a.Unit);
+                        }
+                    }
+                }
+
+            },
+        };
+        SpellDict[SpellTypes.Reanimate] = Reanimate;
+
         Enlarge = new StatusSpell()
         {
             Name = "Enlarge",
@@ -491,38 +525,6 @@ static class SpellList
         };
         SpellDict[SpellTypes.GateMaw] = GateMaw;
 
-        Reanimate = new Spell()
-        {
-            Name = "Reanimate",
-            Id = "Reanimate",
-            SpellType = SpellTypes.Reanimate,
-            Description = "Brings back any unit that died this battle as a summon under the caster's control",
-            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Tile },
-            Range = new Range(4),
-            Tier = 4,
-            Resistable = false,
-            OnExecuteTile = (a, loc) =>
-            {
-                var target = TacticalUtilities.FindUnitToReanimate(a);
-                if (target != null)
-                {
-                    if (TacticalUtilities.OpenTile(loc, null) && a.CastSpell(Reanimate, null))
-                    {
-                        if (State.GameManager.TacticalMode.IsPlayerInControl && State.GameManager.CurrentScene == State.GameManager.TacticalMode)
-                        {
-                            TacticalUtilities.CreateReanimationPanel(loc, a.Unit);
-                        }
-                        else
-                        {
-                            State.GameManager.SoundManager.PlaySpellCast(Summon, a);
-                            TacticalUtilities.Reanimate(loc, target, a.Unit);
-                        }
-                    }
-                }
-
-            },
-        };
-        SpellDict[SpellTypes.Reanimate] = Reanimate;
 
         Resurrection = new Spell()
         {

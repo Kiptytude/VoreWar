@@ -417,7 +417,7 @@ public class UnitEditorPanel : CustomizerPanel
             if (resTrait != (Traits)(-1))
             {
                 UnitEditor.AddTrait(resTrait);
-                if (resTrait == Traits.Resourceful)
+                if (resTrait == Traits.Resourceful || resTrait == Traits.BookWormI || resTrait == Traits.BookWormII || resTrait == Traits.BookWormIII)
                 {
                     UnitEditor.Unit.SetMaxItems();
                     PopulateItems();
@@ -429,7 +429,7 @@ public class UnitEditorPanel : CustomizerPanel
         if (Enum.TryParse(TraitDropdown.options[TraitDropdown.value].text, out Traits trait))
         {
             UnitEditor.AddTrait(trait);
-            if (trait == Traits.Resourceful)
+            if (trait == Traits.Resourceful || trait == Traits.BookWormI || trait == Traits.BookWormII || trait == Traits.BookWormIII)
             {
                 UnitEditor.Unit.SetMaxItems();
                 PopulateItems();
@@ -465,7 +465,7 @@ public class UnitEditorPanel : CustomizerPanel
                 if(resTrait != (Traits)(-1))
                 {
                     UnitEditor.AddTrait(resTrait);
-                    if (resTrait == Traits.Resourceful)
+                    if (resTrait == Traits.Resourceful || resTrait == Traits.BookWormI || resTrait == Traits.BookWormII || resTrait == Traits.BookWormIII)
                     {
                         UnitEditor.Unit.SetMaxItems();
                         PopulateItems();
@@ -481,7 +481,7 @@ public class UnitEditorPanel : CustomizerPanel
             if (TraitsText.text.ToLower().Contains(trait.ToString().ToLower()))
             {
                 UnitEditor.AddTrait(trait);
-                if (trait == Traits.Resourceful)
+                if (trait == Traits.Resourceful || trait == Traits.BookWormI || trait == Traits.BookWormII || trait == Traits.BookWormIII)
                 {
                     UnitEditor.Unit.SetMaxItems();
                     PopulateItems();

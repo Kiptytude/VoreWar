@@ -513,7 +513,7 @@ public class HoveringTooltip : MonoBehaviour
             case Traits.Charmer:
                 return "Allows the casting of the Charm spell once per battle";
             case Traits.HypnoticGas:
-                return "Can emit Gas that turns foes into subservient non-combatants that are easy to vore and rub bellies. Units of the same race are unaffected.";
+                return "Can emit Gas that turns foes into subservient non-combatants that are easy to vore, use buff spells if they have any, and rub bellies. Units of identical alignment are unaffected.";
             case Traits.ForceFeeder:
                 return "Allows unit to attempt force-feeding itself to another unit at will.";
             case Traits.Corruption:
@@ -534,6 +534,12 @@ public class HoveringTooltip : MonoBehaviour
                 return "Allows unit to either take control of any summon, or re-summon the most recently bound one once a battle.";
             case Traits.Infiltrator:
                 return "Armies fully consisting of infiltrators are invisible to the enemy. Using 'Exchange' on an enemy village or a Mercenary camp will infiltrate it (For Player villages, infiltrating as a Mercenary will be preferred, otherwise as recruitables).\nWill also use conventional changes of allignment to go undercover\n(Hidden Trait)";
+            case Traits.BookWormI:
+                return "Unit generates with a random Tier 1 Book.";
+            case Traits.BookWormII:
+                return "Unit generates with a random Tier 2 Book.";
+            case Traits.BookWormIII:
+                return "Unit generates with a random Tier 3-4 Book.";
         }
         return "<b>This trait needs a tooltip!</b>";
     }

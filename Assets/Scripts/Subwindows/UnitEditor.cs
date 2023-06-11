@@ -259,7 +259,8 @@ class UnitEditor : UnitCustomizer
             Unit.Predator = false;
             actor.PredatorComponent?.FreeAnyAlivePrey();
         }
-
+        if (trait == Traits.BookWormI || trait == Traits.BookWormII || trait == Traits.BookWormIII)
+            Unit.GiveTraitBooks();
         actor.Unit.InitializeTraits();
         RefreshStats();
     }

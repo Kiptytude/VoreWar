@@ -115,8 +115,8 @@ public class NonCombatantTacticalAI : RaceServantTacticalAI
         {
             if (targets[0].distance <= spell.Range.Max)
             {
-                spell.TryCast(actor, targets[0].actor);
-                didAction = true;
+                if(spell.TryCast(actor, targets[0].actor))
+                    didAction = true;
                 return;
             }
             else

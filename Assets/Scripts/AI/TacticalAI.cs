@@ -1193,7 +1193,7 @@ public abstract class TacticalAI : ITacticalAI
     protected virtual void RunBind(Actor_Unit actor)
     {
         var spell = actor.Unit.UseableSpells.Find(s => s.SpellType == SpellTypes.Bind);
-        if (spell == null) return;
+        if (spell == null || actor.Unit.Mana < spell.ManaCost) return;
 
         if (!actors.Any(a => a.Unit.Type == UnitType.Summon) && actor.Unit.BoundUnit == null)
         {
@@ -1256,8 +1256,8 @@ public abstract class TacticalAI : ITacticalAI
         {
             if (targets[0].distance <= spell.Range.Max)
             {
-                spell.TryCast(actor, targets[0].actor);
-                didAction = true;
+                if (spell.TryCast(actor, targets[0].actor))
+                    didAction = true;
                 return;
             }
             else
@@ -1281,7 +1281,7 @@ public abstract class TacticalAI : ITacticalAI
     protected virtual int CheckBind(Actor_Unit actor, Vec2i position, int ap)
     {
         var spell = actor.Unit.UseableSpells.Find(s => s.SpellType == SpellTypes.Bind);
-        if (spell == null) return -1;
+        if (spell == null || actor.Unit.Mana < spell.ManaCost) return -1;
 
         if (!actors.Any(a => a.Unit.Type == UnitType.Summon) && actor.Unit.BoundUnit == null)
         {
@@ -1402,7 +1402,7 @@ public abstract class TacticalAI : ITacticalAI
     {
         if (actor.Unit.UseableSpells == null || actor.Unit.UseableSpells.Any() == false)
             return;
-        var availableSpells = actor.Unit.UseableSpells.Where(sp => sp != SpellList.Resurrection && sp != SpellList.Reanimate && sp != SpellList.Bind && sp.ManaCost <= actor.Unit.Mana).ToList();
+        var availableSpells = actor.Unit.UseableSpells.Where(sp => sp != SpellList.Resurrection && sp != SpellList.Reanimate && sp.ManaCost <= actor.Unit.Mana).ToList();
 
         if (availableSpells == null || availableSpells.Any() == false)
             return;
@@ -1439,8 +1439,8 @@ public abstract class TacticalAI : ITacticalAI
         {
             if (targets[0].distance <= spell.Range.Max)
             {
-                spell.TryCast(actor, targets[0].actor);
-                didAction = true;
+                if (spell.TryCast(actor, targets[0].actor));
+                    didAction = true;
                 return;
             }
             else
@@ -1470,7 +1470,6 @@ public abstract class TacticalAI : ITacticalAI
         {
             if (spell is StatusSpell statusSpell && unit.Unit.GetStatusEffect(statusSpell.Type) != null)
                 continue; //Don't recast the same spell on the same unit
-            Actor_Unit binder = null;
             if (TacticalUtilities.TreatAsHostile(actor, unit) && spell.AcceptibleTargets.Contains(AbilityTargets.Enemy))
             {
                 if (spell.AreaOfEffect > 0)
