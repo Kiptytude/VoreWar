@@ -623,7 +623,7 @@ static class StoredLogTexts
             targetRace: Race.Deer, priority: 9),
             new EventString((i) => $"<b>{i.Unit.Name}</b> always loved venison, and with <b>{i.Target.Name}</b> trapped in {GPPHis(i.Unit)} stomach, {GPPHeIs(i.Unit)} absolutely stuffed with it!",
             targetRace: Race.Deer, priority: 9),
-            new EventString((i) => $"<b>{i.Target.Name}</b> struggles hard against <b>{ApostrophizeWithOrWithoutS(i.Unit.Name)}</b> caustic stomach. The outline of cloven hooves press can be seen as {GPPHe(i.Target)} fight{SIfSingular(i.Unit)} to get free!",
+            new EventString((i) => $"<b>{i.Target.Name}</b> struggles hard against <b>{ApostrophizeWithOrWithoutS(i.Unit.Name)}</b> caustic stomach. The outline of cloven hooves press can be seen as {GPPHe(i.Target)} fight{SIfSingular(i.Target)} to get free!",
             targetRace: Race.Deer, priority: 9),
             new EventString((i) => $"<b>{i.Unit.Name}</b> is doing {GPPHis(i.Unit)} part in keeping the deer population down as <b>{i.Target.Name}</b> struggles to make it to another rutting season.",
             targetRace: Race.Deer, priority: 9),

@@ -776,7 +776,7 @@ static class SpellList
             Description = "Allows to either take control of any summon, or re-summon the most recently bound one by targeting an empty space.",
             AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy, AbilityTargets.Ally, AbilityTargets.Tile },
             Range = new Range(4),
-            Tier = 0,
+            Tier = 2,
             Resistable = false,
             OnExecute = (a, t) => a.CastBind(t),
             OnExecuteTile = (a, l) => a.SummonBound(l),
@@ -798,7 +798,7 @@ static class SpellList
                 if (a != t && a.CastSpell(ForceFeed, null))
                 {
                     float r = (float)State.Rand.NextDouble();
-                    if (t.Unit.Predator && (r < t.GetPureStatClashChance(a.Unit.GetStat(Stat.Dexterity), t.Unit.GetStat(Stat.Endurance), .1f)))
+                    if (t.Unit.Predator)
                     {
                         State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<b>{a.Unit.Name}</b> forces {LogUtilities.GPPHimself(a.Unit)} down <b>{LogUtilities.ApostrophizeWithOrWithoutS(t.Unit.Name)}</b> gullet.");
                         a.Movement = 0;
@@ -806,7 +806,7 @@ static class SpellList
                     }
                     else
                     {
-                        State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<b>{a.Unit.Name}</b> blocks <b>{LogUtilities.ApostrophizeWithOrWithoutS(a.Unit.Name)}</b> force feeding attempt.");
+                        State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<b>{a.Unit.Name}</b> couldn't force feed himself to <b>{t.Unit.Name}</b>, {LogUtilities.GPPHe(t.Unit)} {LogUtilities.IsAre(t.Unit)} prey through and through.");
                     }
                 }
 
