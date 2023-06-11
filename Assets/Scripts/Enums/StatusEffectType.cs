@@ -40,7 +40,9 @@
     Charmed = 18,
     /// <summary>Affected units are unable to do anything but servicing the caster's side, who can also swallow them as easily as surrendered units</summary>
     Hypnotized = 19,
-    /// <summary>Corruption buildup. Hidden to the afflicted and their allies. Once the buildup reaches the unit's stat total, it will gain the Corrupted trait and become controlled by the corruption's origin</summary>
+    /// <summary>Corruption buildup. Hidden to the afflicted and their allies. Once the buildup reaches the unit's stat total, it will gain the Corruption trait and become controlled by the corruption's origin</summary>
     Corruption = 20,
+    /// <summary>Unit wants to force-feed itself to the afflicting side</summary>
+    Temptation = 21,
 }
 

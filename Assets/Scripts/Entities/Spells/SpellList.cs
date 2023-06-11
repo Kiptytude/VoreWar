@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.Experimental.UIElements;
 
 public struct Range
 {
@@ -795,21 +796,7 @@ static class SpellList
             Resistable = true,
             OnExecute = (a, t) =>
             {
-                if (a != t && a.CastSpell(ForceFeed, null))
-                {
-                    float r = (float)State.Rand.NextDouble();
-                    if (t.Unit.Predator)
-                    {
-                        State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<b>{a.Unit.Name}</b> forces {LogUtilities.GPPHimself(a.Unit)} down <b>{LogUtilities.ApostrophizeWithOrWithoutS(t.Unit.Name)}</b> gullet.");
-                        a.Movement = 0;
-                        t.PredatorComponent.ForceConsume(a);
-                    }
-                    else
-                    {
-                        State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<b>{a.Unit.Name}</b> couldn't force feed himself to <b>{t.Unit.Name}</b>, {LogUtilities.GPPHe(t.Unit)} {LogUtilities.IsAre(t.Unit)} prey through and through.");
-                    }
-                }
-
+                TacticalUtilities.ForceFeed(a, t);
             },
         };
         SpellDict[SpellTypes.ForceFeed] = ForceFeed;

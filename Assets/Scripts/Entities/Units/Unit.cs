@@ -643,6 +643,7 @@ public class Unit
 
     internal void GiveTraitBooks()
     {
+        if (State.World?.ItemRepository == null) return;
         var tiers = new List<int>();
         if (HasTrait(Traits.BookWormI))
         {

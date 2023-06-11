@@ -187,8 +187,8 @@ public class HoveringTooltip : MonoBehaviour
                 case Stat.Endurance:
                     return $"Affects total health, also reduces damage from acid, has a minor role in escape chance.\n{StatData(Stat.Endurance)}";
                 case Stat.Stomach:
-                    return $"Affects stomach capacity and digestion rate.  Also helps keep prey from escaping.\n{StatData(Stat.Stomach)}\n" +
-                     State.World?.ItemRepository != null ? $"" :  $"{((bool)actor?.Unit.Predator && actor?.PredatorComponent != null ? $"Used Capacity: {Math.Round(actor.PredatorComponent.GetBulkOfPrey(), 2)}\n" : "")}Max Capacity: {Math.Round(State.RaceSettings.GetStomachSize(unit.Race) * (unit.GetStat(Stat.Stomach) / 12f * unit.TraitBoosts.CapacityMult), 1)}";
+                    return ($"Affects stomach capacity and digestion rate.  Also helps keep prey from escaping.\n{StatData(Stat.Stomach)}\n" +
+                     (State.World?.ItemRepository == null ? $"" :  $"{((bool)actor?.Unit.Predator && actor?.PredatorComponent != null ? $"Used Capacity: {Math.Round(actor.PredatorComponent.GetBulkOfPrey(), 2)}\n" : "")}Max Capacity: {Math.Round(State.RaceSettings.GetStomachSize(unit.Race) * (unit.GetStat(Stat.Stomach) / 12f * unit.TraitBoosts.CapacityMult), 1)}"));
                 case Stat.Leadership:
                     return $"Provides a stat boost for all friendly units\nStat value: {unit.GetStatBase(Stat.Leadership)}";
             }
@@ -540,6 +540,8 @@ public class HoveringTooltip : MonoBehaviour
                 return "Unit generates with a random Tier 2 Book.";
             case Traits.BookWormIII:
                 return "Unit generates with a random Tier 3-4 Book.";
+            case Traits.Temptation:
+                return "Units that are put under a mindcontrol (e.g. Charm, Hypnosis) effect by this unit want to force-feed themselves to it or its close allies.";
         }
         return "<b>This trait needs a tooltip!</b>";
     }

@@ -49,6 +49,11 @@ public class NonCombatantTacticalAI : RaceServantTacticalAI
             if (didAction) return;
         }
 
+        if (actor.Unit.GetStatusEffect(StatusEffectType.Temptation) != null && (State.Rand.Next(2) == 0 || actor.Unit.GetStatusEffect(StatusEffectType.Temptation).Duration <= 3))
+        {
+            RunForceFeed(actor);
+        }
+
         TryResurrect(actor);
 
         RunSpells(actor);

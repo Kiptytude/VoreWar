@@ -212,6 +212,11 @@ static class LogUtilities
         return friendlies[State.Rand.Next(friendlies.Length)].Unit;
     }
 
+    internal static bool ActorHumanoid(Unit s)
+    {
+        return s.Race < Race.Vagrants || s.Race >= Race.Selicia;
+    }
+
     internal static bool RomanticTarget(Unit unit, Unit target)
     {
         if (unit.GetGender() == Gender.Hermaphrodite || target.GetGender() == Gender.Hermaphrodite)

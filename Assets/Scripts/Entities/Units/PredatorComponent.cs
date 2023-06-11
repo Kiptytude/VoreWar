@@ -3116,24 +3116,77 @@ public class PredatorComponent
         }
     }
 
-    internal void ForceConsume(Actor_Unit target)
+    private void AddToBalls(Prey preyref, float v)
     {
-        if (target.Unit.IsDead == false)
+        balls.Add(preyref);
+        if (actor.UnitSprite != null)
+        {
+            actor.UnitSprite.UpdateSprites(actor, true);
+            actor.UnitSprite.AnimateBalls(1f);
+        }
+    }
+
+    internal void ForceConsume(Actor_Unit forcePrey, PreyLocation preyLocation)
+    {
+        if (forcePrey.Unit.IsDead == false)
             AlivePrey++;
         State.GameManager.TacticalMode.TacticalStats.RegisterVore(unit.Side);
 
-        if (target.Unit.Side == unit.Side)
+        if (forcePrey.Unit.Side == unit.Side)
             State.GameManager.TacticalMode.TacticalStats.RegisterAllyVore(unit.Side);
-        target.Visible = false;
-        target.Targetable = false;
+        forcePrey.Visible = false;
+        forcePrey.Targetable = false;
         State.GameManager.TacticalMode.DirtyPack = true;
-        if (!(target.Unit.FixedSide == unit.GetApparentSide(target.Unit)) || !unit.HasTrait(Traits.Endosoma))
+        if (!(forcePrey.Unit.FixedSide == unit.GetApparentSide(forcePrey.Unit)) || !unit.HasTrait(Traits.Endosoma))
         {
-            unit.GiveScaledExp(4 * target.Unit.ExpMultiplier, unit.Level - target.Unit.Level, true);
+            unit.GiveScaledExp(4 * forcePrey.Unit.ExpMultiplier, unit.Level - forcePrey.Unit.Level, true);
         }
-        target.Movement = 0;
-        Prey preyref = new Prey(target, actor, target.PredatorComponent?.prey);
+        forcePrey.Movement = 0;
+        Prey preyref = new Prey(forcePrey, actor, forcePrey.PredatorComponent?.prey);
         prey.Add(preyref);
+        switch (preyLocation)
+        {
+            case PreyLocation.womb:
+                State.GameManager.SoundManager.PlaySwallow(PreyLocation.womb, actor);
+                TacticalUtilities.Log.RegisterMiscellaneous($"<b>{forcePrey.Unit.Name}</b> pries apart <b>{LogUtilities.ApostrophizeWithOrWithoutS(unit.Name)}</b> vulva using {LogUtilities.GPPHis(forcePrey.Unit)} face, grabbing onto any bodypart {LogUtilities.GPPHe(forcePrey.Unit)} can find to slip {LogUtilities.GPPHimself(forcePrey.Unit)} all the way in, aided by the {LogUtilities.ApostrophizeWithOrWithoutS(LogUtilities.GetRaceDescSingl(unit))} contractions of sudden arousal.");
+                AddToWomb(preyref, 1f);
+                break;
+            case PreyLocation.balls:
+                State.GameManager.SoundManager.PlaySwallow(PreyLocation.balls, actor);
+                AddToBalls(preyref, 1f);
+                TacticalUtilities.Log.RegisterMiscellaneous($"<b>{forcePrey.Unit.Name}</b> sucks <b>{LogUtilities.ApostrophizeWithOrWithoutS(unit.Name)}</b> tip. As soon as {LogUtilities.GPPHe(forcePrey.Unit)} start{LogUtilities.SIfSingular(forcePrey.Unit)} sticking {LogUtilities.GPPHis(forcePrey.Unit)} tongue inside, however, it's more like the {LogUtilities.ApostrophizeWithOrWithoutS(InfoPanel.RaceSingular(unit))} throbbing member is doing the sucking, allowing <b>{forcePrey.Unit.Name}</b> to wiggle all the way into {LogUtilities.GPPHis(unit)} sack.");
+                break;
+            case PreyLocation.anal:
+                State.GameManager.SoundManager.PlaySwallow(PreyLocation.anal, actor);
+                TacticalUtilities.Log.RegisterMiscellaneous($"<b>{forcePrey.Unit.Name}</b> starts by shoving one {(LogUtilities.ActorHumanoid(forcePrey.Unit) ? "arm" : "forelimb")} up <b>{LogUtilities.ApostrophizeWithOrWithoutS(unit.Name)}</b> ass, then another. Inch by inch {LogUtilities.GPPHe(forcePrey.Unit)} vigorously squeez{LogUtilities.EsIfSingular(forcePrey.Unit)} {LogUtilities.GPPHimself(forcePrey.Unit)} into the anal depths.");
+                AddToStomach(preyref, 1f);
+                break;
+            case PreyLocation.breasts:
+                State.GameManager.SoundManager.PlaySwallow(PreyLocation.breasts, actor);
+                TacticalUtilities.Log.RegisterMiscellaneous($"In just a few deft movements, <b>{forcePrey.Unit.Name}</b> crams {LogUtilities.GPPHimself(forcePrey.Unit)} into <b>{LogUtilities.ApostrophizeWithOrWithoutS(unit.Name)}</b> tits.");
+                var data = Races.GetRace(unit.Race);
+                if (data.ExtendedBreastSprites)
+                {
+                    if (Config.FairyBVType == FairyBVType.Picked && State.GameManager.TacticalMode.IsPlayerInControl)
+                    {
+                        var box = State.GameManager.CreateDialogBox();
+                        box.SetData(() => { rightBreast.Add(preyref); UpdateFullness(); }, "Right", "Left", "Which breast should the prey be put in? (from your pov)", () => { leftBreast.Add(preyref); UpdateFullness(); });
+                        return;
+                    }
+                    if (LeftBreastFullness < RightBreastFullness || State.Rand.Next(2) == 0)
+                        leftBreast.Add(preyref);
+                    else
+                        rightBreast.Add(preyref);
+                }
+                else
+                    breasts.Add(preyref);
+                break;
+            default:
+                State.GameManager.SoundManager.PlaySwallow(PreyLocation.stomach, actor);
+                TacticalUtilities.Log.RegisterMiscellaneous($"At {LogUtilities.GPPHis(forcePrey.Unit)} first glimpse of the {(LogUtilities.ActorHumanoid(unit) ? "warrior's" : "beast's")} maw, <b>{forcePrey.Unit.Name}</b> dives right down {LogUtilities.GPPHis(unit)} gullet. One swallow reflex later, <b>{LogUtilities.ApostrophizeWithOrWithoutS(unit.Name)}</b> belly has been filled.");
+                AddToStomach(preyref, 1f);
+                break;
+        }
         UpdateFullness();
     }
 }

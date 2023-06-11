@@ -3,7 +3,6 @@ using OdinSerializer;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using static UnityEngine.UI.CanvasScaler;
 
 public class Actor_Unit
 {
@@ -1467,10 +1466,18 @@ public class Actor_Unit
             if (spell.Id == "charm")
             {
                 UnitSprite.DisplayCharm();
+                if (attacker.Unit.HasTrait(Traits.Temptation))
+                {
+                    Unit.ApplyStatusEffect(StatusEffectType.Temptation, spell.Effect(attacker, this), spell.Duration(attacker, this));
+                }
             }
             if (spell.Id == "hypno-fart")
             {
                 UnitSprite.DisplayHypno();
+                if (attacker.Unit.HasTrait(Traits.Temptation))
+                {
+                    Unit.ApplyStatusEffect(StatusEffectType.Temptation, spell.Effect(attacker, this), spell.Duration(attacker, this));
+                }
             }
             if (spell.Alraune)
             {
