@@ -544,7 +544,10 @@ public class Unit
         Unit pastLife = unit;
         Name = pastLife.Name;
         experience = pastLife.Experience;
-        AddTraits(pastLife.GetTraits);
+        foreach (Traits trait in pastLife.PermanentTraits)
+        {
+            AddPermanentTrait(trait);
+        }
         InnateSpells.AddRange(pastLife.InnateSpells);
         FixedSide = pastLife.FixedSide;
         hiddenFixedSide = true;
