@@ -2470,6 +2470,7 @@ public class Actor_Unit
             {
                 Unit.BoundUnit.Unit.ApplyStatusEffect(StatusEffectType.Charmed, actorCharm.Strength, actorCharm.Duration);
             }
+            StrategicUtilities.SpendLevelUps(Unit.BoundUnit.Unit);
             State.GameManager.TacticalMode.AddUnitToBattle(Unit.BoundUnit.Unit, l);
             State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<b>{Unit.Name}</b> re-summoned <b>{Unit.BoundUnit.Unit.Name}</b>.");
         }
