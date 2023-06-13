@@ -1497,7 +1497,8 @@ public class Unit
                 Tags.Remove(trait);
             }
         }
-        RandomizeTraits();
+        if (!State.TutorialMode)
+            RandomizeTraits();
         Tags = Tags.Distinct().ToList();
         if (Tags.Contains(Traits.Prey))
             Predator = false;
