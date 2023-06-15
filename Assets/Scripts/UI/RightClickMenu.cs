@@ -3,6 +3,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using static UnityEngine.UI.CanvasScaler;
 
 public class RightClickMenu : MonoBehaviour
 {
@@ -180,7 +181,7 @@ public class RightClickMenu : MonoBehaviour
         }
 
 
-        if ((target.Unit.GetApparentSide(actor.Unit) == actor.Unit.GetApparentSide() || target.Unit.GetApparentSide(actor.Unit) == actor.Unit.FixedSide))
+        if (TacticalUtilities.IsUnitControlledByPlayer(target.Unit) || target.Unit.Side == actor.Unit.Side)
         {
             foreach (Spell spell in actor.Unit.UseableSpells)
             {
@@ -237,7 +238,7 @@ public class RightClickMenu : MonoBehaviour
             DevourChance = devourChance
         };
         int damage = actor.WeaponDamageAgainstTarget(target, false);
-        if (!(target.Unit.GetApparentSide(actor.Unit) == actor.Unit.FixedSide && target.Unit.GetApparentSide(actor.Unit) == actor.Unit.GetApparentSide()))
+        if (!TacticalUtilities.IsUnitControlledByPlayer(target.Unit))
         {
             Buttons[currentButton].onClick.AddListener(() => State.GameManager.TacticalMode.MeleeAttack(actor, target));
             Buttons[currentButton].onClick.AddListener(FinishAction);

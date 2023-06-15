@@ -1859,7 +1859,7 @@ Turns: {currentTurn}
     {
         foreach (Actor_Unit target in units)
         {
-            if (target.Unit.GetApparentSide(actor.Unit) == actor.Unit.FixedSide && target.Unit.GetApparentSide(actor.Unit) == actor.Unit.GetApparentSide() && Config.AllowInfighting == false)
+            if (TacticalUtilities.IsUnitControlledByPlayer(target.Unit) && Config.AllowInfighting == false || actor == target)
                 continue;
             if (target.Targetable == false || target.Visible == false)
                 continue;
@@ -1901,7 +1901,7 @@ Turns: {currentTurn}
     {
         foreach (Actor_Unit target in units)
         {
-            if (target.Unit.GetApparentSide(actor.Unit) == actor.Unit.FixedSide && target.Unit.GetApparentSide(actor.Unit) == actor.Unit.GetApparentSide() && Config.AllowInfighting == false || actor == target)
+            if (TacticalUtilities.IsUnitControlledByPlayer(target.Unit) && Config.AllowInfighting == false || actor == target)
                 continue;
             if (target.Targetable == false || target.Visible == false)
                 continue;
@@ -1919,7 +1919,7 @@ Turns: {currentTurn}
     {
         foreach (Actor_Unit target in units)
         {
-            if (target.Unit.GetApparentSide(actor.Unit) == actor.Unit.FixedSide && target.Unit.GetApparentSide(actor.Unit) == actor.Unit.GetApparentSide() && Config.AllowInfighting == false || actor == target)
+            if (TacticalUtilities.IsUnitControlledByPlayer(target.Unit) && Config.AllowInfighting == false || actor == target)
                 continue;
             if (target.Targetable == false || target.Visible == false)
                 continue;
@@ -1937,9 +1937,9 @@ Turns: {currentTurn}
     {
         foreach (Actor_Unit target in units)
         {
-            if (CurrentSpell.AcceptibleTargets.Contains(AbilityTargets.Ally) == false && target.Unit.GetApparentSide(actor.Unit) == actor.Unit.FixedSide && target.Unit.GetApparentSide(actor.Unit) == actor.Unit.GetApparentSide() && Config.AllowInfighting == false)
+            if (CurrentSpell.AcceptibleTargets.Contains(AbilityTargets.Ally) == false && (TacticalUtilities.IsUnitControlledByPlayer(target.Unit)) && Config.AllowInfighting == false)
                 continue;
-            if (CurrentSpell.AcceptibleTargets.Contains(AbilityTargets.Enemy) == false && target.Unit.Side != actor.Unit.Side)
+            if (CurrentSpell.AcceptibleTargets.Contains(AbilityTargets.Enemy) == false && !(TacticalUtilities.IsUnitControlledByPlayer(target.Unit) || target.Unit.Side == actor.Unit.Side))
                 continue;
 
             if (target.Targetable == false || target.Visible == false)

@@ -199,6 +199,10 @@ public class Unit
     public string Name { get; set; }
     [OdinSerialize]
     public List<string> Pronouns;
+
+    [OdinSerialize]
+    public Action OnDiscard;
+
     public string GetPronoun(int num)
     {
         if (Pronouns == null)
@@ -533,7 +537,7 @@ public class Unit
                             reincarnator = re.Key;
                     });
                     if(reincarnator != null)
-                    Reincarnate(reincarnator);
+                        Reincarnate(reincarnator);
             }
             }
         }
@@ -553,6 +557,12 @@ public class Unit
         hiddenFixedSide = true;
         SavedCopy = pastLife.SavedCopy;
         SavedVillage = pastLife.SavedVillage;
+        State.World.Reincarnators.TryGetValue(pastLife, out Race race);
+        OnDiscard = () =>
+        {
+            State.World.Reincarnators.Add(pastLife, race);
+            Debug.Log(pastLife.Name + " is re-reincarnating");
+        };
         State.World.Reincarnators.Remove(pastLife);
     }
 

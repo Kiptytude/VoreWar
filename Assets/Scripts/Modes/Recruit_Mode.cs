@@ -4,6 +4,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEngine.UI.CanvasScaler;
 
 public class Recruit_Mode : SceneBase
 {
@@ -1271,6 +1272,21 @@ public class Recruit_Mode : SceneBase
                 empire.SpendGold(merc.Cost);
                 mercenaryHouse.Mercenaries.Remove(merc);
                 MercenaryHouse.UniqueMercs.Remove(merc);
+                if (merc.Unit.HasTrait(Traits.Infiltrator) && !merc.Unit.IsInfiltratingSide(village.Side))
+                {
+                    merc.Unit.OnDiscard = () =>
+                    {
+                        var closestFriendlyVillage = State.World.Villages.Where(s => s.Side == merc.Unit.Side).OrderBy(s => s.Position.GetNumberOfMovesDistance(mercenaryHouse.Position)).FirstOrDefault();
+                        if (closestFriendlyVillage == null)
+                            closestFriendlyVillage = State.World.Villages.Where(s => s.Empire.IsAlly(State.World.GetEmpireOfSide(merc.Unit.Side))).OrderBy(s => s.Position.GetNumberOfMovesDistance(mercenaryHouse.Position)).FirstOrDefault();
+                        if (closestFriendlyVillage != null)
+                        {
+                            StrategicUtilities.CreateInvisibleTravelingArmy(merc.Unit, closestFriendlyVillage, 1);
+                            village.VillagePopulation.AddHireable(merc.Unit);
+                            Debug.Log(merc.Unit.Name + " is returning to " + closestFriendlyVillage.Name);
+                        }
+                    };
+                }
                 Destroy(obj);
                 UpdateActorList();
                 UpdateMercenaryScreenText();
@@ -1283,6 +1299,14 @@ public class Recruit_Mode : SceneBase
     {
         if (village.HireSpecialUnit(empire, army, merc))
         {
+            if (merc.Unit.HasTrait(Traits.Infiltrator) && !merc.Unit.IsInfiltratingSide(village.Side))
+            {
+                merc.Unit.OnDiscard = () =>
+                {
+                    village.VillagePopulation.AddHireable(merc.Unit);
+                    Debug.Log(merc.Unit.Name + " is returning to " + village.Name);
+                };
+            }
             Destroy(obj);
             UpdateActorList();
             UpdateMercenaryScreenText();
@@ -1395,6 +1419,14 @@ public class Recruit_Mode : SceneBase
     {
         if (village.HireUnit(empire, army, unit))
         {
+            if (unit.HasTrait(Traits.Infiltrator) && !unit.IsInfiltratingSide(unit.Side))
+            {
+                unit.OnDiscard = () =>
+                {
+                    village.VillagePopulation.AddHireable(unit);
+                    Debug.Log(unit.Name + " is returning to " + village.Name);
+                };
+            }
             UpdateActorList();
             GenText();
         }
@@ -1668,6 +1700,14 @@ public class Recruit_Mode : SceneBase
             {
                 if (unit != null)
                 {
+                    if (unit.HasTrait(Traits.Infiltrator) && !unit.IsInfiltratingSide(unit.Side))
+                    {
+                        unit.OnDiscard = () =>
+                        {
+                            village.VillagePopulation.AddHireable(unit);
+                            Debug.Log(unit.Name + " is returning to " + village.Name);
+                        };
+                    }
                     unit = village.RecruitPlayerUnit(empire, army, race);
                 }
                 else
@@ -1678,8 +1718,17 @@ public class Recruit_Mode : SceneBase
         }
         else
         {
-            if (village.RecruitPlayerUnit(empire, army, race) != null)
+            Unit unit = village.RecruitPlayerUnit(empire, army, race);
+            if ( unit != null)
             {
+                if (unit.HasTrait(Traits.Infiltrator) && !unit.IsInfiltratingSide(unit.Side))
+                {
+                    unit.OnDiscard = () =>
+                    {
+                        village.VillagePopulation.AddHireable(unit);
+                        Debug.Log(unit.Name + " is returning to " + village.Name);
+                    };
+                }
                 UpdateActorList();
                 GenText();
             }

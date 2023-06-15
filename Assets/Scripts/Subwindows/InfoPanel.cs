@@ -546,7 +546,7 @@ public class InfoPanel
                 sb.AppendLine($"Digestions: {unit.DigestedUnits}");
             if (unit.TimesKilled > 0)
                 sb.AppendLine($"Deaths: {unit.TimesKilled}");
-            string traits = unit.ListTraits(!TacticalUtilities.IsUnitControlledByPlayer(unit));
+            string traits = unit.ListTraits(!(TacticalUtilities.IsUnitControlledByPlayer(unit) && !unit.IsInfiltratingSide(unit.Side)));
             if (traits != "")
                 sb.AppendLine("Traits:\n" + traits);
             StringBuilder sbSecond = new StringBuilder();
