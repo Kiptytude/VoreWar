@@ -1572,6 +1572,11 @@ public class Unit
             if (RaceParameters.GetRaceTraits(Race).AllowedVoreTypes.Contains(VoreType.Unbirth))
                 HasVagina = true;
         }
+        if (randomPick == Traits.HeavyPounce && gainable.Contains(Traits.Pounce))
+        {
+            PermanentTraits.Add(Traits.Pounce);
+            RemovedTraits?.Remove(Traits.Pounce);
+        }
     }
 
     public void SetSizeToDefault() => BreastSize = DefaultBreastSize;
