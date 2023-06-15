@@ -2246,6 +2246,7 @@ public class Unit
             }
         }
         return (Traits)(-1);
+    }
     public void Shrink()
     {
         if (HasTrait(Traits.Titanic) && HasTrait(Traits.Colossal) && HasTrait(Traits.Huge) && HasTrait(Traits.Large))
