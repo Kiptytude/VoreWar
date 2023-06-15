@@ -39,7 +39,7 @@ class DefectProcessor
 
     internal void AttackerDefectCheck(Actor_Unit actor, Race otherRace)
     {
-        if (actor.Unit.Race != otherRace || actor.Unit.ImmuneToDefections || actor.Unit.HasTrait(Traits.Camaraderie) || actor.Unit.IsInfiltratingSide(actor.Unit.Side) || actor.Unit.FixedSide != defender.Side)
+        if (actor.Unit.Race != otherRace || actor.Unit.ImmuneToDefections || actor.Unit.HasTrait(Traits.Camaraderie) || actor.Unit.IsInfiltratingSide(actor.Unit.Side) || actor.Unit.FixedSide != State.GameManager.TacticalMode.GetDefenderSide())
             return;
         if (actor.Unit.HasTrait(Traits.RaceLoyal) || State.Rand.NextDouble() < .15f - (.05f * (actor.Unit.GetStat(Stat.Will) - 10) / 10))
         {
@@ -62,7 +62,7 @@ class DefectProcessor
 
     internal void DefenderDefectCheck(Actor_Unit actor, Race otherRace)
     {
-        if (actor.Unit.Race != otherRace || actor.Unit.ImmuneToDefections || actor.Unit.HasTrait(Traits.Camaraderie) || actor.Unit.IsInfiltratingSide(actor.Unit.Side) || actor.Unit.FixedSide != attacker.Side)
+        if (actor.Unit.Race != otherRace || actor.Unit.ImmuneToDefections || actor.Unit.HasTrait(Traits.Camaraderie) || actor.Unit.IsInfiltratingSide(actor.Unit.Side) || actor.Unit.FixedSide != State.GameManager.TacticalMode.GetAttackerSide())
             return;
         if (actor.Unit.HasTrait(Traits.RaceLoyal) || State.Rand.NextDouble() < .15f - (.05f * (actor.Unit.GetStat(Stat.Will) - 10) / 10))
         {

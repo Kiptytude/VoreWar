@@ -220,10 +220,10 @@ public class Recruit_Mode : SceneBase
         ArmyUI.Shop.interactable = activatingEmpire < ActivatingEmpire.Observer && validUnit && unit != null && unit.FixedGear == false;
         var dismissText = ArmyUI.Dismiss.gameObject.GetComponentInChildren(typeof(Text)) as Text;
 
-        if (unit != null && unit.FixedSide == empire.Side && activatingEmpire > ActivatingEmpire.Ally)
+        if (unit != null && unit.FixedSide == empire.Side && unit.IsInfiltratingSide(unit.Side) && activatingEmpire > ActivatingEmpire.Ally)
         {
             dismissText.text = "Exfiltrate";
-            ArmyUI.Dismiss.interactable = true;
+            ArmyUI.Dismiss.interactable = State.GameManager.StrategyMode.IsPlayerTurn;
         }
         else
         {
@@ -1479,7 +1479,7 @@ public class Recruit_Mode : SceneBase
                     {
                         if (village.GetTotalPop() == 0)
                         {
-                            if (unit.Race >= Race.Selicia) // ??              ...Whatever, works fine
+                            if (unit.Race >= Race.Selicia)
                                 village.Race = State.World.GetEmpireOfSide(army.Side).ReplacedRace;
                             else
                                 village.Race = unit.Race;

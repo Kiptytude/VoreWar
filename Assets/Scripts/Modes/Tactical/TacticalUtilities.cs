@@ -2,7 +2,6 @@
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEngine.UI.CanvasScaler;
 
 static class TacticalUtilities
 {
@@ -511,7 +510,7 @@ static class TacticalUtilities
             return false;
         if (Units == null)
         {
-            Debug.Log("This shouldn't have happened");
+            Debug.Log("This shouldn'targetPred have happened");
             return false;
         }
         int count = 0;
@@ -778,7 +777,7 @@ static class TacticalUtilities
             target.UnitSprite.FlexibleSquare.gameObject.SetActive(true);
             target.UnitSprite.HealthBar.gameObject.SetActive(true);
         }
-        State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<b>{caster.Name}</b> brought back <b>{target.Unit.Name}</b> as a summon.");
+        State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<b>{caster.Name}</b> brought back <b>{target.Unit.Name}</b> as actor summon.");
     }
 
     static internal bool MeetsQualifier(List<AbilityTargets> targets, Actor_Unit actor, Actor_Unit target)
@@ -879,6 +878,37 @@ static class TacticalUtilities
         return false;
     }
 
+    internal static void ForceFeed(Actor_Unit actor, Actor_Unit targetPred)
+    {
+        float r = (float)State.Rand.NextDouble();
+        if (targetPred.Unit.Predator)
+        {
+            PreyLocation preyLocation = PreyLocation.stomach;
+            var possibilities = new Dictionary<string, PreyLocation>();
+            possibilities.Add("Maw", PreyLocation.stomach);
+            if (targetPred.Unit.CanAnalVore) possibilities.Add("Anus", PreyLocation.anal);
+            if (targetPred.Unit.CanBreastVore) possibilities.Add("Breast", PreyLocation.breasts);
+            if (targetPred.Unit.CanCockVore) possibilities.Add("Cock", PreyLocation.balls);
+            if (targetPred.Unit.CanUnbirth) possibilities.Add("Pussy", PreyLocation.womb);
 
+            if (State.GameManager.TacticalMode.IsPlayerInControl && State.GameManager.CurrentScene == State.GameManager.TacticalMode && possibilities.Count > 1)
+            {
+                var box = State.GameManager.CreateOptionsBox();
+                box.SetData($"Which way do you want to enter?", "Maw", () => targetPred.PredatorComponent.ForceConsume(actor, preyLocation), possibilities.Keys.ElementAtOrDefault(1), () => targetPred.PredatorComponent.ForceConsume(actor, possibilities.Values.ElementAtOrDefault(1)), possibilities.Keys.ElementAtOrDefault(2), () => targetPred.PredatorComponent.ForceConsume(actor, possibilities.Values.ElementAtOrDefault(2)), possibilities.Keys.ElementAtOrDefault(3), () => targetPred.PredatorComponent.ForceConsume(actor, possibilities.Values.ElementAtOrDefault(3)), possibilities.Keys.ElementAtOrDefault(4), () => targetPred.PredatorComponent.ForceConsume(actor, possibilities.Values.ElementAtOrDefault(4)));
+                actor.Movement = 0;
+            }
+            else
+            {
+                preyLocation = possibilities.Values.ToList()[State.Rand.Next(possibilities.Count)];
+                actor.Movement = 0;
+                targetPred.PredatorComponent.ForceConsume(actor, preyLocation);
+            }
+        }
+        else
+        {
+            State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<b>{actor.Unit.Name}</b> couldn't force feed {LogUtilities.GPPHimself(actor.Unit)} to <b>{targetPred.Unit.Name}</b>.");
+            actor.Movement = 0;
+        }
+    }
 }
 

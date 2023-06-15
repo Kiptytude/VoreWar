@@ -162,7 +162,7 @@ public class HoveringTooltip : MonoBehaviour
         return "";
     }
 
-    string GetDescription(string[] words, Unit unit, Actor_Unit actor)
+    string GetDescription(string[] words, Unit unit, Actor_Unit actor = null)
     {
         if (int.TryParse(words[2], out int temp))
         {
@@ -187,8 +187,8 @@ public class HoveringTooltip : MonoBehaviour
                 case Stat.Endurance:
                     return $"Affects total health, also reduces damage from acid, has a minor role in escape chance.\n{StatData(Stat.Endurance)}";
                 case Stat.Stomach:
-                    return $"Affects stomach capacity and digestion rate.  Also helps keep prey from escaping.\n{StatData(Stat.Stomach)}\n" +
-                     State.World?.ItemRepository != null ? $"" :  $"{((bool)actor?.Unit.Predator && actor?.PredatorComponent != null ? $"Used Capacity: {Math.Round(actor.PredatorComponent.GetBulkOfPrey(), 2)}\n" : "")}Max Capacity: {Math.Round(State.RaceSettings.GetStomachSize(unit.Race) * (unit.GetStat(Stat.Stomach) / 12f * unit.TraitBoosts.CapacityMult), 1)}";
+                    return ($"Affects stomach capacity and digestion rate.  Also helps keep prey from escaping.\n{StatData(Stat.Stomach)}\n" +
+                     (State.World?.ItemRepository == null ? $"" :  $"{((!unit.Predator || actor?.PredatorComponent == null) ?  "" : ($"Used Capacity: {Math.Round(actor.PredatorComponent.GetBulkOfPrey(), 2)}\n"))}Max Capacity: {Math.Round(State.RaceSettings.GetStomachSize(unit.Race) * (unit.GetStat(Stat.Stomach) / 12f * unit.TraitBoosts.CapacityMult), 1)}"));
                 case Stat.Leadership:
                     return $"Provides a stat boost for all friendly units\nStat value: {unit.GetStatBase(Stat.Leadership)}";
             }
@@ -513,7 +513,7 @@ public class HoveringTooltip : MonoBehaviour
             case Traits.Charmer:
                 return "Allows the casting of the Charm spell once per battle";
             case Traits.HypnoticGas:
-                return "Can emit Gas that turns foes into subservient non-combatants that are easy to vore and rub bellies. Units of the same race are unaffected.";
+                return "Can emit Gas that turns foes into subservient non-combatants that are easy to vore, use buff spells if they have any, and rub bellies. Units of identical alignment are unaffected.";
             case Traits.ForceFeeder:
                 return "Allows unit to attempt force-feeding itself to another unit at will.";
             case Traits.Corruption:
@@ -534,6 +534,14 @@ public class HoveringTooltip : MonoBehaviour
                 return "Allows unit to either take control of any summon, or re-summon the most recently bound one once a battle.";
             case Traits.Infiltrator:
                 return "Armies fully consisting of infiltrators are invisible to the enemy. Using 'Exchange' on an enemy village or a Mercenary camp will infiltrate it (For Player villages, infiltrating as a Mercenary will be preferred, otherwise as recruitables).\nWill also use conventional changes of allignment to go undercover\n(Hidden Trait)";
+            case Traits.BookWormI:
+                return "Unit generates with a random Tier 1 Book.";
+            case Traits.BookWormII:
+                return "Unit generates with a random Tier 2 Book.";
+            case Traits.BookWormIII:
+                return "Unit generates with a random Tier 3-4 Book.";
+            case Traits.Temptation:
+                return "Units that are put under a mindcontrol (e.g. Charm, Hypnosis) effect by this unit want to force-feed themselves to it or its close allies.";
         }
         return "<b>This trait needs a tooltip!</b>";
     }

@@ -290,6 +290,15 @@ public enum Traits
     Reanimator = 146,
     /// <summary>Allows unit to either take control of any summon, or re-summon the most recently bound one once a battle.</summary>
     Binder = 147,
+    /// <summary>Unit generates with a random Tier 1 Book.</summary>
+    BookWormI = 148,
+    /// <summary>Unit generates with a random Tier 2 Book.</summary>
+    BookWormII = 149,
+    /// <summary>Unit generates with a random Tier 3-4 Book.</summary>
+    BookWormIII = 150,
+    /// <summary>Units that are put under a mindcontrol (e.g. Charm, Hypnosis) effect by this unit want to force-feed themselves to it or its close allies.</summary>
+    Temptation = 151,
+
 
 
     //Hidden Traits
@@ -304,11 +313,11 @@ public enum Traits
 
     //Hidden Cheat Traits
     /// <summary>If a currupted unit is digested, the pred will build up corruption as a hidden status. Once corrupted prey with a stat total equal to that of the pred has been digested, they are under control of the side of the last-digested corrupted.</summary>
-    Corruption = 291,
+    Corruption = 350,
     /// <summary>Soon after this unit dies, one of the new Units that come into being will be a reincarnation of them. The reincarnation will also have this trait.</summary>
-    InfiniteReincarnation = 292,
+    InfiniteReincarnation = 351,
     /// <summary>Soon after this unit is digested, one of the new Units that come into being as the pred's race will be a reincarnation of them. The reincarnation will also have this trait.</summary>
-    InfiniteTransmigration = 293,
+    InfiniteTransmigration = 352,
 
     /// <summary>Unit can only cock vore or unbirth pery if the prey is 1/3 the size of this unit, but Diminishment does not fade while prey is inside this unit's cock or womb.</summary>
     TightNethers,
@@ -350,7 +359,7 @@ public enum Traits
     /// <summary>Cheat Trait: Unit gains random trait from prey upon absorption.</summary>
     InfiniteAssimilation = 258,
     /// <summary>Cheat Trait: Unit grants random trait from prey to unit's race upon absorption.</summary>
-    SynchronizedEvolution = 276,
+    SynchronizedEvolution = 294,
     /// <summary>Cheat Trait: Unit has 50% chance to convert digested prey to its side.</summary>
     DigestionConversion = 259,
     /// <summary>Cheat Trait: Unit has 50% chance to rebirth digested prey to its race and side.</summary>
@@ -368,7 +377,7 @@ public enum Traits
     /// <summary>When this unit rubs the belly of a foe that has not been attacked in the last two turns, there is a chance for that foe to be stunned or switch sides.</summary>
     SeductiveTouch = 266,
     /// <summary>Can emit Gas that turns foes into subservient non-combatants once per battle.</summary>
-    HypnoticGas = 277,
+    HypnoticGas = 295,
 
     // Growth-related section
     /// <summary>Unit increases in size when absorbing prey.</summary>

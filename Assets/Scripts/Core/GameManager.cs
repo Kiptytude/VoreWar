@@ -42,6 +42,7 @@ public class GameManager : MonoBehaviour
 
     public GameObject SavePrompt;
     public GameObject DialogBoxPrefab;
+    public GameObject OptionsBoxPrefab;
     public GameObject MessageBoxPrefab;
     public GameObject InputBoxPrefab;
     public GameObject FullScreenMessageBoxPrefab;
@@ -157,6 +158,11 @@ public class GameManager : MonoBehaviour
     public DialogBox CreateDialogBox()
     {
         return Instantiate(DialogBoxPrefab).GetComponent<DialogBox>();
+    }
+
+    public OptionsBox CreateOptionsBox()
+    {
+        return Instantiate(OptionsBoxPrefab).GetComponent<OptionsBox>();
     }
 
     public void CreateMessageBox(string text, int timedLife = 0)

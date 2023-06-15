@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.Experimental.UIElements;
 
 public struct Range
 {
@@ -435,6 +436,40 @@ static class SpellList
         };
         SpellDict[SpellTypes.Summon] = Summon;
 
+
+        Reanimate = new Spell()
+        {
+            Name = "Reanimate",
+            Id = "Reanimate",
+            SpellType = SpellTypes.Reanimate,
+            Description = "Brings back any unit that died this battle as a summon under the caster's control",
+            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Tile },
+            Range = new Range(4),
+            Tier = 3,
+            Resistable = false,
+            OnExecuteTile = (a, loc) =>
+            {
+                var target = TacticalUtilities.FindUnitToReanimate(a);
+                if (target != null)
+                {
+                    if (TacticalUtilities.OpenTile(loc, null) && a.CastSpell(Reanimate, null))
+                    {
+                        if (State.GameManager.TacticalMode.IsPlayerInControl && State.GameManager.CurrentScene == State.GameManager.TacticalMode)
+                        {
+                            TacticalUtilities.CreateReanimationPanel(loc, a.Unit);
+                        }
+                        else
+                        {
+                            State.GameManager.SoundManager.PlaySpellCast(Summon, a);
+                            TacticalUtilities.Reanimate(loc, target, a.Unit);
+                        }
+                    }
+                }
+
+            },
+        };
+        SpellDict[SpellTypes.Reanimate] = Reanimate;
+
         Enlarge = new StatusSpell()
         {
             Name = "Enlarge",
@@ -491,38 +526,6 @@ static class SpellList
         };
         SpellDict[SpellTypes.GateMaw] = GateMaw;
 
-        Reanimate = new Spell()
-        {
-            Name = "Reanimate",
-            Id = "Reanimate",
-            SpellType = SpellTypes.Reanimate,
-            Description = "Brings back any unit that died this battle as a summon under the caster's control",
-            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Tile },
-            Range = new Range(4),
-            Tier = 4,
-            Resistable = false,
-            OnExecuteTile = (a, loc) =>
-            {
-                var target = TacticalUtilities.FindUnitToReanimate(a);
-                if (target != null)
-                {
-                    if (TacticalUtilities.OpenTile(loc, null) && a.CastSpell(Reanimate, null))
-                    {
-                        if (State.GameManager.TacticalMode.IsPlayerInControl && State.GameManager.CurrentScene == State.GameManager.TacticalMode)
-                        {
-                            TacticalUtilities.CreateReanimationPanel(loc, a.Unit);
-                        }
-                        else
-                        {
-                            State.GameManager.SoundManager.PlaySpellCast(Summon, a);
-                            TacticalUtilities.Reanimate(loc, target, a.Unit);
-                        }
-                    }
-                }
-
-            },
-        };
-        SpellDict[SpellTypes.Reanimate] = Reanimate;
 
         Resurrection = new Spell()
         {
@@ -722,7 +725,7 @@ static class SpellList
             Name = "Hypnotic Gas",
             Id = "hypno-fart",
             SpellType = SpellTypes.HypnoGas,
-            Description = "Applies Hypnotized in a 4x4 area centered on the caster. Hypnotized units become noncombatants that serve the caster's side.",
+            Description = "Applies Hypnotized in a 4x4 area near on the caster. Hypnotized units become noncombatants that serve the caster's side.",
             AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Tile, AbilityTargets.Enemy },
             Range = new Range(1),
             Duration = (a, t) => 5,
@@ -774,7 +777,7 @@ static class SpellList
             Description = "Allows to either take control of any summon, or re-summon the most recently bound one by targeting an empty space.",
             AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy, AbilityTargets.Ally, AbilityTargets.Tile },
             Range = new Range(4),
-            Tier = 0,
+            Tier = 2,
             Resistable = false,
             OnExecute = (a, t) => a.CastBind(t),
             OnExecuteTile = (a, l) => a.SummonBound(l),
@@ -793,21 +796,7 @@ static class SpellList
             Resistable = true,
             OnExecute = (a, t) =>
             {
-                if (a != t && a.CastSpell(ForceFeed, null))
-                {
-                    float r = (float)State.Rand.NextDouble();
-                    if (t.Unit.Predator && (r < t.GetPureStatClashChance(a.Unit.GetStat(Stat.Dexterity), t.Unit.GetStat(Stat.Endurance), .1f)))
-                    {
-                        State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<b>{a.Unit.Name}</b> forces {LogUtilities.GPPHimself(a.Unit)} down <b>{LogUtilities.ApostrophizeWithOrWithoutS(t.Unit.Name)}</b> gullet.");
-                        a.Movement = 0;
-                        t.PredatorComponent.ForceConsume(a);
-                    }
-                    else
-                    {
-                        State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<b>{a.Unit.Name}</b> blocks <b>{LogUtilities.ApostrophizeWithOrWithoutS(a.Unit.Name)}</b> force feeding attempt.");
-                    }
-                }
-
+                TacticalUtilities.ForceFeed(a, t);
             },
         };
         SpellDict[SpellTypes.ForceFeed] = ForceFeed;

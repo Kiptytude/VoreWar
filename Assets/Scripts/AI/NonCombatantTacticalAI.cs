@@ -49,6 +49,11 @@ public class NonCombatantTacticalAI : RaceServantTacticalAI
             if (didAction) return;
         }
 
+        if (actor.Unit.GetStatusEffect(StatusEffectType.Temptation) != null && (State.Rand.Next(2) == 0 || actor.Unit.GetStatusEffect(StatusEffectType.Temptation).Duration <= 3))
+        {
+            RunForceFeed(actor);
+        }
+
         TryResurrect(actor);
 
         RunSpells(actor);
@@ -115,8 +120,8 @@ public class NonCombatantTacticalAI : RaceServantTacticalAI
         {
             if (targets[0].distance <= spell.Range.Max)
             {
-                spell.TryCast(actor, targets[0].actor);
-                didAction = true;
+                if(spell.TryCast(actor, targets[0].actor))
+                    didAction = true;
                 return;
             }
             else

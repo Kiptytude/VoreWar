@@ -62,6 +62,10 @@ public class HedonistTacticalAI : TacticalAI
             if (didAction) return;
         }
 
+        if (actor.Unit.GetStatusEffect(StatusEffectType.Temptation) != null && (State.Rand.Next(2) == 0 || actor.Unit.GetStatusEffect(StatusEffectType.Temptation).Duration <= 2))
+        {
+            RunForceFeed(actor);
+        }
 
         if (actor.Unit.HasTrait(Traits.Pounce) && actor.Movement >= 2)
         {

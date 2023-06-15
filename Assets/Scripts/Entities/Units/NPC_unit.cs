@@ -32,6 +32,7 @@ public class NPC_unit : Unit
             SetExp(GetExperienceRequiredForLevel(level - 1));
         }
         RestoreManaPct(1);
+        GiveTraitBooks();
     }
 
     private void GenMonster(int desiredLevels)

@@ -3600,8 +3600,8 @@ Turns: {currentTurn}
         {
             foreach (Actor_Unit actor in units)
             {
-                if (!actor.Unit.IsDead && actor.TurnsSinceLastDamage < 2) return false;
-                if (!actor.Unit.IsDead && !actor.Unit.hiddenFixedSide && units.Any(u => !u.Unit.IsDead && TacticalUtilities.TreatAsHostile(actor, u))) return false;
+                if (actor.Targetable && actor.Visible && !actor.Fled && !actor.Surrendered && actor.TurnsSinceLastDamage < 2) return false;
+                if (actor.Targetable && actor.Visible && !actor.Fled && !actor.Surrendered && !actor.Unit.hiddenFixedSide && units.Any(u => u.Targetable && !u.Fled && u.Visible && TacticalUtilities.TreatAsHostile(actor, u))) return false;
                 if (actor.Unit.Predator == false)
                     continue;
                 foreach (var prey in actor.PredatorComponent.GetDirectPrey().Where(s => s.Unit.HasTrait(Traits.TheGreatEscape)).ToList())

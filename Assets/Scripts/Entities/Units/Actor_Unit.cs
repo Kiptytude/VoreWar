@@ -3,7 +3,6 @@ using OdinSerializer;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using static UnityEngine.UI.CanvasScaler;
 
 public class Actor_Unit
 {
@@ -1467,10 +1466,18 @@ public class Actor_Unit
             if (spell.Id == "charm")
             {
                 UnitSprite.DisplayCharm();
+                if (attacker.Unit.HasTrait(Traits.Temptation))
+                {
+                    Unit.ApplyStatusEffect(StatusEffectType.Temptation, spell.Effect(attacker, this), spell.Duration(attacker, this));
+                }
             }
             if (spell.Id == "hypno-fart")
             {
                 UnitSprite.DisplayHypno();
+                if (attacker.Unit.HasTrait(Traits.Temptation))
+                {
+                    Unit.ApplyStatusEffect(StatusEffectType.Temptation, spell.Effect(attacker, this), spell.Duration(attacker, this));
+                }
             }
             if (spell.Alraune)
             {
@@ -2325,7 +2332,6 @@ public class Actor_Unit
            if (binder.Unit.GetStat(Stat.Mind) > Unit.GetStat(Stat.Mind))
             {
                 State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<b>{Unit.Name}</b> tries to bind <b>{LogUtilities.ApostrophizeWithOrWithoutS(binder.Unit.Name)}</b> bound summon, <b>{t.Unit.Name}</b>, but <b>{LogUtilities.ApostrophizeWithOrWithoutS(binder.Unit.Name)}</b> magic is stronger");
-                return false;
             } else if (binder.Unit.GetStat(Stat.Mind) < Unit.GetStat(Stat.Mind))
             {
                 State.GameManager.SoundManager.PlaySpellCast(spell, this);
@@ -2345,31 +2351,68 @@ public class Actor_Unit
             }
             else
             {
-                State.GameManager.SoundManager.PlayMisc("unbound", this);
-                State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<b>{Unit.Name}</b> and <b>{binder.Unit.Name}</b> both exert their magic for control over the summoned <b>{t.Unit.Name}</b>, but they are evenly matched! Suddenly there is a flash of light and both casters stagger for a moment. What happened?");
-                t.Unit.Type = UnitType.Adventurer;
-                binder.Unit.BoundUnit = null;
-                t.Unit.Name += " The Unbound";
-                t.Unit.AddPermanentTrait(Traits.PeakCondition);
-                int unusedSide = 703;
-                while (State.World.AllActiveEmpires?.Any(emp => emp.Side == unusedSide) ?? false)
+                int outcome = State.Rand.Next(4);
+                State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<b>{Unit.Name}</b> and <b>{binder.Unit.Name}</b> both exert their magic for control over the summoned <b>{t.Unit.Name}</b>, but they are evenly matched! The energy crackles...");
+                if (outcome == 3)
                 {
-                    unusedSide++;
+                    State.GameManager.SoundManager.PlayMisc("unbound", this);
+                    var obj = Object.Instantiate(State.GameManager.TacticalEffectPrefabList.ShunGokuSatsu);
+                    obj.transform.SetPositionAndRotation(new Vector3(t.Position.x, t.Position.y), new Quaternion());
+                    State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"Suddenly, there is a flash of light and both casters stagger for a moment. What happened?.");
+                    t.Unit.Type = UnitType.Adventurer;
+                    binder.Unit.BoundUnit = null;
+                    t.Unit.Name += " The Unbound";
+                    t.Unit.AddPermanentTrait(Traits.PeakCondition);
+                    int unusedSide = 703;
+                    while (State.World.AllActiveEmpires?.Any(emp => emp.Side == unusedSide) ?? false)
+                    {
+                        unusedSide++;
+                    }
+                    t.Unit.FixedSide = unusedSide;
+                    State.GameManager.TacticalMode.SwitchAlignment(t);
+                    t.Unit.AddPermanentTrait(Traits.Untamable);
+                    t.Unit.AddPermanentTrait(Traits.Large);
+                    t.Unit.GiveRawExp((int)(binder.Unit.Experience * 0.50 + Unit.Experience * 0.50));
+                    StrategicUtilities.SpendLevelUps(t.Unit);
+                    t.Unit.Health = t.Unit.MaxHealth;
+                    t.Unit.RestoreMana(t.Unit.MaxMana);
+                    if (binder.sidesAttackedThisBattle == null) binder.sidesAttackedThisBattle = new List<int>();
+                    binder.sidesAttackedThisBattle.Add(unusedSide);
+                    if (this.sidesAttackedThisBattle == null) this.sidesAttackedThisBattle = new List<int>();
+                    this.sidesAttackedThisBattle.Add(unusedSide);
+                } else if (outcome == 2)
+                {
+                    State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"...But it looks like the Binding spell worked after all.");
+                    State.GameManager.SoundManager.PlaySpellCast(spell, this);
+                    binder.Unit.BoundUnit = null;
+                    Unit.BoundUnit = t;
+
+                    if (t.Unit.Side != Unit.Side) State.GameManager.TacticalMode.SwitchAlignment(t);
+                    if (!t.Unit.HasTrait(Traits.Untamable))
+                        t.Unit.FixedSide = Unit.FixedSide;
+                    t.Movement = t.CurrentMaxMovement();
+                    var actorCharm = Unit.GetStatusEffect(StatusEffectType.Charmed) ?? Unit.GetStatusEffect(StatusEffectType.Hypnotized);
+                    if (actorCharm != null)
+                    {
+                        t.Unit.ApplyStatusEffect(StatusEffectType.Charmed, actorCharm.Strength, actorCharm.Duration);
+                    }
+                } else if (outcome == 1)
+                {
+                    State.GameManager.SoundManager.PlaySpellCast(spell, this);
+                    State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"...But it looks nothing's changed...");
+                } else if (outcome == 0)
+                {
+                    State.GameManager.SoundManager.PlayMisc("unbound", this);
+                    var obj = Object.Instantiate(State.GameManager.TacticalEffectPrefabList.ShunGokuSatsu);
+                    obj.transform.SetPositionAndRotation(new Vector3(t.Position.x, t.Position.y), new Quaternion());
+                    State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"Suddenly, there is a flash of light and both casters stagger for a moment. What happened?.");
+                    t.Unit.Type = UnitType.Adventurer;
+                    t.Surrendered = true;
+                    t.Damage(9999999, true, true);
+                    t.Visible = false;
+                    t.Unit.Name += " The Banished";
                 }
-                t.Unit.FixedSide = unusedSide;
-                State.GameManager.TacticalMode.SwitchAlignment(t);
-                t.Unit.AddPermanentTrait(Traits.Untamable);
-                t.Unit.AddPermanentTrait(Traits.Large);
-                t.Unit.GiveRawExp((int)(binder.Unit.Experience * 0.50 + Unit.Experience * 0.50));
-                StrategicUtilities.SpendLevelUps(t.Unit);
-                t.Unit.Health = t.Unit.MaxHealth;
-                t.Unit.RestoreMana(t.Unit.MaxMana);
-                if (binder.sidesAttackedThisBattle == null) binder.sidesAttackedThisBattle = new List<int>();
-                binder.sidesAttackedThisBattle.Add(unusedSide);
-                if (this.sidesAttackedThisBattle == null) this.sidesAttackedThisBattle = new List<int>();
-                this.sidesAttackedThisBattle.Add(unusedSide);
-                var obj = Object.Instantiate(State.GameManager.TacticalEffectPrefabList.ShunGokuSatsu);
-                obj.transform.SetPositionAndRotation(new Vector3(t.Position.x, t.Position.y), new Quaternion());
+
             }
         } else
         {
@@ -2427,6 +2470,7 @@ public class Actor_Unit
             {
                 Unit.BoundUnit.Unit.ApplyStatusEffect(StatusEffectType.Charmed, actorCharm.Strength, actorCharm.Duration);
             }
+            StrategicUtilities.SpendLevelUps(Unit.BoundUnit.Unit);
             State.GameManager.TacticalMode.AddUnitToBattle(Unit.BoundUnit.Unit, l);
             State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<b>{Unit.Name}</b> re-summoned <b>{Unit.BoundUnit.Unit.Name}</b>.");
         }

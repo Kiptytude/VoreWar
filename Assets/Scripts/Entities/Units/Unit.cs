@@ -544,7 +544,10 @@ public class Unit
         Unit pastLife = unit;
         Name = pastLife.Name;
         experience = pastLife.Experience;
-        AddTraits(pastLife.GetTraits);
+        foreach (Traits trait in pastLife.PermanentTraits)
+        {
+            AddPermanentTrait(trait);
+        }
         InnateSpells.AddRange(pastLife.InnateSpells);
         FixedSide = pastLife.FixedSide;
         hiddenFixedSide = true;
@@ -632,9 +635,52 @@ public class Unit
                             if (weapon.Damage > 4)
                                 Items[i] = State.World.ItemRepository.GetItem(ItemType.Axe);
                             else
-                                Items[i] = State.World.ItemRepository.GetItem(ItemType.Bow);
+                                Items[i] = State.World.ItemRepository.GetItem(ItemType.Mace);
                         }
                     }
+                }
+            }
+            GiveTraitBooks();
+        }
+    }
+
+    internal void GiveTraitBooks()
+    {
+        if (State.World?.ItemRepository == null) return;
+        var tiers = new List<int>();
+        if (HasTrait(Traits.BookWormI))
+        {
+            tiers.Add(1);
+        }
+        if (HasTrait(Traits.BookWormII))
+        {
+            tiers.Add(2);
+        }
+        if (HasTrait(Traits.BookWormIII))
+        {
+            tiers.Add(3);
+        }
+        for (int i = 0; i < Items.Length; i++)
+        {
+            if (Items[i] != null && Items[i] is SpellBook)
+            {
+                if(((SpellBook)Items[i]).Tier == 4)
+                        tiers.Remove(3);
+                tiers.Remove(((SpellBook)Items[i]).Tier);
+            }
+        }
+
+        for (int i = 0; i < Items.Length; i++)
+        {
+            if (tiers.Count > 0)
+            {
+                if (Items[i] == null)
+                {
+                    int t = tiers.Count > 1 ? tiers[State.Rand.Next(tiers.Count - 1)] : tiers[0];
+                    Items[i] = State.World.ItemRepository.GetRandomBook(t, t == 3 ? 4 : t, true);
+                    if (t == 4)
+                        tiers.Remove(3);
+                    tiers.Remove(t);
                 }
             }
         }
@@ -1451,7 +1497,8 @@ public class Unit
                 Tags.Remove(trait);
             }
         }
-        RandomizeTraits();
+        if (!State.TutorialMode)
+            RandomizeTraits();
         Tags = Tags.Distinct().ToList();
         if (Tags.Contains(Traits.Prey))
             Predator = false;
