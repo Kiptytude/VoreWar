@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 
@@ -558,7 +555,7 @@ class Panthers : BlankSlate
     {
         if (actor.Unit.HasDick == false)
             return null;
-        if (actor.PredatorComponent == null)
+        if (actor.Unit.Predator == false)
             return SpritesVore[107 + actor.Unit.BallsSize];
 
         int size = actor.GetBallSize(31, .8f);

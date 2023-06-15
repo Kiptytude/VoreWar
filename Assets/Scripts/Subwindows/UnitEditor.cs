@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 
 class UnitEditor : UnitCustomizer
 {
@@ -262,7 +258,6 @@ class UnitEditor : UnitCustomizer
         {
             Unit.Predator = false;
             actor.PredatorComponent?.FreeAnyAlivePrey();
-            actor.PredatorComponent = null;
         }
 
         actor.Unit.InitializeTraits();

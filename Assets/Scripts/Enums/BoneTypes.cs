@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-public enum BoneTypes
+﻿public enum BoneTypes
 {
     GenericBonePile,
     SlimePile,
@@ -12,7 +6,7 @@ public enum BoneTypes
     DisposedCondom,
     CumPuddle,
     CrypterSkull,
-    HumanoidSkull,    
+    HumanoidSkull,
     LizardSkull,
     Imp2EyeSkull,
     Imp1EyeSkull,

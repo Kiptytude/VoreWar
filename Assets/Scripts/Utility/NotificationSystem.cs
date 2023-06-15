@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-
-static class NotificationSystem
+﻿static class NotificationSystem
 {
     internal static void VillageOwnerChanged(Village village, int previousSide, int newSide)
     {

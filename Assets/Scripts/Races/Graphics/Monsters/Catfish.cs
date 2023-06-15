@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 class Catfish : BlankSlate
@@ -47,13 +43,13 @@ class Catfish : BlankSlate
     internal override void RandomCustom(Unit unit)
     {
         base.RandomCustom(unit);
-        
+
         unit.BodyAccentType1 = State.Rand.Next(BodyAccentTypes1);
     }
 
     internal override void SetBaseOffsets(Actor_Unit actor)
     {
-        if (actor.PredatorComponent != null && actor.PredatorComponent.IsUnitOfSpecificationInPrey(Race.Selicia, true, PreyLocation.stomach) && actor.GetStomachSize(20) == 20)
+        if (actor.Unit.Predator && actor.PredatorComponent.IsUnitOfSpecificationInPrey(Race.Selicia, true, PreyLocation.stomach) && actor.GetStomachSize(20) == 20)
         {
             AddOffset(Body, 0, 10 * .625f);
             AddOffset(Head, 0, 10 * .625f);
@@ -67,7 +63,7 @@ class Catfish : BlankSlate
             AddOffset(Eyes, 0, 10 * .625f);
             AddOffset(SecondaryEyes, 0, 10 * .625f);
         }
-        else if (actor.PredatorComponent != null && actor.PredatorComponent.IsUnitOfSpecificationInPrey(Race.Selicia, false, PreyLocation.stomach) && actor.GetStomachSize(20, .8f) == 20)
+        else if (actor.Unit.Predator && actor.PredatorComponent.IsUnitOfSpecificationInPrey(Race.Selicia, false, PreyLocation.stomach) && actor.GetStomachSize(20, .8f) == 20)
         {
             AddOffset(Body, 0, 6 * .625f);
             AddOffset(Head, 0, 6 * .625f);
@@ -81,7 +77,7 @@ class Catfish : BlankSlate
             AddOffset(Eyes, 0, 6 * .625f);
             AddOffset(SecondaryEyes, 0, 6 * .625f);
         }
-        else if (actor.PredatorComponent != null && actor.PredatorComponent.IsUnitOfSpecificationInPrey(Race.Selicia, false, PreyLocation.stomach) && actor.GetStomachSize(20, .9f) == 20)
+        else if (actor.Unit.Predator && actor.PredatorComponent.IsUnitOfSpecificationInPrey(Race.Selicia, false, PreyLocation.stomach) && actor.GetStomachSize(20, .9f) == 20)
         {
             AddOffset(Body, 0, 3 * .625f);
             AddOffset(Head, 0, 3 * .625f);
@@ -118,11 +114,11 @@ class Catfish : BlankSlate
             AddOffset(BodyAccent3, 60 * .625f, 0);
         }
     }
-    
+
     protected override Sprite BodySprite(Actor_Unit actor)
     {
         if (actor.AnimationController.frameLists == null) SetUpAnimations(actor);
-        
+
         if (actor.HasBelly == false)
             return Sprites[0];
         if (actor.PredatorComponent.IsUnitOfSpecificationInPrey(Race.Selicia, true, PreyLocation.stomach))
@@ -194,11 +190,11 @@ class Catfish : BlankSlate
     }
 
     protected override Sprite AccessorySprite(Actor_Unit actor) => Sprites[12 + actor.Unit.SpecialAccessoryType]; // Barbels
-    
+
     protected override Sprite BodyAccentSprite(Actor_Unit actor) => Sprites[28 + actor.Unit.BodyAccentType1]; // Dorsal fins
 
     protected override Sprite BodyAccentSprite2(Actor_Unit actor) => Sprites[18 + actor.Unit.SpecialAccessoryType]; // Barbels secondary
-    
+
     protected override Sprite BodyAccentSprite3(Actor_Unit actor) // tail
     {
         if (!actor.Targetable) return Sprites[1];

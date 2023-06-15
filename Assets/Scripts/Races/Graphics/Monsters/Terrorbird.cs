@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 
 class Terrorbird : BlankSlate
 {
@@ -93,7 +88,7 @@ class Terrorbird : BlankSlate
     protected override Sprite BodyAccentSprite8(Actor_Unit actor) // crop
     {
         int sizet = actor.GetTailSize(4);
-        if (actor.PredatorComponent == null || actor.PredatorComponent?.TailFullness == 0)
+        if (actor.Unit.Predator == false || actor.PredatorComponent?.TailFullness == 0)
         {
             return null;
         }

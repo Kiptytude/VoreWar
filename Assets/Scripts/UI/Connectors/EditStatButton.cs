@@ -1,7 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
-using System;
 
 public class EditStatButton : MonoBehaviour
 {

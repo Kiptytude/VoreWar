@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-public enum TacticalTileType
+﻿public enum TacticalTileType
 {
     grass,
     tree1,
@@ -22,7 +16,7 @@ public enum TacticalTileType
     CobbleIntersectionLeftEdge,
     CobbleIntersectionRightEdge,
     WallStart,
-    
+
     RockOverTar = 80,
     RockOverSand = 81,
     GrassOverWater = 82,

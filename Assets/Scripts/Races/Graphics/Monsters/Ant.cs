@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 class Ant : BlankSlate
@@ -19,14 +15,14 @@ class Ant : BlankSlate
 
     internal override Sprite BellySprite(Actor_Unit actor, GameObject belly) // Belly
     {
-        if (actor.PredatorComponent == null)
+        if (actor.Unit.Predator == false)
             return State.GameManager.SpriteDictionary.Ant[2];
 
         int size = actor.GetStomachSize(16, 0.75f);
 
         if (size == 16 && actor.PredatorComponent.IsUnitOfSpecificationInPrey(Race.Selicia, true, PreyLocation.stomach))
         {
-                return State.GameManager.SpriteDictionary.Ant[19];
+            return State.GameManager.SpriteDictionary.Ant[19];
         }
 
         if (size == 16 && actor.PredatorComponent.IsUnitOfSpecificationInPrey(Race.Selicia, false, PreyLocation.stomach))

@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 class Equines : DefaultRaceData
@@ -106,7 +103,7 @@ class Equines : DefaultRaceData
         BodyAccent4 = new SpriteExtraInfo(6, BodyAccentSprite4, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.HorseSkin, s.Unit.AccessoryColor)); //head spots
         BodyAccent5 = new SpriteExtraInfo(5, BodyAccentSprite5, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.HorseSkin, s.Unit.AccessoryColor)); //belly spots, also color breasts/belly/dick
         BodyAccent6 = null;
-        BodyAccent7 = null; 
+        BodyAccent7 = null;
         BodyAccent8 = new SpriteExtraInfo(6, BodyAccentSprite8, null, (s) => LegTuft(s)); //leg tuft
         BodyAccent9 = new SpriteExtraInfo(3, BodyAccentSprite9, null, (s) => TailBit(s)); //tail bit
         BodyAccent10 = new SpriteExtraInfo(5, BodyAccentSprite10, null, null); //leg hoof;
@@ -138,7 +135,7 @@ class Equines : DefaultRaceData
 
         unit.HairStyle = State.Rand.Next(HairStyles);
         unit.TailType = State.Rand.Next(TailTypes);
-       
+
     }
 
     internal override int BreastSizes => 7;
@@ -279,20 +276,20 @@ class Equines : DefaultRaceData
     protected override Sprite BodySprite(Actor_Unit actor)
     {
         int Hasweaponoffset = actor.Unit.HasWeapon ? 1 : 0;
-            if (actor.Unit.HasBreasts == true)
-            {
-                if (actor.IsAttacking)
-                    return SpritesBase[12];
-                else
-                return SpritesBase[10 + Hasweaponoffset];
-            }
+        if (actor.Unit.HasBreasts == true)
+        {
+            if (actor.IsAttacking)
+                return SpritesBase[12];
             else
-            {
-                if (actor.IsAttacking)
-                    return SpritesBase[2];
-                else
+                return SpritesBase[10 + Hasweaponoffset];
+        }
+        else
+        {
+            if (actor.IsAttacking)
+                return SpritesBase[2];
+            else
                 return SpritesBase[0 + Hasweaponoffset];
-            }
+        }
     }
     protected override Sprite BreastsShadowSprite(Actor_Unit actor) => null;
     protected override Sprite BreastsSprite(Actor_Unit actor)
@@ -376,10 +373,10 @@ class Equines : DefaultRaceData
         if (actor.Unit.HasDick == false)
             return null;
 
-        
-            if ((actor.PredatorComponent?.VisibleFullness < .26f) && ((int)Math.Sqrt((actor.Unit.DefaultBreastSize * actor.Unit.DefaultBreastSize) + actor.GetRightBreastSize(29 * 29, 1f)) < 16) && ((int)Math.Sqrt((actor.Unit.DefaultBreastSize * actor.Unit.DefaultBreastSize) + actor.GetLeftBreastSize(29 * 29, 1f)) < 16))
-            {
-                Dick.layer = 24;
+
+        if ((actor.PredatorComponent?.VisibleFullness < .26f) && ((int)Math.Sqrt((actor.Unit.DefaultBreastSize * actor.Unit.DefaultBreastSize) + actor.GetRightBreastSize(29 * 29, 1f)) < 16) && ((int)Math.Sqrt((actor.Unit.DefaultBreastSize * actor.Unit.DefaultBreastSize) + actor.GetLeftBreastSize(29 * 29, 1f)) < 16))
+        {
+            Dick.layer = 24;
             if (actor.IsCockVoring)
             {
                 return SpritesBase[25 + 2 * actor.Unit.DickSize];
@@ -401,23 +398,23 @@ class Equines : DefaultRaceData
                         return SpritesBase[24 + 2 * actor.Unit.DickSize];
                 }
             }
+        }
+        else
+        {
+            Dick.layer = 14;
+            if (actor.IsCockVoring)
+            {
+                return SpritesBase[24 + 2 * actor.Unit.DickSize];
             }
             else
             {
-                Dick.layer = 14;
-                if (actor.IsCockVoring)
-                {
-                    return SpritesBase[24 + 2 * actor.Unit.DickSize];
-                }
+                if (Config.FurryGenitals)
+                    return SpritesBase[23];
                 else
-                {
-                    if (Config.FurryGenitals)
-                        return SpritesBase[23];
-                    else
-                        return SpritesBase[24 + 2 * actor.Unit.DickSize];
-                }
+                    return SpritesBase[24 + 2 * actor.Unit.DickSize];
             }
-       
+        }
+
     }
     protected override Sprite BallsSprite(Actor_Unit actor)
     {
@@ -451,19 +448,19 @@ class Equines : DefaultRaceData
     protected override Sprite EyesSprite(Actor_Unit actor)
     {
         if (actor.Unit.HasBreasts == true)
-            {
+        {
             if (actor.Unit.IsDead && actor.Unit.Items != null)
                 return SpritesBase[9];
             else
                 return SpritesBase[5 + actor.Unit.EyeType];
-            }
+        }
         else
         {
             if (actor.Unit.IsDead && actor.Unit.Items != null)
                 return SpritesBase[19];
             else
                 return SpritesBase[15 + actor.Unit.EyeType];
-            }
+        }
     }
     protected override Color HairColor(Actor_Unit actor) => Color.white;
     protected override Sprite HairSprite(Actor_Unit actor)
@@ -483,9 +480,9 @@ class Equines : DefaultRaceData
             return SpritesBase[13 + attackingOffset + eatingOffset];
         }
         else
-    {
+        {
             return SpritesBase[3 + attackingOffset + eatingOffset];
-    }
+        }
     }
     protected override Sprite MouthSprite(Actor_Unit actor) => null;
     protected override Color ScleraColor(Actor_Unit actor) => Color.white;
@@ -759,7 +756,7 @@ class Equines : DefaultRaceData
         {
 
             int size = actor.GetStomachSize(32, 1.2f);
-            int weightMod = size > 6? 1 : 0;
+            int weightMod = size > 6 ? 1 : 0;
 
             clothing1.GetSprite = (s) => State.GameManager.SpriteDictionary.HorseClothing[38 + weightMod];
 
@@ -840,7 +837,7 @@ class Equines : DefaultRaceData
 
         public override void Configure(CompleteSprite sprite, Actor_Unit actor)
         {
-            
+
             if (actor.HasBelly)
             {
                 if (actor.Unit.HasBreasts)
@@ -854,7 +851,7 @@ class Equines : DefaultRaceData
                         if (black == true)
                             clothing2.GetSprite = (s) => State.GameManager.SpriteDictionary.HorseExtras1[bulge + actor.Unit.DickSize];
                         else
-                        clothing2.GetSprite = (s) => State.GameManager.SpriteDictionary.HorseClothing[bulge + actor.Unit.DickSize];
+                            clothing2.GetSprite = (s) => State.GameManager.SpriteDictionary.HorseClothing[bulge + actor.Unit.DickSize];
                     }
                     else
                         clothing2.GetSprite = null;
@@ -981,44 +978,44 @@ class Equines : DefaultRaceData
 
     }
     class HorseOBottom3 : MainClothing
+    {
+        int sprM;
+        int sprF;
+        int bulge;
+        bool black;
+        Sprite[] sheet;
+        public HorseOBottom3()
         {
-            int sprM;
-            int sprF;
-            int bulge;
-            bool black;
-            Sprite[] sheet;
-            public HorseOBottom3()
-            {
-                coversBreasts = false;
-                blocksDick = true;
-                clothing1 = new SpriteExtraInfo(15, null, WhiteColored);
-                DiscardSprite = State.GameManager.SpriteDictionary.HorseClothing[73];
-                Type = 76173;
-                DiscardUsesPalettes = true;
-            }
+            coversBreasts = false;
+            blocksDick = true;
+            clothing1 = new SpriteExtraInfo(15, null, WhiteColored);
+            DiscardSprite = State.GameManager.SpriteDictionary.HorseClothing[73];
+            Type = 76173;
+            DiscardUsesPalettes = true;
+        }
 
-            public override void Configure(CompleteSprite sprite, Actor_Unit actor)
-            {
+        public override void Configure(CompleteSprite sprite, Actor_Unit actor)
+        {
 
-                if (actor.HasBelly)
-                {
-                    if (actor.Unit.HasBreasts)
-                        clothing1.GetSprite = (s) => State.GameManager.SpriteDictionary.HorseClothing[72];
-                    else
-                        clothing1.GetSprite = (s) => State.GameManager.SpriteDictionary.HorseClothing[70];
-                }
+            if (actor.HasBelly)
+            {
+                if (actor.Unit.HasBreasts)
+                    clothing1.GetSprite = (s) => State.GameManager.SpriteDictionary.HorseClothing[72];
                 else
-                {
-                    if (actor.Unit.HasBreasts)
-                        clothing1.GetSprite = (s) => State.GameManager.SpriteDictionary.HorseClothing[71];
-                    else
-                        clothing1.GetSprite = (s) => State.GameManager.SpriteDictionary.HorseClothing[69];
-                }
-                clothing1.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.Clothing50Spaced, actor.Unit.ClothingColor);
-                base.Configure(sprite, actor);
-
+                    clothing1.GetSprite = (s) => State.GameManager.SpriteDictionary.HorseClothing[70];
             }
+            else
+            {
+                if (actor.Unit.HasBreasts)
+                    clothing1.GetSprite = (s) => State.GameManager.SpriteDictionary.HorseClothing[71];
+                else
+                    clothing1.GetSprite = (s) => State.GameManager.SpriteDictionary.HorseClothing[69];
+            }
+            clothing1.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.Clothing50Spaced, actor.Unit.ClothingColor);
+            base.Configure(sprite, actor);
 
         }
+
+    }
 }
 

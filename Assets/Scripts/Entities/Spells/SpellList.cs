@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
 
 public struct Range
 {
@@ -57,17 +54,22 @@ static class SpellList
     static internal readonly StatusSpell Diminishment;
     //Raze
     static internal readonly Spell GateMaw;
+    static internal readonly Spell Reanimate;
     static internal readonly Spell Resurrection;
 
     static internal readonly StatusSpell AlraunePuff;
     static internal readonly StatusSpell Web;
     static internal readonly StatusSpell GlueBomb;
     static internal readonly StatusSpell Petrify;
+    static internal readonly StatusSpell HypnoGas;
+    static internal readonly Spell ForceFeed;
+    static internal readonly Spell Bind;
 
     static internal readonly DamageSpell ViperPoisonDamage;
     static internal readonly StatusSpell ViperPoisonStatus;
 
     static internal Dictionary<SpellTypes, Spell> SpellDict;
+
 
     static SpellList()
     {
@@ -382,7 +384,7 @@ static class SpellList
             AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy },
             Range = new Range(6),
             Duration = (a, t) => 2 + a.Unit.GetStat(Stat.Mind) / 10,
-            Effect = (a, t) => a.Unit.hiddenFixedSide ? a.Unit.Side : a.Unit.FixedSide,         // the unit will act to the best of its knowledge
+            Effect = (a, t) => a.Unit.GetApparentSide(t.Unit),         // the unit will act to the best of its knowledge
             Type = StatusEffectType.Charmed,
             Tier = 3,
             Resistable = true,
@@ -419,14 +421,15 @@ static class SpellList
                         AvailableRaces.Add(Race.Vagrants);
                     Race summonRace = AvailableRaces[State.Rand.Next(AvailableRaces.Count())];
                     Unit unit = new Unit(a.Unit.Side, summonRace, (int)(a.Unit.Experience * .50f), true, UnitType.Summon);
-                    var actorCharm = a.Unit.GetStatusEffect(StatusEffectType.Charmed);
+                    var actorCharm = a.Unit.GetStatusEffect(StatusEffectType.Charmed) ?? a.Unit.GetStatusEffect(StatusEffectType.Hypnotized);
                     if (actorCharm != null)
                     {
                         unit.ApplyStatusEffect(StatusEffectType.Charmed, actorCharm.Strength, actorCharm.Duration);
                     }
-                        
+
                     StrategicUtilities.SpendLevelUps(unit);
                     State.GameManager.TacticalMode.AddUnitToBattle(unit, loc);
+                    State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<b>{a.Unit.Name}</b> has summoned the {InfoPanel.RaceSingular(unit)} <b>{unit.Name}</b>.");
                 }
             },
         };
@@ -488,6 +491,39 @@ static class SpellList
         };
         SpellDict[SpellTypes.GateMaw] = GateMaw;
 
+        Reanimate = new Spell()
+        {
+            Name = "Reanimate",
+            Id = "Reanimate",
+            SpellType = SpellTypes.Reanimate,
+            Description = "Brings back any unit that died this battle as a summon under the caster's control",
+            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Tile },
+            Range = new Range(4),
+            Tier = 4,
+            Resistable = false,
+            OnExecuteTile = (a, loc) =>
+            {
+                var target = TacticalUtilities.FindUnitToReanimate(a);
+                if (target != null)
+                {
+                    if (TacticalUtilities.OpenTile(loc, null) && a.CastSpell(Reanimate, null))
+                    {
+                        if (State.GameManager.TacticalMode.IsPlayerInControl && State.GameManager.CurrentScene == State.GameManager.TacticalMode)
+                        {
+                            TacticalUtilities.CreateReanimationPanel(loc, a.Unit);
+                        }
+                        else
+                        {
+                            State.GameManager.SoundManager.PlaySpellCast(Summon, a);
+                            TacticalUtilities.Reanimate(loc, target, a.Unit);
+                        }
+                    }
+                }
+
+            },
+        };
+        SpellDict[SpellTypes.Reanimate] = Reanimate;
+
         Resurrection = new Spell()
         {
             Name = "Resurrection",
@@ -535,11 +571,11 @@ static class SpellList
             Damage = (a, t) => 5 + a.Unit.GetStat(Stat.Mind) / 10,
             OnExecute = (a, t) =>
             {
-                
+
             },
             OnExecuteTile = (a, l) =>
             {
-              
+
             },
         };
         SpellDict[SpellTypes.ViperDamage] = ViperPoisonDamage;
@@ -675,11 +711,106 @@ static class SpellList
             ResistanceMult = .9f,
             OnExecute = (a, t) =>
             {
-                a.CastStatusSpell(Petrify, t);                
+                a.CastStatusSpell(Petrify, t);
             },
 
         };
         SpellDict[SpellTypes.Petrify] = Petrify;
+
+        HypnoGas = new StatusSpell()
+        {
+            Name = "Hypnotic Gas",
+            Id = "hypno-fart",
+            SpellType = SpellTypes.HypnoGas,
+            Description = "Applies Hypnotized in a 4x4 area centered on the caster. Hypnotized units become noncombatants that serve the caster's side.",
+            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Tile, AbilityTargets.Enemy },
+            Range = new Range(1),
+            Duration = (a, t) => 5,
+            Effect = (a, t) => a.Unit.GetApparentSide(t.Unit),
+            AreaOfEffect = 1,
+            Type = StatusEffectType.Hypnotized,
+            Tier = 0,
+            Resistable = true,
+            ResistanceMult = 0.5f,
+            OnExecute = (a, t) =>
+            {
+                a.CastStatusSpell(HypnoGas, t);
+                if (Config.FartOnAbsorb)
+                {
+                    a.SetPredMode(PreyLocation.anal);
+                    State.GameManager.SoundManager.PlayFart(a);
+                }
+                else if (Config.BurpFraction > 0)
+                {
+                    a.SetPredMode(PreyLocation.stomach);
+                    State.GameManager.SoundManager.PlayBurp(a);
+                }
+                TacticalGraphicalEffects.CreateGasCloud(t.Position);
+            },
+            OnExecuteTile = (a, loc) =>
+            {
+                a.CastStatusSpell(HypnoGas, null, loc);
+                if (Config.FartOnAbsorb)
+                {
+                    a.SetPredMode(PreyLocation.anal);
+                    State.GameManager.SoundManager.PlayFart(a);
+                }
+                else if (Config.BurpFraction > 0)
+                {
+                    a.SetPredMode(PreyLocation.stomach);
+                    State.GameManager.SoundManager.PlayBurp(a);
+                }
+                TacticalGraphicalEffects.CreateGasCloud(loc);
+            }
+
+        };
+        SpellDict[SpellTypes.HypnoGas] = HypnoGas;
+
+        Bind = new Spell()
+        {
+            Name = "Bind/Resummon",
+            Id = "Bind",
+            SpellType = SpellTypes.Bind,
+            Description = "Allows to either take control of any summon, or re-summon the most recently bound one by targeting an empty space.",
+            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy, AbilityTargets.Ally, AbilityTargets.Tile },
+            Range = new Range(4),
+            Tier = 0,
+            Resistable = false,
+            OnExecute = (a, t) => a.CastBind(t),
+            OnExecuteTile = (a, l) => a.SummonBound(l),
+        };
+        SpellDict[SpellTypes.Bind] = Bind;
+
+        ForceFeed = new Spell()
+        {
+            Name = "Force Feed",
+            Id = "force-feed",
+            SpellType = SpellTypes.ForceFeed,
+            Description = "",
+            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy },
+            Range = new Range(1),
+            Tier = 0,
+            Resistable = true,
+            OnExecute = (a, t) =>
+            {
+                if (a != t && a.CastSpell(ForceFeed, null))
+                {
+                    float r = (float)State.Rand.NextDouble();
+                    if (t.Unit.Predator && (r < t.GetPureStatClashChance(a.Unit.GetStat(Stat.Dexterity), t.Unit.GetStat(Stat.Endurance), .1f)))
+                    {
+                        State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<b>{a.Unit.Name}</b> forces {LogUtilities.GPPHimself(a.Unit)} down <b>{LogUtilities.ApostrophizeWithOrWithoutS(t.Unit.Name)}</b> gullet.");
+                        a.Movement = 0;
+                        t.PredatorComponent.ForceConsume(a);
+                    }
+                    else
+                    {
+                        State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<b>{a.Unit.Name}</b> blocks <b>{LogUtilities.ApostrophizeWithOrWithoutS(a.Unit.Name)}</b> force feeding attempt.");
+                    }
+                }
+
+            },
+        };
+        SpellDict[SpellTypes.ForceFeed] = ForceFeed;
 
     }
 
@@ -709,7 +840,7 @@ public class Spell
         {
             int startMana = actor.Unit.Mana;
             OnExecuteTile(actor, location);
-            if (actor.Unit.SingleUseSpells?.Contains(SpellType) ?? false && actor.Unit.Mana != startMana)
+            if ((actor.Unit.SingleUseSpells?.Contains(SpellType) ?? false) && actor.Unit.Mana != startMana)
             {
                 actor.Unit.SingleUseSpells.Remove(SpellType);
                 actor.Unit.UpdateSpells();
@@ -724,7 +855,7 @@ public class Spell
         {
             int startMana = actor.Unit.Mana;
             OnExecute(actor, target);
-            if (actor.Unit.SingleUseSpells?.Contains(SpellType) ?? false && actor.Unit.Mana != startMana)
+            if ((actor.Unit.SingleUseSpells?.Contains(SpellType) ?? false) && actor.Unit.Mana != startMana)
             {
                 actor.Unit.SingleUseSpells.Remove(SpellType);
                 actor.Unit.UpdateSpells();

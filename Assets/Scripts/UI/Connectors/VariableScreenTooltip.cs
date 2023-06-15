@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.EventSystems;
 
 public class VariableScreenTooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler

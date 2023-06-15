@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
-using System.Text;
 using UnityEngine.UI;
 
 public class GameMenu : MonoBehaviour
@@ -12,7 +10,7 @@ public class GameMenu : MonoBehaviour
     public SaveLoad SaveLoadScreen;
     public CheatMenu CheatMenu;
     public RaceEditorPanel RaceEditor;
-
+    public RandomizerTraitEditor RandomizerTraitEditor;
 
     public HelpPanel HelpUI;
 
@@ -68,6 +66,11 @@ public class GameMenu : MonoBehaviour
         Options.Open();
     }
 
+    public void OpenRandomizerTraits()
+    {
+        RandomizerTraitEditor.gameObject.SetActive(true);
+        RandomizerTraitEditor.Open();
+    }
     public void LoadHelp()
     {
         HelpUI.GenerateButtonsIfNeeded();
@@ -113,7 +116,7 @@ public class GameMenu : MonoBehaviour
             else
                 CloseMenu();
         }
-     
+
     }
 
     public void MainMenu()
@@ -122,7 +125,7 @@ public class GameMenu : MonoBehaviour
         {
             State.GameManager.StrategyMode.ClearData();
         }
-        State.GameManager.SwitchToMainMenu();        
+        State.GameManager.SwitchToMainMenu();
         CloseMenu();
     }
 

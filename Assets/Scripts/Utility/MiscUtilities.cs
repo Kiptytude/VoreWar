@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 static class MiscUtilities
@@ -14,6 +10,24 @@ static class MiscUtilities
     public static void DelayedInvoke(Action theDelegate, float time)
     {
         State.GameManager.StartCoroutine(ExecuteAfterTime(theDelegate, time));
+    }
+
+    internal static void DelayedInvoke(Action<bool> regenerate, float v)
+    {
+        State.GameManager.StartCoroutine(ExecuteAfterTime(regenerate, v));
+    }
+
+    private static IEnumerator ExecuteAfterTime(Action<bool> action, float v)
+    {
+        yield return new WaitForSeconds(v);
+        try
+        {
+            action(false);
+        }
+        catch
+        {
+
+        }
     }
 
     private static IEnumerator ExecuteAfterTime(Action action, float delay)
@@ -27,7 +41,7 @@ static class MiscUtilities
         {
 
         }
-        
+
     }
 }
 

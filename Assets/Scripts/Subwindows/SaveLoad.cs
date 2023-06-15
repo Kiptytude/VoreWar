@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using System.Text;
 using UnityEngine;
@@ -17,7 +15,7 @@ public class SaveLoad : MonoBehaviour
 
     private void Start()
     {
-        RequireConfirmation.isOn = PlayerPrefs.GetInt("SaveLoadConfirmation", 0) == 1 ? true : false;           
+        RequireConfirmation.isOn = PlayerPrefs.GetInt("SaveLoadConfirmation", 0) == 1 ? true : false;
     }
 
     public void ConfirmationChanged()
@@ -49,7 +47,7 @@ public class SaveLoad : MonoBehaviour
             SaveInfo.LoadGame.interactable = true;
             if (TempWorld.Empires != null)
                 TempWorld.MainEmpires = TempWorld.Empires.ToList();
-            
+
             if (TempWorld.MainEmpires == null)
             {
                 SaveInfo.LeftText.text = "Is a pure tactical game";
@@ -109,7 +107,7 @@ public class SaveLoad : MonoBehaviour
         {
             LoadSave();
         }
-        
+
     }
 
     private void LoadSave()

@@ -372,13 +372,11 @@ FodyWeavers.xsd
 /.vscode
 *.csproj
 *.sln
+/UserData
 /UserData/EditedRaces*.dat
-/UserData/createsettings1.txt
-/UserData/createsettings2.txt
-/UserData/createsettings3.txt
-/UserData/LastBatch.txt
+/UserData/*.txt
 /UserData/*.cst
-/UserData/createsettings*.txt
+/UserData/Maps
 *.bak
 *.bak.meta
 .vsconfig

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 abstract class DefaultRaceData
@@ -346,7 +344,7 @@ abstract class DefaultRaceData
                 if (unit.ClothingHatType > 0 && AllowedClothingHatTypes[unit.ClothingHatType - 1].CanWear(unit) == false)
                     unit.ClothingHatType = 0;
             }
-            
+
         }
 
 

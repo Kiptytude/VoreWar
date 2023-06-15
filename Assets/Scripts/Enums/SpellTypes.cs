@@ -1,38 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-public enum SpellTypes
+﻿public enum SpellTypes
 {
-    None,
-    Fireball,
-    PowerBolt,
-    LightningBolt,
-    Shield,
-    Mending,
-    Speed,
-    Valor,
-    Predation,
+    None = 0,
+    Fireball = 1,
+    PowerBolt = 2,
+    LightningBolt = 3,
+    Shield = 4,
+    Mending = 5,
+    Speed = 6,
+    Valor = 7,
+    Predation = 8,
 
-    IceBlast,
-    Pyre,
+    IceBlast = 9,
+    Pyre = 10,
     //Warp,
     //MagicWall,
-    Poison,
+    Poison = 11,
 
     //Quicksand,
-    PreysCurse,
-    Maw,
-    Charm,
-    Summon,
-    Enlarge,
+    PreysCurse = 12,
+    Maw = 13,
+    Charm = 14,
+    Summon = 15,
+    Enlarge = 16,
 
     //Raze,
-    Diminishment,
-    GateMaw,
-    Resurrection,
+    Diminishment = 17,
+    GateMaw = 18,
+    Reanimate = 19,
+    Resurrection = 20,
+
 
 
     AlraunePuff = 70,
@@ -40,8 +36,11 @@ public enum SpellTypes
     GlueBomb = 72,
     ViperPoison = 73,
     Petrify = 74,
+    HypnoGas = 75,
+    Bind = 76,
 
     ViperDamage = 110,
+    ForceFeed = 111,
 
 }
 

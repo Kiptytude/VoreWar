@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 class Vipers : DefaultRaceData
@@ -63,7 +60,7 @@ class Vipers : DefaultRaceData
         SecondaryBreasts = new SpriteExtraInfo(16, SecondaryBreastsSprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.ViperSkin, s.Unit.SkinColor));
         Dick = new SpriteExtraInfo(15, DickSprite, WhiteColored);
         Balls = new SpriteExtraInfo(14, BallsSprite, WhiteColored);
-        
+
         AllowedMainClothingTypes = new List<MainClothing>()
         {
             new ViperArmour1TypeFull(),
@@ -288,7 +285,7 @@ class Vipers : DefaultRaceData
 
     protected override Sprite BodyAccentSprite2(Actor_Unit actor) // second stomach = tail
     {
-        if (actor.PredatorComponent == null)
+        if (actor.Unit.Predator == false)
             return null;
         int size2;
         if (Config.LamiaUseTailAsSecondBelly && (actor.PredatorComponent.Stomach2ndFullness > 0 || actor.PredatorComponent.TailFullness > 0))
@@ -343,7 +340,7 @@ class Vipers : DefaultRaceData
     }
 
     protected override Sprite BodyAccentSprite4(Actor_Unit actor) => Sprites[38 + (actor.IsAttacking ? 1 : 0)]; // arms
-    
+
     protected override Sprite BodyAccentSprite5(Actor_Unit actor) // slit outside
     {
         if (Config.HideCocks) return null;
@@ -384,7 +381,7 @@ class Vipers : DefaultRaceData
             return null;
         }
     }
-    
+
     protected override Sprite BodyAccentSprite7(Actor_Unit actor) // middle tail
     {
         if (actor.Unit.TailType == 0)
@@ -412,10 +409,10 @@ class Vipers : DefaultRaceData
             return null;
         }
     }
-    
+
     protected override Sprite BodyAccentSprite8(Actor_Unit actor) // middle tail B
     {
-        if (actor.PredatorComponent == null)
+        if (actor.Unit.Predator == false)
             return null;
         int size2;
         if (Config.LamiaUseTailAsSecondBelly && (actor.PredatorComponent.Stomach2ndFullness > 0 || actor.PredatorComponent.TailFullness > 0))
@@ -455,7 +452,7 @@ class Vipers : DefaultRaceData
             return Sprites[4];
         return null;
     }
-    
+
     protected override Sprite EyesSprite(Actor_Unit actor) => Sprites[44 + actor.Unit.EyeType];
 
     protected override Sprite EyesSecondarySprite(Actor_Unit actor) => Sprites[40 + actor.Unit.EyeType];
@@ -582,7 +579,7 @@ class Vipers : DefaultRaceData
 
             if (leftSize > 24)
                 leftSize = 24;
-            
+
             return Sprites2[0 + leftSize];
         }
         else
@@ -669,7 +666,7 @@ class Vipers : DefaultRaceData
         }
     }
 
-   
+
     class ViperArmour1TypeFull : MainClothing
     {
         public ViperArmour1TypeFull()
@@ -702,7 +699,7 @@ class Vipers : DefaultRaceData
 
             clothing2.GetSprite = (s) => State.GameManager.SpriteDictionary.Vipers3[12];
             clothing5.GetSprite = (s) => State.GameManager.SpriteDictionary.Vipers3[17];
-            
+
             bool attacking = actor.IsAttacking;
             clothing3.GetSprite = (s) => State.GameManager.SpriteDictionary.Vipers3[13 + (attacking ? 1 : 0)];
             clothing4.GetSprite = (s) => State.GameManager.SpriteDictionary.Vipers3[15 + (attacking ? 1 : 0)];

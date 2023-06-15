@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 class FeralWolf : BlankSlate
@@ -48,7 +44,7 @@ class FeralWolf : BlankSlate
     {
         if ((actor.PredatorComponent?.IsUnitOfSpecificationInPrey(Race.Selicia, true, PreyLocation.stomach) ?? false) && actor.GetStomachSize(15, 1) == 15)
             return null;
-        if (actor.GetStomachSize(4) == 4) 
+        if (actor.GetStomachSize(4) == 4)
             return State.GameManager.SpriteDictionary.FeralWolf[15];
         return null;
     }

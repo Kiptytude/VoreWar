@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 class Kobolds : BlankSlate
@@ -60,9 +57,9 @@ class Kobolds : BlankSlate
 
     internal override void SetBaseOffsets(Actor_Unit actor)
     {
-        if (actor.PredatorComponent != null)
+        if (actor.Unit.Predator)
         {
-            float ballsYOffset = 0;            
+            float ballsYOffset = 0;
             int ballSize = actor.Unit.DickSize + actor.GetBallSize(16 - actor.Unit.DickSize);
             if (ballSize == 13) ballsYOffset = 14;
             if (ballSize == 14) ballsYOffset = 16;
@@ -237,7 +234,7 @@ class Kobolds : BlankSlate
 
     internal override Sprite BellySprite(Actor_Unit actor, GameObject belly)
     {
-        if (actor.PredatorComponent == null || actor.HasBelly == false)
+        if (actor.Unit.Predator == false || actor.HasBelly == false)
             return null;
         if (facingFront)
         {
@@ -355,7 +352,7 @@ class Kobolds : BlankSlate
     {
         public LoinCloth()
         {
-            
+
             clothing1 = new SpriteExtraInfo(10, null, null);
         }
 

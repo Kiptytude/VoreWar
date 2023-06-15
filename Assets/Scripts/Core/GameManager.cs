@@ -1,7 +1,4 @@
-﻿using Assets.Scripts.Utility;
-using System.Collections;
-using System.IO;
-using System.Linq;
+﻿using System.Linq;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -278,7 +275,7 @@ public class GameManager : MonoBehaviour
 
     internal void CameraCall(Vec2i location) => CameraCall(new Vector3(location.x, location.y, 0));
 
-    public void SwitchToStrategyMode()
+    public void SwitchToStrategyMode(bool initialLoad = false)
     {
         if (PureTactical)
         {
@@ -292,7 +289,7 @@ public class GameManager : MonoBehaviour
         CurrentScene.CleanUp();
         CurrentScene = StrategyMode;
         StrategyMode.UndoMoves.Clear();
-        StrategyMode.Regenerate();
+        StrategyMode.Regenerate(initialLoad);
         if (needsCameraRefresh)
             CameraController.LoadStrategicCamera();
         queuedTactical = false;

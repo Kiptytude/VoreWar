@@ -1,9 +1,5 @@
 ﻿using CruxClothing;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 
@@ -144,9 +140,11 @@ class Crux : DefaultRaceData
                 return State.GameManager.SpriteDictionary.Crux[374];
             return State.GameManager.SpriteDictionary.Crux[373];
         }
-        if (acc == State.World.ItemRepository.GetItem(ItemType.BodyArmor)) {
+        if (acc == State.World.ItemRepository.GetItem(ItemType.BodyArmor))
+        {
             BodyAccessory.layer = 21;
-            return State.GameManager.SpriteDictionary.Crux[375]; }
+            return State.GameManager.SpriteDictionary.Crux[375];
+        }
         if (acc == State.World.ItemRepository.GetItem(ItemType.Shoes))
         {
             BodyAccessory.layer = 11;
@@ -208,12 +206,12 @@ class Crux : DefaultRaceData
     }
 
     protected override Sprite SecondaryAccessorySprite(Actor_Unit actor)
-    { 
+    {
         Accessory acc = null;
         if (actor.Unit.Items == null || actor.Unit.Items.Length < 2)
             return null;
         if (actor.Unit.Items[1] is Accessory)
-            acc = (Accessory) actor.Unit.Items[1];
+            acc = (Accessory)actor.Unit.Items[1];
         if (acc == null)
             return null;
         BodyAccessory.layer = 24;
@@ -224,9 +222,11 @@ class Crux : DefaultRaceData
                 return State.GameManager.SpriteDictionary.Crux[374];
             return State.GameManager.SpriteDictionary.Crux[373];
         }
-        if (acc == State.World.ItemRepository.GetItem(ItemType.BodyArmor)) {
+        if (acc == State.World.ItemRepository.GetItem(ItemType.BodyArmor))
+        {
             BodyAccessory.layer = 21;
-            return State.GameManager.SpriteDictionary.Crux[375]; }
+            return State.GameManager.SpriteDictionary.Crux[375];
+        }
         if (acc == State.World.ItemRepository.GetItem(ItemType.Shoes))
         {
             BodyAccessory.layer = 11;
@@ -422,7 +422,8 @@ class Crux : DefaultRaceData
         switch (actor.Unit.BodyAccentType3)
         {
             case 0: return null;
-            case 1: {
+            case 1:
+                {
                     if (actor.Unit.HasWeapon == false || actor.Surrendered)
                         return State.GameManager.SpriteDictionary.Crux[278];
                     switch (actor.GetWeaponSprite())
@@ -447,7 +448,8 @@ class Crux : DefaultRaceData
                             return State.GameManager.SpriteDictionary.Crux[278];
                     }
                 }
-            case 2: {
+            case 2:
+                {
                     if (actor.Unit.HasWeapon == false || actor.Surrendered)
                         return State.GameManager.SpriteDictionary.Crux[279];
                     switch (actor.GetWeaponSprite())
@@ -472,7 +474,8 @@ class Crux : DefaultRaceData
                             return State.GameManager.SpriteDictionary.Crux[279];
                     }
                 }
-            case 3: {
+            case 3:
+                {
                     if (actor.Unit.HasWeapon == false || actor.Surrendered)
                         return State.GameManager.SpriteDictionary.Crux[280];
                     switch (actor.GetWeaponSprite())
@@ -497,7 +500,8 @@ class Crux : DefaultRaceData
                             return State.GameManager.SpriteDictionary.Crux[280];
                     }
                 }
-            case 4: {
+            case 4:
+                {
                     if (actor.Unit.HasWeapon == false || actor.Surrendered)
                         return State.GameManager.SpriteDictionary.Crux[281];
                     switch (actor.GetWeaponSprite())
@@ -651,7 +655,7 @@ class Crux : DefaultRaceData
                 {
                     if (actor.Unit.BodySize == 0 || actor.Unit.BodySize == 2) return State.GameManager.SpriteDictionary.Crux[194];
                     else return State.GameManager.SpriteDictionary.Crux[219];
-                }               
+                }
             }
             if (actor.Unit.BodySize == 0 || actor.Unit.BodySize == 2) return State.GameManager.SpriteDictionary.Crux[170 + actor.GetStomachSize(23)];
             else return State.GameManager.SpriteDictionary.Crux[195 + actor.GetStomachSize(23)];
@@ -697,7 +701,7 @@ class Crux : DefaultRaceData
                 if (actor.Unit.BodySize == 0 || actor.Unit.BodySize == 2) return State.GameManager.SpriteDictionary.Crux[245];
                 else return State.GameManager.SpriteDictionary.Crux[271];
             }
-             
+
         }
 
         if (actor.PredatorComponent?.BallsFullness > 0)
@@ -720,10 +724,11 @@ class Crux : DefaultRaceData
 
     protected override Sprite MouthSprite(Actor_Unit actor)
     {
-        if (actor.IsOralVoring) {
+        if (actor.IsOralVoring)
+        {
             if (actor.Unit.HeadType == 0 || actor.Unit.HeadType == 2)
                 return State.GameManager.SpriteDictionary.Crux[10];
-            return State.GameManager.SpriteDictionary.Crux[11]; 
+            return State.GameManager.SpriteDictionary.Crux[11];
         }
         return null;
     }
@@ -737,8 +742,10 @@ class Crux : DefaultRaceData
 
     protected override Sprite BreastsSprite(Actor_Unit actor)
     {
-        if (actor.Unit.BreastSize >= 0) {
-            if (actor.Unit.BodySize == 0 || actor.Unit.BodySize == 2) {
+        if (actor.Unit.BreastSize >= 0)
+        {
+            if (actor.Unit.BodySize == 0 || actor.Unit.BodySize == 2)
+            {
                 if (actor.Unit.BodyAccentType1 == 0) return State.GameManager.SpriteDictionary.Crux[90 + actor.Unit.BreastSize];
                 return State.GameManager.SpriteDictionary.Crux[97 + actor.Unit.BreastSize];
             }
@@ -791,9 +798,11 @@ class Crux : DefaultRaceData
         {
             if (actor.IsCockVoring)
             {
-                if (actor.GetStomachSize(24) <= 6) {
+                if (actor.GetStomachSize(24) <= 6)
+                {
                     Dick.layer = 17;
-                    return State.GameManager.SpriteDictionary.Crux[168]; }
+                    return State.GameManager.SpriteDictionary.Crux[168];
+                }
                 Dick.layer = 6;
                 return State.GameManager.SpriteDictionary.Crux[169];
             }
@@ -821,7 +830,7 @@ class Crux : DefaultRaceData
                     Dick.layer = 6;
                     return State.GameManager.SpriteDictionary.Crux[150 + actor.Unit.DickSize];
                 }
-                
+
                 Dick.layer = 6;
                 switch (actor.Unit.DickSize)
                 {
@@ -880,7 +889,8 @@ class Crux : DefaultRaceData
         {
             Dick.layer = 6;
 
-            if (actor.IsUnbirthing) {
+            if (actor.IsUnbirthing)
+            {
                 if (actor.Unit.BodySize == 0 || actor.Unit.BodySize == 2)
                     return State.GameManager.SpriteDictionary.Crux[124];
                 return State.GameManager.SpriteDictionary.Crux[125];

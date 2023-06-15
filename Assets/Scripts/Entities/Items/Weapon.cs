@@ -21,7 +21,7 @@ public class Weapon : Item
     }
 
 
-    public Weapon(string name, string description, int cost, int graphic, int damage, int range, float accuracyModifier = 1f,  bool omniWeapon = false, bool lockedItem = false)
+    public Weapon(string name, string description, int cost, int graphic, int damage, int range, float accuracyModifier = 1f, bool omniWeapon = false, bool lockedItem = false)
     {
         Name = name;
         Description = description;

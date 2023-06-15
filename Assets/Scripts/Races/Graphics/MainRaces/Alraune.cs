@@ -1,9 +1,5 @@
 ﻿using AlrauneClothing;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 
@@ -492,7 +488,7 @@ namespace AlrauneClothing
                     clothing2.GetSprite = (s) => State.GameManager.SpriteDictionary.Alraune[141];
             }
             else clothing2.GetSprite = (s) => State.GameManager.SpriteDictionary.Alraune[143];
-            
+
             clothing3.GetSprite = (s) => State.GameManager.SpriteDictionary.Alraune[152];
 
             base.Configure(sprite, actor);

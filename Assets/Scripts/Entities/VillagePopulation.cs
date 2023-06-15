@@ -1,5 +1,4 @@
 ﻿using OdinSerializer;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -144,7 +143,7 @@ public class VillagePopulation
         {
             Population[RandomRacePlaceByWeight()].ChangePop(1);
         }
-        
+
     }
 
     public void DecrementRandom()
@@ -435,9 +434,9 @@ public class VillagePopulation
             RemoveRacePop(rec.Race, 1);
             NamedRecruitables.Remove(NamedRecruitables.OrderBy(s => s.Experience).First());
         }
-            
-        
-       
+
+
+
     }
 
     /// <summary>
@@ -453,9 +452,9 @@ public class VillagePopulation
         {
             NamedRecruitables.Remove(rec);
         }
-           
-        
-       
+
+
+
     }
 
     public void CleanHirables()
@@ -472,7 +471,7 @@ public class VillagePopulation
             {
                 var race = NamedRecruitables[x].Race;
                 NamedRecruitables.Remove(NamedRecruitables[x]);
-                RemoveRacePop(race, 1);                
+                RemoveRacePop(race, 1);
                 endCount--;
                 x--;
             }
@@ -483,12 +482,12 @@ public class VillagePopulation
                 break;
             Population[x].Hireables = NamedRecruitables.Where(s => s.Race == Population[x].Race).Count();
             while (NamedRecruitables.Count > 0 && Population[x].Population < Population[x].Hireables)
-            {                
+            {
                 RemoveLowestHireable(Population[x].Race);
                 var count = NamedRecruitables.Where(s => s.Race == Population[x].Race).Count();
                 if (count < Population[x].Hireables)
                     Population[x].Hireables = count;
-               
+
             }
         }
 

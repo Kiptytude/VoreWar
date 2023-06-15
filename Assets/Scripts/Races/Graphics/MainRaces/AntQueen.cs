@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 class AntQueen : DefaultRaceData
@@ -384,7 +381,7 @@ class AntQueen : DefaultRaceData
             return Sprites2[Math.Min(104 + offset, 129)];
         return Sprites2[96 + size];
     }
-    
+
     class AntLeader : MainClothing
     {
         public AntLeader()

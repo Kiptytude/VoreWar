@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AssimilateList
 {
-    bool Initialized = false;
+    public bool Initialized = false;
     [AllowEditing]
     internal Dictionary<Traits, bool> CanAssimilate;
 

@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
-using System.Collections;
-using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class SliderRevealer : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
@@ -38,8 +37,8 @@ public class SliderRevealer : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     {
         if (hovering && Slider.interactable)
         {
-            State.GameManager.HoveringTooltip.UpdateInformation(Slider); 
-            
+            State.GameManager.HoveringTooltip.UpdateInformation(Slider);
+
             if (Input.GetMouseButton(1))
             {
                 var box = Instantiate(State.GameManager.InputBoxPrefab).GetComponentInChildren<InputBox>();

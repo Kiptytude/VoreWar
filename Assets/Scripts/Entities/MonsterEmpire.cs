@@ -1,12 +1,4 @@
-﻿using OdinSerializer;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
-
-public class MonsterEmpire : Empire
+﻿public class MonsterEmpire : Empire
 {
     //[OdinSerialize]
     //public List<Army> Armies;
@@ -16,7 +8,7 @@ public class MonsterEmpire : Empire
     //[OdinSerialize]
     //public TacticalAIType TacticalAIType;
 
-    
+
 
     public MonsterEmpire(ConstructionArgs args) : base(args)
     {

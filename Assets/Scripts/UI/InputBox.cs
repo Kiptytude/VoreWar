@@ -1,8 +1,7 @@
-﻿using UnityEngine;
-using System.Collections;
-using UnityEngine.UI;
-using System;
+﻿using System;
 using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class InputBox : MonoBehaviour
 {
@@ -57,7 +56,7 @@ public class InputBox : MonoBehaviour
     {
         if (stringMode == false && int.TryParse(InputField.text, out int result))
         {
-            YesAction?.Invoke(result);           
+            YesAction?.Invoke(result);
         }
         else if (stringMode)
         {

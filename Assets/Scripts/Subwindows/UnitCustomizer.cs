@@ -1,5 +1,4 @@
 using System;
-using UnityEngine;
 using UnityEngine.UI;
 
 public class UnitCustomizer
@@ -467,6 +466,21 @@ public class UnitCustomizer
                 buttons[(int)ButtonTypes.ClothingExtraType2].Label.text = "Stockings";
                 buttons[(int)ButtonTypes.ClothingExtraType3].Label.text = "Shoes";
                 break;
+
+            case Race.Vargul:
+                buttons[(int)ButtonTypes.BodyAccessoryType].Label.text = "Body Pattern Type";
+                buttons[(int)ButtonTypes.BodyAccentTypes1].Label.text = "Ear Type";
+                buttons[(int)ButtonTypes.BodyAccentTypes2].Label.text = "Head Pattern Type";
+                buttons[(int)ButtonTypes.BodyAccentTypes3].Label.text = "Mask On/Off (for armors)";
+                buttons[(int)ButtonTypes.BodyAccessoryColor].Label.text = "Body Pattern Colors";
+                buttons[(int)ButtonTypes.ExtraColor1].Label.text = "Armor Details Color";
+                break;
+
+            case Race.FeralLions:
+                buttons[(int)ButtonTypes.Skintone].Label.text = "Fur Color";
+                buttons[(int)ButtonTypes.HairStyle].Label.text = "Mane Style";
+                buttons[(int)ButtonTypes.HairColor].Label.text = "Mane Color";
+                break;
         }
     }
 
@@ -563,8 +577,8 @@ public class UnitCustomizer
         buttons[(int)ButtonTypes.BodyAccentTypes2].Label.text = "Outer Pattern";
         buttons[(int)ButtonTypes.BodyAccentTypes3].Label.text = "Horn Type";
         buttons[(int)ButtonTypes.BodyAccentTypes4].Label.text = "Special Type";
-    }    
-    
+    }
+
     void Goblin()
     {
         buttons[(int)ButtonTypes.BodyAccessoryColor].Label.text = "Body Accent Color";

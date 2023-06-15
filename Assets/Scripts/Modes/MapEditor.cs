@@ -1,16 +1,15 @@
 ﻿using MapObjects;
 using OdinSerializer;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
-using TMPro;
 
 namespace MapObjects
 {
@@ -225,7 +224,7 @@ public class MapEditor : SceneBase
         CatchUpEmpires();
         tiles = State.World.Tiles;
         doodads = State.World.Doodads;
-       
+
         TileTypes = State.GameManager.StrategyMode.TileTypes;
         DoodadTypes = State.GameManager.StrategyMode.DoodadTypes;
         Sprites = State.GameManager.StrategyMode.Sprites;
@@ -241,7 +240,7 @@ public class MapEditor : SceneBase
         else
         {
             ExitMapEditor.GetComponentInChildren<Text>().text = "Exit to Main Menu";
-        }        
+        }
         RecreateObjects();
     }
 
@@ -389,7 +388,7 @@ public class MapEditor : SceneBase
                 break;
             case StrategicDoodadType.bridgeIntersection:
                 Tooltip.text = $"Place bridge intersection tile\nMakes walkable and lowers movement cost to 1";
-                break;  
+                break;
             case StrategicDoodadType.virtualBridgeVertical:
                 Tooltip.text = $"Place sea path tile (An alternate bridge)\nAlso looks better than bridges for things such as wide bridges or diagonal bridges\nMakes walkable and lowers movement cost to 1";
                 break;
@@ -464,7 +463,7 @@ public class MapEditor : SceneBase
                 break;
             case StrategicDoodadType.SpawnerCatfish:
                 Tooltip.text = $"Place a monster spawn location for Catfish, they have to spawn within 2 tiles of a spawner if at least one exists";
-                break; 
+                break;
             case StrategicDoodadType.SpawnerGazelle:
                 Tooltip.text = $"Place a monster spawn location for Gazelle, they have to spawn within 2 tiles of a spawner if at least one exists";
                 break;
@@ -565,7 +564,7 @@ public class MapEditor : SceneBase
                     var type = StrategicTileInfo.GetObjectTileType(this.tiles[i, j], i, j);
                     if (type != -1)
                         TilemapLayers[2].SetTile(new Vector3Int(i, j, 0), State.GameManager.StrategyMode.TileDictionary.Objects[type]);
-                        
+
                 }
             }
         }
@@ -1359,7 +1358,7 @@ public class MapEditor : SceneBase
 
         List<Village> newVillages = new List<Village>();
         foreach (Village village in State.World.Villages.ToList())
-        {            
+        {
             village.Position = new Vec2i(village.Position.x + diffX, village.Position.y + diffY); //done for double checking a fix
             if (village.Position.x < x - 1 && village.Position.x > 0 && village.Position.y < y - 1 && village.Position.y > 0)
                 newVillages.Add(village);

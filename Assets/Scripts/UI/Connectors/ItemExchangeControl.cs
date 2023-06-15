@@ -1,7 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 public class ItemExchangeControl : MonoBehaviour
 {
@@ -31,5 +30,5 @@ public class ItemExchangeControl : MonoBehaviour
     {
         State.GameManager.StrategyMode.ExchangerUI.TransferItemToLeft(type);
     }
-    
+
 }

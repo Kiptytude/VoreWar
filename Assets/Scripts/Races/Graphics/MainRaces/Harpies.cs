@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 class Harpies : DefaultRaceData
@@ -39,7 +35,7 @@ class Harpies : DefaultRaceData
         BackWeapon = null;
         BodySize = new SpriteExtraInfo(-1, BodySizeSprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.Fur, s.Unit.ExtraColor3));
         Breasts = new SpriteExtraInfo(16, BreastsSprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.Skin, s.Unit.SkinColor));
-        
+
         Dick = new SpriteExtraInfo(9, DickSprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.Skin, s.Unit.SkinColor));
         Balls = new SpriteExtraInfo(8, BallsSprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.Skin, s.Unit.SkinColor));
 
@@ -96,7 +92,7 @@ class Harpies : DefaultRaceData
 
     internal override void RandomCustom(Unit unit)
     {
-        base.RandomCustom(unit);      
+        base.RandomCustom(unit);
         unit.BodyAccentType1 = 0;
 
         if (Config.ExtraRandomHairColors)

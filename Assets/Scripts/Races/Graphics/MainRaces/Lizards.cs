@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 class Lizards : DefaultRaceData
@@ -57,7 +53,7 @@ class Lizards : DefaultRaceData
             ClothingTypes.Leotard,
             RaceSpecificClothing.LizardBlackTop,
             RaceSpecificClothing.LizardBikiniTop,
-            RaceSpecificClothing.LizardStrapTop,            
+            RaceSpecificClothing.LizardStrapTop,
             RaceSpecificClothing.LizardBoneTop,
             RaceSpecificClothing.LizardLeatherTop,
             RaceSpecificClothing.LizardClothTop,
@@ -134,7 +130,7 @@ class Lizards : DefaultRaceData
 
     protected override Sprite BreastsSprite(Actor_Unit actor)
     {
-        
+
         if (actor.Unit.HasBreasts == false)
             return null;
         if (Config.LizardsHaveNoBreasts) //Moved so that it doesn't affect males

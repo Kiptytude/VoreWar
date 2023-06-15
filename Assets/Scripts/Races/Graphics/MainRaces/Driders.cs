@@ -1,9 +1,5 @@
 ﻿using DriderClothing;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 
@@ -21,7 +17,7 @@ class Driders : DefaultRaceData
         EyeColors = ColorPaletteMap.GetPaletteCount(ColorPaletteMap.SwapType.DriderEyes); // drider special eyes colors
         ExtraColors1 = ColorPaletteMap.GetPaletteCount(ColorPaletteMap.SwapType.DriderEyes); // abdomen patterns colors
 
-        Body = new SpriteExtraInfo(3, BodySprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.Skin, s.Unit.SkinColor)); 
+        Body = new SpriteExtraInfo(3, BodySprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.Skin, s.Unit.SkinColor));
         Head = new SpriteExtraInfo(7, HeadSprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.DriderSkin, s.Unit.AccessoryColor));
         BodyAccessory = new SpriteExtraInfo(2, AccessorySprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.DriderSkin, s.Unit.AccessoryColor)); //abdomen
         BodyAccent = new SpriteExtraInfo(4, BodyAccentSprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.DriderSkin, s.Unit.AccessoryColor)); //Back Legs
@@ -250,7 +246,7 @@ namespace DriderClothing
                 clothing2.GetSprite = null;
                 clothing3.GetSprite = (s) => State.GameManager.SpriteDictionary.Driders[77 + actor.Unit.BodySize];
             }
-            
+
             base.Configure(sprite, actor);
         }
     }

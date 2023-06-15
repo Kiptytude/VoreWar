@@ -1,6 +1,6 @@
 ﻿using UnityEditor;
-using UnityEngine;
 using UnityEditor.SceneManagement;
+using UnityEngine;
 
 [InitializeOnLoad]
 public class AutoSave
@@ -8,7 +8,8 @@ public class AutoSave
     // Static constructor that gets called when unity fires up.
     static AutoSave()
     {
-        EditorApplication.playModeStateChanged += (PlayModeStateChange state) => {
+        EditorApplication.playModeStateChanged += (PlayModeStateChange state) =>
+        {
             // If we're about to run the scene...
             if (EditorApplication.isPlayingOrWillChangePlaymode && !EditorApplication.isPlaying)
             {

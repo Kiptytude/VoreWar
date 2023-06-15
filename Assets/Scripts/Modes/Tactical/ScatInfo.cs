@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using OdinSerializer;
+﻿using OdinSerializer;
+using System.Collections.Generic;
 using UnityEngine;
 
 class ScatInfo
@@ -23,7 +23,7 @@ class ScatInfo
         predRace = pred.Race;
         preyRace = preyUnit.Unit.Race;
         preySize = Mathf.RoundToInt(preyUnit.Actor.BodySize());
-        
+
         if (pred.Race == Race.Slimes)
         {
             color = pred.AccessoryColor;

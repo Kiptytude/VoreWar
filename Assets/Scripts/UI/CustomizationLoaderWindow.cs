@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,7 +18,7 @@ public class CustomizationLoaderWindow : MonoBehaviour
         EnteredFromUnitEditor = inUnitEditor;
         PopulateGrid();
         gameObject.SetActive(true);
-        
+
     }
 
     public void PopulateGrid()
@@ -63,7 +59,7 @@ public class CustomizationLoaderWindow : MonoBehaviour
     {
         data.CopyToUnit(unit, CopyName.isOn);
         if (EnteredFromUnitEditor)
-        {            
+        {
             State.GameManager.UnitEditor.UnitEditor.RefreshGenderSelector();
             State.GameManager.UnitEditor.UnitEditor.Unit.ReloadTraits();
             State.GameManager.UnitEditor.UnitEditor.Unit.InitializeTraits();
@@ -71,13 +67,13 @@ public class CustomizationLoaderWindow : MonoBehaviour
 
         }
         else
-        {            
+        {
             State.GameManager.Recruit_Mode.Customizer.RefreshGenderSelector();
             State.GameManager.Recruit_Mode.Customizer.Unit.ReloadTraits();
             State.GameManager.Recruit_Mode.Customizer.Unit.InitializeTraits();
             State.GameManager.Recruit_Mode.Customizer.RefreshView();
         }
-           
+
         CloseThis();
     }
 

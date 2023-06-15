@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 class Komodos : DefaultRaceData
@@ -59,7 +56,7 @@ class Komodos : DefaultRaceData
         Balls = new SpriteExtraInfo(10, BallsSprite, null, (s) => KomodoColor(s));
 
         AllowedClothingHatTypes = new List<ClothingAccessory>();
-        
+
 
         AllowedMainClothingTypes = new List<MainClothing>()
         {
@@ -286,7 +283,7 @@ class Komodos : DefaultRaceData
     }
 
     protected override Sprite EyesSprite(Actor_Unit actor) => Sprites[65 + actor.Unit.EyeType];
-    
+
     internal override Sprite BellySprite(Actor_Unit actor, GameObject belly)
     {
         if (actor.HasBelly)
@@ -341,16 +338,16 @@ class Komodos : DefaultRaceData
         {
             switch (actor.GetWeaponSprite())
             {
-            case 0:
-                return Sprites[103];
-            case 1:
-                return Sprites[104];
-            case 2:
-                return Sprites[105];
-            case 3:
-                return Sprites[106];
-            default:
-                return null;
+                case 0:
+                    return Sprites[103];
+                case 1:
+                    return Sprites[104];
+                case 2:
+                    return Sprites[105];
+                case 3:
+                    return Sprites[106];
+                default:
+                    return null;
             }
         }
         else
@@ -545,7 +542,7 @@ class Komodos : DefaultRaceData
             base.Configure(sprite, actor);
         }
     }
-    
+
     class GenericTop2 : MainClothing
     {
         public GenericTop2()
@@ -580,7 +577,7 @@ class Komodos : DefaultRaceData
             base.Configure(sprite, actor);
         }
     }
-    
+
     class GenericTop3 : MainClothing
     {
         public GenericTop3()
@@ -650,7 +647,7 @@ class Komodos : DefaultRaceData
                 clothing1.GetSprite = null;
                 clothing2.GetSprite = null;
             }
-            
+
             clothing1.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.AviansSkin, actor.Unit.ClothingColor);
 
             base.Configure(sprite, actor);

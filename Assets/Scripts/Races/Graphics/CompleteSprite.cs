@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using UnityEngine;
 
 public enum SpriteType
@@ -166,8 +162,8 @@ class CompleteSprite
         int sortOrder = sprite.layer + actor.spriteLayerOffset;
         sprites[typeInt].SortOrder = sortOrder;
 
-        
-       
+
+
 
     }
 
@@ -276,7 +272,7 @@ class CompleteSprite
 
     public void UpdateSprite()
     {
-        var race = Races.GetRace(actor.Unit);        
+        var race = Races.GetRace(actor.Unit);
         if (sprites[(int)SpriteType.Belly] == null) GetSpriteOfType(SpriteType.Belly);
         race.RunFirst(actor);
         SetSprite(SpriteType.Body, race.Body);
@@ -410,8 +406,8 @@ class CompleteSprite
                 container.GameObject.transform.localPosition = new Vector3(-.08f, .22f, 0);
                 container.GameObject.transform.rotation = Quaternion.Euler(0, 0, -45);
             }
-        }       
-      
+        }
+
         actor.SquishedBreasts = false;
 
         for (int i = 0; i < 16; i++)

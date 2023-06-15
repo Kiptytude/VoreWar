@@ -111,6 +111,7 @@ public class ItemRepository
             new SpellBook("Diminishment Book", "Allows the casting of Diminishment", 150, 4, SpellTypes.Diminishment),
             new SpellBook("Gatemaw Book", "Allows the casting of Gatemaw", 150, 4, SpellTypes.GateMaw),
             new SpellBook("Resurrection Book", "Allows the casting of Resurrection", 150, 4, SpellTypes.Resurrection),
+            new SpellBook("Reanimate Book", "Allows the casting of Reanimate", 150, 4, SpellTypes.Reanimate),
         };
         monsterItems = new List<Item>()
         {

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 class WarriorAnt : BlankSlate
@@ -41,7 +37,7 @@ class WarriorAnt : BlankSlate
         AddOffset(Body, 20 * .625f, 0);
         AddOffset(Belly, 20 * .625f, 0);
     }
-    
+
     protected override Sprite BodySprite(Actor_Unit actor)
     {
         if (actor.HasBelly == false)
@@ -106,5 +102,5 @@ class WarriorAnt : BlankSlate
         }
         return Sprites[17 + actor.GetStomachSize(16)];
     }
-    
+
 }

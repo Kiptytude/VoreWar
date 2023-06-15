@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 class Puca : BlankSlate
@@ -37,7 +34,7 @@ class Puca : BlankSlate
 
     internal override void SetBaseOffsets(Actor_Unit actor)
     {
-        if (actor.PredatorComponent != null &&
+        if (actor.Unit.Predator &&
            (actor.PredatorComponent.IsUnitOfSpecificationInPrey(Race.Selicia, true, PreyLocation.stomach, PreyLocation.womb) ||
            actor.PredatorComponent.IsUnitOfSpecificationInPrey(Race.Selicia, false, PreyLocation.stomach, PreyLocation.womb))
            && actor.GetStomachSize(9) == 9)
@@ -128,7 +125,7 @@ class Puca : BlankSlate
                 Weapon.layer = -1;
                 return State.GameManager.SpriteDictionary.Puca[13 + pose];
             }
-              
+
         }
         else
         {
@@ -143,7 +140,7 @@ class Puca : BlankSlate
         {
             belly.SetActive(true);
 
-            if (actor.PredatorComponent.IsUnitOfSpecificationInPrey(Race.Selicia, true, PreyLocation.stomach, PreyLocation.womb)  && actor.GetStomachSize(9) == 9)
+            if (actor.PredatorComponent.IsUnitOfSpecificationInPrey(Race.Selicia, true, PreyLocation.stomach, PreyLocation.womb) && actor.GetStomachSize(9) == 9)
             {
                 belly.transform.localScale = new Vector3(1, 1, 1);
                 return State.GameManager.SpriteDictionary.Puca[50];
@@ -249,7 +246,7 @@ class Puca : BlankSlate
         {
             coversBreasts = false;
             blocksDick = false;
-            clothing1 = new SpriteExtraInfo(17, null, null);            
+            clothing1 = new SpriteExtraInfo(17, null, null);
         }
 
         public override void Configure(CompleteSprite sprite, Actor_Unit actor)

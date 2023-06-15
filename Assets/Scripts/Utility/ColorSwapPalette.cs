@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 
 class ColorSwapPalette
 {
     internal Material colorSwapMaterial;
-    
+
     public ColorSwapPalette(Dictionary<int, Color> swap, bool[] clear = null, int maxClearRange = 256)
     {
         Texture2D colorSwapTex = new Texture2D(256, 1, TextureFormat.RGBA32, false, false);
@@ -17,9 +14,9 @@ class ColorSwapPalette
         colorSwapTex.wrapMode = TextureWrapMode.Clamp;
         for (int i = 0; i < colorSwapTex.width; ++i)
             colorSwapTex.SetPixel(i, 0, new Color(0.0f, 0.0f, 0.0f, 0.0f));
-        
+
         List<int> keys = new List<int>();
-        
+
         foreach (var key in swap)
         {
             keys.Add(key.Key);
@@ -47,7 +44,7 @@ class ColorSwapPalette
                 }
             }
         }
-       
+
 
         colorSwapTex.Apply();
         colorSwapMaterial = GameObject.Instantiate(State.GameManager.ColorSwapMaterial);

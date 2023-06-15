@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 class Bat : BlankSlate
@@ -56,7 +52,7 @@ class Bat : BlankSlate
 
             if (actor.IsUnbirthing) return State.GameManager.SpriteDictionary.Bat[9];
 
-            return State.GameManager.SpriteDictionary.Bat[8]; 
+            return State.GameManager.SpriteDictionary.Bat[8];
         }
         return null;
     }
@@ -83,7 +79,7 @@ class Bat : BlankSlate
     {
         if (actor.Unit.HasDick)
         {
-            if (actor.PredatorComponent == null)
+            if (actor.Unit.Predator == false)
                 return State.GameManager.SpriteDictionary.Bat[31];
 
             if (actor.PredatorComponent.BallsFullness <= 0) return State.GameManager.SpriteDictionary.Bat[28];
@@ -114,9 +110,9 @@ class Bat : BlankSlate
     {
         if (actor.Unit.HasDick)
         {
-            if(actor.IsCockVoring) return State.GameManager.SpriteDictionary.Bat[29];
+            if (actor.IsCockVoring) return State.GameManager.SpriteDictionary.Bat[29];
 
-            if(actor.IsErect()) return State.GameManager.SpriteDictionary.Bat[30];
+            if (actor.IsErect()) return State.GameManager.SpriteDictionary.Bat[30];
 
             return State.GameManager.SpriteDictionary.Bat[28];
         }
@@ -126,7 +122,7 @@ class Bat : BlankSlate
 
     internal override Sprite BellySprite(Actor_Unit actor, GameObject belly)
     {
-        if (actor.PredatorComponent == null)
+        if (actor.Unit.Predator == false)
             return null;
         if (actor.HasBelly)
         {
@@ -162,7 +158,7 @@ class Bat : BlankSlate
             return State.GameManager.SpriteDictionary.Bat[9 + sprite];
         }
         return null;
-    }    
+    }
 
     internal override void RandomCustom(Unit unit)
     {

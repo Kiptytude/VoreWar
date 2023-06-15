@@ -1,7 +1,5 @@
-﻿using UnityEngine;
-using System.Collections;
-using UnityEngine.UI;
-using TMPro;
+﻿using TMPro;
+using UnityEngine;
 
 namespace Assets.Scripts.UI.Connectors
 {
@@ -20,7 +18,7 @@ namespace Assets.Scripts.UI.Connectors
             if (gameObject.activeSelf)
             {
                 if (Input.anyKeyDown)
-                {                    
+                {
                     string key = "4";
                     for (KeyCode i = KeyCode.A; i <= KeyCode.Z; i++)
                     {
@@ -44,7 +42,7 @@ namespace Assets.Scripts.UI.Connectors
                             break;
                         }
                     }
-                    
+
                 }
             }
         }

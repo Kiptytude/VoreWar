@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using UnityEngine;
 
@@ -8,7 +6,7 @@ using UnityEngine;
 
 public static class TacticalPathfinder
 {
-   
+
 
     internal static List<PathNode> GetPath(Vec2i origin, Vec2i destination, int howClose, Actor_Unit actor, int maxDistance = 999)
     {
@@ -114,7 +112,7 @@ public static class TacticalPathfinder
                         closedList.Remove(current);
                         continue;
                     }
-                   
+
                 }
                 if (CheckTile(current.X, current.Y, actor))
                 {
@@ -124,7 +122,7 @@ public static class TacticalPathfinder
                 else
                     closedList.Remove(current);
             }
-            
+
 
         }
 
@@ -327,7 +325,7 @@ public static class TacticalPathfinder
                 new PathNode { X = x - 1, Y = y - 1 },
             };
 
-        return proposedLocations.Where(l => CheckTileFlight(l.X,l.Y) == true).ToList();
+        return proposedLocations.Where(l => CheckTileFlight(l.X, l.Y) == true).ToList();
     }
 
     static int ComputeHScore(int x, int y, int targetX, int targetY)

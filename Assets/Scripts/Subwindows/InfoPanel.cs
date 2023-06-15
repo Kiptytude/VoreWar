@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using System.Text;
-using TMPro;
 using UnityEngine.UI;
 
 public class InfoPanel
@@ -51,8 +50,8 @@ public class InfoPanel
         StringBuilder sb = new StringBuilder();
         StringBuilder sb2 = new StringBuilder();
         BuildStatus(sb2, actor.Unit);
-        BuildStats(sb, actor.Unit, actor.PredatorComponent != null, actor);
-        if (actor.PredatorComponent != null)
+        BuildStats(sb, actor.Unit, actor.Unit.Predator, actor);
+        if (actor.Unit.Predator)
             BuildPredStat(sb, actor);
         if (parentMenu == "unitEditor")
         {
@@ -80,7 +79,7 @@ public class InfoPanel
         UnitInfoPanel.HealthBar.GetComponentInChildren<Text>().text = $"Health: {actor.Health}/{actor.MaxHealth}";
         UnitInfoPanel.ManaBar.GetComponentInChildren<Text>().text = $"Mana: {actor.Mana}/{actor.MaxMana}";
         if (actor.ExperienceRequiredForNextLevel != 0)
-            UnitInfoPanel.ExpBar.value = (actor.Experience - actor.GetExperienceRequiredForLevel(actor.Level - 1)) / (actor.ExperienceRequiredForNextLevel - actor.GetExperienceRequiredForLevel(actor.Level - 1)) ;
+            UnitInfoPanel.ExpBar.value = (actor.Experience - actor.GetExperienceRequiredForLevel(actor.Level - 1)) / (actor.ExperienceRequiredForNextLevel - actor.GetExperienceRequiredForLevel(actor.Level - 1));
         else
             UnitInfoPanel.ExpBar.value = 1;
         UnitInfoPanel.HealthBar.value = actor.HealthPct;
@@ -236,8 +235,6 @@ public class InfoPanel
                 return "Voilin";
             case Race.FeralBats:
                 return "Bat";
-            case Race.Kobolds:
-                return "Kobolds";
             case Race.FeralFrogs:
                 return "Feral Frog";
             case Race.Dragon:
@@ -308,11 +305,13 @@ public class InfoPanel
                 return "Dratopyr";
             case Race.FeralLions:
                 return "Lion";
+            case Race.Kobolds:
+                return "Kobold";
         }
         return unit.Race.ToString(); //Updated this so a new race will return the race's name, instead of nothing
     }
 
-        public static string RaceSingular(Empire empire)
+    public static string RaceSingular(Empire empire)
     {
         if (empire?.ReplacedRace >= Race.Selicia)
             return "";
@@ -367,7 +366,7 @@ public class InfoPanel
             case Race.Goblins:
                 return "Goblin";
             case Race.Succubi:
-                return "Succubus";            
+                return "Succubus";
             case Race.Alligators:
                 return "Alligator";
             case Race.Puca:
@@ -547,7 +546,7 @@ public class InfoPanel
                 sb.AppendLine($"Digestions: {unit.DigestedUnits}");
             if (unit.TimesKilled > 0)
                 sb.AppendLine($"Deaths: {unit.TimesKilled}");
-            string traits = unit.ListTraits();
+            string traits = unit.ListTraits(!TacticalUtilities.IsUnitControlledByPlayer(unit));
             if (traits != "")
                 sb.AppendLine("Traits:\n" + traits);
             StringBuilder sbSecond = new StringBuilder();
@@ -555,11 +554,13 @@ public class InfoPanel
             if (unit.HasTrait(Traits.Frenzy) && unit.EnemiesKilledThisBattle > 0)
                 sbSecond.AppendLine($"Frenzy ({unit.EnemiesKilledThisBattle})");
             if (unit.HasTrait(Traits.Growth) && unit.BaseScale > 1)
-                sbSecond.AppendLine($"Growth ({Math.Round(unit.BaseScale,2)}x)");
+                sbSecond.AppendLine($"Growth ({Math.Round(unit.BaseScale, 2)}x)");
             if (actor?.Slimed ?? false)
                 sbSecond.AppendLine("Slimed");
             if (actor?.Paralyzed ?? false)
                 sbSecond.AppendLine("Paralyzed");
+            if (actor?.Corruption > 0 && !TacticalUtilities.IsUnitControlledByPlayer(unit))
+                sbSecond.AppendLine($"Corruption ({actor.Unit.GetStatTotal()}/{actor.Corruption})");
             if (unit.StatusEffects?.Any() ?? false)
             {
                 foreach (StatusEffectType type in (StatusEffectType[])Enum.GetValues(typeof(StatusEffectType)))

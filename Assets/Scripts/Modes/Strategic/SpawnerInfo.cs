@@ -1,9 +1,4 @@
 ﻿using OdinSerializer;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 
 class SpawnerInfo
@@ -50,7 +45,7 @@ class SpawnerInfo
         Team = team;
         SpawnAttempts = spawnAttempts;
         AddOnRace = addOnRace;
-        Confidence = confidence;
+        Confidence = confidence == 0 ? 6 : confidence;
         MinArmySize = minArmySize;
         MaxArmySize = maxArmySize;
         TurnOrder = turnOrder;
@@ -62,6 +57,6 @@ class SpawnerInfo
         UsingCustomType = true;
     }
 
-   
+
 }
 

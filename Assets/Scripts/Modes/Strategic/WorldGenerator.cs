@@ -1,6 +1,5 @@
 ﻿using Assets.Scripts.Modes.Strategic;
 using Noise;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -48,7 +47,7 @@ public class WorldGenerator
         public int RemainingVillages;
     }
 
-    
+
 
     public void GenerateWorld(ref StrategicTileType[,] tilesRef, ref Village[] villagesRef, int[] teams, MapGenArgs mapGenArgs)
     {
@@ -239,7 +238,7 @@ public class WorldGenerator
         }
 
 
-    }   
+    }
 
     private void AssignVillagesForManyEmpires(int[] teams, int abandonedVillages)
     {
@@ -368,7 +367,7 @@ public class WorldGenerator
         for (int i = 0; i < nameIndex.Length; i++)
         {
             nameIndex[i] = 1;
-        }        
+        }
         while (remainingVillages.Count > ExtraPadding)
         {
             if (builders.Sum(s => s.RemainingVillages) == 0)
@@ -400,7 +399,7 @@ public class WorldGenerator
             CreateFarmland(index);
         }
 
-        
+
         villages = villages.Where(s => s != null).ToArray();
     }
 
@@ -541,7 +540,7 @@ public class WorldGenerator
                     continue;
                 if (usedLocations.Where(s => s.Matches(newX, newY)).Any())
                     continue;
-                if (StrategicTileInfo.CanWalkInto(State.World.Tiles[newX, newY]) && State.World.Tiles[newX, newY] != StrategicTileType.field && State.World.Tiles[newX, newY] != StrategicTileType.fieldSnow && 
+                if (StrategicTileInfo.CanWalkInto(State.World.Tiles[newX, newY]) && State.World.Tiles[newX, newY] != StrategicTileType.field && State.World.Tiles[newX, newY] != StrategicTileType.fieldSnow &&
                     State.World.Tiles[newX, newY] != StrategicTileType.fieldDesert && StrategicUtilities.GetVillageAt(new Vec2i(newX, newY)) == null)
                     return new Vec2i(newX, newY);
             }
@@ -555,7 +554,7 @@ public class WorldGenerator
                     continue;
                 if (usedLocations.Where(s => s.Matches(newX, newY)).Any())
                     continue;
-                if (StrategicTileInfo.CanWalkInto(State.World.Tiles[newX, newY]) && State.World.Tiles[newX, newY] != StrategicTileType.field && State.World.Tiles[newX, newY] != StrategicTileType.fieldSnow && 
+                if (StrategicTileInfo.CanWalkInto(State.World.Tiles[newX, newY]) && State.World.Tiles[newX, newY] != StrategicTileType.field && State.World.Tiles[newX, newY] != StrategicTileType.fieldSnow &&
                     State.World.Tiles[newX, newY] != StrategicTileType.fieldDesert && StrategicUtilities.GetVillageAt(new Vec2i(newX, newY)) == null)
                     return new Vec2i(newX, newY);
             }

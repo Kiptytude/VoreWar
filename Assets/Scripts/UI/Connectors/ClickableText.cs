@@ -1,6 +1,5 @@
-﻿using UnityEngine;
-using System.Collections;
-using TMPro;
+﻿using TMPro;
+using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class ClickableText : MonoBehaviour

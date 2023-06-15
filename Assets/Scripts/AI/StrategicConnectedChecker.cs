@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-
-static class StrategicConnectedChecker
+﻿static class StrategicConnectedChecker
 {
     internal static bool AreAllConnected(Village[] villages, Army[] armies, bool broadcast = true)
     {

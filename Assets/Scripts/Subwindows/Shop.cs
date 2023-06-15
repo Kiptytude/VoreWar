@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.UI;
 
 public class Shop
 {
@@ -55,7 +54,7 @@ public class Shop
         }
         RegenButtonTextAndClickability();
 
-        
+
     }
 
     public void TransferItemToInventory(int slot)
@@ -193,7 +192,7 @@ public class Shop
                 shopUI.BuyPanels[i].gameObject.SetActive(false);
                 continue;
             }
-          
+
             shopUI.BuyPanels[i].gameObject.SetActive(true);
 
             shopUI.BuyPanels[i].BuyButton.interactable = inTown;

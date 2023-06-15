@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -69,10 +66,10 @@ public class RecruitCheatsPanel : MonoBehaviour
             State.GameManager.CreateMessageBox("Invalid Empire, try repicking from the dropdown.");
             return;
         }
-        if (Army.Units.Where( s => s.Type == UnitType.Leader).Any())
+        if (Army.Units.Where(s => s.Type == UnitType.Leader).Any())
         {
             State.GameManager.CreateMessageBox("That army had a leader in it, unexpected behavior may occur when the leader dies.");
-        }        
+        }
         State.GameManager.Recruit_Mode.ButtonCallback(86);
         State.GameManager.SwitchToStrategyMode();
         foreach (Empire empire in State.World.AllActiveEmpires)
@@ -97,7 +94,7 @@ public class RecruitCheatsPanel : MonoBehaviour
             {
                 unit.AddPermanentTrait(trait);
             }
-        }        
+        }
     }
 
     void RemoveTrait()

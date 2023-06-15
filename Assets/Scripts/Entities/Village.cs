@@ -2,7 +2,6 @@ using OdinSerializer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.NetworkInformation;
 using UnityEngine;
 
 
@@ -19,6 +18,7 @@ public class Village
 
     [OdinSerialize]
     public int Side { get; private set; }
+
     [OdinSerialize]
     public Race Race { get; set; }
     [OdinSerialize]
@@ -301,10 +301,10 @@ public class Village
             {
                 float currentHappiness = Happiness;
                 ChangeOwner(raceEmp.Side);
-                Happiness = currentHappiness;                
+                Happiness = currentHappiness;
                 RelationsManager.CityReturned(tempOwner, raceEmp);
                 return;
-            }          
+            }
         }
 
 
@@ -633,13 +633,13 @@ public class Village
                         StrategicUtilities.CreateInvisibleTravelingArmy(unit.unit, closestFriendlyVillage, closestFriendlyVillage.Position.GetNumberOfMovesDistance(Position) / Config.ArmyMP);
                         continue;
                     }
-                    else if (unit.unit.Type == UnitType.Leader)
+                    else if (unit.unit == State.World.GetEmpireOfSide(unit.unit.Side).Leader)
                     {
                         unit.unit.Health = -9999;
                         continue;
                     }
                 }
-                if (unit.unit.Type == UnitType.Leader)
+                if (unit.unit == Empire.Leader)
                 {
                     var localArmy = StrategicUtilities.ArmyAt(Position);
                     if (localArmy != null && localArmy.Side == Side && localArmy.Units.Count() < localArmy.Empire.MaxArmySize)
@@ -1122,7 +1122,7 @@ public class Village
     }
 
     /// <summary>
-    /// The same as Recruit Player unit, only it automatically tries hiring from the adventurers/mercs/hireables first
+    /// The same as Recruit Player unit, only it automatically tries hiring from the infiltrators/adventurers/mercs/hireables first
     /// </summary>
     internal Unit RecruitAIUnit(Empire empire, Army army)
     {
@@ -1132,6 +1132,19 @@ public class Village
         {
             if (army.Units.Count < army.MaxSize)
             {
+                if (VillagePopulation.GetRecruitables().Where(rec => rec.IsInfiltratingSide(Side)).Count() > 0 && army.Side == Side && State.Rand.Next(2) < 1)
+                {
+                    Unit unit = VillagePopulation.GetRecruitables().Where(rec => rec.IsInfiltratingSide(Side)).OrderByDescending(s => s.Experience).First();
+                    var startingExp = GetStartingXp();
+                    if (unit.Experience < startingExp)
+                        unit.SetExp(startingExp);
+                    unit.AddTraits(GetTraitsToAdd());
+                    army.Units.Add(unit);
+                    unit.Side = army.Side;
+                    empire.SpendGold(Config.ArmyCost);
+                    VillagePopulation.RemoveHireable(unit);
+                    return unit;
+                }
                 if (Adventurers?.Count > 0)
                 {
                     MercenaryContainer merc = Adventurers.OrderByDescending(s => s.Unit.Experience).First();
@@ -1305,7 +1318,7 @@ public class Village
             canVore = false;
         int extraCost = 0;
         int exp = GetStartingXp() + (int)(highestExp * .3f) + State.Rand.Next(10);
-        merc.Unit = new Unit(0, race, exp, canVore, UnitType.Adventurer, true);
+        merc.Unit = new Unit((int)race, race, exp, canVore, UnitType.Adventurer, true);
         if (race < Race.Vagrants && merc.Unit.FixedGear == false)
         {
             if (merc.Unit.Items[0] == null)
@@ -1345,7 +1358,7 @@ public class Village
 
         int extraCost = 0;
         int exp = (int)(highestExp * .8f) + State.Rand.Next(10);
-        merc.Unit = new Unit(0, race, exp, true, UnitType.Mercenary, true);
+        merc.Unit = new Unit((int)race, race, exp, true, UnitType.Mercenary, true);
         if (race < Race.Vagrants && merc.Unit.FixedGear == false)
         {
             if (merc.Unit.Items[0] == null)

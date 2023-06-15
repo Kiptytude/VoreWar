@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 class DarkSwallower : BlankSlate
@@ -96,7 +92,7 @@ class DarkSwallower : BlankSlate
 
         int size = actor.GetStomachSize(29);
 
-        if ( size >= 28 && (actor.PredatorComponent?.IsUnitOfSpecificationInPrey(Race.Selicia, true) ?? false))
+        if (size >= 28 && (actor.PredatorComponent?.IsUnitOfSpecificationInPrey(Race.Selicia, true) ?? false))
         {
             return State.GameManager.SpriteDictionary.DarkSwallower[44];
         }

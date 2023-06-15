@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -99,7 +97,7 @@ public class UnitInfoPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
                             State.GameManager.HoveringTooltip.HoveringValidName();
                             HoveringName = $"{words[2]} {words[3]}";
                             nameInstances += 1;
-                        }                        
+                        }
                         else if (prey.Unit.Name == $"{words[2]} {words[3]} {words[4]}")
                         {
                             State.GameManager.HoveringTooltip.HoveringValidName();
@@ -116,7 +114,7 @@ public class UnitInfoPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
     void DisplayInfoFor(string name)
     {
-        if (Actor?.PredatorComponent == null)
+        if (Actor?.Unit.Predator == false || Actor?.PredatorComponent == null)
             return;
         foreach (var prey in Actor.PredatorComponent.GetAllPrey())
         {
@@ -130,7 +128,7 @@ public class UnitInfoPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     void DisplayInfoFor(string name, int instance)
     {
         int count = 0;
-        if (Actor?.PredatorComponent == null)
+        if (Actor?.Unit.Predator == false)
             return;
         foreach (var prey in Actor.PredatorComponent.GetAllPrey())
         {

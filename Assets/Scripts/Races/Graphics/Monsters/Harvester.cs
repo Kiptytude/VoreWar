@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 class Harvester : BlankSlate
@@ -171,7 +167,7 @@ class Harvester : BlankSlate
 
         int size = actor.GetStomachSize(26);
 
-        if ( size >= 26 && (actor.PredatorComponent?.IsUnitOfSpecificationInPrey(Race.Selicia, true) ?? false))
+        if (size >= 26 && (actor.PredatorComponent?.IsUnitOfSpecificationInPrey(Race.Selicia, true) ?? false))
         {
             return State.GameManager.SpriteDictionary.Harvester[38];
         }

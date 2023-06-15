@@ -5,7 +5,7 @@ public enum RaceAI
 {
     Standard,
     Hedonist,
-    ServantRace
+    ServantRace,
 }
 public static class RaceAIType
 {
@@ -14,8 +14,7 @@ public static class RaceAIType
         { RaceAI.Standard, typeof(StandardTacticalAI)},
         { RaceAI.Hedonist, typeof(HedonistTacticalAI)},
         { RaceAI.ServantRace, typeof(RaceServantTacticalAI)},
-
     };
-    
-    
+
+
 }

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -190,11 +188,32 @@ public class HoveringTooltip : MonoBehaviour
                     return $"Affects total health, also reduces damage from acid, has a minor role in escape chance.\n{StatData(Stat.Endurance)}";
                 case Stat.Stomach:
                     return $"Affects stomach capacity and digestion rate.  Also helps keep prey from escaping.\n{StatData(Stat.Stomach)}\n" +
-                        $"{(actor?.PredatorComponent != null ? $"Used Capacity: {Math.Round(actor.PredatorComponent.GetBulkOfPrey(), 2) }\n" : "")}Max Capacity: {Math.Round(State.RaceSettings.GetStomachSize(unit.Race) * (unit.GetStat(Stat.Stomach) / 12f * unit.TraitBoosts.CapacityMult), 1)}";
+                     State.World?.ItemRepository != null ? $"" :  $"{((bool)actor?.Unit.Predator && actor?.PredatorComponent != null ? $"Used Capacity: {Math.Round(actor.PredatorComponent.GetBulkOfPrey(), 2)}\n" : "")}Max Capacity: {Math.Round(State.RaceSettings.GetStomachSize(unit.Race) * (unit.GetStat(Stat.Stomach) / 12f * unit.TraitBoosts.CapacityMult), 1)}";
                 case Stat.Leadership:
                     return $"Provides a stat boost for all friendly units\nStat value: {unit.GetStatBase(Stat.Leadership)}";
             }
         }
+        if (Enum.TryParse(words[2], out Race race))
+        {
+            if (unit == null) //Protector for the add a race screen
+                return "";
+            var racePar = RaceParameters.GetTraitData(unit);
+            var bodySize = State.RaceSettings.GetBodySize(race);
+            var stomachSize = State.RaceSettings.GetStomachSize(race);
+            //return $"{race}\n{racePar.RaceDescription}\nBody Size: {State.RaceSettings.GetBodySize(race)}\nBase Stomach Size: {State.RaceSettings.GetStomachSize(race)}\nFavored Stat: {racePar.FavoredStat}\nDefault Traits:\n{State.RaceSettings.ListTraits(race)}";
+            return $"{race}\n{racePar.RaceDescription}\nRace Body Size: {bodySize}\nCurrent Bulk: {actor?.Bulk()}\nBase Stomach Size: {stomachSize}\nFavored Stat: {State.RaceSettings.GetFavoredStat(race)}";
+        }
+
+        if (unit != null && words[2] == InfoPanel.RaceSingular(unit))
+        {
+            race = unit.Race;
+            var racePar = RaceParameters.GetTraitData(unit);
+            var bodySize = State.RaceSettings.GetBodySize(race);
+            var stomachSize = State.RaceSettings.GetStomachSize(race);
+            //return $"{race}\n{racePar.RaceDescription}\nBody Size: {State.RaceSettings.GetBodySize(race)}\nBase Stomach Size: {State.RaceSettings.GetStomachSize(race)}\nFavored Stat: {racePar.FavoredStat}\nDefault Traits:\n{State.RaceSettings.ListTraits(race)}";
+            return $"{race}\n{racePar.RaceDescription}\nRace Body Size: {bodySize}\nCurrent Bulk: {actor?.Bulk()}\nBase Stomach Size: {stomachSize}\nFavored Stat: {State.RaceSettings.GetFavoredStat(race)}";
+        }
+
         if (Enum.TryParse(words[2], out Traits trait))
         {
             return GetTraitData(trait);
@@ -257,7 +276,8 @@ public class HoveringTooltip : MonoBehaviour
                         return $"Unit cannot perform any actions, but is easy to hit, takes half damage from attacks and is bulky to eat.\nTurns Remaining: {effect.Duration}";
                     case StatusEffectType.Berserk:
                         return $"Unit is berserk, its strength and voracity are greatly increased for a brief period\nTurns Remaining: {effect.Duration}";
-
+                    case StatusEffectType.Charmed:
+                        return $"Unit fights for the unit that charmed it.";
                 }
             }
         }
@@ -286,28 +306,6 @@ public class HoveringTooltip : MonoBehaviour
                 }
             }
         }
-
-        if (Enum.TryParse(words[2], out Race race))
-        {
-            if (unit == null) //Protector for the add a race screen
-                return "";
-            var racePar = RaceParameters.GetTraitData(unit);
-            var bodySize = State.RaceSettings.GetBodySize(race);
-            var stomachSize = State.RaceSettings.GetStomachSize(race);
-            //return $"{race}\n{racePar.RaceDescription}\nBody Size: {State.RaceSettings.GetBodySize(race)}\nBase Stomach Size: {State.RaceSettings.GetStomachSize(race)}\nFavored Stat: {racePar.FavoredStat}\nDefault Traits:\n{State.RaceSettings.ListTraits(race)}";
-            return $"{race}\n{racePar.RaceDescription}\nRace Body Size: {bodySize}\nCurrent Bulk: {actor?.Bulk()}\nBase Stomach Size: {stomachSize}\nFavored Stat: {State.RaceSettings.GetFavoredStat(race)}";
-        }
-
-        if (unit != null && words[2] == InfoPanel.RaceSingular(unit))
-        {
-            race = unit.Race;
-            var racePar = RaceParameters.GetTraitData(unit);
-            var bodySize = State.RaceSettings.GetBodySize(race);
-            var stomachSize = State.RaceSettings.GetStomachSize(race);
-            //return $"{race}\n{racePar.RaceDescription}\nBody Size: {State.RaceSettings.GetBodySize(race)}\nBase Stomach Size: {State.RaceSettings.GetStomachSize(race)}\nFavored Stat: {racePar.FavoredStat}\nDefault Traits:\n{State.RaceSettings.ListTraits(race)}";
-            return $"{race}\n{racePar.RaceDescription}\nRace Body Size: {bodySize}\nCurrent Bulk: {actor?.Bulk()}\nBase Stomach Size: {stomachSize}\nFavored Stat: {State.RaceSettings.GetFavoredStat(race)}";
-        }
-
 
         {
             List<Spell> AllSpells = SpellList.SpellDict.Select(s => s.Value).ToList();
@@ -414,7 +412,7 @@ public class HoveringTooltip : MonoBehaviour
                 return "Allows usage of a powerful ability that does attacks and vore.  Can only be used every 3 turns";
             case Traits.Eternal:
                 return "(Cheat Trait) - This unit can never die.  If it is killed during a battle, it will be set to full hp and act as though it fled (will rejoin if the army wins, otherwise sets off for the closest town)";
-            case Traits.Reanimator:
+            case Traits.Revenant:
                 return "(Cheat Trait) - This unit can never die from weapons or spells, though digestion can kill it permanently.  If it is 'killed' during a battle, it will be set to full hp and act as though it fled (will rejoin if the army wins, otherwise sets off for the closest town) Note that these don't give immunity to digestion conversion unlike the pure eternal trait";
             case Traits.Reformer:
                 return "(Cheat Trait) - This unit can never die from being digested, but spells and weapons can kill it permanently.  If it is killed during a battle, it will be set to full hp and act as though it fled (will rejoin if the army wins, otherwise sets off for the closest town) Note that these don't give immunity to digestion conversion unlike the pure eternal trait";
@@ -469,11 +467,11 @@ public class HoveringTooltip : MonoBehaviour
             case Traits.PoisonSpit:
                 return "Allows using the poison spit ability once per battle, which does damage in a 3x3 and attempts to apply a strong short term poison as well.  This trait also makes the unit immune to poison damage.";
             case Traits.DigestionConversion:
-                return "When a unit finishes digesting someone, there's a 50% chance they will then convert to the predator's side, and be healed to half of their max life.  Can't convert leaders, summons, or units with saved copies.\n(Cheat Trait)"; 
+                return "When a unit finishes digesting someone, there's a 50% chance they will then convert to the predator's side, and be healed to half of their max life.  Can't convert leaders, summons, or units with saved copies.\n(Cheat Trait)";
             case Traits.DigestionRebirth:
                 return "When a unit finishes digesting someone, there's a 50% chance they will then convert to the predator's side and change race to the predator's race, and be healed to half of their max life.  Can't convert leaders, summons, or units with saved copies.\n(Cheat Trait)";
             case Traits.SenseWeakness:
-                return "Unit does more melee/ranged damage against targets with less health, and also increases for every negative status effect the target has."; 
+                return "Unit does more melee/ranged damage against targets with less health, and also increases for every negative status effect the target has.";
             case Traits.BladeDance:
                 return "Unit gains a stack of blade dance every time they successfully hit their opponent with melee, and lose a stack every time they are hit with melee.  Each stack gives +2 strength and +1 agility.";
             case Traits.EssenceAbsorption:
@@ -509,11 +507,33 @@ public class HoveringTooltip : MonoBehaviour
             case Traits.PermanentGrowth:
                 return "An accessory trait to Growth that makes growth gained permanent.  (Does nothing without the Growth trait)\n(Cheat Trait)";
             case Traits.Berserk:
-                return "If the unit is reduced below half health by an attack, will go berserk, greating increasing its strength and voracity for 3 turns.\nCan only occur once per battle.";
+                return "If the unit is reduced below half health by an attack, will go berserk, greatly increasing its strength and voracity for 3 turns.\nCan only occur once per battle.";
             case Traits.SynchronizedEvolution:
                 return "Any trait this unit assimilates is received by all members of their race. (requires Assimilate or InfiniteAssimilation)\n(Cheat Trait)";
             case Traits.Charmer:
                 return "Allows the casting of the Charm spell once per battle";
+            case Traits.HypnoticGas:
+                return "Can emit Gas that turns foes into subservient non-combatants that are easy to vore and rub bellies. Units of the same race are unaffected.";
+            case Traits.ForceFeeder:
+                return "Allows unit to attempt force-feeding itself to another unit at will.";
+            case Traits.Corruption:
+                return "If a currupted unit is digested, the pred will build up corruption as a hidden status. Once corrupted prey with a stat total equal to that of the pred has been digested, they are under control of the side of the last-digested corrupted.\n(Hidden Trait)";
+            case Traits.Reanimator:
+                return "Allows unit to use <b>Reanimate</b>, an attack that brings any unit back to life as the caster's summon, once per battle";
+            case Traits.Reincarnation:
+                return "Soon after this unit dies, one of the new Units that come into being will be a reincarnation of them.\n(Hidden Trait)";
+            case Traits.Transmigration:
+                return "Soon after this unit is digested, one of the new Units that come into being as the pred's race will be a reincarnation of them.\n(Hidden Trait)";
+            case Traits.InfiniteReincarnation:
+                return "Soon after this unit dies, one of the new Units that come into being will be a reincarnation of them.\nReincarnations will also have this trait (Hidden Trait)(Cheat Trait)";
+            case Traits.InfiniteTransmigration:
+                return "Soon after this unit is digested, one of the new Units that come into being as the pred's race will be a reincarnation of them.\nReincarnations will also have this trait (Hidden Trait)(Cheat Trait)";
+            case Traits.Untamable:
+                return "No matter which army this unit is in, it is only ever truly aligned with its race. Only vore-based types of conversion are really effective\n(Hidden Trait)";
+            case Traits.Binder:
+                return "Allows unit to either take control of any summon, or re-summon the most recently bound one once a battle.";
+            case Traits.Infiltrator:
+                return "Armies fully consisting of infiltrators are invisible to the enemy. Using 'Exchange' on an enemy village or a Mercenary camp will infiltrate it (For Player villages, infiltrating as a Mercenary will be preferred, otherwise as recruitables).\nWill also use conventional changes of allignment to go undercover\n(Hidden Trait)";
         }
         return "<b>This trait needs a tooltip!</b>";
     }
@@ -529,13 +549,16 @@ public class HoveringTooltip : MonoBehaviour
             case RaceAI.ServantRace:
                 return "Acts Subservient towards units of the most powerful race on their side, flocking to rub those individuals.\n" +
                     "Racial superiority is based on eminence.";
+            //case RaceAI.NonCombatant:
+            //    return "Won't use weapons or offensive spells, but supports combatants with beneficial spells and bodily services.";
+
         }
         return "<b>This AI needs a tooltip!</b>";
     }
 
     internal void UpdateInformationDefaultTooltip(int value)
     {
-       
+
         string description = DefaultTooltips.Tooltip(value);
         if (description == "")
         {

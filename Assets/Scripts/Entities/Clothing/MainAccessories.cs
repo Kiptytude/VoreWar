@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-class AsuraMask : ClothingAccessory
+﻿class AsuraMask : ClothingAccessory
 {
     public AsuraMask()
     {
@@ -53,19 +47,19 @@ class SantaHat : ClothingAccessory
                 break;
             case Race.Frogs:
                 clothing1.YOffset = 9 * .625f;
-                break; 
+                break;
             case Race.Bees:
                 clothing1.YOffset = 26 * .625f;
                 break;
             case Race.Merfolk:
                 clothing1.YOffset = 14 * .625f;
-                break; 
+                break;
             case Race.Kangaroos:
                 clothing1.YOffset = -3 * .625f;
                 break;
             case Race.Sergal:
                 clothing1.YOffset = 26 * .625f;
-                break;            
+                break;
             default:
                 clothing1.YOffset = 0;
                 break;

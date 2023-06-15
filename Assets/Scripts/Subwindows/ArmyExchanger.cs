@@ -1,5 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Diagnostics;
+using System.Linq;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class ArmyExchanger : MonoBehaviour
@@ -226,7 +227,7 @@ public class ArmyExchanger : MonoBehaviour
         if (rightSelected >= RightArmy.Units.Count || LeftArmy.Units.Count == LeftArmy.MaxSize)
             return;
 
-        if (RightArmy.Units[rightSelected].Type == UnitType.Leader && LeftArmy.Side != RightArmy.Side)
+        if (RightArmy.Units[rightSelected] == RightArmy.Empire.Leader && LeftArmy.Side != RightArmy.Side)
         {
             State.GameManager.CreateMessageBox("Can't trade heroes between races");
             return;
@@ -253,9 +254,15 @@ public class ArmyExchanger : MonoBehaviour
         if (leftSelected >= LeftArmy.Units.Count || RightArmy.Units.Count == RightArmy.MaxSize)
             return;
 
-        if (LeftArmy.Units[leftSelected].Type == UnitType.Leader && LeftArmy.Side != RightArmy.Side)
+        if (LeftArmy.Units[leftSelected] == LeftArmy.Empire.Leader && LeftArmy.Side != RightArmy.Side)
         {
             State.GameManager.CreateMessageBox("Can't trade heroes between races");
+            return;
+        }
+        var village = StrategicUtilities.GetVillageAt(RightArmy.Position);
+        if (village != null && RightArmy.Empire != null && village.Empire.IsEnemy(RightArmy.Empire) && LeftArmy.Units[leftSelected] == LeftArmy.Empire.Leader)
+        {
+            State.GameManager.CreateMessageBox("Leaders can't infiltrate");
             return;
         }
         RightArmy.Units.Add(LeftArmy.Units[leftSelected]);
@@ -319,13 +326,13 @@ public class ArmyExchanger : MonoBehaviour
         if (rightSelected >= RightArmy.Units.Count || leftSelected >= LeftArmy.Units.Count)
             return;
 
-        if (LeftArmy.Units[leftSelected].Type == UnitType.Leader && LeftArmy.Side != RightArmy.Side)
+        if (LeftArmy.Units[rightSelected] == LeftArmy.Empire.Leader && LeftArmy.Side != RightArmy.Side)
         {
             State.GameManager.CreateMessageBox("Can't trade heroes between races");
             return;
         }
 
-        if (RightArmy.Units[rightSelected].Type == UnitType.Leader && LeftArmy.Side != RightArmy.Side)
+        if (RightArmy.Units[rightSelected] == RightArmy.Empire.Leader && LeftArmy.Side != RightArmy.Side)
         {
             State.GameManager.CreateMessageBox("Can't trade heroes between races");
             return;

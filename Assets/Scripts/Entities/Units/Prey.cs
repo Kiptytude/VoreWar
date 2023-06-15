@@ -1,14 +1,10 @@
 ﻿using OdinSerializer;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 class Prey
 {
-    
+
 
     [OdinSerialize]
     public Actor_Unit Predator { get; set; }
@@ -46,7 +42,7 @@ class Prey
 
     public void UpdateEscapeRate()
     {
-        if (Actor.Surrendered || (Predator.Unit.HasTrait(Traits.Endosoma) && Predator.Unit.Side == Unit.Side))
+        if (Actor.Surrendered || (Predator.Unit.HasTrait(Traits.Endosoma) && (Unit.FixedSide == Predator.Unit.GetApparentSide(Unit)) || Unit.GetStatusEffect(StatusEffectType.Hypnotized)?.Strength == Predator.Unit.FixedSide))
         {
             EscapeRate = 0;
             return;
@@ -58,7 +54,7 @@ class Prey
         float preyDexterity = Mathf.Pow(15 + Unit.GetStat(Stat.Dexterity), 1.5f);
         float preyEndurance = Mathf.Pow(15 + Unit.GetStat(Stat.Endurance), 1.5f);
         float preyWill = Mathf.Pow(15 + Unit.GetStat(Stat.Will), 1.5f);
-        
+
         float predScore = 4 * ((10 + Predator.PredatorComponent.TotalCapacity()) / 10 + predStomach * 2 + predVoracity) * (Predator.Unit.HealthPct + 1) / (1 + Predator.PredatorComponent.UsageFraction);
         float preyScore = 2 * (preyEndurance + preyStrength + preyDexterity + 3 * preyWill) / 2 * (.2f + (Unit.HealthPct * Unit.HealthPct)) * ((1f + TurnsDigested) / (4f + TurnsDigested));
 

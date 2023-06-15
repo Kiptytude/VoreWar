@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 class Erin : DefaultRaceData
@@ -119,10 +115,10 @@ class Erin : DefaultRaceData
     }
     protected override Sprite HeadSprite(Actor_Unit actor)
     {
-      if (actor.IsAttacking || actor.IsEating)
-          return Sprites[3];
-      if (actor.Unit.IsDead && actor.Unit.Items != null) //Second part checks for a not fully initialized unit, so that she doesn't have the dead face when you view her race info
-          return Sprites[4];
+        if (actor.IsAttacking || actor.IsEating)
+            return Sprites[3];
+        if (actor.Unit.IsDead && actor.Unit.Items != null) //Second part checks for a not fully initialized unit, so that she doesn't have the dead face when you view her race info
+            return Sprites[4];
         else
             return Sprites[2];
     }
@@ -178,7 +174,7 @@ class ErinTop : MainClothing
         {
             clothing1.GetSprite = (s) => State.GameManager.SpriteDictionary.Erin[14];
         }
-            clothing2.GetSprite = (s) => State.GameManager.SpriteDictionary.Erin[16];
+        clothing2.GetSprite = (s) => State.GameManager.SpriteDictionary.Erin[16];
 
         base.Configure(sprite, actor);
     }
@@ -195,7 +191,7 @@ class ErinPantie : MainClothing
     }
     public override void Configure(CompleteSprite sprite, Actor_Unit actor)
     {
-clothing1.GetSprite = (s) => State.GameManager.SpriteDictionary.Erin[13];
+        clothing1.GetSprite = (s) => State.GameManager.SpriteDictionary.Erin[13];
         base.Configure(sprite, actor);
 
 
@@ -214,7 +210,7 @@ class ErinSkirt : MainClothing
     }
     public override void Configure(CompleteSprite sprite, Actor_Unit actor)
     {
-clothing1.GetSprite = (s) => State.GameManager.SpriteDictionary.Erin[12];
+        clothing1.GetSprite = (s) => State.GameManager.SpriteDictionary.Erin[12];
         base.Configure(sprite, actor);
 
 
@@ -233,7 +229,7 @@ class ErinStocking : MainClothing
     }
     public override void Configure(CompleteSprite sprite, Actor_Unit actor)
     {
-clothing1.GetSprite = (s) => State.GameManager.SpriteDictionary.Erin[11];
+        clothing1.GetSprite = (s) => State.GameManager.SpriteDictionary.Erin[11];
         base.Configure(sprite, actor);
 
 
@@ -252,7 +248,7 @@ class ErinShoes : MainClothing
     }
     public override void Configure(CompleteSprite sprite, Actor_Unit actor)
     {
-clothing1.GetSprite = (s) => State.GameManager.SpriteDictionary.Erin[10];
+        clothing1.GetSprite = (s) => State.GameManager.SpriteDictionary.Erin[10];
         base.Configure(sprite, actor);
 
 

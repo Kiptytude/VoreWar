@@ -1,7 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 public class ChangeEndOfTurnModeUI : MonoBehaviour
 {
@@ -24,10 +23,10 @@ public class ChangeEndOfTurnModeUI : MonoBehaviour
         gameObject.SetActive(false);
         PlayerPrefs.SetInt("AutoAdvance", dropdown.value);
         Config.AutoAdvance = (Config.AutoAdvanceType)PlayerPrefs.GetInt("AutoAdvance", 1);
-        
+
         PlayerPrefs.SetInt("DisplayEndOfTurnText", display.isOn ? 1 : 0);
         Config.DisplayEndOfTurnText = PlayerPrefs.GetInt("DisplayEndOfTurnText", 0) == 1;
-        State.GameManager.TacticalMode.UpdateEndTurnButtonText();       
+        State.GameManager.TacticalMode.UpdateEndTurnButtonText();
     }
 
     public void Close()
@@ -37,5 +36,5 @@ public class ChangeEndOfTurnModeUI : MonoBehaviour
     }
 
 
-    
+
 }

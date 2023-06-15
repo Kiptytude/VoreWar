@@ -1,5 +1,4 @@
 ﻿using OdinSerializer;
-using System;
 
 public class RacePop
 {
