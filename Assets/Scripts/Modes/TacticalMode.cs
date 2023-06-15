@@ -151,7 +151,7 @@ public class TacticalMode : SceneBase
 
     bool attackersTurn;
     internal bool IsPlayerTurn;
-    internal bool IsPlayerInControl => PseudoTurn || (IsPlayerTurn && RunningFriendlyAI == false && foreignAI == null);
+    internal bool IsPlayerInControl => PseudoTurn || (IsPlayerTurn && RunningFriendlyAI == false && foreignAI == null && !SpectatorMode);
     int activeSide;
 
     public bool AIAttacker;
@@ -161,6 +161,8 @@ public class TacticalMode : SceneBase
     public bool AIDefender;
 
     public bool CheatDefenderControl;
+
+    internal bool SpectatorMode;
 
     internal string AttackerName = null;
     internal string DefenderName = null;
@@ -382,6 +384,9 @@ public class TacticalMode : SceneBase
 
     public void Begin(StrategicTileType tiletype, Village village, Army invader, Army defender, TacticalAIType AIinvader, TacticalAIType AIdefender, TacticalBattleOverride tacticalBattleOverride = TacticalBattleOverride.Ignore)
     {
+        CheatAttackerControl = false;
+        CheatDefenderControl = false;
+        SpectatorMode = false;
         if (arrowManager == null)
             arrowManager = FindObjectOfType<PathNodeManager>();
         if (Config.AutoScaleTactical)
@@ -2258,6 +2263,7 @@ Turns: {currentTurn}
             }
             if (watchRest == false)
                 TurboMode();
+            else SpectatorMode = true;
             return;
         }
         if (attackersTurn)
@@ -2292,6 +2298,7 @@ Turns: {currentTurn}
         }
         if (watchRest == false)
             TurboMode();
+        else SpectatorMode = true;
     }
 
     internal void SetMagicMode(Spell spell)
@@ -2445,6 +2452,7 @@ Turns: {currentTurn}
 
     void UpdateStatus(float dt)
     {
+        if (SpectatorMode) RunningFriendlyAI = true;
 
         Translator?.UpdateLocation();
 
