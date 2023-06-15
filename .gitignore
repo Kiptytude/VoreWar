@@ -372,5 +372,8 @@ FodyWeavers.xsd
 /.vscode
 *.csproj
 *.sln
+/UserData
 /UserData/EditedRaces*.dat
-/UserData/createsettings*.txt
+/UserData/*.txt
+/UserData/*.cst
+/UserData/Maps

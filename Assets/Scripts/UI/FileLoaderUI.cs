@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class FileLoaderUI : MonoBehaviour

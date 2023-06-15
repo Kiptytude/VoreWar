@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 class SlimeQueen : Slimes
 {
-   
+
 
     public SlimeQueen()
     {
@@ -28,7 +25,7 @@ class SlimeQueen : Slimes
         Weapon = new SpriteExtraInfo(12, WeaponSprite, WhiteColored);
         BodySize = null;
 
-        
+
     }
 
     internal override void SetBaseOffsets(Actor_Unit actor)
@@ -41,7 +38,7 @@ class SlimeQueen : Slimes
     internal override void RandomCustom(Unit unit)
     {
         base.RandomCustom(unit);
-       
+
         unit.HairStyle = State.Rand.Next(HairStyles);
         unit.ExtraColor1 = 0;
         unit.ExtraColor2 = 0;
@@ -51,7 +48,7 @@ class SlimeQueen : Slimes
     {
         if (actor.Unit.HasDick == false)
             return null;
-        AddOffset(Balls, 0, 0);        
+        AddOffset(Balls, 0, 0);
         int baseSize = 6;
         int ballOffset = actor.GetBallSize(21, 1);
         if ((actor.PredatorComponent?.IsUnitOfSpecificationInPrey(Race.Selicia, true, PreyLocation.balls) ?? false) && actor.GetBallSize(21, .9f) == 21)

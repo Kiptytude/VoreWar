@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 class Zoey : BlankSlate
@@ -71,7 +69,7 @@ class Zoey : BlankSlate
     {
         ClothingShift = new Vector3(0, 0);
         switch (bodyState)
-        {            
+        {
             case BodyState.HighBelly:
                 if (actor.GetStomachSize(19, 1) == 19)
                 {
@@ -208,28 +206,28 @@ class Zoey : BlankSlate
                 case BodyState.SideBelly:
                     if (actor.PredatorComponent.IsUnitOfSpecificationInPrey(Race.Selicia, true, PreyLocation.stomach, PreyLocation.womb) && actor.GetStomachSize(19, 1) == 19)
                         return Sprites[72];
-					else if (actor.PredatorComponent.IsUnitOfSpecificationInPrey(Race.Selicia, false, PreyLocation.stomach, PreyLocation.womb))
-					{
-						if (actor.GetStomachSize(19, 0.7f) == 19)
-							return Sprites[78];
-						else if (actor.GetStomachSize(19, 0.8f) == 19)
-							return Sprites[77];
-						else if (actor.GetStomachSize(19, 0.9f) == 19)
-							return Sprites[76];
-					}
+                    else if (actor.PredatorComponent.IsUnitOfSpecificationInPrey(Race.Selicia, false, PreyLocation.stomach, PreyLocation.womb))
+                    {
+                        if (actor.GetStomachSize(19, 0.7f) == 19)
+                            return Sprites[78];
+                        else if (actor.GetStomachSize(19, 0.8f) == 19)
+                            return Sprites[77];
+                        else if (actor.GetStomachSize(19, 0.9f) == 19)
+                            return Sprites[76];
+                    }
                     return Sprites[52 + actor.GetStomachSize(19)];
                 default:
                     if (actor.PredatorComponent.IsUnitOfSpecificationInPrey(Race.Selicia, true, PreyLocation.stomach, PreyLocation.womb) && actor.GetStomachSize(19, 1) == 19)
                         return Sprites[51];
-					else if (actor.PredatorComponent.IsUnitOfSpecificationInPrey(Race.Selicia, false, PreyLocation.stomach, PreyLocation.womb))
-					{
-						if (actor.GetStomachSize(19, 0.7f) == 19)
-							return Sprites[75];
-						else if (actor.GetStomachSize(19, 0.8f) == 19)
-							return Sprites[74];
-						else if (actor.GetStomachSize(19, 0.9f) == 19)
-							return Sprites[73];
-					}
+                    else if (actor.PredatorComponent.IsUnitOfSpecificationInPrey(Race.Selicia, false, PreyLocation.stomach, PreyLocation.womb))
+                    {
+                        if (actor.GetStomachSize(19, 0.7f) == 19)
+                            return Sprites[75];
+                        else if (actor.GetStomachSize(19, 0.8f) == 19)
+                            return Sprites[74];
+                        else if (actor.GetStomachSize(19, 0.9f) == 19)
+                            return Sprites[73];
+                    }
                     return Sprites[31 + actor.GetStomachSize(19)];
             }
 
@@ -317,13 +315,13 @@ class Zoey : BlankSlate
                         clothing1.GetSprite = (s) => State.GameManager.SpriteDictionary.ZoeyHoliday[4];
                     break;
                 case BodyState.SideBelly:
-                        clothing1.GetSprite = (s) => State.GameManager.SpriteDictionary.ZoeyHoliday[5];
+                    clothing1.GetSprite = (s) => State.GameManager.SpriteDictionary.ZoeyHoliday[5];
                     break;
                 default:
                     if (actor.Unit.BreastSize == 4 | actor.GetStomachSize(19, 1) >= 4)
-                    clothing1.GetSprite = (s) => State.GameManager.SpriteDictionary.ZoeyHoliday[24 + (actor.IsAttacking ? 1 : 0)];
+                        clothing1.GetSprite = (s) => State.GameManager.SpriteDictionary.ZoeyHoliday[24 + (actor.IsAttacking ? 1 : 0)];
                     else
-                    clothing1.GetSprite = (s) => State.GameManager.SpriteDictionary.ZoeyHoliday[22 + (actor.IsAttacking ? 1 : 0)];
+                        clothing1.GetSprite = (s) => State.GameManager.SpriteDictionary.ZoeyHoliday[22 + (actor.IsAttacking ? 1 : 0)];
                     break;
             }
 
@@ -343,7 +341,7 @@ class Zoey : BlankSlate
                     break;
                 default:
                     if (actor.Unit.BreastSize == 4 | actor.GetStomachSize(19, 1) >= 4)
-                    clothing2.GetSprite = (s) => State.GameManager.SpriteDictionary.ZoeyHoliday[24]; 
+                        clothing2.GetSprite = (s) => State.GameManager.SpriteDictionary.ZoeyHoliday[24];
                     else
                         clothing2.GetSprite = (s) => State.GameManager.SpriteDictionary.ZoeyHoliday[7 + Math.Min(actor.Unit.BreastSize, 3)];
                     break;

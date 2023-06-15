@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -233,7 +232,7 @@ namespace UnityEngine.Tilemaps
                 positionValue.type = dataType;
                 positionValue.data = positionProperty;
 
-	            m_PositionProperties[positionKey] = positionValue;
+                m_PositionProperties[positionKey] = positionValue;
                 return true;
             }
             return false;

@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 
 class Gazelle : BlankSlate
 {
 
     readonly Sprite[] Sprites = State.GameManager.SpriteDictionary.Gazelle1;
     readonly Sprite[] Sprites2 = State.GameManager.SpriteDictionary.Gazelle2;
-    
+
     public Gazelle()
     {
         SpecialAccessoryCount = 8; // ears
@@ -41,7 +36,7 @@ class Gazelle : BlankSlate
         Balls = new SpriteExtraInfo(1, BallsSprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.GazelleSkin, s.Unit.SkinColor));
 
     }
-    
+
     internal override void SetBaseOffsets(Actor_Unit actor)
     {
         AddOffset(Balls, -30 * .625f, -45 * .625f);
@@ -51,14 +46,14 @@ class Gazelle : BlankSlate
     internal override void RandomCustom(Unit unit)
     {
         base.RandomCustom(unit);
-        
+
         unit.BodyAccentType1 = State.Rand.Next(BodyAccentTypes1);
         unit.BodyAccentType2 = State.Rand.Next(BodyAccentTypes2);
         unit.TailType = State.Rand.Next(TailTypes);
     }
 
     protected override Sprite BodySprite(Actor_Unit actor) => Sprites[0 + actor.Unit.BodyAccentType1];
-    
+
     protected override Sprite HeadSprite(Actor_Unit actor) => Sprites[24 + ((actor.IsAttacking || actor.IsEating) ? 1 : 0) + 2 * actor.Unit.BodyAccentType1];
 
     protected override Sprite AccessorySprite(Actor_Unit actor)
@@ -97,7 +92,7 @@ class Gazelle : BlankSlate
         }
         return null;
     }
-    
+
     protected override Sprite BodyAccentSprite8(Actor_Unit actor)
     {
         if (Config.HideCocks) return null;
@@ -125,9 +120,9 @@ class Gazelle : BlankSlate
         {
             Belly.layer = 6;
         }
-        
+
         if (actor.HasBelly == false)
-        return null;
+            return null;
         if (actor.PredatorComponent.IsUnitOfSpecificationInPrey(Race.Selicia, true, PreyLocation.stomach, PreyLocation.womb))
             return Sprites2[30];
         if (actor.PredatorComponent.IsUnitOfSpecificationInPrey(Race.Selicia, false, PreyLocation.stomach, PreyLocation.womb))
@@ -139,7 +134,7 @@ class Gazelle : BlankSlate
         }
         return Sprites2[0 + actor.GetStomachSize(27)];
     }
-    
+
     protected override Sprite DickSprite(Actor_Unit actor)
     {
         if (actor.Unit.HasDick == false)
@@ -150,7 +145,7 @@ class Gazelle : BlankSlate
         }
         return null;
     }
-    
+
     protected override Sprite BallsSprite(Actor_Unit actor)
     {
         if (actor.Unit.HasDick == false)
@@ -187,4 +182,4 @@ class Gazelle : BlankSlate
 
 
 
-    }
+}

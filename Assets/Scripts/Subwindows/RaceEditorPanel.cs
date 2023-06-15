@@ -1,12 +1,10 @@
-﻿using UnityEngine;
-using System.Collections;
-using TMPro;
-using System;
-using System.Linq;
-using UnityEngine.UI;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
-using UnityEngine.EventSystems;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class RaceEditorPanel : MonoBehaviour
 {
@@ -99,8 +97,11 @@ public class RaceEditorPanel : MonoBehaviour
             RaceDropdown.RefreshShownValue();
         }
 
-        if (TraitDropdown.options?.Any() == false)
-        {
+        TraitDropdown.options.Clear();
+            foreach (RandomizeList rl in State.RandomizeLists)
+            {
+                TraitDropdown.options.Add(new TMP_Dropdown.OptionData(rl.name.ToString()));
+            }
             foreach (Traits traitId in ((Traits[])Enum.GetValues(typeof(Traits))).OrderBy(s =>
              {
                  return s >= Traits.LightningSpeed ? "ZZZ" + s.ToString() : s.ToString();
@@ -109,7 +110,6 @@ public class RaceEditorPanel : MonoBehaviour
                 TraitDropdown.options.Add(new TMP_Dropdown.OptionData(traitId.ToString()));
             }
             TraitDropdown.RefreshShownValue();
-        }
 
         if (FavoredStat.options?.Any() == false)
         {
@@ -168,7 +168,9 @@ public class RaceEditorPanel : MonoBehaviour
 
     public void AddTrait()
     {
-
+        if (State.RandomizeLists.Any(rl => rl.name == TraitDropdown.options[TraitDropdown.value].text)){
+            CurrentTraits.Add((Traits)State.RandomizeLists.Where(rl => rl.name == TraitDropdown.options[TraitDropdown.value].text).FirstOrDefault()?.id);
+        }
         if (Enum.TryParse(TraitDropdown.options[TraitDropdown.value].text, out Traits trait))
         {
             if (CurrentTraits.Contains(trait) == false)
@@ -179,6 +181,15 @@ public class RaceEditorPanel : MonoBehaviour
 
     public void AddTraitALL()
     {
+        if (State.RandomizeLists.Any(rl => rl.name == TraitDropdown.options[TraitDropdown.value].text))
+        {
+            foreach (Race race in (Race[])Enum.GetValues(typeof(Race)))
+            {
+                RaceSettingsItem item = State.RaceSettings.Get(race);
+                item.RaceTraits.Add((Traits)State.RandomizeLists.Where(rl => rl.name == TraitDropdown.options[TraitDropdown.value].text).FirstOrDefault()?.id);
+            }
+            AddTrait();
+        }
         if (Enum.TryParse(TraitDropdown.options[TraitDropdown.value].text, out Traits trait))
         {
             foreach (Race race in (Race[])Enum.GetValues(typeof(Race)))
@@ -194,8 +205,11 @@ public class RaceEditorPanel : MonoBehaviour
 
     public void RemoveTrait()
     {
-
-        if (Enum.TryParse(TraitDropdown.options[TraitDropdown.value].text, out Traits trait))
+        if (State.RandomizeLists.Any(rl => rl.name == TraitDropdown.options[TraitDropdown.value].text))
+        {
+            CurrentTraits.Remove((Traits)State.RandomizeLists.Where(rl => rl.name == TraitDropdown.options[TraitDropdown.value].text).FirstOrDefault()?.id);
+        }
+            if (Enum.TryParse(TraitDropdown.options[TraitDropdown.value].text, out Traits trait))
         {
             CurrentTraits.Remove(trait);
         }
@@ -204,6 +218,15 @@ public class RaceEditorPanel : MonoBehaviour
 
     public void RemoveTraitALL()
     {
+        if (State.RandomizeLists.Any(rl => rl.name == TraitDropdown.options[TraitDropdown.value].text))
+        {
+            foreach (Race race in (Race[])Enum.GetValues(typeof(Race)))
+            {
+                RaceSettingsItem item = State.RaceSettings.Get(race);
+                item.RaceTraits.Remove((Traits)State.RandomizeLists.Where(rl => rl.name == TraitDropdown.options[TraitDropdown.value].text).FirstOrDefault()?.id);
+            }
+            RemoveTrait();
+        }
         if (Enum.TryParse(TraitDropdown.options[TraitDropdown.value].text, out Traits trait))
         {
             foreach (Race race in (Race[])Enum.GetValues(typeof(Race)))
@@ -356,6 +379,13 @@ public class RaceEditorPanel : MonoBehaviour
     public static List<Traits> TextToTraitList(string text)
     {
         List<Traits> traits = new List<Traits>();
+        foreach (RandomizeList rl in State.RandomizeLists)
+        {
+            if (text.ToLower().Contains(rl.name.ToString().ToLower()))
+            {
+                traits.Add((Traits)rl.id);
+            }
+        }
         foreach (Traits trait in (Stat[])Enum.GetValues(typeof(Traits)))
         {
             if (text.ToLower().Contains(trait.ToString().ToLower()))
@@ -367,9 +397,9 @@ public class RaceEditorPanel : MonoBehaviour
         return traits;
     }
 
-  
 
-    public static string TraitListToText(List<Traits> traits)
+
+    public static string TraitListToText(List<Traits> traits, bool hideSecret = false)
     {
         if (traits == null)
             return "";
@@ -377,11 +407,15 @@ public class RaceEditorPanel : MonoBehaviour
         bool first = true;
         foreach (var trait in traits)
         {
+            if (hideSecret && Unit.secretTags.Contains(trait)) continue; // We even hide secret traits if they would be shown once purchased, otherwise if you read "Infiltrator" you already know it's safe.
             if (first)
                 first = false;
             else
                 ret += ", ";
-            ret += trait.ToString();
+            if (State.RandomizeLists.Any(rl => (Traits)rl.id == trait))
+                ret += State.RandomizeLists.Where(rl => (Traits)rl.id == trait).FirstOrDefault().name;  
+            else
+                ret += trait.ToString();
         }
         return ret;
     }
@@ -577,8 +611,12 @@ public class RaceEditorPanel : MonoBehaviour
         if (CurrentTraits == null)
             CurrentTraits = new List<Traits>();
         foreach (Traits trait in CurrentTraits)
-        {
-            sb.AppendLine(trait.ToString());
+        {   
+            if (State.RandomizeLists.Any(rl => (Traits)rl.id == trait))
+            {
+                sb.AppendLine(State.RandomizeLists.Where(rl => (Traits)rl.id == trait).FirstOrDefault().name);
+            } else
+                sb.AppendLine(trait.ToString());
         }
         TraitList.text = sb.ToString();
     }
@@ -656,7 +694,5 @@ public class RaceEditorPanel : MonoBehaviour
         LoadRace();
         UpdateInteractable();
     }
-
-
 
 }

@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TacticalBuildings;
 using TacticalDecorations;
 using UnityEngine;
@@ -105,7 +102,7 @@ class TacticalMapGenerator
                             decoration = TacticalDecorationList.DecDict[decType];
                             TryToPlaceDecoration(i, j, decoration, decType);
                         }
-                       
+
                     }
 
                 }
@@ -451,7 +448,7 @@ class TacticalMapGenerator
             {
                 building.LowerLeftPosition.x--;
             }
-            
+
             for (int xx = 0; xx < building.Width; xx++)
             {
                 for (int yy = 0; yy < building.Height; yy++)

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 
 /// <summary>
 /// The main clothing type, suitable for Primary clothing or waist clothing.  Covers breasts and blocks dick by default
@@ -21,8 +16,8 @@ abstract class MainClothing
     protected SpriteExtraInfo clothing3;
     protected SpriteExtraInfo clothing4;
     protected SpriteExtraInfo clothing5;
-    protected SpriteExtraInfo clothing6;    
-    protected SpriteExtraInfo clothing7;    
+    protected SpriteExtraInfo clothing6;
+    protected SpriteExtraInfo clothing7;
     protected SpriteExtraInfo clothing8;
     /// <summary>If not null, replaces the character's breast sprite, used for cleavage windows or other such things</summary>
     protected Sprite breastSprite = null;
@@ -51,10 +46,10 @@ abstract class MainClothing
     protected Color bellyColor = Color.white;
     /// <summary>Palette to use if colorsBelly is on</summary>
     protected ColorSwapPalette bellyPalette = null;
-    
-    
 
-    
+
+
+
 
     /// <summary>Whether the clothing is considered to be always the default color, also affects the discard</summary>
     internal bool FixedColor = false;
@@ -161,7 +156,7 @@ abstract class MainClothing
             {
                 sprite.HideSprite(SpriteType.BreastShadow); //Used for other things in newgraphics
             }
-            
+
         }
         else if (coversBreasts)
         {

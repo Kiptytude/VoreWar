@@ -1,4 +1,4 @@
-using System.Collections;
+using OdinSerializer.Utilities;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,7 +16,7 @@ public class StartMode : SceneBase
         State.GameManager.Menu.Options.LoadFromStored();
         State.GameManager.Menu.CheatMenu.LoadFromStored();
         versionNumber.text = $"Version: {State.Version}";
-        State.GameManager.Menu.ContentSettings.Refresh();        
+        State.GameManager.Menu.ContentSettings.Refresh();
         Preset1.onClick.AddListener(() => SetPreset(1));
         Preset2.onClick.AddListener(() => SetPreset(2));
         Preset3.onClick.AddListener(() => SetPreset(3));
@@ -75,6 +75,11 @@ public class StartMode : SceneBase
         State.GameManager.VariableEditor.Open(State.AssimilateList);
     }
 
+    public void ChangeRandomizableTraits()
+    {
+        State.GameManager.Menu.OpenRandomizerTraits();
+    }
+
     public void ReturnToStart()
     {
         State.TutorialMode = false;
@@ -86,7 +91,7 @@ public class StartMode : SceneBase
     }
 
     public void TutorialMode()
-    {        
+    {
         State.GameManager.TutorialScript = new TutorialScript();
         State.Load($"{Application.streamingAssetsPath}{System.IO.Path.DirectorySeparatorChar}Tutorial.sav", tutorial: true);
     }
@@ -109,6 +114,6 @@ public class StartMode : SceneBase
 
     public override void CleanUp()
     {
-    }    
+    }
 
 }

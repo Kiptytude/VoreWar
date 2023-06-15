@@ -1,8 +1,7 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System;
 using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
-using System;
 
 public class ConfigAutoLevelUpPanel : MonoBehaviour
 {
@@ -201,7 +200,7 @@ public class ConfigAutoLevelUpPanel : MonoBehaviour
                 }
                 Dropdown.value = (int)AIClass.Custom;
             }
-           
+
         }
     }
 
@@ -230,14 +229,14 @@ public class ConfigAutoLevelUpPanel : MonoBehaviour
 
     public void UpdateSliderText()
     {
-        
+
         for (int i = 0; i < Sliders.Length; i++)
         {
             Sliders[i].GetComponentInChildren<Text>().text = $"{(Stat)i} - {Math.Round(Sliders[i].value, 2)} ";
         }
         if (deniedChanges == false)
         {
-            Custom = true;            
+            Custom = true;
             Unit.AIClass = AIClass.Custom;
             Dropdown.value = (int)Unit.AIClass;
         }
@@ -248,6 +247,6 @@ public class ConfigAutoLevelUpPanel : MonoBehaviour
         State.GameManager.CreateMessageBox("Will try to level up to maintain these ratios between stats, since stats avaiable are random it won't maintain it exactly, but with 3 strength and 1 will, it would try to keep the strength stat at 3 times the will stat, etc.");
     }
 
-    
-   
+
+
 }

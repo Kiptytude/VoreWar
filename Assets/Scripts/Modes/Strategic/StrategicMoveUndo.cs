@@ -19,7 +19,7 @@
         Army.SetPosition(PreviousPosition);
         Army.RemainingMP = MP;
         State.GameManager.StrategyMode.Regenerate();
-        
-        
+
+
     }
 }

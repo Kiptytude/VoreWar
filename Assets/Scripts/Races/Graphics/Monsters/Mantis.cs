@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 class Mantis : BlankSlate
@@ -355,7 +351,7 @@ class Mantis : BlankSlate
 
     internal override Sprite BellySprite(Actor_Unit actor, GameObject belly)
     {
-        if (actor.PredatorComponent == null || actor.HasBelly == false)
+        if (actor.Unit.Predator == false || actor.HasBelly == false)
             return null;
         if (position == Position.Eating)
         {
@@ -372,5 +368,5 @@ class Mantis : BlankSlate
         }
         return null;
     }
-    
+
 }

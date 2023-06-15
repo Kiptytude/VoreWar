@@ -1,8 +1,6 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
-using System.Collections;
 using UnityEngine.EventSystems;
-using System.Linq;
+using UnityEngine.UI;
 
 public class UIUnitSprite : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
@@ -28,11 +26,11 @@ public class UIUnitSprite : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
     }
 
     public void UpdateSprites(Actor_Unit actor, bool locked = true)
-    {        
+    {
 
         if (CompleteSprite == null)
             CompleteSprite = new CompleteSprite(State.GameManager.ImagePrefab, null, transform);
-       
+
         CompleteSprite.SetActor(actor);
         CompleteSprite.UpdateSprite();
         if (locked)
@@ -46,7 +44,7 @@ public class UIUnitSprite : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
             }
 
         }
-        CompleteSprite.UpdateSprite(); 
+        CompleteSprite.UpdateSprite();
         //The second one is designed to fix the squishbreasts flag not applying correctly on the first round.  I could do a lot of complicated stuff to fix, or just this
 
         Name.color = actor.Unit.HasEnoughExpToLevelUp() ? new Color(1, .6f, 0) : new Color(.196f, .196f, .196f);

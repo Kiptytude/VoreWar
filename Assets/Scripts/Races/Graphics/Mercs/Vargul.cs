@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 class Vargul : DefaultRaceData
@@ -63,7 +60,7 @@ class Vargul : DefaultRaceData
         Balls = new SpriteExtraInfo(10, BallsSprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.VargulSkin, s.Unit.SkinColor));
 
         AllowedClothingHatTypes = new List<ClothingAccessory>();
-        
+
         AllowedMainClothingTypes = new List<MainClothing>()
         {
             new GenericTop1(),
@@ -91,7 +88,7 @@ class Vargul : DefaultRaceData
         clothingColors = ColorPaletteMap.GetPaletteCount(ColorPaletteMap.SwapType.AviansSkin);
         ExtraColors1 = ColorPaletteMap.GetPaletteCount(ColorPaletteMap.SwapType.Clothing50Spaced);
     }
-    
+
     internal override void RandomCustom(Unit unit)
     {
         base.RandomCustom(unit);
@@ -122,7 +119,7 @@ class Vargul : DefaultRaceData
 
     internal override int DickSizes => 8;
     internal override int BreastSizes => 8;
-    
+
     protected override Sprite BodySprite(Actor_Unit actor)
     {
         if (actor.Unit.HasBreasts)
@@ -304,7 +301,7 @@ class Vargul : DefaultRaceData
         return Sprites[25];
     }
 
-protected override Sprite MouthSprite(Actor_Unit actor)
+    protected override Sprite MouthSprite(Actor_Unit actor)
     {
         if (actor.IsOralVoring)
             return Sprites[24];
@@ -896,7 +893,7 @@ protected override Sprite MouthSprite(Actor_Unit actor)
             }
 
             clothing1.GetSprite = (s) => State.GameManager.SpriteDictionary.Vargul5[0];
-            
+
             clothing4.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.Clothing50Spaced, actor.Unit.ExtraColor1);
             clothing5.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.Clothing50Spaced, actor.Unit.ExtraColor1);
             clothing6.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.Clothing50Spaced, actor.Unit.ExtraColor1);
@@ -1026,7 +1023,7 @@ protected override Sprite MouthSprite(Actor_Unit actor)
                 {
                     clothing4.GetSprite = (s) => State.GameManager.SpriteDictionary.Vargul5[54];
                 }
-                
+
                 if (actor.HasBelly)
                 {
                     clothing7.GetSprite = (s) => State.GameManager.SpriteDictionary.Vargul5[100 + actor.Unit.BreastSize];
@@ -1177,7 +1174,7 @@ protected override Sprite MouthSprite(Actor_Unit actor)
                 {
                     clothing5.GetSprite = (s) => State.GameManager.SpriteDictionary.Vargul5[123];
                 }
-                
+
                 if (actor.HasBelly || (actor.GetBallSize(27, .8f) > 0) || actor.HasPreyInBreasts)
                 {
                     clothing8.GetSprite = null;

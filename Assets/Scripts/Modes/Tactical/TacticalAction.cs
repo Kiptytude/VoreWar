@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 struct AcceptibleTargets
@@ -29,7 +27,7 @@ class TargetedTacticalAction
     internal Func<Actor_Unit, Actor_Unit, bool> OnExecute;
     internal Func<Actor_Unit, Vec2i, bool> OnExecuteLocation;
 
-    public TargetedTacticalAction(string name, bool requiresPred, Predicate<Actor_Unit> conditional,  Action onClicked, Func<Actor_Unit, Actor_Unit, bool> onExecute, Func<Actor_Unit, Vec2i, bool> onExecuteLocation = null, int minimumMp = 1, Color color = default)
+    public TargetedTacticalAction(string name, bool requiresPred, Predicate<Actor_Unit> conditional, Action onClicked, Func<Actor_Unit, Actor_Unit, bool> onExecute, Func<Actor_Unit, Vec2i, bool> onExecuteLocation = null, int minimumMp = 1, Color color = default)
     {
         Name = name;
         RequiresPred = requiresPred;
@@ -50,8 +48,9 @@ class UntargetedTacticalAction
     internal Color ButtonColor;
     internal string Name;
     internal Action OnClicked;
+    internal Predicate<Actor_Unit> AppearConditional;
 
-    public UntargetedTacticalAction(string name, Action onClicked, Color color = default)
+    public UntargetedTacticalAction(string name, Action onClicked, Predicate<Actor_Unit> conditional, Color color = default)
     {
         Name = name;
         OnClicked = onClicked;
@@ -59,6 +58,7 @@ class UntargetedTacticalAction
             ButtonColor = new Color(.669f, .753f, 1);
         else
             ButtonColor = color;
+        AppearConditional = conditional;
     }
 }
 
@@ -80,7 +80,7 @@ static class TacticalActionList
             requiresPred: false,
             conditional: (a) => true,
             onClicked: () => State.GameManager.TacticalMode.TrySetSpecialMode(SpecialAction.BellyRub),
-            onExecute: (a, t) => { return t.PredatorComponent != null ? a.BellyRub(t) : false; }));
+            onExecute: (a, t) => { return t.Unit.Predator ? a.BellyRub(t) : false; }));
         TargetedDictionary[SpecialAction.BellyRub] = TargetedActions.Last();
 
         TargetedActions.Add(new TargetedTacticalAction(
@@ -143,7 +143,7 @@ static class TacticalActionList
         TargetedActions.Add(new TargetedTacticalAction(
             name: "Vore Steal",
             requiresPred: true,
-            conditional: (a) => Config.TransferAllowed == true && Config.KuroTenkoEnabled == true && a.PredatorComponent != null,
+            conditional: (a) => Config.TransferAllowed == true && Config.KuroTenkoEnabled == true && a.Unit.Predator,
             onClicked: () => State.GameManager.TacticalMode.TrySetSpecialMode(SpecialAction.StealVore),
             onExecute: (a, t) => a.PredatorComponent.VoreStealAttempt(t)));
         TargetedDictionary[SpecialAction.StealVore] = TargetedActions.Last();
@@ -185,7 +185,7 @@ static class TacticalActionList
         TargetedActions.Add(new TargetedTacticalAction(
             name: "Vore Pounce",
             requiresPred: true,
-            conditional: (a) => a.Unit.HasTrait(Traits.Pounce) && a.PredatorComponent != null,
+            conditional: (a) => a.Unit.HasTrait(Traits.Pounce) && a.Unit.Predator,
             onClicked: () => State.GameManager.TacticalMode.TrySetSpecialMode(SpecialAction.PounceVore),
             onExecute: (a, t) => a.VorePounce(t),
             minimumMp: 2));
@@ -223,8 +223,10 @@ static class TacticalActionList
 
 
 
-        UntargetedActions.Add(new UntargetedTacticalAction("Flee", () => State.GameManager.TacticalMode.ButtonCallback(10)));
-        UntargetedActions.Add(new UntargetedTacticalAction("Surrender", () => State.GameManager.TacticalMode.ButtonCallback(9), new Color(.9f, .65f, .65f)));
+        UntargetedActions.Add(new UntargetedTacticalAction("Flee", () => State.GameManager.TacticalMode.ButtonCallback(10), (a) => true));
+        UntargetedActions.Add(new UntargetedTacticalAction("Surrender", () => State.GameManager.TacticalMode.ButtonCallback(9), (a) => true, new Color(.9f, .65f, .65f)));
+        UntargetedActions.Add(new UntargetedTacticalAction("Reveal", () => State.GameManager.TacticalMode.ButtonCallback(15), (a) => a.Unit.hiddenFixedSide && TacticalUtilities.PlayerCanSeeTrueSide(a.Unit)));
+        UntargetedActions.Add(new UntargetedTacticalAction("Defect", () => State.GameManager.TacticalMode.ButtonCallback(14), (a) => a.allowedToDefect));
     }
 }
 

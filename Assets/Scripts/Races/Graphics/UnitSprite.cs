@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -109,6 +108,13 @@ public class UnitSprite : MonoBehaviour
         FinishDisplayedTextSetup();
     }
 
+    public void DisplayHypno()
+    {
+        DamageIndicator.faceColor = Color.green;
+        DamageIndicator.text = "Hypnotized!";
+        FinishDisplayedTextSetup();
+    }
+
     public void DisplayDazzle()
     {
         DamageIndicator.faceColor = Color.red;
@@ -144,7 +150,7 @@ public class UnitSprite : MonoBehaviour
         FinishDisplayedTextSetup();
     }
 
-    public void DisplayDamage(int damage, bool spellDamage = false)
+    public void DisplayDamage(int damage, bool spellDamage = false, bool expGain = false)
     {
         if (State.GameManager.TacticalMode.turboMode)
             return;
@@ -152,8 +158,16 @@ public class UnitSprite : MonoBehaviour
             return;
         if (damage > 0)
         {
-            DamageIndicator.faceColor = Color.red;
-            DamageIndicator.text = $"-{damage}";
+            if (expGain)
+            {
+                DamageIndicator.faceColor = Color.yellow;
+                DamageIndicator.text = $"+{damage}";
+            }
+            else
+            {
+                DamageIndicator.faceColor = Color.red;
+                DamageIndicator.text = $"-{damage}";
+            }
         }
         else if (damage < 0)
         {
@@ -199,7 +213,7 @@ public class UnitSprite : MonoBehaviour
 
         if (lastHealth != actor.Unit.Health)
             UpdateHealthBar(actor);
-     
+
 
         if (goalScale.x > GraphicsFolder.localScale.x)
         {
@@ -299,7 +313,37 @@ public class UnitSprite : MonoBehaviour
             alpha = (activeTurn && actor.Movement > 0) ? .5f : .2f;
         else
             alpha = 0;
-        if (BlueColored)
+
+        if (actor.Unit.FixedSide != actor.Unit.Side && TacticalUtilities.PlayerCanSeeTrueSide(actor.Unit))
+        {
+            if (BlueColored)
+            {
+                {
+                    if (Config.AllianceSquaresDarkness == 3)
+                    {
+                        if (activeTurn && actor.Movement > 0)
+                            FlexibleSquare.color = new Color(1f, 0.6f, 0, 1);
+                        else
+                            FlexibleSquare.color = new Color(0.75f, 0.40f, 0, 1);
+                    }
+                    else
+                        FlexibleSquare.color = new Color(0.8f, 0.5f, 0f, alpha);
+                }
+            }
+            else
+            {
+                if (Config.AllianceSquaresDarkness == 3)
+                {
+                    if (activeTurn && actor.Movement > 0)
+                        FlexibleSquare.color = new Color(0.65f, 0, 0.9f, 1);
+                    else
+                        FlexibleSquare.color = new Color(0.35f, 0, 0.40f, 1);
+                }
+                else
+                    FlexibleSquare.color = new Color(0.45f, 0f, 0.75f, alpha);
+            }
+        }
+        else if (BlueColored)
         {
             if (Config.AltFriendlyColor)
             {
@@ -376,8 +420,4 @@ public class UnitSprite : MonoBehaviour
         HealthBar.gameObject.SetActive(false);
         CompleteSprite.ApplyDeadEffect();
     }
-
-
-
-
 }

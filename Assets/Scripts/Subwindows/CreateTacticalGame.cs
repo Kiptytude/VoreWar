@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -71,7 +70,7 @@ public class CreateTacticalGame : MonoBehaviour
 
         if (Enum.TryParse(Attacker.Race.captionText.text, out race))
         {
-           
+
         }
         else
         {
@@ -93,7 +92,7 @@ public class CreateTacticalGame : MonoBehaviour
 
         if (Enum.TryParse(Defender.Race.captionText.text, out Race race))
         {
-          
+
         }
         else
         {

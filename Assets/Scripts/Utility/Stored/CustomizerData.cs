@@ -1,9 +1,5 @@
 ﻿using OdinSerializer;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 class CustomizerData
 {
@@ -145,24 +141,24 @@ class CustomizerData
         Furry = unit.Furry;
         NewGraphics = Config.NewGraphics;
 
-        HeadType = unit.HeadType;    
-        TailType = unit.TailType;    
-        FurType = unit.FurType;    
-        EarType = unit.EarType;    
-        BodyAccentType1 = unit.BodyAccentType1;        
-        BodyAccentType2 = unit.BodyAccentType2;    
-        BodyAccentType3 = unit.BodyAccentType3;    
-        BodyAccentType4 = unit.BodyAccentType4;    
-        BodyAccentType5 = unit.BodyAccentType5;    
-        BallsSize = unit.BallsSize;    
-        VulvaType = unit.VulvaType;    
-        BasicMeleeWeaponType = unit.BasicMeleeWeaponType;    
-        AdvancedMeleeWeaponType = unit.AdvancedMeleeWeaponType;    
-        BasicRangedWeaponType = unit.BasicRangedWeaponType;    
+        HeadType = unit.HeadType;
+        TailType = unit.TailType;
+        FurType = unit.FurType;
+        EarType = unit.EarType;
+        BodyAccentType1 = unit.BodyAccentType1;
+        BodyAccentType2 = unit.BodyAccentType2;
+        BodyAccentType3 = unit.BodyAccentType3;
+        BodyAccentType4 = unit.BodyAccentType4;
+        BodyAccentType5 = unit.BodyAccentType5;
+        BallsSize = unit.BallsSize;
+        VulvaType = unit.VulvaType;
+        BasicMeleeWeaponType = unit.BasicMeleeWeaponType;
+        AdvancedMeleeWeaponType = unit.AdvancedMeleeWeaponType;
+        BasicRangedWeaponType = unit.BasicRangedWeaponType;
         AdvancedRangedWeaponType = unit.AdvancedRangedWeaponType;
 
         Pronouns = unit.Pronouns;
-}
+    }
 
     public void CopyToUnit(Unit unit, bool includeName)
     {
@@ -237,10 +233,10 @@ class CustomizerData
         if (ClothingExtraType4 > race.ExtraMainClothing4Types.Count) unit.ClothingExtraType4 = 0;
         if (ClothingExtraType5 > race.ExtraMainClothing5Types.Count) unit.ClothingExtraType5 = 0;
         if (HeadType > race.HeadTypes) unit.HeadType = 0;
-        
 
 
-        
+
+
     }
 }
 

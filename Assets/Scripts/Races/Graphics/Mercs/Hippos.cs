@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 class Hippos : DefaultRaceData
@@ -57,7 +54,7 @@ class Hippos : DefaultRaceData
         BreastShadow = null;
         Dick = new SpriteExtraInfo(9, DickSprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.HippoSkin, s.Unit.SkinColor));
         Balls = new SpriteExtraInfo(8, BallsSprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.HippoSkin, s.Unit.SkinColor));
-        
+
         AllowedMainClothingTypes = new List<MainClothing>()
         {
             new HipposTop1(),
@@ -172,7 +169,7 @@ class Hippos : DefaultRaceData
     protected override Sprite BodyAccentSprite6(Actor_Unit actor) => Sprites[120 + (actor.IsAttacking ? 1 : 0)]; // left arm
 
     protected override Sprite EyesSprite(Actor_Unit actor) => Sprites[30 + (actor.IsEating ? 1 : 0) + (2 * actor.Unit.EyeType)];
-    
+
     internal override Sprite BellySprite(Actor_Unit actor, GameObject belly)
     {
         if (actor.HasBelly)
@@ -468,7 +465,7 @@ class Hippos : DefaultRaceData
             base.Configure(sprite, actor);
         }
     }
-    
+
     class Natural : MainClothing
     {
         public Natural()

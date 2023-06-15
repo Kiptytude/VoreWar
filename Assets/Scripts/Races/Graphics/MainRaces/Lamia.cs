@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 class Lamia : DefaultRaceData
@@ -65,7 +62,7 @@ class Lamia : DefaultRaceData
 
     internal override void RunFirst(Actor_Unit actor)
     {
-        if (actor.PredatorComponent == null)
+        if (actor.Unit.Predator == false)
             Selicia = false;
         else
             Selicia = (actor.PredatorComponent.IsUnitOfSpecificationInPrey(Race.Selicia, true, PreyLocation.stomach)
@@ -123,11 +120,11 @@ class Lamia : DefaultRaceData
         if (Selicia) return State.GameManager.SpriteDictionary.Lamia[17];
 
         int bonusCap = 0;
-        if (actor.PredatorComponent != null && actor.PredatorComponent.TailFullness > 0)
+        if (actor.Unit.Predator && actor.PredatorComponent.TailFullness > 0)
             bonusCap = 1 + actor.GetTailSize(2);
-        if (Config.LamiaUseTailAsSecondBelly && actor.PredatorComponent != null)
+        if (Config.LamiaUseTailAsSecondBelly && actor.Unit.Predator)
             return State.GameManager.SpriteDictionary.Lamia[Math.Min(bonusCap + (actor.PredatorComponent?.Stomach2ndFullness > 0 ? (11 + actor.GetStomach2Size(2)) : 10), 13)];
-        
+
         return State.GameManager.SpriteDictionary.Lamia[Math.Min(10 + actor.Unit.BodySize + bonusCap, 13)];
     }
 
@@ -209,7 +206,7 @@ class Lamia : DefaultRaceData
     {
         if (actor.Unit.HasDick == false)
             return null;
-       
+
         if (actor.IsErect())
         {
             if (actor.HasBelly == false)
@@ -235,10 +232,10 @@ class Lamia : DefaultRaceData
             return State.GameManager.SpriteDictionary.Lamia[14];
         }
         int bonusCap = 0;
-        if (actor.PredatorComponent != null && actor.PredatorComponent.TailFullness > 0)
+        if (actor.Unit.Predator && actor.PredatorComponent.TailFullness > 0)
             bonusCap = 1 + actor.GetTailSize(2);
-    
-        if (Config.LamiaUseTailAsSecondBelly && actor.PredatorComponent != null)
+
+        if (Config.LamiaUseTailAsSecondBelly && actor.Unit.Predator)
         {
             if (actor.PredatorComponent.Stomach2ndFullness > 0 || actor.PredatorComponent.TailFullness > 0)
                 return State.GameManager.SpriteDictionary.Lamia[Math.Min(2 + actor.GetStomach2Size(2) + bonusCap, 4)];

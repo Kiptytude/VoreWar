@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 class SpriteContainer
@@ -31,7 +26,7 @@ class SpriteContainer
                 return spriteRenderer.sortingOrder;
         }
         set
-        {            
+        {
             if (usingSpriteRenderer == false)
                 _sortOrder = value;
             else

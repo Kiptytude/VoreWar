@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-static class Races
+﻿static class Races
 {
 
 
@@ -297,13 +291,13 @@ static class Races
             case Race.Monitors:
                 return Monitors;
             case Race.Deer:
-                return Deer; 
+                return Deer;
             case Race.Schiwardez:
                 return Schiwardez;
             case Race.Terrorbird:
                 return Terrorbird;
             case Race.Vargul:
-                return Vargul; 
+                return Vargul;
             case Race.Dratopyr:
                 return Dratopyr;
             case Race.Erin:

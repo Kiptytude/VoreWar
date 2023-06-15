@@ -3,7 +3,8 @@
 public static class PreyLocStrings
 {
     static readonly List<string> wombSyn = new List<string>() { "womb", "lower belly", "pussy", "slit", "muff", "cunt" };
-    static readonly List<string> breastSyn = new List<string>() { "breasts", "bosom", "bust", "mammaries", "boobs", "cleavage", "tits" };    
+    static readonly List<string> breastSyn = new List<string>() { "breasts", "bosom", "bust", "mammaries", "boobs", "cleavage", "tits" };
+    static readonly List<string> breastSynPlural = new List<string>() { "breasts", "mammaries", "boobs", "tits" };
     static readonly List<string> ballsSyn = new List<string>() { "balls", "scrotum", "testicles", "nuts", "orbs", "nutsack" };
     static readonly List<string> stomachSyn = new List<string>() { "gut", "stomach", "belly", "tummy", "middle" };
     static readonly List<string> analSyn = new List<string>() { "butt", "ass", "bottom", "backside", "bum", "rear", "rump", "booty", "tush" };
@@ -43,7 +44,7 @@ public static class PreyLocStrings
             case PreyLocation.leftBreast:
                 return genRandom(breastSyn);
             case PreyLocation.rightBreast:
-                return genRandom(breastSyn);				
+                return genRandom(breastSyn);
             case PreyLocation.balls:
                 return genRandom(ballsSyn);
             case PreyLocation.stomach:
@@ -64,6 +65,11 @@ public static class PreyLocStrings
         return genRandom(cockSyn);
     }
 
+    public static string ToBreastSynPlural()
+    {
+        return genRandom(breastSynPlural);
+    }
+
     public static string ToFluid(this PreyLocation preyLocation)
     {
         switch (preyLocation)
@@ -73,7 +79,7 @@ public static class PreyLocStrings
             case PreyLocation.leftBreast:
                 return genRandom(breastFluid);
             case PreyLocation.rightBreast:
-                return genRandom(breastFluid);				
+                return genRandom(breastFluid);
             case PreyLocation.balls:
                 return genRandom(ballsFluid);
             case PreyLocation.stomach:
@@ -96,7 +102,7 @@ public static class PreyLocStrings
             case PreyLocation.leftBreast:
                 return genRandom(breastVerb);
             case PreyLocation.rightBreast:
-                return genRandom(breastVerb);					
+                return genRandom(breastVerb);
             case PreyLocation.balls:
                 return genRandom(ballsVerb);
             case PreyLocation.stomach:
@@ -118,7 +124,7 @@ public static class PreyLocStrings
             case PreyLocation.leftBreast:
                 return genRandom(breastVerbPastTense);
             case PreyLocation.rightBreast:
-                return genRandom(breastVerbPastTense);					
+                return genRandom(breastVerbPastTense);
             case PreyLocation.balls:
                 return genRandom(ballsVerbPastTense);
             case PreyLocation.stomach:

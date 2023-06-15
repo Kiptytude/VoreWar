@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 class Bees : DefaultRaceData
@@ -104,7 +101,7 @@ class Bees : DefaultRaceData
     internal override void RandomCustom(Unit unit)
     {
         base.RandomCustom(unit);
-       
+
         if (unit.HasDick && unit.HasBreasts)
         {
             if (Config.HermsOnlyUseFemaleHair)

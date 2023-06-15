@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.EventSystems;
 
 public class MapEditorVillage : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler

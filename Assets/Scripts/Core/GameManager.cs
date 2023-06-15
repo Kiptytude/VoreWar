@@ -1,7 +1,4 @@
-﻿using Assets.Scripts.Utility;
-using System.Collections;
-using System.IO;
-using System.Linq;
+﻿using System.Linq;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -45,6 +42,7 @@ public class GameManager : MonoBehaviour
 
     public GameObject SavePrompt;
     public GameObject DialogBoxPrefab;
+    public GameObject OptionsBoxPrefab;
     public GameObject MessageBoxPrefab;
     public GameObject InputBoxPrefab;
     public GameObject FullScreenMessageBoxPrefab;
@@ -160,6 +158,11 @@ public class GameManager : MonoBehaviour
     public DialogBox CreateDialogBox()
     {
         return Instantiate(DialogBoxPrefab).GetComponent<DialogBox>();
+    }
+
+    public OptionsBox CreateOptionsBox()
+    {
+        return Instantiate(OptionsBoxPrefab).GetComponent<OptionsBox>();
     }
 
     public void CreateMessageBox(string text, int timedLife = 0)
@@ -278,7 +281,7 @@ public class GameManager : MonoBehaviour
 
     internal void CameraCall(Vec2i location) => CameraCall(new Vector3(location.x, location.y, 0));
 
-    public void SwitchToStrategyMode()
+    public void SwitchToStrategyMode(bool initialLoad = false)
     {
         if (PureTactical)
         {
@@ -292,7 +295,7 @@ public class GameManager : MonoBehaviour
         CurrentScene.CleanUp();
         CurrentScene = StrategyMode;
         StrategyMode.UndoMoves.Clear();
-        StrategyMode.Regenerate();
+        StrategyMode.Regenerate(initialLoad);
         if (needsCameraRefresh)
             CameraController.LoadStrategicCamera();
         queuedTactical = false;

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 
 public class AltClicks : MonoBehaviour, IPointerClickHandler
 {

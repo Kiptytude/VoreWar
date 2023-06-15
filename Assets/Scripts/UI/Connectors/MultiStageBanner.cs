@@ -1,6 +1,6 @@
-﻿using System.Collections;
-using System.Linq;
+﻿using System.Linq;
 using UnityEngine;
+using static Army;
 
 public class MultiStageBanner : MonoBehaviour
 {
@@ -20,7 +20,6 @@ public class MultiStageBanner : MonoBehaviour
             FullBannerLayer.color = empire.UnitySecondaryColor;
         else
             FullBannerLayer.color = Color.white;
-        InsigniaLayer.color = empire.UnityColor;
         if (army.BannerStyle == 0)
         {
             if (25 + (int)empire.Race < State.GameManager.StrategyMode.Banners.Length)
@@ -30,6 +29,15 @@ public class MultiStageBanner : MonoBehaviour
         }
         else
             InsigniaLayer.sprite = State.GameManager.StrategyMode.Banners[2 + army.BannerStyle];
+        //Color TransparentPrimaryColor = new Color(empire.UnityColor.r, empire.UnityColor.g, empire.UnityColor.b, 0.5f);
+        //Color TransparentSecondaryColor = new Color(empire.UnitySecondaryColor.r, empire.UnitySecondaryColor.g, empire.UnitySecondaryColor.b, 0.5f);
+
+        if (army.Units.All(u => u.HasTrait(Traits.Infiltrator) && !u.IsInfiltratingSide(u.Side)))
+        {
+            FullBannerLayer.color  = new Color(FullBannerLayer.color.r, FullBannerLayer.color.g, FullBannerLayer.color.b, 0.5f);
+            InsigniaLayer.color = new Color(InsigniaLayer.color.r, InsigniaLayer.color.g, InsigniaLayer.color.b, 0.5f);
+            LeaderLayer.color = new Color(LeaderLayer.color.r, LeaderLayer.color.g, LeaderLayer.color.b, 0.5f);
+        }
 
         SelectedBackLayer.enabled = selected;
         SelectedColorLayer.enabled = selected;

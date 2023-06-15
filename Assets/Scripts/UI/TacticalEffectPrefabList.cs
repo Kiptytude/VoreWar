@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class TacticalEffectPrefabList : MonoBehaviour
 {
@@ -13,4 +12,5 @@ public class TacticalEffectPrefabList : MonoBehaviour
     public GameObject GlueBomb;
     public GameObject PoisonCloud;
     public GameObject Charm;
+    public GameObject GasCloud;
 }

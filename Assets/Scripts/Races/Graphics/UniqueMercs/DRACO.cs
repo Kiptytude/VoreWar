@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 class DRACO : BlankSlate
@@ -11,9 +7,9 @@ class DRACO : BlankSlate
     {
         CanBeGender = new List<Gender>() { Gender.Male };
         GentleAnimation = true;
-        Head = new SpriteExtraInfo(6, HeadSprite, WhiteColored);		
+        Head = new SpriteExtraInfo(6, HeadSprite, WhiteColored);
         Body = new SpriteExtraInfo(5, BodySprite, WhiteColored);
-        BodyAccent = new SpriteExtraInfo(3, BodyAccentSprite, WhiteColored);		
+        BodyAccent = new SpriteExtraInfo(3, BodyAccentSprite, WhiteColored);
         Belly = new SpriteExtraInfo(4, null, WhiteColored);
         clothingColors = 0;
     }
@@ -32,9 +28,9 @@ class DRACO : BlankSlate
     }
 
     protected override Sprite BodySprite(Actor_Unit actor) => State.GameManager.SpriteDictionary.DRACO[0];
-	
-    protected override Sprite BodyAccentSprite(Actor_Unit actor) => State.GameManager.SpriteDictionary.DRACO[1];	
-	
+
+    protected override Sprite BodyAccentSprite(Actor_Unit actor) => State.GameManager.SpriteDictionary.DRACO[1];
+
     internal override Sprite BellySprite(Actor_Unit actor, GameObject belly)
     {
         if (actor.HasBelly == false)

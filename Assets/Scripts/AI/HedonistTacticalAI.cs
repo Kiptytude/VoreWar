@@ -1,7 +1,4 @@
-using OdinSerializer;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 
 public class HedonistTacticalAI : TacticalAI
 {
@@ -15,7 +12,7 @@ public class HedonistTacticalAI : TacticalAI
         didAction = false; // Very important fix: surrounded retreaters sometimes just skipped doing attacks because this was never set to false in or before "fightwithoutmoving"
 
         path = null;
-        if (retreating && actor.Unit.Type != UnitType.Summon && actor.Unit.Type != UnitType.SpecialMercenary && actor.Unit.HasTrait(Traits.Fearless) == false && actor.Unit.GetStatusEffect(StatusEffectType.Charmed) == null && TacticalUtilities.GetPreferredSide(actor, AISide, enemySide) == AISide)
+        if (retreating && actor.Unit.Type != UnitType.Summon && actor.Unit.Type != UnitType.SpecialMercenary && actor.Unit.HasTrait(Traits.Fearless) == false && TacticalUtilities.GetMindControlSide(actor.Unit) == -1 && TacticalUtilities.GetPreferredSide(actor.Unit, AISide, enemySide) == AISide)
         {
             int retreatY;
             if (State.GameManager.TacticalMode.IsDefender(actor) == false)
@@ -51,6 +48,10 @@ public class HedonistTacticalAI : TacticalAI
             if (didAction) return;
         }
 
+        if (actor.Unit.GetStatusEffect(StatusEffectType.Temptation) != null && (State.Rand.Next(2) == 0 || actor.Unit.GetStatusEffect(StatusEffectType.Temptation).Duration <= 2))
+        {
+            RunForceFeed(actor);
+        }
 
         if (actor.Unit.HasTrait(Traits.Pounce) && actor.Movement >= 2)
         {
@@ -66,6 +67,9 @@ public class HedonistTacticalAI : TacticalAI
             return;
 
         TryResurrect(actor);
+        TryReanimate(actor);
+
+        RunBind(actor);
 
         if (State.Rand.Next(2) == 0 || actor.Unit.HasWeapon == false)
             RunSpells(actor);

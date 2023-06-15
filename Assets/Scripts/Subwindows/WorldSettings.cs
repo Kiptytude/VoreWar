@@ -1,6 +1,5 @@
 ﻿using LegacyAI;
 using System;
-using System.Collections;
 using System.Linq;
 using System.Text;
 using UnityEngine;
@@ -38,7 +37,7 @@ public class WorldSettings : MonoBehaviour
             {
                 StrategicAI ai = (StrategicAI)State.World.MainEmpires[i].StrategicAI;
                 if (ai.CheatLevel > 0)
-                Empires[i].StrategicAI.value = 3 + ai.CheatLevel;
+                    Empires[i].StrategicAI.value = 3 + ai.CheatLevel;
                 else if (ai.smarterAI)
                     Empires[i].StrategicAI.value = 3;
                 else
@@ -96,9 +95,9 @@ public class WorldSettings : MonoBehaviour
                 else if (strat == StrategyAIType.Advanced)
                     State.World.MainEmpires[i].StrategicAI = new StrategicAI(State.World.MainEmpires[i], 0, true);
                 else if (strat == StrategyAIType.Cheating1)
-                    State.World.MainEmpires[i].StrategicAI = new StrategicAI(State.World.MainEmpires[i], 1, true); 
+                    State.World.MainEmpires[i].StrategicAI = new StrategicAI(State.World.MainEmpires[i], 1, true);
                 else if (strat == StrategyAIType.Cheating2)
-                    State.World.MainEmpires[i].StrategicAI = new StrategicAI(State.World.MainEmpires[i], 2, true); 
+                    State.World.MainEmpires[i].StrategicAI = new StrategicAI(State.World.MainEmpires[i], 2, true);
                 else if (strat == StrategyAIType.Cheating3)
                     State.World.MainEmpires[i].StrategicAI = new StrategicAI(State.World.MainEmpires[i], 3, true);
                 else if (strat == StrategyAIType.Legacy)
@@ -113,26 +112,26 @@ public class WorldSettings : MonoBehaviour
             if (State.World.MainEmpires[i].CanVore != Empires[i].CanVore.isOn)
             {
                 State.World.MainEmpires[i].CanVore = Empires[i].CanVore.isOn;
-            foreach (Unit unit in StrategicUtilities.GetAllUnits().Where(s => s.Race == State.World.MainEmpires[i].Race))
-            {
-                if (unit.Type == UnitType.Soldier)
+                foreach (Unit unit in StrategicUtilities.GetAllUnits().Where(s => s.Race == State.World.MainEmpires[i].Race))
                 {
-                    if (unit.fixedPredator == false)
+                    if (unit.Type == UnitType.Soldier)
+                    {
+                        if (unit.fixedPredator == false)
                         {
                             unit.Predator = State.World.MainEmpires[i].CanVore;
                             unit.ReloadTraits(); //To make sure it takes into account gender traits as well
                         }
                     }
-                    
+
+                }
             }
-            }
-            
+
             if (State.World.MainEmpires[i].Team != Convert.ToInt32(Empires[i].Team.text))
             {
                 State.World.MainEmpires[i].Team = Convert.ToInt32(Empires[i].Team.text);
                 RelationsManager.TeamUpdated(State.World.MainEmpires[i]);
             }
-            
+
             State.World.MainEmpires[i].UnityColor = CreateStrategicGame.ColorFromIndex(Empires[i].PrimaryColor.value);
             State.World.MainEmpires[i].UnitySecondaryColor = CreateStrategicGame.GetDarkerColor(CreateStrategicGame.ColorFromIndex(Empires[i].SecondaryColor.value));
             State.World.MainEmpires[i].MaxArmySize = (int)Empires[i].MaxArmySize.value;
@@ -143,6 +142,7 @@ public class WorldSettings : MonoBehaviour
             RelationsManager.ResetRelationTypes();
         State.World.RefreshTurnOrder();
         State.World.UpdateBanditLimits();
+        State.GameManager.StrategyMode?.CheckIfOnlyAIPlayers();
         gameObject.SetActive(false);
     }
 
@@ -158,7 +158,7 @@ public class WorldSettings : MonoBehaviour
     }
 
     void ChangeArmySizes(int size)
-    {        
+    {
         foreach (var empire in Empires)
         {
             empire.MaxArmySize.value = size;
@@ -190,8 +190,8 @@ public class WorldSettings : MonoBehaviour
         right.AppendLine($"Level Soft Cap: {Config.SoftLevelCap}");
         right.AppendLine($"Level Hard Cap: {Config.HardLevelCap}");
         right.AppendLine($"Victory Type: {Config.VictoryCondition}");
-        right.AppendLine($"Gold Mine Income : {Config.GoldMineIncome}");        
-        right.AppendLine($"Leader Exp % lost on Death : {Math.Round(Config.LeaderLossExpPct * 100,2)}");
+        right.AppendLine($"Gold Mine Income : {Config.GoldMineIncome}");
+        right.AppendLine($"Leader Exp % lost on Death : {Math.Round(Config.LeaderLossExpPct * 100, 2)}");
         right.AppendLine($"Leader Levels lost on Death : {Config.LeaderLossLevels}");
         if (State.World.crazyBuildings)
             right.AppendLine($"Annoynimouse's crazy buildings are on...");

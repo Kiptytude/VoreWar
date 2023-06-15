@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 
 class Wyvern : BlankSlate
 {
@@ -47,7 +42,7 @@ class Wyvern : BlankSlate
         actor.AnimationController.frameLists = new AnimationController.FrameList[] {
             new AnimationController.FrameList(0, 0, false),  // Tail controller. Index 0.
             new AnimationController.FrameList(0, 0, false)}; // Tongue controller. Index 1.
-}
+    }
 
     protected override Sprite BodySprite(Actor_Unit actor)
     {
@@ -97,7 +92,8 @@ class Wyvern : BlankSlate
     {
         if (!actor.Targetable) return null;
 
-        if (actor.IsAttacking || actor.IsOralVoring) {
+        if (actor.IsAttacking || actor.IsOralVoring)
+        {
             actor.AnimationController.frameLists[1].currentlyActive = false;
             actor.AnimationController.frameLists[1].currentFrame = 0;
             actor.AnimationController.frameLists[1].currentTime = 0f;
@@ -106,11 +102,13 @@ class Wyvern : BlankSlate
 
         if (actor.AnimationController.frameLists[1].currentlyActive)
         {
-            if (actor.AnimationController.frameLists[1].currentTime >= frameListTongue.times[actor.AnimationController.frameLists[0].currentFrame]) {
+            if (actor.AnimationController.frameLists[1].currentTime >= frameListTongue.times[actor.AnimationController.frameLists[0].currentFrame])
+            {
                 actor.AnimationController.frameLists[1].currentFrame++;
                 actor.AnimationController.frameLists[1].currentTime = 0f;
 
-                if (actor.AnimationController.frameLists[1].currentFrame >= frameListTongue.frames.Length) {
+                if (actor.AnimationController.frameLists[1].currentFrame >= frameListTongue.frames.Length)
+                {
                     actor.AnimationController.frameLists[1].currentlyActive = false;
                     actor.AnimationController.frameLists[1].currentFrame = 0;
                     actor.AnimationController.frameLists[1].currentTime = 0f;
@@ -120,7 +118,8 @@ class Wyvern : BlankSlate
             return State.GameManager.SpriteDictionary.Wyvern[34 + frameListTongue.frames[actor.AnimationController.frameLists[1].currentFrame]];
         }
 
-        if (actor.PredatorComponent?.VisibleFullness > 0 && State.Rand.Next(600) == 0) {
+        if (actor.PredatorComponent?.VisibleFullness > 0 && State.Rand.Next(600) == 0)
+        {
             actor.AnimationController.frameLists[1].currentlyActive = true;
         }
 
@@ -144,19 +143,23 @@ class Wyvern : BlankSlate
     {
         if (!actor.Targetable) return State.GameManager.SpriteDictionary.Wyvern[24];
 
-        if (actor.IsAttacking) {
+        if (actor.IsAttacking)
+        {
             actor.AnimationController.frameLists[0].currentlyActive = false;
             actor.AnimationController.frameLists[0].currentFrame = 0;
             actor.AnimationController.frameLists[0].currentTime = 0f;
             return null;
         }
 
-        if (actor.AnimationController.frameLists[0].currentlyActive) {
-            if (actor.AnimationController.frameLists[0].currentTime >= frameListTail.times[actor.AnimationController.frameLists[0].currentFrame]) {
+        if (actor.AnimationController.frameLists[0].currentlyActive)
+        {
+            if (actor.AnimationController.frameLists[0].currentTime >= frameListTail.times[actor.AnimationController.frameLists[0].currentFrame])
+            {
                 actor.AnimationController.frameLists[0].currentFrame++;
                 actor.AnimationController.frameLists[0].currentTime = 0f;
 
-                if (actor.AnimationController.frameLists[0].currentFrame >= frameListTail.frames.Length) {
+                if (actor.AnimationController.frameLists[0].currentFrame >= frameListTail.frames.Length)
+                {
                     actor.AnimationController.frameLists[0].currentlyActive = false;
                     actor.AnimationController.frameLists[0].currentFrame = 0;
                     actor.AnimationController.frameLists[0].currentTime = 0f;
@@ -166,7 +169,8 @@ class Wyvern : BlankSlate
             return State.GameManager.SpriteDictionary.Wyvern[22 + frameListTail.frames[actor.AnimationController.frameLists[0].currentFrame]];
         }
 
-        if (State.Rand.Next(400) == 0) {
+        if (State.Rand.Next(400) == 0)
+        {
             actor.AnimationController.frameLists[0].currentlyActive = true;
         }
 
@@ -177,12 +181,14 @@ class Wyvern : BlankSlate
     {
         if (!actor.Targetable) return State.GameManager.SpriteDictionary.Wyvern[30];
 
-        if (actor.IsAttacking) {
+        if (actor.IsAttacking)
+        {
             actor.AnimationController.frameLists[0].currentlyActive = false;
             return State.GameManager.SpriteDictionary.Wyvern[6];
         }
 
-        if (actor.AnimationController.frameLists[0].currentlyActive) {
+        if (actor.AnimationController.frameLists[0].currentlyActive)
+        {
             return State.GameManager.SpriteDictionary.Wyvern[28 + frameListTail.frames[actor.AnimationController.frameLists[0].currentFrame]];
         }
 
@@ -209,17 +215,22 @@ class Wyvern : BlankSlate
         base.RandomCustom(unit);
         unit.BodySize = State.Rand.Next(0, 4);
         unit.EyeType = State.Rand.Next(0, 3);
-        while (unit.SkinColor == unit.EyeColor) {
-            unit.EyeColor = State.Rand.Next(0, ColorMap.WyvernColorCount); }
+        while (unit.SkinColor == unit.EyeColor)
+        {
+            unit.EyeColor = State.Rand.Next(0, ColorMap.WyvernColorCount);
+        }
         string name = GetRaceSpecialName(unit);
         if (name != null) unit.Name = name;
     }
 
-    private string GetRaceSpecialName(Unit unit) {
+    private string GetRaceSpecialName(Unit unit)
+    {
         int rand = State.Rand.Next(0, 20);
 
-        if (rand <= 2) {
-            switch (unit.SkinColor) {
+        if (rand <= 2)
+        {
+            switch (unit.SkinColor)
+            {
                 case 0: return "Flamescale";
                 case 1: return "Bloodscale";
                 case 2: return "Cobaltscale";
@@ -231,7 +242,8 @@ class Wyvern : BlankSlate
                 case 8: return "Rosescale";
                 case 9: return "Budscale";
                 case 10: return "Dustscale";
-                default: break;}
+                default: break;
+            }
         }
         if (rand <= 3 && unit.EyeType == 2) return "Blackeye";
         if (rand <= 5 && unit.EyeType == 2) return "Darkeye";
@@ -250,7 +262,8 @@ class Wyvern : BlankSlate
                 case 7: return "Sunsetwing";
                 case 8: return "Leafwing";
                 case 9: return "Dustscale";
-                default: break;}
+                default: break;
+            }
         }
 
         if (rand <= 8)
@@ -268,7 +281,8 @@ class Wyvern : BlankSlate
                 case 8: return "Warmscale";
                 case 9: return "Mintscale";
                 case 10: return "Sandscale";
-                default: break;}
+                default: break;
+            }
         }
 
         if (rand <= 11)
@@ -282,7 +296,8 @@ class Wyvern : BlankSlate
                 case 4: return "Shadowwing";
                 case 5: return "Viridwing";
                 case 6: return "Poisonwing";
-                default: break;}
+                default: break;
+            }
         }
         return null;
     }

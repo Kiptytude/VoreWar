@@ -1,9 +1,5 @@
 ﻿using MapObjects;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 
 class MapVillagePopulator
@@ -37,7 +33,7 @@ class MapVillagePopulator
                 continue;
             if (Config.VillagesPerEmpire[(int)map.storedVillages[i].Race] == 0)
                 continue;
-            
+
             if (map.storedVillages[i].Capital == true)
             {
                 Race race = map.storedVillages[i].Race;
@@ -64,7 +60,7 @@ class MapVillagePopulator
             return;
         }
         List<MercenaryHouse> newHouses = new List<MercenaryHouse>();
-        
+
 
         for (int i = 0; i < map.mercLocations.Length; i++)
         {

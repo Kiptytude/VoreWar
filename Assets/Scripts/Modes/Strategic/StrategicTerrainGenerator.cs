@@ -1,9 +1,4 @@
-﻿
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Assets.Scripts.Modes.Strategic
 {
@@ -18,7 +13,7 @@ namespace Assets.Scripts.Modes.Strategic
 
         //this is used to sharpen mountains and flatten valleys. 
         //Ideally the curve should be 0y in 0x and 1y in 1x, and below 0.5 for most of its length
-        AnimationCurve height_multiplier = new AnimationCurve(new Keyframe[] { new Keyframe(0, 0), new Keyframe(.2f, .2f), new Keyframe(.8f, .5f), new Keyframe(1, 1) });       
+        AnimationCurve height_multiplier = new AnimationCurve(new Keyframe[] { new Keyframe(0, 0), new Keyframe(.2f, .2f), new Keyframe(.8f, .5f), new Keyframe(1, 1) });
 
         float he_zoom = 10f;
         float he_factor = 2f; //1.8 to 4 look good
@@ -61,7 +56,7 @@ namespace Assets.Scripts.Modes.Strategic
         }
 
         StrategicTileType GetTerrain(int x, int y)
-        {            
+        {
             float height = he_array[x, y];
             float humidity = hu_array[x, y];
             float temperature = te_array[x, y];
@@ -95,9 +90,9 @@ namespace Assets.Scripts.Modes.Strategic
             if (temperature < .3f && height < .55f - (GenArgs.Hilliness / 5) && humidity < (.5f + GenArgs.ForestPct / 4) && humidity > (.5f - GenArgs.ForestPct / 4))
                 return StrategicTileType.snowTrees;
             if (temperature < .3f && height < .55f - (GenArgs.Hilliness / 5))
-                return StrategicTileType.snow;         
+                return StrategicTileType.snow;
             if (temperature < .3f && height > .55f - (GenArgs.Hilliness / 5) + Random.Range(0f, 1 - mountain_threshold))
-                return StrategicTileType.snowMountain; 
+                return StrategicTileType.snowMountain;
             if (temperature < .3f)
                 return StrategicTileType.snowHills;
             if (height > .55f - (GenArgs.Hilliness / 5) + Random.Range(0f, 1 - mountain_threshold))

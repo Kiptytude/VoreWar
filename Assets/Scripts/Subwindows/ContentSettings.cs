@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 public class ContentSettings : MonoBehaviour
 {
@@ -27,7 +25,7 @@ public class ContentSettings : MonoBehaviour
     public Slider FurryFraction;
     public Toggle FriendlyRegurgitation;
 
-    public Slider FogDistance; 
+    public Slider FogDistance;
 
     public Toggle HairMatchesFur;
     public Toggle MaleHairForFemales;
@@ -174,12 +172,14 @@ public class ContentSettings : MonoBehaviour
     public GameObject GenderPanel;
     public GameObject AppearancePanel;
     public GameObject VoreMiscPanel;
+    public GameObject VoreMisc2Panel;
 
     public Button GameplayButton;
     public Button RacesButton;
     public Button GenderButton;
     public Button AppearanceButton;
     public Button VoreMiscButton;
+    public Button VoreMisc2Button;
 
     List<ToggleObject> Toggles;
 
@@ -486,11 +486,13 @@ public class ContentSettings : MonoBehaviour
         GenderPanel.SetActive(false);
         AppearancePanel.SetActive(false);
         VoreMiscPanel.SetActive(false);
+        VoreMisc2Panel.SetActive(false);
         GameplayButton.interactable = false;
         RacesButton.interactable = true;
         GenderButton.interactable = true;
         AppearanceButton.interactable = true;
         VoreMiscButton.interactable = true;
+        VoreMisc2Button.interactable = true;
     }
 
     public void ActivateRaces()
@@ -500,11 +502,13 @@ public class ContentSettings : MonoBehaviour
         GenderPanel.SetActive(false);
         AppearancePanel.SetActive(false);
         VoreMiscPanel.SetActive(false);
+        VoreMisc2Panel.SetActive(false);
         GameplayButton.interactable = true;
         RacesButton.interactable = false;
         GenderButton.interactable = true;
         AppearanceButton.interactable = true;
         VoreMiscButton.interactable = true;
+        VoreMisc2Button.interactable = true;
         MonsterSpawnerFolder.position = new Vector3();
     }
     public void ActivateGender()
@@ -514,11 +518,13 @@ public class ContentSettings : MonoBehaviour
         GenderPanel.SetActive(true);
         AppearancePanel.SetActive(false);
         VoreMiscPanel.SetActive(false);
+        VoreMisc2Panel.SetActive(false);
         GameplayButton.interactable = true;
         RacesButton.interactable = true;
         GenderButton.interactable = false;
         AppearanceButton.interactable = true;
         VoreMiscButton.interactable = true;
+        VoreMisc2Button.interactable = true;
     }
     public void ActivateAppearance()
     {
@@ -527,11 +533,13 @@ public class ContentSettings : MonoBehaviour
         GenderPanel.SetActive(false);
         AppearancePanel.SetActive(true);
         VoreMiscPanel.SetActive(false);
+        VoreMisc2Panel.SetActive(false);
         GameplayButton.interactable = true;
         RacesButton.interactable = true;
         GenderButton.interactable = true;
         AppearanceButton.interactable = false;
         VoreMiscButton.interactable = true;
+        VoreMisc2Button.interactable = true;
     }
 
     public void ActivateVoreMisc()
@@ -541,11 +549,29 @@ public class ContentSettings : MonoBehaviour
         GenderPanel.SetActive(false);
         AppearancePanel.SetActive(false);
         VoreMiscPanel.SetActive(true);
+        VoreMisc2Panel.SetActive(false);
         GameplayButton.interactable = true;
         RacesButton.interactable = true;
         GenderButton.interactable = true;
         AppearanceButton.interactable = true;
         VoreMiscButton.interactable = false;
+        VoreMisc2Button.interactable = true;
+    }
+
+    public void ActivateVoreMisc2()
+    {
+        GameplayPanel.SetActive(false);
+        RacesPanel.SetActive(false);
+        GenderPanel.SetActive(false);
+        AppearancePanel.SetActive(false);
+        VoreMiscPanel.SetActive(false);
+        VoreMisc2Panel.SetActive(true);
+        GameplayButton.interactable = true;
+        RacesButton.interactable = true;
+        GenderButton.interactable = true;
+        AppearanceButton.interactable = true;
+        VoreMiscButton.interactable = true;
+        VoreMisc2Button.interactable = false;
     }
 
     public void ConfirmRefresh()
@@ -687,7 +713,7 @@ public class ContentSettings : MonoBehaviour
         WeightLossFractionDick.value = Config.WeightLossFractionDick;
         GrowthMod.text = Config.GrowthMod.ToString();
         GrowthCap.text = Config.GrowthCap.ToString();
-        GrowthDecayOffset.text = Config.GrowthDecayOffset.ToString();   
+        GrowthDecayOffset.text = Config.GrowthDecayOffset.ToString();
         GrowthDecayIncreaseRate.text = Config.GrowthDecayIncreaseRate.ToString();
         FurryFraction.value = Config.FurryFraction;
         TacticalWaterValue.value = Config.TacticalWaterValue;
@@ -754,7 +780,7 @@ public class ContentSettings : MonoBehaviour
             spawner.SpawnRate.value = info.spawnRate;
             spawner.ScalingRate.text = info.scalingFactor.ToString();
             spawner.MaxArmies.text = info.MaxArmies.ToString();
-            spawner.Confidence.text = info.Confidence.ToString();
+            spawner.Confidence.text = info.Confidence == 0 ? "6" : info.Confidence.ToString();
             spawner.MinArmySize.text = info.MinArmySize.ToString();
             spawner.MaxArmySize.text = info.MaxArmySize.ToString();
             spawner.Team.text = info.Team.ToString();
@@ -854,7 +880,7 @@ public class ContentSettings : MonoBehaviour
                         }
                     }
                 }
-               
+
             }
         }
         foreach (ToggleObject toggle in Toggles)

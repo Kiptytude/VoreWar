@@ -1,9 +1,5 @@
 ﻿using OdinSerializer;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 
 
@@ -64,7 +60,7 @@ public class StrategicStats
         for (int i = 0; i < State.World.MainEmpires.Count; i++)
         {
             if (EmpireStats.Length > i)
-                empireStats[i] = EmpireStats[i];            
+                empireStats[i] = EmpireStats[i];
             else
                 empireStats[i] = new RaceStats(((Race)i).ToString());
         }
@@ -76,7 +72,7 @@ public class StrategicStats
         StringBuilder sb = new StringBuilder();
         foreach (RaceStats race in EmpireStats)
         {
-            if (race.TotalGoldCollected == Config.StartingGold || (race.BattlesLost == 0 && race.BattlesWon == 0) )
+            if (race.TotalGoldCollected == Config.StartingGold || (race.BattlesLost == 0 && race.BattlesWon == 0))
                 continue;
             sb.AppendLine($"Empire of {race.EmpireName}");
             sb.AppendLine($"Battles Won: {race.BattlesWon}");

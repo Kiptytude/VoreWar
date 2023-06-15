@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 class Auri : DefaultRaceData
@@ -10,8 +7,8 @@ class Auri : DefaultRaceData
     readonly Sprite[] Sprites = State.GameManager.SpriteDictionary.Auri;
     readonly Sprite[] Sprites2 = State.GameManager.SpriteDictionary.AuriVore;
 
-    RaceFrameList EarAnimation = new RaceFrameList(new int[3] { 22, 23, 22}, new float[3] { .2f, .2f, .2f });
-    RaceFrameList FaceAnimation = new RaceFrameList(new int[3] { 18, 19, 18}, new float[3] { .25f, .25f, .25f });
+    RaceFrameList EarAnimation = new RaceFrameList(new int[3] { 22, 23, 22 }, new float[3] { .2f, .2f, .2f });
+    RaceFrameList FaceAnimation = new RaceFrameList(new int[3] { 18, 19, 18 }, new float[3] { .25f, .25f, .25f });
 
     bool oversize = false;
 
@@ -65,7 +62,7 @@ class Auri : DefaultRaceData
             new Kimono(false),
             new KimonoHoliday(true),
             new KimonoHoliday(false),
-            
+
         };
 
         ExtraMainClothing2Types = new List<MainClothing>() //Stocking
@@ -230,7 +227,7 @@ class Auri : DefaultRaceData
 
     protected override Sprite BodyAccentSprite(Actor_Unit actor)
     {
-        if (actor.Unit.BodyAccentType1 == 0 )
+        if (actor.Unit.BodyAccentType1 == 0)
             return null;
         int weightMod = actor.Unit.BodySize * 4;
         if (actor.Unit.BodyAccentType1 == 0)
@@ -314,7 +311,7 @@ class Auri : DefaultRaceData
     {
         if (actor.Unit.HasBreasts == false)
             return null;
-       
+
         if (actor.PredatorComponent?.LeftBreastFullness > 0)
         {
             int leftSize = (int)Math.Sqrt((actor.Unit.DefaultBreastSize * actor.Unit.DefaultBreastSize) + actor.GetLeftBreastSize(32 * 32, 1f));
@@ -445,7 +442,7 @@ class Auri : DefaultRaceData
         }
 
     }
-   
+
 
     class GenericBottom : MainClothing
     {
@@ -556,8 +553,8 @@ class Auri : DefaultRaceData
             base.Configure(sprite, actor);
         }
     }
-    
-    class KimonoHoliday: MainClothing
+
+    class KimonoHoliday : MainClothing
     {
         bool Skirt = false;
         public KimonoHoliday(bool skirt)
@@ -608,7 +605,7 @@ class Auri : DefaultRaceData
             }
             else if (actor.Unit.BreastSize < 3)
             {
-                clothing2.GetSprite = (s) => State.GameManager.SpriteDictionary.AuriHoliday[16 ];
+                clothing2.GetSprite = (s) => State.GameManager.SpriteDictionary.AuriHoliday[16];
             }
             else
             {

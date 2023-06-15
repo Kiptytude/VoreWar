@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -56,7 +52,7 @@ public class UniformLoaderWindow : MonoBehaviour
                 tempUnit = State.GameManager.UnitEditor.UnitEditor.Unit.Clone();
             else
                 tempUnit = State.GameManager.Recruit_Mode.Customizer.Unit.Clone();
-            
+
             uniformData.CopyToUnit(tempUnit);
             Actor_Unit actor = new Actor_Unit(new Vec2i(0, 0), tempUnit);
             sprite.UpdateSprites(actor);
@@ -94,7 +90,7 @@ public class UniformLoaderWindow : MonoBehaviour
                 rejectMessage = "Only for Males";
             else
                 rejectMessage = "Unspecified Error";
-            tempUnit = new Unit(0, uniformData.Race, 0, false, uniformData.Type);           
+            tempUnit = new Unit((int)uniformData.Race, uniformData.Race, 0, false, uniformData.Type);
             uniformData.CopyToUnit(tempUnit);
             Actor_Unit actor = new Actor_Unit(new Vec2i(0, 0), tempUnit);
             sprite.UpdateSprites(actor);
@@ -139,15 +135,15 @@ public class UniformLoaderWindow : MonoBehaviour
         {
             UniformDataStorer.SetUniformOdds(ActiveRace, UniformFraction.value);
         }
-        
-        
+
+
         int children = ActorFolder.transform.childCount;
         for (int i = children - 1; i >= 0; i--)
         {
             Destroy(ActorFolder.transform.GetChild(i).gameObject);
         }
         gameObject.SetActive(false);
-        
+
     }
 }
 

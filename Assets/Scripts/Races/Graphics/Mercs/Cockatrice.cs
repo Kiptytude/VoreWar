@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 class Cockatrice : DefaultRaceData
@@ -17,7 +14,7 @@ class Cockatrice : DefaultRaceData
     {
         BodySizes = 4;
         EyeTypes = 12;
-        SpecialAccessoryCount = 0;    
+        SpecialAccessoryCount = 0;
         HairStyles = 24;
         MouthTypes = 6;
         AccessoryColors = ColorPaletteMap.GetPaletteCount(ColorPaletteMap.SwapType.CockatriceSkin); // Feather Colors

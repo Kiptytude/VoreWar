@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.UI;
 
 public class WeaponStocker : MonoBehaviour
@@ -17,5 +16,5 @@ public class WeaponStocker : MonoBehaviour
     public Button BuyCompoundBow;
     public Button SellCompoundBow;
     public Text CompoundBows;
-    
+
 }

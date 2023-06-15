@@ -63,7 +63,7 @@ public class StrategicAI : IStrategicAI
         if (CheatLevel >= 1)
         {
             empire.AddGold(100 * CheatLevel);
-        } 
+        }
         bool boughtWeapons = false;
 
         if (Config.Diplomacy)

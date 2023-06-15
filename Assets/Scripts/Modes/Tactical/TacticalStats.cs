@@ -1,9 +1,6 @@
 ﻿using OdinSerializer;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 
 public class TacticalStats
@@ -154,7 +151,7 @@ public class TacticalStats
             {
                 sb.AppendLine($"{item.Key.Name} - Damage Dealt: {Stats.DamageDealtBySpell[item.Key]} - Kills: {(Stats.KillsWithSpell.ContainsKey(item.Key) ? Stats.KillsWithSpell[item.Key] : 0)}");
             }
-        }       
+        }
         sb.AppendLine($"Hits: {Stats.Hits}");
         sb.AppendLine($"Misses: {Stats.Misses}");
         sb.AppendLine($"Total HP Healed: {Stats.TotalHPHealed}");
@@ -187,7 +184,7 @@ public class TacticalStats
 
     internal void RegisterKill(Spell spell, int attackerSide)
     {
-        
+
         if (attackerSide == AttackerSide)
         {
             if (AttackerStats.KillsWithSpell == null)

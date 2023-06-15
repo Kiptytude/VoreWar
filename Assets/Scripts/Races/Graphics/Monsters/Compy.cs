@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 class Compy : BlankSlate
@@ -69,7 +65,7 @@ class Compy : BlankSlate
             return State.GameManager.SpriteDictionary.Compy[27];
         if ((actor.PredatorComponent?.IsUnitOfSpecificationInPrey(Race.Selicia, false, PreyLocation.balls) ?? false) && size >= 22)
             return State.GameManager.SpriteDictionary.Compy[26];
-			
+
         if (size >= 21) size = 21;
 
         return State.GameManager.SpriteDictionary.Compy[3 + size];

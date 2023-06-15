@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-public class Leader : Unit
+﻿public class Leader : Unit
 {
 
     public Leader(int side, Race race, int startingXP) : base(side, race, startingXP, true, UnitType.Leader)
@@ -23,7 +17,7 @@ public class Leader : Unit
 
         Health = MaxHealth;
         if (race == Race.Lizards)
-            Races.GetRace(Race.Lizards).RandomCustom(this);       
+            Races.GetRace(Race.Lizards).RandomCustom(this);
         if (Config.LetterBeforeLeaderNames != "")
             Name = Config.LetterBeforeLeaderNames + Name.ToLower();
         ExpMultiplier = 2;
@@ -58,14 +52,14 @@ public class Leader : Unit
     }
     public static Stat[] GetLevelUpPossibilities()
     {
-        Stat[] ret;         
+        Stat[] ret;
         if (Config.LeadersAutoGainLeadership)
             ret = new Stat[(int)Stat.Leadership];
         else
             ret = new Stat[(int)Stat.None];
         for (int i = 0; i < ret.Length; i++)
         {
-            
+
             ret[i] = (Stat)i;
         }
         return ret;

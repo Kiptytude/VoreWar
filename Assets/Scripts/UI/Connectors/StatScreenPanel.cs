@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.UI;
 
 public class StatScreenPanel : MonoBehaviour
@@ -42,9 +41,9 @@ public class StatScreenPanel : MonoBehaviour
                 State.GameManager.CloseStatsScreen();
             CloseButtonText.text = $"Exit Stats Screen (automatically happens in {(int)AutoCloseTime})";
         }
-        
+
     }
-    
+
     public void AddTime()
     {
         AutoCloseTime += 15;

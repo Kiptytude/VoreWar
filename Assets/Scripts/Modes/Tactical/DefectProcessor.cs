@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 
 
@@ -43,17 +39,17 @@ class DefectProcessor
 
     internal void AttackerDefectCheck(Actor_Unit actor, Race otherRace)
     {
-        if (actor.Unit.Race != otherRace || actor.Unit.ImmuneToDefections || actor.Unit.HasTrait(Traits.Camaraderie))
+        if (actor.Unit.Race != otherRace || actor.Unit.ImmuneToDefections || actor.Unit.HasTrait(Traits.Camaraderie) || actor.Unit.IsInfiltratingSide(actor.Unit.Side) || actor.Unit.FixedSide != State.GameManager.TacticalMode.GetDefenderSide())
             return;
         if (actor.Unit.HasTrait(Traits.RaceLoyal) || State.Rand.NextDouble() < .15f - (.05f * (actor.Unit.GetStat(Stat.Will) - 10) / 10))
         {
             DefectedAttackers++;
-            
-            attacker.Units.Remove(actor.Unit);            
+
+            attacker.Units.Remove(actor.Unit);
             if (defender != null && defender.Units.Count < defender.MaxSize)
             {
                 actor.Unit.Side = defender.Side;
-                defender.Units.Add(actor.Unit);               
+                defender.Units.Add(actor.Unit);
             }
             else
             {
@@ -66,7 +62,7 @@ class DefectProcessor
 
     internal void DefenderDefectCheck(Actor_Unit actor, Race otherRace)
     {
-        if (actor.Unit.Race != otherRace || actor.Unit.ImmuneToDefections || actor.Unit.HasTrait(Traits.Camaraderie))
+        if (actor.Unit.Race != otherRace || actor.Unit.ImmuneToDefections || actor.Unit.HasTrait(Traits.Camaraderie) || actor.Unit.IsInfiltratingSide(actor.Unit.Side) || actor.Unit.FixedSide != State.GameManager.TacticalMode.GetAttackerSide())
             return;
         if (actor.Unit.HasTrait(Traits.RaceLoyal) || State.Rand.NextDouble() < .15f - (.05f * (actor.Unit.GetStat(Stat.Will) - 10) / 10))
         {
@@ -75,7 +71,7 @@ class DefectProcessor
             defender.Units.Remove(actor.Unit);
             if (attacker.Units.Count < attacker.MaxSize)
             {
-                attacker.Units.Add(actor.Unit);                
+                attacker.Units.Add(actor.Unit);
             }
             else
             {
@@ -90,7 +86,7 @@ class DefectProcessor
         if (actor.Unit.Race != otherRace || actor.Unit.ImmuneToDefections || actor.Unit.HasTrait(Traits.Camaraderie))
             return;
         if (actor.Unit.HasTrait(Traits.RaceLoyal) || State.Rand.NextDouble() < (2 - village.Happiness / 66) * .15f - (.05f * (actor.Unit.GetStat(Stat.Will) - 10) / 10))
-        {            
+        {
             actor.Unit.Side = attacker.Side;
             village.GetRecruitables().Remove(actor.Unit);
             DefectedGarrison++;

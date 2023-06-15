@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using System.Collections.Generic;
 
 namespace TaurusClothes
 {
@@ -78,7 +73,7 @@ namespace TaurusClothes
         {
             if (actor.Unit.HasBreasts == false)
                 return;
-            
+
 
             clothing1.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.Clothing, actor.Unit.ClothingColor);
             clothing1.GetSprite = (s) => State.GameManager.SpriteDictionary.CowClothing[16 + actor.Unit.BreastSize];
@@ -225,7 +220,7 @@ namespace TaurusClothes
             base.Configure(sprite, actor);
         }
     }
-    
+
     class HolidayHat : ClothingAccessory
     {
         public HolidayHat()

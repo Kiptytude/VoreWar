@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-
-static class DefaultTooltips
+﻿static class DefaultTooltips
 {
     internal static string Tooltip(int tooltip)
     {

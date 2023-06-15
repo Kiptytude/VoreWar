@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 class EasternDragon : BlankSlate
@@ -19,15 +15,15 @@ class EasternDragon : BlankSlate
 
         Body = new SpriteExtraInfo(5, BodySprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.EasternDragon, (s.Unit.SkinColor))); // Body
         Head = new SpriteExtraInfo(6, HeadSprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.EasternDragon, (s.Unit.SkinColor))); // Head
-        BodyAccent = new SpriteExtraInfo(0, BodyAccentSprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.EasternDragon, (s.Unit.SkinColor)));; // Tail
+        BodyAccent = new SpriteExtraInfo(0, BodyAccentSprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.EasternDragon, (s.Unit.SkinColor))); ; // Tail
         BodyAccent2 = new SpriteExtraInfo(2, BodyAccentSprite2, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.EasternDragon, (s.Unit.SkinColor))); ; // Sheath/SnatchBase
         BodyAccent3 = new SpriteExtraInfo(3, BodyAccentSprite3, WhiteColored); // Snatch
         BodyAccent4 = new SpriteExtraInfo(4, BodyAccentSprite4, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.EasternDragon, (s.Unit.SkinColor))); ; // Womb
         Mouth = new SpriteExtraInfo(8, MouthSprite, WhiteColored); // Inner Mouth
-        BodySize = new SpriteExtraInfo(7, BodySizeSprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.EasternDragon, (s.Unit.SkinColor)));; // Horns
+        BodySize = new SpriteExtraInfo(7, BodySizeSprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.EasternDragon, (s.Unit.SkinColor))); ; // Horns
         Dick = new SpriteExtraInfo(3, DickSprite, WhiteColored); // Dick, CV, UB
-        Belly = new SpriteExtraInfo(8, null, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.EasternDragon, (s.Unit.SkinColor)));; // Belly
-        Balls = new SpriteExtraInfo(1, BallsSprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.EasternDragon, (s.Unit.SkinColor)));; // Balls
+        Belly = new SpriteExtraInfo(8, null, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.EasternDragon, (s.Unit.SkinColor))); ; // Belly
+        Balls = new SpriteExtraInfo(1, BallsSprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.EasternDragon, (s.Unit.SkinColor))); ; // Balls
         SecondaryAccessory = new SpriteExtraInfo(9, SecondaryAccessorySprite, WhiteColored); // Tongue
 
         BodySizes = 4; // Horn types
@@ -42,7 +38,7 @@ class EasternDragon : BlankSlate
         AddOffset(BodyAccent4, 128 * .3125f, 0);
     }
 
-        internal void SetUpAnimations(Actor_Unit actor)
+    internal void SetUpAnimations(Actor_Unit actor)
     {
         actor.AnimationController.frameLists = new AnimationController.FrameList[] {
             new AnimationController.FrameList(0, 0, false),  // Eye controller. Index 0.
@@ -136,7 +132,7 @@ class EasternDragon : BlankSlate
             return State.GameManager.SpriteDictionary.EasternDragon[5];
         return null;
     }
-	
+
     protected override Sprite HeadSprite(Actor_Unit actor) // Head
     {
         if (!actor.Targetable) return State.GameManager.SpriteDictionary.EasternDragon[3];
@@ -179,7 +175,8 @@ class EasternDragon : BlankSlate
     {
         if (!actor.Targetable) return null;
 
-        if (actor.IsAttacking || actor.IsOralVoring) {
+        if (actor.IsAttacking || actor.IsOralVoring)
+        {
             actor.AnimationController.frameLists[1].currentlyActive = false;
             actor.AnimationController.frameLists[1].currentFrame = 0;
             actor.AnimationController.frameLists[1].currentTime = 0f;
@@ -188,11 +185,13 @@ class EasternDragon : BlankSlate
 
         if (actor.AnimationController.frameLists[1].currentlyActive)
         {
-            if (actor.AnimationController.frameLists[1].currentTime >= frameListTongue.times[actor.AnimationController.frameLists[1].currentFrame]) {
+            if (actor.AnimationController.frameLists[1].currentTime >= frameListTongue.times[actor.AnimationController.frameLists[1].currentFrame])
+            {
                 actor.AnimationController.frameLists[1].currentFrame++;
                 actor.AnimationController.frameLists[1].currentTime = 0f;
 
-                if (actor.AnimationController.frameLists[1].currentFrame >= frameListTongue.frames.Length) {
+                if (actor.AnimationController.frameLists[1].currentFrame >= frameListTongue.frames.Length)
+                {
                     actor.AnimationController.frameLists[1].currentlyActive = false;
                     actor.AnimationController.frameLists[1].currentFrame = 0;
                     actor.AnimationController.frameLists[1].currentTime = 0f;
@@ -202,7 +201,8 @@ class EasternDragon : BlankSlate
             return State.GameManager.SpriteDictionary.EasternDragon[10 + frameListTongue.frames[actor.AnimationController.frameLists[1].currentFrame]];
         }
 
-        if (actor.PredatorComponent?.VisibleFullness > 0 && State.Rand.Next(1200) == 0) {
+        if (actor.PredatorComponent?.VisibleFullness > 0 && State.Rand.Next(1200) == 0)
+        {
             actor.AnimationController.frameLists[1].currentlyActive = true;
         }
 
@@ -219,29 +219,29 @@ class EasternDragon : BlankSlate
             int sprite = actor.GetExclusiveStomachSize(16, 0.8f);
 
             if (sprite == 16 && (actor.PredatorComponent?.IsUnitOfSpecificationInPrey(Race.Selicia, true, PreyLocation.stomach) ?? false))
-			{
-				AddOffset(Belly, 0, 0 * .625f);
-				return State.GameManager.SpriteDictionary.EasternDragon[37];
-			}
-			else if (sprite == 16 && (actor.PredatorComponent?.IsUnitOfSpecificationInPrey(Race.Selicia, false, PreyLocation.stomach) ?? false))
-			{
-				AddOffset(Belly, 0, 0 * .625f);
-				return State.GameManager.SpriteDictionary.EasternDragon[36];
-			}
-			else if (sprite == 15 && (actor.PredatorComponent?.IsUnitOfSpecificationInPrey(Race.Selicia, false, PreyLocation.stomach) ?? false))
-			{
-				AddOffset(Belly, 0, 0 * .625f);
-				return State.GameManager.SpriteDictionary.EasternDragon[35];
-			}	
+            {
+                AddOffset(Belly, 0, 0 * .625f);
+                return State.GameManager.SpriteDictionary.EasternDragon[37];
+            }
+            else if (sprite == 16 && (actor.PredatorComponent?.IsUnitOfSpecificationInPrey(Race.Selicia, false, PreyLocation.stomach) ?? false))
+            {
+                AddOffset(Belly, 0, 0 * .625f);
+                return State.GameManager.SpriteDictionary.EasternDragon[36];
+            }
+            else if (sprite == 15 && (actor.PredatorComponent?.IsUnitOfSpecificationInPrey(Race.Selicia, false, PreyLocation.stomach) ?? false))
+            {
+                AddOffset(Belly, 0, 0 * .625f);
+                return State.GameManager.SpriteDictionary.EasternDragon[35];
+            }
             if (sprite >= 14)
                 return State.GameManager.SpriteDictionary.EasternDragon[34];
             return State.GameManager.SpriteDictionary.EasternDragon[20 + sprite];
         }
         else
         {
-        if (actor.GetExclusiveStomachSize(1) == 0)
-            return State.GameManager.SpriteDictionary.EasternDragon[19];
-        return State.GameManager.SpriteDictionary.EasternDragon[20 + actor.GetExclusiveStomachSize(14, 0.8f)];			
+            if (actor.GetExclusiveStomachSize(1) == 0)
+                return State.GameManager.SpriteDictionary.EasternDragon[19];
+            return State.GameManager.SpriteDictionary.EasternDragon[20 + actor.GetExclusiveStomachSize(14, 0.8f)];
         }
     }
 

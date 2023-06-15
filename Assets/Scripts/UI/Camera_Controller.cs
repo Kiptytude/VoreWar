@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class Camera_Controller : MonoBehaviour
 {
@@ -39,7 +38,7 @@ public class Camera_Controller : MonoBehaviour
 
         if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject() == false)//Don't zoom if you're scrolling or otherwise
         {
-            cam.orthographicSize = Mathf.Clamp(cam.orthographicSize * (1f - Input.GetAxis("Mouse ScrollWheel")), ZoomRange.x, ZoomRange.y);            
+            cam.orthographicSize = Mathf.Clamp(cam.orthographicSize * (1f - Input.GetAxis("Mouse ScrollWheel")), ZoomRange.x, ZoomRange.y);
             if (Input.GetKey(KeyCode.RightAlt))
             {
                 if (State.GameManager.CurrentScene == State.GameManager.StrategyMode)
@@ -110,7 +109,7 @@ public class Camera_Controller : MonoBehaviour
                 transform.Translate(0, -ScrollSpeed, 0);
             }
         }
-       
+
         Vector3 clampedLoc = new Vector3(transform.position.x, transform.position.y, -10f);
 
         clampedLoc.x = Mathf.Clamp(clampedLoc.x, 0, maxX);
@@ -151,7 +150,7 @@ public class Camera_Controller : MonoBehaviour
     public void LoadTacticalCamera()
     {
         if (State.World.SavedCameraState == null || State.World.SavedCameraState.TacticalPosition == Vector2.zero)
-            return;            
+            return;
         transform.position = State.World.SavedCameraState.TacticalPosition;
         cam.orthographicSize = State.World.SavedCameraState.TacticalZoom;
     }

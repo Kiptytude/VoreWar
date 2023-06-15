@@ -1,12 +1,11 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System;
 using TMPro;
-using System;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class DiplomacyScreen : MonoBehaviour
 {
-    
+
 
     public UIUnitSprite Leader;
 
@@ -40,12 +39,12 @@ public class DiplomacyScreen : MonoBehaviour
         gameObject.SetActive(true);
         Updates.text = "";
         UpdateMainText();
-      
+
     }
 
     private void UpdateMainText()
     {
-       
+
         var relation = RelationsManager.GetRelation(Other.Side, Player.Side);
         var counterRelation = RelationsManager.GetRelation(Player.Side, Other.Side);
         Information.text = $"<b>{Other.Name}</b>\nTheir opinion of us: {Math.Round(relation.Attitude, 3)}\nOur opinion of them: {Math.Round(counterRelation.Attitude, 3)}\nType: {relation.Type}";
@@ -86,7 +85,7 @@ public class DiplomacyScreen : MonoBehaviour
             AskAllyButton.interactable = false;
             AskPeaceButton.interactable = true;
         }
-      
+
     }
 
     public void AskPeace()
@@ -95,7 +94,7 @@ public class DiplomacyScreen : MonoBehaviour
         if (relation.Type != RelationState.Enemies)
             return;
         if (relation.Attitude >= -.25f)
-        {            
+        {
             RelationsManager.SetPeace(Player, Other);
             UpdateMainText();
             Updates.text = "Peace was accepted";
@@ -114,7 +113,7 @@ public class DiplomacyScreen : MonoBehaviour
             RelationsManager.SetWar(Player, Other);
             UpdateMainText();
             Updates.text = "War was declared";
-        }          
+        }
     }
 
     public void AskAllies()
@@ -123,7 +122,7 @@ public class DiplomacyScreen : MonoBehaviour
         if (relation.Type != RelationState.Neutral)
             return;
         if (relation.Attitude >= .75f)
-        {            
+        {
             RelationsManager.SetAlly(Player, Other);
             UpdateMainText();
             Updates.text = $"You are now allies of the {Other.Name}";
@@ -142,7 +141,7 @@ public class DiplomacyScreen : MonoBehaviour
                 Updates.text = $"Have to give positive gold";
             }
             else if (Player.Gold >= amount)
-            {                
+            {
                 Player.SpendGold(amount);
                 Other.AddGold(amount);
                 relation.Attitude += amount / 5000f;
@@ -155,8 +154,8 @@ public class DiplomacyScreen : MonoBehaviour
                 Updates.text = $"Didn't have enough gold to give {amount}, you only have {State.World.ActingEmpire.Gold}";
             }
         }
-        
+
     }
 
-  
+
 }

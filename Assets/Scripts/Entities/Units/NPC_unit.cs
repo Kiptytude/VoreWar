@@ -1,5 +1,3 @@
-using System;
-
 public class NPC_unit : Unit
 {
 
@@ -34,6 +32,7 @@ public class NPC_unit : Unit
             SetExp(GetExperienceRequiredForLevel(level - 1));
         }
         RestoreManaPct(1);
+        GiveTraitBooks();
     }
 
     private void GenMonster(int desiredLevels)
@@ -111,7 +110,7 @@ public class NPC_unit : Unit
         Stats[(int)Stat.Leadership] = 10;
 
         if (race == Race.Lizards)
-            Races.GetRace(Race.Lizards).RandomCustom(this);        
+            Races.GetRace(Race.Lizards).RandomCustom(this);
         if (Config.LetterBeforeLeaderNames != "")
             Name = Config.LetterBeforeLeaderNames + Name.ToLower();
         ExpMultiplier = 2;

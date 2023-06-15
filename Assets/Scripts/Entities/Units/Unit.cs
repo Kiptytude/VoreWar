@@ -1,7 +1,7 @@
 using OdinSerializer;
+using OdinSerializer.Utilities;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using UnityEngine;
 
@@ -38,13 +38,15 @@ public class Unit
     public int FixedSide
     {
         get
-        { 
-           return (_fixedSide == -1) ? Side : _fixedSide; 
+        {
+            return (_fixedSide == -1) ? Side : _fixedSide;
         }
         set => _fixedSide = value;
     }
     [OdinSerialize]
     public bool hiddenFixedSide = false;
+
+    public static List<Traits> secretTags = new List<Traits>() { Traits.Infiltrator, Traits.Corruption, Traits.Reincarnation, Traits.InfiniteReincarnation, Traits.Transmigration, Traits.InfiniteTransmigration, Traits.Untamable};
 
     [OdinSerialize]
     public Race Race;
@@ -229,6 +231,9 @@ public class Unit
     [OdinSerialize]
     public bool EarnedMask = false;
 
+    [OdinSerialize]
+    public Unit KilledBy;
+
     public override string ToString() => Name;
 
     /// <summary>
@@ -256,6 +261,9 @@ public class Unit
     [OdinSerialize]
     internal List<SpellTypes> SingleUseSpells = new List<SpellTypes>();
 
+    [OdinSerialize]
+    internal List<SpellTypes> MultiUseSpells = new List<SpellTypes>();  // This is so much more straightforward than adding Special Actions
+
     internal List<Spell> UseableSpells
     {
         get
@@ -271,6 +279,11 @@ public class Unit
 
     internal bool HasDick => DickSize > -1;
     internal bool HasBreasts => DefaultBreastSize > -1;
+
+    public bool IsInfiltratingSide(int side)
+    {
+        return side == Side && Side != FixedSide && hiddenFixedSide;
+    }
 
     internal Gender GetGender()
     {
@@ -423,6 +436,9 @@ public class Unit
 
     internal Unit CurrentLeader;
 
+    [OdinSerialize]
+    public Actor_Unit BoundUnit;
+
 
     /// <summary>
     /// Creates an empty unit for various purposes
@@ -460,6 +476,8 @@ public class Unit
         ReloadTraits();
         raceData.RandomCustom(this);
         InitializeTraits();
+        RefreshSecrecy();
+        InitializeFixedSide(side);
 
         if (HasTrait(Traits.Resourceful))
         {
@@ -494,7 +512,48 @@ public class Unit
                 UniformDataStorer.ExternalCopyToUnit(available[State.Rand.Next(available.Count)], this);
             }
         }
+        ReincarnateCheck();
+    }
 
+    private void ReincarnateCheck()
+    {
+        if (State.World != null && State.World.Reincarnators != null && State.World.Reincarnators?.Count > 0 && Type != UnitType.SpecialMercenary && Type != UnitType.Summon)
+        {
+            if (State.World.Reincarnators.Where(r => r.Value == Race).Count() > 0 && State.Rand.Next(3) == 0)
+                Reincarnate(State.World.Reincarnators.Where(r => r.Value == Race).First().Key);
+            else
+            {
+                var randomRaceReincarnators = State.World.Reincarnators.Where(r => r.Value <= (Race)(-1));
+            if (randomRaceReincarnators.Count() > 0)
+                {
+                    Unit reincarnator = null;
+                    randomRaceReincarnators.Reverse().ForEach(re =>
+                    {
+                        if (State.Rand.Next(Math.Max(6, StrategicUtilities.GetAllArmyUnits().Count() / 3)) == 0)
+                            reincarnator = re.Key;
+                    });
+                    if(reincarnator != null)
+                    Reincarnate(reincarnator);
+            }
+            }
+        }
+    }
+
+    private void Reincarnate(Unit unit)
+    {
+        Unit pastLife = unit;
+        Name = pastLife.Name;
+        experience = pastLife.Experience;
+        foreach (Traits trait in pastLife.PermanentTraits)
+        {
+            AddPermanentTrait(trait);
+        }
+        InnateSpells.AddRange(pastLife.InnateSpells);
+        FixedSide = pastLife.FixedSide;
+        hiddenFixedSide = true;
+        SavedCopy = pastLife.SavedCopy;
+        SavedVillage = pastLife.SavedVillage;
+        State.World.Reincarnators.Remove(pastLife);
     }
 
     internal void SetGear(Race race)
@@ -576,9 +635,52 @@ public class Unit
                             if (weapon.Damage > 4)
                                 Items[i] = State.World.ItemRepository.GetItem(ItemType.Axe);
                             else
-                                Items[i] = State.World.ItemRepository.GetItem(ItemType.Bow);
+                                Items[i] = State.World.ItemRepository.GetItem(ItemType.Mace);
                         }
                     }
+                }
+            }
+            GiveTraitBooks();
+        }
+    }
+
+    internal void GiveTraitBooks()
+    {
+        if (State.World?.ItemRepository == null) return;
+        var tiers = new List<int>();
+        if (HasTrait(Traits.BookWormI))
+        {
+            tiers.Add(1);
+        }
+        if (HasTrait(Traits.BookWormII))
+        {
+            tiers.Add(2);
+        }
+        if (HasTrait(Traits.BookWormIII))
+        {
+            tiers.Add(3);
+        }
+        for (int i = 0; i < Items.Length; i++)
+        {
+            if (Items[i] != null && Items[i] is SpellBook)
+            {
+                if(((SpellBook)Items[i]).Tier == 4)
+                        tiers.Remove(3);
+                tiers.Remove(((SpellBook)Items[i]).Tier);
+            }
+        }
+
+        for (int i = 0; i < Items.Length; i++)
+        {
+            if (tiers.Count > 0)
+            {
+                if (Items[i] == null)
+                {
+                    int t = tiers.Count > 1 ? tiers[State.Rand.Next(tiers.Count - 1)] : tiers[0];
+                    Items[i] = State.World.ItemRepository.GetRandomBook(t, t == 3 ? 4 : t, true);
+                    if (t == 4)
+                        tiers.Remove(3);
+                    tiers.Remove(t);
                 }
             }
         }
@@ -1061,6 +1163,28 @@ public class Unit
         RecalculateStatBoosts();
     }
 
+    internal void RefreshSecrecy()
+    {
+        if (HasTrait(Traits.Infiltrator) || HasTrait(Traits.Corruption))
+            hiddenFixedSide = true;
+    }
+    internal void InitializeFixedSide(int side)
+    {
+        if (State.World?.ItemRepository == null) return; //protection for the create strat screen
+        if (_fixedSide > -1) return;
+        if (HasTrait(Traits.Untamable))
+        {
+            FixedSide = State.World.GetEmpireOfRace(Race)?.Side ?? side;
+            return;
+        }
+        if (HasTrait(Traits.Infiltrator))
+        {
+            FixedSide = side;
+            return;
+        }
+        FixedSide = -1;
+    }
+
     public bool HasTrait(Traits tag)
     {
         if (tag == Traits.TheGreatEscape && Race == Race.Erin)
@@ -1119,28 +1243,32 @@ public class Unit
 
     }
 
-    internal string ListTraits()
+    internal string ListTraits(bool hideSecret = false)
     {
         if (Tags.Count == 0 && (PermanentTraits == null || PermanentTraits.Count == 0))
             return "";
         string ret = "";
         for (int i = 0; i < Tags.Count; i++)
         {
-            ret += Tags[i].ToString();
-            if (i + 1 < Tags.Count)
-                ret += "\n";
+            if (!(hideSecret && secretTags.Contains(Tags[i])))
+            {
+                if (ret != "")
+                    ret += "\n";
+                ret += Tags[i].ToString();
+            }
         }
         if (PermanentTraits != null && PermanentTraits.Count > 0)
         {
-            if (ret != "")
-                ret += "\n";
             for (int i = 0; i < PermanentTraits.Count; i++)
             {
                 if (Tags.Contains(PermanentTraits[i]))
                     continue;
-                ret += PermanentTraits[i].ToString();
-                if (i + 1 < PermanentTraits.Count)
-                    ret += "\n";
+                if (!(hideSecret && secretTags.Contains(PermanentTraits[i])))
+                {
+                    if (ret != "")
+                        ret += "\n";
+                    ret += PermanentTraits[i].ToString();
+                }
             }
         }
         return ret;
@@ -1224,6 +1352,8 @@ public class Unit
 
     protected void RecalculateStatBoosts()
     {
+        RefreshSecrecy();
+        InitializeFixedSide(Side);
         if (Tags == null)
             return;
 
@@ -1367,6 +1497,7 @@ public class Unit
                 Tags.Remove(trait);
             }
         }
+        RandomizeTraits();
         Tags = Tags.Distinct().ToList();
         if (Tags.Contains(Traits.Prey))
             Predator = false;
@@ -1378,6 +1509,68 @@ public class Unit
         if (Predator == false)
             Tags.Add(Traits.Prey);
         SetMaxItems();
+    }
+
+    public void ChangeRace(Race race)
+    {
+        Race = race;
+        fixedPredator = false;
+    }
+
+    private void RandomizeTraits()
+    {
+        var customs = Tags.Where(t => State.RandomizeLists.Any(rl => (Traits)rl.id == t));
+        customs.ForEach(ct =>
+        {
+            RandomizeList randomizeList = State.RandomizeLists.Single(rl => (Traits)rl.id == ct);
+            if (State.Rand.NextDouble() < randomizeList.chance)
+            {
+                List<Traits> gainable = randomizeList.RandomTraits.Where(rt => !Tags.Contains(rt) && !PermanentTraits.Contains(rt)).ToList();
+                if (gainable.Count() > 0)
+                {
+                    var randomPick = gainable[State.Rand.Next(gainable.Count())];
+                    PermanentTraits.Add(randomPick);
+                    RemovedTraits?.Remove(randomPick); // Even if manually removed before, rng-sus' word is law
+                    GivePrerequisiteTraits(randomPick, gainable);
+                }
+            }
+            if (RemovedTraits == null)
+                RemovedTraits = new List<Traits>();
+            RemovedTraits.Add(ct);  // we don't want the random traits generating infinite traits
+        });
+        foreach (Traits trait in RemovedTraits)
+        {
+            Tags.Remove(trait);
+        }
+    }
+
+    private void GivePrerequisiteTraits(Traits randomPick, List<Traits> gainable)
+    {
+        if (randomPick > Traits.Growth && randomPick <= Traits.FleetingGrowth && gainable.Contains(Traits.Growth))
+        {
+            PermanentTraits.Add(Traits.Growth);
+            RemovedTraits?.Remove(Traits.Growth);
+        }
+        if ( randomPick == Traits.HealingBelly && gainable.Contains(Traits.Endosoma))
+        {
+            PermanentTraits.Add(Traits.Endosoma);
+            RemovedTraits?.Remove(Traits.Endosoma);
+        }
+        if (randomPick == Traits.VenomousBite && gainable.Contains(Traits.Biter))
+        {
+            PermanentTraits.Add(Traits.Biter);
+            RemovedTraits?.Remove(Traits.Biter);
+        }
+        if (randomPick == Traits.SynchronizedEvolution && gainable.Contains(Traits.Assimilate))
+        {
+            PermanentTraits.Add(Traits.Assimilate);
+            RemovedTraits?.Remove(Traits.Assimilate);
+        }
+        if (randomPick == Traits.PredConverter || randomPick == Traits.PredRebirther || randomPick == Traits.PredGusher)
+        {
+            if (RaceParameters.GetRaceTraits(Race).AllowedVoreTypes.Contains(VoreType.Unbirth))
+                HasVagina = true;
+        }
     }
 
     public void SetSizeToDefault() => BreastSize = DefaultBreastSize;
@@ -1572,6 +1765,11 @@ public class Unit
             if (experience < 0)
                 experience = 0;
         }
+    }
+
+    public int GetStatTotal()
+    {
+        return Stats.Sum();
     }
 
     public void LevelDown()
@@ -1817,6 +2015,18 @@ public class Unit
 
         }
 
+        if (MultiUseSpells?.Any() ?? false)
+        {
+            foreach (var spellType in MultiUseSpells)
+            {
+                if (SpellList.SpellDict.TryGetValue(spellType, out Spell spell))
+                {
+                    UseableSpells.Add(spell);
+                }
+            }
+
+        }
+
         var racePar = RaceParameters.GetTraitData(this);
 
         if (racePar.InnateSpells?.Any() ?? false)
@@ -1883,12 +2093,20 @@ public class Unit
         if (HasEffect(StatusEffectType.Webbed)) ret++;
         if (HasEffect(StatusEffectType.WillingPrey)) ret++;
         if (HasEffect(StatusEffectType.Charmed)) ret++;
+        if (HasEffect(StatusEffectType.Hypnotized)) ret++;
 
         bool HasEffect(StatusEffectType type)
         {
             return GetStatusEffect(type) != null;
         }
         return ret;
+    }
+
+    public int GetApparentSide(Unit viewer = null)
+    {
+        if (viewer != null && TacticalUtilities.UnitCanSeeTrueSideOfTarget(viewer, this))
+            return FixedSide;
+        return hiddenFixedSide ? Side : FixedSide;
     }
 
     internal void AddBladeDance()
@@ -2012,4 +2230,18 @@ public class Unit
 
     }
 
+    internal Traits RandomizeOne(RandomizeList randomizeList)
+    {
+        if (State.Rand.NextDouble() < randomizeList.chance)
+        {
+            List<Traits> gainable = randomizeList.RandomTraits.Where(rt => !Tags.Contains(rt) && !PermanentTraits.Contains(rt)).ToList();
+            if (gainable.Count() > 0)
+            {
+                var randomPick = gainable[State.Rand.Next(gainable.Count())];
+                GivePrerequisiteTraits(randomPick, gainable);
+                return randomPick;
+            }
+        }
+        return (Traits)(-1);
+    }
 }

@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 public enum StrategicTileType
 {
@@ -93,7 +90,7 @@ static class StrategicTileInfo
     static internal List<StrategicTileType> SandFamily = new List<StrategicTileType>() { StrategicTileType.desert, StrategicTileType.fieldDesert, StrategicTileType.sandHills, StrategicTileType.brokenCliffs };
     static internal List<StrategicTileType> GrassFamily = new List<StrategicTileType>() { StrategicTileType.grass, StrategicTileType.forest, StrategicTileType.mountain, StrategicTileType.field, StrategicTileType.hills };
     static internal List<StrategicTileType> SnowFamily = new List<StrategicTileType>() { StrategicTileType.snow, StrategicTileType.snowHills, StrategicTileType.fieldSnow, StrategicTileType.ice, StrategicTileType.snowTrees, StrategicTileType.snowMountain };
-    static internal List<StrategicTileType> WaterFamily = new List<StrategicTileType>() { StrategicTileType.water, StrategicTileType.ocean};
+    static internal List<StrategicTileType> WaterFamily = new List<StrategicTileType>() { StrategicTileType.water, StrategicTileType.ocean };
 
 
     static Noise.OpenSimplexNoise OpenSimplexNoise = new Noise.OpenSimplexNoise(155);
@@ -263,7 +260,7 @@ static class StrategicTileInfo
             case StrategicTileType.volcanic:
             case StrategicTileType.fieldSnow:
             case StrategicTileType.fieldDesert:
-           
+
                 return 1;
 
             case StrategicTileType.forest:

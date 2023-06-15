@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-public enum Gender : int
+﻿public enum Gender : int
 {
     None,           //  No breasts,  no penis,  no vagina
     Female,         // Has breasts,  no penis, has vagina

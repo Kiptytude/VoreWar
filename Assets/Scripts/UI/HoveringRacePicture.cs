@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -46,14 +41,14 @@ public class HoveringRacePicture : MonoBehaviour
                 image.raycastTarget = false;
             }
             LastRace = race;
-        }                
+        }
         gameObject.SetActive(true);
         remainingFrames = 3;
         text.text = "";
         float xAdjust = 10;
         float exceeded = Input.mousePosition.x + (rect.rect.width * Screen.width / 1920) - Screen.width;
         if (exceeded > 0)
-            xAdjust = -exceeded;        
+            xAdjust = -exceeded;
         float yAdjust = 0;
         exceeded = Input.mousePosition.y - (rect.rect.height * Screen.height / 1080);
         if (exceeded < 0)

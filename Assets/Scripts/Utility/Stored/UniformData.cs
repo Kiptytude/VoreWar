@@ -1,9 +1,4 @@
 ﻿using OdinSerializer;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 class UniformData
 {
@@ -73,7 +68,7 @@ class UniformData
             ClothingHatType = unit.ClothingHatType;
         if (ClothingAccesorySaved)
             ClothingAccesoryType = unit.ClothingAccessoryType;
-        
+
 
         Type = unit.Type;
 

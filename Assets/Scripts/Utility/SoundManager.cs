@@ -1,7 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
+using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
@@ -37,6 +36,8 @@ public class SoundManager : MonoBehaviour
 
     private readonly Dictionary<string, AudioClip[]> SpellCasts = new Dictionary<string, AudioClip[]>();
     private readonly Dictionary<string, AudioClip[]> SpellHits = new Dictionary<string, AudioClip[]>();
+
+    private readonly Dictionary<string, AudioClip[]> MiscSounds = new Dictionary<string, AudioClip[]>();
 
     internal void PlaySwing(Actor_Unit actor) => RandomizeSfx(Swings, actor, combatVolume);
     internal void PlayArrowHit(Actor_Unit actor) => RandomizeSfx(ArrowHits, actor, combatVolume);
@@ -130,12 +131,14 @@ public class SoundManager : MonoBehaviour
             SpellCasts[id] = Resources.LoadAll<AudioClip>($"audio{sep}spell{sep}{id}{sep}cast");
             SpellHits[id] = Resources.LoadAll<AudioClip>($"audio{sep}spell{sep}{id}{sep}hit");
         }
+        MiscSounds["unbound"] = Resources.LoadAll<AudioClip>($"audio{sep}spell{sep}unbound");
+
         InitSources();
     }
 
     private void PlayLoop(AudioClip clip, AudioSource source)
     {
-       // Debug.Log(clip);
+        // Debug.Log(clip);
         source.clip = clip;
         source.Play();
     }
@@ -213,13 +216,13 @@ public class SoundManager : MonoBehaviour
 
         if (State.GameManager.TacticalMode.TacticalSoundBlocked())
             return;
-        
+
         AudioSource source = actor.UnitSprite.LoopSource;
 
         volume *= PositionSound(source, actor.UnitSprite.transform.position, loopFloor);
 
         source.volume = volume;
-        
+
         // Don't interrupt an existing source
 
         if (source.isPlaying)
@@ -248,11 +251,39 @@ public class SoundManager : MonoBehaviour
             return;
 
         AudioSource source = actor.UnitSprite.SfxSources[Random.Range(0, actor.UnitSprite.SfxSourcesCount)];
-        
+
         AudioClip clip = clips[Random.Range(0, clips.Length)];
 
         volume *= PositionSound(source, actor.UnitSprite.transform.position, sfxFloor);
-        
+
+        PlaySfx(clip, source, volume);
+    }
+
+    internal void PlayMisc(string name, Actor_Unit actor)
+    {
+        var volume = combatVolume;
+
+        AudioClip[] clips = MiscSounds[name];
+
+        if (SoundEnabled == false)
+            return;
+        if (clips == null || clips.Length == 0)
+            return;
+
+        if (actor == null || actor.UnitSprite == null)
+        {
+            RandomizeSfxGlobal(clips, null, volume);
+            return;
+        }
+        if (State.GameManager.TacticalMode.TacticalSoundBlocked())
+            return;
+
+        AudioSource source = actor.UnitSprite.SfxSources[Random.Range(0, actor.UnitSprite.SfxSourcesCount)];
+
+        AudioClip clip = clips[Random.Range(0, clips.Length)];
+
+        volume *= PositionSound(source, actor.UnitSprite.transform.position, sfxFloor);
+
         PlaySfx(clip, source, volume);
     }
 }

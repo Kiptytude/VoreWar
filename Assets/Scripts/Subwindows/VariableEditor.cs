@@ -1,11 +1,11 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Reflection;
-using UnityEngine.UI;
-using TMPro;
-using System;
-using System.Linq;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.IO;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class VariableEditor : MonoBehaviour
 {
@@ -21,6 +21,7 @@ public class VariableEditor : MonoBehaviour
     public TextMeshProUGUI TooltipText;
 
     internal Dictionary<Traits, bool> TempDictionary;
+    internal List<Toggle> DictToggleList;
 
     internal const BindingFlags Bindings = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
 
@@ -173,6 +174,11 @@ public class VariableEditor : MonoBehaviour
                 TempDictionary = (Dictionary<Traits, bool>)field.GetValue(obj);
                 if (TempDictionary != null)
                 {
+                    var newObject = Instantiate(Toggle, Folder);
+                    var allToggle = newObject.GetComponent<Toggle>();
+                    newObject.name = $"ALL";
+                    allToggle.GetComponentInChildren<Text>().text = "ALL";
+                    DictToggleList = new List<Toggle>();
                     foreach (var entry in TempDictionary.OrderBy(s =>
                        {
                            return s.Key >= Traits.LightningSpeed ? "ZZZ" + s.ToString() : s.ToString();
@@ -183,7 +189,10 @@ public class VariableEditor : MonoBehaviour
                         newObj.name = $"UsingDictionary^{entry.Key}";
                         toggle.isOn = entry.Value;
                         toggle.GetComponentInChildren<Text>().text = entry.Key.ToString();
+                        DictToggleList.Add(toggle);
                     }
+                    allToggle.isOn = DictToggleList.All(t => t.isOn);
+                    allToggle.onValueChanged.AddListener(delegate { CheckAll(allToggle.isOn); });
                 }
                 //var newObj = Instantiate(Toggle, Folder);
                 //var toggle = newObj.GetComponent<Toggle>();
@@ -207,6 +216,12 @@ public class VariableEditor : MonoBehaviour
 
         }
     }
+
+    private void CheckAll(bool isOn)
+    {
+        DictToggleList.ForEach(t => t.isOn = isOn);
+    }
+
 
     //private void ProcessProperties<T>(T obj)
     //{
@@ -369,7 +384,7 @@ public class VariableEditor : MonoBehaviour
             }
             var input = obj.GetComponentInChildren<TMP_InputField>();
             if (input != null)
-            {               
+            {
                 if (int.TryParse(input.text, out int result))
                 {
                     var attr = EditingObject.GetType().GetField(obj.name)?.GetCustomAttribute(typeof(IntegerRangeAttribute));
@@ -396,7 +411,10 @@ public class VariableEditor : MonoBehaviour
             State.GameManager.Menu.WorldSettingsUI.ShowSettings();
         }
         if (needSave)
-            State.AssimilateList.Save();
+        {
+            if (State.AssimilateList.Initialized)
+                State.AssimilateList.Save();
+        }
     }
 
     public void Close()

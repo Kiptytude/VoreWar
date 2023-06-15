@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 public enum VillageBuilding : int
@@ -26,14 +25,14 @@ public enum VillageBuilding : int
     subjugationPen2,
     capitalPalace,
     hangingGardens,
-	trainer4,
-	market1,
-	market2,
-	market3,
+    trainer4,
+    market1,
+    market2,
+    market3,
     MagicGuild,
     Cathedral,
     LastIndex, //Keep this last
-   
+
 }
 
 
@@ -133,7 +132,7 @@ public static class VillageBuildingList
             RequiredBuildings = new List<VillageBuilding>() { VillageBuilding.trainer }
         },
 
-       
+
         [VillageBuilding.CapitalDefenses] = new VillageBuildingDefinition(
             VillageBuilding.CapitalDefenses, "Capital",
             "The capital city."
@@ -154,7 +153,7 @@ public static class VillageBuildingList
         )
         {
             Cost = new BuildingCost() { Wealth = 400 },
-            Boosts = new VillageBoosts(){ SpellLevels = 1, },
+            Boosts = new VillageBoosts() { SpellLevels = 1, },
         },
 
         [VillageBuilding.Cathedral] = new VillageBuildingDefinition(
@@ -177,7 +176,8 @@ public static class VillageBuildingList
         )
         {
             Cost = new BuildingCost() { Wealth = 250 },
-            Boosts = new VillageBoosts() {
+            Boosts = new VillageBoosts()
+            {
                 WealthMult = 0.5f,
                 WealthAdd = 20
             }
@@ -189,7 +189,8 @@ public static class VillageBuildingList
         )
         {
             Cost = new BuildingCost() { Wealth = 1500 },
-            Boosts = new VillageBoosts() {
+            Boosts = new VillageBoosts()
+            {
                 WealthMult = 1.0f,
                 WealthAdd = 50
             },
@@ -202,7 +203,8 @@ public static class VillageBuildingList
         )
         {
             Cost = new BuildingCost() { Wealth = 5000 },
-            Boosts = new VillageBoosts() {
+            Boosts = new VillageBoosts()
+            {
                 WealthMult = 1.0f,
                 WealthAdd = 350
             },
@@ -215,7 +217,8 @@ public static class VillageBuildingList
         )
         {
             Cost = new BuildingCost() { Wealth = 1000 },
-            Boosts = new VillageBoosts() {
+            Boosts = new VillageBoosts()
+            {
                 PopulationGrowthMult = 0.5f
             }
         },
@@ -226,7 +229,8 @@ public static class VillageBuildingList
         )
         {
             Cost = new BuildingCost() { Wealth = 4000 },
-            Boosts = new VillageBoosts() {
+            Boosts = new VillageBoosts()
+            {
                 PopulationGrowthMult = 1.0f
             },
             RequiredBuildings = new List<VillageBuilding>() { VillageBuilding.power1 }
@@ -238,7 +242,8 @@ public static class VillageBuildingList
         )
         {
             Cost = new BuildingCost() { Wealth = 80 },
-            Boosts = new VillageBoosts() {
+            Boosts = new VillageBoosts()
+            {
                 WealthMult = 0.15f,
                 FarmsEquivalent = 0.5f
             }
@@ -259,7 +264,8 @@ public static class VillageBuildingList
         )
         {
             Cost = new BuildingCost() { Wealth = 400 },
-            Boosts = new VillageBoosts() {
+            Boosts = new VillageBoosts()
+            {
                 WealthMult = 0.15f,
                 PopulationGrowthMult = 0.3f,
                 FarmsEquivalent = 5.0f
@@ -273,7 +279,8 @@ public static class VillageBuildingList
         )
         {
             Cost = new BuildingCost() { Wealth = 700 },
-            Boosts = new VillageBoosts() {
+            Boosts = new VillageBoosts()
+            {
                 WealthMult = 0.15f,
                 PopulationGrowthMult = 0.5f,
                 PopulationMaxMult = 1.0f
@@ -286,8 +293,9 @@ public static class VillageBuildingList
             "+100% the heal rate, Allows Mercenaries and Adventurers to visit and be hired."
         )
         {
-            Cost = new BuildingCost() { Wealth = 40},
-            Boosts = new VillageBoosts() {
+            Cost = new BuildingCost() { Wealth = 40 },
+            Boosts = new VillageBoosts()
+            {
                 HealRateMult = 1.0f,
                 MaxMercsAdd = 2,
                 MercsPerTurnAdd = 1,
@@ -302,7 +310,8 @@ public static class VillageBuildingList
         )
         {
             Cost = new BuildingCost() { Wealth = 800 },
-            Boosts = new VillageBoosts() {
+            Boosts = new VillageBoosts()
+            {
                 HealRateMult = 3.0f,
                 WealthAdd = 40,
                 TeamStartingExpAdd = 8
@@ -321,7 +330,8 @@ public static class VillageBuildingList
         )
         {
             Cost = new BuildingCost() { Wealth = 2000 },
-            Boosts = new VillageBoosts() {
+            Boosts = new VillageBoosts()
+            {
                 HealRateMult = 7.0f,
                 WealthAdd = 10,
                 TeamStartingExpAdd = 32,
@@ -339,7 +349,8 @@ public static class VillageBuildingList
         )
         {
             Cost = new BuildingCost() { Wealth = 60 },
-            Boosts = new VillageBoosts() {
+            Boosts = new VillageBoosts()
+            {
                 hasWall = true
             }
         },
@@ -350,7 +361,8 @@ public static class VillageBuildingList
         )
         {
             Cost = new BuildingCost() { Wealth = 300 },
-            Boosts = new VillageBoosts() {
+            Boosts = new VillageBoosts()
+            {
                 GarrisonMaxAdd = 8
             },
             RequiredBuildings = new List<VillageBuilding>() { VillageBuilding.wall }
@@ -362,7 +374,8 @@ public static class VillageBuildingList
         )
         {
             Cost = new BuildingCost() { Wealth = 80 },
-            Boosts = new VillageBoosts() {
+            Boosts = new VillageBoosts()
+            {
                 MaximumTrainingLevelAdd = 3,
                 StartingExpAdd = 8
             }
@@ -374,7 +387,8 @@ public static class VillageBuildingList
         )
         {
             Cost = new BuildingCost() { Wealth = 1500, LeaderExperience = 500 },
-            Boosts = new VillageBoosts() {
+            Boosts = new VillageBoosts()
+            {
                 StartingExpAdd = 50,
                 TeamStartingExpAdd = 50,
                 MaximumTrainingLevelAdd = 2
@@ -388,7 +402,8 @@ public static class VillageBuildingList
         )
         {
             Cost = new BuildingCost() { Wealth = 5000, LeaderExperience = 3000 },
-            Boosts = new VillageBoosts() {
+            Boosts = new VillageBoosts()
+            {
                 StartingExpAdd = 100,
                 TeamStartingExpAdd = 250,
                 MaximumTrainingLevelAdd = 2
@@ -403,7 +418,8 @@ public static class VillageBuildingList
         )
         {
             Cost = new BuildingCost() { Wealth = 2500 },
-            Boosts = new VillageBoosts() {
+            Boosts = new VillageBoosts()
+            {
                 TeamStartingExpAdd = 100,
                 WealthMult = 0.70f,
                 WealthAdd = 40
@@ -419,7 +435,8 @@ public static class VillageBuildingList
         )
         {
             Cost = new BuildingCost() { Wealth = 0 },
-            Boosts = new VillageBoosts() {
+            Boosts = new VillageBoosts()
+            {
                 GarrisonMaxAdd = 8,
                 WealthMult = 0.25f,
                 PopulationMaxMult = 0.5f
@@ -436,7 +453,8 @@ public static class VillageBuildingList
         )
         {
             Cost = new BuildingCost() { Wealth = 10000 },
-            Boosts = new VillageBoosts() {
+            Boosts = new VillageBoosts()
+            {
                 GarrisonMaxAdd = 16,
                 WealthMult = 0.5f,
                 WealthAdd = 100,
@@ -453,7 +471,8 @@ public static class VillageBuildingList
         )
         {
             Cost = new BuildingCost() { Wealth = 25000 },
-            Boosts = new VillageBoosts() {
+            Boosts = new VillageBoosts()
+            {
                 FarmsEquivalent = 50.0f,
                 TeamStartingExpAdd = 250
             },
@@ -467,7 +486,8 @@ public static class VillageBuildingList
         )
         {
             Cost = new BuildingCost() { Wealth = 100000, LeaderExperience = 20000 },
-            Boosts = new VillageBoosts() {
+            Boosts = new VillageBoosts()
+            {
                 StartingExpAdd = 1000,
                 TeamStartingExpAdd = 4000,
                 FarmsEquivalent = 200.0f,
@@ -483,7 +503,8 @@ public static class VillageBuildingList
         )
         {
             Cost = new BuildingCost() { Wealth = 500 },
-            Boosts = new VillageBoosts() {
+            Boosts = new VillageBoosts()
+            {
                 WealthAdd = 5,
                 TeamWealthAdd = 10
             }
@@ -495,7 +516,8 @@ public static class VillageBuildingList
         )
         {
             Cost = new BuildingCost() { Wealth = 2500 },
-            Boosts = new VillageBoosts() {
+            Boosts = new VillageBoosts()
+            {
                 WealthAdd = 20,
                 TeamWealthAdd = 50
             },
@@ -508,7 +530,8 @@ public static class VillageBuildingList
         )
         {
             Cost = new BuildingCost() { Wealth = 12500 },
-            Boosts = new VillageBoosts() {
+            Boosts = new VillageBoosts()
+            {
                 WealthAdd = 50,
                 TeamWealthAdd = 150,
                 TeamStartingExpAdd = 100
@@ -540,5 +563,5 @@ public static class VillageBuildingList
 
     };
 
-    
+
 }

@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 //TODO:
 // recolor bulges on clothes
@@ -51,7 +48,7 @@ class Imps : DefaultRaceData
         BodyAccentTypes3 = 4;
         BodyAccentTypes4 = 3;
 
-        clothingColors = ColorPaletteMap.GetPaletteCount(ColorPaletteMap.SwapType.Clothing50Spaced);        
+        clothingColors = ColorPaletteMap.GetPaletteCount(ColorPaletteMap.SwapType.Clothing50Spaced);
 
         ExtendedBreastSprites = true;
 

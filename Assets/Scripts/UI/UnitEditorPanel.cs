@@ -1,8 +1,7 @@
-﻿using System;
+﻿using CruxClothing;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,6 +12,8 @@ public class UnitEditorPanel : CustomizerPanel
     public TMP_Dropdown TraitDropdown;
     public TMP_Dropdown[] ItemDropdown;
     public TMP_Dropdown[] SpellDropdown;
+    public TMP_Dropdown AlignmentDropdown;
+    public Toggle HiddenToggle;
     public UnitInfoPanel InfoPanel;
     public TextMeshProUGUI TraitList;
     public Slider ExpBar;
@@ -28,6 +29,7 @@ public class UnitEditorPanel : CustomizerPanel
     Dictionary<Traits, int> traitDict;
     Dictionary<int, string> itemDict;
     Dictionary<string, int> itemReverseDict;
+    Dictionary<int, Empire> empireDict;
 
     public TMP_InputField TraitsText;
 
@@ -57,7 +59,12 @@ public class UnitEditorPanel : CustomizerPanel
 
         traitDict = new Dictionary<Traits, int>();
         int val2 = 0;
-
+        foreach (RandomizeList rl in State.RandomizeLists)
+        {
+            traitDict[(Traits)rl.id] = val2;
+            val2++;
+            TraitDropdown.options.Add(new TMP_Dropdown.OptionData(rl.name.ToString()));
+        }
         foreach (Traits traitId in ((Traits[])Enum.GetValues(typeof(Traits))).OrderBy(s =>
        {
            return s >= Traits.LightningSpeed ? "ZZZ" + s.ToString() : s.ToString();
@@ -92,7 +99,42 @@ public class UnitEditorPanel : CustomizerPanel
             }
             SpellDropdown[i].RefreshShownValue();
         }
+        SetupAllignment();
+    }
 
+    private void SetupAllignment()
+    {
+        empireDict = new Dictionary<int, Empire>();
+        AlignmentDropdown.options.Add(new TMP_Dropdown.OptionData("Default"));
+        if (State.World?.MainEmpires != null)
+        {
+            var mainEmps = State.World.MainEmpires;
+            for (int i = 0; i < mainEmps.Count; i++)
+            {
+                if (mainEmps[i].Side >= 700)
+                    continue;
+                AlignmentDropdown.options.Add(new TMP_Dropdown.OptionData(mainEmps[i].Name));
+                empireDict[i + 1] = mainEmps[i];
+            }
+
+            if (State.World.MonsterEmpires != null)
+            {
+                var monsterEmps = State.World.MonsterEmpires;
+                for (int i = 0; i < monsterEmps.Count(); i++)
+                {
+                    if (monsterEmps[i].Side >= 700)
+                        continue;
+                    AlignmentDropdown.options.Add(new TMP_Dropdown.OptionData(monsterEmps[i].Name));
+                    empireDict[i + mainEmps.Count - 1] = monsterEmps[i];
+                }
+            }
+        }
+        else
+        {
+            AlignmentDropdown.options.Add(new TMP_Dropdown.OptionData("Defender"));
+            AlignmentDropdown.options.Add(new TMP_Dropdown.OptionData("Attacker"));
+        }
+        AlignmentDropdown.RefreshShownValue();
     }
 
     EditStatButton CreateNewButton(Stat stat, Action<Stat, int> statAction, Action<Stat, int> levelAction, Action<Stat, int> manualSetAction)
@@ -146,12 +188,24 @@ public class UnitEditorPanel : CustomizerPanel
         else
             RaceDropdown.value = 0;
         RaceDropdown.captionText.text = actor.Unit.Race.ToString();
+        AlignmentDropdown.captionText.text = DetermineAllignment(actor.Unit);
+        HiddenToggle.isOn = actor.Unit.hiddenFixedSide;
         PopulateItems();
         TraitList.text = UnitEditor.Unit.ListTraits();
         SwapAlignment.gameObject.SetActive(State.GameManager.CurrentScene == State.GameManager.TacticalMode);
         ChangeUnitButtons(actor.Unit);
         UpdateButtons();
-        
+
+    }
+
+    private string DetermineAllignment(Unit unit)
+    {
+        if (State.World?.MainEmpires != null)
+        {
+            return State.World.GetEmpireOfSide(unit.FixedSide)?.Name ?? unit.Race.ToString();
+        }
+        else
+            return unit.FixedSide == State.GameManager.TacticalMode.GetDefenderSide() ? "Defender" : "Attacker";
     }
 
     public void Open(Unit unit)
@@ -176,6 +230,8 @@ public class UnitEditorPanel : CustomizerPanel
         }
         else
             RaceDropdown.value = 0;
+        AlignmentDropdown.captionText.text = DetermineAllignment(unit);
+        HiddenToggle.isOn = unit.hiddenFixedSide;
         PopulateItems();
         TraitList.text = UnitEditor.Unit.ListTraits();
         SwapAlignment.gameObject.SetActive(State.GameManager.CurrentScene == State.GameManager.TacticalMode);
@@ -297,7 +353,7 @@ public class UnitEditorPanel : CustomizerPanel
                 SpellDropdown[i].value = 0;
             SpellDropdown[i].RefreshShownValue();
         }
-        
+
     }
 
     public void ChangeItem(int slot)
@@ -317,6 +373,32 @@ public class UnitEditorPanel : CustomizerPanel
 
     }
 
+    public void ChangeAlignment()
+    {
+        if (UnitEditor.Unit == null)
+            return;
+
+        if (AlignmentDropdown.options[AlignmentDropdown.value].text == "Default")
+            UnitEditor.Unit.FixedSide = -1;
+        else if (AlignmentDropdown.options[AlignmentDropdown.value].text == "Defender")
+            UnitEditor.Unit.FixedSide = State.GameManager.TacticalMode.GetDefenderSide();
+        else if (AlignmentDropdown.options[AlignmentDropdown.value].text == "Attacker")
+            UnitEditor.Unit.FixedSide = State.GameManager.TacticalMode.GetAttackerSide();
+        else if (State.World?.MainEmpires != null)
+        {
+            UnitEditor.Unit.FixedSide = empireDict[AlignmentDropdown.value].Side;
+        }
+        ToggleHidden();
+    }
+
+    public void ToggleHidden()
+    {
+        if (UnitEditor.Unit == null)
+            return;
+        UnitEditor.Unit.hiddenFixedSide = HiddenToggle.isOn;
+        UnitEditor.RefreshView();
+    }
+
     public void RandomizeUnit()
     {
         Races.GetRace(UnitEditor.Unit).RandomCustom(UnitEditor.Unit);
@@ -328,11 +410,26 @@ public class UnitEditorPanel : CustomizerPanel
     {
         if (UnitEditor.Unit == null)
             return;
-
+        if (State.RandomizeLists.Any(rl => rl.name == TraitDropdown.options[TraitDropdown.value].text))
+        {
+            RandomizeList randomizeList = State.RandomizeLists.Single(rl => rl.name == TraitDropdown.options[TraitDropdown.value].text);
+            var resTrait = UnitEditor.Unit.RandomizeOne(randomizeList);
+            if (resTrait != (Traits)(-1))
+            {
+                UnitEditor.AddTrait(resTrait);
+                if (resTrait == Traits.Resourceful || resTrait == Traits.BookWormI || resTrait == Traits.BookWormII || resTrait == Traits.BookWormIII)
+                {
+                    UnitEditor.Unit.SetMaxItems();
+                    PopulateItems();
+                }
+                UnitEditor.RefreshActor();
+                TraitList.text = UnitEditor.Unit.ListTraits();
+            }
+        }
         if (Enum.TryParse(TraitDropdown.options[TraitDropdown.value].text, out Traits trait))
         {
             UnitEditor.AddTrait(trait);
-            if (trait == Traits.Resourceful)
+            if (trait == Traits.Resourceful || trait == Traits.BookWormI || trait == Traits.BookWormII || trait == Traits.BookWormIII)
             {
                 UnitEditor.Unit.SetMaxItems();
                 PopulateItems();
@@ -353,20 +450,38 @@ public class UnitEditorPanel : CustomizerPanel
             UnitEditor.Unit.ModifyStat(stat, s - UnitEditor.Unit.GetStatBase(stat));
             UnitEditor.RefreshStats();
             UpdateButtons();
-            }, "Change", "Cancel", $"Modify {stat}?", 6);
+        }, "Change", "Cancel", $"Modify {stat}?", 6);
     }
 
     public void AddTraitsText()
     {
         if (UnitEditor.Unit == null)
             return;
+        foreach (RandomizeList rl in (State.RandomizeLists))
+        {
+            if (TraitsText.text.ToLower().Contains(rl.name.ToString().ToLower()))
+            {
+                var resTrait = UnitEditor.Unit.RandomizeOne(rl);
+                if(resTrait != (Traits)(-1))
+                {
+                    UnitEditor.AddTrait(resTrait);
+                    if (resTrait == Traits.Resourceful || resTrait == Traits.BookWormI || resTrait == Traits.BookWormII || resTrait == Traits.BookWormIII)
+                    {
+                        UnitEditor.Unit.SetMaxItems();
+                        PopulateItems();
+                    }
+                    UnitEditor.RefreshActor();
+                    TraitList.text = UnitEditor.Unit.ListTraits();
+                }
 
+            }
+        }
         foreach (Traits trait in (Stat[])Enum.GetValues(typeof(Traits)))
         {
             if (TraitsText.text.ToLower().Contains(trait.ToString().ToLower()))
             {
                 UnitEditor.AddTrait(trait);
-                if (trait == Traits.Resourceful)
+                if (trait == Traits.Resourceful || trait == Traits.BookWormI || trait == Traits.BookWormII || trait == Traits.BookWormIII)
                 {
                     UnitEditor.Unit.SetMaxItems();
                     PopulateItems();

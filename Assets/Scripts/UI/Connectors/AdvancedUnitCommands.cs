@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -31,7 +30,7 @@ public class AdvancedUnitCommands : MonoBehaviour
 
         foreach (var action in TacticalActionList.TargetedActions)
         {
-            if (action.AppearConditional(actor) && (action.RequiresPred == false || actor.PredatorComponent != null))
+            if (action.AppearConditional(actor) && (action.RequiresPred == false || actor.Unit.Predator))
             {
                 if (action.Name == "Tail Vore" && actor.Unit.Race == Race.Terrorbird)
                     SetButton("Crop Vore", action.OnClicked, action.ButtonColor);
@@ -42,7 +41,8 @@ public class AdvancedUnitCommands : MonoBehaviour
 
         foreach (var action in TacticalActionList.UntargetedActions)
         {
-            SetButton(action.Name, action.OnClicked, action.ButtonColor, false);
+            if (action.AppearConditional(actor))
+                SetButton(action.Name, action.OnClicked, action.ButtonColor, false);
         }
 
         foreach (var spell in actor.Unit.UseableSpells)

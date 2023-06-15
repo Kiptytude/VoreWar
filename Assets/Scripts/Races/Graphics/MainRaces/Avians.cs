@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 class Avians : DefaultRaceData
@@ -89,7 +86,7 @@ class Avians : DefaultRaceData
 
         clothingColors = ColorPaletteMap.GetPaletteCount(ColorPaletteMap.SwapType.AviansSkin);
     }
-    
+
     internal override void RandomCustom(Unit unit)
     {
         base.RandomCustom(unit);
@@ -110,7 +107,7 @@ class Avians : DefaultRaceData
         }
 
         if (unit.Type == UnitType.Leader)
-            unit.ClothingType = 1 + AllowedMainClothingTypes.IndexOf(LeaderClothes);       
+            unit.ClothingType = 1 + AllowedMainClothingTypes.IndexOf(LeaderClothes);
     }
 
     internal override int DickSizes => 8;
@@ -137,7 +134,7 @@ class Avians : DefaultRaceData
         return Sprites2[96 + actor.Unit.HairStyle];
     }
 
-protected override Sprite BodyAccentSprite(Actor_Unit actor) // wings primary (white)
+    protected override Sprite BodyAccentSprite(Actor_Unit actor) // wings primary (white)
     {
         if (actor.IsAttacking)
         {
@@ -911,7 +908,7 @@ protected override Sprite BodyAccentSprite(Actor_Unit actor) // wings primary (w
             base.Configure(sprite, actor);
         }
     }
-    
+
     class GenericBot1 : MainClothing
     {
         public GenericBot1()
@@ -939,7 +936,7 @@ protected override Sprite BodyAccentSprite(Actor_Unit actor) // wings primary (w
                         clothing1.GetSprite = (s) => State.GameManager.SpriteDictionary.Avians3[116];
                 }
                 else clothing1.GetSprite = null;
-                
+
                 clothing2.GetSprite = (s) => State.GameManager.SpriteDictionary.Avians3[107 + actor.Unit.BodySize];
             }
             else
@@ -950,7 +947,7 @@ protected override Sprite BodyAccentSprite(Actor_Unit actor) // wings primary (w
                     clothing1.GetSprite = (s) => State.GameManager.SpriteDictionary.Avians3[120];
                 else
                     clothing1.GetSprite = (s) => State.GameManager.SpriteDictionary.Avians3[119];
-                
+
                 clothing2.GetSprite = (s) => State.GameManager.SpriteDictionary.Avians3[111 + actor.Unit.BodySize];
             }
 

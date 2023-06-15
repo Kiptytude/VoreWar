@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 class Demisharks : DefaultRaceData
@@ -106,14 +103,14 @@ class Demisharks : DefaultRaceData
 
         clothingColors = ColorPaletteMap.GetPaletteCount(ColorPaletteMap.SwapType.AviansSkin);
     }
-    
+
     ColorSwapPalette SharkColor(Actor_Unit actor)
     {
         if (actor.Unit.BodyAccentType1 == 0)
             return ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.SharkReversed, actor.Unit.SkinColor);
         return ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.SharkSkin, actor.Unit.SkinColor);
     }
-    
+
     internal override void SetBaseOffsets(Actor_Unit actor)
     {
         if (!actor.Unit.HasBreasts)
@@ -442,7 +439,7 @@ class Demisharks : DefaultRaceData
     {
         if (actor.Unit.HasWeapon && actor.Surrendered == false)
         {
-            if(actor.GetWeaponSprite() < 4 && actor.IsAttacking)
+            if (actor.GetWeaponSprite() < 4 && actor.IsAttacking)
             {
                 Weapon.layer = 20;
                 return Sprites3[75 + actor.GetWeaponSprite()];
@@ -1000,7 +997,7 @@ class Demisharks : DefaultRaceData
             {
                 clothing2.GetSprite = (s) => State.GameManager.SpriteDictionary.Sharks6[98 + 3 * (!actor.Unit.HasBreasts ? 1 : 0)];
             }
-            else if (actor.GetWeaponSprite() == 1 || actor.GetWeaponSprite() == 3 || actor.GetWeaponSprite() == 7 )
+            else if (actor.GetWeaponSprite() == 1 || actor.GetWeaponSprite() == 3 || actor.GetWeaponSprite() == 7)
             {
                 clothing2.GetSprite = (s) => State.GameManager.SpriteDictionary.Sharks6[97 + 3 * (!actor.Unit.HasBreasts ? 1 : 0)];
             }
@@ -1104,7 +1101,7 @@ class Demisharks : DefaultRaceData
                 clothing1.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.SharkSkin, actor.Unit.SkinColor);
                 clothing2.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.SharkSkin, actor.Unit.SkinColor);
             }
-            
+
             base.Configure(sprite, actor);
         }
     }
@@ -1452,7 +1449,7 @@ class Demisharks : DefaultRaceData
                     clothing1.GetSprite = (s) => State.GameManager.SpriteDictionary.Sharks6[8 + actor.Unit.BodySize];
                 }
             }
-            
+
             base.Configure(sprite, actor);
         }
     }
@@ -1588,10 +1585,10 @@ class Demisharks : DefaultRaceData
 
         public override void Configure(CompleteSprite sprite, Actor_Unit actor)
         {
-            
+
             clothing1.GetSprite = (s) => State.GameManager.SpriteDictionary.Sharks7[5];
             clothing2.GetSprite = (s) => State.GameManager.SpriteDictionary.Sharks7[6];
-            
+
 
             base.Configure(sprite, actor);
         }

@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 class Zera : BlankSlate
@@ -313,7 +310,7 @@ class Zera : BlankSlate
         int ballSprite;
         //int ballSprite = actor.Unit.BodyAccentType2;
 
-        if (actor.PredatorComponent != null)
+        if (actor.Unit.Predator)
         {
             if (ballIndex > 18 && actor.PredatorComponent.IsUnitOfSpecificationInPrey(Race.Selicia, PreyLocation.balls) == false)
                 ballIndex = 18;

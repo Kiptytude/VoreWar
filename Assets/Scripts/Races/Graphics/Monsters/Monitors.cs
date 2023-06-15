@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 class Monitors : BlankSlate
@@ -55,7 +51,7 @@ class Monitors : BlankSlate
     internal override int DickSizes => 6;
     internal override int BreastSizes => 1; // (no breasts)
 
-    
+
     protected override Sprite BodySprite(Actor_Unit actor)
     {
         if (actor.AnimationController.frameLists == null) SetUpAnimations(actor);

@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 
 class MonsterStrategicAI : IStrategicAI
@@ -70,7 +68,7 @@ class MonsterStrategicAI : IStrategicAI
     }
 
     public bool TurnAI()
-    {        
+    {
         SpawnerInfo spawner = Config.SpawnerInfo(empire.Race);
         if (spawner == null)
             return false;
@@ -203,7 +201,7 @@ class MonsterStrategicAI : IStrategicAI
                         else
                             army.Units.Add(new Unit(empire.Side, Race.Compy, RandXp(baseXp), true));
                     }
-                }  
+                }
                 else if (empire.ReplacedRace == Race.Monitors)
                 {
                     for (int i = 0; i < count; i++)
@@ -214,19 +212,9 @@ class MonsterStrategicAI : IStrategicAI
                             army.Units.Add(new Unit(empire.Side, Race.Monitors, RandXp(baseXp), true));
                     }
                 }
-				else if (empire.ReplacedRace == Race.Goodra)
-                {
-                    for (int i = 0; i < count; i++)
-                    {
-                        if (spawner.AddOnRace && State.Rand.Next(5) == 0)
-                            army.Units.Add(new Unit(empire.Side, Race.Goodra, RandXp(baseXp), true));
-                        else
-                            army.Units.Add(new Unit(empire.Side, Race.Goodra, RandXp(baseXp), true));
-                    }
-                }
                 else if (empire.ReplacedRace == Race.FeralLions)
                 {
-                    army.Units.Add(new Leader(empire.Side, Race.FeralLions, RandXp(baseXp*2)));
+                    army.Units.Add(new Leader(empire.Side, Race.FeralLions, RandXp(baseXp * 2)));
                     for (int i = 1; i < count; i++)
                     {
                         army.Units.Add(new Unit(empire.Side, Race.FeralLions, RandXp(baseXp), true));
@@ -373,7 +361,7 @@ class MonsterStrategicAI : IStrategicAI
 
         foreach (Army hostileArmy in StrategicUtilities.GetAllHostileArmies(empire, true))
         {
-            if (StrategicUtilities.ArmyPower(hostileArmy) < MaxDefenderStrength * StrategicUtilities.ArmyPower(army) && hostileArmy.InVillageIndex == -1)
+            if (!hostileArmy.Units.All(u => u.HasTrait(Traits.Infiltrator)) && StrategicUtilities.ArmyPower(hostileArmy) < MaxDefenderStrength * StrategicUtilities.ArmyPower(army) && hostileArmy.InVillageIndex == -1)
             {
                 potentialTargets.Add(hostileArmy.Position);
                 potentialTargetValue.Add(0);
