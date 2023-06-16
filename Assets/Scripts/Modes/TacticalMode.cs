@@ -3733,16 +3733,22 @@ Turns: {currentTurn}
                 {
                     if (State.World.MainEmpires != null)
                     {
-                        if (State.World.Reincarnators == null)
-                            State.World.Reincarnators = new Dictionary<Unit, Race>();
-                        if (!State.World.Reincarnators.ContainsKey(actor.Unit))
+                        List<Race> activeRaces = State.World.AllActiveEmpires.Where(e => e.GetAllUnitsIncludingTravelersAndStandby().Count > 0)
+                            .ToList().ConvertAll(ep => ep.ReplacedRace).Distinct().ToList();
+                        if (activeRaces.Any())
                         {
-                            actor.Unit.FixedSide = actor.Unit.FixedSide;
-                            actor.Unit.RemoveTrait(Traits.Reincarnation);
-                            actor.Unit.RemoveTrait(Traits.Diseased);
-                            actor.Unit.RemoveTrait(Traits.Illness);
-                            State.World.Reincarnators.Add(actor.Unit, (Race)(-1));
-                            State.World.GetEmpireOfSide(actor.Unit.Side)?.Reports.Add(new StrategicReport($"{actor.Unit.Name} will reincarnate as a random race.", new Vec2(0, 0)));
+                            Race race = activeRaces[State.Rand.Next(activeRaces.Count)];
+                            if (State.World.Reincarnators == null)
+                                State.World.Reincarnators = new Dictionary<Unit, Race>();
+                            if (!State.World.Reincarnators.ContainsKey(actor.Unit))
+                            {
+                                actor.Unit.FixedSide = actor.Unit.FixedSide;
+                                actor.Unit.RemoveTrait(Traits.Reincarnation);
+                                actor.Unit.RemoveTrait(Traits.Diseased);
+                                actor.Unit.RemoveTrait(Traits.Illness);
+                                State.World.Reincarnators.Add(actor.Unit, race);
+                                State.World.GetEmpireOfSide(actor.Unit.Side)?.Reports.Add(new StrategicReport($"{actor.Unit.Name} will reincarnate as a random race.", new Vec2(0, 0)));
+                        }
                         }
                     } 
                 }

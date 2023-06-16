@@ -327,8 +327,8 @@ public class Recruit_Mode : SceneBase
         if (army?.Units.Count > selectedIndex && selectedIndex != -1)
         {
             infoPanel.RefreshStrategicUnitInfo(army.Units[selectedIndex]);
-            ArmyUI.LevelUp.interactable = activatingEmpire != ActivatingEmpire.Observer && army.Units[selectedIndex].HasEnoughExpToLevelUp();
-            ArmyUI.AutoLevelUp.interactable = activatingEmpire != ActivatingEmpire.Observer && army.Units.Where(s => s.HasEnoughExpToLevelUp()).Any();
+            ArmyUI.LevelUp.interactable = activatingEmpire < ActivatingEmpire.Observer && army.Units[selectedIndex].HasEnoughExpToLevelUp();
+            ArmyUI.AutoLevelUp.interactable = activatingEmpire < ActivatingEmpire.Observer && army.Units.Where(s => s.HasEnoughExpToLevelUp()).Any();
         }
         else
         {
@@ -1485,6 +1485,7 @@ public class Recruit_Mode : SceneBase
 
     private void Exfiltrate(Unit unit)
     {
+        unit.Side = unit.FixedSide;
         Army destinationArmy = null;
         foreach (Army a in empire.Armies)
         {

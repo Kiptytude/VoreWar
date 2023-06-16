@@ -525,21 +525,6 @@ public class Unit
         {
             if (State.World.Reincarnators.Where(r => r.Value == Race).Count() > 0 && State.Rand.Next(3) == 0)
                 Reincarnate(State.World.Reincarnators.Where(r => r.Value == Race).First().Key);
-            else
-            {
-                var randomRaceReincarnators = State.World.Reincarnators.Where(r => r.Value <= (Race)(-1));
-            if (randomRaceReincarnators.Count() > 0)
-                {
-                    Unit reincarnator = null;
-                    randomRaceReincarnators.Reverse().ForEach(re =>
-                    {
-                        if (State.Rand.Next(Math.Max(6, StrategicUtilities.GetAllArmyUnits().Count() / 3)) == 0)
-                            reincarnator = re.Key;
-                    });
-                    if(reincarnator != null)
-                        Reincarnate(reincarnator);
-            }
-            }
         }
     }
 
@@ -564,6 +549,7 @@ public class Unit
             Debug.Log(pastLife.Name + " is re-reincarnating");
         };
         State.World.Reincarnators.Remove(pastLife);
+        StrategicUtilities.SpendLevelUps(this);
     }
 
     internal void SetGear(Race race)
@@ -1530,11 +1516,18 @@ public class Unit
 
     private void RandomizeTraits()
     {
-        var customs = Tags.Where(t => State.RandomizeLists.Any(rl => (Traits)rl.id == t));
+        List<Traits> traitsToRemove = new List<Traits>();
+        while (true) { 
+        var customs = Tags.Where(t => State.RandomizeLists.Any(rl => (Traits)rl.id == t)).ToList();
+            customs.AddRange(PermanentTraits.Where(t => State.RandomizeLists.Any(rl => (Traits)rl.id == t)));
+            customs.RemoveAll(t => traitsToRemove.Contains(t));
+            if (!customs.Any())
+                break;
         customs.ForEach(ct =>
         {
             RandomizeList randomizeList = State.RandomizeLists.Single(rl => (Traits)rl.id == ct);
-            if (State.Rand.NextDouble() < randomizeList.chance)
+            var chance = randomizeList.chance;
+            while (chance > 0 && State.Rand.NextDouble() < randomizeList.chance)
             {
                 List<Traits> gainable = randomizeList.RandomTraits.Where(rt => !Tags.Contains(rt) && !PermanentTraits.Contains(rt)).ToList();
                 if (gainable.Count() > 0)
@@ -1542,16 +1535,21 @@ public class Unit
                     var randomPick = gainable[State.Rand.Next(gainable.Count())];
                     PermanentTraits.Add(randomPick);
                     RemovedTraits?.Remove(randomPick); // Even if manually removed before, rng-sus' word is law
+                    gainable.Remove(randomPick);
                     GivePrerequisiteTraits(randomPick, gainable);
                 }
+                chance -= 1;
             }
-            if (RemovedTraits == null)
-                RemovedTraits = new List<Traits>();
-            RemovedTraits.Add(ct);  // we don't want the random traits generating infinite traits
+            traitsToRemove.Add(ct);
         });
+        }
+        if (RemovedTraits == null)
+            RemovedTraits = new List<Traits>();
+        RemovedTraits.AddRange(traitsToRemove);  // we don't want the random traits generating infinite traits
         foreach (Traits trait in RemovedTraits)
         {
             Tags.Remove(trait);
+            PermanentTraits.Remove(trait);
         }
     }
 
@@ -2246,18 +2244,32 @@ public class Unit
 
     }
 
-    internal Traits RandomizeOne(RandomizeList randomizeList)
+    internal List<Traits> RandomizeOne(RandomizeList randomizeList)
     {
-        if (State.Rand.NextDouble() < randomizeList.chance)
+        var chance = randomizeList.chance;
+        var traitsToAdd = new List<Traits>();
+        List<Traits> gainable = randomizeList.RandomTraits.Where(rt => !Tags.Contains(rt) && !PermanentTraits.Contains(rt)).ToList();
+        while (State.Rand.NextDouble() < chance)
         {
-            List<Traits> gainable = randomizeList.RandomTraits.Where(rt => !Tags.Contains(rt) && !PermanentTraits.Contains(rt)).ToList();
             if (gainable.Count() > 0)
             {
                 var randomPick = gainable[State.Rand.Next(gainable.Count())];
                 GivePrerequisiteTraits(randomPick, gainable);
-                return randomPick;
+                if (randomPick >= (Traits)1000)
+                {
+                    RandomizeList recursiveRl = State.RandomizeLists.Find(re => (Traits)re.id == randomPick);
+                    if (recursiveRl != null)
+                    {
+                        Tags.Add(randomPick);
+                        traitsToAdd.AddRange(RandomizeOne(recursiveRl));
+                        Tags.Remove(randomPick);
+                    }
+                } else
+                    traitsToAdd.Add(randomPick);
+                gainable.Remove(randomPick);
             }
+            chance -= 1;
         }
-        return (Traits)(-1);
+        return traitsToAdd;
     }
 }
