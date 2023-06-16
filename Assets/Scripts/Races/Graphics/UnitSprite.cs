@@ -23,6 +23,8 @@ public class UnitSprite : MonoBehaviour
     CompleteSprite _CompleteSprite;
     Animator animator;
     Animator ballsAnimator;
+    Animator boobsAnimator;
+    Animator SecondBoobsAnimator;
 
     public readonly int SfxSourcesCount = 5;
     public readonly float pitchMin = 0.92f;
@@ -165,8 +167,8 @@ public class UnitSprite : MonoBehaviour
             }
             else
             {
-                DamageIndicator.faceColor = Color.red;
-                DamageIndicator.text = $"-{damage}";
+            DamageIndicator.faceColor = Color.red;
+            DamageIndicator.text = $"-{damage}";
             }
         }
         else if (damage < 0)
@@ -213,7 +215,7 @@ public class UnitSprite : MonoBehaviour
 
         if (lastHealth != actor.Unit.Health)
             UpdateHealthBar(actor);
-
+     
 
         if (goalScale.x > GraphicsFolder.localScale.x)
         {
@@ -295,8 +297,34 @@ public class UnitSprite : MonoBehaviour
             ballsAnimator = CompleteSprite.GetSpriteOfType(SpriteType.Balls)?.GameObject.GetComponentInParent<Animator>();
             if (ballsAnimator != null)
             {
+                var raceData = Races.GetRace(actor.Unit);
+                if (raceData.GentleAnimation)
+                    ballsAnimator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animations/ActorsGentle");
+                else
+                    ballsAnimator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animations/Actors");
                 ballsAnimator.enabled = true;
-                ballsAnimator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animations/ActorsGentle");
+            }
+
+            boobsAnimator = CompleteSprite.GetSpriteOfType(SpriteType.Breasts)?.GameObject.GetComponentInParent<Animator>();
+            if (boobsAnimator != null)
+            {
+                var raceData = Races.GetRace(actor.Unit);
+                if (raceData.GentleAnimation)
+                    boobsAnimator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animations/ActorsGentle");
+                else
+                    boobsAnimator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animations/Actors");
+                boobsAnimator.enabled = true;
+            }
+
+            SecondBoobsAnimator = CompleteSprite.GetSpriteOfType(SpriteType.SecondaryBreasts)?.GameObject.GetComponentInParent<Animator>();
+            if (SecondBoobsAnimator != null)
+            {
+                var raceData = Races.GetRace(actor.Unit);
+                if (raceData.GentleAnimation)
+                    SecondBoobsAnimator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animations/ActorsGentle");
+                else
+                    SecondBoobsAnimator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animations/Actors");
+                SecondBoobsAnimator.enabled = true;
             }
 
         }
@@ -316,8 +344,8 @@ public class UnitSprite : MonoBehaviour
 
         if (actor.Unit.FixedSide != actor.Unit.Side && TacticalUtilities.PlayerCanSeeTrueSide(actor.Unit))
         {
-            if (BlueColored)
-            {
+        if (BlueColored)
+        {
                 {
                     if (Config.AllianceSquaresDarkness == 3)
                     {
@@ -404,6 +432,28 @@ public class UnitSprite : MonoBehaviour
         if (ran == 1) animator.SetTrigger("wriggle");
         if (ran == 2) animator.SetTrigger("wriggle2");
         if (ran == 3) animator.SetTrigger("wriggle3");
+    }
+
+    public void AnimateBoobs(float odds)
+    {
+        if (boobsAnimator == null) return;
+        if (Random.value > odds) return;
+        if (!boobsAnimator.GetCurrentAnimatorStateInfo(0).IsName("none")) return;
+        int ran = Random.Range(0, 3); // 0 up to 3
+        if (ran == 1) boobsAnimator.SetTrigger("wriggle");
+        if (ran == 2) boobsAnimator.SetTrigger("wriggle2");
+        if (ran == 3) boobsAnimator.SetTrigger("wriggle3");
+    }
+
+    public void AnimateSecondBoobs(float odds)
+    {
+        if (SecondBoobsAnimator == null) return;
+        if (Random.value > odds) return;
+        if (!SecondBoobsAnimator.GetCurrentAnimatorStateInfo(0).IsName("none")) return;
+        int ran = Random.Range(0, 3); // 0 up to 3
+        if (ran == 1) SecondBoobsAnimator.SetTrigger("wriggle");
+        if (ran == 2) SecondBoobsAnimator.SetTrigger("wriggle2");
+        if (ran == 3) SecondBoobsAnimator.SetTrigger("wriggle3");
     }
 
     public void AnimateBellyEnter()
