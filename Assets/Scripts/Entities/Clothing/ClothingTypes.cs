@@ -87,7 +87,12 @@ class BeltTop : MainClothing
 
     public override void Configure(CompleteSprite sprite, Actor_Unit actor)
     {
-        if (actor.Unit.HasBreasts)
+        if (actor.Unit.Race == Race.Lizards && actor.IsAnalVoring || actor.IsUnbirthing)
+            {
+            blocksDick = false;
+            clothing1.GetSprite = (s) => null;
+            }
+        else if (actor.Unit.HasBreasts)
         {
             int breastMod = 0;
             if (actor.Unit.Race == Race.Succubi)
@@ -123,8 +128,16 @@ class BikiniBottom : MainClothing
     public override void Configure(CompleteSprite sprite, Actor_Unit actor)
     {
         int spr = 0;
-        if (actor.Unit.Race == Race.Lizards)
+        if (actor.Unit.Race == Race.Lizards && actor.IsAnalVoring || actor.IsUnbirthing)
+            {
+            blocksDick = false;
+            clothing1.GetSprite = (s) => null;
+            }
+        else if (actor.Unit.Race == Race.Lizards)
+            {
+            blocksDick = true;
             spr = 8;
+            }
         else if (actor.Unit.Race == Race.Harpies)
             spr = 9;
         else if (actor.Unit.Race == Race.Lamia)
@@ -139,7 +152,12 @@ class BikiniBottom : MainClothing
 
         if (actor.Unit.DickSize > 2)
         {
-            if (actor.Unit.DickSize > 4)
+            if (actor.Unit.Race == Race.Lizards && actor.IsAnalVoring || actor.IsUnbirthing)
+            {
+                blocksDick = false;
+                clothing2.GetSprite = (s) => null;
+            }
+            else if (actor.Unit.DickSize > 4)
                 clothing2.GetSprite = (s) => State.GameManager.SpriteDictionary.BikiniBottom[11];
             else
                 clothing2.GetSprite = (s) => State.GameManager.SpriteDictionary.BikiniBottom[10];
@@ -171,8 +189,16 @@ class Shorts : MainClothing
     public override void Configure(CompleteSprite sprite, Actor_Unit actor)
     {
         int spr = 0;
-        if (actor.Unit.Race == Race.Lizards)
+        if (actor.Unit.Race == Race.Lizards && actor.IsAnalVoring || actor.IsUnbirthing)
+            {
+            blocksDick = false;
+            clothing1.GetSprite = (s) => null;
+            }
+        else if (actor.Unit.Race == Race.Lizards)
+            {
+            blocksDick = true;
             spr = 8;
+            }
         else if (actor.Unit.Race == Race.Harpies)
             spr = 9;
         else
@@ -213,7 +239,11 @@ class Loincloth : MainClothing
     public override void Configure(CompleteSprite sprite, Actor_Unit actor)
     {
         int spr = 0;
-        if (actor.Unit.Race == Race.Lizards)
+        if (actor.Unit.Race == Race.Lizards && actor.IsAnalVoring || actor.IsUnbirthing)
+            {
+            clothing1.GetSprite = (s) => null;
+            }
+        else if (actor.Unit.Race == Race.Lizards)
             spr = 8;
         else if (actor.Unit.Race == Race.Harpies)
             spr = 9;
@@ -254,7 +284,10 @@ class Leotard : MainClothing
     {
         int spr = 0;
         if (actor.Unit.Race == Race.Lizards)
+            {
+            blocksDick = true;
             spr = 8;
+            }
         else if (actor.Unit.Race == Race.Harpies)
             spr = 9;
         else
@@ -267,7 +300,12 @@ class Leotard : MainClothing
 
         if (actor.Unit.DickSize > 2)
         {
-            if (actor.Unit.DickSize > 4)
+            if (actor.Unit.Race == Race.Lizards && actor.IsAnalVoring || actor.IsUnbirthing)
+            {
+                blocksDick = false;
+                clothing3.GetSprite = (s) => null;
+            }
+            else if (actor.Unit.DickSize > 4)
                 clothing3.GetSprite = (s) => State.GameManager.SpriteDictionary.Leotards[11];
             else
                 clothing3.GetSprite = (s) => State.GameManager.SpriteDictionary.Leotards[10];
@@ -279,10 +317,21 @@ class Leotard : MainClothing
         clothing3.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.Clothing, actor.Unit.ClothingColor);
         bellyPalette = ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.SkinToClothing, actor.Unit.ClothingColor);
 
-        clothing1.GetSprite = (s) => State.GameManager.SpriteDictionary.Leotards[spr];
+        if (actor.Unit.Race == Race.Lizards && actor.IsAnalVoring || actor.IsUnbirthing)
+            {
+            blocksDick = false;
+            clothing1.GetSprite = (s) => null;
+            }
+        else clothing1.GetSprite = (s) => State.GameManager.SpriteDictionary.Leotards[spr];
+        
         if (actor.Unit.BreastSize >= 0)
         {
-            clothing2.GetSprite = (s) => State.GameManager.SpriteDictionary.Leotards[12 + actor.Unit.BreastSize];
+            if (actor.Unit.Race == Race.Lizards && actor.IsAnalVoring || actor.IsUnbirthing)
+            {
+                blocksDick = false;
+                clothing2.GetSprite = (s) => null;
+            }
+            else clothing2.GetSprite = (s) => State.GameManager.SpriteDictionary.Leotards[12 + actor.Unit.BreastSize];
         }
         else
             clothing2.GetSprite = null;
@@ -327,8 +376,8 @@ class Rags : MainClothing
                 spr = 7;
         }
 
-        if ((blocksDick || inFrontOfDick) && Config.CockVoreHidesClothes && actor.PredatorComponent?.BallsFullness > 0)
-            clothing1.GetSprite = null;
+        if ((blocksDick || inFrontOfDick) && Config.CockVoreHidesClothes && actor.PredatorComponent?.BallsFullness > 0)       
+            clothing1.GetSprite = null;        
         else
             clothing1.GetSprite = (s) => State.GameManager.SpriteDictionary.Rags[spr];
 
@@ -341,6 +390,11 @@ class Rags : MainClothing
             clothing2.GetSprite = (s) => State.GameManager.SpriteDictionary.Rags[spr2];
             clothing2.layer = 18;
         }
+        else if (actor.Unit.Race == Race.Lizards && actor.IsAnalVoring || actor.IsUnbirthing)
+            {
+            blocksDick = false;
+            clothing2.GetSprite = (s) => null;
+            }
         else if (actor.Unit.BreastSize >= 0)
         {
             clothing2.GetSprite = (s) => State.GameManager.SpriteDictionary.Rags[11 + actor.Unit.BreastSize];

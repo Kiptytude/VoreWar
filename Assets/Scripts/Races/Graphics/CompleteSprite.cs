@@ -32,6 +32,10 @@ public enum SpriteType
     BreastShadow,
     Dick,
     Balls,
+    Pussy,
+    PussyIn,
+    Anus,
+    AnusIn,
     Mouth,
     Clothing,
     Clothing2,
@@ -97,6 +101,10 @@ class CompleteSprite
             sprites[typeInt] = new SpriteContainer(animatedType, folder, spriteType.ToString(), 0, 0, null);
         else if (spriteType == SpriteType.Balls && animatedType != null)
             sprites[typeInt] = new SpriteContainer(animatedType, folder, spriteType.ToString(), 0, 0, null);
+        else if (spriteType == SpriteType.Breasts && animatedType != null)
+            sprites[typeInt] = new SpriteContainer(animatedType, folder, spriteType.ToString(), 0, 0, null);
+        else if (spriteType == SpriteType.SecondaryBreasts && animatedType != null)
+            sprites[typeInt] = new SpriteContainer(animatedType, folder, spriteType.ToString(), 0, 0, null);
         else
             sprites[typeInt] = new SpriteContainer(type, folder, spriteType.ToString(), 0, 0, null);
         return sprites[typeInt];
@@ -154,8 +162,8 @@ class CompleteSprite
         int sortOrder = sprite.layer + actor.spriteLayerOffset;
         sprites[typeInt].SortOrder = sortOrder;
 
-
-
+        
+       
 
     }
 
@@ -264,7 +272,7 @@ class CompleteSprite
 
     public void UpdateSprite()
     {
-        var race = Races.GetRace(actor.Unit);
+        var race = Races.GetRace(actor.Unit);        
         if (sprites[(int)SpriteType.Belly] == null) GetSpriteOfType(SpriteType.Belly);
         race.RunFirst(actor);
         SetSprite(SpriteType.Body, race.Body);
@@ -333,12 +341,20 @@ class CompleteSprite
         {
             SetSprite(SpriteType.Dick, race.Dick);
             SetSprite(SpriteType.Balls, race.Balls);
+            SetSprite(SpriteType.Pussy, race.Pussy);
+            SetSprite(SpriteType.PussyIn, race.PussyIn);
+            SetSprite(SpriteType.Anus, race.Anus);
+            SetSprite(SpriteType.AnusIn, race.AnusIn);
         }
         else
         {
             HideSprite(SpriteType.Dick);
             HideSprite(SpriteType.Balls);
-        }
+            HideSprite(SpriteType.Pussy);
+            HideSprite(SpriteType.PussyIn);
+            HideSprite(SpriteType.Anus);
+            HideSprite(SpriteType.AnusIn);
+        }       
         race.SetBaseOffsets(actor);
         overallOffset = race.WholeBodyOffset;
         //Done this way so that any offsets that changed other parts will always work correctly
@@ -372,6 +388,10 @@ class CompleteSprite
         UpdatePosition(SpriteType.SecondaryBreasts, race.SecondaryBreasts);
         UpdatePosition(SpriteType.Dick, race.Dick);
         UpdatePosition(SpriteType.Balls, race.Balls);
+        UpdatePosition(SpriteType.Pussy, race.Pussy);
+        UpdatePosition(SpriteType.PussyIn, race.PussyIn);
+        UpdatePosition(SpriteType.Anus, race.Anus);
+        UpdatePosition(SpriteType.AnusIn, race.AnusIn);
 
         if (sprites[(int)SpriteType.BackWeapon] != null)
         {
@@ -386,8 +406,8 @@ class CompleteSprite
                 container.GameObject.transform.localPosition = new Vector3(-.08f, .22f, 0);
                 container.GameObject.transform.rotation = Quaternion.Euler(0, 0, -45);
             }
-        }
-
+        }       
+      
         actor.SquishedBreasts = false;
 
         for (int i = 0; i < 16; i++)

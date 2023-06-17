@@ -307,7 +307,7 @@ public class TacticalMode : SceneBase
 
         }
     }
-
+    
     private void Start()
     {
         var allSprites = State.GameManager.TacticalBuildingSpriteDictionary.AllSprites;
@@ -465,7 +465,7 @@ public class TacticalMode : SceneBase
         Race attackerRace = invader.Empire?.ReplacedRace ?? (Race)invader.Side;
         if (Config.Defections && !State.GameManager.PureTactical)
         {
-
+            
 
             foreach (Actor_Unit actor in attackers)
             {
@@ -1491,7 +1491,7 @@ Turns: {currentTurn}
         {
             actor.UnitSprite.HitPercentagesDisplayed(false);
             actor.UnitSprite.DisplaySummoned();
-        }
+        }        
         //if (actor.Unit.Side == defenderSide)
         //actor.Unit.CurrentLeader = DefenderLeader;
     }
@@ -2095,7 +2095,7 @@ Turns: {currentTurn}
                         IgnorePseudo = true;
                     }
                     else
-                        RunningFriendlyAI = true;
+                    RunningFriendlyAI = true;
                     break;
                 case 4:
                     PromptEndTurn();
@@ -2521,6 +2521,21 @@ Turns: {currentTurn}
                 if (unit.PredatorComponent?.BallsFullness > 0 && unit.PredatorComponent?.AlivePrey > 0)
                 {
                     unit.UnitSprite.AnimateBalls(unit.PredatorComponent.PreyNearLocation(PreyLocation.balls, true) * 0.0022f);
+                }
+
+                if (unit.PredatorComponent?.BreastFullness > 0 && unit.PredatorComponent?.AlivePrey > 0)
+                {
+                    unit.UnitSprite.AnimateBoobs(unit.PredatorComponent.PreyNearLocation(PreyLocation.breasts, true) * 0.0022f);
+                }
+
+                if (unit.PredatorComponent?.LeftBreastFullness > 0 && unit.PredatorComponent?.AlivePrey > 0)
+                {
+                    unit.UnitSprite.AnimateBoobs(unit.PredatorComponent.PreyNearLocation(PreyLocation.leftBreast, true) * 0.0022f);
+                }
+
+                if (unit.PredatorComponent?.RightBreastFullness > 0 && unit.PredatorComponent?.AlivePrey > 0)
+                {
+                    unit.UnitSprite.AnimateSecondBoobs(unit.PredatorComponent.PreyNearLocation(PreyLocation.rightBreast, true) * 0.0022f);
                 }
             }
         }
@@ -4035,7 +4050,7 @@ Turns: {currentTurn}
                             }
                             else
                             {
-                                remainingDefenders -= actor.PredatorComponent.GetDirectPrey().Where(s => s.Unit.HasTrait(Traits.TheGreatEscape)).Count();
+                                remainingDefenders -= actor.PredatorComponent.GetDirectPrey().Where(s => s.Unit.HasTrait(Traits.TheGreatEscape)).Count(); 
                             }
                         }
 
@@ -4165,7 +4180,7 @@ Turns: {currentTurn}
         }
         if (actors.Any())
         {
-            TacticalUtilities.ProcessTravelingUnits(actors.Select(s => s.Unit).ToList());
+            TacticalUtilities.ProcessTravelingUnits(actors.Select(s => s.Unit).ToList());            
         }
     }
 
