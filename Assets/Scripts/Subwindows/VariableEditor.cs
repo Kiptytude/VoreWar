@@ -189,6 +189,8 @@ public class VariableEditor : MonoBehaviour
                         newObj.name = $"UsingDictionary^{entry.Key}";
                         toggle.isOn = entry.Value;
                         toggle.GetComponentInChildren<Text>().text = entry.Key.ToString();
+                        toggle.gameObject.AddComponent<VariableScreenTooltip>();
+                        toggle.GetComponent<VariableScreenTooltip>().text = HoveringTooltip.GetTraitData(entry.Key);
                         DictToggleList.Add(toggle);
                     }
                     allToggle.isOn = DictToggleList.All(t => t.isOn);
