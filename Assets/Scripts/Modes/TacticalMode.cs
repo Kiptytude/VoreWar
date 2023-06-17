@@ -1486,7 +1486,7 @@ Turns: {currentTurn}
 
     }
 
-    internal void AddUnitToBattle(Unit unit, Vec2i position)
+    internal Actor_Unit AddUnitToBattle(Unit unit, Vec2i position)
     {
         Actor_Unit actor = new Actor_Unit(position, unit);
         units.Add(actor);
@@ -1499,6 +1499,7 @@ Turns: {currentTurn}
         }
         //if (actor.Unit.Side == defenderSide)
         //actor.Unit.CurrentLeader = DefenderLeader;
+        return actor;
     }
 
     void UpdateActorColor(Actor_Unit actor)
@@ -3684,7 +3685,7 @@ Turns: {currentTurn}
                 if (actor.Unit.IsDead && actor.Unit.Type != UnitType.Summon &&
                     (actor.Unit.HasTrait(Traits.Eternal) || (actor.Unit.HasTrait(Traits.LuckySurvival) && State.Rand.Next(5) != 0) ||
                     (actor.Unit.HasTrait(Traits.Reformer) && actor.KilledByDigestion) ||
-                    (actor.Unit.HasTrait(Traits.Reanimator) && actor.KilledByDigestion == false)
+                    (actor.Unit.HasTrait(Traits.Revenant) && actor.KilledByDigestion == false)
                     ))
                 {
                     actor.Surrendered = false;

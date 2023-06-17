@@ -777,7 +777,7 @@ static class TacticalUtilities
             target.UnitSprite.FlexibleSquare.gameObject.SetActive(true);
             target.UnitSprite.HealthBar.gameObject.SetActive(true);
         }
-        State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<b>{caster.Name}</b> brought back <b>{target.Unit.Name}</b> as actor summon.");
+        State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<b>{caster.Name}</b> brought back <b>{target.Unit.Name}</b> as a summon.");
     }
 
     static internal bool MeetsQualifier(List<AbilityTargets> targets, Actor_Unit actor, Actor_Unit target)

@@ -1585,6 +1585,11 @@ public class Unit
             PermanentTraits.Add(Traits.Pounce);
             RemovedTraits?.Remove(Traits.Pounce);
         }
+        if (randomPick == Traits.Temptation && gainable.Contains(Traits.Charmer))
+        {
+            PermanentTraits.Add(Traits.Charmer);
+            RemovedTraits?.Remove(Traits.Charmer);
+        }
     }
 
     public void SetSizeToDefault() => BreastSize = DefaultBreastSize;

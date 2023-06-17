@@ -238,7 +238,7 @@ public class RightClickMenu : MonoBehaviour
             DevourChance = devourChance
         };
         int damage = actor.WeaponDamageAgainstTarget(target, false);
-        if (!TacticalUtilities.IsUnitControlledByPlayer(target.Unit))
+        if (!TacticalUtilities.IsUnitControlledByPlayer(target.Unit) || Config.AllowInfighting)
         {
             Buttons[currentButton].onClick.AddListener(() => State.GameManager.TacticalMode.MeleeAttack(actor, target));
             Buttons[currentButton].onClick.AddListener(FinishAction);
