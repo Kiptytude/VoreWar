@@ -191,17 +191,17 @@ public class VariableEditor : MonoBehaviour
                             var rlName = State.RandomizeLists.Find(r => (Traits)r.id == entry.Key)?.name ?? entry.Key.ToString();
                             newObj.name = $"UsingDictionary^{rlName}";
                             toggle.GetComponentInChildren<Text>().text = rlName;
+                            toggle.gameObject.AddComponent<VariableScreenTooltip>();
+                            toggle.GetComponent<VariableScreenTooltip>().text = "A Custom Trait.";
                         }
                         else
                         {
                             newObj.name = $"UsingDictionary^{entry.Key}";
                             toggle.GetComponentInChildren<Text>().text = entry.Key.ToString();
+                            toggle.gameObject.AddComponent<VariableScreenTooltip>();
+                            toggle.GetComponent<VariableScreenTooltip>().text = HoveringTooltip.GetTraitData(entry.Key);
                         }
-
                         toggle.isOn = entry.Value;
-                        toggle.GetComponentInChildren<Text>().text = entry.Key.ToString();
-                        toggle.gameObject.AddComponent<VariableScreenTooltip>();
-                        toggle.GetComponent<VariableScreenTooltip>().text = HoveringTooltip.GetTraitData(entry.Key);
                         DictToggleList.Add(toggle);
                     }
                     allToggle.isOn = DictToggleList.All(t => t.isOn);
