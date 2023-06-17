@@ -725,7 +725,7 @@ static class SpellList
             Name = "Hypnotic Gas",
             Id = "hypno-fart",
             SpellType = SpellTypes.HypnoGas,
-            Description = "Applies Hypnotized in a 4x4 area centered on the caster. Hypnotized units become noncombatants that serve the caster's side.",
+            Description = "Applies Hypnotized in a 4x4 area near on the caster. Hypnotized units become noncombatants that serve the caster's side.",
             AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Tile, AbilityTargets.Enemy },
             Range = new Range(1),
             Duration = (a, t) => 5,

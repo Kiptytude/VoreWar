@@ -553,7 +553,7 @@ public class StrategyMode : SceneBase
         UpdateFog();
     }
 
-    private void ReassignArmyEmpire(Army army)
+    internal void ReassignArmyEmpire(Army army)
     {
         var sidesRepresented = new Dictionary<int,int>();
         army.Units.ForEach(unit =>
@@ -1898,7 +1898,7 @@ public class StrategyMode : SceneBase
         }
         else
         {
-            foreach (Army army in ActingEmpire.Armies.Where(a => ContainsFriendly(a)))
+            foreach (Army army in ActingEmpire.Armies.Where(a => a.Side == ActingEmpire.Side))
             {
                 if (army.Position.GetDistance(clickLocation) < 1)
                 {
@@ -1916,7 +1916,7 @@ public class StrategyMode : SceneBase
                 }
             }
 
-            foreach (Army army in StrategicUtilities.GetAllArmies().Where(s => s.Side == ActingEmpire.Side && ContainsFriendly(s)))
+            foreach (Army army in StrategicUtilities.GetAllArmies().Where(s => s.Side == ActingEmpire.Side))
             {
                 if (army.Position.GetDistance(clickLocation) < 1)
                 {
@@ -1939,7 +1939,7 @@ public class StrategyMode : SceneBase
 
 
 
-            foreach (Army army in StrategicUtilities.GetAllArmies().Where(s => s.Side != ActingEmpire.Side && s.Empire.IsAlly(ActingEmpire) && ContainsFriendly(s)))
+            foreach (Army army in StrategicUtilities.GetAllArmies().Where(s => s.Side != ActingEmpire.Side && s.Empire.IsAlly(ActingEmpire)))
             {
                 if (army.Position.GetDistance(clickLocation) < 1)
                 {

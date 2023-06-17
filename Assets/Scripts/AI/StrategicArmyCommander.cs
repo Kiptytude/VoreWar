@@ -532,6 +532,14 @@ class StrategicArmyCommander
         Unit unit = village.RecruitAIUnit(empire, army);
         if (unit == null) //Catches army size
             return null;
+        if (unit.HasTrait(Traits.Infiltrator) && !unit.IsInfiltratingSide(unit.Side))
+        {
+            unit.OnDiscard = () =>
+            {
+                village.VillagePopulation.AddHireable(unit);
+                UnityEngine.Debug.Log(unit.Name + " is returning to " +  village.Name);
+            };
+        }
         if (unit.FixedGear == false)
         {
             if (unit.HasTrait(Traits.Feral))

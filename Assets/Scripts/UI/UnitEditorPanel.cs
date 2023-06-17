@@ -413,8 +413,8 @@ public class UnitEditorPanel : CustomizerPanel
         if (State.RandomizeLists.Any(rl => rl.name == TraitDropdown.options[TraitDropdown.value].text))
         {
             RandomizeList randomizeList = State.RandomizeLists.Single(rl => rl.name == TraitDropdown.options[TraitDropdown.value].text);
-            var resTrait = UnitEditor.Unit.RandomizeOne(randomizeList);
-            if (resTrait != (Traits)(-1))
+            var resTraits = UnitEditor.Unit.RandomizeOne(randomizeList);
+            foreach (Traits resTrait in resTraits)
             {
                 UnitEditor.AddTrait(resTrait);
                 if (resTrait == Traits.Resourceful || resTrait == Traits.BookWormI || resTrait == Traits.BookWormII || resTrait == Traits.BookWormIII)
@@ -422,9 +422,9 @@ public class UnitEditorPanel : CustomizerPanel
                     UnitEditor.Unit.SetMaxItems();
                     PopulateItems();
                 }
-                UnitEditor.RefreshActor();
-                TraitList.text = UnitEditor.Unit.ListTraits();
             }
+            UnitEditor.RefreshActor();
+            TraitList.text = UnitEditor.Unit.ListTraits();
         }
         if (Enum.TryParse(TraitDropdown.options[TraitDropdown.value].text, out Traits trait))
         {
@@ -461,8 +461,8 @@ public class UnitEditorPanel : CustomizerPanel
         {
             if (TraitsText.text.ToLower().Contains(rl.name.ToString().ToLower()))
             {
-                var resTrait = UnitEditor.Unit.RandomizeOne(rl);
-                if(resTrait != (Traits)(-1))
+                var resTraits = UnitEditor.Unit.RandomizeOne(rl);
+                foreach (Traits resTrait in resTraits)
                 {
                     UnitEditor.AddTrait(resTrait);
                     if (resTrait == Traits.Resourceful || resTrait == Traits.BookWormI || resTrait == Traits.BookWormII || resTrait == Traits.BookWormIII)
@@ -470,9 +470,9 @@ public class UnitEditorPanel : CustomizerPanel
                         UnitEditor.Unit.SetMaxItems();
                         PopulateItems();
                     }
-                    UnitEditor.RefreshActor();
-                    TraitList.text = UnitEditor.Unit.ListTraits();
                 }
+                UnitEditor.RefreshActor();
+                TraitList.text = UnitEditor.Unit.ListTraits();
 
             }
         }

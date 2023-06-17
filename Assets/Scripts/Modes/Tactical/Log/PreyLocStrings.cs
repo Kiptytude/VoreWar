@@ -55,6 +55,8 @@ public static class PreyLocStrings
                 return genRandom(wombSyn);
             case PreyLocation.anal:
                 return genRandom(analSyn);
+            case PreyLocation.tail:
+                return "tail";
             default:
                 return "";
         }

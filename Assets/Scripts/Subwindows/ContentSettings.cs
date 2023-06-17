@@ -451,6 +451,9 @@ public class ContentSettings : MonoBehaviour
             case Race.FeralLions:
                 tooltip.value = 248;
                 break;
+            case Race.Goodra:
+                tooltip.value = 257;
+                break;
         }
         return spawner;
     }

@@ -67,6 +67,13 @@ public class RandomizerTraitEditor : MonoBehaviour
             rt.chance.text = savedCustom.chance.ToString();
             rt.id = savedCustom.id;
             var ranTraits = new Dictionary<Traits, bool>();
+            foreach (Traits r in State.RandomizeLists.ConvertAll(r => (Traits)r.id))
+            {
+                if (savedCustom.RandomTraits.Contains(r))
+                    ranTraits[r] = true;
+                else
+                    ranTraits[r] = false;
+            }
             foreach (Traits trait in (Traits[])Enum.GetValues(typeof(Traits)))
             {
                 if (savedCustom.RandomTraits.Contains(trait))
@@ -99,6 +106,10 @@ public class RandomizerTraitEditor : MonoBehaviour
             var last = RandomizerTags.LastOrDefault();
             rt.id = last == null ? 1001 : last.id + 1;
             var ranTraits = new Dictionary<Traits, bool>();
+            foreach (Traits r in State.RandomizeLists.ConvertAll(r => (Traits)r.id))
+            {
+                ranTraits[r] = false;
+            }
             foreach (Traits trait in (Traits[])Enum.GetValues(typeof(Traits)))
             {
                 ranTraits[trait] = false;
@@ -139,6 +150,7 @@ public class RandomizerTraitEditor : MonoBehaviour
             if (!Validate(tag))
             {
                 State.GameManager.CreateMessageBox("Saving failed: Trait with name \"" + tag.name.text + "\" is incomplete or invalid.");
+                Remove(tag);
                 return;
             }
             RandomizeList newCustom = new RandomizeList();
@@ -163,7 +175,7 @@ public class RandomizerTraitEditor : MonoBehaviour
     {
         float res;
         if (randomizerTrait.name.text.Length < 1) return false;
-        if (randomizerTrait.chance.text.Length < 1 || !float.TryParse(randomizerTrait.chance.text, out res) || res < 0 || res > 1) return false;
+        if (randomizerTrait.chance.text.Length < 1 || !float.TryParse(randomizerTrait.chance.text, out res) || res < 0) return false;
         if (randomizerTrait.TraitDictionary.Where(i => i.Value).Count() < 1) return false;
         if (RandomizerTags.Where(rt => rt.name.text == randomizerTrait.name.text).Count() > 1) return false;
         return true;
