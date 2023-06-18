@@ -618,6 +618,7 @@ public class StrategyMode : SceneBase
             var newArmy = new Army(emp, pos, emp.Side);
             newArmy.Units = army.Units;
             emp.Armies.Add(newArmy);
+            newArmy.Units.ForEach(u => u.Side = newArmy.Side);
         } else // we'll literally make up an empire on the spot. Should rarely happen
         {
             var monsterEmp = State.World.MonsterEmpires.Where(e => e.Race == army.Units.Where(u => u.FixedSide == finalSide.Key).FirstOrDefault()?.Race).FirstOrDefault();

@@ -522,18 +522,20 @@ public class TacticalMode : SceneBase
         if (DefenderName == null)
             DefenderName = $"{armies[1]?.Empire?.Name ?? village?.Empire?.Name ?? ((Race)defenderSide).ToString()}";
 
-        if (defenders.Count <= 0 && garrison.Count <= 0)
+        GeneralSetup();
+
+        if ((armies[1]?.Units.Count ?? 0) <= 0 && garrison.Count <= 0)
         {
+            VictoryCheck();
             string msg = $"All defenders have defected to rejoin their race, attackers win by default.";
             State.GameManager.CreateMessageBox(msg);
-            VictoryCheck();
             return;
         }
-        else if (attackers.Count <= 0)
+        if (armies[0].Units.Count <= 0)
         {
+            VictoryCheck();
             string msg = $"All attackers have defected to rejoin their race, defenders win by default.";
             State.GameManager.CreateMessageBox(msg);
-            VictoryCheck();
             return;
         }
 
@@ -562,7 +564,6 @@ public class TacticalMode : SceneBase
 
         currentAI = attackerAI;
         IsPlayerTurn = !AIAttacker;
-        GeneralSetup();
 
         Log.RegisterNewTurn(AttackerName, 1);
 
@@ -3510,7 +3511,7 @@ Turns: {currentTurn}
                 {
                     foreach (var prey in RetreatedDigestors[i].PredatorComponent.GetAllPrey())
                     {
-                        if (TacticalUtilities.TreatAsHostile(RetreatedDigestors[i], prey.Actor) && prey.Actor.Fled == false)
+                        if (!TacticalUtilities.TreatAsHostile(RetreatedDigestors[i], prey.Actor) && prey.Actor.Fled == false)
                         {
                             RetreatUnit(prey.Actor, prey.Unit.Side == defenderSide);
                         }
