@@ -65,6 +65,14 @@ public class RandomizerTraitEditor : MonoBehaviour
             var rt = obj.GetComponent<RandomizerTrait>();
             rt.name.text = savedCustom.name;
             rt.chance.text = savedCustom.chance.ToString();
+            rt.chance.onValueChanged.AddListener((v) =>
+            {
+                float res;
+                if (v.Length < 1 || !float.TryParse(v, out res) || res < 0)
+                {
+                    rt.chance.text = "0";
+                }
+            });
             rt.id = savedCustom.id;
             var ranTraits = new Dictionary<Traits, bool>();
             foreach (Traits r in State.RandomizeLists.ConvertAll(r => (Traits)r.id))

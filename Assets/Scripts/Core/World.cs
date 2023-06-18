@@ -48,7 +48,7 @@ public class World
     public List<Empire> AllActiveEmpires;
 
     [OdinSerialize]
-    public Dictionary<Unit, Race> Reincarnators;
+    public List<Reincarnator> Reincarnators;
 
     public World(bool MapEditorVersion)
     {

@@ -64,5 +64,10 @@
         }
         return ret;
     }
+
+    public override int GetStatTotal()
+    {
+        return base.GetStatTotal() + GetStat(Stat.Leadership);
+    }
 }
 

@@ -560,7 +560,7 @@ public class InfoPanel
             if (actor?.Paralyzed ?? false)
                 sbSecond.AppendLine("Paralyzed");
             if (actor?.Corruption > 0 && !TacticalUtilities.IsUnitControlledByPlayer(unit))
-                sbSecond.AppendLine($"Corruption ({actor.Unit.GetStatTotal()}/{actor.Corruption})");
+                sbSecond.AppendLine($"Corruption ({unit.GetStatTotal() + unit.GetStat(Stat.Will)}/{actor.Corruption})");
             if (unit.StatusEffects?.Any() ?? false)
             {
                 foreach (StatusEffectType type in (StatusEffectType[])Enum.GetValues(typeof(StatusEffectType)))

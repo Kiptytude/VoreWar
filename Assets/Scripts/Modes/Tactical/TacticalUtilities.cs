@@ -152,7 +152,7 @@ static class TacticalUtilities
     static internal void CleanVillage(int remainingAttackers)
     {
         bool MonsterAttacker = armies[0].Side >= 100;
-        SpawnerInfo spawner = Config.SpawnerInfo((Race)armies[0].Side);
+        SpawnerInfo spawner = Config.SpawnerInfo((Race)armies[0]?.Side);
         Config.MonsterConquestType spawnerType;
         if (spawner != null)
             spawnerType = spawner.GetConquestType();

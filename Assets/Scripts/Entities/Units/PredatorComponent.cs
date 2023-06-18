@@ -1057,7 +1057,7 @@ public class PredatorComponent
             if (preyUnit.Unit.HasTrait(Traits.Corruption))
            {
                 actor.Corruption += preyUnit.Unit.GetStatTotal();
-                if (actor.Corruption >= unit.GetStatTotal())
+                if (actor.Corruption >= unit.GetStatTotal() + unit.GetStat(Stat.Will))
                 {
                     unit.AddPermanentTrait(Traits.Corruption);
                     if (!unit.HasTrait(Traits.Untamable))
