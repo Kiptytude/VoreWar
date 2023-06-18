@@ -3728,7 +3728,8 @@ Turns: {currentTurn}
                     actor.PredatorComponent?.PurgePrey();
                     units.Remove(actor);
                 }
-                else if ((actor.Unit.HasTrait(Traits.Transmigration) || actor.Unit.HasTrait(Traits.InfiniteTransmigration)) && actor.KilledByDigestion && actor.Unit.IsDead && actor.Unit.Type != UnitType.Summon)
+                else if ((actor.Unit.HasTrait(Traits.Transmigration) || actor.Unit.HasTrait(Traits.InfiniteTransmigration)) && actor.KilledByDigestion && actor.Unit.IsDead
+                    && actor.Unit.Type != UnitType.Summon && actor.Unit.Type != UnitType.Leader && actor.Unit.Type != UnitType.SpecialMercenary)
                 {
                     if (State.World.MainEmpires != null)
                     {
@@ -3744,7 +3745,8 @@ Turns: {currentTurn}
                         }
                     }
                 }
-                else if ((actor.Unit.HasTrait(Traits.Reincarnation) || actor.Unit.HasTrait(Traits.InfiniteReincarnation)) && actor.Unit.IsDead && actor.Unit.Type != UnitType.Summon)
+                else if ((actor.Unit.HasTrait(Traits.Reincarnation) || actor.Unit.HasTrait(Traits.InfiniteReincarnation)) && actor.Unit.IsDead 
+                    && actor.Unit.Type != UnitType.Summon && actor.Unit.Type != UnitType.Leader && actor.Unit.Type != UnitType.SpecialMercenary)
                 {
                     if (State.World.MainEmpires != null)
                     {
