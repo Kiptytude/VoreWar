@@ -523,32 +523,43 @@ public class Unit
     {
         if (State.World != null && State.World.Reincarnators != null && State.World.Reincarnators?.Count > 0 && Type != UnitType.SpecialMercenary && Type != UnitType.Summon)
         {
-            if (State.World.Reincarnators.Where(r => r.Value == Race).Count() > 0 && State.Rand.Next(3) == 0)
-                Reincarnate(State.World.Reincarnators.Where(r => r.Value == Race).First().Key);
+            if (State.World.Reincarnators.Where(r => r.Race == Race).Count() > 0 && State.Rand.Next(3) == 0)
+                Reincarnate(State.World.Reincarnators.Where(r => r.Race == Race).First());
         }
     }
 
-    private void Reincarnate(Unit unit)
+    private void Reincarnate(Reincarnator reinc)
     {
-        Unit pastLife = unit;
-        Name = pastLife.Name;
-        experience = pastLife.Experience;
-        foreach (Traits trait in pastLife.PermanentTraits)
+        Unit Unit = reinc.PastLife;
+        Name = Unit.Name;
+        experience = Unit.Experience;
+        foreach (Traits trait in Unit.PermanentTraits)
         {
             AddPermanentTrait(trait);
         }
-        InnateSpells.AddRange(pastLife.InnateSpells);
-        FixedSide = pastLife.FixedSide;
+        InnateSpells.AddRange(Unit.InnateSpells);
+        FixedSide = Unit.FixedSide;
         hiddenFixedSide = true;
-        SavedCopy = pastLife.SavedCopy;
-        SavedVillage = pastLife.SavedVillage;
-        State.World.Reincarnators.TryGetValue(pastLife, out Race race);
+        SavedCopy = Unit.SavedCopy;
+        SavedVillage = Unit.SavedVillage;
+        Race race = reinc.Race;
         OnDiscard = () =>
         {
-            State.World.Reincarnators.Add(pastLife, race);
-            Debug.Log(pastLife.Name + " is re-reincarnating");
+            Race targetRace = race;
+            if (!reinc.RaceLocked)
+            {
+                List<Race> activeRaces = StrategicUtilities.GetAllUnits(false).ConvertAll(u => u.Race)
+                .Distinct().ToList();
+                if (activeRaces.Any())
+                {
+                    targetRace = activeRaces[State.Rand.Next(activeRaces.Count)];
+                }
+            }
+            State.World.Reincarnators.Add(new Reincarnator(Unit, targetRace, reinc.RaceLocked));
+            Debug.Log(Unit.Name + " is re-reincarnating");
         };
-        State.World.Reincarnators.Remove(pastLife);
+        State.World.Reincarnators.Remove(reinc);
+        Debug.Log(Unit.Name + " reincarnated as a " + Race);
         StrategicUtilities.SpendLevelUps(this);
     }
 
@@ -1786,9 +1797,11 @@ public class Unit
         }
     }
 
-    public int GetStatTotal()
+    public virtual int GetStatTotal()
     {
-        return Stats.Sum();
+        return GetStat(Stat.Agility) + GetStat(Stat.Will) + GetStat(Stat.Mind)
+            + GetStat(Stat.Dexterity) + GetStat(Stat.Endurance) + GetStat(Stat.Strength)
+            + GetStat(Stat.Voracity) + GetStat(Stat.Stomach);
     }
 
     public void LevelDown()

@@ -3731,15 +3731,13 @@ Turns: {currentTurn}
                 {
                     if (State.World.MainEmpires != null)
                     {
+                        Race race = actor.Unit.KilledBy.Race;
                         if (State.World.Reincarnators == null)
-                            State.World.Reincarnators = new Dictionary<Unit, Race>();
-                        if (!State.World.Reincarnators.ContainsKey(actor.Unit))
+                            State.World.Reincarnators = new List<Reincarnator>();
+                        if (!State.World.Reincarnators.Any(rc => rc.PastLife == actor.Unit))
                         {
-                            actor.Unit.FixedSide = actor.Unit.FixedSide;
                             actor.Unit.RemoveTrait(Traits.Transmigration);
-                            actor.Unit.RemoveTrait(Traits.Diseased);
-                            actor.Unit.RemoveTrait(Traits.Illness);
-                            State.World.Reincarnators.Add(actor.Unit, actor.Unit.KilledBy.Race);
+                            State.World.Reincarnators.Add(new Reincarnator(actor.Unit, race, true));
                             State.World.GetEmpireOfSide(actor.Unit.Side)?.Reports.Add(new StrategicReport($"{actor.Unit.Name} will reincarnate as a {InfoPanel.RaceSingular(actor.Unit.KilledBy)}.", new Vec2(0, 0)));
 
                         }
@@ -3749,20 +3747,17 @@ Turns: {currentTurn}
                 {
                     if (State.World.MainEmpires != null)
                     {
-                        List<Race> activeRaces = State.World.AllActiveEmpires.Where(e => e.GetAllUnitsIncludingTravelersAndStandby().Count > 0)
-                            .ToList().ConvertAll(ep => ep.ReplacedRace).Distinct().ToList();
+                        List<Race> activeRaces = StrategicUtilities.GetAllUnits(false).ConvertAll(u => u.Race).Distinct()
+                            .ToList();
                         if (activeRaces.Any())
                         {
                             Race race = activeRaces[State.Rand.Next(activeRaces.Count)];
                             if (State.World.Reincarnators == null)
-                                State.World.Reincarnators = new Dictionary<Unit, Race>();
-                            if (!State.World.Reincarnators.ContainsKey(actor.Unit))
+                                State.World.Reincarnators = new List<Reincarnator>();
+                            if (!State.World.Reincarnators.Any(rc => rc.PastLife == actor.Unit))
                             {
-                                actor.Unit.FixedSide = actor.Unit.FixedSide;
                                 actor.Unit.RemoveTrait(Traits.Reincarnation);
-                                actor.Unit.RemoveTrait(Traits.Diseased);
-                                actor.Unit.RemoveTrait(Traits.Illness);
-                                State.World.Reincarnators.Add(actor.Unit, race);
+                                State.World.Reincarnators.Add(new Reincarnator(actor.Unit, race));
                                 State.World.GetEmpireOfSide(actor.Unit.Side)?.Reports.Add(new StrategicReport($"{actor.Unit.Name} will reincarnate as a random race.", new Vec2(0, 0)));
                         }
                         }
@@ -3770,7 +3765,7 @@ Turns: {currentTurn}
                 }
                 else if (actor.Fled)
                     units.Remove(actor);
-                else if (actor.Unit.IsDead && actor.Unit.SavedCopy != null && (!State.World.Reincarnators?.ContainsKey(actor.Unit) ?? true))
+                else if (actor.Unit.IsDead && actor.Unit.SavedCopy != null && ((!State.World.Reincarnators?.Any(rc => rc.PastLife == actor.Unit)) ?? true))
                 {
                     var emp = State.World.GetEmpireOfSide(actor.Unit.Side);
                     var vill = actor.Unit.SavedVillage;
