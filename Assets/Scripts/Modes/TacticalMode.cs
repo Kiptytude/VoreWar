@@ -2447,7 +2447,7 @@ Turns: {currentTurn}
         actor.Targetable = false;
         actor.UnitSprite.gameObject.SetActive(false);
         actor.Fled = true;
-
+        actor.Unit.RefreshSecrecy();
         SelectedUnit = null;
     }
 
