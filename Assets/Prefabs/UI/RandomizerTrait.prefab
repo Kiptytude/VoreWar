@@ -1345,17 +1345,17 @@ PrefabInstance:
     - target: {fileID: 114787627876447784, guid: 89bebbadda021fa4888a74173e78312f,
         type: 3}
       propertyPath: m_ContentType
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114787627876447784, guid: 89bebbadda021fa4888a74173e78312f,
         type: 3}
       propertyPath: m_KeyboardType
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114787627876447784, guid: 89bebbadda021fa4888a74173e78312f,
         type: 3}
       propertyPath: m_CharacterValidation
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114395904218120334, guid: 89bebbadda021fa4888a74173e78312f,
         type: 3}
