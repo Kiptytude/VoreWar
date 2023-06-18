@@ -134,7 +134,7 @@ class Lizards : DefaultRaceData
         else if (actor.Unit.TailType == 0 || actor.IsOralVoring || actor.IsAttacking || actor.IsCockVoring || actor.IsBreastVoring)
             facingFront = true;
         else
-            facingFront = false;
+            facingFront = true;
         base.RunFirst(actor);
     }
 
@@ -178,19 +178,28 @@ class Lizards : DefaultRaceData
         if (facingFront) 
         { 
             BodyAccent2.layer = 7; 
-            return State.GameManager.SpriteDictionary.Lizards[3 + (actor.IsAttacking ? 1 : 0)];}
+            return State.GameManager.SpriteDictionary.Lizards[3 + (actor.IsAttacking ? 1 : 0)];
+		}
         else 
         {
             BodyAccent2.layer = 25;
-            if (actor.Unit.HasDick && actor.PredatorComponent.BallsFullness >= 2.5)
+
+			try
             {
-                return State.GameManager.SpriteDictionary.LizardsBooty[75];
-            }
-            else if (actor.GetStomachSize(16, 1.0f) >= 16)
-            { 
-                return State.GameManager.SpriteDictionary.LizardsBooty[74];
-            }
-            else return State.GameManager.SpriteDictionary.LizardsBooty[6];
+				if (actor.Unit.HasDick && actor.PredatorComponent.BallsFullness >= 2.5)
+				{
+					return State.GameManager.SpriteDictionary.LizardsBooty[75];
+				}
+			}
+			catch (NullReferenceException e)
+			{
+				Console.WriteLine($"Missing the predator component: {e.Message}");
+			}
+			if (actor.GetStomachSize(16, 1.0f) >= 16)
+			{ 
+				return State.GameManager.SpriteDictionary.LizardsBooty[74];
+			}
+			else return State.GameManager.SpriteDictionary.LizardsBooty[6];
         }
     }
 
