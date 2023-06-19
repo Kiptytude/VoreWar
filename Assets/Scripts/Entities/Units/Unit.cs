@@ -1527,11 +1527,9 @@ public class Unit
 
     private void RandomizeTraits()
     {
-        List<Traits> traitsToRemove = new List<Traits>();
         while (true) { 
         var customs = Tags.Where(t => State.RandomizeLists.Any(rl => (Traits)rl.id == t)).ToList();
             customs.AddRange(PermanentTraits.Where(t => State.RandomizeLists.Any(rl => (Traits)rl.id == t)));
-            customs.RemoveAll(t => traitsToRemove.Contains(t));
             if (!customs.Any())
                 break;
         customs.ForEach(ct =>
@@ -1551,17 +1549,17 @@ public class Unit
                 }
                 chance -= 1;
             }
-            traitsToRemove.Add(ct);
+            if (RemovedTraits == null)
+                RemovedTraits = new List<Traits>();
+            RemovedTraits.Add(ct);
+            foreach (Traits trait in RemovedTraits)
+            {
+                Tags.Remove(trait);
+                PermanentTraits.Remove(trait);
+            }
         });
         }
-        if (RemovedTraits == null)
-            RemovedTraits = new List<Traits>();
-        RemovedTraits.AddRange(traitsToRemove);  // we don't want the random traits generating infinite traits
-        foreach (Traits trait in RemovedTraits)
-        {
-            Tags.Remove(trait);
-            PermanentTraits.Remove(trait);
-        }
+
     }
 
     private void GivePrerequisiteTraits(Traits randomPick, List<Traits> gainable)
@@ -2278,9 +2276,7 @@ public class Unit
                     RandomizeList recursiveRl = State.RandomizeLists.Find(re => (Traits)re.id == randomPick);
                     if (recursiveRl != null)
                     {
-                        Tags.Add(randomPick);
                         traitsToAdd.AddRange(RandomizeOne(recursiveRl));
-                        Tags.Remove(randomPick);
                     }
                 } else
                     traitsToAdd.Add(randomPick);

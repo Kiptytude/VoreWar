@@ -158,7 +158,6 @@ public class RandomizerTraitEditor : MonoBehaviour
             if (!Validate(tag))
             {
                 State.GameManager.CreateMessageBox("Saving failed: Trait with name \"" + tag.name.text + "\" is incomplete or invalid.");
-                Remove(tag);
                 return;
             }
             RandomizeList newCustom = new RandomizeList();

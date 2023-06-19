@@ -215,7 +215,7 @@ static class StrategicUtilities
 
     public static List<int> GetAllHumanSides()
     {
-        return State.World.AllActiveEmpires.Where(emp => emp.StrategicAI == null).ToList().ConvertAll(emp => emp.Side);
+        return State.World.AllActiveEmpires?.Where(emp => emp.StrategicAI == null).ToList().ConvertAll(emp => emp.Side) ?? new List<int>();
     }
 
     public static int Get80thExperiencePercentile()
