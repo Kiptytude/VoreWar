@@ -2,6 +2,7 @@
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEngine.UI.CanvasScaler;
 
 static class TacticalUtilities
 {
@@ -834,6 +835,19 @@ static class TacticalUtilities
             }
         }
 
+    }
+
+    static public bool IsUnitControlledBySide(Unit unit, int side)
+    {
+        if (GetMindControlSide(unit) != -1)  // Charmed units may fight for a specific side, but for targeting purposes we'll consider them driven by separate forces
+            return false;
+        if (side == unit.FixedSide)
+            return true;
+        else if (State.GameManager.PureTactical)
+            return false;
+        if (unit.IsInfiltratingSide(side))
+            return true;                    // hidden and compliant
+        return false;
     }
 
     static public bool PlayerCanSeeTrueSide(Unit unit)

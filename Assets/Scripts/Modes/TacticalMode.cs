@@ -6,6 +6,7 @@ using TacticalDecorations;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Tilemaps;
+using static UnityEngine.UI.CanvasScaler;
 
 public class TacticalMode : SceneBase
 {
@@ -522,6 +523,8 @@ public class TacticalMode : SceneBase
         if (DefenderName == null)
             DefenderName = $"{armies[1]?.Empire?.Name ?? village?.Empire?.Name ?? ((Race)defenderSide).ToString()}";
 
+        IsPlayerTurn = !AIAttacker;
+
         GeneralSetup();
 
         if ((armies[1]?.Units.Count ?? 0) <= 0 && garrison.Count <= 0)
@@ -563,7 +566,7 @@ public class TacticalMode : SceneBase
         }
 
         currentAI = attackerAI;
-        IsPlayerTurn = !AIAttacker;
+
 
         Log.RegisterNewTurn(AttackerName, 1);
 
@@ -1861,7 +1864,7 @@ Turns: {currentTurn}
     {
         foreach (Actor_Unit target in units)
         {
-            if (TacticalUtilities.IsUnitControlledByPlayer(target.Unit) && Config.AllowInfighting == false || actor == target)
+            if ((TacticalUtilities.IsUnitControlledByPlayer(target.Unit) && Config.AllowInfighting == false) && !(!AIDefender && !AIAttacker) || actor == target)
                 continue;
             if (target.Targetable == false || target.Visible == false)
                 continue;
@@ -1903,7 +1906,7 @@ Turns: {currentTurn}
     {
         foreach (Actor_Unit target in units)
         {
-            if (TacticalUtilities.IsUnitControlledByPlayer(target.Unit) && Config.AllowInfighting == false || actor == target)
+            if ((TacticalUtilities.IsUnitControlledByPlayer(target.Unit) && Config.AllowInfighting == false && !(!AIDefender && !AIAttacker)) || actor == target)
                 continue;
             if (target.Targetable == false || target.Visible == false)
                 continue;
@@ -1921,7 +1924,7 @@ Turns: {currentTurn}
     {
         foreach (Actor_Unit target in units)
         {
-            if (TacticalUtilities.IsUnitControlledByPlayer(target.Unit) && Config.AllowInfighting == false || actor == target)
+            if ((TacticalUtilities.IsUnitControlledByPlayer(target.Unit) && Config.AllowInfighting == false && !(!AIDefender && !AIAttacker)) || actor == target)
                 continue;
             if (target.Targetable == false || target.Visible == false)
                 continue;
@@ -1939,9 +1942,9 @@ Turns: {currentTurn}
     {
         foreach (Actor_Unit target in units)
         {
-            if (CurrentSpell.AcceptibleTargets.Contains(AbilityTargets.Ally) == false && (TacticalUtilities.IsUnitControlledByPlayer(target.Unit)) && Config.AllowInfighting == false)
+            if (CurrentSpell.AcceptibleTargets.Contains(AbilityTargets.Ally) == false && (TacticalUtilities.IsUnitControlledByPlayer(target.Unit) && Config.AllowInfighting == false && !(!AIDefender && !AIAttacker)))
                 continue;
-            if (CurrentSpell.AcceptibleTargets.Contains(AbilityTargets.Enemy) == false && !(TacticalUtilities.IsUnitControlledByPlayer(target.Unit) || target.Unit.Side == actor.Unit.Side))
+            if (CurrentSpell.AcceptibleTargets.Contains(AbilityTargets.Enemy) == false && !(TacticalUtilities.IsUnitControlledByPlayer(target.Unit) || target.Unit.Side == actor.Unit.Side) && !(!AIDefender && !AIAttacker))
                 continue;
 
             if (target.Targetable == false || target.Visible == false)
@@ -2976,7 +2979,7 @@ Turns: {currentTurn}
         {
             if (currentIndex >= units.Count)
                 currentIndex -= units.Count;
-            if (TacticalUtilities.IsUnitControlledByPlayer(units[currentIndex].Unit) && units[currentIndex].Targetable && units[currentIndex].Movement > 0)
+            if (units[currentIndex].Unit.Side == activeSide && TacticalUtilities.IsUnitControlledByPlayer(units[currentIndex].Unit) && units[currentIndex].Targetable && units[currentIndex].Movement > 0)
             {
                 if (type == NextUnitType.Any || (type == NextUnitType.Melee && units[currentIndex].BestMelee.Damage > 2) || (type == NextUnitType.Ranged && units[currentIndex].BestRanged != null))
                 {
@@ -3064,7 +3067,7 @@ Turns: {currentTurn}
 
                 if (ActionMode == 0)
                 {
-                    if (TacticalUtilities.IsUnitControlledByPlayer(unit.Unit))
+                    if (TacticalUtilities.IsUnitControlledByPlayer(unit.Unit) && unit.Unit.Side == activeSide)
                     {
 
                         if (SelectedUnit != units[i])
@@ -3079,7 +3082,7 @@ Turns: {currentTurn}
                     continue;
                 if (ActionMode == 1)
                 {
-                    if (!TacticalUtilities.IsUnitControlledByPlayer(unit.Unit) || (Config.AllowInfighting && unit != SelectedUnit))
+                    if (!TacticalUtilities.IsUnitControlledByPlayer(unit.Unit) || (Config.AllowInfighting || (!AIDefender && !AIAttacker)) && unit != SelectedUnit)
                     {
                         MeleeAttack(SelectedUnit, unit);
                         return;
@@ -3088,7 +3091,7 @@ Turns: {currentTurn}
                 }
                 if (ActionMode == 2)
                 {
-                    if (!TacticalUtilities.IsUnitControlledByPlayer(unit.Unit) || Config.AllowInfighting)
+                    if (!TacticalUtilities.IsUnitControlledByPlayer(unit.Unit) || (Config.AllowInfighting || (!AIDefender && !AIAttacker)) && unit != SelectedUnit)
                     {
                         RangedAttack(SelectedUnit, unit);
                         return;
@@ -3189,7 +3192,7 @@ Turns: {currentTurn}
     private bool unitControllableBySide(Actor_Unit unit, int side)
     {
         bool correctSide = unit.Unit.Side == side;
-        bool controlOverridden = TacticalUtilities.GetMindControlSide(unit.Unit) != -1 || unit.Unit.FixedSide != side;
+        bool controlOverridden = TacticalUtilities.GetMindControlSide(unit.Unit) != -1 || (unit.Unit.FixedSide != side && !unit.Unit.IsInfiltratingSide(side));
         return correctSide && !controlOverridden;
     }
 
