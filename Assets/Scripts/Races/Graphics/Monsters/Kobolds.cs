@@ -51,7 +51,7 @@ class Kobolds : BlankSlate
         else if (actor.Unit.TailType == 0 || actor.IsOralVoring || actor.IsAttacking)
             facingFront = true;
         else
-            facingFront = false;
+            facingFront = true;
         base.RunFirst(actor);
     }
 
