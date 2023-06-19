@@ -3187,6 +3187,8 @@ public class PredatorComponent
                 AddToStomach(preyref, 1f);
                 break;
         }
+        actor.SetPredMode(preyLocation);
+        actor.SetVoreSuccessMode();
         UpdateFullness();
     }
 }

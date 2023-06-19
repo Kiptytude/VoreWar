@@ -793,7 +793,7 @@ static class SpellList
             AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy },
             Range = new Range(1),
             Tier = 0,
-            Resistable = true,
+            Resistable = false,
             OnExecute = (a, t) =>
             {
                 TacticalUtilities.ForceFeed(a, t);
