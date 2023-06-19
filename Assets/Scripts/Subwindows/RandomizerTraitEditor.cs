@@ -153,12 +153,13 @@ public class RandomizerTraitEditor : MonoBehaviour
     public void Persist()
     {
         List<RandomizeList> randomizeLists = new List<RandomizeList>();
+        bool valid = true;
         RandomizerTags.ForEach(tag =>
         {
             if (!Validate(tag))
             {
                 State.GameManager.CreateMessageBox("Saving failed: Trait with name \"" + tag.name.text + "\" is incomplete or invalid.");
-                return;
+                valid = false;
             }
             RandomizeList newCustom = new RandomizeList();
             newCustom.id = tag.id;
@@ -171,10 +172,13 @@ public class RandomizerTraitEditor : MonoBehaviour
             }
             randomizeLists.Add(newCustom);
         });
+        if (valid)
+        {
         State.RandomizeLists = new List<RandomizeList>();
         State.RandomizeLists.AddRange(randomizeLists);
         string[] printable = randomizeLists.ConvertAll(item => item.ToString()).ToArray();
         File.WriteAllLines($"{State.StorageDirectory}customTraits.txt", printable);
+        }
         Close();
     }
 
