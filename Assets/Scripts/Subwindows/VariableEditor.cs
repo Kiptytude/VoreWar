@@ -186,9 +186,22 @@ public class VariableEditor : MonoBehaviour
                     {
                         var newObj = Instantiate(Toggle, Folder);
                         var toggle = newObj.GetComponent<Toggle>();
-                        newObj.name = $"UsingDictionary^{entry.Key}";
+                        if (entry.Key >= (Traits)1000)
+                        {
+                            var rlName = State.RandomizeLists.Find(r => (Traits)r.id == entry.Key)?.name ?? entry.Key.ToString();
+                            newObj.name = $"UsingDictionary^{rlName}";
+                            toggle.GetComponentInChildren<Text>().text = rlName;
+                            toggle.gameObject.AddComponent<VariableScreenTooltip>();
+                            toggle.GetComponent<VariableScreenTooltip>().text = "A Custom Trait.";
+                        }
+                        else
+                        {
+                            newObj.name = $"UsingDictionary^{entry.Key}";
+                            toggle.GetComponentInChildren<Text>().text = entry.Key.ToString();
+                            toggle.gameObject.AddComponent<VariableScreenTooltip>();
+                            toggle.GetComponent<VariableScreenTooltip>().text = HoveringTooltip.GetTraitData(entry.Key);
+                        }
                         toggle.isOn = entry.Value;
-                        toggle.GetComponentInChildren<Text>().text = entry.Key.ToString();
                         DictToggleList.Add(toggle);
                     }
                     allToggle.isOn = DictToggleList.All(t => t.isOn);
@@ -371,6 +384,11 @@ public class VariableEditor : MonoBehaviour
                     if (Enum.TryParse(split[1], out Traits trait))
                     {
                         TempDictionary[trait] = obj.GetComponentInChildren<Toggle>().isOn;
+                    } else
+                    {
+                        var match = State.RandomizeLists.Find(r => r.name == split[1]);
+                        if (match != null)
+                            TempDictionary[(Traits)match.id] = obj.GetComponentInChildren<Toggle>().isOn;
                     }
                     needSave = true;
                 }

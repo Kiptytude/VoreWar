@@ -167,8 +167,8 @@ public class UnitSprite : MonoBehaviour
             }
             else
             {
-                DamageIndicator.faceColor = Color.red;
-                DamageIndicator.text = $"-{damage}";
+            DamageIndicator.faceColor = Color.red;
+            DamageIndicator.text = $"-{damage}";
             }
         }
         else if (damage < 0)
@@ -215,7 +215,7 @@ public class UnitSprite : MonoBehaviour
 
         if (lastHealth != actor.Unit.Health)
             UpdateHealthBar(actor);
-
+     
 
         if (goalScale.x > GraphicsFolder.localScale.x)
         {
@@ -344,8 +344,8 @@ public class UnitSprite : MonoBehaviour
 
         if (actor.Unit.FixedSide != actor.Unit.Side && TacticalUtilities.PlayerCanSeeTrueSide(actor.Unit))
         {
-            if (BlueColored)
-            {
+        if (BlueColored)
+        {
                 {
                     if (Config.AllianceSquaresDarkness == 3)
                     {

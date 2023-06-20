@@ -53,7 +53,7 @@ class Demibats : DefaultRaceData
         BackWeapon = null;
         BodySize = null;
         Breasts = new SpriteExtraInfo(17, BreastsSprite, null, (s) => FurryColor(s));
-        BreastShadow = new SpriteExtraInfo(17, SecondaryBreastsSprite, null, (s) => FurryColor(s));
+        SecondaryBreasts = new SpriteExtraInfo(17, SecondaryBreastsSprite, null, (s) => FurryColor(s));
         Dick = new SpriteExtraInfo(11, DickSprite, null, (s) => FurryColor(s));
         Balls = new SpriteExtraInfo(10, BallsSprite, null, (s) => FurryColor(s));
 

@@ -972,6 +972,18 @@ public class PredatorComponent
 
         if (preyUnit.Unit.IsThisCloseToDeath(preyDamage))
         {
+            if (preyUnit.Unit.HasTrait(Traits.Corruption))
+            {
+                actor.Corruption += preyUnit.Unit.GetStatTotal();
+                if (actor.Corruption >= unit.GetStatTotal() + unit.GetStat(Stat.Will))
+                {
+                    unit.AddPermanentTrait(Traits.Corruption);
+                    if (!unit.HasTrait(Traits.Untamable))
+                        unit.FixedSide = preyUnit.Unit.FixedSide;
+                    unit.hiddenFixedSide = true;
+                }
+                preyUnit.Unit.RemoveTrait(Traits.Corruption);
+            }
             if (preyUnit.Unit.CanBeConverted() &&
              (Location(preyUnit) == PreyLocation.womb || Config.KuroTenkoConvertsAllTypes) &&
              (Config.KuroTenkoEnabled && (Config.UBConversion == UBConversion.Both || Config.UBConversion == UBConversion.ConversionOnly) || unit.HasTrait(Traits.PredConverter)) &&
@@ -1053,18 +1065,6 @@ public class PredatorComponent
             {
                 unit.AddPermanentTrait(Traits.CursedMark);
                 preyUnit.Unit.RemoveTrait(Traits.CursedMark);
-            }
-            if (preyUnit.Unit.HasTrait(Traits.Corruption))
-           {
-                actor.Corruption += preyUnit.Unit.GetStatTotal();
-                if (actor.Corruption >= unit.GetStatTotal())
-                {
-                    unit.AddPermanentTrait(Traits.Corruption);
-                    if (!unit.HasTrait(Traits.Untamable))
-                        unit.FixedSide = preyUnit.Unit.FixedSide;
-                    unit.hiddenFixedSide = true;
-                }   
-                preyUnit.Unit.RemoveTrait(Traits.Corruption);
             }
             unit.DigestedUnits++;
             if (unit.HasTrait(Traits.EssenceAbsorption) && unit.DigestedUnits % 4 == 0)
@@ -3186,6 +3186,8 @@ public class PredatorComponent
                 AddToStomach(preyref, 1f);
                 break;
         }
+        actor.SetPredMode(preyLocation);
+        actor.SetVoreSuccessMode();
         UpdateFullness();
     }
 }

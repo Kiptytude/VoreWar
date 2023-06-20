@@ -2,6 +2,7 @@
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEngine.UI.CanvasScaler;
 
 static class TacticalUtilities
 {
@@ -152,7 +153,7 @@ static class TacticalUtilities
     static internal void CleanVillage(int remainingAttackers)
     {
         bool MonsterAttacker = armies[0].Side >= 100;
-        SpawnerInfo spawner = Config.SpawnerInfo((Race)armies[0].Side);
+        SpawnerInfo spawner = Config.SpawnerInfo((Race)armies[0]?.Side);
         Config.MonsterConquestType spawnerType;
         if (spawner != null)
             spawnerType = spawner.GetConquestType();
@@ -777,7 +778,7 @@ static class TacticalUtilities
             target.UnitSprite.FlexibleSquare.gameObject.SetActive(true);
             target.UnitSprite.HealthBar.gameObject.SetActive(true);
         }
-        State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<b>{caster.Name}</b> brought back <b>{target.Unit.Name}</b> as actor summon.");
+        State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<b>{caster.Name}</b> brought back <b>{target.Unit.Name}</b> as a summon.");
     }
 
     static internal bool MeetsQualifier(List<AbilityTargets> targets, Actor_Unit actor, Actor_Unit target)
@@ -834,6 +835,19 @@ static class TacticalUtilities
             }
         }
 
+    }
+
+    static public bool IsUnitControlledBySide(Unit unit, int side)
+    {
+        if (GetMindControlSide(unit) != -1)  // Charmed units may fight for a specific side, but for targeting purposes we'll consider them driven by separate forces
+            return false;
+        if (side == unit.FixedSide)
+            return true;
+        else if (State.GameManager.PureTactical)
+            return false;
+        if (unit.IsInfiltratingSide(side))
+            return true;                    // hidden and compliant
+        return false;
     }
 
     static public bool PlayerCanSeeTrueSide(Unit unit)

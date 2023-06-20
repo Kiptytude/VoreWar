@@ -75,7 +75,14 @@ public class MercenaryHouse
 
         if (Mercenaries.Count > maxStock - minimumReplacedPerTurn)
         {
+            List<Unit> units = Mercenaries.ConvertAll(merc => merc.Unit);
             Mercenaries.RemoveRange(0, Mercenaries.Count - (maxStock - minimumReplacedPerTurn));
+            foreach (Unit u in units) {
+                if (!Mercenaries.Any(mer => mer.Unit == u) && u.OnDiscard != null)
+                {
+                    u.OnDiscard();
+                }
+            }
         }
         for (int i = 0; i < 20; i++)
         {

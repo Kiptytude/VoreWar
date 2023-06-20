@@ -1112,7 +1112,7 @@ public class Actor_Unit
             return false;
         List<AbilityTargets> targetTypes = new List<AbilityTargets>();
         targetTypes.Add(AbilityTargets.Enemy);
-        if (TacticalUtilities.MeetsQualifier(targetTypes, this, target))
+        if (!TacticalUtilities.MeetsQualifier(targetTypes, this, target))
             return false;
         if (target.Position.GetNumberOfMovesDistance(Position) != 1)
             return false;
@@ -1447,13 +1447,13 @@ public class Actor_Unit
             return false;
         }
         bool sneakAttack = false;
-        if (attacker.Unit.GetApparentSide(Unit) == Unit.GetApparentSide() && attacker.Unit.IsInfiltratingSide(Unit.GetApparentSide()))     // Replace when there is an unresistable negative status
+        if (attacker.Unit.GetApparentSide(Unit) == Unit.GetApparentSide() && attacker.Unit.IsInfiltratingSide(Unit.GetApparentSide()) && !spell.AcceptibleTargets.Contains(AbilityTargets.Ally))     // Replace when there is an unresistable negative status
         {
             attacker.Unit.hiddenFixedSide = false;
             sneakAttack = true;
             State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<color=purple>{attacker.Unit.Name} sneak-attacked {Unit.Name}!</color>");
         }
-        if (attacker.Unit.GetApparentSide() != Unit.GetApparentSide())
+        if (attacker.Unit.GetApparentSide() != Unit.GetApparentSide() && !spell.AcceptibleTargets.Contains(AbilityTargets.Ally))
         {
             if (attacker.sidesAttackedThisBattle == null)
                 attacker.sidesAttackedThisBattle = new List<int>();
@@ -2465,13 +2465,13 @@ public class Actor_Unit
         }
         else
         {
-            var actorCharm = Unit.GetStatusEffect(StatusEffectType.Charmed) ?? Unit.GetStatusEffect(StatusEffectType.Hypnotized);
-            if (actorCharm != null)
-            {
-                Unit.BoundUnit.Unit.ApplyStatusEffect(StatusEffectType.Charmed, actorCharm.Strength, actorCharm.Duration);
-            }
             StrategicUtilities.SpendLevelUps(Unit.BoundUnit.Unit);
-            State.GameManager.TacticalMode.AddUnitToBattle(Unit.BoundUnit.Unit, l);
+            var target = State.GameManager.TacticalMode.AddUnitToBattle(Unit.BoundUnit.Unit, l);
+            target.Visible = true;
+            target.Targetable = true;
+            target.SelfPrey = null;
+            target.Surrendered = false;
+            target.Unit.Health = target.Unit.MaxHealth;
             State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<b>{Unit.Name}</b> re-summoned <b>{Unit.BoundUnit.Unit.Name}</b>.");
         }
 

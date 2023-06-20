@@ -307,6 +307,22 @@ public class CheatMenu : MonoBehaviour
             FirstRaceRelation.text = "";
             SecondRaceRelation.text = "";
         }
+        FirstRaceRelation.onValueChanged.AddListener((v) =>
+        {
+            float res;
+            if (v.Length < 1 || !float.TryParse(v, out res) || res < 0)
+            {
+                FirstRaceRelation.text = "0";
+            }
+        });
+        SecondRaceRelation.onValueChanged.AddListener((v) =>
+        {
+            float res;
+            if (v.Length < 1 || !float.TryParse(v, out res) || res < 0)
+            {
+                SecondRaceRelation.text = "0";
+            }
+        });
 
     }
 

@@ -6,6 +6,7 @@ using TacticalDecorations;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Tilemaps;
+using static UnityEngine.UI.CanvasScaler;
 
 public class TacticalMode : SceneBase
 {
@@ -151,7 +152,7 @@ public class TacticalMode : SceneBase
 
     bool attackersTurn;
     internal bool IsPlayerTurn;
-    internal bool IsPlayerInControl => PseudoTurn || (IsPlayerTurn && RunningFriendlyAI == false && foreignAI == null);
+    internal bool IsPlayerInControl => PseudoTurn || (IsPlayerTurn && RunningFriendlyAI == false && foreignAI == null && !SpectatorMode);
     int activeSide;
 
     public bool AIAttacker;
@@ -161,6 +162,8 @@ public class TacticalMode : SceneBase
     public bool AIDefender;
 
     public bool CheatDefenderControl;
+
+    internal bool SpectatorMode;
 
     internal string AttackerName = null;
     internal string DefenderName = null;
@@ -307,7 +310,7 @@ public class TacticalMode : SceneBase
 
         }
     }
-
+    
     private void Start()
     {
         var allSprites = State.GameManager.TacticalBuildingSpriteDictionary.AllSprites;
@@ -382,6 +385,9 @@ public class TacticalMode : SceneBase
 
     public void Begin(StrategicTileType tiletype, Village village, Army invader, Army defender, TacticalAIType AIinvader, TacticalAIType AIdefender, TacticalBattleOverride tacticalBattleOverride = TacticalBattleOverride.Ignore)
     {
+        CheatAttackerControl = false;
+        CheatDefenderControl = false;
+        SpectatorMode = false;
         if (arrowManager == null)
             arrowManager = FindObjectOfType<PathNodeManager>();
         if (Config.AutoScaleTactical)
@@ -465,7 +471,7 @@ public class TacticalMode : SceneBase
         Race attackerRace = invader.Empire?.ReplacedRace ?? (Race)invader.Side;
         if (Config.Defections && !State.GameManager.PureTactical)
         {
-
+            
 
             foreach (Actor_Unit actor in attackers)
             {
@@ -517,18 +523,22 @@ public class TacticalMode : SceneBase
         if (DefenderName == null)
             DefenderName = $"{armies[1]?.Empire?.Name ?? village?.Empire?.Name ?? ((Race)defenderSide).ToString()}";
 
-        if (defenders.Count <= 0 && garrison.Count <= 0)
+        IsPlayerTurn = !AIAttacker;
+
+        GeneralSetup();
+
+        if ((armies[1]?.Units.Count ?? 0) <= 0 && garrison.Count <= 0)
         {
+            VictoryCheck();
             string msg = $"All defenders have defected to rejoin their race, attackers win by default.";
             State.GameManager.CreateMessageBox(msg);
-            VictoryCheck();
             return;
         }
-        else if (attackers.Count <= 0)
+        if (armies[0].Units.Count <= 0)
         {
+            VictoryCheck();
             string msg = $"All attackers have defected to rejoin their race, defenders win by default.";
             State.GameManager.CreateMessageBox(msg);
-            VictoryCheck();
             return;
         }
 
@@ -556,8 +566,7 @@ public class TacticalMode : SceneBase
         }
 
         currentAI = attackerAI;
-        IsPlayerTurn = !AIAttacker;
-        GeneralSetup();
+
 
         Log.RegisterNewTurn(AttackerName, 1);
 
@@ -1481,7 +1490,7 @@ Turns: {currentTurn}
 
     }
 
-    internal void AddUnitToBattle(Unit unit, Vec2i position)
+    internal Actor_Unit AddUnitToBattle(Unit unit, Vec2i position)
     {
         Actor_Unit actor = new Actor_Unit(position, unit);
         units.Add(actor);
@@ -1491,9 +1500,10 @@ Turns: {currentTurn}
         {
             actor.UnitSprite.HitPercentagesDisplayed(false);
             actor.UnitSprite.DisplaySummoned();
-        }
+        }        
         //if (actor.Unit.Side == defenderSide)
         //actor.Unit.CurrentLeader = DefenderLeader;
+        return actor;
     }
 
     void UpdateActorColor(Actor_Unit actor)
@@ -1856,7 +1866,7 @@ Turns: {currentTurn}
     {
         foreach (Actor_Unit target in units)
         {
-            if (target.Unit.GetApparentSide(actor.Unit) == actor.Unit.FixedSide && target.Unit.GetApparentSide(actor.Unit) == actor.Unit.GetApparentSide() && Config.AllowInfighting == false)
+            if ((TacticalUtilities.IsUnitControlledByPlayer(target.Unit) && Config.AllowInfighting == false) && !(!AIDefender && !AIAttacker) || actor == target)
                 continue;
             if (target.Targetable == false || target.Visible == false)
                 continue;
@@ -1898,7 +1908,7 @@ Turns: {currentTurn}
     {
         foreach (Actor_Unit target in units)
         {
-            if (target.Unit.GetApparentSide(actor.Unit) == actor.Unit.FixedSide && target.Unit.GetApparentSide(actor.Unit) == actor.Unit.GetApparentSide() && Config.AllowInfighting == false || actor == target)
+            if ((TacticalUtilities.IsUnitControlledByPlayer(target.Unit) && Config.AllowInfighting == false && !(!AIDefender && !AIAttacker)) || actor == target)
                 continue;
             if (target.Targetable == false || target.Visible == false)
                 continue;
@@ -1916,7 +1926,7 @@ Turns: {currentTurn}
     {
         foreach (Actor_Unit target in units)
         {
-            if (target.Unit.GetApparentSide(actor.Unit) == actor.Unit.FixedSide && target.Unit.GetApparentSide(actor.Unit) == actor.Unit.GetApparentSide() && Config.AllowInfighting == false || actor == target)
+            if ((TacticalUtilities.IsUnitControlledByPlayer(target.Unit) && Config.AllowInfighting == false && !(!AIDefender && !AIAttacker)) || actor == target)
                 continue;
             if (target.Targetable == false || target.Visible == false)
                 continue;
@@ -1934,9 +1944,9 @@ Turns: {currentTurn}
     {
         foreach (Actor_Unit target in units)
         {
-            if (CurrentSpell.AcceptibleTargets.Contains(AbilityTargets.Ally) == false && target.Unit.GetApparentSide(actor.Unit) == actor.Unit.FixedSide && target.Unit.GetApparentSide(actor.Unit) == actor.Unit.GetApparentSide() && Config.AllowInfighting == false)
+            if (CurrentSpell.AcceptibleTargets.Contains(AbilityTargets.Ally) == false && (TacticalUtilities.IsUnitControlledByPlayer(target.Unit) && Config.AllowInfighting == false && !(!AIDefender && !AIAttacker)))
                 continue;
-            if (CurrentSpell.AcceptibleTargets.Contains(AbilityTargets.Enemy) == false && target.Unit.Side != actor.Unit.Side)
+            if (CurrentSpell.AcceptibleTargets.Contains(AbilityTargets.Enemy) == false && !(TacticalUtilities.IsUnitControlledByPlayer(target.Unit) || target.Unit.Side == actor.Unit.Side) && !(!AIDefender && !AIAttacker))
                 continue;
 
             if (target.Targetable == false || target.Visible == false)
@@ -2097,7 +2107,7 @@ Turns: {currentTurn}
                         IgnorePseudo = true;
                     }
                     else
-                        RunningFriendlyAI = true;
+                    RunningFriendlyAI = true;
                     break;
                 case 4:
                     PromptEndTurn();
@@ -2260,6 +2270,7 @@ Turns: {currentTurn}
             }
             if (watchRest == false)
                 TurboMode();
+            else SpectatorMode = true;
             return;
         }
         if (attackersTurn)
@@ -2294,6 +2305,7 @@ Turns: {currentTurn}
         }
         if (watchRest == false)
             TurboMode();
+        else SpectatorMode = true;
     }
 
     internal void SetMagicMode(Spell spell)
@@ -2441,12 +2453,13 @@ Turns: {currentTurn}
         actor.Targetable = false;
         actor.UnitSprite.gameObject.SetActive(false);
         actor.Fled = true;
-
+        actor.Unit.RefreshSecrecy();
         SelectedUnit = null;
     }
 
     void UpdateStatus(float dt)
     {
+        if (SpectatorMode) RunningFriendlyAI = true;
 
         Translator?.UpdateLocation();
 
@@ -2968,7 +2981,7 @@ Turns: {currentTurn}
         {
             if (currentIndex >= units.Count)
                 currentIndex -= units.Count;
-            if (TacticalUtilities.IsUnitControlledByPlayer(units[currentIndex].Unit) && units[currentIndex].Targetable && units[currentIndex].Movement > 0)
+            if (units[currentIndex].Unit.Side == activeSide && TacticalUtilities.IsUnitControlledByPlayer(units[currentIndex].Unit) && units[currentIndex].Targetable && units[currentIndex].Movement > 0)
             {
                 if (type == NextUnitType.Any || (type == NextUnitType.Melee && units[currentIndex].BestMelee.Damage > 2) || (type == NextUnitType.Ranged && units[currentIndex].BestRanged != null))
                 {
@@ -3056,7 +3069,7 @@ Turns: {currentTurn}
 
                 if (ActionMode == 0)
                 {
-                    if (TacticalUtilities.IsUnitControlledByPlayer(unit.Unit))
+                    if (TacticalUtilities.IsUnitControlledByPlayer(unit.Unit) && unit.Unit.Side == activeSide)
                     {
 
                         if (SelectedUnit != units[i])
@@ -3071,7 +3084,7 @@ Turns: {currentTurn}
                     continue;
                 if (ActionMode == 1)
                 {
-                    if (!TacticalUtilities.IsUnitControlledByPlayer(unit.Unit) || (Config.AllowInfighting && unit != SelectedUnit))
+                    if (!TacticalUtilities.IsUnitControlledByPlayer(unit.Unit) || (Config.AllowInfighting || (!AIDefender && !AIAttacker)) && unit != SelectedUnit)
                     {
                         MeleeAttack(SelectedUnit, unit);
                         return;
@@ -3080,7 +3093,7 @@ Turns: {currentTurn}
                 }
                 if (ActionMode == 2)
                 {
-                    if (!TacticalUtilities.IsUnitControlledByPlayer(unit.Unit) || Config.AllowInfighting)
+                    if (!TacticalUtilities.IsUnitControlledByPlayer(unit.Unit) || (Config.AllowInfighting || (!AIDefender && !AIAttacker)) && unit != SelectedUnit)
                     {
                         RangedAttack(SelectedUnit, unit);
                         return;
@@ -3181,7 +3194,7 @@ Turns: {currentTurn}
     private bool unitControllableBySide(Actor_Unit unit, int side)
     {
         bool correctSide = unit.Unit.Side == side;
-        bool controlOverridden = TacticalUtilities.GetMindControlSide(unit.Unit) != -1 || unit.Unit.FixedSide != side;
+        bool controlOverridden = TacticalUtilities.GetMindControlSide(unit.Unit) != -1 || (unit.Unit.FixedSide != side && !unit.Unit.IsInfiltratingSide(side));
         return correctSide && !controlOverridden;
     }
 
@@ -3503,7 +3516,7 @@ Turns: {currentTurn}
                 {
                     foreach (var prey in RetreatedDigestors[i].PredatorComponent.GetAllPrey())
                     {
-                        if (TacticalUtilities.TreatAsHostile(RetreatedDigestors[i], prey.Actor) && prey.Actor.Fled == false)
+                        if (!TacticalUtilities.TreatAsHostile(RetreatedDigestors[i], prey.Actor) && prey.Actor.Fled == false)
                         {
                             RetreatUnit(prey.Actor, prey.Unit.Side == defenderSide);
                         }
@@ -3693,7 +3706,7 @@ Turns: {currentTurn}
                 if (actor.Unit.IsDead && actor.Unit.Type != UnitType.Summon &&
                     (actor.Unit.HasTrait(Traits.Eternal) || (actor.Unit.HasTrait(Traits.LuckySurvival) && State.Rand.Next(5) != 0) ||
                     (actor.Unit.HasTrait(Traits.Reformer) && actor.KilledByDigestion) ||
-                    (actor.Unit.HasTrait(Traits.Reanimator) && actor.KilledByDigestion == false)
+                    (actor.Unit.HasTrait(Traits.Revenant) && actor.KilledByDigestion == false)
                     ))
                 {
                     actor.Surrendered = false;
@@ -3720,44 +3733,47 @@ Turns: {currentTurn}
                     actor.PredatorComponent?.PurgePrey();
                     units.Remove(actor);
                 }
-                else if ((actor.Unit.HasTrait(Traits.Transmigration) || actor.Unit.HasTrait(Traits.InfiniteTransmigration)) && actor.KilledByDigestion && actor.Unit.IsDead && actor.Unit.Type != UnitType.Summon)
+                else if ((actor.Unit.HasTrait(Traits.Transmigration) || actor.Unit.HasTrait(Traits.InfiniteTransmigration)) && actor.KilledByDigestion && actor.Unit.IsDead
+                    && actor.Unit.Type != UnitType.Summon && actor.Unit.Type != UnitType.Leader && actor.Unit.Type != UnitType.SpecialMercenary)
                 {
                     if (State.World.MainEmpires != null)
                     {
+                        Race race = actor.Unit.KilledBy.Race;
                         if (State.World.Reincarnators == null)
-                            State.World.Reincarnators = new Dictionary<Unit, Race>();
-                        if (!State.World.Reincarnators.ContainsKey(actor.Unit))
+                            State.World.Reincarnators = new List<Reincarnator>();
+                        if (!State.World.Reincarnators.Any(rc => rc.PastLife == actor.Unit))
                         {
-                            actor.Unit.FixedSide = actor.Unit.FixedSide;
                             actor.Unit.RemoveTrait(Traits.Transmigration);
-                            actor.Unit.RemoveTrait(Traits.Diseased);
-                            actor.Unit.RemoveTrait(Traits.Illness);
-                            State.World.Reincarnators.Add(actor.Unit, actor.Unit.KilledBy.Race);
+                            State.World.Reincarnators.Add(new Reincarnator(actor.Unit, race, true));
                             State.World.GetEmpireOfSide(actor.Unit.Side)?.Reports.Add(new StrategicReport($"{actor.Unit.Name} will reincarnate as a {InfoPanel.RaceSingular(actor.Unit.KilledBy)}.", new Vec2(0, 0)));
 
                         }
                     }
                 }
-                else if ((actor.Unit.HasTrait(Traits.Reincarnation) || actor.Unit.HasTrait(Traits.InfiniteReincarnation)) && actor.Unit.IsDead && actor.Unit.Type != UnitType.Summon)
+                else if ((actor.Unit.HasTrait(Traits.Reincarnation) || actor.Unit.HasTrait(Traits.InfiniteReincarnation)) && actor.Unit.IsDead 
+                    && actor.Unit.Type != UnitType.Summon && actor.Unit.Type != UnitType.Leader && actor.Unit.Type != UnitType.SpecialMercenary)
                 {
                     if (State.World.MainEmpires != null)
                     {
-                        if (State.World.Reincarnators == null)
-                            State.World.Reincarnators = new Dictionary<Unit, Race>();
-                        if (!State.World.Reincarnators.ContainsKey(actor.Unit))
+                        List<Race> activeRaces = StrategicUtilities.GetAllUnits(false).ConvertAll(u => u.Race).Distinct()
+                            .ToList();
+                        if (activeRaces.Any())
                         {
-                            actor.Unit.FixedSide = actor.Unit.FixedSide;
-                            actor.Unit.RemoveTrait(Traits.Reincarnation);
-                            actor.Unit.RemoveTrait(Traits.Diseased);
-                            actor.Unit.RemoveTrait(Traits.Illness);
-                            State.World.Reincarnators.Add(actor.Unit, (Race)(-1));
-                            State.World.GetEmpireOfSide(actor.Unit.Side)?.Reports.Add(new StrategicReport($"{actor.Unit.Name} will reincarnate as a random race.", new Vec2(0, 0)));
+                            Race race = activeRaces[State.Rand.Next(activeRaces.Count)];
+                            if (State.World.Reincarnators == null)
+                                State.World.Reincarnators = new List<Reincarnator>();
+                            if (!State.World.Reincarnators.Any(rc => rc.PastLife == actor.Unit))
+                            {
+                                actor.Unit.RemoveTrait(Traits.Reincarnation);
+                                State.World.Reincarnators.Add(new Reincarnator(actor.Unit, race));
+                                State.World.GetEmpireOfSide(actor.Unit.Side)?.Reports.Add(new StrategicReport($"{actor.Unit.Name} will reincarnate as a random race.", new Vec2(0, 0)));
+                        }
                         }
                     } 
                 }
                 else if (actor.Fled)
                     units.Remove(actor);
-                else if (actor.Unit.IsDead && actor.Unit.SavedCopy != null && (!State.World.Reincarnators?.ContainsKey(actor.Unit) ?? true))
+                else if (actor.Unit.IsDead && actor.Unit.SavedCopy != null && ((!State.World.Reincarnators?.Any(rc => rc.PastLife == actor.Unit)) ?? true))
                 {
                     var emp = State.World.GetEmpireOfSide(actor.Unit.Side);
                     var vill = actor.Unit.SavedVillage;
@@ -4052,7 +4068,7 @@ Turns: {currentTurn}
                             }
                             else
                             {
-                                remainingDefenders -= actor.PredatorComponent.GetDirectPrey().Where(s => s.Unit.HasTrait(Traits.TheGreatEscape)).Count();
+                                remainingDefenders -= actor.PredatorComponent.GetDirectPrey().Where(s => s.Unit.HasTrait(Traits.TheGreatEscape)).Count(); 
                             }
                         }
 
@@ -4182,7 +4198,7 @@ Turns: {currentTurn}
         }
         if (actors.Any())
         {
-            TacticalUtilities.ProcessTravelingUnits(actors.Select(s => s.Unit).ToList());
+            TacticalUtilities.ProcessTravelingUnits(actors.Select(s => s.Unit).ToList());            
         }
     }
 

@@ -541,8 +541,8 @@ public class HoveringTooltip : MonoBehaviour
             case Traits.BookWormIII:
                 return "Unit generates with a random Tier 3-4 Book.";
             case Traits.Temptation:
-                return "Units that are put under a mindcontrol (e.g. Charm, Hypnosis) effect by this unit want to force-feed themselves to it or its close allies.";
-        }
+               return "Units that are put under a mindcontrol (e.g. Charm, Hypnosis) effect by this unit want to force-feed themselves to it or its close allies.";
+        }  
         return "<b>This trait needs a tooltip!</b>";
     }
 

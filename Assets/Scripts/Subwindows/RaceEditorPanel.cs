@@ -511,7 +511,14 @@ public class RaceEditorPanel : MonoBehaviour
                 powerAdj = racePar.PowerAdjustment;
             }
             PowerAdjustment.text = powerAdj.ToString();
-
+            PowerAdjustment.onValueChanged.AddListener((v) =>
+            {
+                float res;
+                if (v.Length < 1 || !float.TryParse(v, out res) || res < 0)
+                {
+                    PowerAdjustment.text = "0";
+                }
+            });
             FemaleTraits.text = TraitListToText(item.FemaleTraits);
             MaleTraits.text = TraitListToText(item.MaleTraits);
             HermTraits.text = TraitListToText(item.HermTraits);

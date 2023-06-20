@@ -65,8 +65,23 @@ public class RandomizerTraitEditor : MonoBehaviour
             var rt = obj.GetComponent<RandomizerTrait>();
             rt.name.text = savedCustom.name;
             rt.chance.text = savedCustom.chance.ToString();
+            rt.chance.onValueChanged.AddListener((v) =>
+            {
+                float res;
+                if (v.Length < 1 || !float.TryParse(v, out res) || res < 0)
+                {
+                    rt.chance.text = "0";
+                }
+            });
             rt.id = savedCustom.id;
             var ranTraits = new Dictionary<Traits, bool>();
+            foreach (Traits r in State.RandomizeLists.ConvertAll(r => (Traits)r.id))
+            {
+                if (savedCustom.RandomTraits.Contains(r))
+                    ranTraits[r] = true;
+                else
+                    ranTraits[r] = false;
+            }
             foreach (Traits trait in (Traits[])Enum.GetValues(typeof(Traits)))
             {
                 if (savedCustom.RandomTraits.Contains(trait))
@@ -99,6 +114,10 @@ public class RandomizerTraitEditor : MonoBehaviour
             var last = RandomizerTags.LastOrDefault();
             rt.id = last == null ? 1001 : last.id + 1;
             var ranTraits = new Dictionary<Traits, bool>();
+            foreach (Traits r in State.RandomizeLists.ConvertAll(r => (Traits)r.id))
+            {
+                ranTraits[r] = false;
+            }
             foreach (Traits trait in (Traits[])Enum.GetValues(typeof(Traits)))
             {
                 ranTraits[trait] = false;
@@ -134,12 +153,13 @@ public class RandomizerTraitEditor : MonoBehaviour
     public void Persist()
     {
         List<RandomizeList> randomizeLists = new List<RandomizeList>();
+        bool valid = true;
         RandomizerTags.ForEach(tag =>
         {
             if (!Validate(tag))
             {
                 State.GameManager.CreateMessageBox("Saving failed: Trait with name \"" + tag.name.text + "\" is incomplete or invalid.");
-                return;
+                valid = false;
             }
             RandomizeList newCustom = new RandomizeList();
             newCustom.id = tag.id;
@@ -152,10 +172,13 @@ public class RandomizerTraitEditor : MonoBehaviour
             }
             randomizeLists.Add(newCustom);
         });
+        if (valid)
+        {
         State.RandomizeLists = new List<RandomizeList>();
         State.RandomizeLists.AddRange(randomizeLists);
         string[] printable = randomizeLists.ConvertAll(item => item.ToString()).ToArray();
         File.WriteAllLines($"{State.StorageDirectory}customTraits.txt", printable);
+        }
         Close();
     }
 
@@ -163,7 +186,7 @@ public class RandomizerTraitEditor : MonoBehaviour
     {
         float res;
         if (randomizerTrait.name.text.Length < 1) return false;
-        if (randomizerTrait.chance.text.Length < 1 || !float.TryParse(randomizerTrait.chance.text, out res) || res < 0 || res > 1) return false;
+        if (randomizerTrait.chance.text.Length < 1 || !float.TryParse(randomizerTrait.chance.text, out res) || res < 0) return false;
         if (randomizerTrait.TraitDictionary.Where(i => i.Value).Count() < 1) return false;
         if (RandomizerTags.Where(rt => rt.name.text == randomizerTrait.name.text).Count() > 1) return false;
         return true;

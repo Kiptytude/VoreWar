@@ -123,6 +123,7 @@ public class RightClickMenu : MonoBehaviour
     public void CreateButtons(Actor_Unit actor, Actor_Unit target)
     {
         bool sneakAttack = false;
+        bool rubCreated = false;
         if (actor.Unit.GetApparentSide(target.Unit) == target.Unit.GetApparentSide() && actor.Unit.IsInfiltratingSide(target.Unit.GetApparentSide()))
         {
             sneakAttack = true;
@@ -180,7 +181,7 @@ public class RightClickMenu : MonoBehaviour
         }
 
 
-        if ((target.Unit.GetApparentSide(actor.Unit) == actor.Unit.GetApparentSide() || target.Unit.GetApparentSide(actor.Unit) == actor.Unit.FixedSide))
+        if (TacticalUtilities.IsUnitControlledByPlayer(target.Unit) || target.Unit.Side == actor.Unit.Side)
         {
             foreach (Spell spell in actor.Unit.UseableSpells)
             {
@@ -200,6 +201,7 @@ public class RightClickMenu : MonoBehaviour
                 Buttons[currentButton].GetComponentInChildren<Text>().text = "Belly Rub";
             if (range != 1 || target.PredatorComponent?.Fullness <= 0)
                 Buttons[currentButton].interactable = false;
+            rubCreated = true;
             currentButton++;
 
             if (target.Surrendered == false && actor.Unit.HasTrait(Traits.Cruel) == false && Config.AllowInfighting == false)
@@ -237,7 +239,7 @@ public class RightClickMenu : MonoBehaviour
             DevourChance = devourChance
         };
         int damage = actor.WeaponDamageAgainstTarget(target, false);
-        if (!(target.Unit.GetApparentSide(actor.Unit) == actor.Unit.FixedSide && target.Unit.GetApparentSide(actor.Unit) == actor.Unit.GetApparentSide()))
+        if (!TacticalUtilities.IsUnitControlledByPlayer(target.Unit) || Config.AllowInfighting ||  (!State.GameManager.TacticalMode.AIDefender && !State.GameManager.TacticalMode.AIAttacker))
         {
             Buttons[currentButton].onClick.AddListener(() => State.GameManager.TacticalMode.MeleeAttack(actor, target));
             Buttons[currentButton].onClick.AddListener(FinishAction);
@@ -310,6 +312,7 @@ public class RightClickMenu : MonoBehaviour
         }
 
         if ((target.Unit.GetApparentSide(actor.Unit) != actor.Unit.GetApparentSide() && target.Unit.GetApparentSide(actor.Unit) != actor.Unit.FixedSide) &&
+            !rubCreated &&
             (Config.CanUseStomachRubOnEnemies || actor.Unit.HasTrait(Traits.SeductiveTouch)))
         {
             Buttons[currentButton].onClick.AddListener(() => actor.BellyRub(target));
