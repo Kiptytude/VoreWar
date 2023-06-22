@@ -1,6 +1,7 @@
 ﻿using OdinSerializer;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -113,7 +114,7 @@ public static class State
                     {
                         custom.id = int.Parse(strings[0]);
                         custom.name = strings[1];
-                        custom.chance = float.Parse(strings[2]);
+                        custom.chance = float.Parse(strings[2], new CultureInfo("en-US"));
                         custom.RandomTraits = strings[3].Split('|').ToList().ConvertAll(s => (Traits)int.Parse(s));
                         RandomizeLists.Add(custom);
                     }
