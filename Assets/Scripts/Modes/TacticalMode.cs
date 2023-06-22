@@ -498,7 +498,8 @@ public class TacticalMode : SceneBase
         foreach (Actor_Unit actor in units)
         {
             actor.Unit.EnemiesKilledThisBattle = 0;
-            actor.allowedToDefect = TacticalUtilities.GetPreferredSide(actor.Unit, actor.Unit.Side, actor.Unit.Side == attackerSide ? defenderSide : attackerSide) != actor.Unit.Side;
+            actor.allowedToDefect = !actor.DefectedThisTurn && TacticalUtilities.GetPreferredSide(actor.Unit, actor.Unit.Side, actor.Unit.Side == attackerSide ? defenderSide : attackerSide) != actor.Unit.Side;
+            actor.DefectedThisTurn = false;
         }
 
 
@@ -3284,10 +3285,12 @@ Turns: {currentTurn}
 
     internal void SwitchAlignment(Actor_Unit actor)
     {
+        int startingSide = actor.Unit.Side;
         if (actor.Unit.Side == defenderSide)
             AttackerConvert(actor);
         else
             DefenderConvert(actor);
+        actor.DefectedThisTurn = startingSide != actor.Unit.Side;
     }
 
     internal bool IsDefender(Actor_Unit actor)
@@ -3488,8 +3491,9 @@ Turns: {currentTurn}
         {
             if (units[i].Unit.IsDead == false && units[i].Unit.Side == activeSide)
             {
-                units[i].allowedToDefect = TacticalUtilities.GetPreferredSide(units[i].Unit, activeSide, attackersTurn ? defenderSide : attackerSide) != activeSide
-                    || units.Any(u => u.Unit.Side != units[i].Unit.Side && !u.Unit.IsDead) && !units.Any(u => TacticalUtilities.TreatAsHostile(units[i], u) && !u.Unit.IsDead);
+                units[i].allowedToDefect = !units[i].DefectedThisTurn && (TacticalUtilities.GetPreferredSide(units[i].Unit, activeSide, attackersTurn ? defenderSide : attackerSide) != activeSide
+                    || units.Any(u => u.Unit.Side != units[i].Unit.Side && u.Targetable && u.Visible && !u.Fled) && !units.Any(u => TacticalUtilities.TreatAsHostile(units[i], u) && u.Targetable && u.Visible && !u.Fled));
+                units[i].DefectedThisTurn = false;
                 units[i].NewTurn();
             }
             if (units[i].Unit.IsDead && units[i].Unit.Side == activeSide)
@@ -4449,5 +4453,17 @@ Turns: {currentTurn}
         EffectTileMap.ClearAllTiles();
         RightClickMenu.CloseAll();
         TacticalUtilities.ResetData();
+    }
+
+    internal void HandleReanimationSideEffects(Unit caster, Actor_Unit target)
+    {
+        armies[0].Units.Remove(target.Unit);
+        State.GameManager.TacticalMode.extraAttackers.Remove(target);
+        garrison.Remove(target);
+        armies[1]?.Units.Remove(target.Unit);
+        State.GameManager.TacticalMode.extraDefenders.Remove(target);
+        village?.GetRecruitables().Remove(target.Unit);
+        target.Unit.Side = caster.Side;
+        State.GameManager.TacticalMode.UpdateActorColor(target);
     }
 }

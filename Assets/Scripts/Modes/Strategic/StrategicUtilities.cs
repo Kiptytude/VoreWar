@@ -724,7 +724,7 @@ static class StrategicUtilities
 
     internal static void ProcessTravelingUnits(List<Unit> travelingUnits, Army army)
     {
-        var loc = StrategyPathfinder.GetPathToClosestObject(null, army.Position, State.World.Villages.Where(s => travelingUnits[0].Side == s.Side).Select(s => s.Position).ToArray(), army.GetMaxMovement(), 999, army.movementMode == Army.MovementMode.Flight);
+        var loc = StrategyPathfinder.GetPathToClosestObject(null, army, State.World.Villages.Where(s => travelingUnits[0].Side == s.Side).Select(s => s.Position).ToArray(), army.GetMaxMovement(), 999, army.movementMode == Army.MovementMode.Flight);
 
         int turns = 9999;
         int flightTurns = 9999;
@@ -737,9 +737,9 @@ static class StrategicUtilities
         if (loc != null && loc.Count > 0)
         {
             destination = new Vec2i(loc.Last().X, loc.Last().Y);
-            turns = StrategyPathfinder.TurnsToReach(null, army.Position, destination, army.GetMaxMovement(), false);
+            turns = StrategyPathfinder.TurnsToReach(null, army, destination, army.GetMaxMovement(), false);
             if (flyersExist)
-                flightTurns = StrategyPathfinder.TurnsToReach(null, army.Position, destination, army.GetMaxMovement(), true);
+                flightTurns = StrategyPathfinder.TurnsToReach(null, army, destination, army.GetMaxMovement(), true);
         }
         if (turns < 999)
         {
@@ -771,13 +771,13 @@ static class StrategicUtilities
     {
         if (travelingUnit.Type == UnitType.SpecialMercenary && travelingUnit.HasTrait(Traits.Eternal) == false)
             return;
-        var loc = StrategyPathfinder.GetPathToClosestObject(null, army.Position, State.World.Villages.Where(s => travelingUnit.Side == s.Side).Select(s => s.Position).ToArray(), army.GetMaxMovement(), 999, army.movementMode == Army.MovementMode.Flight);
+        var loc = StrategyPathfinder.GetPathToClosestObject(null, army, State.World.Villages.Where(s => travelingUnit.Side == s.Side).Select(s => s.Position).ToArray(), army.GetMaxMovement(), 999, army.movementMode == Army.MovementMode.Flight);
         int turns = 9999;
         Vec2i destination = null;
         if (loc != null && loc.Count > 0)
         {
             destination = new Vec2i(loc.Last().X, loc.Last().Y);
-            turns = StrategyPathfinder.TurnsToReach(null, army.Position, destination, army.GetMaxMovement(), travelingUnit.HasTrait(Traits.Pathfinder));
+            turns = StrategyPathfinder.TurnsToReach(null, army, destination, army.GetMaxMovement(), travelingUnit.HasTrait(Traits.Pathfinder));
         }
         if (turns < 999)
             CreateInvisibleTravelingArmy(travelingUnit, GetVillageAt(destination), turns);

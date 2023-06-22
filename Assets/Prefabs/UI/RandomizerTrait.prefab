@@ -512,7 +512,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: (1 = 100%) to turn into one of the following
+  m_text: (i%) to turn into one of the following
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -581,10 +581,10 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 6067157529679609647}
-    characterCount: 44
+    characterCount: 38
     spriteCount: 0
-    spaceCount: 9
-    wordCount: 9
+    spaceCount: 7
+    wordCount: 8
     linkCount: 0
     lineCount: 1
     pageCount: 1
@@ -1340,22 +1340,22 @@ PrefabInstance:
     - target: {fileID: 114787627876447784, guid: 89bebbadda021fa4888a74173e78312f,
         type: 3}
       propertyPath: m_CharacterLimit
-      value: 10
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 114787627876447784, guid: 89bebbadda021fa4888a74173e78312f,
         type: 3}
       propertyPath: m_ContentType
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 114787627876447784, guid: 89bebbadda021fa4888a74173e78312f,
         type: 3}
       propertyPath: m_KeyboardType
-      value: 0
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 114787627876447784, guid: 89bebbadda021fa4888a74173e78312f,
         type: 3}
       propertyPath: m_CharacterValidation
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114395904218120334, guid: 89bebbadda021fa4888a74173e78312f,
         type: 3}

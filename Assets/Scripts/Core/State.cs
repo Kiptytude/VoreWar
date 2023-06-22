@@ -9,7 +9,7 @@ using UnityEngine;
 public static class State
 {
     static int saveErrors = 0;
-    public const string Version = "41D";
+    public const string Version = "41E";
     public static World World;
     public static Rand Rand = new Rand();
     public static NameGenerator NameGen;
@@ -109,11 +109,14 @@ public static class State
                     line = new string(line
                        .Where(c => !Char.IsWhiteSpace(c)).ToArray());
                     string[] strings = line.Split(',');
-                    custom.id = int.Parse(strings[0]);
-                    custom.name = strings[1];
-                    custom.chance = float.Parse(strings[2]);
-                    custom.RandomTraits = strings[3].Split('|').ToList().ConvertAll(s => (Traits)int.Parse(s));
-                    RandomizeLists.Add(custom);
+                    if (strings.Length == 4)
+                    {
+                        custom.id = int.Parse(strings[0]);
+                        custom.name = strings[1];
+                        custom.chance = float.Parse(strings[2]);
+                        custom.RandomTraits = strings[3].Split('|').ToList().ConvertAll(s => (Traits)int.Parse(s));
+                        RandomizeLists.Add(custom);
+                    }
                 });
             }
                
@@ -767,6 +770,23 @@ public static class State
                     foreach (var unit in StrategicUtilities.GetAllUnits())
                     {
                         unit.FixedSide = -1;
+                    }
+
+                }
+            }
+
+
+            if (string.Compare(World.SaveVersion, "41E") < 0)
+            {
+                if (World.AllActiveEmpires != null)
+                {
+                    foreach (Empire emp in World.AllActiveEmpires)
+                    {
+                        foreach(Army army in emp.Armies)
+                        {
+                            army.impassables = new List<StrategicTileType>()
+    { StrategicTileType.mountain, StrategicTileType.snowMountain, StrategicTileType.water, StrategicTileType.lava, StrategicTileType.ocean, StrategicTileType.brokenCliffs};
+                        }
                     }
 
                 }

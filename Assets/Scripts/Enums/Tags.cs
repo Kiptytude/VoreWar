@@ -298,6 +298,12 @@ public enum Traits
     BookWormIII = 150,
     /// <summary>Units that are put under a mindcontrol (e.g. Charm, Hypnosis) effect by this unit want to force-feed themselves to it or its close allies.</summary>
     Temptation = 151,
+    /// <summary>Unit treats grass as unpassable.</summary>
+    GrassImpedence = 152,
+    /// <summary>Unit doesn't treat lava as unpassable.</summary>
+    LavaWalker = 153,
+    /// <summary>Unit treats snow as unpassable.</summary>
+    SnowImpedence = 154,
 
 
 

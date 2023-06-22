@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
@@ -61,7 +62,7 @@ static class TacticalUtilities
                         friendlyVillage = villageList[0];
                     else
                         friendlyVillage = villageList[State.Rand.Next(villageList.Count())];
-                    var loc = StrategyPathfinder.GetPath(null, armies[0].Position, friendlyVillage.Position, 3, false, 999);
+                    var loc = StrategyPathfinder.GetPath(null, armies[0], friendlyVillage.Position, 3, false, 999);
                     int turns = 9999;
                     int flightTurns = 9999;
                     Vec2i destination = null;
@@ -69,9 +70,9 @@ static class TacticalUtilities
                     if (loc != null && loc.Count > 0)
                     {
                         destination = new Vec2i(loc.Last().X, loc.Last().Y);
-                        turns = StrategyPathfinder.TurnsToReach(null, armies[0].Position, destination, Config.ArmyMP, false);
+                        turns = StrategyPathfinder.TurnsToReach(null, armies[0], destination, Config.ArmyMP, false);
                         if (flyersExist)
-                            flightTurns = StrategyPathfinder.TurnsToReach(null, armies[0].Position, destination, Config.ArmyMP, true);
+                            flightTurns = StrategyPathfinder.TurnsToReach(null, armies[0], destination, Config.ArmyMP, true);
                     }
                     if (turns < 999)
                     {
@@ -85,7 +86,7 @@ static class TacticalUtilities
             }
             else
             {
-                var loc = StrategyPathfinder.GetPathToClosestObject(null, armies[0].Position, State.World.Villages.Where(s => travelingUnits[0].Side == s.Side && s != village).Select(s => s.Position).ToArray(), 3, 999, false);
+                var loc = StrategyPathfinder.GetPathToClosestObject(null, armies[0], State.World.Villages.Where(s => travelingUnits[0].Side == s.Side && s != village).Select(s => s.Position).ToArray(), 3, 999, false);
                 int turns = 9999;
                 int flightTurns = 9999;
                 Vec2i destination = null;
@@ -93,9 +94,9 @@ static class TacticalUtilities
                 if (loc != null && loc.Count > 0)
                 {
                     destination = new Vec2i(loc.Last().X, loc.Last().Y);
-                    turns = StrategyPathfinder.TurnsToReach(null, armies[0].Position, destination, Config.ArmyMP, false);
+                    turns = StrategyPathfinder.TurnsToReach(null, armies[0], destination, Config.ArmyMP, false);
                     if (flyersExist)
-                        flightTurns = StrategyPathfinder.TurnsToReach(null, armies[0].Position, destination, Config.ArmyMP, true);
+                        flightTurns = StrategyPathfinder.TurnsToReach(null, armies[0], destination, Config.ArmyMP, true);
                 }
                 if (turns < 999)
                 {
@@ -319,6 +320,8 @@ static class TacticalUtilities
     static public bool TreatAsHostile(Actor_Unit actor, Actor_Unit target)
     {
         if (actor == target) return false;
+        if (actor.Unit.Side == actor.Unit.FixedSide && !(target.sidesAttackedThisBattle?.Contains(actor.Unit.FixedSide) ?? false) && target.Unit.Side == actor.Unit.Side)
+            return false;
         int friendlySide = actor.Unit.Side;
         int defenderSide = State.GameManager.TacticalMode.GetDefenderSide();
         int opponentSide = friendlySide == defenderSide ? State.GameManager.TacticalMode.GetAttackerSide() : defenderSide;
@@ -760,8 +763,9 @@ static class TacticalUtilities
         target.Targetable = true;
         target.SelfPrey = null;
         target.Surrendered = false;
+        target.sidesAttackedThisBattle = new List<int>();
         target.Unit.Type = UnitType.Summon;
-        if (target.Unit.Side != caster.Side) State.GameManager.TacticalMode.SwitchAlignment(target);
+        State.GameManager.TacticalMode.HandleReanimationSideEffects(caster, target);
         if (!target.Unit.HasTrait(Traits.Untamable))
             target.Unit.FixedSide = caster.FixedSide;
 

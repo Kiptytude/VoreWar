@@ -1400,7 +1400,7 @@ public class StrategyMode : SceneBase
         if (currentPathDestination != null && mouseLocation.Matches(currentPathDestination))
             return;
         currentPathDestination = mouseLocation;
-        var path = StrategyPathfinder.GetPath(ActingEmpire, SelectedArmy.Position, mouseLocation, SelectedArmy.RemainingMP, SelectedArmy.movementMode == Army.MovementMode.Flight);
+        var path = StrategyPathfinder.GetPath(ActingEmpire, SelectedArmy, mouseLocation, SelectedArmy.RemainingMP, SelectedArmy.movementMode == Army.MovementMode.Flight);
         arrowManager.ClearNodes();
         if (path == null || path.Count == 0)
             return;
@@ -1438,7 +1438,7 @@ public class StrategyMode : SceneBase
 
     void ShowPathOfArmy(Army army)
     {
-        var path = StrategyPathfinder.GetPath(ActingEmpire, army.Position, army.Destination, army.RemainingMP, army.movementMode == Army.MovementMode.Flight);
+        var path = StrategyPathfinder.GetPath(ActingEmpire, army, army.Destination, army.RemainingMP, army.movementMode == Army.MovementMode.Flight);
         arrowManager.ClearNodes();
         if (path == null || path.Count == 0)
             return;
@@ -2078,7 +2078,7 @@ public class StrategyMode : SceneBase
             return;
         arrowManager.ClearNodes();
         Vec2i clickLoc = new Vec2i(x, y);
-        QueuedPath = StrategyPathfinder.GetPath(ActingEmpire, SelectedArmy.Position, clickLoc, SelectedArmy.RemainingMP, SelectedArmy.movementMode == Army.MovementMode.Flight);
+        QueuedPath = StrategyPathfinder.GetPath(ActingEmpire, SelectedArmy, clickLoc, SelectedArmy.RemainingMP, SelectedArmy.movementMode == Army.MovementMode.Flight);
         if (QueuedPath == null)
         {
             Army army = StrategicUtilities.ArmyAt(clickLoc);
@@ -2326,7 +2326,7 @@ public class StrategyMode : SceneBase
 
                     SelectedArmy = army;
                     foundWaiting = true;
-                    QueuedPath = StrategyPathfinder.GetPath(ActingEmpire, SelectedArmy.Position, SelectedArmy.Destination, SelectedArmy.RemainingMP, SelectedArmy.movementMode == Army.MovementMode.Flight);
+                    QueuedPath = StrategyPathfinder.GetPath(ActingEmpire, SelectedArmy, SelectedArmy.Destination, SelectedArmy.RemainingMP, SelectedArmy.movementMode == Army.MovementMode.Flight);
                     if (QueuedPath == null)
                         army.Destination = null;
                     break;

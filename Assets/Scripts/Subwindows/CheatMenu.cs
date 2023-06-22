@@ -278,8 +278,8 @@ public class CheatMenu : MonoBehaviour
         {
             Relation = null;
             CounterRelation = null;
-            FirstRaceRelation.text = Math.Round(Relation.Attitude, 5).ToString();
-            SecondRaceRelation.text = Math.Round(CounterRelation.Attitude, 5).ToString();
+            FirstRaceRelation.text = (Math.Round(Relation.Attitude, 5)*100).ToString();
+            SecondRaceRelation.text = (Math.Round(CounterRelation.Attitude, 5)*100).ToString();
             return;
         }
 
@@ -297,8 +297,8 @@ public class CheatMenu : MonoBehaviour
         {
             Relation = RelationsManager.GetRelation(firstSide, secondSide);
             CounterRelation = RelationsManager.GetRelation(secondSide, firstSide);
-            FirstRaceRelation.text = Math.Round(Relation.Attitude, 5).ToString();
-            SecondRaceRelation.text = Math.Round(CounterRelation.Attitude, 5).ToString();
+            FirstRaceRelation.text = (Math.Round(Relation.Attitude, 5) * 100).ToString();
+            SecondRaceRelation.text = (Math.Round(CounterRelation.Attitude, 5) * 100).ToString();
         }
         else
         {
@@ -307,33 +307,16 @@ public class CheatMenu : MonoBehaviour
             FirstRaceRelation.text = "";
             SecondRaceRelation.text = "";
         }
-        FirstRaceRelation.onValueChanged.AddListener((v) =>
-        {
-            float res;
-            if (v.Length < 1 || !float.TryParse(v, out res) || res < 0)
-            {
-                FirstRaceRelation.text = "0";
-            }
-        });
-        SecondRaceRelation.onValueChanged.AddListener((v) =>
-        {
-            float res;
-            if (v.Length < 1 || !float.TryParse(v, out res) || res < 0)
-            {
-                SecondRaceRelation.text = "0";
-            }
-        });
-
     }
 
     public void UpdateRelations()
     {
         if (Relation != null && CounterRelation != null)
         {
-            if (float.TryParse(FirstRaceRelation.text, out float first))
-                Relation.Attitude = first;
-            if (float.TryParse(SecondRaceRelation.text, out float second))
-                CounterRelation.Attitude = second;
+            if (int.TryParse(FirstRaceRelation.text, out int first))
+                Relation.Attitude = first/100;
+            if (int.TryParse(SecondRaceRelation.text, out int second))
+                CounterRelation.Attitude = second/100;
         }
     }
 

@@ -7,6 +7,9 @@ using UnityEngine;
 
 public class Army
 {
+    [OdinSerialize]
+    internal List<StrategicTileType> impassables = new List<StrategicTileType>() 
+    { StrategicTileType.mountain, StrategicTileType.snowMountain, StrategicTileType.water, StrategicTileType.lava, StrategicTileType.ocean, StrategicTileType.brokenCliffs};
     internal enum MovementMode
     {
         Standard,
@@ -187,15 +190,43 @@ public class Army
     public void RefreshMovementMode()
     {
         int flying = 0;
+        int noGrass = 0;
+        int yesLava = 0;
+        int noSnow = 0;
         //int aquatic = 0;
 
         foreach (Unit unit in Units)
         {
             if (unit.HasTrait(Traits.Pathfinder))
                 flying++;
+            if (unit.HasTrait(Traits.GrassImpedence))
+                noGrass++;
+            if (unit.HasTrait(Traits.LavaWalker)) 
+                yesLava++;
+            if (unit.HasTrait(Traits.SnowImpedence))
+                noSnow++;
+
             //else if (unit.HasTrait(Traits.Aquatic))
             //    aquatic++;
         }
+        if (noGrass > 0 && noGrass > Units.Count / 2) { 
+            if (!impassables.Contains(StrategicTileType.grass))
+                impassables.Add(StrategicTileType.grass);
+        }
+        else impassables.Remove(StrategicTileType.grass);
+
+        if (noSnow > 0 && noSnow > Units.Count / 2)
+        {
+            if (!impassables.Contains(StrategicTileType.snow))
+                impassables.Add(StrategicTileType.snow);
+        }
+        else impassables.Remove(StrategicTileType.snow);
+
+        if (yesLava > 0 && yesLava >= Units.Count / 2)
+            impassables.Remove(StrategicTileType.lava);
+        else if (!impassables.Contains(StrategicTileType.lava))
+            impassables.Add(StrategicTileType.lava);
+
         if (flying > 0 && flying >= Units.Count / 2)
             movementMode = MovementMode.Flight;
         //else if (aquatic >= Units.Count / 2)
@@ -385,7 +416,7 @@ public class Army
         {
             return TileAction.TwoMP;
         }
-        if (StrategicTileInfo.CanWalkInto(p.x, p.y) == false)
+        if (StrategyPathfinder.CanEnter(p, this) == false)
         {
             return TileAction.Impassible;
         }

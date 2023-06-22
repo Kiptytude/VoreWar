@@ -65,6 +65,8 @@ public class Actor_Unit
     [OdinSerialize]
     public bool Surrendered;
 
+    public bool DefectedThisTurn;
+
     [OdinSerialize]
     public bool WasJustFreed;
 
@@ -688,7 +690,7 @@ public class Actor_Unit
     public bool IsBeingSuckled => Mode == DisplayMode.Suckled;
     public bool IsRubbing => Mode == DisplayMode.Rubbing;
     public bool IsBeingRubbed => Mode == DisplayMode.Rubbed;
-
+    [OdinSerialize]
     public List<int> sidesAttackedThisBattle { get; set; }
 
     public float GetSpecialChance(SpecialAction action)

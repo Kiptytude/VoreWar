@@ -252,7 +252,7 @@ class GoblinAI : IStrategicAI
         if (targetPosition != null)
         {
             pathIsFor = army;
-            path = StrategyPathfinder.GetMonsterPath(empire, army.Position, targetPosition, army.RemainingMP, army.movementMode == Army.MovementMode.Flight);
+            path = StrategyPathfinder.GetMonsterPath(empire, army, targetPosition, army.RemainingMP, army.movementMode == Army.MovementMode.Flight);
             return;
         }
         army.RemainingMP = 0;

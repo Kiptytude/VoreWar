@@ -19,7 +19,7 @@ public class RandomizeList
 
     public override string ToString()
     {
-        string str = id + ", " + name + ", " + chance.ToString().Replace(",",".") + ", ";
+        string str = id + ", " + name + ", " + chance.ToString() + ", ";
         RandomTraits.ForEach(rt => str += (int)rt + "|");
         str = str.Remove(str.Length - 1);
         return str;
