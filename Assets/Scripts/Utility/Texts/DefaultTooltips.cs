@@ -645,7 +645,7 @@ Does not retroactively affect already created units.";
             case 256:
                 return "Modifies how mighty the game thinks the Race is (Affects power calculations).\n" +
                     "A way to make your balance changes known to the AI, or deliberately make it misjudge. " +
-                    "In the default balance, this value ranges from 0.5 (compy) to 12 (dragon).";
+                    "In the default balance, this value ranges from 50 (compy) to 1200 (dragon).";
             case 257:
                 return @"Enables the Goodra monster packs";
             default:

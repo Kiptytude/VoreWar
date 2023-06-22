@@ -6,6 +6,7 @@ using System.IO;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public class VariableEditor : MonoBehaviour
 {
@@ -180,8 +181,10 @@ public class VariableEditor : MonoBehaviour
                     allToggle.GetComponentInChildren<Text>().text = "ALL";
                     DictToggleList = new List<Toggle>();
                     foreach (var entry in TempDictionary.OrderBy(s =>
-                       {
-                           return s.Key >= Traits.LightningSpeed ? "ZZZ" + s.ToString() : s.ToString();
+                    {
+                        if (s.Key >= (Traits)1000)
+                            return "AAA" + s.Key.ToString();
+                           return s.Key >= Traits.LightningSpeed ? "ZZZ" + s.Key.ToString() : s.Key.ToString();
                        }))
                     {
                         var newObj = Instantiate(Toggle, Folder);

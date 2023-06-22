@@ -156,7 +156,7 @@ public class RandomizerTraitEditor : MonoBehaviour
             RandomizeList newCustom = new RandomizeList();
             newCustom.id = tag.id;
             newCustom.name = tag.name.text;
-            newCustom.chance = int.Parse(tag.chance.text)/100f;
+            newCustom.chance = int.Parse(tag.chance.text) /100f;
             newCustom.RandomTraits = new List<Traits>();
             foreach (var trait in tag.TraitDictionary)
             {
