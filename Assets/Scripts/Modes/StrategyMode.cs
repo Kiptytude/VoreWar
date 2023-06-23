@@ -1148,11 +1148,14 @@ public class StrategyMode : SceneBase
                         if (ExchangerUI.RightArmy.Units.All(u => u.HasTrait(Traits.Infiltrator)))
                         {
                             Village village = StrategicUtilities.GetVillageAt(ExchangerUI.RightArmy.Position);
-                            if (village != null && village.Empire.IsEnemy(ExchangerUI.LeftArmy.Empire)) {
-                                var infilitrators = new List<Unit>();
+                            var infilitrators = new List<Unit>();
+                            
+                                
                                 ExchangerUI.RightArmy.Units.ForEach(unit => {
                                     infilitrators.Add(unit);
                                 });
+                            if (village != null && village.Empire.IsEnemy(ExchangerUI.LeftArmy.Empire))
+                            {
                                 infilitrators.ForEach(inf =>
                                 {
                                     StrategicUtilities.TryInfiltrate(ExchangerUI.RightArmy, inf, village);
@@ -1163,18 +1166,10 @@ public class StrategyMode : SceneBase
                             else
                             {
                                 MercenaryHouse mercHouse = StrategicUtilities.GetMercenaryHouseAt(ExchangerUI.RightArmy.Position);
-                                if (mercHouse != null) { 
-                                    ExchangerUI.RightArmy.Units.ForEach(unit => {
-                                        MercenaryContainer merc = new MercenaryContainer();
-                                        merc.Unit = unit;
-                                        merc.Title = $"{unit.Race} - Mercenary";
-                                        var power = State.RaceSettings.Get(merc.Unit.Race).PowerAdjustment;
-                                        if (power == 0)
-                                        {
-                                            power = RaceParameters.GetTraitData(merc.Unit).PowerAdjustment;
-                                        }
-                                        merc.Cost = (int)((25 + State.Rand.Next(15) + (.12 * unit.Experience)) * UnityEngine.Random.Range(0.8f, 1.2f) * power);
-                                        mercHouse.Mercenaries.Add(merc);
+                                if (mercHouse != null) {
+                                    infilitrators.ForEach(inf =>
+                                    {
+                                        StrategicUtilities.TryInfiltrate(ExchangerUI.RightArmy, inf, null, mercHouse);
                                     });
                                     ExchangerUI.RightArmy.Empire.Armies.Remove(ExchangerUI.RightArmy);
                                     ExchangerUI.RightArmy.Empire.ArmiesCreated--;

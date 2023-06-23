@@ -1009,11 +1009,15 @@ static class StrategicUtilities
             };
     }
 
-    internal static void TryInfiltrate(Army originArmy, Unit unit, Village village)
+    internal static void TryInfiltrate(Army originArmy, Unit unit, Village village, MercenaryHouse mercHouse = null)
     {
         List<MercenaryContainer> mercDestination = null;
         List<Unit> destination = null;
-        if (village.Empire.StrategicAI == null && village.NetBoosts.MercsPerTurnAdd > 0)
+        if (village == null && mercHouse != null)
+        {
+            mercDestination = mercHouse.Mercenaries;
+        }
+        else if (village.Empire.StrategicAI == null && village.NetBoosts.MercsPerTurnAdd > 0)
             mercDestination = village.Mercenaries;
         else destination = village.GetRecruitables();
    
@@ -1036,9 +1040,10 @@ static class StrategicUtilities
             merc.Cost = (int)((25 + State.Rand.Next(15) + (.12 * unit.Experience)) * UnityEngine.Random.Range(0.8f, 1.2f) * power);
             mercDestination.Add(merc);
             originArmy.Units.Remove(unit);
-            Debug.Log($"{unit.Name} has infiltrated {village.Name}");
+            Debug.Log($"{unit.Name} has infiltrated {village?.Name ?? ("a mercanary camp")}");
         }
-        unit.OnDiscard = () =>
+        if (!originArmy.Units.Contains(unit))
+            unit.OnDiscard = () =>
         {
             var closestFriendlyVillage = State.World.Villages.Where(s => s.Side == unit.Side).OrderBy(s => s.Position.GetNumberOfMovesDistance(originArmy.Position)).FirstOrDefault();
             if (closestFriendlyVillage == null)

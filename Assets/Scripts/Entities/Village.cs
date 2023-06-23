@@ -1245,7 +1245,15 @@ public class Village
             {
                 if (Mercenaries.Count > NetBoosts.MaxMercsAdd - NetBoosts.MercsPerTurnAdd)
                 {
+                    List<Unit> units = Mercenaries.ConvertAll(merc => merc.Unit);
                     Mercenaries.RemoveRange(0, Mercenaries.Count - (NetBoosts.MaxMercsAdd - NetBoosts.MercsPerTurnAdd));
+                    foreach (Unit u in units)
+                    {
+                        if (!Mercenaries.Any(mer => mer.Unit == u) && u.OnDiscard != null)
+                        {
+                            u.OnDiscard();
+                        }
+                    }
                 }
                 for (int i = 0; i < NetBoosts.MercsPerTurnAdd; i++)
                 {
@@ -1261,7 +1269,15 @@ public class Village
         {
             if (Adventurers.Count > NetBoosts.MaxAdventurersAdd - NetBoosts.AdventurersPerTurnAdd)
             {
+                List<Unit> units = Adventurers.ConvertAll(merc => merc.Unit);
                 Adventurers.RemoveRange(0, Adventurers.Count - (NetBoosts.MaxAdventurersAdd - NetBoosts.AdventurersPerTurnAdd));
+                foreach (Unit u in units)
+                {
+                    if (!Adventurers.Any(mer => mer.Unit == u) && u.OnDiscard != null)
+                    {
+                        u.OnDiscard();
+                    }
+                }
             }
             for (int i = 0; i < NetBoosts.AdventurersPerTurnAdd; i++)
             {
