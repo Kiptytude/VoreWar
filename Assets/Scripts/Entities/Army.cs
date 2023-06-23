@@ -193,6 +193,8 @@ public class Army
         int noGrass = 0;
         int yesLava = 0;
         int noSnow = 0;
+        int yesMountain = 0;
+        int noVolcanic = 0;
         //int aquatic = 0;
 
         foreach (Unit unit in Units)
@@ -205,6 +207,10 @@ public class Army
                 yesLava++;
             if (unit.HasTrait(Traits.SnowImpedence))
                 noSnow++;
+            if (unit.HasTrait(Traits.MountainWalker))
+                yesMountain++;
+            if (unit.HasTrait(Traits.VolcanicImpedence))
+                noVolcanic++;
 
             //else if (unit.HasTrait(Traits.Aquatic))
             //    aquatic++;
@@ -226,6 +232,29 @@ public class Army
             impassables.Remove(StrategicTileType.lava);
         else if (!impassables.Contains(StrategicTileType.lava))
             impassables.Add(StrategicTileType.lava);
+
+        if (yesMountain > 0 && yesMountain >= Units.Count / 2)
+        {
+            impassables.Remove(StrategicTileType.mountain);
+            impassables.Remove(StrategicTileType.snowMountain);
+            impassables.Remove(StrategicTileType.brokenCliffs);
+        }
+        else 
+        {  
+            if (!impassables.Contains(StrategicTileType.snowMountain))
+                impassables.Add(StrategicTileType.snowMountain);
+            if (!impassables.Contains(StrategicTileType.mountain))
+                 impassables.Add(StrategicTileType.mountain);
+            if (!impassables.Contains(StrategicTileType.brokenCliffs))
+                impassables.Add(StrategicTileType.brokenCliffs);
+        }
+
+        if (noVolcanic > 0 && noVolcanic > Units.Count / 2)
+        {
+            if (!impassables.Contains(StrategicTileType.volcanic))
+                impassables.Add(StrategicTileType.volcanic);
+        }
+        else impassables.Remove(StrategicTileType.volcanic);
 
         if (flying > 0 && flying >= Units.Count / 2)
             movementMode = MovementMode.Flight;

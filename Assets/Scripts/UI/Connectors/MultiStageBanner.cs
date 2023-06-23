@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using UnityEngine;
-using static Army;
 
 public class MultiStageBanner : MonoBehaviour
 {
@@ -20,6 +19,7 @@ public class MultiStageBanner : MonoBehaviour
             FullBannerLayer.color = empire.UnitySecondaryColor;
         else
             FullBannerLayer.color = Color.white;
+        InsigniaLayer.color = empire.UnityColor;
         if (army.BannerStyle == 0)
         {
             if (25 + (int)empire.Race < State.GameManager.StrategyMode.Banners.Length)

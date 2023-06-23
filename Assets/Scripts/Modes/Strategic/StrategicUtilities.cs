@@ -995,6 +995,18 @@ static class StrategicUtilities
             originArmy.Units.Remove(unit);
             Debug.Log($"{unit.Name} has infiltrated {chosenVillage?.Name ?? ("a mercanary camp")}");
         }
+        if (!originArmy.Units.Contains(unit))
+            unit.OnDiscard = () =>
+            {
+                var closestFriendlyVillage = State.World.Villages.Where(s => s.Side == unit.Side).OrderBy(s => s.Position.GetNumberOfMovesDistance(originArmy.Position)).FirstOrDefault();
+                if (closestFriendlyVillage == null)
+                    closestFriendlyVillage = State.World.Villages.Where(s => s.Empire.IsAlly(State.World.GetEmpireOfSide(unit.Side))).OrderBy(s => s.Position.GetNumberOfMovesDistance(originArmy.Position)).FirstOrDefault();
+                if (closestFriendlyVillage != null)
+                {
+                    StrategicUtilities.CreateInvisibleTravelingArmy(unit, closestFriendlyVillage, 1);
+                    Debug.Log(unit.Name + " is returning to " + closestFriendlyVillage.Name);
+                }
+            };
     }
 
     internal static void TryInfiltrate(Army originArmy, Unit unit, Village village)
@@ -1026,6 +1038,17 @@ static class StrategicUtilities
             originArmy.Units.Remove(unit);
             Debug.Log($"{unit.Name} has infiltrated {village.Name}");
         }
+        unit.OnDiscard = () =>
+        {
+            var closestFriendlyVillage = State.World.Villages.Where(s => s.Side == unit.Side).OrderBy(s => s.Position.GetNumberOfMovesDistance(originArmy.Position)).FirstOrDefault();
+            if (closestFriendlyVillage == null)
+                closestFriendlyVillage = State.World.Villages.Where(s => s.Empire.IsAlly(State.World.GetEmpireOfSide(unit.Side))).OrderBy(s => s.Position.GetNumberOfMovesDistance(originArmy.Position)).FirstOrDefault();
+            if (closestFriendlyVillage != null)
+            {
+                StrategicUtilities.CreateInvisibleTravelingArmy(unit, closestFriendlyVillage, 1);
+                Debug.Log(unit.Name + " is returning to " + closestFriendlyVillage.Name);
+            }
+        };
     }
 }
 

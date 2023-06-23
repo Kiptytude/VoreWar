@@ -304,6 +304,10 @@ public enum Traits
     LavaWalker = 153,
     /// <summary>Unit treats snow as unpassable.</summary>
     SnowImpedence = 154,
+    /// <summary>Unit doesn't treat any kind of mountain (or broken cliff) as unpassable.</summary>
+    MountainWalker = 153,
+    /// <summary>Unit treats volcanic ground as unpassable.</summary>
+    VolcanicImpedence = 154,
 
 
 
