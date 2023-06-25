@@ -535,7 +535,7 @@ public class InfoPanel
             // Add Leadership Stat if unit is a Leader
             if (unit.Type == UnitType.Leader)
                 sb.AppendLine($"Leadership: {unit.GetStatBase(Stat.Leadership)}");
-
+            sb.AppendLine($"Stat total: {unit.GetStatTotal()}");
             if (unit.SavedCopy != null && unit.SavedVillage != null)
                 sb.AppendLine($"Imprinted");
             if (actor?.Surrendered ?? false)
@@ -560,7 +560,11 @@ public class InfoPanel
             if (actor?.Paralyzed ?? false)
                 sbSecond.AppendLine("Paralyzed");
             if (actor?.Corruption > 0 && !TacticalUtilities.IsUnitControlledByPlayer(unit))
-                sbSecond.AppendLine($"Corruption ({unit.GetStatTotal() + unit.GetStat(Stat.Will)}/{actor.Corruption})");
+                sbSecond.AppendLine($"Corruption ({actor.Corruption}/{unit.GetStatTotal() + unit.GetStat(Stat.Will)})");
+            if (actor?.Possessed > 0 && !TacticalUtilities.IsUnitControlledByPlayer(unit))
+                sbSecond.AppendLine($"Possessed ({actor.Corruption + actor.Possessed}/{unit.GetStatTotal() + unit.GetStat(Stat.Will)})");
+            if (actor?.Infected ?? false)
+                sbSecond.AppendLine($"Infected");
             if (unit.StatusEffects?.Any() ?? false)
             {
                 foreach (StatusEffectType type in (StatusEffectType[])Enum.GetValues(typeof(StatusEffectType)))

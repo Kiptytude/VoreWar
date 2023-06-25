@@ -92,6 +92,18 @@ public class Actor_Unit
     public int Corruption;
 
     [OdinSerialize]
+    public int Possessed;
+
+    [OdinSerialize]
+    public bool Infected;
+
+    [OdinSerialize]
+    public Race InfectedRace;
+
+    [OdinSerialize]
+    public int InfectedSide;
+
+    [OdinSerialize]
     public bool KilledByDigestion;
 
     [OdinSerialize]
@@ -264,6 +276,78 @@ public class Actor_Unit
         Unit = unit;
         Visible = true;
         Targetable = true;
+    }
+
+    public Actor_Unit(Unit unit, Actor_Unit reciepient)
+    {
+        PredatorComponent = new PredatorComponent(this, unit);
+        unit.SetBreastSize(-1); //Resets to default
+        Mode = DisplayMode.None;
+        modeQueue = new List<KeyValuePair<int, float>>();
+        animationUpdateTime = 0;
+        Position = reciepient.Position;
+        Unit = unit;
+        Visible = false;
+        Targetable = false;
+        RestoreMP();
+        unit.SingleUseSpells = new List<SpellTypes>();
+        unit.MultiUseSpells = new List<SpellTypes>();
+        if (unit.HasTrait(Traits.MadScience) && State.World?.ItemRepository != null) //protection for the create strat screen
+        {
+            unit.SingleUseSpells.Add(((SpellBook)State.World.ItemRepository.GetRandomBook(1, 4)).ContainedSpell);
+            unit.UpdateSpells();
+        }
+        if (unit.HasTrait(Traits.PollenProjector) && State.World?.ItemRepository != null) //protection for the create strat screen
+        {
+            unit.SingleUseSpells.Add(SpellList.AlraunePuff.SpellType);
+            unit.UpdateSpells();
+        }
+        if (unit.HasTrait(Traits.Webber) && State.World?.ItemRepository != null) //protection for the create strat screen
+        {
+            unit.SingleUseSpells.Add(SpellList.Web.SpellType);
+            unit.UpdateSpells();
+        }
+        if (unit.HasTrait(Traits.GlueBomb) && State.World?.ItemRepository != null) //protection for the create strat screen
+        {
+            unit.SingleUseSpells.Add(SpellList.GlueBomb.SpellType);
+            unit.UpdateSpells();
+        }
+        if (unit.HasTrait(Traits.PoisonSpit) && State.World?.ItemRepository != null) //protection for the create strat screen
+        {
+            unit.SingleUseSpells.Add(SpellList.ViperPoisonStatus.SpellType);
+            unit.UpdateSpells();
+        }
+        if (unit.HasTrait(Traits.Petrifier) && State.World?.ItemRepository != null) //protection for the create strat screen
+        {
+            unit.SingleUseSpells.Add(SpellList.Petrify.SpellType);
+            unit.UpdateSpells();
+        }
+        if (unit.HasTrait(Traits.Charmer) && State.World?.ItemRepository != null) //protection for the create strat screen
+        {
+            unit.SingleUseSpells.Add(SpellList.Charm.SpellType);
+            unit.UpdateSpells();
+        }
+        if (unit.HasTrait(Traits.HypnoticGas) && State.World?.ItemRepository != null) //protection for the create strat screen
+        {
+            unit.SingleUseSpells.Add(SpellList.HypnoGas.SpellType);
+            unit.UpdateSpells();
+        }
+        if (unit.HasTrait(Traits.Reanimator) && State.World?.ItemRepository != null) //protection for the create strat screen
+        {
+            unit.SingleUseSpells.Add(SpellList.Reanimate.SpellType);
+            unit.UpdateSpells();
+        }
+        if (unit.HasTrait(Traits.Binder) && State.World?.ItemRepository != null) //protection for the create strat screen
+        {
+            unit.SingleUseSpells.Add(SpellList.Bind.SpellType);
+            unit.UpdateSpells();
+        }
+        // Multi-use section
+        if (unit.HasTrait(Traits.ForceFeeder) && State.World?.ItemRepository != null) //protection for the create strat screen
+        {
+            unit.MultiUseSpells.Add(SpellList.ForceFeed.SpellType);
+            unit.UpdateSpells();
+        }
     }
 
     public Actor_Unit(Vec2i p, Unit unit)

@@ -318,6 +318,10 @@ public enum Traits
     InfiniteReincarnation = 351,
     /// <summary>Soon after this unit is digested, one of the new Units that come into being as the pred's race will be a reincarnation of them. The reincarnation will also have this trait.</summary>
     InfiniteTransmigration = 352,
+    /// <summary>If a possession unit is eaten, the pred will be possessed as a hidden status. Once possessed prey's stat total plus the Preds corruption is equal to that of the pred, they are under control of the side of the last-eaten possessed.</summary>
+    Possession = 353,
+    /// <summary>A parasite prey will give the host CreateSpawn and set infection after digestion, host Takes minor damage on prey absorption and major damage when creating spawn</summary>
+    Parasite = 354,
 
 
 
@@ -376,6 +380,10 @@ public enum Traits
     SeductiveTouch = 266,
     /// <summary>Can emit Gas that turns foes into subservient non-combatants once per battle.</summary>
     HypnoticGas = 295,
+    /// <summary>Shares generic traits with pred</summary>
+    Symbiote = 296,
+    /// <summary>creates a spawn unit on prey Absorption</summary>
+    CreateSpawn = 297,
 
     // Growth-related section
     /// <summary>Unit increases in size when absorbing prey.</summary>

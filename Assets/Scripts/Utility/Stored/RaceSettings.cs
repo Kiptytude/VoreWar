@@ -138,6 +138,13 @@ class RaceSettings
         return null;
     }
 
+    internal List<Traits> GetSpawnRaceTraits(Race race)
+    {
+        if (Races.ContainsKey(race))
+            return Get(race).SpawnTraits;
+        return null;
+    }
+
     internal Stat GetFavoredStat(Race race)
     {
         if (Races.ContainsKey(race))
@@ -292,6 +299,8 @@ class RaceSettingsItem
     internal List<Traits> FemaleTraits;
     [OdinSerialize]
     internal List<Traits> HermTraits;
+    [OdinSerialize]
+    internal List<Traits> SpawnTraits;
 
     [OdinSerialize]
     internal bool FavoredStatSet;
@@ -364,6 +373,7 @@ class RaceSettingsItem
         MaleTraits = new List<Traits>();
         FemaleTraits = new List<Traits>();
         HermTraits = new List<Traits>();
+        SpawnTraits = new List<Traits>();
 
         FavoredStatSet = true;
         FavoredStat = racePar.FavoredStat;

@@ -13,6 +13,7 @@ public enum UnitType
     Summon,
     SpecialMercenary,
     Adventurer,
+    Spawn,
 }
 
 public enum AIClass
@@ -46,7 +47,7 @@ public class Unit
     [OdinSerialize]
     public bool hiddenFixedSide = false;
 
-    public static List<Traits> secretTags = new List<Traits>() { Traits.Infiltrator, Traits.Corruption, Traits.Reincarnation, Traits.InfiniteReincarnation, Traits.Transmigration, Traits.InfiniteTransmigration, Traits.Untamable};
+    public static List<Traits> secretTags = new List<Traits>() { Traits.Infiltrator, Traits.Corruption, Traits.Parasite, Traits.Possession, Traits.Reincarnation, Traits.InfiniteReincarnation, Traits.Transmigration, Traits.InfiniteTransmigration, Traits.Untamable};
 
     [OdinSerialize]
     public Race Race;
@@ -415,6 +416,8 @@ public class Unit
 
     [OdinSerialize]
     protected List<Traits> TemporaryTraits;
+    [OdinSerialize]
+    protected List<Traits> SharedTraits;
 
     /// <summary>
     /// Traits that are considered to be permanent, i.e. do not disappear during refreshes
@@ -1465,6 +1468,24 @@ public class Unit
             TemporaryTraits.RemoveAt(0);
     }
 
+    public void AddSharedTrait(Traits trait)
+    {
+        if (SharedTraits == null)
+            SharedTraits = new List<Traits>();
+        if (!SharedTraits.Contains(trait) && !HasTrait(trait))
+            SharedTraits.Add(trait);
+            AddTrait(trait);
+    }
+
+    public void RemoveSharedTrait(Traits trait)
+    {
+        if (SharedTraits == null)
+            SharedTraits = new List<Traits>();
+        if (SharedTraits.Contains(trait) && HasTrait(trait))
+            SharedTraits.Remove(trait);
+            RemoveTrait(trait);
+    }
+
     internal void ReloadTraits()
     {
         Tags = new List<Traits>();
@@ -1495,8 +1516,17 @@ public class Unit
         {
             if (Config.LeaderTraits != null) Tags.AddRange(Config.LeaderTraits);
         }
+        else if (Type == UnitType.Spawn)
+        {
+            var spawnTraits = State.RaceSettings.GetSpawnRaceTraits(Race);
+            if (spawnTraits != null) Tags.AddRange(spawnTraits);
+            spawnTraits = Config.SpawnTraits;
+            if (spawnTraits != null) Tags.AddRange(spawnTraits);
+        }
         if (TemporaryTraits != null)
             Tags.AddRange(TemporaryTraits);
+        if (SharedTraits != null)
+            Tags.AddRange(SharedTraits);
         if (RemovedTraits != null)
         {
             foreach (Traits trait in RemovedTraits)

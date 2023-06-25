@@ -72,6 +72,7 @@ public class RaceEditorPanel : MonoBehaviour
     public InputField MaleTraits;
     public InputField FemaleTraits;
     public InputField HermTraits;
+    public InputField SpawnTraits;
 
     public TMP_Dropdown BannerType;
 
@@ -354,7 +355,7 @@ public class RaceEditorPanel : MonoBehaviour
                 item.FemaleTraits = TextToTraitList(FemaleTraits.text);
                 item.MaleTraits = TextToTraitList(MaleTraits.text);
                 item.HermTraits = TextToTraitList(HermTraits.text);
-
+                item.SpawnTraits = TextToTraitList(SpawnTraits.text);
             }
         }
         catch
@@ -522,6 +523,8 @@ public class RaceEditorPanel : MonoBehaviour
             FemaleTraits.text = TraitListToText(item.FemaleTraits);
             MaleTraits.text = TraitListToText(item.MaleTraits);
             HermTraits.text = TraitListToText(item.HermTraits);
+            SpawnTraits.text = TraitListToText(item.SpawnTraits);
+            
         }
     }
 

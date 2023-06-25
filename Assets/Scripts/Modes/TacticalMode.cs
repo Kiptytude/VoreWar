@@ -1490,6 +1490,23 @@ Turns: {currentTurn}
 
     }
 
+    internal Actor_Unit AddUnitToBattle(Unit unit,  Actor_Unit reciepient)
+    {
+        Actor_Unit actor = new Actor_Unit(unit, reciepient);
+        units.Add(actor);
+        actor.UpdateBestWeapons();
+        UpdateActorColor(actor);
+        if (actor.UnitSprite != null)
+        {
+            actor.UnitSprite.HitPercentagesDisplayed(false);
+            actor.UnitSprite.DisplaySummoned();
+        }
+
+        //if (actor.Unit.Side == defenderSide)
+        //actor.Unit.CurrentLeader = DefenderLeader;
+        return actor;
+    }
+
     internal Actor_Unit AddUnitToBattle(Unit unit, Vec2i position)
     {
         Actor_Unit actor = new Actor_Unit(position, unit);

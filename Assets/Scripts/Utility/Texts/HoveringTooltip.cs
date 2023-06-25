@@ -234,6 +234,8 @@ public class HoveringTooltip : MonoBehaviour
                     return "A unique mercenary, only one of each can exist in the world at once, can not retreat and will return to the merc camp if dismissed";
                 case UnitType.Adventurer:
                     return "An adventurer, recruited not from the village population, but from an inn";
+                case UnitType.Spawn:
+                    return "A weaker unit, created under certain conditions";
             }
         }
 
@@ -516,8 +518,16 @@ public class HoveringTooltip : MonoBehaviour
                 return "Can emit Gas that turns foes into subservient non-combatants that are easy to vore, use buff spells if they have any, and rub bellies. Units of identical alignment are unaffected.";
             case Traits.ForceFeeder:
                 return "Allows unit to attempt force-feeding itself to another unit at will.";
+            case Traits.Possession:
+				return "Temporarily control a Pred unit while digesting inside\n (Cheat Hidded Trait)";    
             case Traits.Corruption:
                 return "If a currupted unit is digested, the pred will build up corruption as a hidden status. Once corrupted prey with a stat total equal to that of the pred has been digested, they are under control of the side of the last-digested corrupted.\n(Hidden Trait)";
+            case Traits.Parasite:
+                return "A parasite prey will give the host CreateSpawn and set infection after digestion, host Takes minor damage on prey absorption and major damage when creating spawn";
+            case Traits.Symbiote:
+                return "Shares generic traits with pred";
+            case Traits.CreateSpawn:
+                return "creates a spawn unit on prey Absorption";
             case Traits.Reanimator:
                 return "Allows unit to use <b>Reanimate</b>, an attack that brings any unit back to life as the caster's summon, once per battle";
             case Traits.Reincarnation:
