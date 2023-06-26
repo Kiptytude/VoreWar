@@ -160,7 +160,7 @@ public class UnitSprite : MonoBehaviour
     public void DisplayGraze()
     {
         DamageIndicator.faceColor = Color.green;
-        DamageIndicator.text = "Escaped";
+        DamageIndicator.text = "Graze";
         FinishDisplayedTextSetup();
     }
 
