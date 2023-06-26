@@ -1197,7 +1197,7 @@ public class Actor_Unit
             {
                 float calculatedGrazeDamage = Unit.TraitBoosts.Outgoing.GrazeDamageMult * target.Unit.TraitBoosts.Incoming.GrazeDamageMult;
                 damageMultiplier *= (calculatedGrazeDamage) * Config.GrazeDamageMod;
-                critbool = true;
+                grazebool = true;
             }
 
             //Crit check
@@ -1210,7 +1210,7 @@ public class Actor_Unit
             {
                 float calculatedCritDamage = Unit.TraitBoosts.Outgoing.CritDamageMult * target.Unit.TraitBoosts.Incoming.CritDamageMult;
                 damageMultiplier *= (calculatedCritDamage) * Config.CritDamageMod;
-                grazebool = true;
+                critbool = true;
             }
             // Crit and graze check (returns attack to normal state if both are true)
             if (critbool && grazebool)
@@ -1272,13 +1272,9 @@ public class Actor_Unit
                         KillUnit(target, weapon);
                     }
                     if (critbool)
-                    {
                         target.UnitSprite.DisplayCrit();
-                    }
-                    if (grazebool)
-                    {
+                    else if (grazebool)
                         target.UnitSprite.DisplayGraze();
-                    }
                     return true;
                 }
                 else
@@ -1349,13 +1345,9 @@ public class Actor_Unit
                         KillUnit(target, weapon);
                     }
                     if (critbool)
-                    {
                         target.UnitSprite.DisplayCrit();
-                    }
-                    if (grazebool)
-                    {
+                    else if (grazebool)
                         target.UnitSprite.DisplayGraze();
-                    }
                     return true;
                 }
                 else
