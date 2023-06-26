@@ -40,7 +40,7 @@ class FogSystemTactical
         foreach(Actor_Unit unit in all)
         {
             unit.InSight = true;
-            int unitSightRange = Config.World.DefualtSightRange + unit.Unit.TraitBoosts.SightRangeBoost;
+            int unitSightRange = Config.World.DefualtTacticalSightRange + unit.Unit.TraitBoosts.SightRangeBoost;
             if (currentturn < Config.World.RevealTurn) //Keeps all units revealed after the set ammount of turns have passed or if in turbo mode.
             {
                 if (unit.Unit.GetStatusEffect(StatusEffectType.Illuminated) == null || unit.PredatorComponent.PreyCount <= 0)

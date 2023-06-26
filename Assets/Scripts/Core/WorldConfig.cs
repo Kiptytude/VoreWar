@@ -162,15 +162,15 @@ public class WorldConfig
     internal int DefaultStartingWeight = 3;
 	
     // DayNight configuration
-    [OdinSerialize, AllowEditing, IntegerRange(1, 30), Description("It will be night for the entire round every X round. (Set to 1 for every round)")]
+    [OdinSerialize, AllowEditing, IntegerRange(1, 10), Description("It will be night for the entire round every X round. (Set to 1 for every round)")]
     internal int NightRounds = 1;
     [OdinSerialize, AllowEditing, ProperName("Base Night Chance"), FloatRange(0, 1), Description("The % chance that it will be night on a given turn. Night will only last that Empire's turn and can occur multiple times per round.")]
     internal float BaseNightChance = 0.01f;
     [OdinSerialize, AllowEditing, ProperName("Night Chance Increase"), FloatRange(0, 1), Description("The increase of the % chance it will be night on a given turn, increasing every turn it is not night.  (% chance resets to the base chance after a night turn)")]
     internal float NightChanceIncrease = 0.01f;
     [OdinSerialize, AllowEditing, ProperName("Defualt Vision Radius"), IntegerRange(1,5), Description("Radius of a unit's vision at night. Things like traits can also increase this.")]
-    internal int DefualtSightRange = 1;
-    [OdinSerialize, AllowEditing, ProperName("Defualt Vision Radius"), IntegerRange(1, 5), Description("Radius of a unit's vision at night. Things like traits can also increase this.")]
+    internal int DefualtTacticalSightRange = 1;
+    [OdinSerialize, AllowEditing, ProperName("Defualt Vision Radius"), IntegerRange(0, 7), Description("Radius of a unit's vision at night. Things like traits can also increase this.")]
     internal int NightStrategicSightReduction = 1;
     [OdinSerialize, AllowEditing, ProperName("Reveal Turn"), Description("The tactical turn where every unit is revealed.")]
     internal int RevealTurn = 100;

@@ -303,7 +303,7 @@ static class Config
     internal static float NightChanceIncrease => World.NightChanceIncrease;
     internal static bool NightMonsters => World.GetValue("NightMonsters");
     internal static bool NightMoveMonsters => World.GetValue("NightMoveMonsters");
-    internal static int DefualtSightRange => World.DefualtSightRange;
+    internal static int DefualtTacticalSightRange => World.DefualtTacticalSightRange;
     internal static int NightStrategicSightReduction => World.NightStrategicSightReduction;
     internal static int RevealTurn => World.RevealTurn;
 
