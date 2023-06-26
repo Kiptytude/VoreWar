@@ -44,5 +44,7 @@
     Corruption = 20,
     /// <summary>Unit wants to force-feed itself to the afflicting side</summary>
     Temptation = 21,
+    /// <summary>Unit can be seen in the darkness</summary>
+    Illuminated = 22,
 }
 

@@ -73,6 +73,30 @@ public class ContentSettings : MonoBehaviour
 
     public Toggle LeadersRerandomizeOnDeath;
 
+    public Toggle DayNightEnabled;
+    public Toggle DayNightCosmetic;
+    public Toggle DayNightSchedule;
+    public Toggle DayNightRandom;
+    public Toggle NightMonsters;
+    public Toggle NightMoveMonsters;
+    public Slider NightRounds;
+    public Slider BaseNightChance;
+    public Slider NightChanceIncrease;
+    public Slider DefualtSightRange;
+    public Slider NightStrategicSightReduction;
+    public InputField RevealTurn;
+
+
+    public Toggle CombatComplicationsEnabled;
+    public Toggle StatCrit;
+    public Toggle StatGraze;
+    public Slider BaseCritChance;
+    public Slider CritDamageMod;
+    public Slider BaseGrazeChance;
+    public Slider GrazeDamageMod;
+
+
+
     public Toggle AllowHugeBreasts;
     public Toggle AllowHugeDicks;
     public Toggle AllowTopless;
@@ -317,6 +341,15 @@ public class ContentSettings : MonoBehaviour
             new ToggleObject(BurpOnDigest, "BurpOnDigest", false),
             new ToggleObject(FartOnAbsorb, "FartOnAbsorb", false),
             new ToggleObject(CanUseStomachRubOnEnemies, "CanUseStomachRubOnEnemies", false),
+            new ToggleObject(DayNightEnabled, "DayNightEnabled", true),
+            new ToggleObject(DayNightCosmetic, "DayNightCosmetic", false),
+            new ToggleObject(DayNightSchedule, "DayNightSchedule", true),
+            new ToggleObject(DayNightRandom, "DayNightRandom", true),
+            new ToggleObject(NightMonsters, "NightMonsters", false),
+            new ToggleObject(NightMoveMonsters, "NightMoveMonsters", false),
+            new ToggleObject(CombatComplicationsEnabled, "CombatComplicationsEnabled", false),
+            new ToggleObject(StatCrit, "StatCrit", false),
+            new ToggleObject(StatGraze, "StatGraze", false),
         };
         MercToggles = new List<ToggleObject>();
         MonsterSpawners = new List<MonsterSpawnerPanel>();

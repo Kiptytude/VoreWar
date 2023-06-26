@@ -58,6 +58,11 @@ static class SpellList
     static internal readonly Spell Reanimate;
     static internal readonly Spell Resurrection;
 
+    static internal readonly Spell Purify;
+
+    static internal readonly Spell ManaDrain;
+    static internal readonly DamageSpell ManaBolt;
+    static internal readonly DamageSpell ManaVoid;
     static internal readonly StatusSpell AlraunePuff;
     static internal readonly StatusSpell Web;
     static internal readonly StatusSpell GlueBomb;
@@ -800,6 +805,96 @@ static class SpellList
             },
         };
         SpellDict[SpellTypes.ForceFeed] = ForceFeed;
+		
+        Purify = new Spell()
+        {
+            Name = "Purify",
+            Id = "purify",
+            SpellType = SpellTypes.Purify,
+            Description = "Removes positive and negative status effectso on an ally or enemy.",
+            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy, AbilityTargets.Ally },
+            Range = new Range(4),
+            Tier = 2,
+            AreaOfEffect = 0,
+            Resistable = true,
+            OnExecute = (a, t) =>
+            {
+                foreach (var eff in t.Unit.StatusEffects.ToList())
+                {
+                    t.Unit.StatusEffects.Remove(t.Unit.GetLongestStatusEffect(eff.Type));
+                }
+            }
+        };
+        SpellDict[SpellTypes.Purify] = Purify;
+
+        ManaDrain = new Spell()
+        {
+            Name = "Siphon Mana",
+            Id = "mana-drain",
+            SpellType = SpellTypes.ManaDrain,
+            Description = "Siphon 20% of a target's mana",
+            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy, AbilityTargets.Ally },
+            Range = new Range(5),
+            Tier = 0,
+            AreaOfEffect = 0,
+            Resistable = false,
+            OnExecute = (a, t) =>
+            {
+                if(t.Unit.SpendMana(a.Unit.MaxMana/5))
+                {
+                    a.Unit.RestoreMana(a.Unit.MaxMana/5);
+                    TacticalGraphicalEffects.CreateGenericMagic(t.Position, a.Position, a, TacticalGraphicalEffects.SpellEffectIcon.Buff);
+                }
+            }
+        };
+        SpellDict[SpellTypes.ManaDrain] = ManaDrain;
+
+        ManaBolt = new DamageSpell()
+        {
+            Name = "ManaBolt",
+            Id = "mana-bolt",
+            SpellType = SpellTypes.ManaBolt,
+            Description = "Deals increased damage based on unit's current mana",
+            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy},
+            Range = new Range(6),
+            Tier = 0,
+            AreaOfEffect = 0,
+            ResistanceMult = 0.5f,
+            Damage = (a, t) => a.Unit.Mana + a.Unit.GetStat(Stat.Mind) / 5,
+            Resistable = true,
+            OnExecute = (a, t) =>
+            {
+                TacticalGraphicalEffects.CreateGenericMagic(a.Position, t.Position, t);
+                a.CastOffensiveSpell(ManaBolt, t);
+            }
+        };
+        SpellDict[SpellTypes.ManaBolt] = ManaBolt;
+
+        ManaVoid = new DamageSpell()
+        {
+            Name = "ManaVoid",
+            Id = "mana-bolt",
+            SpellType = SpellTypes.ManaVoid,
+            Description = "Deals increased damage based on target's current mana",
+            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy },
+            Range = new Range(4),
+            Tier = 0,
+            AreaOfEffect = 0,
+            ResistanceMult = 0.5f,
+            Damage = (a, t) => TacticalUtilities.UnitsWithinTiles(t.Position, 1).Sum(s=>s.Unit.Mana) + a.Unit.GetStat(Stat.Mind) / 5,
+            Resistable = true,
+            OnExecute = (a, t) =>
+            {
+                TacticalGraphicalEffects.CreateGenericMagic(a.Position, t.Position, t);
+                a.CastOffensiveSpell(ManaVoid, t);
+            },
+            OnExecuteTile = (a, l) =>
+            {
+                TacticalGraphicalEffects.CreateGenericMagic(a.Position, l, null);
+                a.CastOffensiveSpell(Pyre, null, l);
+            },
+        };
+        SpellDict[SpellTypes.ManaVoid] = ManaVoid;
 
     }
 

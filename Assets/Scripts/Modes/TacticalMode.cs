@@ -45,10 +45,13 @@ public class TacticalMode : SceneBase
 
     List<Actor_Unit> RetreatedDigestors;
 
+    internal FogSystemTactical FogSystem;
     public Translator Translator;
 
     public TacticalTileDictionary TileDictionary;
 
+    public Tilemap FogOfWar;
+    public TileBase FogTile;
     public Tilemap Tilemap;
     public Tilemap UnderTilemap;
     public Tilemap FrontTilemap;
@@ -437,6 +440,7 @@ public class TacticalMode : SceneBase
             Actor_Unit unit = new Actor_Unit(mapGen.RandomActorPosition(tiles, BlockedTile, units, TacticalMapGenerator.SpawnLocation.upper, armies[0].Units[i].GetBestRanged() == null), armies[0].Units[i]);
             units.Add(unit);
             unit.Unit.Side = armies[0].Side;
+			unit.InSight = true; // All units visible by default, for daytime
             unit.Unit.CurrentLeader = AttackerLeader;
             attackers.Add(unit);
         }
@@ -448,6 +452,7 @@ public class TacticalMode : SceneBase
                 Actor_Unit unit = new Actor_Unit(mapGen.RandomActorPosition(tiles, BlockedTile, units, TacticalMapGenerator.SpawnLocation.lower, armies[1].Units[i].GetBestRanged() == null), armies[1].Units[i]);
                 units.Add(unit);
                 unit.Unit.Side = defenderSide;
+				unit.InSight = true; //All units visible by default, for daytime
                 unit.Unit.CurrentLeader = DefenderLeader;
                 defenders.Add(unit);
             }
@@ -459,6 +464,7 @@ public class TacticalMode : SceneBase
                 Actor_Unit unit = new Actor_Unit(mapGen.RandomActorPosition(tiles, BlockedTile, units, TacticalMapGenerator.SpawnLocation.lower, grabbedGarrison[i].GetBestRanged() == null), grabbedGarrison[i]);
                 units.Add(unit);
                 unit.Unit.Side = defenderSide;
+				unit.InSight = true; //All units visible by default, for daytime
                 unit.Unit.CurrentLeader = DefenderLeader;
                 garrison.Add(unit);
             }
@@ -602,7 +608,10 @@ public class TacticalMode : SceneBase
             }
         }
 
-
+        if (State.World.IsNight)    
+        {
+            UpdateFog();
+        }
     }
 
     private void InitRetreatConditions(ITacticalAI AI, List<Actor_Unit> fighters, Empire empire, bool nonPlayer)
@@ -1305,6 +1314,7 @@ Turns: {currentTurn}
         Tilemap.ClearAllTiles();
         UnderTilemap.ClearAllTiles();
         FrontTilemap.ClearAllTiles();
+        FogOfWar.ClearAllTiles();
         FrontColorTilemap.ClearAllTiles();
         FrontSpriteTilemap.ClearAllTiles();
         EffectTileMap.ClearAllTiles();
@@ -2461,6 +2471,10 @@ Turns: {currentTurn}
 
         Translator?.UpdateLocation();
 
+        if (State.World.IsNight)
+        {
+            UpdateFog();
+        }
         SpellHelperText.SetActive(ActionMode == 6 && CurrentSpell.AcceptibleTargets.Contains(AbilityTargets.Tile));
 
         if (SelectedUnit != null)
@@ -3896,6 +3910,13 @@ Turns: {currentTurn}
             autoAdvancing = false;
             return true;
         }
+		 else if (currentTurn < Config.World.RevealTurn)
+        {
+            foreach (Actor_Unit actor in units)
+            {
+                actor.InSight = true;
+            }
+        }
         return false;
     }
 
@@ -4412,6 +4433,14 @@ Turns: {currentTurn}
         }
 
     }
+	
+    void UpdateFog()
+    {
+        FogOfWar.gameObject.SetActive(true);
+        if (FogSystem == null)
+            FogSystem = new FogSystemTactical(FogOfWar, FogTile);
+        FogSystem.UpdateFog(units, defenderSide, attackersTurn, AIAttacker, AIDefender, currentTurn);
+    }
 
     public override void CleanUp()
     {
@@ -4447,6 +4476,7 @@ Turns: {currentTurn}
         FrontSpriteTilemap.ClearAllTiles();
         FrontColorTilemap.ClearAllTiles();
         EffectTileMap.ClearAllTiles();
+        FogOfWar.ClearAllTiles();
         RightClickMenu.CloseAll();
         TacticalUtilities.ResetData();
     }

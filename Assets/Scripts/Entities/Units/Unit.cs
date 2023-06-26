@@ -623,6 +623,11 @@ public class Unit
             FixedGear = true;
             Items[0] = State.World.ItemRepository.GetSpecialItem(SpecialItems.AurilikaWeapon);
         }
+        else if (race == Race.Salix)
+        {
+            FixedGear = true;
+            Items[0] = State.World.ItemRepository.GetSpecialItem(SpecialItems.SalixWeapon);
+        }
         else
         {
             FixedGear = false;
@@ -2124,6 +2129,8 @@ public class Unit
         if (HasEffect(StatusEffectType.WillingPrey)) ret++;
         if (HasEffect(StatusEffectType.Charmed)) ret++;
         if (HasEffect(StatusEffectType.Hypnotized)) ret++;
+        if (HasEffect(StatusEffectType.Illuminated)) ret++;
+
 
         bool HasEffect(StatusEffectType type)
         {

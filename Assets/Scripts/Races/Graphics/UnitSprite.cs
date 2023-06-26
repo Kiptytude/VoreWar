@@ -151,6 +151,18 @@ public class UnitSprite : MonoBehaviour
         DamageIndicator.text = "Escaped";
         FinishDisplayedTextSetup();
     }
+    public void DisplayCrit()
+    {
+        DamageIndicator.faceColor = Color.red;
+        DamageIndicator.text = "CRITICAL!";
+        FinishDisplayedTextSetup();
+    }
+    public void DisplayGraze()
+    {
+        DamageIndicator.faceColor = Color.green;
+        DamageIndicator.text = "Escaped";
+        FinishDisplayedTextSetup();
+    }
 
     public void DisplayDamage(int damage, bool spellDamage = false, bool expGain = false)
     {

@@ -53,6 +53,7 @@ public enum SpecialItems
     ZeraWeapon,
     AbakWeapon,
     AurilikaWeapon,
+    SalixWeapon,
 }
 
 
@@ -169,6 +170,7 @@ public class ItemRepository
             new Weapon(name:"Zera's Claws", description:"Claw Attack", cost:4, graphic:0, damage:8, range:1),
             new Weapon(name:"Abakhanskya's Bite", description:"Bite Attack", cost:4, graphic:0, damage:8, range:1),
             new Weapon(name:"Aurilika's Gohei", description:"A sacred talisman", cost:4, graphic:0, damage:4, range:1, accuracyModifier: 5f, lockedItem:true),
+            new Weapon(name:"Salix's Staff", description:"A weighty magic staff", cost:4, graphic:0, damage:6, range:1, lockedItem:true),
         };
 
 

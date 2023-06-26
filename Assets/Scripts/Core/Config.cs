@@ -294,6 +294,26 @@ static class Config
     internal static bool FlatExperience => World.GetValue("FlatExperience");
     internal static bool FogOfWar => World.GetValue("FogOfWar");
 
+    internal static bool DayNightEnabled => World.GetValue("DayNightEnabled");
+    internal static bool DayNightCosmetic => World.GetValue("DayNightCosmetic");
+    internal static bool DayNightSchedule => World.GetValue("DayNightSchedule");
+    internal static int NightRounds => World.NightRounds;
+    internal static bool DayNightRandom => World.GetValue("DayNightRandom");
+    internal static float BaseNightChance => World.BaseNightChance;
+    internal static float NightChanceIncrease => World.NightChanceIncrease;
+    internal static bool NightMonsters => World.GetValue("NightMonsters");
+    internal static bool NightMoveMonsters => World.GetValue("NightMoveMonsters");
+    internal static int DefualtSightRange => World.DefualtSightRange;
+    internal static int NightStrategicSightReduction => World.NightStrategicSightReduction;
+    internal static int RevealTurn => World.RevealTurn;
+
+    internal static bool CombatComplicationsEnabled => World.GetValue("CombatComplicationsEnabled");
+    internal static bool StatCrit => World.GetValue("StatCrit");
+    internal static float BaseCritChance => World.BaseCritChance;
+    internal static float CritDamageMod => World.CritDamageMod;
+    internal static bool StatGraze => World.GetValue("StatGraze");
+    internal static float BaseGrazeChance => World.BaseGrazeChance;
+    internal static float GrazeDamageMod => World.GrazeDamageMod;
     internal static int FogDistance => World.FogDistance;
     internal static bool LeadersUseCustomizations => World.GetValue("LeadersUseCustomizations");
     internal static bool LeadersAutoGainLeadership => World.GetValue("LeadersAutoGainLeadership");

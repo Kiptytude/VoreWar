@@ -298,7 +298,24 @@ public enum Traits
     BookWormIII = 150,
     /// <summary>Units that are put under a mindcontrol (e.g. Charm, Hypnosis) effect by this unit want to force-feed themselves to it or its close allies.</summary>
     Temptation = 151,
-
+    /// <summary>Unit heals for half Max HP when taken below half Max HP</summary>
+	SecondWind = 152, 
+    /// <summary>Unit heals after not taking damage for a bit, scaling higer with each turn without damage.</summary>
+	Perseverance = 153, //
+    /// <summary>Unit needs mana to survive, uses a bit of their mana every turn. Becomes shaken every turn they don't have mana</summary>
+	ManaDependant = 154,
+    /// <summary>Unit heals after not taking damage for a bit, scaling higer with each turn without damage.</summary>
+    NightEye = 155,
+    /// <summary>Unit heals after not taking damage for a bit, scaling higer with each turn without damage.</summary>
+    KeenEye = 156,
+    /// <summary>Unit heals after not taking damage for a bit, scaling higer with each turn without damage.</summary>
+	AccuteDodge = 157,
+    //Not yet implemented
+    AlertStance = 158, // Increased graze chance if MP remaining
+    CheapShot = 159, // Critical hits stun
+    StaggeringForce = 160, // Critical hits stagger
+    SavageSortilege = 161, //Unit Can critically strike magic attacks
+    ArcaneBloodline = 162, //Unit can use health as mana, Gain 3 Mana Based spells
 
 
     //Hidden Traits

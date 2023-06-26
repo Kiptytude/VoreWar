@@ -278,6 +278,8 @@ public class HoveringTooltip : MonoBehaviour
                         return $"Unit is berserk, its strength and voracity are greatly increased for a brief period\nTurns Remaining: {effect.Duration}";
                     case StatusEffectType.Charmed:
                         return $"Unit fights for the unit that charmed it.";
+                   case StatusEffectType.Illuminated:
+                        return $"(Spell) Unit is visible in the dark and can be targeted like normal.\nTurns Remaining: {effect.Duration}";
                 }
             }
         }
@@ -542,6 +544,12 @@ public class HoveringTooltip : MonoBehaviour
                 return "Unit generates with a random Tier 3-4 Book.";
             case Traits.Temptation:
                return "Units that are put under a mindcontrol (e.g. Charm, Hypnosis) effect by this unit want to force-feed themselves to it or its close allies.";
+            case Traits.NightEye:
+                return "Increases night time vision range by +1 in Tactical battles and by +1 in stratigic if half of the units in an army have this trait.";
+            case Traits.AccuteDodge:
+                return "Unit has the chance to minimise recieved damage when being attacked. (Excludes spells and vore damage).";
+            case Traits.KeenEye:
+                return "Unit has the chance to deal increase damage when attacking.";
         }  
         return "<b>This trait needs a tooltip!</b>";
     }

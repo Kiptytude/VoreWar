@@ -80,6 +80,12 @@ public class Actor_Unit
     [OdinSerialize]
     public bool Fled;
 
+    // DayNight addition
+    [OdinSerialize]
+    public bool Hidden;
+    [OdinSerialize]
+    public bool InSight;
+	
     [OdinSerialize]
     internal Prey SelfPrey;
 
@@ -99,6 +105,9 @@ public class Actor_Unit
 
     [OdinSerialize]
     public bool GoneBerserk;
+
+    [OdinSerialize]
+    public bool Winded;
 
     [OdinSerialize]
     internal int AIAvoidEat;
@@ -872,6 +881,7 @@ public class Actor_Unit
         if (ranged)
         {
             float damageScalar = Unit.TraitBoosts.Outgoing.RangedDamage * target.Unit.TraitBoosts.Incoming.RangedDamage;
+			damageScalar *= multiplier;
             if (Unit.HasTrait(Traits.AllOutFirstStrike) && HasAttackedThisCombat == false)
                 damageScalar *= 5;
             if (target.Unit.GetStatusEffect(StatusEffectType.Petrify) != null)
@@ -1172,7 +1182,44 @@ public class Actor_Unit
                 return false;
             }
         }
+        float origDamageMult = damageMultiplier;
+        bool grazebool = false;
+        bool critbool = false;
+        if (Config.CombatComplicationsEnabled)
+        {
+            // Graze Check
+            float grazechance = Config.BaseGrazeChance;
+            if (Config.StatGraze)
+            {
+                grazechance = GrazeCheck(this, target);
+            }
+            if (State.Rand.NextDouble() < grazechance)
+            {
+                float calculatedGrazeDamage = Unit.TraitBoosts.Outgoing.GrazeDamageMult * target.Unit.TraitBoosts.Incoming.GrazeDamageMult;
+                damageMultiplier *= (calculatedGrazeDamage) * Config.GrazeDamageMod;
+                critbool = true;
+            }
 
+            //Crit check
+            float critchance = Config.BaseCritChance;
+            if (Config.StatCrit)
+            {
+                critchance = CritCheck(this, target);
+            }
+            if (State.Rand.NextDouble() < critchance)
+            {
+                float calculatedCritDamage = Unit.TraitBoosts.Outgoing.CritDamageMult * target.Unit.TraitBoosts.Incoming.CritDamageMult;
+                damageMultiplier *= (calculatedCritDamage) * Config.CritDamageMod;
+                grazebool = true;
+            }
+            // Crit and graze check (returns attack to normal state if both are true)
+            if (critbool && grazebool)
+            {
+                damageMultiplier = origDamageMult;
+                critbool = false;
+                grazebool = false;
+            }
+        }
         //check range
         int targetRange = target.Position.GetNumberOfMovesDistance(Position);
         if (weapon.Range > 1)
@@ -1223,6 +1270,14 @@ public class Actor_Unit
                     {
                         State.GameManager.TacticalMode.TacticalStats.RegisterKill(BestRanged, Unit.Side);
                         KillUnit(target, weapon);
+                    }
+                    if (critbool)
+                    {
+                        target.UnitSprite.DisplayCrit();
+                    }
+                    if (grazebool)
+                    {
+                        target.UnitSprite.DisplayGraze();
                     }
                     return true;
                 }
@@ -1292,6 +1347,14 @@ public class Actor_Unit
                     {
                         State.GameManager.TacticalMode.TacticalStats.RegisterKill(BestMelee, Unit.Side);
                         KillUnit(target, weapon);
+                    }
+                    if (critbool)
+                    {
+                        target.UnitSprite.DisplayCrit();
+                    }
+                    if (grazebool)
+                    {
+                        target.UnitSprite.DisplayGraze();
                     }
                     return true;
                 }
@@ -1972,6 +2035,17 @@ public class Actor_Unit
             RestoreMP();
         Unit.TickStatusEffects();
         Unit.Heal(Unit.TraitBoosts.HealthRegen);
+        if (Unit.HasTrait(Traits.Perseverance) && TurnsSinceLastDamage > 3)
+        {
+            Unit.HealPercentage(0.05f);
+        }
+        if (Unit.HasTrait(Traits.ManaDependant))
+        {
+            if (!Unit.SpendMana(Unit.MaxMana/20))
+            {
+                Unit.ApplyStatusEffect(StatusEffectType.Shaken, 0.3f, 1);
+            }
+        }
         ReceivedRub = false;
         TurnsSinceLastDamage++;
     }
@@ -2003,6 +2077,14 @@ public class Actor_Unit
             {
                 GoneBerserk = true;
                 Unit.ApplyStatusEffect(StatusEffectType.Berserk, 1, 3);
+            }
+        }
+        if (Unit.HasTrait(Traits.SecondWind) && Winded == false)
+        {
+            if (Unit.HealthPct < .5f)
+            {
+                Winded = true;
+                Unit.Heal(Unit.MaxHealth/2);
             }
         }
         if ((canKill == false && Unit.IsDead) || (Config.AutoSurrender && Unit.IsDead && State.Rand.NextDouble() < Config.AutoSurrenderChance && Surrendered == false && Unit.HasTrait(Traits.Fearless) == false))
@@ -2131,7 +2213,40 @@ public class Actor_Unit
             ratio = 5;
         return ratio / 25;
     }
+    public float CritCheck(Actor_Unit actor, Actor_Unit target, bool isSpell = false)
+    {
+        if (target.Unit.IsDead)
+        {
+            return 0;
+        }
+        float ratio = 0;
+        if (!isSpell)
+        {
+            ratio = (float)((actor.Unit.GetStat(Stat.Dexterity) + actor.Unit.GetStat(Stat.Strength)) / 2) /
+                (target.Unit.GetStat(Stat.Endurance) * target.Unit.GetStat(Stat.Endurance) + target.Unit.GetStat(Stat.Will));
+        }
+        else
+        {
+            ratio = (float)(actor.Unit.GetStat(Stat.Mind) / (target.Unit.GetStat(Stat.Will) + target.Unit.GetStat(Stat.Endurance)));
+        }
 
+        ratio += actor.Unit.TraitBoosts.Outgoing.CritRateShift + Config.BaseCritChance;
+
+        return ratio;
+    }
+
+    public float GrazeCheck(Actor_Unit actor, Actor_Unit target)
+    {
+        if (target.Unit.IsDead)
+        {
+            return 0;
+        }
+        float ratio = (float)((actor.Unit.GetStat(Stat.Dexterity) + actor.Unit.GetStat(Stat.Strength)) / 2) / (target.Unit.GetStat(Stat.Endurance) * target.Unit.GetStat(Stat.Endurance) + target.Unit.GetStat(Stat.Will));
+
+        ratio += actor.Unit.TraitBoosts.Outgoing.GrazeRateShift + Config.BaseGrazeChance;
+        return ratio;
+    }
+	
     internal bool CastSpell(Spell spell, Actor_Unit target)
     {
         if (Unit.SpendMana(spell.ManaCost) == false)
