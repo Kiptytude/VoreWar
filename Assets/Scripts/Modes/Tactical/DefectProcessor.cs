@@ -39,7 +39,7 @@ class DefectProcessor
 
     internal void AttackerDefectCheck(Actor_Unit actor, Race otherRace)
     {
-        if (actor.Unit.Race != otherRace || actor.Unit.ImmuneToDefections || actor.Unit.HasTrait(Traits.Camaraderie))
+        if (actor.Unit.Race != otherRace || actor.Unit.ImmuneToDefections || actor.Unit.HasTrait(Traits.Camaraderie) || actor.Unit.HasFixedSide())
             return;
         if (actor.Unit.HasTrait(Traits.RaceLoyal) || State.Rand.NextDouble() < .15f - (.05f * (actor.Unit.GetStat(Stat.Will) - 10) / 10))
         {
@@ -62,7 +62,7 @@ class DefectProcessor
 
     internal void DefenderDefectCheck(Actor_Unit actor, Race otherRace)
     {
-        if (actor.Unit.Race != otherRace || actor.Unit.ImmuneToDefections || actor.Unit.HasTrait(Traits.Camaraderie))
+        if (actor.Unit.Race != otherRace || actor.Unit.ImmuneToDefections || actor.Unit.HasTrait(Traits.Camaraderie) || actor.Unit.HasFixedSide())
             return;
         if (actor.Unit.HasTrait(Traits.RaceLoyal) || State.Rand.NextDouble() < .15f - (.05f * (actor.Unit.GetStat(Stat.Will) - 10) / 10))
         {
@@ -83,7 +83,7 @@ class DefectProcessor
 
     internal void GarrisonDefectCheck(Actor_Unit actor, Race otherRace)
     {
-        if (actor.Unit.Race != otherRace || actor.Unit.ImmuneToDefections || actor.Unit.HasTrait(Traits.Camaraderie))
+        if (actor.Unit.Race != otherRace || actor.Unit.ImmuneToDefections || actor.Unit.HasTrait(Traits.Camaraderie) || actor.Unit.HasFixedSide())
             return;
         if (actor.Unit.HasTrait(Traits.RaceLoyal) || State.Rand.NextDouble() < (2 - village.Happiness / 66) * .15f - (.05f * (actor.Unit.GetStat(Stat.Will) - 10) / 10))
         {

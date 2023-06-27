@@ -1646,6 +1646,7 @@ public abstract class TacticalAI : ITacticalAI
             if (State.GameManager.TacticalMode.currentTurn < 500) // Someone just got STUCK trying to flee forever. Wow.
             {
                 retreating = true;                      // Will hopefully cause inattentive opponents to have these sneaking right back into their cities
+                State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<color=orange>{(actors[0].Unit.Side == AISide ? "Attackers" : "Defenders")} are now fleeing</color>");
                 return;
             }
         }
