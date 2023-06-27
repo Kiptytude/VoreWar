@@ -200,6 +200,8 @@ public class UnitEditorPanel : CustomizerPanel
 
     private string DetermineAllignment(Unit unit)
     {
+        if (!unit.HasFixedSide())
+            return "Default";
         if (State.World?.MainEmpires != null)
         {
             return State.World.GetEmpireOfSide(unit.FixedSide)?.Name ?? unit.Race.ToString();
