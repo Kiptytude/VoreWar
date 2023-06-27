@@ -187,8 +187,8 @@ public class MapEditor : SceneBase
             }
             State.World.Tiles = tiles;
             State.World.Doodads = doodads;
-            if (StrategicConnectedChecker.AreAllConnected(State.World.Villages, StrategicUtilities.GetAllArmies()) == false)
-                return;
+            //if (StrategicConnectedChecker.AreAllConnected(State.World.Villages, StrategicUtilities.GetAllArmies()) == false)
+            //    return;
 
             foreach (Village village in State.World.Villages)
             {
@@ -1252,10 +1252,10 @@ public class MapEditor : SceneBase
     {
         State.World.Tiles = tiles;
         State.World.Doodads = doodads;
-        if (StrategicConnectedChecker.AreAllConnected(State.World.Villages, StrategicUtilities.GetAllArmies()) == false)
-        {
-            return;
-        }
+        //if (StrategicConnectedChecker.AreAllConnected(State.World.Villages, StrategicUtilities.GetAllArmies()) == false)
+        //{
+        //    return;
+        //}
 
         List<MapVillage> storedVillages = new List<MapVillage>();
         foreach (Village village in State.World.Villages)
@@ -1426,10 +1426,10 @@ public class MapEditor : SceneBase
 
     public void SaveMapPrompt()
     {
-        if (StrategicConnectedChecker.AreAllConnected(State.World.Villages, StrategicUtilities.GetAllArmies()) == false)
-        {
-            return;
-        }
+        //if (StrategicConnectedChecker.AreAllConnected(State.World.Villages, StrategicUtilities.GetAllArmies()) == false)
+        //{
+        //    return;
+        //}
         var ui = Instantiate(State.GameManager.SavePrompt).GetComponent<SaveNamePrompt>();
         ui.Save.onClick.AddListener(() => TrySave($"{State.MapDirectory}{ui.Name.text}.map"));
     }
