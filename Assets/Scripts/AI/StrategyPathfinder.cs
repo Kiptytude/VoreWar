@@ -374,6 +374,8 @@ public static class StrategyPathfinder
 
     internal static bool CanEnter(Vec2 pos, Army army)
     {
+        if (State.World.Doodads != null && State.World.Doodads[pos.x, pos.y] >= StrategicDoodadType.bridgeVertical && State.World.Doodads[pos.x, pos.y] <= StrategicDoodadType.virtualBridgeIntersection)
+            return true;
         if (Grid[pos.x, pos.y].FriendlyOccupied)
             return false;
         if (army.impassables.Contains(Grid[pos.x, pos.y].TileType)) 
