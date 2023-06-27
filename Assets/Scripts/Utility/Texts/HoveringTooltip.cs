@@ -567,6 +567,8 @@ public class HoveringTooltip : MonoBehaviour
                 return "Unit treats volcanic ground as impassable.\nMore than half of the army has to have this trait to have an effect";
             case Traits.Donor:
                 return "Upon being absorbed, this unit bestows all traits that are listed below \"Donor\" in its trait list.";
+            case Traits.Extraction:
+                return "Every time digestion progresses, this unit steals one trait from each prey inside them, if only duplicates (or non-assimilable traits) remain, they are turned into exp. Absorbtion steals any that are left.\n(Cheat Trait)";
         }  
         return "<b>This trait needs a tooltip!</b>";
     }

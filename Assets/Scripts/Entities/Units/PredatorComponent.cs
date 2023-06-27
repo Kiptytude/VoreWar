@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Experimental.PlayerLoop;
 
 public enum PreyLocation
 {
@@ -979,7 +980,24 @@ public class PredatorComponent
     {
         int totalHeal = 0;
         bool freshKill = false;
+        if (unit.HasTrait(Traits.Extraction))
+        {
+            var possibleTraits = preyUnit.Unit.GetTraits.Where(s => unit.GetTraits.Contains(s) == false && State.AssimilateList.CanGet(s)).ToArray();
 
+            if(possibleTraits.Any())
+            {
+                var trait = possibleTraits[State.Rand.Next(possibleTraits.Length)];
+                unit.AddPermanentTrait(trait);
+                preyUnit.Unit.RemoveTrait(trait);
+            } else
+            if (preyUnit.Unit.GetTraits.Any())
+            {
+                var trait = preyUnit.Unit.GetTraits[State.Rand.Next(preyUnit.Unit.GetTraits.Count)];
+                preyUnit.Unit.RemoveTrait(trait);
+                unit.GiveRawExp(5);
+                actor.UnitSprite.DisplayDamage(5, false, true);
+            }
+        }
         if (preyUnit.Unit.IsThisCloseToDeath(preyDamage))
         {
             if (preyUnit.Unit.HasTrait(Traits.Corruption))
@@ -1444,6 +1462,22 @@ public class PredatorComponent
     {
         bool updated = false;
         bool raceUpdated = true;
+        if (unit.HasTrait(Traits.Extraction))
+        {
+            var possibleTraits = preyUnit.Unit.GetTraits.Where(s => unit.GetTraits.Contains(s) == false && State.AssimilateList.CanGet(s)).ToArray();
+
+            foreach (Traits trait in possibleTraits)
+            {
+                unit.AddPermanentTrait(trait);
+                preyUnit.Unit.RemoveTrait(trait);
+                updated = true;
+            }
+            foreach (Traits trait in preyUnit.Unit.GetTraits)
+            {
+                preyUnit.Unit.RemoveTrait(trait);
+                unit.GiveRawExp(5);
+            }
+        }
         if (preyUnit.Unit.HasTrait(Traits.Donor))
         {
             int donorIndex = preyUnit.Unit.GetTraits.IndexOf(Traits.Donor);

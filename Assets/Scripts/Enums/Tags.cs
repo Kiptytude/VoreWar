@@ -401,6 +401,8 @@ public enum Traits
     SeductiveTouch = 266,
     /// <summary>Can emit Gas that turns foes into subservient non-combatants once per battle.</summary>
     HypnoticGas = 295,
+    /// <summary>Every time digestion progresses, this unit steals one trait from each prey inside them, if only duplicates (or non-assimilable traits) remain, they are turned into exp. Absorbtion steals any that are left.</summary>
+    Extraction = 296,
 
     // Growth-related section
     /// <summary>Unit increases in size when absorbing prey.</summary>
