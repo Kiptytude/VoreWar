@@ -517,7 +517,8 @@ public class HoveringTooltip : MonoBehaviour
             case Traits.ForceFeeder:
                 return "Allows unit to attempt force-feeding itself to another unit at will.";
             case Traits.Corruption:
-                return "If a currupted unit is digested, the pred will build up corruption as a hidden status. Once corrupted prey with a stat total equal to that of the pred has been digested, they are under control of the side of the last-digested corrupted.\n(Hidden Trait)";
+                return "If a currupted unit is digested, the pred will build up corruption as a status hidden to them. Once the build-up (corrupted prey's stat total) reaches a certain threshold (pred's stat total + will), the side of the corrupted prey controls the pred." +
+                    "\nAlso prevents vore-based conversion\n(Hidden Trait)";
             case Traits.Reanimator:
                 return "Allows unit to use <b>Reanimate</b>, an attack that brings any unit back to life as the caster's summon, once per battle";
             case Traits.Reincarnation:
@@ -542,6 +543,30 @@ public class HoveringTooltip : MonoBehaviour
                 return "Unit generates with a random Tier 3-4 Book.";
             case Traits.Temptation:
                return "Units that are put under a mindcontrol (e.g. Charm, Hypnosis) effect by this unit want to force-feed themselves to it or its close allies.";
+            case Traits.Infertile:
+                return "Unit cannot contribute to village population growth.";
+            case Traits.HillImpedence:
+                return "Unit treats all hills as impassable.\nMore than half of the army has to have this trait to have an effect";
+            case Traits.GrassImpedence:
+                return "Unit treats grass as impassable.\nMore than half of the army has to have this trait to have an effect";
+            case Traits.MountainWalker:
+                return "Unit can cross over mountains and broken cliffs (but not stop on one).\nAt least half of the army has to have this trait to have an effect";
+            case Traits.WaterWalker:
+                return "Unit can cross over water (but not stop on it).\nAt least half of the army has to have this trait to have an effect";
+            case Traits.LavaWalker:
+                return "Unit can cross over lava (but not stop on it).\nAt least half of the army has to have this trait to have an effect";
+            case Traits.SwampImpedence:
+                return "Unit treats swamps as impassable.\nMore than half of the army has to have this trait to have an effect";
+            case Traits.ForestImpedence:
+                return "Unit treats forests as impassable.\nMore than half of the army has to have this trait to have an effect";
+            case Traits.DesertImpedence:
+                return "Unit treats deserts and sand hills as impassable.\nMore than half of the army has to have this trait to have an effect";
+            case Traits.SnowImpedence:
+                return "Unit treats snow and snow hills as impassable.\nMore than half of the army has to have this trait to have an effect";
+            case Traits.VolcanicImpedence:
+                return "Unit treats volcanic ground as impassable.\nMore than half of the army has to have this trait to have an effect";
+            case Traits.Donor:
+                return "Upon being absorbed, this unit bestows all traits that are listed below \"Donor\" in its trait list.";
         }  
         return "<b>This trait needs a tooltip!</b>";
     }

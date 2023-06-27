@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static UnityEngine.UI.CanvasScaler;
 
 
 public class Village
@@ -522,7 +523,7 @@ public class Village
 
     void Growth()
     {
-        int localPopulation = VillagePopulation.GetTotalPop();
+        double namedBreeders  = 0;
         Army army = StrategicUtilities.ArmyAt(Position);
         SpawnerInfo spawner = null;
         if (army != null)
@@ -533,20 +534,57 @@ public class Village
         else
             spawnerType = Config.MonsterConquest;
         if ((army != null && army.Side < 100) || (army != null && (spawnerType == Config.MonsterConquestType.CompleteDevourAndRepopulate || spawnerType == Config.MonsterConquestType.CompleteDevourAndRepopulateFortify)))
-            localPopulation += army.Units.Count;
-        if (VillagePopulation.GetTotalPop() == 0 && localPopulation > 1)
+        {
+            army.Units.ForEach(u =>
+            {
+                if (!u.HasTrait(Traits.Infertile))
+                {
+                    namedBreeders += 1;
+                    if (u.HasTrait(Traits.ProlificBreeder))
+                    {
+                        namedBreeders += 0.75;
+                    }
+                    if (u.HasTrait(Traits.SlowBreeder))
+                    {
+                        namedBreeders -= 0.30;
+                    }
+                
+                }
+            });
+            GetRecruitables().ForEach(u =>
+            {
+                if (!u.HasTrait(Traits.Infertile))
+                {
+                    if (u.HasTrait(Traits.ProlificBreeder))
+                    {
+                        namedBreeders += 0.75;
+                    }
+                    if (u.HasTrait(Traits.SlowBreeder))
+                    {
+                        namedBreeders -= 0.30;
+                    }
+                }
+                else namedBreeders -= 1;
+            });
+        }
+
+        if (VillagePopulation.GetTotalPop() == 0 && namedBreeders > 1)
         {
             if (army != null)
             {
                 Dictionary<Race, int> count = new Dictionary<Race, int>();
                 foreach (Unit unit in army.Units)
                 {
+                  
                     if (unit.Race >= Race.Selicia && Empire.ReplacedRace != unit.Race)
+                        continue;
+                    if (State.RaceSettings.GetRaceTraits(unit.Race).Contains(Traits.Infertile))
                         continue;
                     if (count.ContainsKey(unit.Race) == false)
                         count[unit.Race] = 1;
                     else
                         count[unit.Race]++;
+                    
                 }
                 var final = count.OrderByDescending(s => s.Value).ToArray();
                 if (final.Length > 0)
@@ -558,7 +596,8 @@ public class Village
                 else if (State.World.GetEmpireOfSide(army.Side)?.ReplacedRace != null)
                 {
                     Race = State.World.GetEmpireOfSide(army.Side).ReplacedRace;
-                    VillagePopulation.AddRacePop(State.World.GetEmpireOfSide(army.Side).ReplacedRace, 0);
+                    if (!State.RaceSettings.GetRaceTraits(Race).Contains(Traits.Infertile))
+                        VillagePopulation.AddRacePop(Race, 0);
                 }
 
                 else
@@ -571,7 +610,7 @@ public class Village
                 return;
             }
         }
-        if (localPopulation > 1 && VillagePopulation.GetTotalPop() < Maxpop)
+        if ((VillagePopulation.GetTotalPop() + namedBreeders) > 1 && VillagePopulation.GetTotalPop() < Maxpop)
         {
             float growthPct = 0.10F;
 
@@ -579,18 +618,34 @@ public class Village
 
             growthPct *= happyMult;
 
-            var traits = State.RaceSettings.GetRaceTraits(Race);
-            if (traits.Contains(Traits.ProlificBreeder))
-                growthPct *= 1.75f;
-            else if (traits.Contains(Traits.SlowBreeder))
-                growthPct *= .7f;
-
             growthPct *= NetBoosts.PopulationGrowthMult;
 
-            int incr = (int)(1 + (localPopulation * growthPct));
+            double unnamedBreeders = 0;
+
+            VillagePopulation.Population.ForEach(pop =>
+            {
+                var traits = State.RaceSettings.GetRaceTraits(pop.Race);
+                double breedingContrib = 1;
+                if (traits.Contains(Traits.ProlificBreeder))
+                    breedingContrib *= 1.75f;
+                if (traits.Contains(Traits.SlowBreeder))
+                    breedingContrib *= .7f;
+                if (traits.Contains(Traits.Infertile))
+                    breedingContrib *= 0;
+                unnamedBreeders += (pop.Population-pop.Hireables) * breedingContrib;
+            });
+            double totalBreeders = unnamedBreeders + namedBreeders;
+            int incr;
             int Population = VillagePopulation.GetTotalPop();
-            if (Population == 0)
-                incr = Math.Max(2, incr);
+            if (totalBreeders == 0)
+                incr = 0;
+            else
+            {
+                incr = (int)(1 + (totalBreeders * growthPct));
+                if (Population == 0)
+                    incr = Math.Max(2, incr);
+            }
+
 
             if (Maxpop - Population < incr)
             {

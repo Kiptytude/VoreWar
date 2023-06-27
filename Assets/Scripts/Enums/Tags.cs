@@ -298,16 +298,31 @@ public enum Traits
     BookWormIII = 150,
     /// <summary>Units that are put under a mindcontrol (e.g. Charm, Hypnosis) effect by this unit want to force-feed themselves to it or its close allies.</summary>
     Temptation = 151,
-    /// <summary>Unit treats grass as unpassable.</summary>
-    GrassImpedence = 152,
+    /// <summary>Unit cannot reproduce.</summary>
+    Infertile = 152,
+    /// <summary>Unit treats hills as unpassable.</summary>
+    HillImpedence = 162,
     /// <summary>Unit doesn't treat lava as unpassable.</summary>
     LavaWalker = 153,
     /// <summary>Unit treats snow as unpassable.</summary>
     SnowImpedence = 154,
     /// <summary>Unit doesn't treat any kind of mountain (or broken cliff) as unpassable.</summary>
-    MountainWalker = 153,
+    MountainWalker = 155,
     /// <summary>Unit treats volcanic ground as unpassable.</summary>
-    VolcanicImpedence = 154,
+    VolcanicImpedence = 156,
+    /// <summary>Unit treats sand as unpassable.</summary>
+    DesertImpedence = 157,
+    /// <summary>Unit doesn't treat water as unpassable.</summary>
+    WaterWalker = 158,
+    /// <summary>Unit treats forests as unpassable.</summary>
+    ForestImpedence = 159,
+    /// <summary>Unit treats swamps as unpassable.</summary>
+    SwampImpedence = 160,
+    /// <summary>Unit treats grass as unpassable.</summary>
+    GrassImpedence = 161,
+    /// <summary>When this unit is absorbed, it passes on all traits listed below "Donor" to the predator.</summary>
+    Donor = 163,
+
 
 
 

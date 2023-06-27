@@ -190,19 +190,24 @@ public class Army
     public void RefreshMovementMode()
     {
         int flying = 0;
-        int noGrass = 0;
+        int noHill = 0;
         int yesLava = 0;
         int noSnow = 0;
         int yesMountain = 0;
         int noVolcanic = 0;
+        int yesWater = 0;
+        int noDesert = 0;
+        int noSwamp = 0;
+        int noForest = 0;
+        int noGrass = 0;
         //int aquatic = 0;
 
         foreach (Unit unit in Units)
         {
             if (unit.HasTrait(Traits.Pathfinder))
                 flying++;
-            if (unit.HasTrait(Traits.GrassImpedence))
-                noGrass++;
+            if (unit.HasTrait(Traits.HillImpedence))
+                noHill++;
             if (unit.HasTrait(Traits.LavaWalker)) 
                 yesLava++;
             if (unit.HasTrait(Traits.SnowImpedence))
@@ -211,22 +216,59 @@ public class Army
                 yesMountain++;
             if (unit.HasTrait(Traits.VolcanicImpedence))
                 noVolcanic++;
+            if (unit.HasTrait(Traits.WaterWalker))
+                yesWater++;
+            if (unit.HasTrait(Traits.DesertImpedence))
+                noDesert++;
+            if (unit.HasTrait(Traits.SwampImpedence))
+                noSwamp++;
+            if (unit.HasTrait(Traits.ForestImpedence))
+                noForest++;
+            if (unit.HasTrait(Traits.GrassImpedence))
+                noGrass++;
 
             //else if (unit.HasTrait(Traits.Aquatic))
             //    aquatic++;
         }
-        if (noGrass > 0 && noGrass > Units.Count / 2) { 
-            if (!impassables.Contains(StrategicTileType.grass))
-                impassables.Add(StrategicTileType.grass);
+        if (noHill > 0 && noHill > Units.Count / 2)
+        {
+            if (!impassables.Contains(StrategicTileType.hills))
+            {
+                impassables.Add(StrategicTileType.hills);
+            }
+            if (!impassables.Contains(StrategicTileType.snowHills))
+            {
+                impassables.Add(StrategicTileType.snowHills);
+            }
+            if (!impassables.Contains(StrategicTileType.sandHills))
+            {
+                impassables.Add(StrategicTileType.sandHills);
+            }
         }
-        else impassables.Remove(StrategicTileType.grass);
+        else
+        {
+            impassables.Remove(StrategicTileType.hills);
+            impassables.Remove(StrategicTileType.snowHills);
+            impassables.Remove(StrategicTileType.sandHills);
+
+        }
 
         if (noSnow > 0 && noSnow > Units.Count / 2)
         {
             if (!impassables.Contains(StrategicTileType.snow))
+            {
                 impassables.Add(StrategicTileType.snow);
+            }
+            if (!impassables.Contains(StrategicTileType.snowHills))
+            {
+                impassables.Add(StrategicTileType.snowHills);
+            }
         }
-        else impassables.Remove(StrategicTileType.snow);
+        else
+        {
+            impassables.Remove(StrategicTileType.snow);
+            impassables.Remove(StrategicTileType.snowHills);
+        }
 
         if (yesLava > 0 && yesLava >= Units.Count / 2)
             impassables.Remove(StrategicTileType.lava);
@@ -255,6 +297,78 @@ public class Army
                 impassables.Add(StrategicTileType.volcanic);
         }
         else impassables.Remove(StrategicTileType.volcanic);
+
+        if (yesWater > 0 && yesWater >= Units.Count / 2)
+        {
+            impassables.Remove(StrategicTileType.ocean);
+            impassables.Remove(StrategicTileType.water);
+        }
+        else
+        {
+            if (!impassables.Contains(StrategicTileType.ocean))
+                impassables.Add(StrategicTileType.ocean);
+            if (!impassables.Contains(StrategicTileType.water))
+                impassables.Add(StrategicTileType.water);
+        }
+
+        if (noDesert > 0 && noDesert > Units.Count / 2)
+        {
+            if (!impassables.Contains(StrategicTileType.desert))
+            {
+                impassables.Add(StrategicTileType.desert);
+            }
+            if (!impassables.Contains(StrategicTileType.sandHills))
+            {
+                impassables.Add(StrategicTileType.sandHills);
+            }
+        }
+        else
+        {
+            impassables.Remove(StrategicTileType.desert);
+            impassables.Remove(StrategicTileType.sandHills);
+        }
+
+        if (noSwamp > 0 && noSwamp > Units.Count / 2)
+        {
+            if (!impassables.Contains(StrategicTileType.swamp))
+            {
+                impassables.Add(StrategicTileType.swamp);
+            }
+            if (!impassables.Contains(StrategicTileType.purpleSwamp))
+            {
+                impassables.Add(StrategicTileType.purpleSwamp);
+            }
+        }
+        else
+        {
+            impassables.Remove(StrategicTileType.swamp);
+            impassables.Remove(StrategicTileType.purpleSwamp);
+        }
+
+        if (noForest > 0 && noForest > Units.Count / 2)
+        {
+            if (!impassables.Contains(StrategicTileType.forest))
+            {
+                impassables.Add(StrategicTileType.forest);
+            }
+            if (!impassables.Contains(StrategicTileType.snowTrees))
+            {
+                impassables.Add(StrategicTileType.snowTrees);
+            }
+        }
+        else
+        {
+            impassables.Remove(StrategicTileType.forest);
+            impassables.Remove(StrategicTileType.snowTrees);
+        }
+
+        if (noGrass > 0 && noGrass > Units.Count / 2)
+        {
+            if (!impassables.Contains(StrategicTileType.grass))
+                impassables.Add(StrategicTileType.grass);
+        }
+        else impassables.Remove(StrategicTileType.grass);
+
 
         if (flying > 0 && flying >= Units.Count / 2)
             movementMode = MovementMode.Flight;
