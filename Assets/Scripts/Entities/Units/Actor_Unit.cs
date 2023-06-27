@@ -1712,42 +1712,43 @@ public class Actor_Unit
         else
             Movement = 0;
 
-        if (Unit.HasTrait(Traits.SeductiveTouch) && target.Unit.Side != Unit.Side && target.TurnsSinceLastDamage > 1)
+        if (Unit.HasTrait(Traits.SeductiveTouch) && (target.Unit.FixedSide != Unit.FixedSide) && target.TurnsSinceLastDamage > 1)
         {
             bool seduce = false;
             bool distract = false;
-            for (int i = 0; i < (Unit.HasTrait(Traits.PleasurableTouch) ? 2 : 1); i++)
-            {
-                float r = (float)State.Rand.NextDouble();
-                if (r < GetPureStatClashChance(Unit.GetStat(Stat.Dexterity), target.Unit.GetStat(Stat.Will), .1f))
+            if (!target.Unit.HasTrait(Traits.Untamable))
+                for (int i = 0; i < (Unit.HasTrait(Traits.PleasurableTouch) ? 2 : 1); i++)
                 {
-                    if (target.TurnsSinceLastParalysis <= 0 || target.Paralyzed)
+                    float r = (float)State.Rand.NextDouble();
+                    if (r < GetPureStatClashChance(Unit.GetStat(Stat.Dexterity), target.Unit.GetStat(Stat.Will), .1f))
                     {
-                        seduce = true;
-                    }
-                    else
-                    {
-                        distract = true;
-                    }
+                        if (target.TurnsSinceLastParalysis <= 0 || target.Paralyzed)
+                        {
+                            seduce = true;
+                        }
+                        else
+                        {
+                            distract = true;
+                        }
 
+                    }
                 }
-            }
             if (seduce)
             {
                 var strings = new[] {$"<b>{target.Unit.Name}</b> decides to swap sides because <b>{Unit.Name}</b>'s rubs are just that sublime!",
-                        $"<b>{target.Unit.Name}</b> joins <b>{Unit.Name}</b>'s side to get more of those irresistable scritches later!",
-                        $"The way <b>{Unit.Name}</b> touches {LogUtilities.GPPHim(target.Unit)} moves something other than {LogUtilities.GPPHis(target.Unit)} prey-filled innards in <b>{target.Unit.Name}</b>, making {LogUtilities.GPPHim(target.Unit)} join {LogUtilities.GPPHim(Unit)}.",
-                        $"<b>{Unit.Name}</b> makes <b>{target.Unit.Name}</b> feel incredible, rearranging {LogUtilities.GPPHis(target.Unit)} priorities in this conflict...",
-                        $"<b>{target.Unit.Name}</b> slowly returns from a world of pure bliss and decides to stick with <b>{Unit.Name}</b> after all."};
+                            $"<b>{target.Unit.Name}</b> joins <b>{Unit.Name}</b>'s side to get more of those irresistable scritches later!",
+                            $"The way <b>{Unit.Name}</b> touches {LogUtilities.GPPHim(target.Unit)} moves something other than {LogUtilities.GPPHis(target.Unit)} prey-filled innards in <b>{target.Unit.Name}</b>, making {LogUtilities.GPPHim(target.Unit)} join {LogUtilities.GPPHim(Unit)}.",
+                            $"<b>{Unit.Name}</b> makes <b>{target.Unit.Name}</b> feel incredible, rearranging {LogUtilities.GPPHis(target.Unit)} priorities in this conflict...",
+                            $"<b>{target.Unit.Name}</b> slowly returns from a world of pure bliss and decides to stick with <b>{Unit.Name}</b> after all."};
                 if (target.Unit.Race == Race.Dogs)
                     strings.Append($"<b>{Unit.Name}</b>’s attentive massage of <b>{target.Unit.Name}</b>’s stuffed midsection convinces the voracious canine to make {LogUtilities.GPPHim(Unit)} {LogUtilities.GPPHis(target.Unit)} master no matter the cost.");
                 target.UnitSprite.DisplaySeduce();
                 State.GameManager.TacticalMode.Log.RegisterMiscellaneous(
                         LogUtilities.GetRandomStringFrom(strings)
                 );
-                State.GameManager.TacticalMode.SwitchAlignment(target);
-                if (!target.Unit.HasTrait(Traits.Untamable))
-                    target.Unit.FixedSide = Unit.FixedSide;
+                if (target.Unit.Side != Unit.Side)
+                    State.GameManager.TacticalMode.SwitchAlignment(target);
+                target.Unit.FixedSide = Unit.FixedSide;
                 target.Unit.hiddenFixedSide = true;
             }
             else if (distract)
@@ -2328,13 +2329,14 @@ public class Actor_Unit
         if (binder?.Unit.FixedSide == Unit.FixedSide) return false;
         if (Unit.SpendMana(spell.ManaCost) == false) return false;
 
-        
+
         if (binder != null)
         {
-           if (binder.Unit.GetStat(Stat.Mind) > Unit.GetStat(Stat.Mind))
+            if (binder.Unit.GetStat(Stat.Mind) > Unit.GetStat(Stat.Mind))
             {
                 State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<b>{Unit.Name}</b> tries to bind <b>{LogUtilities.ApostrophizeWithOrWithoutS(binder.Unit.Name)}</b> bound summon, <b>{t.Unit.Name}</b>, but <b>{LogUtilities.ApostrophizeWithOrWithoutS(binder.Unit.Name)}</b> magic is stronger");
-            } else if (binder.Unit.GetStat(Stat.Mind) < Unit.GetStat(Stat.Mind))
+            }
+            else if (binder.Unit.GetStat(Stat.Mind) < Unit.GetStat(Stat.Mind))
             {
                 State.GameManager.SoundManager.PlaySpellCast(spell, this);
                 State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"With {LogUtilities.GPPHis(Unit)} superior magic <b>{Unit.Name}</b> wrests control over the summoned {InfoPanel.RaceSingular(t.Unit)} from <b>{binder.Unit.Name}</b>.");
@@ -2382,7 +2384,8 @@ public class Actor_Unit
                     binder.sidesAttackedThisBattle.Add(unusedSide);
                     if (this.sidesAttackedThisBattle == null) this.sidesAttackedThisBattle = new List<int>();
                     this.sidesAttackedThisBattle.Add(unusedSide);
-                } else if (outcome == 2)
+                }
+                else if (outcome == 2)
                 {
                     State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"...But it looks like the Binding spell worked after all.");
                     State.GameManager.SoundManager.PlaySpellCast(spell, this);
@@ -2398,11 +2401,13 @@ public class Actor_Unit
                     {
                         t.Unit.ApplyStatusEffect(StatusEffectType.Charmed, actorCharm.Strength, actorCharm.Duration);
                     }
-                } else if (outcome == 1)
+                }
+                else if (outcome == 1)
                 {
                     State.GameManager.SoundManager.PlaySpellCast(spell, this);
                     State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"...But it looks nothing's changed...");
-                } else if (outcome == 0)
+                }
+                else if (outcome == 0)
                 {
                     State.GameManager.SoundManager.PlayMisc("unbound", this);
                     var obj = Object.Instantiate(State.GameManager.TacticalEffectPrefabList.ShunGokuSatsu);
@@ -2416,7 +2421,8 @@ public class Actor_Unit
                 }
 
             }
-        } else
+        }
+        else
         {
             State.GameManager.SoundManager.PlaySpellCast(spell, this);
 
@@ -2489,5 +2495,22 @@ public class Actor_Unit
             Movement = 0;
 
         return true;
+    }
+
+    internal void AddCorruption(int amount, int side)
+    {
+        if (!Unit.HasTrait(Traits.Corruption)) { 
+            Corruption += amount;
+            if (Corruption >= Unit.GetStatTotal() + Unit.GetStat(Stat.Will))
+            {
+                Unit.AddPermanentTrait(Traits.Corruption);
+                Corruption = 0;
+                if (!Unit.HasTrait(Traits.Untamable))
+                    Unit.FixedSide = side;
+                Unit.hiddenFixedSide = true;
+                sidesAttackedThisBattle = new List<int>();
+            }
+        } else
+            Corruption = 0;
     }
 }
