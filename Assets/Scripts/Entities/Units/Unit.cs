@@ -1,5 +1,4 @@
 using OdinSerializer;
-using OdinSerializer.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,6 +34,8 @@ public class Unit
     public int Side;
     [OdinSerialize]
     private int _fixedSide = -1;
+
+    internal bool HasFixedSide() => _fixedSide != -1;
     public int FixedSide
     {
         get
@@ -78,7 +79,12 @@ public class Unit
 
     internal int MaxMana => (int)(GetStatBase(Stat.Mind) + GetStatBase(Stat.Will) * 2 * TraitBoosts.ManaMultiplier);
 
-    public int MaxHealth => (Stats[(int)Stat.Endurance] * 2 + Stats[(int)Stat.Strength]) /** ((10 + RaceParameters.GetTraitData(Race).BodySize) / 30f)*/;
+    public int MaxHealth => (int)Math.Ceiling((Stats[(int)Stat.Endurance] * 2 * GetScale() + Stats[(int)Stat.Strength]) ) /** ((10 + RaceParameters.GetTraitData(Race).BodySize) / 30f)*/;
+
+    private int GetHealthBoosts()
+    {
+        throw new NotImplementedException();
+    }
 
     [OdinSerialize]
     internal AIClass AIClass;
@@ -365,7 +371,7 @@ public class Unit
         }
     }
 
-    public bool BestSuitedForRanged() => Stats[(int)Stat.Dexterity] > Stats[(int)Stat.Strength];
+    public bool BestSuitedForRanged() => Stats[(int)Stat.Dexterity] * TraitBoosts.VirtualDexMult > Stats[(int)Stat.Strength] * TraitBoosts.VirtualStrMult;
 
     protected void SetLevel(int level) => this.level = level;
 
@@ -555,10 +561,10 @@ public class Unit
                     targetRace = activeRaces[State.Rand.Next(activeRaces.Count)];
                 }
             }
-            State.World.Reincarnators.Add(new Reincarnator(Unit, targetRace, reinc.RaceLocked));
+            State.World.Reincarnators?.Add(new Reincarnator(Unit, targetRace, reinc.RaceLocked));
             Debug.Log(Unit.Name + " is re-reincarnating");
         };
-        State.World.Reincarnators.Remove(reinc);
+        State.World.Reincarnators?.Remove(reinc);
         Debug.Log(Unit.Name + " reincarnated as a " + Race);
         StrategicUtilities.SpendLevelUps(this);
     }
@@ -1184,7 +1190,7 @@ public class Unit
             FixedSide = State.World.GetEmpireOfRace(Race)?.Side ?? side;
             return;
         }
-        if (HasTrait(Traits.Infiltrator))
+        if (HasTrait(Traits.Infiltrator) || HasTrait(Traits.Corruption))
         {
             FixedSide = side;
             return;
@@ -1545,7 +1551,7 @@ public class Unit
                     PermanentTraits.Add(randomPick);
                     RemovedTraits?.Remove(randomPick); // Even if manually removed before, rng-sus' word is law
                     gainable.Remove(randomPick);
-                    GivePrerequisiteTraits(randomPick, gainable);
+                    GivePrerequisiteTraits(randomPick);
                 }
                 chance -= 1;
             }
@@ -1562,42 +1568,38 @@ public class Unit
 
     }
 
-    private void GivePrerequisiteTraits(Traits randomPick, List<Traits> gainable)
+    private void GivePrerequisiteTraits(Traits randomPick)
     {
-        if (randomPick > Traits.Growth && randomPick <= Traits.FleetingGrowth && gainable.Contains(Traits.Growth))
+        Traits prereq = (Traits)(-1);
+        if (randomPick > Traits.Growth && randomPick <= Traits.FleetingGrowth)
         {
-            PermanentTraits.Add(Traits.Growth);
-            RemovedTraits?.Remove(Traits.Growth);
+            prereq = Traits.Growth;
         }
-        if ( randomPick == Traits.HealingBelly && gainable.Contains(Traits.Endosoma))
+        if ( randomPick == Traits.HealingBelly)
         {
-            PermanentTraits.Add(Traits.Endosoma);
-            RemovedTraits?.Remove(Traits.Endosoma);
+            prereq = Traits.Endosoma;
         }
-        if (randomPick == Traits.VenomousBite && gainable.Contains(Traits.Biter))
+        if (randomPick == Traits.VenomousBite)
         {
-            PermanentTraits.Add(Traits.Biter);
-            RemovedTraits?.Remove(Traits.Biter);
+            prereq = Traits.Biter;
         }
-        if (randomPick == Traits.SynchronizedEvolution && gainable.Contains(Traits.Assimilate))
+        if (randomPick == Traits.SynchronizedEvolution)
         {
-            PermanentTraits.Add(Traits.Assimilate);
-            RemovedTraits?.Remove(Traits.Assimilate);
+            prereq = Traits.Assimilate;
         }
         if (randomPick == Traits.PredConverter || randomPick == Traits.PredRebirther || randomPick == Traits.PredGusher)
         {
             if (RaceParameters.GetRaceTraits(Race).AllowedVoreTypes.Contains(VoreType.Unbirth))
                 HasVagina = true;
         }
-        if (randomPick == Traits.HeavyPounce && gainable.Contains(Traits.Pounce))
+        if (randomPick == Traits.HeavyPounce)
         {
-            PermanentTraits.Add(Traits.Pounce);
-            RemovedTraits?.Remove(Traits.Pounce);
+            prereq = Traits.Pounce;
         }
-        if (randomPick == Traits.Temptation && gainable.Contains(Traits.Charmer))
+        if (prereq != (Traits)(-1) && !Tags.Contains(prereq) && !PermanentTraits.Contains(prereq))
         {
-            PermanentTraits.Add(Traits.Charmer);
-            RemovedTraits?.Remove(Traits.Charmer);
+            PermanentTraits.Add(prereq);
+            RemovedTraits?.Remove(prereq);
         }
     }
 
@@ -2270,7 +2272,7 @@ public class Unit
             if (gainable.Count() > 0)
             {
                 var randomPick = gainable[State.Rand.Next(gainable.Count())];
-                GivePrerequisiteTraits(randomPick, gainable);
+                GivePrerequisiteTraits(randomPick);
                 if (randomPick >= (Traits)1000)
                 {
                     RandomizeList recursiveRl = State.RandomizeLists.Find(re => (Traits)re.id == randomPick);

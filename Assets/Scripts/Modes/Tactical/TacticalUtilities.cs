@@ -858,12 +858,14 @@ static class TacticalUtilities
     {
         if (!unit.hiddenFixedSide || unit.FixedSide == unit.Side) return true;
 
+        if (State.World.MainEmpires == null)
+            return unit.FixedSide == (!State.GameManager.TacticalMode.AIAttacker ?
+                State.GameManager.TacticalMode.GetAttackerSide() : (!State.GameManager.TacticalMode.AIDefender ? State.GameManager.TacticalMode.GetDefenderSide() : unit.FixedSide));
+
         if (StrategicUtilities.GetAllHumanSides().Count > 1) return false;
         if (StrategicUtilities.GetAllHumanSides().Count < 1) return true;
 
-        if (State.World.MainEmpires == null) 
-            return unit.FixedSide == (!State.GameManager.TacticalMode.AIAttacker ? 
-                State.GameManager.TacticalMode.GetAttackerSide() : (!State.GameManager.TacticalMode.AIDefender ? State.GameManager.TacticalMode.GetDefenderSide() : unit.FixedSide));
+
 
         if (State.GameManager.StrategyMode.LastHumanEmpire?.Side == unit.FixedSide)
             return true;

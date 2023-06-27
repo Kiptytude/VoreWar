@@ -215,7 +215,18 @@ static class StrategicUtilities
 
     public static List<int> GetAllHumanSides()
     {
-        return State.World.AllActiveEmpires?.Where(emp => emp.StrategicAI == null).ToList().ConvertAll(emp => emp.Side) ?? new List<int>();
+        if (State.World.MainEmpires != null)
+            return State.World.AllActiveEmpires?.Where(emp => emp.StrategicAI == null).ToList().ConvertAll(emp => emp.Side) ?? new List<int>();
+        else
+        {
+            var list = new List<int>();
+            if (!State.GameManager.TacticalMode.AIAttacker)
+                list.Add(State.GameManager.TacticalMode.GetAttackerSide());
+            if (!State.GameManager.TacticalMode.AIDefender)
+                list.Add(State.GameManager.TacticalMode.GetDefenderSide());
+            return list;
+        }
+
     }
 
     public static int Get80thExperiencePercentile()
