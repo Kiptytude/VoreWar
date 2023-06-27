@@ -290,64 +290,7 @@ public class Actor_Unit
         Visible = false;
         Targetable = false;
         RestoreMP();
-        unit.SingleUseSpells = new List<SpellTypes>();
-        unit.MultiUseSpells = new List<SpellTypes>();
-        if (unit.HasTrait(Traits.MadScience) && State.World?.ItemRepository != null) //protection for the create strat screen
-        {
-            unit.SingleUseSpells.Add(((SpellBook)State.World.ItemRepository.GetRandomBook(1, 4)).ContainedSpell);
-            unit.UpdateSpells();
-        }
-        if (unit.HasTrait(Traits.PollenProjector) && State.World?.ItemRepository != null) //protection for the create strat screen
-        {
-            unit.SingleUseSpells.Add(SpellList.AlraunePuff.SpellType);
-            unit.UpdateSpells();
-        }
-        if (unit.HasTrait(Traits.Webber) && State.World?.ItemRepository != null) //protection for the create strat screen
-        {
-            unit.SingleUseSpells.Add(SpellList.Web.SpellType);
-            unit.UpdateSpells();
-        }
-        if (unit.HasTrait(Traits.GlueBomb) && State.World?.ItemRepository != null) //protection for the create strat screen
-        {
-            unit.SingleUseSpells.Add(SpellList.GlueBomb.SpellType);
-            unit.UpdateSpells();
-        }
-        if (unit.HasTrait(Traits.PoisonSpit) && State.World?.ItemRepository != null) //protection for the create strat screen
-        {
-            unit.SingleUseSpells.Add(SpellList.ViperPoisonStatus.SpellType);
-            unit.UpdateSpells();
-        }
-        if (unit.HasTrait(Traits.Petrifier) && State.World?.ItemRepository != null) //protection for the create strat screen
-        {
-            unit.SingleUseSpells.Add(SpellList.Petrify.SpellType);
-            unit.UpdateSpells();
-        }
-        if (unit.HasTrait(Traits.Charmer) && State.World?.ItemRepository != null) //protection for the create strat screen
-        {
-            unit.SingleUseSpells.Add(SpellList.Charm.SpellType);
-            unit.UpdateSpells();
-        }
-        if (unit.HasTrait(Traits.HypnoticGas) && State.World?.ItemRepository != null) //protection for the create strat screen
-        {
-            unit.SingleUseSpells.Add(SpellList.HypnoGas.SpellType);
-            unit.UpdateSpells();
-        }
-        if (unit.HasTrait(Traits.Reanimator) && State.World?.ItemRepository != null) //protection for the create strat screen
-        {
-            unit.SingleUseSpells.Add(SpellList.Reanimate.SpellType);
-            unit.UpdateSpells();
-        }
-        if (unit.HasTrait(Traits.Binder) && State.World?.ItemRepository != null) //protection for the create strat screen
-        {
-            unit.SingleUseSpells.Add(SpellList.Bind.SpellType);
-            unit.UpdateSpells();
-        }
-        // Multi-use section
-        if (unit.HasTrait(Traits.ForceFeeder) && State.World?.ItemRepository != null) //protection for the create strat screen
-        {
-            unit.MultiUseSpells.Add(SpellList.ForceFeed.SpellType);
-            unit.UpdateSpells();
-        }
+        ReloadSpellTraits();
     }
 
     public Actor_Unit(Vec2i p, Unit unit)
@@ -362,63 +305,68 @@ public class Actor_Unit
         Visible = true;
         Targetable = true;
         RestoreMP();
-        unit.SingleUseSpells = new List<SpellTypes>();
-        unit.MultiUseSpells = new List<SpellTypes>();
-        if (unit.HasTrait(Traits.MadScience) && State.World?.ItemRepository != null) //protection for the create strat screen
+        ReloadSpellTraits();
+    }
+
+    public void ReloadSpellTraits()
+    {
+        Unit.SingleUseSpells = new List<SpellTypes>();
+        Unit.MultiUseSpells = new List<SpellTypes>();
+        if (Unit.HasTrait(Traits.MadScience) && State.World?.ItemRepository != null) //protection for the create strat screen
         {
-            unit.SingleUseSpells.Add(((SpellBook)State.World.ItemRepository.GetRandomBook(1, 4)).ContainedSpell);
-            unit.UpdateSpells();
+            Unit.SingleUseSpells.Add(((SpellBook)State.World.ItemRepository.GetRandomBook(1, 4)).ContainedSpell);
+            Unit.UpdateSpells();
         }
-        if (unit.HasTrait(Traits.PollenProjector) && State.World?.ItemRepository != null) //protection for the create strat screen
+        if (Unit.HasTrait(Traits.PollenProjector) && State.World?.ItemRepository != null) //protection for the create strat screen
         {
-            unit.SingleUseSpells.Add(SpellList.AlraunePuff.SpellType);
-            unit.UpdateSpells();
+            Unit.SingleUseSpells.Add(SpellList.AlraunePuff.SpellType);
+            Unit.UpdateSpells();
         }
-        if (unit.HasTrait(Traits.Webber) && State.World?.ItemRepository != null) //protection for the create strat screen
+        if (Unit.HasTrait(Traits.Webber) && State.World?.ItemRepository != null) //protection for the create strat screen
         {
-            unit.SingleUseSpells.Add(SpellList.Web.SpellType);
-            unit.UpdateSpells();
+            Unit.SingleUseSpells.Add(SpellList.Web.SpellType);
+            Unit.UpdateSpells();
         }
-        if (unit.HasTrait(Traits.GlueBomb) && State.World?.ItemRepository != null) //protection for the create strat screen
+        if (Unit.HasTrait(Traits.GlueBomb) && State.World?.ItemRepository != null) //protection for the create strat screen
         {
-            unit.SingleUseSpells.Add(SpellList.GlueBomb.SpellType);
-            unit.UpdateSpells();
+            Unit.SingleUseSpells.Add(SpellList.GlueBomb.SpellType);
+            Unit.UpdateSpells();
         }
-        if (unit.HasTrait(Traits.PoisonSpit) && State.World?.ItemRepository != null) //protection for the create strat screen
+        if (Unit.HasTrait(Traits.PoisonSpit) && State.World?.ItemRepository != null) //protection for the create strat screen
         {
-            unit.SingleUseSpells.Add(SpellList.ViperPoisonStatus.SpellType);
-            unit.UpdateSpells();
+            Unit.SingleUseSpells.Add(SpellList.ViperPoisonStatus.SpellType);
+            Unit.UpdateSpells();
         }
-        if (unit.HasTrait(Traits.Petrifier) && State.World?.ItemRepository != null) //protection for the create strat screen
+        if (Unit.HasTrait(Traits.Petrifier) && State.World?.ItemRepository != null) //protection for the create strat screen
         {
-            unit.SingleUseSpells.Add(SpellList.Petrify.SpellType);
-            unit.UpdateSpells();
+            Unit.SingleUseSpells.Add(SpellList.Petrify.SpellType);
+            Unit.UpdateSpells();
         }
-        if (unit.HasTrait(Traits.Charmer) && State.World?.ItemRepository != null) //protection for the create strat screen
+        if (Unit.HasTrait(Traits.Charmer) && State.World?.ItemRepository != null) //protection for the create strat screen
         {
-            unit.SingleUseSpells.Add(SpellList.Charm.SpellType);
-            unit.UpdateSpells();
+            Unit.SingleUseSpells.Add(SpellList.Charm.SpellType);
+            Unit.UpdateSpells();
         }
-        if (unit.HasTrait(Traits.HypnoticGas) && State.World?.ItemRepository != null) //protection for the create strat screen
+        if (Unit.HasTrait(Traits.HypnoticGas) && State.World?.ItemRepository != null) //protection for the create strat screen
         {
-            unit.SingleUseSpells.Add(SpellList.HypnoGas.SpellType);
-            unit.UpdateSpells();
+            Unit.SingleUseSpells.Add(SpellList.HypnoGas.SpellType);
+            Unit.UpdateSpells();
         }
-        if (unit.HasTrait(Traits.Reanimator) && State.World?.ItemRepository != null) //protection for the create strat screen
+        if (Unit.HasTrait(Traits.Reanimator) && State.World?.ItemRepository != null) //protection for the create strat screen
         {
-            unit.SingleUseSpells.Add(SpellList.Reanimate.SpellType);
-            unit.UpdateSpells();
+            Unit.SingleUseSpells.Add(SpellList.Reanimate.SpellType);
+            Unit.UpdateSpells();
         }
-        if (unit.HasTrait(Traits.Binder) && State.World?.ItemRepository != null) //protection for the create strat screen
+        if (Unit.HasTrait(Traits.Binder) && State.World?.ItemRepository != null) //protection for the create strat screen
         {
-            unit.SingleUseSpells.Add(SpellList.Bind.SpellType);
-            unit.UpdateSpells();
+            Unit.SingleUseSpells.Add(SpellList.Bind.SpellType);
+            Unit.UpdateSpells();
         }
         // Multi-use section
-        if (unit.HasTrait(Traits.ForceFeeder) && State.World?.ItemRepository != null) //protection for the create strat screen
+        if (Unit.HasTrait(Traits.ForceFeeder) && State.World?.ItemRepository != null) //protection for the create strat screen
         {
-            unit.MultiUseSpells.Add(SpellList.ForceFeed.SpellType);
-            unit.UpdateSpells();
+            Unit.MultiUseSpells.Add(SpellList.ForceFeed.SpellType);
+            Unit.UpdateSpells();
         }
     }
 

@@ -1,5 +1,6 @@
 ﻿public enum Race : int
 {
+    none = -1,
     //Rough system is 0 starts main races, 50 starts mercs, 100 starts monsters, 170 starts unique mercs
     Cats = 0,
     Dogs = 1,
@@ -93,5 +94,6 @@
     Abakhanskya = 177,
     Zera = 178,
     Auri = 179,
-    Erin = 180
+    Erin = 180,
+
 }

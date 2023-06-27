@@ -269,6 +269,27 @@ public class Unit
     [OdinSerialize]
     internal List<SpellTypes> MultiUseSpells = new List<SpellTypes>();  // This is so much more straightforward than adding Special Actions
 
+    [OdinSerialize]
+    private Race _spawnRace;
+    public Race SpawnRace
+    {
+        get
+        {
+            return (_spawnRace == Race.none) ? Race : _spawnRace;
+        }
+        set => _spawnRace = value;
+    }
+    [OdinSerialize]
+    private Race _conversionRace;
+    public Race ConversionRace
+    {
+        get
+        {
+            return (_conversionRace == Race.none) ? Race : _conversionRace;
+        }
+        set => _conversionRace = value;
+    }
+
     internal List<Spell> UseableSpells
     {
         get
@@ -519,6 +540,9 @@ public class Unit
                 UniformDataStorer.ExternalCopyToUnit(available[State.Rand.Next(available.Count)], this);
             }
         }
+        _spawnRace = Race.none;
+        _conversionRace = Race.none;
+
         ReincarnateCheck();
     }
 
@@ -1475,6 +1499,7 @@ public class Unit
         if (!SharedTraits.Contains(trait) && !HasTrait(trait))
             SharedTraits.Add(trait);
             AddTrait(trait);
+
     }
 
     public void RemoveSharedTrait(Traits trait)
@@ -1514,6 +1539,8 @@ public class Unit
         }
         if (Type == UnitType.Leader)
         {
+            var leaderTraits = State.RaceSettings.GetLeaderRaceTraits(Race);
+            if (leaderTraits != null) Tags.AddRange(leaderTraits);
             if (Config.LeaderTraits != null) Tags.AddRange(Config.LeaderTraits);
         }
         else if (Type == UnitType.Spawn)

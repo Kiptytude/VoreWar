@@ -4,6 +4,7 @@
     public Spawn(int side, Race race, int startingXP) : base(side, race, startingXP, true, UnitType.Spawn)
     {
         var raceStats = State.RaceSettings.GetRaceStats(Race);
+        Health = Health/2;
 
         Stats[(int)Stat.Strength] = 5 + raceStats.Strength.Minimum;
         Stats[(int)Stat.Dexterity] = 5 + raceStats.Dexterity.Minimum;

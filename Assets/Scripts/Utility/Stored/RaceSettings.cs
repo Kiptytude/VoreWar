@@ -145,6 +145,13 @@ class RaceSettings
         return null;
     }
 
+    internal List<Traits> GetLeaderRaceTraits(Race race)
+    {
+        if (Races.ContainsKey(race))
+            return Get(race).LeaderTraits;
+        return null;
+    }
+
     internal Stat GetFavoredStat(Race race)
     {
         if (Races.ContainsKey(race))
@@ -209,6 +216,26 @@ class RaceSettings
         return RaceParameters.GetRaceTraits(race).RaceStats;
     }
 
+    internal Race GetSpawnRace(Race race)
+    {
+        Race spawnRace;
+        if (Races.ContainsKey(race))
+            spawnRace = Get(race).SpawnRace;
+        else
+            spawnRace = RaceParameters.GetRaceTraits(race).SpawnRace; 
+        return (spawnRace == Race.none) ? race : spawnRace;
+    }
+
+    internal Race GetConversionRace(Race race)
+    {
+        Race conversionRace;
+        if (Races.ContainsKey(race))
+            conversionRace = Get(race).ConversionRace;
+        else
+            conversionRace = RaceParameters.GetRaceTraits(race).ConversionRace; 
+        return (conversionRace == Race.none) ? race : conversionRace;
+    }
+
     //internal Race GetDisplayedGraphic(Race race)
     //{
     //    if (Races.ContainsKey(race))
@@ -262,6 +289,11 @@ class RaceSettingsItem
     internal List<VoreType> AllowedVoreTypes;
 
     [OdinSerialize]
+    internal Race SpawnRace;
+    [OdinSerialize]
+    internal Race ConversionRace;
+
+    [OdinSerialize]
     internal RaceStats Stats;
 
     [OdinSerialize]
@@ -301,6 +333,8 @@ class RaceSettingsItem
     internal List<Traits> HermTraits;
     [OdinSerialize]
     internal List<Traits> SpawnTraits;
+    [OdinSerialize]
+    internal List<Traits> LeaderTraits;
 
     [OdinSerialize]
     internal bool FavoredStatSet;
@@ -338,6 +372,9 @@ class RaceSettingsItem
         RaceTraits = racePar.RacialTraits.ToList();
         AllowedVoreTypes = racePar.AllowedVoreTypes.ToList();
 
+        SpawnRace = racePar.SpawnRace;
+        ConversionRace = racePar.ConversionRace;
+
         var baseStats = racePar.RaceStats;
 
         Stats = new RaceStats() //Generates a clean copy instead of a reference.  
@@ -374,6 +411,7 @@ class RaceSettingsItem
         FemaleTraits = new List<Traits>();
         HermTraits = new List<Traits>();
         SpawnTraits = new List<Traits>();
+        LeaderTraits = new List<Traits>();
 
         FavoredStatSet = true;
         FavoredStat = racePar.FavoredStat;

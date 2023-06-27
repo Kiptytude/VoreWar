@@ -307,6 +307,8 @@ public class InfoPanel
                 return "Lion";
             case Race.Kobolds:
                 return "Kobold";
+            case Race.none:
+                return "NULL";
         }
         return unit.Race.ToString(); //Updated this so a new race will return the race's name, instead of nothing
     }
