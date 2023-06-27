@@ -1665,7 +1665,18 @@ public class PredatorComponent
                 GenerateBones(preyUnit);
             }
         }
-        else if (location == PreyLocation.balls || location == PreyLocation.womb || location == PreyLocation.breasts || location == PreyLocation.leftBreast || location == PreyLocation.rightBreast)
+        else if (location == PreyLocation.balls)
+        {
+            State.GameManager.SoundManager.PlayAbsorb(location, actor);
+            if (Config.Cumstains)
+            {
+                if (unit.Race == Race.Selicia)
+                    State.GameManager.TacticalMode.CreateMiscDiscard(GetCurrentLocation(), BoneTypes.CumPuddle, preyUnit.Unit.Name, 0);
+                else
+                    State.GameManager.TacticalMode.CreateMiscDiscard(GetCurrentLocation(), BoneTypes.DisposedCondom, preyUnit.Unit.Name);
+            }
+        }
+        else if (location == PreyLocation.womb || location == PreyLocation.breasts || location == PreyLocation.leftBreast || location == PreyLocation.rightBreast)
         {
             State.GameManager.SoundManager.PlayAbsorb(location, actor);
             if (Config.Cumstains)

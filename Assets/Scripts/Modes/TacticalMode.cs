@@ -1604,6 +1604,8 @@ Turns: {currentTurn}
         string description = $"Remains of {name}";
         if (type == BoneTypes.CumPuddle)
             miscDiscards.Add(new MiscDiscard(location, MiscDiscardType.Cum, spriteNum, sortOrder, color, description));
+        else if (type == BoneTypes.DisposedCondom)
+            miscDiscards.Add(new MiscDiscard(location, MiscDiscardType.DisposedCondom, spriteNum, sortOrder, color, description));
         else
             miscDiscards.Add(new MiscDiscard(location, MiscDiscardType.Bones, spriteNum, sortOrder, color, description));
         miscDiscards.Last().GenerateSpritePrefab(ActorFolder);
