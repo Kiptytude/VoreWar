@@ -3291,6 +3291,7 @@ Turns: {currentTurn}
         else
             DefenderConvert(actor);
         actor.DefectedThisTurn = startingSide != actor.Unit.Side;
+        actor.sidesAttackedThisBattle = new List<int>();
     }
 
     internal bool IsDefender(Actor_Unit actor)

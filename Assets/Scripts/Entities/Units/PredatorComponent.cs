@@ -880,8 +880,18 @@ public class PredatorComponent
                     preyDamage = 0;
                 if (unit.HasTrait(Traits.InfiniteAssimilation) && !preyUnit.Unit.HasTrait(Traits.InfiniteAssimilation) && Config.KuroTenkoEnabled)
                     preyUnit.Unit.AddPermanentTrait(Traits.InfiniteAssimilation);
-                if (unit.HasTrait(Traits.Corruption) && !preyUnit.Unit.HasTrait(Traits.Corruption) && Config.KuroTenkoEnabled)
+                if (unit.HasTrait(Traits.Assimilate) && !preyUnit.Unit.HasTrait(Traits.Assimilate) && Config.KuroTenkoEnabled)
+                    preyUnit.Unit.AddPermanentTrait(Traits.Assimilate);
+                if (unit.HasTrait(Traits.AdaptiveBiology) && !preyUnit.Unit.HasTrait(Traits.AdaptiveBiology) && Config.KuroTenkoEnabled)
+                    preyUnit.Unit.AddPermanentTrait(Traits.AdaptiveBiology);
+                if (unit.HasTrait(Traits.Corruption) && !preyUnit.Unit.HasTrait(Traits.Corruption))
+                {
                     preyUnit.Unit.AddPermanentTrait(Traits.Corruption);
+                    if (!preyUnit.Unit.HasTrait(Traits.Untamable))
+                        preyUnit.Unit.FixedSide = unit.FixedSide;
+                    preyUnit.Unit.hiddenFixedSide = true;
+                    preyUnit.Actor.sidesAttackedThisBattle = new List<int>();
+                }
                 preyUnit.Unit.ReloadTraits();
                 preyUnit.Unit.InitializeTraits();
 
@@ -974,15 +984,7 @@ public class PredatorComponent
         {
             if (preyUnit.Unit.HasTrait(Traits.Corruption))
             {
-                actor.Corruption += preyUnit.Unit.GetStatTotal();
-                if (actor.Corruption >= unit.GetStatTotal() + unit.GetStat(Stat.Will))
-                {
-                    unit.AddPermanentTrait(Traits.Corruption);
-                    if (!unit.HasTrait(Traits.Untamable))
-                        unit.FixedSide = preyUnit.Unit.FixedSide;
-                    unit.hiddenFixedSide = true;
-                }
-                preyUnit.Unit.RemoveTrait(Traits.Corruption);
+                actor.AddCorruption(preyUnit.Unit.GetStatTotal(), preyUnit.Unit.FixedSide);
             }
             if (preyUnit.Unit.CanBeConverted() &&
              (Location(preyUnit) == PreyLocation.womb || Config.KuroTenkoConvertsAllTypes) &&
@@ -994,8 +996,14 @@ public class PredatorComponent
                 preyUnit.Actor.Movement = 0;
                 if (preyUnit.Unit.Side != unit.Side)
                     State.GameManager.TacticalMode.SwitchAlignment(preyUnit.Actor);
-
-
+                if (unit.HasTrait(Traits.Corruption) || preyUnit.Unit.HasTrait(Traits.Corruption))
+                {
+                    preyUnit.Unit.hiddenFixedSide = true;
+                    preyUnit.Actor.sidesAttackedThisBattle = new List<int>();
+                    preyUnit.Unit.RemoveTrait(Traits.Corruption);
+                    preyUnit.Unit.AddPermanentTrait(Traits.Corruption);
+                }
+                if (!preyUnit.Unit.HasTrait(Traits.Corruption))
                     preyUnit.Unit.FixedSide = unit.FixedSide;
 
                 preyUnit.Actor.Surrendered = false;
@@ -1019,16 +1027,20 @@ public class PredatorComponent
                 preyUnit.Actor.Movement = 0;
                 if (preyUnit.Unit.Side != unit.Side)
                     State.GameManager.TacticalMode.SwitchAlignment(preyUnit.Actor);
-
+                if (unit.HasTrait(Traits.Corruption) || preyUnit.Unit.HasTrait(Traits.Corruption))
+                {
+                    preyUnit.Unit.hiddenFixedSide = true;
+                    preyUnit.Actor.sidesAttackedThisBattle = new List<int>();
+                    preyUnit.Unit.RemoveTrait(Traits.Corruption);
+                    preyUnit.Unit.AddPermanentTrait(Traits.Corruption);
+                }
+                if (!preyUnit.Unit.HasTrait(Traits.Corruption))
                     preyUnit.Unit.FixedSide = unit.FixedSide;
 
                 preyUnit.Actor.Surrendered = false;
-                if (!unit.HasTrait(Traits.Greedy))
-                {
-                    State.GameManager.TacticalMode.TacticalStats.RegisterRegurgitation(unit.Side);
-                    FreeUnit(preyUnit.Actor);
-                    TacticalUtilities.Log.RegisterRegurgitated(unit, preyUnit.Unit, Location(preyUnit));
-                }
+                State.GameManager.TacticalMode.TacticalStats.RegisterRegurgitation(unit.Side);
+                FreeUnit(preyUnit.Actor);
+
                 State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"{preyUnit.Unit.Name} converted from one side to another thanks to {unit.Name}'s digestion conversion trait.");
                 return 0;
             }
@@ -1049,9 +1061,17 @@ public class PredatorComponent
                 preyUnit.Actor.Movement = 0;
                 if (preyUnit.Unit.Side != unit.Side)
                     State.GameManager.TacticalMode.SwitchAlignment(preyUnit.Actor);
+                if (unit.HasTrait(Traits.Corruption) || preyUnit.Unit.HasTrait(Traits.Corruption))
+                {
+                    preyUnit.Unit.hiddenFixedSide = true;
+                    preyUnit.Actor.sidesAttackedThisBattle = new List<int>();
+                    preyUnit.Unit.RemoveTrait(Traits.Corruption);
+                    preyUnit.Unit.AddPermanentTrait(Traits.Corruption);
+                }
+                if (!preyUnit.Unit.HasTrait(Traits.Corruption))
                     preyUnit.Unit.FixedSide = unit.FixedSide;
-                  
-                    TacticalUtilities.Log.RegisterBirth(unit, preyUnit.Unit, 0.5f);
+
+                TacticalUtilities.Log.RegisterBirth(unit, preyUnit.Unit, 0.5f);
                     FreeUnit(preyUnit.Actor);
                 preyUnit.Actor.AnimationController = new AnimationController();
                 preyUnit.Actor.Surrendered = false;
@@ -1184,7 +1204,14 @@ public class PredatorComponent
                     preyUnit.Actor.Movement = 0;
                     if (preyUnit.Unit.Side != unit.Side)
                         State.GameManager.TacticalMode.SwitchAlignment(preyUnit.Actor);
-
+                    if (unit.HasTrait(Traits.Corruption) || preyUnit.Unit.HasTrait(Traits.Corruption))
+                    {
+                        preyUnit.Unit.hiddenFixedSide = true;
+                        preyUnit.Actor.sidesAttackedThisBattle = new List<int>();
+                        preyUnit.Unit.RemoveTrait(Traits.Corruption);
+                        preyUnit.Unit.AddPermanentTrait(Traits.Corruption);
+                    }
+                    if (!preyUnit.Unit.HasTrait(Traits.Corruption))
                         preyUnit.Unit.FixedSide = unit.FixedSide;
                     preyUnit.Actor.Surrendered = false;
                     if (preyUnit.Unit.Race != unit.Race)
@@ -1201,6 +1228,7 @@ public class PredatorComponent
                             race.RandomCustom(preyUnit.Unit);
                         }
                         preyUnit.Actor.AnimationController = new AnimationController();
+                        preyUnit.Unit.RemoveTrait(Traits.Infertile);
                         preyUnit.Actor.Unit.ReloadTraits();
                         preyUnit.Actor.Unit.InitializeTraits();
                     }
@@ -1416,6 +1444,19 @@ public class PredatorComponent
     {
         bool updated = false;
         bool raceUpdated = true;
+        if (preyUnit.Unit.HasTrait(Traits.Donor))
+        {
+            int donorIndex = preyUnit.Unit.GetTraits.IndexOf(Traits.Donor);
+            var donorTraits = preyUnit.Unit.GetTraits.SkipWhile((t, index) => index <= donorIndex);
+            var possibleTraits = donorTraits.Where(s => unit.GetTraits.Contains(s) == false && State.AssimilateList.CanGet(s)).ToArray();
+
+            foreach (Traits trait in possibleTraits)
+            {
+                    unit.AddPermanentTrait(trait);
+                    preyUnit.Unit.RemoveTrait(trait);
+                    updated = true;
+            }
+        }
         if (unit.HasTrait(Traits.InfiniteAssimilation))
         {
             var possibleTraits = preyUnit.Unit.GetTraits.Where(s => unit.GetTraits.Contains(s) == false && State.AssimilateList.CanGet(s)).ToArray();
@@ -2542,6 +2583,10 @@ public class PredatorComponent
                     break;
             }
             actor.Unit.Heal(suckle[0]);
+            if (target.Unit.HasTrait(Traits.Corruption))
+            {
+                actor.AddCorruption(unit.GetStatTotal() / 10, unit.FixedSide);
+            }
             if (suckle[0] != 0)
                 actor.UnitSprite.DisplayDamage(-suckle[0]);
             actor.UnitSprite.UpdateSprites(target, true);
@@ -2853,6 +2898,10 @@ public class PredatorComponent
         if (nurseHeal[0] + nurseHeal[1] > 0)
             TacticalUtilities.Log.RegisterHeal(target.Unit, nurseHeal, "breastfeeding", actor.Unit.HasTrait(Traits.Honeymaker) ? "honey" : "none");
         actor.DigestCheck("breastfeed");
+        if (unit.HasTrait(Traits.Corruption))
+        {
+            target.AddCorruption(unit.GetStatTotal() / 10, unit.FixedSide);
+        }
         int halfMovement = 1 + actor.MaxMovement() / (2 + (actor.Unit.HasTrait(Traits.WetNurse) ? 1 : 0));
         if (actor.Movement > halfMovement)
             actor.Movement -= halfMovement;
@@ -2884,6 +2933,10 @@ public class PredatorComponent
         if (nurseHeal[0] + nurseHeal[1] > 0)
             TacticalUtilities.Log.RegisterHeal(target.Unit, nurseHeal, "cumfeeding");
         actor.DigestCheck("cumfeed");
+        if (unit.HasTrait(Traits.Corruption))
+        {
+            target.AddCorruption(unit.GetStatTotal()/10, unit.FixedSide);
+        }
         int quarterMovement = 1 + actor.MaxMovement() / (4 + (actor.Unit.HasTrait(Traits.WetNurse) ? 1 : 0));
         if (actor.Movement > quarterMovement)
             actor.Movement -= quarterMovement;
@@ -2934,13 +2987,13 @@ public class PredatorComponent
         if (destination == PreyLocation.womb && recipient.Unit.HasVagina && Config.CumGestation)
         {
             bool alreadyPregnant = false;
-            Unit alreadyChild = null;
+            Actor_Unit alreadyChild = null;
             foreach (Prey existingPrey in recipient.PredatorComponent.womb)
             {
                 if ((existingPrey.Unit.IsDead && existingPrey.Unit.Side != recipient.Unit.Side) || (!existingPrey.Unit.IsDead && existingPrey.Unit.Side == recipient.Unit.Side))
                 {
                     alreadyPregnant = true;
-                    alreadyChild = existingPrey.Unit;
+                    alreadyChild = existingPrey.Actor;
                 }
             }
             if (alreadyPregnant)
@@ -2948,7 +3001,16 @@ public class PredatorComponent
                 recipient.PredatorComponent.birthStatBoost += preyUnit.Unit.Level;
                 recipient.PredatorComponent.RemovePrey(preyUnit);
                 actor.PredatorComponent.RemovePrey(preyUnit);
-                State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<b>{actor.Unit.Name}</b> pumps what remains of <b>{preyUnit.Unit.Name}</b> into <b>{recipient.Unit.Name}</b>'s womb, providing nutrients to strengthen <b>{alreadyChild.Name}</b>.");
+                State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<b>{actor.Unit.Name}</b> pumps what remains of <b>{preyUnit.Unit.Name}</b> into <b>{recipient.Unit.Name}</b>'s womb, providing nutrients to strengthen <b>{alreadyChild.Unit.Name}</b>.");
+                if (unit.HasTrait(Traits.Corruption) || preyUnit.Unit.HasTrait(Traits.Corruption))
+                {
+                    alreadyChild.Unit.hiddenFixedSide = true;
+                    alreadyChild.sidesAttackedThisBattle = new List<int>();
+                    alreadyChild.Unit.RemoveTrait(Traits.Corruption);
+                    alreadyChild.Unit.AddPermanentTrait(Traits.Corruption);
+                }
+                if (!alreadyChild.Unit.HasTrait(Traits.Corruption))
+                    alreadyChild.Unit.FixedSide = unit.FixedSide;
                 UpdateFullness();
                 unit.UpdateSpells();
                 return true;
@@ -2956,8 +3018,15 @@ public class PredatorComponent
         }
         recipient.PredatorComponent.prey.Add(preyref);
         if (preyUnit.Unit.IsDead == false)
+        {
             recipient.PredatorComponent.AlivePrey++;
-        actor.PredatorComponent.AlivePrey--;
+            actor.PredatorComponent.AlivePrey--;
+        } else if (unit.HasTrait(Traits.Corruption))
+        {
+            recipient.AddCorruption(preyUnit.Unit.GetStatTotal()/2, unit.FixedSide);
+        }
+        else if (preyUnit.Unit.HasTrait(Traits.Corruption))
+            recipient.AddCorruption(preyUnit.Unit.GetStatTotal() / 2, preyUnit.Unit.FixedSide);
         switch (destination)
         {
             case PreyLocation.womb:
@@ -2974,7 +3043,7 @@ public class PredatorComponent
                 break;
         }
         recipient.Unit.GiveScaledExp(4 * preyUnit.Unit.ExpMultiplier, recipient.Unit.Level - preyUnit.Unit.Level, true);
-        if (preyUnit.Unit.IsDead == false && Config.NoScatForDeadTransfers)
+        if (preyUnit.Unit.IsDead && Config.NoScatForDeadTransfers)
             preyUnit.ScatDisabled = true;
         recipient.PredatorComponent.UpdateFullness();
         actor.PredatorComponent.RemovePrey(preyUnit);
