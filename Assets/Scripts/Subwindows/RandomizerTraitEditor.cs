@@ -85,7 +85,7 @@ public class RandomizerTraitEditor : MonoBehaviour
             rt.CloneBtn.onClick.AddListener(() =>
             {
                 var clone = CreateRandomizerTrait(savedCustom);
-                clone.id = RandomizerTags.LastOrDefault().id + 1;
+                clone.id = FindNewId();
                 clone.name.text = "new" + clone.name.text;
                 RandomizerTags.Add(clone);
                 CreateAddButton();
@@ -104,7 +104,7 @@ public class RandomizerTraitEditor : MonoBehaviour
             rt.name.text = "";
             rt.chance.text = "100";
             var last = RandomizerTags.LastOrDefault();
-            rt.id = last == null ? 1001 : last.id + 1;
+            rt.id = last == null ? 1001 : FindNewId();
             var ranTraits = new Dictionary<Traits, bool>();
             foreach (Traits r in State.RandomizeLists.ConvertAll(r => (Traits)r.id))
             {
@@ -118,7 +118,7 @@ public class RandomizerTraitEditor : MonoBehaviour
             rt.CloneBtn.onClick.AddListener(() =>
             {
                 var clone = CreateRandomizerTrait(savedCustom);
-                clone.id = RandomizerTags.LastOrDefault().id + 1;
+                clone.id = FindNewId();
                 clone.name.text = "new" + clone.name.text;
                 RandomizerTags.Add(clone);
                 CreateAddButton();
@@ -130,6 +130,18 @@ public class RandomizerTraitEditor : MonoBehaviour
             });
             return rt;
         }
+    }
+
+    private int FindNewId()
+    {
+        bool taken = true;
+        int index = 0;
+        while (taken)
+        {
+            index++;
+            taken = RandomizerTags.Any(rt => rt.id == (1000 + index));
+        }
+        return 1000 + index;
     }
 
     private void Remove(RandomizerTrait rt)
