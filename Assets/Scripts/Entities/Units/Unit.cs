@@ -93,7 +93,7 @@ public class Unit
 
             int oldMax = _maxHealth;
             _maxHealth = GetStat(Stat.Endurance) * 2 + GetStat(Stat.Strength);
-            if (oldMax != _maxHealth)
+            if (oldMax != 1 && oldMax != 0 && oldMax != _maxHealth)
             {
                 Health += _maxHealth - oldMax;
             }
@@ -1396,7 +1396,6 @@ public class Unit
 
     protected void RecalculateStatBoosts()
     {
-        float healthBefore = HealthPct;
         RefreshSecrecy();
         InitializeFixedSide(Side);
         if (Tags == null)
@@ -1447,7 +1446,6 @@ public class Unit
                     booster.Boost(TraitBoosts);
             }
         }
-        Health = (int)Math.Ceiling(MaxHealth * healthBefore);
     }
 
 

@@ -372,7 +372,7 @@ static class SpellList
             Range = new Range(4),
             Tier = 3,
             Resistable = true,
-            OnExecute = (a, t) => a.CastMaw(Maw, t),
+            OnExecute = (a, t) => a.CastMawWithLocation(Maw, t),
         };
         SpellDict[SpellTypes.Maw] = Maw;
 
@@ -521,8 +521,8 @@ static class SpellList
             Tier = 4,
             AreaOfEffect = 1,
             Resistable = true,
-            OnExecute = (a, t) => a.CastMaw(GateMaw, t),
-            OnExecuteTile = (a, l) => a.CastMaw(GateMaw, null, l),
+            OnExecute = (a, t) => a.CastMawWithLocation(GateMaw, t),
+            OnExecuteTile = (a, l) => a.CastMawWithLocation(GateMaw, null, l),
         };
         SpellDict[SpellTypes.GateMaw] = GateMaw;
 

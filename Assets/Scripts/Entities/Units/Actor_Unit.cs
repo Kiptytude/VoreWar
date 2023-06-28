@@ -166,6 +166,21 @@ public class Actor_Unit
     public void DrainExp(int damage) => Unit.GiveExp(-1 * damage);
     public void SetPos(Vec2i p) => Position = p;
 
+    public void ChangeRace(Race race)
+    {
+                if (Unit.Race == race)
+                    return;
+                Unit.Race = race;
+                Unit.RandomizeGender(race, Races.GetRace(Unit));                
+                Unit.SetGear(race);
+                AnimationController = new AnimationController();
+
+                Races.GetRace(Unit).RandomCustom(Unit);
+
+                Unit.ReloadTraits();
+                Unit.InitializeTraits();
+    }
+
     private void RestoreMP()
     {
         if (WasJustFreed)
@@ -2160,7 +2175,28 @@ public class Actor_Unit
         return true;
     }
 
-    internal void CastMaw(Spell spell, Actor_Unit target, Vec2i targetArea = null)
+    internal void CastMawWithLocation(Spell spell, Actor_Unit target, Vec2i targetArea = null)
+    {
+        PreyLocation preyLocation = PreyLocation.stomach;
+        var possibilities = new Dictionary<string, PreyLocation>();
+        possibilities.Add("Maw", PreyLocation.stomach);
+        if (Unit.CanAnalVore) possibilities.Add("Anus", PreyLocation.anal);
+        if (Unit.CanBreastVore) possibilities.Add("Breast", PreyLocation.breasts);
+        if (Unit.CanCockVore) possibilities.Add("Cock", PreyLocation.balls);
+        if (Unit.CanUnbirth) possibilities.Add("Pussy", PreyLocation.womb);
+
+        if (State.GameManager.TacticalMode.IsPlayerInControl && State.GameManager.CurrentScene == State.GameManager.TacticalMode && possibilities.Count > 1)
+        {
+            var box = State.GameManager.CreateOptionsBox();
+            box.SetData($"Where do you want to put your prey?", "Maw", () => CastMaw(spell, target, PreyLocation.stomach, targetArea), possibilities.Keys.ElementAtOrDefault(1), () => CastMaw(spell, target, possibilities.Values.ElementAtOrDefault(1), targetArea), possibilities.Keys.ElementAtOrDefault(2), () => CastMaw(spell, target, possibilities.Values.ElementAtOrDefault(2), targetArea), possibilities.Keys.ElementAtOrDefault(3), () => CastMaw(spell, target, possibilities.Values.ElementAtOrDefault(3), targetArea), possibilities.Keys.ElementAtOrDefault(4), () => CastMaw(spell, target, possibilities.Values.ElementAtOrDefault(4), targetArea));
+        }
+        else
+        {
+            preyLocation = possibilities.Values.ToList()[State.Rand.Next(possibilities.Count)];
+            CastMaw(spell, target, preyLocation, targetArea);
+        }
+    }
+    internal void CastMaw(Spell spell, Actor_Unit target, PreyLocation preyLocation, Vec2i targetArea = null )
     {
         if (Unit.Predator == false)
             return;
@@ -2168,14 +2204,13 @@ public class Actor_Unit
             return;
 
         State.GameManager.SoundManager.PlaySpellCast(spell, this);
-
         if (target != null)
         {
             if (spell.AreaOfEffect > 0)
             {
                 foreach (var splashTarget in TacticalUtilities.UnitsWithinTiles(target.Position, spell.AreaOfEffect))
                 {
-                    if (PredatorComponent.MagicConsume(spell, splashTarget))
+                    if (PredatorComponent.MagicConsume(spell, splashTarget, preyLocation))
                     {
                         State.GameManager.SoundManager.PlaySpellHit(spell, splashTarget.UnitSprite.transform.position);
                     }
@@ -2183,7 +2218,7 @@ public class Actor_Unit
             }
             else
             {
-                if (PredatorComponent.MagicConsume(spell, target))
+                if (PredatorComponent.MagicConsume(spell, target, preyLocation))
                 {
                     State.GameManager.SoundManager.PlaySpellHit(spell, target.UnitSprite.transform.position);
                 }
@@ -2193,7 +2228,7 @@ public class Actor_Unit
         {
             foreach (var splashTarget in TacticalUtilities.UnitsWithinTiles(targetArea, spell.AreaOfEffect))
             {
-                if (PredatorComponent.MagicConsume(spell, splashTarget))
+                if (PredatorComponent.MagicConsume(spell, splashTarget, preyLocation))
                 {
                     State.GameManager.SoundManager.PlaySpellHit(spell, splashTarget.UnitSprite.transform.position);
                 }
@@ -2210,12 +2245,10 @@ public class Actor_Unit
         else
             Movement = 0;
     }
-
     internal void CastOffensiveSpell(DamageSpell spell, Actor_Unit target, Vec2i targetArea = null)
     {
         if (Unit.SpendMana(spell.ManaCost) == false)
             return;
-
         State.GameManager.SoundManager.PlaySpellCast(spell, this);
 
         if (target != null)

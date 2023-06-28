@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Experimental.PlayerLoop;
 
 public enum PreyLocation
 {
@@ -2108,7 +2107,7 @@ public class PredatorComponent
         return Consume(target, AnalVore, PreyLocation.anal);
     }
 
-    internal bool MagicConsume(Spell spell, Actor_Unit target)
+    internal bool MagicConsume(Spell spell, Actor_Unit target, PreyLocation preyLocation = PreyLocation.stomach)
     {
         bool sneakAttack = false;
         if (actor.Unit.GetApparentSide(target.Unit) == target.Unit.GetApparentSide() && actor.Unit.IsInfiltratingSide(target.Unit.GetApparentSide()) && !actor.Unit.HasTrait(Traits.Endosoma))
@@ -2159,7 +2158,7 @@ public class PredatorComponent
                 target.Movement = 0;
                 Prey preyref = new Prey(target, actor, target.PredatorComponent?.prey);
                 prey.Add(preyref);
-                MagicDevour(target, v, preyref);
+                MagicDevour(target, v, preyref, preyLocation);
                 UpdateFullness();
                 return true;
             }
@@ -2327,7 +2326,7 @@ public class PredatorComponent
         UpdateFullness();
     }
 
-    void MagicDevour(Actor_Unit target, float v, Prey preyref)
+    void MagicDevour(Actor_Unit target, float v, Prey preyref, PreyLocation preyLocation)
     {
         if (actor.Unit.Side == target.Unit.GetApparentSide() && !actor.Unit.HasTrait(Traits.Endosoma))
         {
@@ -2342,6 +2341,39 @@ public class PredatorComponent
             {
                 target.Unit.StatusEffects.Remove(charm);                // betrayal dispels charm
             }
+        }
+        switch (preyLocation)
+        {
+            case PreyLocation.womb:
+                AddToWomb(preyref, 1f);
+                break;
+            case PreyLocation.balls:
+                AddToBalls(preyref, 1f);
+                break;
+            case PreyLocation.anal:
+                AddToStomach(preyref, 1f);
+                break;
+            case PreyLocation.breasts:
+                var data = Races.GetRace(unit.Race);
+                if (data.ExtendedBreastSprites)
+                {
+                    if (Config.FairyBVType == FairyBVType.Picked && State.GameManager.TacticalMode.IsPlayerInControl)
+                    {
+                        var box = State.GameManager.CreateDialogBox();
+                        box.SetData(() => { rightBreast.Add(preyref); UpdateFullness(); }, "Right", "Left", "Which breast should the prey be put in? (from your pov)", () => { leftBreast.Add(preyref); UpdateFullness(); });
+                        return;
+                    }
+                    if (LeftBreastFullness < RightBreastFullness || State.Rand.Next(2) == 0)
+                        leftBreast.Add(preyref);
+                    else
+                        rightBreast.Add(preyref);
+                }
+                else
+                    breasts.Add(preyref);
+                break;
+            default:
+                AddToStomach(preyref, 1f);
+                break;
         }
         AddToStomach(preyref, v);
     }
@@ -3265,7 +3297,6 @@ public class PredatorComponent
                 AddToStomach(preyref, 1f);
                 break;
             case PreyLocation.breasts:
-                State.GameManager.SoundManager.PlaySwallow(PreyLocation.breasts, actor);
                 TacticalUtilities.Log.RegisterMiscellaneous($"In just a few deft movements, <b>{forcePrey.Unit.Name}</b> crams {LogUtilities.GPPHimself(forcePrey.Unit)} into <b>{LogUtilities.ApostrophizeWithOrWithoutS(unit.Name)}</b> tits.");
                 var data = Races.GetRace(unit.Race);
                 if (data.ExtendedBreastSprites)
@@ -3274,15 +3305,18 @@ public class PredatorComponent
                     {
                         var box = State.GameManager.CreateDialogBox();
                         box.SetData(() => { rightBreast.Add(preyref); UpdateFullness(); }, "Right", "Left", "Which breast should the prey be put in? (from your pov)", () => { leftBreast.Add(preyref); UpdateFullness(); });
-                        return;
+                        State.GameManager.SoundManager.PlaySwallow(PreyLocation.breasts, actor);
+                        break;
                     }
+                    State.GameManager.SoundManager.PlaySwallow(PreyLocation.breasts, actor);
                     if (LeftBreastFullness < RightBreastFullness || State.Rand.Next(2) == 0)
                         leftBreast.Add(preyref);
                     else
                         rightBreast.Add(preyref);
-                }
-                else
-                    breasts.Add(preyref);
+                    break;
+                }                
+                State.GameManager.SoundManager.PlaySwallow(PreyLocation.breasts, actor);
+                breasts.Add(preyref);
                 break;
             default:
                 State.GameManager.SoundManager.PlaySwallow(PreyLocation.stomach, actor);
