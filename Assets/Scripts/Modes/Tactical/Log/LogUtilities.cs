@@ -458,6 +458,8 @@ static class LogUtilities
                 return GetRandomStringFrom("dog", GetGenderString(unit, "bitch", "dog", "dog"), "canine");
             case Race.Foxes:
                 return GetRandomStringFrom("fox", GetGenderString(unit, "vixen", "tod", "fox"), "vulpine", "canid");
+            case Race.Youko:
+                return GetRandomStringFrom("fox", GetGenderString(unit, "vixen", "tod", "fox"), "vulpine", "canid");
             case Race.Wolves:
                 return GetRandomStringFrom("feral", GetGenderString(unit, "wolfess", "wolf", "wolf"), "canine"); ////I changed "wolfen" to "wolfess" 
             case Race.Bunnies:

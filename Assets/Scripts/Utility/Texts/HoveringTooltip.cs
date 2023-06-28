@@ -524,6 +524,10 @@ public class HoveringTooltip : MonoBehaviour
                 return "If a currupted unit is digested, the pred will build up corruption as a hidden status. Once corrupted prey with a stat total equal to that of the pred has been digested, they are under control of the side of the last-digested corrupted.\n(Hidden Trait)";
             case Traits.Parasite:
                 return "A parasite prey will give the host CreateSpawn and set infection after digestion, host Takes minor damage on prey absorption and major damage when creating spawn";
+            case Traits.Metamorphosis:
+                return "A Metamorphosis prey will revive and change form after digestion to the spawn race";
+            case Traits.UnpleasantDigestion:
+                return "Unit will damage a predator while digesting";
             case Traits.Symbiote:
                 return "Shares generic traits with pred";
             case Traits.CreateSpawn:
@@ -552,6 +556,8 @@ public class HoveringTooltip : MonoBehaviour
                 return "Unit generates with a random Tier 3-4 Book.";
             case Traits.Temptation:
                return "Units that are put under a mindcontrol (e.g. Charm, Hypnosis) effect by this unit want to force-feed themselves to it or its close allies.";
+            case Traits.Whispers:
+                return "When eaten, Predator is afflicted by Prey's curse, and has a chance to be charmed each round";
         }  
         return "<b>This trait needs a tooltip!</b>";
     }

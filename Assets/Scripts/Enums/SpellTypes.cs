@@ -37,6 +37,7 @@
     Petrify = 74,
     HypnoGas = 75,
     Bind = 76,
+    Whispers = 77,
 
     ViperDamage = 110,
     ForceFeed = 111,

@@ -31,6 +31,8 @@
     Frogs = 26,
     Sharks = 27,
     Deer = 28,
+    Youko = 29,
+
     Succubi = 50,
     Tigers = 51,
     Goblins = 52,
@@ -43,6 +45,7 @@
     Komodos = 59,
     Cockatrice = 60,
     Vargul = 61,
+
 
     Vagrants = 100,
     Serpents = 101,
@@ -83,6 +86,7 @@
     Dratopyr = 136,
     FeralLions = 137,
     Goodra = 138,
+    Whisp = 139,
 
     Selicia = 170,
     Vision = 171,

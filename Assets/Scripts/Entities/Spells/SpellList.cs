@@ -63,6 +63,7 @@ static class SpellList
     static internal readonly StatusSpell GlueBomb;
     static internal readonly StatusSpell Petrify;
     static internal readonly StatusSpell HypnoGas;
+    static internal readonly StatusSpell Whispers;
     static internal readonly Spell ForceFeed;
     static internal readonly Spell Bind;
 
@@ -801,6 +802,27 @@ static class SpellList
         };
         SpellDict[SpellTypes.ForceFeed] = ForceFeed;
 
+
+        Whispers = new StatusSpell()
+        {
+            Name = "Whispers",
+            Id = "whispers-spell",
+            SpellType = SpellTypes.Whispers,
+            Description = "Applies Charm and Prey's Curse for 1 round",
+            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy, AbilityTargets.Tile },
+            Range = new Range(8),
+            Duration = (a, t) => 2,
+            Effect = (a, t) => a.Unit.GetApparentSide(t.Unit),
+            Type = StatusEffectType.Charmed,
+            Tier = 0,
+            Resistable = true,
+            OnExecute = (a, t) =>
+            {
+                a.CastStatusSpell(Whispers, t);
+            },
+
+        };
+        SpellDict[SpellTypes.Whispers] = Whispers;
     }
 
 

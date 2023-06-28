@@ -7,6 +7,7 @@ static class RaceParameters
     static readonly RaceTraits Cats;
     static readonly RaceTraits Dogs;
     static readonly RaceTraits Foxes;
+    static readonly RaceTraits Youko;
     static readonly RaceTraits Wolves;
     static readonly RaceTraits Bunnies;
     static readonly RaceTraits Lizards;
@@ -95,6 +96,7 @@ static class RaceParameters
     static readonly RaceTraits Auri;
     static readonly RaceTraits Erin;
     static readonly RaceTraits Goodra;
+    static readonly RaceTraits Whisp;
 
     static Unit tempUnit;
 
@@ -126,6 +128,8 @@ static class RaceParameters
                 return Dogs;
             case Race.Foxes:
                 return Foxes;
+            case Race.Youko:
+                return Youko;    
             case Race.Wolves:
                 return Wolves;
             case Race.Bunnies:
@@ -302,6 +306,8 @@ static class RaceParameters
                 return Erin;
 			case Race.Goodra:
                 return Goodra;
+            case Race.Whisp:
+                return Whisp;
             case (Race)700: //Singled out so that it doesn't make the debug message
                 return Default;
             case (Race)701:
@@ -364,6 +370,20 @@ static class RaceParameters
             Traits.ThrillSeeker
         },
             RaceDescription = "Natives of this realm, the Foxes seem unable of taking danger seriously. They dodge attacks at the last second and only seem to grow ever bolder as death approaches them. Entire armies have fallen exhausted as a group of foxes dances among them, ready to be devoured once the time is right.",
+        };
+
+        Youko = new RaceTraits()
+        {
+            BodySize = 10,
+            StomachSize = 15,
+            HasTail = true,
+            FavoredStat = Stat.Mind,
+            RacialTraits = new List<Traits>()
+        {
+            Traits.ArtfulDodge,
+            Traits.ThrillSeeker
+        },
+            RaceDescription = "",
         };
 
         Wolves = new RaceTraits()
@@ -1587,6 +1607,34 @@ static class RaceParameters
                 Traits.EscapeArtist,
                 Traits.KeenReflexes,
                 Traits.EasyToVore
+        },
+            RaceDescription = ""
+        };
+
+        Whisp = new RaceTraits()
+        {
+            BodySize = 7,
+            StomachSize = 10,
+            HasTail = false,
+            FavoredStat = Stat.Mind,
+            AllowedVoreTypes = new List<VoreType> { },
+            ExpMultiplier = 1.1f,
+            PowerAdjustment = 1.2f,
+            RaceStats = new RaceStats()
+            {
+                Strength = new RaceStats.StatRange(4, 8),
+                Dexterity = new RaceStats.StatRange(9, 14),
+                Endurance = new RaceStats.StatRange(6, 12),
+                Mind = new RaceStats.StatRange(14, 22),
+                Will = new RaceStats.StatRange(8, 14),
+                Agility = new RaceStats.StatRange(14, 22),
+                Voracity = new RaceStats.StatRange(8, 14),
+                Stomach = new RaceStats.StatRange(5, 10),
+            },
+            RacialTraits = new List<Traits>()
+        {
+                Traits.Prey,
+                Traits.Whispers,
         },
             RaceDescription = ""
         };

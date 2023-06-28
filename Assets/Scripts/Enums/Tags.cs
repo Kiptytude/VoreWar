@@ -298,6 +298,10 @@ public enum Traits
     BookWormIII = 150,
     /// <summary>Units that are put under a mindcontrol (e.g. Charm, Hypnosis) effect by this unit want to force-feed themselves to it or its close allies.</summary>
     Temptation = 151,
+    /// <summary>When eaten, Predator is afflicted by Prey's curse, and has a chance to be charmed each round</summary>
+    Whispers = 152,
+    /// <summary>While digesting, Prey deals damage to predator</summary>
+    UnpleasantDigestion = 153,
 
 
 
@@ -310,6 +314,9 @@ public enum Traits
     Reincarnation = 202,
     /// <summary>Soon after this unit is digested, one of the new Units that come into being for the pred's race will be a reincarnation of them.</summary>
     Transmigration = 203,
+    /// <summary>Soon after this unit is digested, one of the new Units that come into being for the pred's race will be a reincarnation of them.</summary>
+    Metamorphosis = 204,
+
 
     //Hidden Cheat Traits
     /// <summary>If a currupted unit is digested, the pred will build up corruption as a hidden status. Once corrupted prey with a stat total equal to that of the pred has been digested, they are under control of the side of the last-digested corrupted.</summary>

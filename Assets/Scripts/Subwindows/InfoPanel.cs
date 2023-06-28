@@ -148,6 +148,8 @@ public class InfoPanel
                 return "Dog";
             case Race.Foxes:
                 return "Fox";
+            case Race.Youko:
+                return "Youko";    
             case Race.Wolves:
                 return "Wolf";
             case Race.Bunnies:
@@ -307,6 +309,8 @@ public class InfoPanel
                 return "Lion";
             case Race.Kobolds:
                 return "Kobold";
+            case Race.Whisp:
+                return "Whisp";
             case Race.none:
                 return "NULL";
         }
@@ -479,6 +483,8 @@ public class InfoPanel
                 return "Dratopyr";
             case Race.FeralLions:
                 return "Lion";
+            case Race.Whisp:
+                return "Whisp";
         }
         return empire.ReplacedRace.ToString();
     }

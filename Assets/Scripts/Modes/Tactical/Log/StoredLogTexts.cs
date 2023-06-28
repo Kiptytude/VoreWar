@@ -1378,6 +1378,11 @@ static class StoredLogTexts
             new EventString((i) => $"\"You know,\" <b>{i.Target.Name}</b> muses with a sly grin as <b>{i.Unit.Name}</b> tends to {GPPHis(i.Target)} sloshing tummy, \"You could always massage me from the inside, it’d be much more relaxing. I promise I wouldn’t let you melt away!\" The trickster is surprised and flattered when {GPPHis(i.Target)} attendant doesn’t oppose the idea because {GPPHe(i.Unit)} trust{SIfSingular(i.Unit)} {GPPHim(i.Target)} so much.",
             targetRace: Race.Foxes, priority: 9, conditional: s => ReqTargetCompatible(s) && ActorHumanoid(s)),
 
+            new EventString((i) => $"<b>{i.Target.Name}</b>, with great melodrama, begins to wail about {GPPHis(i.Target)} pained stomach as it bubbled away its last victim. <b>{i.Unit.Name}</b>, naïve against the wiley fox’s acting, immediately starts lathering the bushy tailed warrior with attention and rubbing.",
+            targetRace: Race.Youko, priority: 9),
+            new EventString((i) => $"\"You know,\" <b>{i.Target.Name}</b> muses with a sly grin as <b>{i.Unit.Name}</b> tends to {GPPHis(i.Target)} sloshing tummy, \"You could always massage me from the inside, it’d be much more relaxing. I promise I wouldn’t let you melt away!\" The trickster is surprised and flattered when {GPPHis(i.Target)} attendant doesn’t oppose the idea because {GPPHe(i.Unit)} trust{SIfSingular(i.Unit)} {GPPHim(i.Target)} so much.",
+            targetRace: Race.Youko, priority: 9, conditional: s => ReqTargetCompatible(s) && ActorHumanoid(s)),
+
             new EventString((i) => $"At <b>{ApostrophizeWithOrWithoutS(i.Target.Name)}</b> behest, <b>{i.Unit.Name}</b> begins to tend to the great dragon’s mighty belly as it melts {GPPHis(i.Target)} foes away into a fine sludge.",
             targetRace: Race.Dragon, priority: 9),
             new EventString((i) => $"<b>{i.Unit.Name}</b> has to scratch hard against the huge dragon’s shifting tummy scales to even be felt. <b>{i.Target.Name}</b> cares not, simply basking in {GPPHis(i.Target)} favorite servant’s attention.",

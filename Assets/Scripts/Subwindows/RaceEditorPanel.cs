@@ -500,12 +500,22 @@ public class RaceEditorPanel : MonoBehaviour
             InnateSpellDropdown.RefreshShownValue();
 
             var spawnRace = State.RaceSettings.GetSpawnRace(race);
-            SpawnRaceDropdown.value = SpawnRaceDropdown.options.IndexOf(SpawnRaceDropdown.options.Where(element => element.text == spawnRace.ToString()).ElementAt(0));
+            foreach(TMP_Dropdown.OptionData option in SpawnRaceDropdown.options.ToList())
+                if(option.text == spawnRace.ToString())
+                {
+                    SpawnRaceDropdown.value = SpawnRaceDropdown.options.IndexOf(option);
+                    break;
+                }
 
             SpawnRaceDropdown.RefreshShownValue();
 
             var conversionRace = State.RaceSettings.GetConversionRace(race);
-            ConversionRaceDropdown.value = ConversionRaceDropdown.options.IndexOf(ConversionRaceDropdown.options.Where(element => element.text == conversionRace.ToString()).ElementAt(0));
+            foreach(TMP_Dropdown.OptionData option in ConversionRaceDropdown.options.ToList())
+                if(option.text == conversionRace.ToString())
+                {
+                    ConversionRaceDropdown.value = ConversionRaceDropdown.options.IndexOf(option);
+                    break;
+                }
 
             ConversionRaceDropdown.RefreshShownValue();
 

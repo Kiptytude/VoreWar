@@ -865,11 +865,15 @@ public class Actor_Unit
         {
             if (attacker.BestRanged?.AccuracyModifier > 1)
                 attack = (int)(attack * attacker.BestRanged.AccuracyModifier);
+            if (attacker.BestRanged?.Magic == true)
+                attack = attack + attacker.Unit.GetStat(Stat.Mind);
         }
         else
         {
             if (attacker.BestMelee?.AccuracyModifier > 1)
                 attack = (int)(attack * attacker.BestMelee.AccuracyModifier);
+            if (attacker.BestMelee?.Magic == true)
+                attack = attack + attacker.Unit.GetStat(Stat.Mind);
         }
 
         float ratio = (float)attack / defense;
@@ -1519,6 +1523,10 @@ public class Actor_Unit
                     Unit.ApplyStatusEffect(StatusEffectType.Poisoned, 2 + attacker.Unit.GetStat(Stat.Mind) / 10, 3);
                     Unit.ApplyStatusEffect(StatusEffectType.WillingPrey, 0, 3);
                 }
+            }
+            if (spell.Id == "Whispers")
+            {
+                Unit.ApplyStatusEffect(StatusEffectType.WillingPrey, 0, spell.Duration(attacker, this));
             }
             if (TacticalUtilities.MeetsQualifier(spell.AcceptibleTargets, attacker, this))
                 attacker.Unit.GiveScaledExp(1, attacker.Unit.Level - Unit.Level);

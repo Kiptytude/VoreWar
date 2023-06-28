@@ -1052,15 +1052,15 @@ public class PredatorComponent
         RemovePrey(preyref);
     }
 
-    private Race DetermineSpawnRace()
+    private Race DetermineSpawnRace(Unit parent)
     {
-        if(unit.SpawnRace != unit.Race)
+        if(parent.SpawnRace != parent.Race)
         {
-            return unit.Race;
+            return parent.SpawnRace;
         }
 
         else
-            return State.RaceSettings.GetSpawnRace(unit.Race);
+            return State.RaceSettings.GetSpawnRace(parent.Race);
     }
 
     private Race DetermineConversionRace()
@@ -1075,13 +1075,14 @@ public class PredatorComponent
     {
         int totalHeal = 0;
         bool freshKill = false;
-
+        if(preyUnit.Unit.HasTrait(Traits.UnpleasantDigestion))
+            actor.Damage(1);
         if (preyUnit.Unit.IsThisCloseToDeath(preyDamage))
         {
             if (preyUnit.Unit.HasTrait(Traits.Parasite))
             {
                 actor.Infected = true;
-                actor.InfectedRace = preyUnit.Unit.Race;
+                actor.InfectedRace = DetermineSpawnRace(preyUnit.Unit);
                 actor.InfectedSide = preyUnit.Unit.FixedSide;
             }
             if (preyUnit.Unit.HasTrait(Traits.Corruption))
@@ -1101,6 +1102,36 @@ public class PredatorComponent
                     unit.hiddenFixedSide = true;
                 }
                 preyUnit.Unit.RemoveTrait(Traits.Corruption);
+            }
+            if (preyUnit.Unit.HasTrait(Traits.Metamorphosis))
+            {
+                Race conversionRace = DetermineSpawnRace(preyUnit.Unit);
+                preyUnit.Unit.Health = preyUnit.Unit.MaxHealth;
+                preyUnit.Unit.GiveExp(unit.Experience / 2);
+                preyUnit.Actor.Movement = 0;
+
+                preyUnit.Actor.Surrendered = false;
+
+                if (preyUnit.Unit.Race != conversionRace)
+                {
+                    HashSet<Gender> set = new HashSet<Gender>(Races.GetRace(preyUnit.Unit.Race).CanBeGender);
+                    bool equals = set.SetEquals(Races.GetRace(conversionRace).CanBeGender);
+                    preyUnit.Unit.ChangeRace(conversionRace);
+                    preyUnit.Unit.SetGear(conversionRace);
+                    if (equals == false || Config.AlwaysRandomizeConverted)
+                        preyUnit.Unit.TotalRandomizeAppearance();
+                    else
+                    {
+                        var race = Races.GetRace(conversionRace);
+                        race.RandomCustom(preyUnit.Unit);
+                    }
+                    preyUnit.Actor.AnimationController = new AnimationController();
+                    preyUnit.Actor.Unit.ReloadTraits();
+                    preyUnit.Actor.Unit.InitializeTraits();
+                }
+                State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"{preyUnit.Unit.Name} changed form within {unit.Name}'s body.");
+                UpdateFullness();
+                return 0;
             }
             if (preyUnit.Unit.CanBeConverted() &&
              (Location(preyUnit) == PreyLocation.womb || Config.KuroTenkoConvertsAllTypes) &&
@@ -1298,7 +1329,7 @@ public class PredatorComponent
                     CreateSpawn(actor.InfectedRace, actor.InfectedSide, true);
                 }
                 if (unit.HasTrait(Traits.CreateSpawn))
-                    CreateSpawn(DetermineSpawnRace(), unit.Side);
+                    CreateSpawn(DetermineSpawnRace(unit), unit.Side);
                 
                 if (preyUnit.Unit.CanBeConverted() &&
                  (Location(preyUnit) == PreyLocation.womb || Config.KuroTenkoConvertsAllTypes) &&
@@ -1451,16 +1482,22 @@ public class PredatorComponent
         }
         else
         {
+            if (preyUnit.Unit.HasTrait(Traits.Whispers))
+            {
+                preyUnit.Actor.CastStatusSpell(SpellList.Whispers, actor);
+            }
             preyUnit.TurnsDigested++;
             AlivePrey++;
             preyUnit.UpdateEscapeRate();
             float escapeMult = 1;
             if (FreeCap() < 0)
             {
+
                 float cap = TotalCapacity();
                 escapeMult = 1.4f + 2 * ((Fullness / cap) - 1);
+                actor.Damage((int)(FreeCap()*-1)/2);
             }
-            if (State.Rand.NextDouble() < preyUnit.EscapeRate * escapeMult && preyUnit.Actor.Surrendered == false && !preyUnit.Unit.HasTrait(Traits.Possession))
+            if (State.Rand.NextDouble() < preyUnit.EscapeRate * escapeMult && preyUnit.Actor.Surrendered == false && !preyUnit.Unit.HasTrait(Traits.Possession) && !preyUnit.Unit.HasTrait(Traits.Parasite))
             {
                 if (stomach2.Contains(preyUnit))
                 {
