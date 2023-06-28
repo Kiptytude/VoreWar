@@ -83,7 +83,7 @@ public class Unit
 
     public int MaxHealth
     {
-        get
+        get // Ah yes, a simple getter function u?u. Keeps health percentage consistent after gaining/losing stats mid battle, doesn't break Thrillseeker, doesn't break on save/load... etc.
         {
             if (Stats == null) return 1;
             if (!Config.StatBoostsAffectMaxHP) {
@@ -95,7 +95,8 @@ public class Unit
             _maxHealth = GetStat(Stat.Endurance) * 2 + GetStat(Stat.Strength);
             if (oldMax != 1 && oldMax != 0 && oldMax != _maxHealth)
             {
-                Health += _maxHealth - oldMax;
+                int healthChange = (int)Math.Round((_maxHealth - oldMax) * _healthPct);
+                Health = Math.Min(_maxHealth,Math.Max(1, Health + healthChange));
             }
             return _maxHealth;
         }
@@ -262,6 +263,9 @@ public class Unit
 
     [OdinSerialize]
     public Unit KilledBy;
+
+    [OdinSerialize]
+    public List<Unit> ShifterShapes;
 
     public override string ToString() => Name;
 

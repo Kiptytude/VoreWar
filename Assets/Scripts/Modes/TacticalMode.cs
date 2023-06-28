@@ -2222,7 +2222,12 @@ Turns: {currentTurn}
                 SelectedUnit.Unit.hiddenFixedSide = false;
 
         }
+        if (ID == 16)
+        {
+            if (SelectedUnit != null && SelectedUnit.Targetable)
+                TacticalUtilities.ShapeshifterMenu(SelectedUnit);
 
+        }
     }
 
     internal void ProcessSkip(bool surrender, bool watchRest)

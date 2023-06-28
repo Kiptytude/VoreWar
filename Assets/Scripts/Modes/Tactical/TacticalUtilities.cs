@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
@@ -927,6 +928,11 @@ static class TacticalUtilities
             State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<b>{actor.Unit.Name}</b> couldn't force feed {LogUtilities.GPPHimself(actor.Unit)} to <b>{targetPred.Unit.Name}</b>.");
             actor.Movement = 0;
         }
+    }
+
+    internal static void ShapeshifterMenu(Actor_Unit selectedUnit)
+    {
+        throw new NotImplementedException();
     }
 }
 

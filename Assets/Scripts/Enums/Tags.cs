@@ -322,8 +322,8 @@ public enum Traits
     GrassImpedence = 161,
     /// <summary>When this unit is absorbed, it passes on all traits listed below "Donor" to the predator.</summary>
     Donor = 163,
-
-
+    /// <summary>Gives the ability to change into different races after acquiring them via absorbing, being reborn, reincarnating, or infiltrating.</summary>
+    Shapeshifter = 164,
 
 
     //Hidden Traits
@@ -403,6 +403,8 @@ public enum Traits
     HypnoticGas = 295,
     /// <summary>Every time digestion progresses, this unit steals one trait from each prey inside them, if only duplicates (or non-assimilable traits) remain, they are turned into exp. Absorbtion steals any that are left.</summary>
     Extraction = 296,
+    /// <summary>Like Shapeshifter, only that the forms can be specific people, including their individual traits. These get swapped out only through player input (Cheat Trait)</summary>
+    Skinwalker = 297,
 
     // Growth-related section
     /// <summary>Unit increases in size when absorbing prey.</summary>
