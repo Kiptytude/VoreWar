@@ -117,11 +117,8 @@ public class AdvancedUnitCommands : MonoBehaviour
             button = Buttons[index];
             button.onClick.RemoveAllListeners();
         }
-        bool CastableWithoutMana = false;
-        if (spell.SpellType == SpellTypes.AmplifyMagic ||
-            spell.SpellType == SpellTypes.Evocation)
-            CastableWithoutMana = true; 
-        button.GetComponentInChildren<Text>().text = spell.Name + ((actor.Unit.Mana >= spell.ManaCost || CastableWithoutMana) ? "" : "\n(no mana)");
+
+        button.GetComponentInChildren<Text>().text = spell.Name + ((actor.Unit.Mana >= spell.ManaCost || spell.IsFree) ? "" : "\n(no mana)");
         button.onClick.AddListener(new UnityEngine.Events.UnityAction(() => State.GameManager.TacticalMode.SetMagicMode(spell)));
 
         button.onClick.AddListener(() =>
@@ -138,7 +135,7 @@ public class AdvancedUnitCommands : MonoBehaviour
         cb.pressedColor = pressed;
         button.colors = cb;
 
-        button.interactable = (actor.Unit.Mana >= spell.ManaCost || CastableWithoutMana);
+        button.interactable = (actor.Unit.Mana >= spell.ManaCost || spell.IsFree);
         button.gameObject.SetActive(true);
         index++;
         return button;

@@ -860,7 +860,7 @@ static class SpellList
             Name = "Evocation",
             Id = "evocation",
             SpellType = SpellTypes.Evocation,
-            Description = "Regenerate mana based on Spell Force stacks",
+            Description = "Regenerate mana per Spell Force stacks, requires at least one Spell Force stack",
             AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Ally },
             Range = new Range(0),
             Tier = 0,
@@ -872,7 +872,7 @@ static class SpellList
                 a.Unit.RestoreMana(2);
                 a.CastSpell(Evocation, a);
                 int spellforce = a.Unit.GetStatusEffect(StatusEffectType.SpellForce).Duration;
-                a.Unit.RestoreMana(spellforce * 3);
+                a.Unit.RestoreMana(spellforce * 10);
                 TacticalGraphicalEffects.CreateGenericMagic(a.Position, t.Position, t, TacticalGraphicalEffects.SpellEffectIcon.PurplePlus);
             }
         };
@@ -909,7 +909,7 @@ static class SpellList
             Range = new Range(6),
             Tier = 0,
             AreaOfEffect = 0,
-            Damage = (a, t) => ((a.Unit.Mana/10) * a.Unit.GetStatusEffect(StatusEffectType.SpellForce).Duration) + a.Unit.GetStat(Stat.Mind),
+            Damage = (a, t) => ((a.Unit.Mana/10) * a.Unit.GetStatusEffect(StatusEffectType.SpellForce).Duration) + a.Unit.GetStat(Stat.Mind)/3,
             Resistable = true,
             OnExecute = (a, t) =>
             {
