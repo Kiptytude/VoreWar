@@ -79,8 +79,27 @@ public class Unit
 
     internal int MaxMana => (int)(GetStatBase(Stat.Mind) + GetStatBase(Stat.Will) * 2 * TraitBoosts.ManaMultiplier);
 
-    public int MaxHealth => (int)Math.Ceiling((Stats[(int)Stat.Endurance] * 2 * GetScale() + Stats[(int)Stat.Strength]) ) /** ((10 + RaceParameters.GetTraitData(Race).BodySize) / 30f)*/;
+    private int _maxHealth = 1;
 
+    public int MaxHealth
+    {
+        get
+        {
+            if (Stats == null) return 1;
+            if (!Config.StatBoostsAffectMaxHP) {
+                _maxHealth = Stats[(int)Stat.Endurance] * 2 + Stats[(int)Stat.Strength];
+                 return _maxHealth;
+            }
+
+            int oldMax = _maxHealth;
+            _maxHealth = GetStat(Stat.Endurance) * 2 + GetStat(Stat.Strength);
+            if (oldMax != _maxHealth)
+            {
+                Health += _maxHealth - oldMax;
+            }
+            return _maxHealth;
+        }
+    }
     private int GetHealthBoosts()
     {
         throw new NotImplementedException();
@@ -996,8 +1015,20 @@ public class Unit
     float ExpRequiredMod => TraitBoosts.ExpRequired;
     public bool HasEnoughExpToLevelUp() => Experience >= ExperienceRequiredForNextLevel;
 
-    public float HealthPct => (float)Health / MaxHealth;
+    private float _healthPct = 100f;
+    public float HealthPct
+    {
+        get
+        {
+             _healthPct = (float) Health / MaxHealth;
+            return _healthPct;
+        }
+    }
 
+    internal float GetHealthPctWithoutUpdating() // Important for calculating stat boosts that depend on health percentages, otherwise it's circular.
+    {
+        return _healthPct;
+    }
     internal void ClearAllTraits()
     {
         Tags = new List<Traits>();
@@ -1365,6 +1396,7 @@ public class Unit
 
     protected void RecalculateStatBoosts()
     {
+        float healthBefore = HealthPct;
         RefreshSecrecy();
         InitializeFixedSide(Side);
         if (Tags == null)
@@ -1415,7 +1447,7 @@ public class Unit
                     booster.Boost(TraitBoosts);
             }
         }
-
+        Health = (int)Math.Ceiling(MaxHealth * healthBefore);
     }
 
 

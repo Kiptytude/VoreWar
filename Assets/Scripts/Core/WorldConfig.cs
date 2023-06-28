@@ -305,7 +305,8 @@ public class WorldConfig
             ["ClothingDiscards"] = true,
             ["HideViperSlit"] = false,
             ["BurpOnDigest"] = false,
-            ["FartOnAbsorb"] = false
+            ["FartOnAbsorb"] = false,
+            ["StatBoostsAffectMaxHP"] = false
         };
 
         foreach (Race race in (Race[])Enum.GetValues(typeof(Race)))

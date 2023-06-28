@@ -648,6 +648,8 @@ Does not retroactively affect already created units.";
                     "In the default balance, this value ranges from 50 (compy) to 1200 (dragon).";
             case 257:
                 return @"Enables the Goodra monster packs";
+            case 258:
+                return "Normally only base endurance and strength influence HP. With this, size and other boosts (green/red numbers) will be used as well.";
             default:
                 return "";
         }

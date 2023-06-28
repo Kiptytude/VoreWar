@@ -217,6 +217,8 @@ public class ContentSettings : MonoBehaviour
 
     public Slider MaxArmies;
 
+    public Toggle StatBoostsAffectMaxHP;
+
 
 
     List<ToggleObject> MercToggles;
@@ -317,6 +319,8 @@ public class ContentSettings : MonoBehaviour
             new ToggleObject(BurpOnDigest, "BurpOnDigest", false),
             new ToggleObject(FartOnAbsorb, "FartOnAbsorb", false),
             new ToggleObject(CanUseStomachRubOnEnemies, "CanUseStomachRubOnEnemies", false),
+            new ToggleObject(StatBoostsAffectMaxHP, "StatBoostsAffectMaxHP", false),
+
         };
         MercToggles = new List<ToggleObject>();
         MonsterSpawners = new List<MonsterSpawnerPanel>();

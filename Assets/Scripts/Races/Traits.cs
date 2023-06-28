@@ -250,7 +250,7 @@ internal class ThrillSeeker : Trait, IStatBoost
     public int StatBoost(Unit unit, Stat stat)
     {
         int ret = 0;
-        ret = (int)(unit.GetStatBase(stat) * (0.11f - (0.11f * unit.HealthPct)));
+        ret = (int)(unit.GetStatBase(stat) * (0.11f - (0.11f * unit.GetHealthPctWithoutUpdating())));
         return ret;
     }
 }
