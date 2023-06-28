@@ -2577,13 +2577,11 @@ static class RaceParameters
             },
             RacialTraits = new List<Traits>()
             {
-                Traits.ArcaneBloodline,
+                Traits.ArcaneMagistrate,
                 Traits.SavageSortilege,
                 Traits.ManaDependant,
                 Traits.QuickShooter
             },
-            InnateSpells = new List<SpellTypes>()
-            { SpellTypes.ManaBolt,SpellTypes.ManaVoid, SpellTypes.ManaDrain },
             RaceDescription = "A demi-mouse mage from a different dimension.",
         };
 

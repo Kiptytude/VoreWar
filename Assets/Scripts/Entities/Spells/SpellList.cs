@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using UnityEngine.Experimental.UIElements;
 
@@ -60,9 +61,11 @@ static class SpellList
 
     static internal readonly Spell Purify;
 
-    static internal readonly Spell ManaDrain;
-    static internal readonly DamageSpell ManaBolt;
-    static internal readonly DamageSpell ManaVoid;
+    static internal readonly Spell AmplifyMagic;
+    static internal readonly Spell Evocation;
+    static internal readonly DamageSpell SpellBurst;
+    static internal readonly DamageSpell ArcaneDevistation;
+
     static internal readonly StatusSpell AlraunePuff;
     static internal readonly StatusSpell Web;
     static internal readonly StatusSpell GlueBomb;
@@ -827,33 +830,59 @@ static class SpellList
         };
         SpellDict[SpellTypes.Purify] = Purify;
 
-        ManaDrain = new Spell()
+        AmplifyMagic = new Spell()
         {
-            Name = "Siphon Mana",
-            Id = "mana-drain",
-            SpellType = SpellTypes.ManaDrain,
-            Description = "Siphon 20% of a target's mana",
-            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy, AbilityTargets.Ally },
-            Range = new Range(5),
+            Name = "Amplify Magic",
+            Id = "amplify-magic",
+            SpellType = SpellTypes.AmplifyMagic,
+            Description = "Grant unit and nearby allies a stack of Spell Force",
+            AcceptibleTargets = new List<AbilityTargets>() {AbilityTargets.Ally },
+            Range = new Range(1),
             Tier = 0,
-            AreaOfEffect = 0,
+            AreaOfEffect = 1,
             Resistable = false,
+            IsFree = true,
             OnExecute = (a, t) =>
             {
-                if(t.Unit.SpendMana(a.Unit.MaxMana/5))
+                a.Unit.RestoreMana(2);
+                a.CastSpell(AmplifyMagic, t);
+                foreach (var ally in TacticalUtilities.UnitsWithinTiles(t.Position, 1).Where(s => s.Unit.IsDead == false && s.Unit.Side == a.Unit.Side))
                 {
-                    a.Unit.RestoreMana(a.Unit.MaxMana/5);
-                    TacticalGraphicalEffects.CreateGenericMagic(t.Position, a.Position, a, TacticalGraphicalEffects.SpellEffectIcon.Buff);
+                    ally.Unit.AddSpellForce();
+                    TacticalGraphicalEffects.CreateGenericMagic(a.Position, ally.Position, ally, TacticalGraphicalEffects.SpellEffectIcon.Buff);
                 }
             }
         };
-        SpellDict[SpellTypes.ManaDrain] = ManaDrain;
+        SpellDict[SpellTypes.AmplifyMagic] = AmplifyMagic;
 
-        ManaBolt = new DamageSpell()
+        Evocation = new Spell()
         {
-            Name = "ManaBolt",
-            Id = "mana-bolt",
-            SpellType = SpellTypes.ManaBolt,
+            Name = "Evocation",
+            Id = "evocation",
+            SpellType = SpellTypes.Evocation,
+            Description = "Regenerate mana based on Spell Force stacks",
+            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Ally },
+            Range = new Range(0),
+            Tier = 0,
+            AreaOfEffect = 0,
+            Resistable = false,
+            IsFree = true,
+            OnExecute = (a, t) =>
+            {
+                a.Unit.RestoreMana(2);
+                a.CastSpell(Evocation, a);
+                int spellforce = a.Unit.GetStatusEffect(StatusEffectType.SpellForce).Duration;
+                a.Unit.RestoreMana(spellforce * 3);
+                TacticalGraphicalEffects.CreateGenericMagic(a.Position, t.Position, t, TacticalGraphicalEffects.SpellEffectIcon.PurplePlus);
+            }
+        };
+        SpellDict[SpellTypes.Evocation] = Evocation;
+
+        SpellBurst = new DamageSpell()
+        {
+            Name = "SpellBurst",
+            Id = "spell-burst",
+            SpellType = SpellTypes.SpellBurst,
             Description = "Deals increased damage based on unit's current mana",
             AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy},
             Range = new Range(6),
@@ -865,37 +894,32 @@ static class SpellList
             OnExecute = (a, t) =>
             {
                 TacticalGraphicalEffects.CreateGenericMagic(a.Position, t.Position, t);
-                a.CastOffensiveSpell(ManaBolt, t);
+                a.CastOffensiveSpell(SpellBurst, t);
             }
         };
-        SpellDict[SpellTypes.ManaBolt] = ManaBolt;
+        SpellDict[SpellTypes.SpellBurst] = SpellBurst;
 
-        ManaVoid = new DamageSpell()
+        ArcaneDevistation = new DamageSpell()
         {
-            Name = "ManaVoid",
-            Id = "mana-bolt",
-            SpellType = SpellTypes.ManaVoid,
-            Description = "Deals increased damage based on target's current mana",
+            Name = "Arcane Devistation",
+            Id = "arcane-devistation",
+            SpellType = SpellTypes.ArcaneDevistation,
+            Description = "Deals massive damage, damage is increased by current spellforce stacks and mana, but uses all of both.",
             AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy },
-            Range = new Range(4),
+            Range = new Range(6),
             Tier = 0,
             AreaOfEffect = 0,
-            ResistanceMult = 0.5f,
-            Damage = (a, t) => TacticalUtilities.UnitsWithinTiles(t.Position, 1).Sum(s=>s.Unit.Mana) + a.Unit.GetStat(Stat.Mind) / 5,
+            Damage = (a, t) => ((a.Unit.Mana/10) * a.Unit.GetStatusEffect(StatusEffectType.SpellForce).Duration) + a.Unit.GetStat(Stat.Mind),
             Resistable = true,
             OnExecute = (a, t) =>
             {
+                a.CastOffensiveSpell(ArcaneDevistation, t);
                 TacticalGraphicalEffects.CreateGenericMagic(a.Position, t.Position, t);
-                a.CastOffensiveSpell(ManaVoid, t);
-            },
-            OnExecuteTile = (a, l) =>
-            {
-                TacticalGraphicalEffects.CreateGenericMagic(a.Position, l, null);
-                a.CastOffensiveSpell(Pyre, null, l);
-            },
+                a.Unit.StatusEffects.Remove(a.Unit.GetStatusEffect(StatusEffectType.SpellForce));
+                a.Unit.SpendMana(a.Unit.Mana);
+            }
         };
-        SpellDict[SpellTypes.ManaVoid] = ManaVoid;
-
+        SpellDict[SpellTypes.ArcaneDevistation] = ArcaneDevistation;
     }
 
 
@@ -917,10 +941,12 @@ public class Spell
     internal bool Resistable;
     internal float ResistanceMult = 1;
     internal Action<Actor_Unit, Actor_Unit> OnExecute;
+    internal bool IsFree = false;
+    
 
     internal bool TryCast(Actor_Unit actor, Vec2i location)
     {
-        if (actor.Unit.Mana >= ManaCost && actor.Movement > 0)
+        if ((actor.Unit.Mana >= ManaCost || IsFree) && actor.Movement > 0)
         {
             int startMana = actor.Unit.Mana;
             OnExecuteTile(actor, location);
@@ -935,7 +961,7 @@ public class Spell
     }
     internal bool TryCast(Actor_Unit actor, Actor_Unit target)
     {
-        if (actor.Unit.Mana >= ManaCost && actor.Movement > 0)
+        if ((actor.Unit.Mana >= ManaCost || IsFree) && actor.Movement > 0)
         {
             int startMana = actor.Unit.Mana;
             OnExecute(actor, target);

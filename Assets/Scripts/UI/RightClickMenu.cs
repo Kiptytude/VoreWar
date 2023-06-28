@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -14,6 +15,8 @@ public class RightClickMenu : MonoBehaviour
     Button[] PounceButtons;
     public Transform PouncePanel;
     RectTransform PounceRect;
+
+    public List<SpellTypes> CastableWithoutMana = new List<SpellTypes> { SpellTypes.AmplifyMagic, SpellTypes.Evocation };
 
     bool activeWait;
     bool pounceNeedsRefresh;
@@ -439,12 +442,12 @@ public class RightClickMenu : MonoBehaviour
 
     private int AddSpell(Spell spell, Actor_Unit actor, Actor_Unit target, int currentButton, int range, float spellChance)
     {
-        if (actor.Unit.Mana >= spell.ManaCost)
+        if (actor.Unit.Mana >= spell.ManaCost || CastableWithoutMana.Contains(spell.SpellType))
             Buttons[currentButton].GetComponentInChildren<Text>().text = $"{spell.Name} {(spell.Resistable ? Mathf.Round(100 * spellChance).ToString() : "100")}%";
         else
             Buttons[currentButton].GetComponentInChildren<Text>().text = $"{spell.Name} (no mana)";
         Buttons[currentButton].onClick.AddListener(() => spell.TryCast(actor, target));
-        if (range < spell.Range.Min || range > spell.Range.Max || actor.Unit.Mana < spell.ManaCost)
+        if ((range < spell.Range.Min || range > spell.Range.Max || actor.Unit.Mana < spell.ManaCost) && !CastableWithoutMana.Contains(spell.SpellType))
             Buttons[currentButton].interactable = false;
         Buttons[currentButton].onClick.AddListener(FinishAction);
         currentButton++;
@@ -453,12 +456,12 @@ public class RightClickMenu : MonoBehaviour
 
     private int AddSpellLocation(Spell spell, Actor_Unit actor, Vec2i location, int currentButton, int range, float spellChance)
     {
-        if (actor.Unit.Mana >= spell.ManaCost)
+        if (actor.Unit.Mana >= spell.ManaCost || CastableWithoutMana.Contains(spell.SpellType))
             Buttons[currentButton].GetComponentInChildren<Text>().text = $"{spell.Name}";
         else
             Buttons[currentButton].GetComponentInChildren<Text>().text = $"{spell.Name} (no mana)";
         Buttons[currentButton].onClick.AddListener(() => spell.TryCast(actor, location));
-        if (range < spell.Range.Min || range > spell.Range.Max || actor.Unit.Mana < spell.ManaCost)
+        if ((range < spell.Range.Min || range > spell.Range.Max || actor.Unit.Mana < spell.ManaCost) && !CastableWithoutMana.Contains(spell.SpellType))
             Buttons[currentButton].interactable = false;
         Buttons[currentButton].onClick.AddListener(FinishAction);
         currentButton++;

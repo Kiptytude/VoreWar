@@ -315,7 +315,7 @@ public enum Traits
     CheapShot = 159, // Critical hits stun
     StaggeringForce = 160, // Critical hits stagger
     SavageSortilege = 161, //Unit Can critically strike magic attacks
-    ArcaneBloodline = 162, //Unit can use health as mana, Gain 3 Mana Based spells
+    ArcaneMagistrate = 162, //Unit gains access to a powerful set of spells
 
 
     //Hidden Traits

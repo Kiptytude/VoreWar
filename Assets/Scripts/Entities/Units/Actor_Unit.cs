@@ -2,6 +2,7 @@
 using OdinSerializer;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.Experimental.UIElements.GraphView;
 using UnityEngine;
 
 public class Actor_Unit
@@ -343,6 +344,14 @@ public class Actor_Unit
         if (unit.HasTrait(Traits.ForceFeeder) && State.World?.ItemRepository != null) //protection for the create strat screen
         {
             unit.MultiUseSpells.Add(SpellList.ForceFeed.SpellType);
+            unit.UpdateSpells();
+        }
+        if (unit.HasTrait(Traits.ArcaneMagistrate) && State.World?.ItemRepository != null) //protection for the create strat screen
+        {
+            unit.MultiUseSpells.Add(SpellList.AmplifyMagic.SpellType);
+            unit.MultiUseSpells.Add(SpellList.Evocation.SpellType);
+            unit.MultiUseSpells.Add(SpellList.SpellBurst.SpellType);
+            unit.MultiUseSpells.Add(SpellList.ArcaneDevistation.SpellType);
             unit.UpdateSpells();
         }
     }
@@ -1193,6 +1202,7 @@ public class Actor_Unit
             {
                 grazechance = GrazeCheck(this, target);
             }
+            grazechance += Unit.TraitBoosts.Outgoing.GrazeRateShift - target.Unit.TraitBoosts.Incoming.GrazeRateShift;
             if (State.Rand.NextDouble() < grazechance)
             {
                 float calculatedGrazeDamage = Unit.TraitBoosts.Outgoing.GrazeDamageMult * target.Unit.TraitBoosts.Incoming.GrazeDamageMult;
@@ -1206,6 +1216,7 @@ public class Actor_Unit
             {
                 critchance = CritCheck(this, target);
             }
+            critchance += Unit.TraitBoosts.Outgoing.CritRateShift - target.Unit.TraitBoosts.Incoming.CritRateShift;
             if (State.Rand.NextDouble() < critchance)
             {
                 float calculatedCritDamage = Unit.TraitBoosts.Outgoing.CritDamageMult * target.Unit.TraitBoosts.Incoming.CritDamageMult;
@@ -1254,6 +1265,9 @@ public class Actor_Unit
                         Unit.RemoveTenacious();
                     if (target.Unit.HasTrait(Traits.Tenacious))
                         target.Unit.AddTenacious();
+                    if (target.Unit.GetStatusEffect(StatusEffectType.SpellForce) != null)                  
+                        target.Unit.RemoveSpellForce();
+                    
                     TacticalGraphicalEffects.CreateProjectile(this, target);
                     State.GameManager.TacticalMode.TacticalStats.RegisterHit(BestRanged, Mathf.Min(damage, remainingHealth), Unit.Side);
                     TacticalUtilities.Log.RegisterHit(Unit, target.Unit, weapon, damage, chance);
@@ -1322,6 +1336,8 @@ public class Actor_Unit
                         Unit.RemoveTenacious();
                     if (target.Unit.HasTrait(Traits.Tenacious))
                         target.Unit.AddTenacious();
+                    if (target.Unit.GetStatusEffect(StatusEffectType.SpellForce) != null)
+                        target.Unit.RemoveSpellForce();
                     if (target.Unit.HasTrait(Traits.Toxic) && State.Rand.Next(8) == 0)
                         Unit.ApplyStatusEffect(StatusEffectType.Poisoned, 2 + target.Unit.GetStat(Stat.Endurance) / 20, 3);
                     if (Unit.HasTrait(Traits.ForcefulBlow))
@@ -1467,6 +1483,21 @@ public class Actor_Unit
                 damage = (int)Mathf.Round(damage * Unit.TraitBoosts.FireDamageTaken);
             if (spell.DamageType == DamageTypes.Poison && Unit.HasTrait(Traits.PoisonSpit))
                 damage = 0;
+            if (attacker.Unit.HasTrait(Traits.SavageSortilege))
+            {
+                float critchance = Config.BaseCritChance;
+                if (Config.StatCrit)
+                {
+                    critchance = CritCheck(attacker, this);
+                }
+                critchance += attacker.Unit.TraitBoosts.Outgoing.CritRateShift - Unit.TraitBoosts.Incoming.CritRateShift;
+                if (State.Rand.NextDouble() < critchance)
+                {
+                    float calculatedCritDamage = attacker.Unit.TraitBoosts.Outgoing.CritDamageMult * Unit.TraitBoosts.Incoming.CritDamageMult;
+                    damage *= (int)((calculatedCritDamage) * Config.CritDamageMod);
+
+                }
+            }
             State.GameManager.TacticalMode.TacticalStats.RegisterHit(spell, Mathf.Min(damage, Unit.Health), attacker.Unit.Side);
             Damage(damage, true);
             State.GameManager.TacticalMode.Log.RegisterSpellHit(attacker.Unit, Unit, spell.SpellType, damage, chance);
@@ -2029,7 +2060,7 @@ public class Actor_Unit
         Unit.Heal(Unit.TraitBoosts.HealthRegen);
         if (Unit.HasTrait(Traits.Perseverance) && TurnsSinceLastDamage > 3)
         {
-            Unit.HealPercentage(0.05f);
+            Unit.HealPercentage(0.03f * TurnsSinceLastDamage);
         }
         if (Unit.HasTrait(Traits.ManaDependant))
         {
@@ -2222,7 +2253,8 @@ public class Actor_Unit
             ratio = (float)(actor.Unit.GetStat(Stat.Mind) / (target.Unit.GetStat(Stat.Will) + target.Unit.GetStat(Stat.Endurance)));
         }
 
-        ratio += actor.Unit.TraitBoosts.Outgoing.CritRateShift + Config.BaseCritChance;
+        if (Config.BaseCritChance > ratio)
+            ratio = Config.BaseCritChance;
 
         return ratio;
     }
@@ -2235,7 +2267,9 @@ public class Actor_Unit
         }
         float ratio = (float)((actor.Unit.GetStat(Stat.Dexterity) + actor.Unit.GetStat(Stat.Strength)) / 2) / (target.Unit.GetStat(Stat.Endurance) * target.Unit.GetStat(Stat.Endurance) + target.Unit.GetStat(Stat.Will));
 
-        ratio += actor.Unit.TraitBoosts.Outgoing.GrazeRateShift + Config.BaseGrazeChance;
+        if (Config.BaseGrazeChance > ratio)
+            ratio = Config.BaseGrazeChance;
+
         return ratio;
     }
 	

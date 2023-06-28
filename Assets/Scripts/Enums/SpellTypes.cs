@@ -31,10 +31,10 @@
 
     Purify = 21,
 
-    ManaDrain = 22,
-    ManaBolt = 23,
-    ManaVoid = 24,
-    ManaVoidExplosion = 25,
+    AmplifyMagic = 60,
+    Evocation = 61,
+    SpellBurst = 62,
+    ArcaneDevistation = 63,
 
     AlraunePuff = 70,
     Web = 71,

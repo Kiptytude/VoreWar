@@ -2202,6 +2202,34 @@ public class Unit
 
     }
 
+    internal void AddSpellForce()
+    {
+        var force = GetStatusEffect(StatusEffectType.SpellForce);
+        if (force != null)
+        {
+            force.Duration++;
+            force.Strength++;
+        }
+        else
+        {
+            ApplyStatusEffect(StatusEffectType.SpellForce, 1, 1);
+        }
+
+    }
+
+    internal void RemoveSpellForce()
+    {
+        var force = GetStatusEffect(StatusEffectType.SpellForce);
+        if (force != null)
+        {
+            force.Duration--;
+            force.Strength--;
+            if (force.Duration == 0)
+                StatusEffects.Remove(force);
+        }
+
+    }
+
     internal StatusEffect GetLongestStatusEffect(StatusEffectType type)
     {
         return StatusEffects.Where(s => s.Type == type).OrderByDescending(s => s.Duration).FirstOrDefault();
@@ -2217,7 +2245,7 @@ public class Unit
             NonFatalDamage((int)effect.Strength, "poison");
         foreach (var eff in StatusEffects.ToList())
         {
-            if (eff.Type == StatusEffectType.BladeDance || eff.Type == StatusEffectType.Tenacious)
+            if (eff.Type == StatusEffectType.BladeDance || eff.Type == StatusEffectType.Tenacious || eff.Type == StatusEffectType.SpellForce)
                 continue;
             eff.Duration -= 1;
             if (eff.Duration <= 0)
