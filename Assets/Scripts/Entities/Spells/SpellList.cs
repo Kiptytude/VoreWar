@@ -883,18 +883,18 @@ static class SpellList
             Name = "SpellBurst",
             Id = "spell-burst",
             SpellType = SpellTypes.SpellBurst,
-            Description = "Deals increased damage based on unit's current mana",
-            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy},
-            Range = new Range(6),
+            Description = "Deals damage based on unit and targets mind stat",
+            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Ally},
+            Range = new Range(3),
             Tier = 0,
             AreaOfEffect = 0,
-            ResistanceMult = 0.5f,
-            Damage = (a, t) => a.Unit.Mana + a.Unit.GetStat(Stat.Mind) / 5,
-            Resistable = true,
+            Damage = (a, t) => a.Unit.GetStat(Stat.Mind) / 10 + a.Unit.GetStat(Stat.Mind) / 10,
+            Resistable = false,
             OnExecute = (a, t) =>
             {
-                TacticalGraphicalEffects.CreateGenericMagic(a.Position, t.Position, t);
                 a.CastOffensiveSpell(SpellBurst, t);
+                TacticalGraphicalEffects.CreateGenericMagic(a.Position, t.Position, t);
+                a.Unit.StatusEffects.Remove(a.Unit.GetStatusEffect(StatusEffectType.SpellForce));
             }
         };
         SpellDict[SpellTypes.SpellBurst] = SpellBurst;
@@ -904,18 +904,17 @@ static class SpellList
             Name = "Arcane Devistation",
             Id = "arcane-devistation",
             SpellType = SpellTypes.ArcaneDevistation,
-            Description = "Deals massive damage, damage is increased by current spellforce stacks and mana, but uses all of both.",
+            Description = "Deals massive damage, damage is increased by current mana, but uses all it.",
             AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy },
             Range = new Range(6),
             Tier = 0,
             AreaOfEffect = 0,
-            Damage = (a, t) => ((a.Unit.Mana/10) * a.Unit.GetStatusEffect(StatusEffectType.SpellForce).Duration) + a.Unit.GetStat(Stat.Mind)/3,
+            Damage = (a, t) => (a.Unit.Mana/5)+ a.Unit.GetStat(Stat.Mind)/2,
             Resistable = true,
             OnExecute = (a, t) =>
             {
                 a.CastOffensiveSpell(ArcaneDevistation, t);
                 TacticalGraphicalEffects.CreateGenericMagic(a.Position, t.Position, t);
-                a.Unit.StatusEffects.Remove(a.Unit.GetStatusEffect(StatusEffectType.SpellForce));
                 a.Unit.SpendMana(a.Unit.Mana);
             }
         };
