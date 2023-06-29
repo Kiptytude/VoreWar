@@ -243,6 +243,8 @@ class Lizards : DefaultRaceData
         if (facingFront == true)
         {
             Breasts.layer = 16;
+            if (Config.LizardsHaveNoBreasts)
+                return null;
             if (actor.Unit.HasBreasts == false)
                 {return null;}
             if (actor.SquishedBreasts && actor.Unit.BreastSize >= 3 && actor.Unit.BreastSize <= 6)
@@ -252,6 +254,8 @@ class Lizards : DefaultRaceData
         else
         {
             Breasts.layer = 15;
+            if (Config.LizardsHaveNoBreasts)
+                return null;
             if (actor.Unit.HasBreasts == false)
                 {return null;}
             if (actor.Unit.BreastSize <= 2)
