@@ -1010,6 +1010,7 @@ Turns: {currentTurn}
                 case Race.Lamia:
                     wallType = WallType.Lamia;
                     break;
+                case Race.Youko:
                 case Race.Foxes:
                     wallType = WallType.Fox;
                     break;

@@ -2626,6 +2626,7 @@ internal class RaceTraits
     internal List<VoreType> AllowedVoreTypes = new List<VoreType> { VoreType.Anal, VoreType.Oral, VoreType.CockVore, VoreType.BreastVore, VoreType.Unbirth };
     internal Race SpawnRace = Race.none;
     internal Race ConversionRace = Race.none;
+    internal Race LeaderRace = Race.none;
     internal List<SpellTypes> InnateSpells = new List<SpellTypes>();
     internal RaceStats RaceStats = new RaceStats();
     /// <summary>

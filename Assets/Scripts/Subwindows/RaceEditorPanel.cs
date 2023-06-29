@@ -26,6 +26,7 @@ public class RaceEditorPanel : MonoBehaviour
     public TMP_Dropdown InnateSpellDropdown;
     public TMP_Dropdown SpawnRaceDropdown;
     public TMP_Dropdown ConversionRaceDropdown;
+    public TMP_Dropdown LeaderRaceDropdown;
 
     public TMP_Dropdown TraitDropdown;
     public TextMeshProUGUI TraitList;
@@ -149,6 +150,15 @@ public class RaceEditorPanel : MonoBehaviour
                 ConversionRaceDropdown.options.Add(new TMP_Dropdown.OptionData(race.ToString()));
             }
             ConversionRaceDropdown.RefreshShownValue();
+        }
+
+        if (LeaderRaceDropdown.options?.Any() == false)
+        {
+            foreach (Race race in ((Race[])Enum.GetValues(typeof(Race))).OrderBy((s) => s.ToString()))
+            {
+                LeaderRaceDropdown.options.Add(new TMP_Dropdown.OptionData(race.ToString()));
+            }
+            LeaderRaceDropdown.RefreshShownValue();
         }
 
         if (BannerType.options.Count < 4)
@@ -299,6 +309,8 @@ public class RaceEditorPanel : MonoBehaviour
                     item.SpawnRace = spawnRace;
                 if (Enum.TryParse(ConversionRaceDropdown.options[ConversionRaceDropdown.value].text, out Race conversionRace))
                     item.ConversionRace = conversionRace;
+                if (Enum.TryParse(LeaderRaceDropdown.options[LeaderRaceDropdown.value].text, out Race leaderRace))
+                    item.LeaderRace = leaderRace;    
 
                 item.overrideBoob = OverrideBoob.isOn;
                 item.MinBoob = Convert.ToInt32(MinBoob.text) - 1;
@@ -518,6 +530,16 @@ public class RaceEditorPanel : MonoBehaviour
                 }
 
             ConversionRaceDropdown.RefreshShownValue();
+
+            var leaderRace = State.RaceSettings.GetLeaderRace(race);
+            foreach(TMP_Dropdown.OptionData option in LeaderRaceDropdown.options.ToList())
+                if(option.text == leaderRace.ToString())
+                {
+                    LeaderRaceDropdown.value = LeaderRaceDropdown.options.IndexOf(option);
+                    break;
+                }
+
+            LeaderRaceDropdown.RefreshShownValue();
 
             BodySize.text = item.BodySize.ToString();
             StomachSize.text = item.StomachSize.ToString();

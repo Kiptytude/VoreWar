@@ -236,6 +236,16 @@ class RaceSettings
         return (conversionRace == Race.none) ? race : conversionRace;
     }
 
+    internal Race GetLeaderRace(Race race)
+    {
+        Race leaderRace;
+        if (Races.ContainsKey(race))
+            leaderRace = Get(race).LeaderRace;
+        else
+            leaderRace = RaceParameters.GetRaceTraits(race).LeaderRace; 
+        return (leaderRace == Race.none) ? race : leaderRace;
+    }
+
     //internal Race GetDisplayedGraphic(Race race)
     //{
     //    if (Races.ContainsKey(race))
@@ -292,6 +302,8 @@ class RaceSettingsItem
     internal Race SpawnRace;
     [OdinSerialize]
     internal Race ConversionRace;
+    [OdinSerialize]
+    internal Race LeaderRace;
 
     [OdinSerialize]
     internal RaceStats Stats;
@@ -374,6 +386,7 @@ class RaceSettingsItem
 
         SpawnRace = racePar.SpawnRace;
         ConversionRace = racePar.ConversionRace;
+        LeaderRace = racePar.ConversionRace;
 
         var baseStats = racePar.RaceStats;
 
