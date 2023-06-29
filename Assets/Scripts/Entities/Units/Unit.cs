@@ -371,9 +371,10 @@ public class Unit
 
     internal bool SpendMana(int amount)
     {
-        if (Mana >= amount)
+        int ModifiedManaCost = amount + (amount * (GetStatusEffect(StatusEffectType.SpellForce) != null ? GetStatusEffect(StatusEffectType.SpellForce).Duration/10 : 0));
+        if (Mana >= ModifiedManaCost)
         {
-            Mana -= amount;
+            Mana -= ModifiedManaCost;
             return true;
         }
         return false;
@@ -1091,6 +1092,12 @@ public class Unit
             bonus += GetStatBase(Stat.Agility) * .1f * GetStatusEffect(StatusEffectType.Tenacious).Duration;
         if (stat == Stat.Voracity && GetStatusEffect(StatusEffectType.Tenacious) != null)
             bonus += GetStatBase(Stat.Voracity) * .1f * GetStatusEffect(StatusEffectType.Tenacious).Duration;
+
+        if (stat == Stat.Mind && GetStatusEffect(StatusEffectType.SpellForce) != null)
+        {
+            int stacks = GetStatusEffect(StatusEffectType.SpellForce).Duration;
+            bonus += (5 * stacks) + (GetStatBase(Stat.Voracity) * (stacks/100));
+        }
 
         bonus -= GetStatBase(stat) * (GetStatusEffect(StatusEffectType.Shaken)?.Strength ?? 0);
 

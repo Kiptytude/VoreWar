@@ -117,8 +117,8 @@ public class AdvancedUnitCommands : MonoBehaviour
             button = Buttons[index];
             button.onClick.RemoveAllListeners();
         }
-
-        button.GetComponentInChildren<Text>().text = spell.Name + ((actor.Unit.Mana >= spell.ManaCost || spell.IsFree) ? "" : "\n(no mana)");
+        int ModifiedManaCost = spell.ManaCost + (spell.ManaCost * (actor.Unit.GetStatusEffect(StatusEffectType.SpellForce) != null ? actor.Unit.GetStatusEffect(StatusEffectType.SpellForce).Duration/10: 0));
+        button.GetComponentInChildren<Text>().text = spell.Name + ((actor.Unit.Mana >= ModifiedManaCost || spell.IsFree) ? "" : "\n(no mana)");
         button.onClick.AddListener(new UnityEngine.Events.UnityAction(() => State.GameManager.TacticalMode.SetMagicMode(spell)));
 
         button.onClick.AddListener(() =>
@@ -135,7 +135,7 @@ public class AdvancedUnitCommands : MonoBehaviour
         cb.pressedColor = pressed;
         button.colors = cb;
 
-        button.interactable = (actor.Unit.Mana >= spell.ManaCost || spell.IsFree);
+        button.interactable = (actor.Unit.Mana >= ModifiedManaCost || spell.IsFree);
         button.gameObject.SetActive(true);
         index++;
         return button;

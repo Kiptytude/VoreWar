@@ -46,7 +46,7 @@
     Temptation = 21,
     /// <summary>Unit can be seen in the darkness</summary>
     Illuminated = 22,
-    // <summary>Mind is increased by 5 and spell mana cost by 10% per stack.</summary>
+    // <summary>Mind is increased by 1% + 5 and spell mana cost by 10% per stack.</summary>
     SpellForce = 23,
 }
 

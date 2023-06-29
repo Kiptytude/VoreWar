@@ -440,12 +440,14 @@ public class RightClickMenu : MonoBehaviour
 
     private int AddSpell(Spell spell, Actor_Unit actor, Actor_Unit target, int currentButton, int range, float spellChance)
     {
-        if (actor.Unit.Mana >= spell.ManaCost || spell.IsFree)
+        int ModifiedManaCost = spell.ManaCost +
+                    (spell.ManaCost * (actor.Unit.GetStatusEffect(StatusEffectType.SpellForce) != null ? actor.Unit.GetStatusEffect(StatusEffectType.SpellForce).Duration / 10 : 0));
+        if (actor.Unit.Mana >= ModifiedManaCost || spell.IsFree)
             Buttons[currentButton].GetComponentInChildren<Text>().text = $"{spell.Name} {(spell.Resistable ? Mathf.Round(100 * spellChance).ToString() : "100")}%";
         else
             Buttons[currentButton].GetComponentInChildren<Text>().text = $"{spell.Name} (no mana)";
         Buttons[currentButton].onClick.AddListener(() => spell.TryCast(actor, target));
-        if ((range < spell.Range.Min || range > spell.Range.Max || actor.Unit.Mana < spell.ManaCost) && !spell.IsFree)
+        if ((range < spell.Range.Min || range > spell.Range.Max || actor.Unit.Mana < ModifiedManaCost) && !spell.IsFree)
             Buttons[currentButton].interactable = false;
         Buttons[currentButton].onClick.AddListener(FinishAction);
         currentButton++;
@@ -454,12 +456,15 @@ public class RightClickMenu : MonoBehaviour
 
     private int AddSpellLocation(Spell spell, Actor_Unit actor, Vec2i location, int currentButton, int range, float spellChance)
     {
-        if (actor.Unit.Mana >= spell.ManaCost || spell.IsFree)
+        int ModifiedManaCost = spell.ManaCost + 
+            (spell.ManaCost * (actor.Unit.GetStatusEffect(StatusEffectType.SpellForce) != null ? actor.Unit.GetStatusEffect(StatusEffectType.SpellForce).Duration/10 : 0));
+
+        if (actor.Unit.Mana >= ModifiedManaCost || spell.IsFree)
             Buttons[currentButton].GetComponentInChildren<Text>().text = $"{spell.Name}";
         else
             Buttons[currentButton].GetComponentInChildren<Text>().text = $"{spell.Name} (no mana)";
         Buttons[currentButton].onClick.AddListener(() => spell.TryCast(actor, location));
-        if ((range < spell.Range.Min || range > spell.Range.Max || actor.Unit.Mana < spell.ManaCost) && !spell.IsFree)
+        if ((range < spell.Range.Min || range > spell.Range.Max || actor.Unit.Mana < ModifiedManaCost) && !spell.IsFree)
             Buttons[currentButton].interactable = false;
         Buttons[currentButton].onClick.AddListener(FinishAction);
         currentButton++;

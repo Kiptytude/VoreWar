@@ -883,12 +883,12 @@ static class SpellList
             Name = "SpellBurst",
             Id = "spell-burst",
             SpellType = SpellTypes.SpellBurst,
-            Description = "Deals damage based on unit and targets mind stat",
+            Description = "Deals damage based on unit and targets mind stat, not resistable",
             AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Ally},
             Range = new Range(3),
-            Tier = 0,
+            Tier = 1,
             AreaOfEffect = 0,
-            Damage = (a, t) => a.Unit.GetStat(Stat.Mind) / 10 + a.Unit.GetStat(Stat.Mind) / 10,
+            Damage = (a, t) => t.Unit.GetStat(Stat.Mind) / 10 + a.Unit.GetStat(Stat.Mind) / 10,
             Resistable = false,
             OnExecute = (a, t) =>
             {
@@ -909,7 +909,7 @@ static class SpellList
             Range = new Range(6),
             Tier = 0,
             AreaOfEffect = 0,
-            Damage = (a, t) => (a.Unit.Mana/5)+ a.Unit.GetStat(Stat.Mind)/2,
+            Damage = (a, t) => (a.Unit.Mana/5) + a.Unit.GetStat(Stat.Mind)/2,
             Resistable = true,
             OnExecute = (a, t) =>
             {
