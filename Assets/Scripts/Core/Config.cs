@@ -200,6 +200,7 @@ static class Config
     internal static float TacticalTerrainFrequency => World.TacticalTerrainFrequency;
 
     internal static float AutoSurrenderChance => World.AutoSurrenderChance;
+    internal static float AutoSurrenderDefectChance => World.AutoSurrenderDefectChance;
 
     internal static float OverallMonsterSpawnRateModifier => World.OverallMonsterSpawnRateModifier;
     internal static float OverallMonsterCapModifier => World.OverallMonsterCapModifier;
