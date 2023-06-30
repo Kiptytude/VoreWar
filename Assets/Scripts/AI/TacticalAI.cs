@@ -1008,7 +1008,7 @@ public abstract class TacticalAI : ITacticalAI
         Actor_Unit reserveTarget = targets[0].actor;
         while (targets.Any())
         {
-            if (targets[0].distance <= actor.BestRanged.Range && (targets[0].distance > 1 || (targets[0].distance > 0 && actor.BestRanged.Omni)))
+            if (targets[0].distance <= actor.BestRanged.Range && targets[0].actor.InSight && (targets[0].distance > 1 || (targets[0].distance > 0 && actor.BestRanged.Omni)))
             {
                 actor.Attack(targets[0].actor, true);
                 didAction = true;
@@ -1049,7 +1049,7 @@ public abstract class TacticalAI : ITacticalAI
         {
             if (target?.Unit == null) //If this doesn't prevent exceptions I might have to just try/catch this function.  
                 continue;
-            if (target.Targetable == true && target.InSight && TacticalUtilities.TreatAsHostile(actor, target) && (target.Surrendered == false || (onlySurrenderedEnemies && lackPredators) || currentTurn > 150))
+            if (target.Targetable == true && TacticalUtilities.TreatAsHostile(actor, target) && (target.Surrendered == false || (onlySurrenderedEnemies && lackPredators) || currentTurn > 150))
             {
                 int distance = target.Position.GetNumberOfMovesDistance(position);
                 float chance = target.GetAttackChance(actor, true, true);
@@ -1096,7 +1096,7 @@ public abstract class TacticalAI : ITacticalAI
         Actor_Unit reserveTarget = targets[0].actor;
         while (targets.Any())
         {
-            if (targets[0].distance < 2)
+            if (targets[0].distance < 2 && targets[0].actor.InSight)
             {
                 actor.Attack(targets[0].actor, false);
                 didAction = true;
@@ -1104,7 +1104,7 @@ public abstract class TacticalAI : ITacticalAI
             }
             else
             {
-                if (targets[0].actor.Position.GetNumberOfMovesDistance(actor.Position) < actor.Movement) //discard the clearly impossible
+                if (targets[0].actor.Position.GetNumberOfMovesDistance(actor.Position) < actor.Movement && targets[0].actor.InSight) //discard the clearly impossible
                 {
                     if (actor.Unit.Race == Race.Asura && TacticalActionList.TargetedDictionary[SpecialAction.ShunGokuSatsu].AppearConditional(actor))
                         MoveToAndAction(actor, targets[0].actor.Position, 1, actor.Movement, () => actor.ShunGokuSatsu(targets[0].actor));
@@ -1140,7 +1140,7 @@ public abstract class TacticalAI : ITacticalAI
             return targets;
         foreach (Actor_Unit unit in actors)
         {
-            if (unit.Targetable == true && unit.InSight && TacticalUtilities.TreatAsHostile(actor, unit) && (unit.Surrendered == false || (onlySurrenderedEnemies && lackPredators) || currentTurn > 150))
+            if (unit.Targetable == true && TacticalUtilities.TreatAsHostile(actor, unit) && (unit.Surrendered == false || (onlySurrenderedEnemies && lackPredators) || currentTurn > 150))
             {
 
                 int distance = unit.Position.GetNumberOfMovesDistance(position);
@@ -1619,7 +1619,7 @@ public abstract class TacticalAI : ITacticalAI
                     if (actor.Unit.GetStatusEffect(statSpell.Type) != null)
                         continue;
                 }
-                if (unit.Targetable == true && unit.InSight && unit.Surrendered == false)
+                if (unit.Targetable == true && unit.Surrendered == false)
                 {
                     int distance = unit.Position.GetNumberOfMovesDistance(position);
                     float chance = unit.GetMagicChance(unit, spell);

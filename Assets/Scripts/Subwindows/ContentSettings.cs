@@ -681,7 +681,7 @@ public class ContentSettings : MonoBehaviour
         Config.World.HermTraits = RaceEditorPanel.TextToTraitList(PlayerPrefs.GetString("HermTraits", ""));
         Config.World.OverallMonsterCapModifier = PlayerPrefs.GetFloat("OverallMonsterCapModifier", 1);
         Config.World.OverallMonsterSpawnRateModifier = PlayerPrefs.GetFloat("OverallMonsterSpawnRateModifier", 1);
-        Config.World.RevealTurn = PlayerPrefs.GetInt("RevealTurn", 1);
+        Config.World.RevealTurn = PlayerPrefs.GetInt("RevealTurn", 50);
         MonsterDropdownChanged();
         if (Config.World.SpawnerInfo == null)
             Config.World.ResetSpawnerDictionary();

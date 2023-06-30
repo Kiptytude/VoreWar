@@ -3910,13 +3910,6 @@ Turns: {currentTurn}
             autoAdvancing = false;
             return true;
         }
-		 else if (currentTurn < Config.World.RevealTurn)
-        {
-            foreach (Actor_Unit actor in units)
-            {
-                actor.InSight = true;
-            }
-        }
         return false;
     }
 
