@@ -3476,6 +3476,10 @@ Turns: {currentTurn}
     {
         AllSurrenderedCheck();
         Log.RegisterNewTurn(attackersTurn ? AttackerName : DefenderName, currentTurn);
+        if (State.World.IsNight)
+        {
+            UpdateFog();
+        }
         for (int i = 0; i < units.Count; i++)
         {
             if (units[i].Unit.IsDead == false && units[i].Unit.Side != activeSide)

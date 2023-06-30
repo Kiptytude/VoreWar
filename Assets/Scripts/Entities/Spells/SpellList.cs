@@ -888,7 +888,7 @@ static class SpellList
             Range = new Range(3),
             Tier = 1,
             AreaOfEffect = 0,
-            Damage = (a, t) => t.Unit.GetStat(Stat.Mind) / 10 + a.Unit.GetStat(Stat.Mind) / 10,
+            Damage = (a, t) => t.Unit.GetStat(Stat.Mind) / 5 + a.Unit.GetStat(Stat.Mind) / 5,
             Resistable = false,
             OnExecute = (a, t) =>
             {
