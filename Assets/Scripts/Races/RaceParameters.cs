@@ -380,9 +380,15 @@ static class RaceParameters
             FavoredStat = Stat.Mind,
             RacialTraits = new List<Traits>()
         {
-            Traits.ArtfulDodge,
-            Traits.ThrillSeeker
+            Traits.Charmer,
+            Traits.Temptation,
+            Traits.Possession,
+            Traits.ForceFeeder,
+            Traits.ManaDrain,
+            Traits.CreateSpawn,
+            Traits.SeductiveTouch,
         },
+            SpawnRace = Race.Whisp,
             RaceDescription = "",
         };
 
@@ -1617,7 +1623,7 @@ static class RaceParameters
             StomachSize = 10,
             HasTail = false,
             FavoredStat = Stat.Mind,
-            AllowedVoreTypes = new List<VoreType> { },
+            AllowedVoreTypes = new List<VoreType> { VoreType.Oral, VoreType.Unbirth, VoreType.BreastVore, VoreType.CockVore, VoreType.Anal },
             ExpMultiplier = 1.1f,
             PowerAdjustment = 1.2f,
             RaceStats = new RaceStats()
@@ -1633,9 +1639,13 @@ static class RaceParameters
             },
             RacialTraits = new List<Traits>()
         {
-                Traits.Prey,
                 Traits.Whispers,
-        },
+                Traits.Corruption,
+                Traits.ForceFeeder,
+                Traits.Metamorphosis,
+                Traits.GreaterChangeling,
+            },
+            SpawnRace = Race.Youko,
             RaceDescription = ""
         };
 
@@ -2622,6 +2632,8 @@ internal class RaceTraits
     internal bool HasTail;
     internal Stat FavoredStat;
     internal List<Traits> RacialTraits;
+    internal List<Traits> LeaderTraits;
+    internal List<Traits> SpawnTraits;
     //internal List<Traits> RandomTraits;
     internal List<VoreType> AllowedVoreTypes = new List<VoreType> { VoreType.Anal, VoreType.Oral, VoreType.CockVore, VoreType.BreastVore, VoreType.Unbirth };
     internal Race SpawnRace = Race.none;

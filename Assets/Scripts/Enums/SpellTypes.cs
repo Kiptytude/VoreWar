@@ -41,6 +41,7 @@
 
     ViperDamage = 110,
     ForceFeed = 111,
-
+    AssumeForm = 112,
+    RevertForm = 113,
 }
 

@@ -558,6 +558,14 @@ public class HoveringTooltip : MonoBehaviour
                return "Units that are put under a mindcontrol (e.g. Charm, Hypnosis) effect by this unit want to force-feed themselves to it or its close allies.";
             case Traits.Whispers:
                 return "When eaten, Predator is afflicted by Prey's curse, and has a chance to be charmed each round";
+            case Traits.TraitStealer:
+                return "While digesting, , Predator is able to use prey's normal traits";
+            case Traits.Changeling:
+                return "While Absorbing a prey, Becomes that prey's Race until absorption";
+            case Traits.GreaterChangeling:
+                return "While digesing a prey, Becomes that prey's Race until absorption";
+            case Traits.TrueChangeling:
+                return "While digesing a prey, Becomes that prey's Race until dispelled";    
         }  
         return "<b>This trait needs a tooltip!</b>";
     }

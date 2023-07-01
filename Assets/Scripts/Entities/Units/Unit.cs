@@ -47,7 +47,7 @@ public class Unit
     [OdinSerialize]
     public bool hiddenFixedSide = false;
 
-    public static List<Traits> secretTags = new List<Traits>() { Traits.Infiltrator, Traits.Corruption, Traits.Parasite, Traits.Metamorphosis, Traits.Possession, Traits.Reincarnation, Traits.InfiniteReincarnation, Traits.Transmigration, Traits.InfiniteTransmigration, Traits.Untamable};
+    public static List<Traits> secretTags = new List<Traits>() { Traits.Infiltrator, Traits.Corruption, Traits.Parasite, Traits.Metamorphosis, Traits.Possession, Traits.Changeling, Traits.Reincarnation, Traits.InfiniteReincarnation, Traits.Transmigration, Traits.InfiniteTransmigration, Traits.Untamable};
 
     [OdinSerialize]
     public Race Race;
@@ -270,12 +270,38 @@ public class Unit
     internal List<SpellTypes> MultiUseSpells = new List<SpellTypes>();  // This is so much more straightforward than adding Special Actions
 
     [OdinSerialize]
+    internal Unit _hiddenUnit = null;
+    public Unit HiddenUnit
+    {
+        get
+        {
+            return (_hiddenUnit == null) ? this : _hiddenUnit;
+        }
+    }
+
+    public Race HiddenRace
+    {
+        get
+        {
+            return (_hiddenUnit == null) ? Race : _hiddenUnit.Race;
+        }
+    }
+
+    public int[] HiddenStats
+    {
+        get
+        {
+            return (_hiddenUnit == null) ? Stats : _hiddenUnit.Stats;
+        }
+    }
+
+    [OdinSerialize]
     private Race _spawnRace;
     public Race SpawnRace
     {
         get
         {
-            return (_spawnRace == Race.none) ? Race : _spawnRace;
+            return (_spawnRace == Race.none) ? HiddenRace : _spawnRace;
         }
         set => _spawnRace = value;
     }
@@ -285,7 +311,7 @@ public class Unit
     {
         get
         {
-            return (_conversionRace == Race.none) ? Race : _conversionRace;
+            return (_conversionRace == Race.none) ? HiddenRace : _conversionRace;
         }
         set => _conversionRace = value;
     }
@@ -439,6 +465,8 @@ public class Unit
     protected List<Traits> TemporaryTraits;
     [OdinSerialize]
     protected List<Traits> SharedTraits;
+    [OdinSerialize]
+    protected List<Traits> PersistentSharedTraits;
 
     /// <summary>
     /// Traits that are considered to be permanent, i.e. do not disappear during refreshes
@@ -475,7 +503,14 @@ public class Unit
     {
         Race = race;
         Stats = new int[(int)Stat.None];
-        RandomSkills();
+        Stats[(int)Stat.Strength] = 6 + State.Rand.Next(9);
+        Stats[(int)Stat.Dexterity] = 6 + State.Rand.Next(9);
+        Stats[(int)Stat.Endurance] = 8 + State.Rand.Next(6);
+        Stats[(int)Stat.Mind] = 6 + State.Rand.Next(8);
+        Stats[(int)Stat.Will] = 6 + State.Rand.Next(8);
+        Stats[(int)Stat.Agility] = 6 + State.Rand.Next(5);
+        Stats[(int)Stat.Voracity] = 5 + State.Rand.Next(7);
+        Stats[(int)Stat.Stomach] = 12 + State.Rand.Next(4);
         Health = MaxHealth;
         Mana = MaxMana;
     }
@@ -740,7 +775,58 @@ public class Unit
         return clone;
     }
 
-    internal void SetGenderRandomizeName(Race race, Gender gender)
+    internal void CopyAppearance(Unit appearance)
+    {
+        this.HairColor = appearance.HairColor;
+        this.HairStyle = appearance.HairStyle;
+        this.BeardStyle = appearance.HairStyle;
+        this.SkinColor = appearance.SkinColor;
+        this.AccessoryColor = appearance.AccessoryColor;
+        this.EyeColor = appearance.EyeColor;
+        this.ExtraColor1 = appearance.ExtraColor1;
+        this.ExtraColor2 = appearance.ExtraColor2;
+        this.ExtraColor3 = appearance.ExtraColor3;
+        this.ExtraColor4 = appearance.ExtraColor4;
+        this.EyeType = appearance.EyeType;
+        this.MouthType = appearance.MouthType;
+        this.BreastSize = appearance.BreastSize;
+        this.DickSize = appearance.DickSize;
+        this.HasVagina = appearance.HasVagina;
+        this.BodySize = appearance.BodySize;
+        this.SpecialAccessoryType = appearance.SpecialAccessoryType;
+        this.BodySizeManuallyChanged = appearance.BodySizeManuallyChanged;
+        this.DefaultBreastSize = appearance.DefaultBreastSize;
+        this.ClothingType = appearance.ClothingType;
+        this.ClothingType2 = appearance.ClothingType2;
+        this.ClothingHatType = appearance.ClothingHatType;
+        this.ClothingAccessoryType = appearance.ClothingAccessoryType;
+        this.ClothingExtraType1 = appearance.ClothingExtraType1;
+        this.ClothingExtraType2 = appearance.ClothingExtraType2;
+        this.ClothingExtraType3 = appearance.ClothingExtraType3;
+        this.ClothingExtraType4 = appearance.ClothingExtraType4;
+        this.ClothingExtraType5 = appearance.ClothingExtraType5;
+        this.ClothingColor = appearance.ClothingColor;
+        this.ClothingColor2 = appearance.ClothingColor2;
+        this.ClothingColor3 = appearance.ClothingColor3;
+        this.Furry = appearance.Furry;
+        this.HeadType = appearance.HeadType;
+        this.TailType = appearance.TailType;
+        this.FurType = appearance.FurType;
+        this.EarType = appearance.EarType;
+        this.BodyAccentType1 = appearance.BodyAccentType1;
+        this.BodyAccentType2 = appearance.BodyAccentType2;
+        this.BodyAccentType3 = appearance.BodyAccentType3;
+        this.BodyAccentType4 = appearance.BodyAccentType4;
+        this.BodyAccentType5 = appearance.BodyAccentType5;
+        this.BallsSize = appearance.BallsSize;
+        this.VulvaType = appearance.VulvaType;
+        this.BasicMeleeWeaponType = appearance.BasicMeleeWeaponType;
+        this.AdvancedMeleeWeaponType = appearance.AdvancedMeleeWeaponType;
+        this.BasicRangedWeaponType = appearance.BasicRangedWeaponType;
+        this.AdvancedRangedWeaponType = appearance.AdvancedRangedWeaponType;
+}
+
+internal void SetGenderRandomizeName(Race race, Gender gender)
     {
         var raceData = Races.GetRace(this);
         var isMale = false;
@@ -1496,6 +1582,13 @@ public class Unit
             TemporaryTraits.RemoveAt(0);
     }
 
+    public bool HasSharedTrait(Traits trait)
+    {
+        if (SharedTraits == null)
+            SharedTraits = new List<Traits>();
+        return (SharedTraits.Contains(trait));
+    }
+
     public void AddSharedTrait(Traits trait)
     {
         if (SharedTraits == null)
@@ -1504,6 +1597,17 @@ public class Unit
             SharedTraits.Add(trait);
             AddTrait(trait);
 
+    }
+
+    public void ResetSharedTraits()
+    {
+        if (SharedTraits == null)
+            SharedTraits = new List<Traits>();
+        foreach (Traits trait in SharedTraits)
+        {
+            SharedTraits.Remove(trait);
+            RemoveTrait(trait);
+        }
     }
 
     public void RemoveSharedTrait(Traits trait)
@@ -1515,41 +1619,78 @@ public class Unit
             RemoveTrait(trait);
     }
 
+    public bool HasPersistentSharedTrait(Traits trait)
+    {
+        if (PersistentSharedTraits == null)
+            PersistentSharedTraits = new List<Traits>();
+        return (PersistentSharedTraits.Contains(trait));
+    }
+
+    public void AddPersistentSharedTrait(Traits trait)
+    {
+        if (PersistentSharedTraits == null)
+            PersistentSharedTraits = new List<Traits>();
+        if (!PersistentSharedTraits.Contains(trait) && !HasTrait(trait))
+            PersistentSharedTraits.Add(trait);
+        AddTrait(trait);
+
+    }
+
+    public void ResetPersistentSharedTraits()
+    {
+        if (PersistentSharedTraits == null)
+            PersistentSharedTraits = new List<Traits>();
+        foreach (Traits trait in PersistentSharedTraits)
+        {
+            PersistentSharedTraits.Remove(trait);
+            RemoveTrait(trait);
+        }
+    }
+
+    public void RemovePersistentSharedTrait(Traits trait)
+    {
+        if (PersistentSharedTraits == null)
+            PersistentSharedTraits = new List<Traits>();
+        if (PersistentSharedTraits.Contains(trait) && HasTrait(trait))
+            PersistentSharedTraits.Remove(trait);
+        RemoveTrait(trait);
+    }
+
     internal void ReloadTraits()
     {
         Tags = new List<Traits>();
         if (Config.RaceTraitsEnabled)
-            Tags.AddRange(State.RaceSettings.GetRaceTraits(Race));
-        if (HasBreasts && HasDick == false)
+            Tags.AddRange(State.RaceSettings.GetRaceTraits(HiddenUnit.Race));
+        if (HiddenUnit.HasBreasts && HiddenUnit.HasDick == false)
         {
-            var femaleTraits = State.RaceSettings.GetFemaleRaceTraits(Race);
+            var femaleTraits = State.RaceSettings.GetFemaleRaceTraits(HiddenUnit.Race);
             if (femaleTraits != null) Tags.AddRange(femaleTraits);
             femaleTraits = Config.FemaleTraits;
             if (femaleTraits != null) Tags.AddRange(femaleTraits);
         }
-        else if (!HasBreasts && HasDick)
+        else if (!HiddenUnit.HasBreasts && HiddenUnit.HasDick)
         {
-            var maleTraits = State.RaceSettings.GetMaleRaceTraits(Race);
+            var maleTraits = State.RaceSettings.GetMaleRaceTraits(HiddenUnit.Race);
             if (maleTraits != null) Tags.AddRange(maleTraits);
             maleTraits = Config.MaleTraits;
             if (maleTraits != null) Tags.AddRange(maleTraits);
         }
         else
         {
-            var hermTraits = State.RaceSettings.GetHermRaceTraits(Race);
+            var hermTraits = State.RaceSettings.GetHermRaceTraits(HiddenUnit.Race);
             if (hermTraits != null) Tags.AddRange(hermTraits);
             hermTraits = Config.HermTraits;
             if (hermTraits != null) Tags.AddRange(hermTraits);
         }
         if (Type == UnitType.Leader)
         {
-            var leaderTraits = State.RaceSettings.GetLeaderRaceTraits(Race);
+            var leaderTraits = State.RaceSettings.GetLeaderRaceTraits(HiddenUnit.Race);
             if (leaderTraits != null) Tags.AddRange(leaderTraits);
             if (Config.LeaderTraits != null) Tags.AddRange(Config.LeaderTraits);
         }
         else if (Type == UnitType.Spawn)
         {
-            var spawnTraits = State.RaceSettings.GetSpawnRaceTraits(Race);
+            var spawnTraits = State.RaceSettings.GetSpawnRaceTraits(HiddenUnit.Race);
             if (spawnTraits != null) Tags.AddRange(spawnTraits);
             spawnTraits = Config.SpawnTraits;
             if (spawnTraits != null) Tags.AddRange(spawnTraits);
@@ -1558,6 +1699,8 @@ public class Unit
             Tags.AddRange(TemporaryTraits);
         if (SharedTraits != null)
             Tags.AddRange(SharedTraits);
+        if (PersistentSharedTraits != null)
+            Tags.AddRange(PersistentSharedTraits);
         if (RemovedTraits != null)
         {
             foreach (Traits trait in RemovedTraits)
@@ -1571,11 +1714,11 @@ public class Unit
         if (Tags.Contains(Traits.Prey))
             Predator = false;
         else if (fixedPredator == false)
-            Predator = State.World?.GetEmpireOfRace(Race)?.CanVore ?? true;
+            Predator = State.World?.GetEmpireOfRace(HiddenUnit.Race)?.CanVore ?? true;
         Tags.RemoveAll(s => s == Traits.Prey);
-        if (RaceParameters.GetTraitData(this).AllowedVoreTypes.Any() == false)
+        if (RaceParameters.GetTraitData(HiddenUnit).AllowedVoreTypes.Any() == false)
             Predator = false;
-        if (Predator == false)
+        if (HiddenUnit.Predator == false)
             Tags.Add(Traits.Prey);
         SetMaxItems();
     }
@@ -1584,6 +1727,29 @@ public class Unit
     {
         Race = race;
         fixedPredator = false;
+    }
+
+    public void HideRace(Race race, Unit appearance = null)
+    {
+        _hiddenUnit = Clone();
+        Race = race;
+        fixedPredator = false;
+        if (appearance != null)
+            CopyAppearance(appearance);
+        else
+        {
+            var NewRace = Races.GetRace(race);
+            NewRace.RandomCustom(this);
+        }
+
+    }
+
+    public void UnhideRace()
+    {
+        Race = HiddenUnit.Race;
+        fixedPredator = false;
+        CopyAppearance(HiddenUnit);
+        _hiddenUnit = null;
     }
 
     private void RandomizeTraits()

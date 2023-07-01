@@ -1960,6 +1960,8 @@ Turns: {currentTurn}
     {
         foreach (Actor_Unit target in units)
         {
+            if (CurrentSpell.AcceptibleTargets.Contains(AbilityTargets.Self) == true && actor.Unit != target.Unit)
+                continue;
             if (CurrentSpell.AcceptibleTargets.Contains(AbilityTargets.Ally) == false && (TacticalUtilities.IsUnitControlledByPlayer(target.Unit) && Config.AllowInfighting == false && !(!AIDefender && !AIAttacker)))
                 continue;
             if (CurrentSpell.AcceptibleTargets.Contains(AbilityTargets.Enemy) == false && !(TacticalUtilities.IsUnitControlledByPlayer(target.Unit) || target.Unit.Side == actor.Unit.Side) && !(!AIDefender && !AIAttacker))
@@ -3843,9 +3845,14 @@ Turns: {currentTurn}
                 }
             }
             if (remainingAttackers > 0 && extraAttackers != null && extraAttackers.Any())
+            {
                 AssignLeftoverTroops(armies[0], extraAttackers);
+            }
             else if (remainingDefenders > 0 && extraDefenders != null && extraDefenders.Any())
+            {
                 AssignLeftoverTroops(armies[1], extraDefenders);
+            }
+                
 
             ProcessFledUnits();
             remainingAttackers = 0;
@@ -4168,7 +4175,7 @@ Turns: {currentTurn}
                 retreatedDefenders.Remove(actor.Unit);
             }
         }
-
+        List<Actor_Unit> leftover = new List<Actor_Unit>();
         if (army != null)
         {
             foreach (Actor_Unit actor in actors.ToList()) //Prevent doubling up of retreated defected units
@@ -4197,7 +4204,6 @@ Turns: {currentTurn}
                 var last = army.Units.Last();
                 army.Units.Remove(last);
                 actors.Add(new Actor_Unit(last));
-
             }
         }
 

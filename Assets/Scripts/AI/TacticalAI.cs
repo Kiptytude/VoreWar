@@ -1627,6 +1627,21 @@ public abstract class TacticalAI : ITacticalAI
 
                 }
             }
+            else if (!TacticalUtilities.TreatAsHostile(actor, unit) && spell.AcceptibleTargets.Contains(AbilityTargets.Self))
+            {
+                if (actor.Unit != unit.Unit)
+                    continue;
+                if (spell == SpellList.AssumeForm && unit?.PredatorComponent.PreyCount <= 0)
+                    continue;
+                if (spell == SpellList.RevertForm && unit.Unit.Race == unit.Unit.HiddenRace)
+                    continue;
+                if (unit.Targetable == true && unit.Surrendered == false)
+                {
+                    int distance = unit.Position.GetNumberOfMovesDistance(position);
+                    float chance = unit.GetMagicChance(unit, spell);
+                    targets.Add(new PotentialTarget(unit, chance, distance, unit.Unit.Level));
+                }
+            }
         }
         return targets.OrderByDescending(t => t.utility).ToList();
     }

@@ -28,8 +28,8 @@ class Humans : DefaultRaceData
 
         ExtendedBreastSprites = true;
 
-        Body = new SpriteExtraInfo(4, BodySprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.RedSkin, s.Unit.SkinColor));
-        Head = new SpriteExtraInfo(6, HeadSprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.RedSkin, s.Unit.SkinColor));
+        Body = new SpriteExtraInfo(4, BodySprite, null, (s) => FurryColor(s));
+        Head = new SpriteExtraInfo(6, HeadSprite, null, (s) => FurryColor(s));
         BodyAccessory = new SpriteExtraInfo(7, AccessorySprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.RedSkin, s.Unit.SkinColor)); // Ears
         BodyAccent = new SpriteExtraInfo(3, BodyAccentSprite, WhiteColored); // Extra weapon sprite
         BodyAccent2 = new SpriteExtraInfo(0, BodyAccentSprite2, WhiteColored); // Back weapon sprite
@@ -47,15 +47,15 @@ class Humans : DefaultRaceData
         Eyes = new SpriteExtraInfo(8, EyesSprite, WhiteColored);
         SecondaryEyes = new SpriteExtraInfo(7, EyesSecondarySprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.EyeColor, s.Unit.EyeColor));
         SecondaryAccessory = null;
-        Belly = new SpriteExtraInfo(14, null, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.RedSkin, s.Unit.SkinColor));
+        Belly = new SpriteExtraInfo(14, null, null, (s) => FurryColor(s));
         Weapon = new SpriteExtraInfo(6, WeaponSprite, WhiteColored);
         BackWeapon = null;
         BodySize = null;
-        Breasts = new SpriteExtraInfo(17, BreastsSprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.RedSkin, s.Unit.SkinColor));
-        SecondaryBreasts = new SpriteExtraInfo(17, SecondaryBreastsSprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.RedSkin, s.Unit.SkinColor));
+        Breasts = new SpriteExtraInfo(17, BreastsSprite, null, (s) => FurryColor(s));
+        SecondaryBreasts = new SpriteExtraInfo(17, SecondaryBreastsSprite, null, (s) => FurryColor(s));
         BreastShadow = null;
-        Dick = new SpriteExtraInfo(11, DickSprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.RedSkin, s.Unit.SkinColor));
-        Balls = new SpriteExtraInfo(10, BallsSprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.RedSkin, s.Unit.SkinColor));
+        Dick = new SpriteExtraInfo(11, DickSprite, null, (s) => FurryColor(s));
+        Balls = new SpriteExtraInfo(10, BallsSprite, null, (s) => FurryColor(s));
 
 
         AllowedMainClothingTypes = new List<MainClothing>()
@@ -807,8 +807,8 @@ class Humans : DefaultRaceData
             }
 
             clothing1.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.Clothing50Spaced, actor.Unit.ClothingColor);
-            clothing2.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.RedSkin, actor.Unit.SkinColor);
-            clothing3.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.RedSkin, actor.Unit.SkinColor);
+            clothing2.GetPalette = (s) => FurryColor(s);
+            clothing3.GetPalette = (s) => FurryColor(s);
 
             base.Configure(sprite, actor);
         }
@@ -871,8 +871,8 @@ class Humans : DefaultRaceData
                 clothing3.GetSprite = null;
             }
 
-            clothing2.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.RedSkin, actor.Unit.SkinColor);
-            clothing3.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.RedSkin, actor.Unit.SkinColor);
+            clothing2.GetPalette = (s) => FurryColor(s);
+            clothing3.GetPalette = (s) => FurryColor(s);
 
             base.Configure(sprite, actor);
         }
@@ -937,8 +937,8 @@ class Humans : DefaultRaceData
             }
 
             clothing1.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.Clothing50Spaced, actor.Unit.ClothingColor);
-            clothing2.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.RedSkin, actor.Unit.SkinColor);
-            clothing3.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.RedSkin, actor.Unit.SkinColor);
+            clothing2.GetPalette = (s) => FurryColor(s);
+            clothing3.GetPalette = (s) => FurryColor(s);
 
             base.Configure(sprite, actor);
         }
@@ -1001,8 +1001,8 @@ class Humans : DefaultRaceData
                 clothing3.GetSprite = null;
             }
 
-            clothing2.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.RedSkin, actor.Unit.SkinColor);
-            clothing3.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.RedSkin, actor.Unit.SkinColor);
+            clothing2.GetPalette = (s) => FurryColor(s);
+            clothing3.GetPalette = (s) => FurryColor(s);
 
             base.Configure(sprite, actor);
         }
@@ -1067,8 +1067,8 @@ class Humans : DefaultRaceData
             }
 
             clothing1.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.Clothing50Spaced, actor.Unit.ClothingColor);
-            clothing2.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.RedSkin, actor.Unit.SkinColor);
-            clothing3.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.RedSkin, actor.Unit.SkinColor);
+            clothing2.GetPalette = (s) => FurryColor(s);
+            clothing3.GetPalette = (s) => FurryColor(s);
 
             base.Configure(sprite, actor);
         }
@@ -1133,8 +1133,8 @@ class Humans : DefaultRaceData
             }
 
             clothing1.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.Clothing50Spaced, actor.Unit.ClothingColor);
-            clothing2.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.RedSkin, actor.Unit.SkinColor);
-            clothing3.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.RedSkin, actor.Unit.SkinColor);
+            clothing2.GetPalette = (s) => FurryColor(s);
+            clothing3.GetPalette = (s) => FurryColor(s);
 
             base.Configure(sprite, actor);
         }
@@ -1197,8 +1197,8 @@ class Humans : DefaultRaceData
                 clothing3.GetSprite = null;
             }
 
-            clothing2.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.RedSkin, actor.Unit.SkinColor);
-            clothing3.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.RedSkin, actor.Unit.SkinColor);
+            clothing2.GetPalette = (s) => FurryColor(s);
+            clothing3.GetPalette = (s) => FurryColor(s);
 
             base.Configure(sprite, actor);
         }
@@ -1577,8 +1577,8 @@ class Humans : DefaultRaceData
             }
 
             clothing1.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.Clothing50Spaced, actor.Unit.ClothingColor);
-            clothing2.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.RedSkin, actor.Unit.SkinColor);
-            clothing3.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.RedSkin, actor.Unit.SkinColor);
+            clothing2.GetPalette = (s) => FurryColor(s);
+            clothing3.GetPalette = (s) => FurryColor(s);
             clothing4.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.Clothing50Spaced, actor.Unit.ClothingColor);
 
             base.Configure(sprite, actor);
@@ -1778,8 +1778,8 @@ class Humans : DefaultRaceData
             }
 
             clothing1.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.Clothing50Spaced, actor.Unit.ClothingColor);
-            clothing2.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.RedSkin, actor.Unit.SkinColor);
-            clothing3.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.RedSkin, actor.Unit.SkinColor);
+            clothing2.GetPalette = (s) => FurryColor(s);
+            clothing3.GetPalette = (s) => FurryColor(s);
             clothing4.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.Clothing50Spaced, actor.Unit.ClothingColor);
 
             base.Configure(sprite, actor);
@@ -1979,8 +1979,8 @@ class Humans : DefaultRaceData
             }
 
             clothing1.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.Clothing50Spaced, actor.Unit.ClothingColor);
-            clothing2.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.RedSkin, actor.Unit.SkinColor);
-            clothing3.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.RedSkin, actor.Unit.SkinColor);
+            clothing2.GetPalette = (s) => FurryColor(s);
+            clothing3.GetPalette = (s) => FurryColor(s);
             clothing4.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.Clothing50Spaced, actor.Unit.ClothingColor);
 
             base.Configure(sprite, actor);
@@ -2112,8 +2112,8 @@ class Humans : DefaultRaceData
             }
 
             clothing1.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.Clothing50Spaced, actor.Unit.ClothingColor);
-            clothing2.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.RedSkin, actor.Unit.SkinColor);
-            clothing3.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.RedSkin, actor.Unit.SkinColor);
+            clothing2.GetPalette = (s) => FurryColor(s);
+            clothing3.GetPalette = (s) => FurryColor(s);
             clothing4.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.Clothing50Spaced, actor.Unit.ClothingColor);
 
             base.Configure(sprite, actor);
@@ -2491,7 +2491,12 @@ class Humans : DefaultRaceData
         }
     }
 
-
+    static ColorSwapPalette FurryColor(Actor_Unit actor)
+    {
+        if (actor.Unit.Furry)
+            return ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.RedFur, actor.Unit.AccessoryColor);
+        return ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.RedSkin, actor.Unit.SkinColor);
+    }
 
 
 

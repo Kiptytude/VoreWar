@@ -24,6 +24,7 @@ public enum AbilityTargets
 {
     Enemy,
     Ally,
+    Self,
     SurrenderedAlly,
     Tile,
 }
@@ -65,6 +66,8 @@ static class SpellList
     static internal readonly StatusSpell HypnoGas;
     static internal readonly StatusSpell Whispers;
     static internal readonly Spell ForceFeed;
+    static internal readonly Spell AssumeForm;
+    static internal readonly Spell RevertForm;
     static internal readonly Spell Bind;
 
     static internal readonly DamageSpell ViperPoisonDamage;
@@ -801,6 +804,40 @@ static class SpellList
             },
         };
         SpellDict[SpellTypes.ForceFeed] = ForceFeed;
+
+        RevertForm = new Spell()
+        {
+            Name = "Revert Form",
+            Id = "revert-form",
+            SpellType = SpellTypes.RevertForm,
+            Description = "",
+            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Self },
+            Range = new Range(1),
+            Tier = 0,
+            Resistable = false,
+            OnExecute = (a, t) =>
+            {
+                TacticalUtilities.RevertForm(a, t);
+            },
+        };
+        SpellDict[SpellTypes.RevertForm] = RevertForm;
+
+        AssumeForm = new Spell()
+        {
+            Name = "Assume Form",
+            Id = "assume-form",
+            SpellType = SpellTypes.AssumeForm,
+            Description = "Assumes the form of a random Prey",
+            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Self },
+            Range = new Range(1),
+            Tier = 0,
+            Resistable = false,
+            OnExecute = (a, t) =>
+            {
+                TacticalUtilities.AssumeForm(a, t);
+            },
+        };
+        SpellDict[SpellTypes.AssumeForm] = AssumeForm;
 
 
         Whispers = new StatusSpell()

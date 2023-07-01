@@ -29,6 +29,9 @@ class Prey
     [OdinSerialize]
     public bool ScatDisabled { get; set; }
 
+    [OdinSerialize]
+    public List<Traits> SharedTraits;
+
     public PreyLocation Location => Predator?.PredatorComponent.Location(this) ?? PreyLocation.stomach;
 
     public Prey(Actor_Unit actor, Actor_Unit predator, List<Prey> preyList)
@@ -38,6 +41,7 @@ class Prey
         Predator = predator;
         Unit = actor.Unit;
         SubPrey = preyList;
+        SharedTraits = new List<Traits>();
     }
 
     public void UpdateEscapeRate()
@@ -239,4 +243,5 @@ class Prey
         }
         return rtn;
     }
+
 }

@@ -368,6 +368,13 @@ public class Actor_Unit
             Unit.MultiUseSpells.Add(SpellList.ForceFeed.SpellType);
             Unit.UpdateSpells();
         }
+        if ((Unit.HasTrait(Traits.Changeling) || Unit.HasTrait(Traits.GreaterChangeling) || Unit.HasTrait(Traits.TrueChangeling)) && State.World?.ItemRepository != null) //protection for the create strat screen
+        {
+            Unit.MultiUseSpells.Add(SpellList.AssumeForm.SpellType);
+            if(Unit.HiddenRace != Unit.Race)
+                Unit.MultiUseSpells.Add(SpellList.RevertForm.SpellType);
+            Unit.UpdateSpells();
+        }
     }
 
     public void GenerateSpritePrefab(Transform folder)
@@ -2527,5 +2534,57 @@ public class Actor_Unit
             Movement = 0;
 
         return true;
+    }
+
+    public void ChangeRaceAny(Unit template)
+    {
+        if (Unit.HiddenRace == Unit.Race)
+        {
+            Unit.HideRace(template.Race, template);
+            foreach (Traits trait in template.GetTraits)
+            {
+                if ((!Unit.HasTrait(trait) || Unit.HasSharedTrait(trait)) && !TraitsMethods.IsRaceModifying(trait))
+                    Unit.AddPersistentSharedTrait(trait);
+            }
+            AnimationController = new AnimationController();
+            Unit.ReloadTraits();
+            Unit.InitializeTraits();
+            ReloadSpellTraits();
+            State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"{Unit.Name} shifted form to resemble {template.Name}");
+            Unit.FixedSide = Unit.Side;
+            Unit.Side = template.Side;
+            Unit.hiddenFixedSide = true;
+        }
+    }
+
+    public void ChangeRacePrey()
+    {
+        if (Unit.HiddenRace == Unit.Race)
+        {
+            bool isDead = true;
+            if (Unit.HasTrait(Traits.TrueChangeling) || Unit.HasTrait(Traits.GreaterChangeling))
+            {
+                isDead = false;
+            }
+            PredatorComponent?.ChangeRaceAuto(isDead,true);
+        }
+    }
+
+    public void RevertRace()
+    {
+        if (Unit.HiddenRace != Unit.Race)
+        {
+            Unit.UnhideRace();
+            Unit.SpawnRace = Race.none;
+            State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"{Unit.Name} shifted back to normal");
+            Unit.Side = Unit.FixedSide;
+            Unit.hiddenFixedSide = false;
+            PredatorComponent?.ResetTemplate();
+            Unit.ResetPersistentSharedTraits();
+            AnimationController = new AnimationController();
+            Unit.ReloadTraits();
+            Unit.InitializeTraits();
+            ReloadSpellTraits();
+        }
     }
 }

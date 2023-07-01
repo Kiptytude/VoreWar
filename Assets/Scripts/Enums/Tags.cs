@@ -302,6 +302,8 @@ public enum Traits
     Whispers = 152,
     /// <summary>While digesting, Prey deals damage to predator</summary>
     UnpleasantDigestion = 153,
+    /// <summary>While digesting, Predator is able to use prey's normal traits</summary>
+    TraitStealer = 1543,
 
 
 
@@ -314,8 +316,12 @@ public enum Traits
     Reincarnation = 202,
     /// <summary>Soon after this unit is digested, one of the new Units that come into being for the pred's race will be a reincarnation of them.</summary>
     Transmigration = 203,
-    /// <summary>Soon after this unit is digested, one of the new Units that come into being for the pred's race will be a reincarnation of them.</summary>
+    /// <summary>Unit changes Race upon digestion</summary>
     Metamorphosis = 204,
+    /// <summary>While Absorbing a prey, Becomes that prey's Race</summary>
+    Changeling = 205,
+    /// <summary>While digesting a prey, Becomes that prey's Race</summary>
+    GreaterChangeling = 206,
 
 
     //Hidden Cheat Traits
@@ -329,6 +335,9 @@ public enum Traits
     Possession = 353,
     /// <summary>A parasite prey will give the host CreateSpawn and set infection after digestion, host Takes minor damage on prey absorption and major damage when creating spawn</summary>
     Parasite = 354,
+    /// <summary>While digesting a prey, Becomes that prey's Race, new form lasts until dispersed</summary>
+    TrueChangeling = 355,
+
 
 
 
@@ -410,5 +419,28 @@ public enum Traits
     /// <summary>Unit's absorption growth decays 2x as fast.</summary>
     FleetingGrowth = 274,
     /// <summary>Doubles healing provided when absorbing unit and increases growth provided by 50%.</summary>
-    ProteinRich = 275,
+    ProteinRich = 275
+
+}
+
+static class TraitsMethods
+{
+
+    static public bool IsRaceModifying(Traits trait)
+    {
+        switch (trait)
+        {
+            case Traits.Metamorphosis:
+            case Traits.Changeling:
+            case Traits.GreaterChangeling:
+            case Traits.TrueChangeling:
+                return true;
+            default:
+                return false;
+        }
+    }
+    static public Traits LastTrait()
+    {
+        return Traits.TrueChangeling;
+    }
 }

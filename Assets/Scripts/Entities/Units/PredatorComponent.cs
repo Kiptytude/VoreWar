@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+
+
 public enum PreyLocation
 {
     breasts,
@@ -37,6 +39,8 @@ public class PredatorComponent
     List<Prey> stomach2;
     [OdinSerialize]
     List<Prey> tail;
+    [OdinSerialize]
+    List<Prey> deadPrey;
 
     Transition StomachTransition;
     Transition BallsTransition;
@@ -106,6 +110,8 @@ public class PredatorComponent
     Unit unit;
     [OdinSerialize]
     public int birthStatBoost;
+    [OdinSerialize]
+    private Prey template = null;
 
 
     public int AlivePrey { get; set; }
@@ -290,6 +296,7 @@ public class PredatorComponent
         tail = new List<Prey>();
         leftBreast = new List<Prey>();
         rightBreast = new List<Prey>();
+        deadPrey = new List<Prey>();
         birthStatBoost = 0;
     }
 
@@ -721,13 +728,40 @@ public class PredatorComponent
 
     }
 
+    void ShareTrait(Traits trait, Prey preyUnit, Traits maxTrait = Traits.Infiltrator)
+    {
+        if (trait < maxTrait && TraitsMethods.IsRaceModifying(trait))
+        {
+            if (!unit.HasTrait(trait))
+                unit.AddSharedTrait(trait);
+            if (!preyUnit.SharedTraits.Contains(trait) && unit.HasSharedTrait(trait))
+                preyUnit.SharedTraits.Add(trait);
+        }
+    }
+
+    public void RefreshSharedTraits()
+    {
+        unit.ResetSharedTraits();
+        foreach (Prey preyUnit in prey)
+            foreach(Traits trait in preyUnit.SharedTraits)
+                if (!unit.HasTrait(trait))
+                    unit.AddSharedTrait(trait);
+    }
+
     void AddPrey(Prey preyUnit, PreyLocation location)
     {
-        if(preyUnit.Unit.HasTrait(Traits.Symbiote))
+        bool changedRace = false;
+        if (unit.HasTrait(Traits.GreaterChangeling)|| unit.HasTrait(Traits.TrueChangeling))
+        {
+            changedRace = TryChangeRace(preyUnit);
+        }
+        if ((preyUnit.Unit.HasTrait(Traits.Symbiote) || unit.HasTrait(Traits.TraitStealer)) && !changedRace)
         {
             foreach(Traits trait in preyUnit.Unit.GetTraits)
-                if(!unit.HasTrait(trait) && (trait < Traits.Infiltrator) && (trait != Traits.Prey) && (trait != Traits.Small))
-                    unit.AddSharedTrait(trait);
+            {
+                if((trait != Traits.Prey) && (trait != Traits.Small))
+                    ShareTrait(trait,preyUnit);
+            }
             unit.ReloadTraits();
             unit.InitializeTraits();
             actor.ReloadSpellTraits();
@@ -780,11 +814,18 @@ public class PredatorComponent
     
     void AddPrey(Prey preyUnit)
     {
-        if(preyUnit.Unit.HasTrait(Traits.Symbiote))
+        bool changedRace = false;
+        if (unit.HasTrait(Traits.GreaterChangeling) || unit.HasTrait(Traits.TrueChangeling))
         {
-            foreach(Traits trait in preyUnit.Unit.GetTraits)
-                if(!unit.HasTrait(trait) && (trait < Traits.Infiltrator) && (trait != Traits.Prey) && (trait != Traits.Small))
-                    unit.AddSharedTrait(trait);
+            changedRace = TryChangeRace(preyUnit);
+        }
+        if((preyUnit.Unit.HasTrait(Traits.Symbiote) || unit.HasTrait(Traits.TraitStealer)) && !changedRace)
+        {
+            foreach (Traits trait in preyUnit.Unit.GetTraits)
+            {
+                if ((trait != Traits.Prey) && (trait != Traits.Small))
+                    ShareTrait(trait, preyUnit);
+            }
             unit.ReloadTraits();
             unit.InitializeTraits();
             actor.ReloadSpellTraits();
@@ -844,12 +885,25 @@ public class PredatorComponent
     {
         if(prey.Contains(preyUnit))
         {
-            if(preyUnit.Unit.HasTrait(Traits.Symbiote))
+            prey.Remove(preyUnit);
+            if (preyUnit == template)
+                if (unit.HasTrait(Traits.Changeling) || unit.HasTrait(Traits.GreaterChangeling))
+                {
+                    ResetTemplate();
+                    bool isDead = true;
+                    if (unit.HasTrait(Traits.TrueChangeling) || unit.HasTrait(Traits.GreaterChangeling))
+                    {
+                        isDead = false;
+                    }
+                    ChangeRaceAuto(isDead, false);
+                }
+                else
+                    template = null;
+            else if (preyUnit.Unit.HasTrait(Traits.Symbiote) || unit.HasTrait(Traits.TraitStealer))
             {
-                foreach(Traits trait in preyUnit.Unit.GetTraits)
-                    if(trait < Traits.Infiltrator)
-                        unit.RemoveSharedTrait(trait);
-                unit.ReloadTraits();
+                foreach (Traits trait in preyUnit.SharedTraits)
+                    unit.RemoveSharedTrait(trait);
+                RefreshSharedTraits();
                 unit.InitializeTraits();
                 actor.ReloadSpellTraits();
             }
@@ -872,7 +926,6 @@ public class PredatorComponent
         tail.Remove(preyUnit);
         leftBreast.Remove(preyUnit);
         rightBreast.Remove(preyUnit);
-        prey.Remove(preyUnit);
         UpdateAlivePrey();
     }
 
@@ -1063,12 +1116,94 @@ public class PredatorComponent
             return State.RaceSettings.GetSpawnRace(parent.Race);
     }
 
-    private Race DetermineConversionRace()
+    private Race DetermineConversionRace(Unit parent)
     {
-        if(unit.ConversionRace != unit.Race)
-            return unit.ConversionRace;
+        if(parent.ConversionRace != parent.Race)
+            return parent.ConversionRace;
         else
-            return State.RaceSettings.GetConversionRace(unit.Race);
+            return State.RaceSettings.GetConversionRace(parent.Race);
+    }
+
+    public void ResetTemplate()
+    {
+        if (template == null)
+            return;
+        foreach (Traits trait in template.SharedTraits)
+            unit.RemoveSharedTrait(trait);
+        RefreshSharedTraits();
+        template = null;
+    }
+
+    private bool CheckChangeRace(Prey preyUnit)
+    {
+        if ((unit.HasTrait(Traits.Changeling) || unit.HasTrait(Traits.GreaterChangeling) || unit.HasTrait(Traits.TrueChangeling)) && unit.HiddenRace == unit.Race && template == null)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    private Prey SelectPrey(bool isDead, bool random)
+    {
+        Prey bestPrey = null;
+        List<Prey> preyList;
+        if (isDead)
+            preyList = deadPrey;
+        else
+            preyList = prey;
+        if (preyList.Capacity > 0)
+        {
+            bestPrey = preyList[State.Rand.Next(1,preyList.Count) - 1];
+            if (random)
+                return bestPrey;
+            foreach (Prey preyUnit in preyList)
+                if (preyUnit.Unit.Health > bestPrey.Unit.Health)
+                    bestPrey = preyUnit;
+        }
+        return bestPrey;
+    }
+
+    public bool ChangeRaceAuto(bool isDead, bool random)
+    {
+        Prey preyUnit = SelectPrey(isDead, random);
+        if (preyUnit != null){
+            return TryChangeRace(preyUnit);
+        }
+        else
+        {
+            actor.RevertRace();
+            return false;
+        }
+    }
+
+    private bool TryChangeRace(Prey preyUnit)
+    {
+        if (CheckChangeRace(preyUnit))
+        {
+            if (unit.HasTrait(Traits.Changeling) && !preyUnit.Unit.IsDead)
+                return false;
+            unit.HideRace(preyUnit.Unit.Race, preyUnit.Unit);
+            unit.SpawnRace = DetermineSpawnRace(preyUnit.Unit);
+            foreach (Traits trait in preyUnit.Unit.GetTraits)
+            {
+                if(unit.HasTrait(Traits.TrueChangeling) && (!unit.HasTrait(trait)||unit.HasSharedTrait(trait)) && !TraitsMethods.IsRaceModifying(trait))
+                {
+                    unit.AddPersistentSharedTrait(trait);
+                }
+                ShareTrait(trait, preyUnit, TraitsMethods.LastTrait());
+            }
+            actor.AnimationController = new AnimationController();
+            unit.ReloadTraits();
+            unit.InitializeTraits();
+            actor.ReloadSpellTraits();
+            State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"{unit.Name} shifted form to resemble {preyUnit.Unit.Name}");
+            unit.FixedSide = unit.Side;
+            unit.Side = preyUnit.Unit.Side;
+            unit.hiddenFixedSide = true;
+            template = preyUnit;
+            return true;
+        }
+        return false;
     }
 
     private int DigestOneUnit(Prey preyUnit, int preyDamage)
@@ -1083,6 +1218,8 @@ public class PredatorComponent
             {
                 actor.Infected = true;
                 actor.InfectedRace = DetermineSpawnRace(preyUnit.Unit);
+                if (!unit.HasSharedTrait(Traits.Parasite))
+                    actor.InfectedRace = DetermineSpawnRace(preyUnit.Unit.HiddenUnit);
                 actor.InfectedSide = preyUnit.Unit.FixedSide;
             }
             if (preyUnit.Unit.HasTrait(Traits.Corruption))
@@ -1105,13 +1242,17 @@ public class PredatorComponent
             }
             if (preyUnit.Unit.HasTrait(Traits.Metamorphosis))
             {
-                Race conversionRace = DetermineSpawnRace(preyUnit.Unit);
+                Race conversionRace = DetermineSpawnRace(preyUnit.Unit.HiddenUnit);
                 preyUnit.Unit.Health = preyUnit.Unit.MaxHealth;
                 preyUnit.Unit.GiveExp(unit.Experience / 2);
                 preyUnit.Actor.Movement = 0;
 
                 preyUnit.Actor.Surrendered = false;
-
+                if (preyUnit.Unit.Race != preyUnit.Unit.HiddenRace)
+                {
+                    preyUnit.Unit.ResetSharedTraits();
+                    preyUnit.Actor.RevertRace();
+                }
                 if (preyUnit.Unit.Race != conversionRace)
                 {
                     HashSet<Gender> set = new HashSet<Gender>(Races.GetRace(preyUnit.Unit.Race).CanBeGender);
@@ -1128,6 +1269,8 @@ public class PredatorComponent
                     preyUnit.Actor.AnimationController = new AnimationController();
                     preyUnit.Actor.Unit.ReloadTraits();
                     preyUnit.Actor.Unit.InitializeTraits();
+                    preyUnit.Actor.PredatorComponent?.FreeAnyAlivePrey();
+                    preyUnit.Actor.PredatorComponent?.RefreshSharedTraits();
                 }
                 State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"{preyUnit.Unit.Name} changed form within {unit.Name}'s body.");
                 UpdateFullness();
@@ -1247,7 +1390,11 @@ public class PredatorComponent
         }
 
         if (freshKill)
+        {
             preyUnit.Actor.Unit.Health = 0;
+            TryChangeRace(preyUnit);
+        }
+            
 
         if (preyUnit.Unit.IsThisCloseToDeath(preyDamage))
         {
@@ -1329,15 +1476,22 @@ public class PredatorComponent
                     CreateSpawn(actor.InfectedRace, actor.InfectedSide, true);
                 }
                 if (unit.HasTrait(Traits.CreateSpawn))
-                    CreateSpawn(DetermineSpawnRace(unit), unit.Side);
+                {
+                    Race spawnRace = DetermineSpawnRace(unit);
+                    if (!unit.HasSharedTrait(Traits.CreateSpawn))
+                        spawnRace = DetermineSpawnRace(unit.HiddenUnit);
+                    CreateSpawn(spawnRace, unit.Side);
+                }
                 
                 if (preyUnit.Unit.CanBeConverted() &&
                  (Location(preyUnit) == PreyLocation.womb || Config.KuroTenkoConvertsAllTypes) &&
                  ((Config.KuroTenkoEnabled && (Config.UBConversion == UBConversion.Both || Config.UBConversion == UBConversion.RebirthOnly)) || unit.HasTrait(Traits.PredRebirther)) &&
-                 (Config.SpecialMercsCanConvert || DetermineConversionRace() < Race.Selicia) &&
+                 (Config.SpecialMercsCanConvert || DetermineConversionRace(unit) < Race.Selicia) &&
                  !unit.HasTrait(Traits.PredGusher))
                 {
-                    Race conversionRace = DetermineConversionRace();
+                    Race conversionRace = DetermineConversionRace(unit);
+                    if(unit.HasTrait(Traits.PredRebirther) && !unit.HasSharedTrait(Traits.PredRebirther))
+                        conversionRace = DetermineConversionRace(unit.HiddenUnit);
                     preyUnit.Unit.Health = preyUnit.Unit.MaxHealth / 2;
                     preyUnit.Actor.Movement = 0;
                     if (preyUnit.Unit.Side != unit.Side)
@@ -3126,6 +3280,8 @@ public class PredatorComponent
         recipient.PredatorComponent.AddPrey(preyref);
         if (preyUnit.Unit.IsDead == false)
             recipient.PredatorComponent.AlivePrey++;
+        else
+            TryChangeRace(preyUnit);
         actor.PredatorComponent.AlivePrey--;
         switch (destination)
         {
