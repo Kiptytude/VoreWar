@@ -44,13 +44,13 @@ class FogSystemTactical
                 {
                     unit.InSight = false;
                 }
-            }
-            if ((AIAttacker && AIDefender) || Config.DayNightCosmetic == true)
-            {
-                ClearWithinSTilesOf(unit.Position, unitSightRange); // Shows all units to player for AI only battles
-            }
+            }           
             if (unit.Targetable)
             {
+                if ((AIAttacker && AIDefender) || Config.DayNightCosmetic == true)
+                {
+                    ClearWithinSTilesOf(unit.Position, unitSightRange); // Shows all units to player for AI only battles
+                }
                 foreach (var seenUnit in TacticalUtilities.UnitsWithinTiles(unit.Position, unitSightRange).Where(s => TacticalUtilities.TreatAsHostile(unit, s)))
                 {
                     seenUnit.InSight = true;
