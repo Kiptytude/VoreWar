@@ -2,6 +2,7 @@ using OdinSerializer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using static UnityEngine.UI.CanvasScaler;
 
 
 public abstract class TacticalAI : ITacticalAI
@@ -1064,7 +1065,7 @@ public abstract class TacticalAI : ITacticalAI
                 int distance = target.Position.GetNumberOfMovesDistance(position);
                 float chance = target.GetAttackChance(actor, true, true);
                 int damage = actor.WeaponDamageAgainstTarget(target, true);
-                targets.Add(new PotentialTarget(target, chance, distance, damage));
+                targets.Add(new PotentialTarget(target, chance, distance, damage,((target.InSight&&State.World.IsNight)? 100:0)));
             }
         }
         return targets.OrderByDescending(t => t.utility).ToList();
@@ -1177,7 +1178,8 @@ public abstract class TacticalAI : ITacticalAI
                 }
                 int chance = (int)unit.GetAttackChance(actor, false, true);
                 int damage = actor.WeaponDamageAgainstTarget(unit, false);
-                targets.Add(new PotentialTarget(unit, chance, distance, damage));
+                targets.Add(new PotentialTarget(unit, chance, distance, damage, ((unit.InSight && State.World.IsNight) ? 100 : 0)));
+
 
             }
         }
@@ -1573,7 +1575,7 @@ public abstract class TacticalAI : ITacticalAI
         Actor_Unit reserveTarget = targets[0].actor;
         while (targets.Any())
         {
-            if (targets[0].distance <= spell.Range.Max)
+            if (targets[0].distance <= spell.Range.Max && targets[0].actor.InSight)
             {
                 if (spell.TryCast(actor, targets[0].actor))
                     didAction = true;
@@ -1581,7 +1583,7 @@ public abstract class TacticalAI : ITacticalAI
             }
             else
             {
-                if (targets[0].actor.Position.GetNumberOfMovesDistance(actor.Position) <= actor.Movement + spell.Range.Max) //discard the clearly impossible
+                if (targets[0].actor.Position.GetNumberOfMovesDistance(actor.Position) <= actor.Movement + spell.Range.Max && targets[0].actor.InSight) //discard the clearly impossible
                 {
                     MoveToAndAction(actor, targets[0].actor.Position, spell.Range.Max, actor.Movement, () => spell.TryCast(actor, targets[0].actor));
                     if (foundPath && path.Path.Count() < actor.Movement)
