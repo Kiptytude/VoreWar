@@ -172,7 +172,7 @@ public class Actor_Unit
                     return;
                 Unit.Race = race;
                 Unit.RandomizeGender(race, Races.GetRace(Unit));                
-                Unit.SetGear(race);
+                Unit.SetGear(race, true);
                 AnimationController = new AnimationController();
 
                 Races.GetRace(Unit).RandomCustom(Unit);
@@ -1751,7 +1751,7 @@ public class Actor_Unit
             if (seduce)
             {
                 var strings = new[] {$"<b>{target.Unit.Name}</b> decides to swap sides because <b>{Unit.Name}</b>'s rubs are just that sublime!",
-                            $"<b>{target.Unit.Name}</b> joins <b>{Unit.Name}</b>'s side to get more of those irresistable scritches later!",
+                            $"<b>{target.Unit.Name}</b> joins <b>{Unit.Name}</b>'s side to get more of those irresistible scritches later!",
                             $"The way <b>{Unit.Name}</b> touches {LogUtilities.GPPHim(target.Unit)} moves something other than {LogUtilities.GPPHis(target.Unit)} prey-filled innards in <b>{target.Unit.Name}</b>, making {LogUtilities.GPPHim(target.Unit)} join {LogUtilities.GPPHim(Unit)}.",
                             $"<b>{Unit.Name}</b> makes <b>{target.Unit.Name}</b> feel incredible, rearranging {LogUtilities.GPPHis(target.Unit)} priorities in this conflict...",
                             $"<b>{target.Unit.Name}</b> slowly returns from a world of pure bliss and decides to stick with <b>{Unit.Name}</b> after all."};
@@ -2545,5 +2545,10 @@ public class Actor_Unit
             }
         } else
             Corruption = 0;
+    }
+
+    internal void Shapeshift(Unit shape)
+    {
+        
     }
 }
