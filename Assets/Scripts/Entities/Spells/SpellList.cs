@@ -737,7 +737,7 @@ static class SpellList
             ResistanceMult = 0.5f,
             OnExecute = (a, t) =>
             {
-                a.CastStatusSpell(HypnoGas, t);
+                a.CastStatusSpell(HypnoGas, t, null, Stat.Voracity);
                 if (Config.FartOnAbsorb)
                 {
                     a.SetPredMode(PreyLocation.anal);
@@ -752,7 +752,7 @@ static class SpellList
             },
             OnExecuteTile = (a, loc) =>
             {
-                a.CastStatusSpell(HypnoGas, null, loc);
+                a.CastStatusSpell(HypnoGas, null, loc, Stat.Voracity);
                 if (Config.FartOnAbsorb)
                 {
                     a.SetPredMode(PreyLocation.anal);
