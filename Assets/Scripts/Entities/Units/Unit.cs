@@ -769,8 +769,9 @@ public class Unit
         {
             foreach (int t in tiers)
             {
-                InnateSpells.Add(((SpellBook)State.World.ItemRepository.GetRandomBook(t, t == 3 ? 4 : t, true)).ContainedSpell);
-                tiers.Remove(t);
+                SpellTypes spell = ((SpellBook)State.World.ItemRepository.GetRandomBook(t, t == 3 ? 4 : t, true)).ContainedSpell;
+                if (!InnateSpells.Contains(spell))
+                InnateSpells.Add(spell);
             }
         }
     }
