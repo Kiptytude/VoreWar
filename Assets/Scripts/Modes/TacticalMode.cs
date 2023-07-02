@@ -385,6 +385,7 @@ public class TacticalMode : SceneBase
 
     public void Begin(StrategicTileType tiletype, Village village, Army invader, Army defender, TacticalAIType AIinvader, TacticalAIType AIdefender, TacticalBattleOverride tacticalBattleOverride = TacticalBattleOverride.Ignore)
     {
+        BattleReviewText.gameObject.SetActive(false);
         CheatAttackerControl = false;
         CheatDefenderControl = false;
         SpectatorMode = false;
@@ -500,6 +501,7 @@ public class TacticalMode : SceneBase
             actor.Unit.EnemiesKilledThisBattle = 0;
             actor.allowedToDefect = !actor.DefectedThisTurn && TacticalUtilities.GetPreferredSide(actor.Unit, actor.Unit.Side, actor.Unit.Side == attackerSide ? defenderSide : attackerSide) != actor.Unit.Side;
             actor.DefectedThisTurn = false;
+            actor.Unit.Heal(actor.Unit.GetLeaderBonus() * 3); // mainly for the new Stat boosts => maxHealth option, but eh why not have it for everyone anyway?
         }
 
 
@@ -4057,6 +4059,10 @@ Turns: {currentTurn}
                         Debug.Log("Prey orphan found, fixing");
                         actor.Targetable = true;
                         actor.Visible = true;
+                    }
+                    if (actor.SelfPrey?.Predator != null && (actor.SelfPrey.Predator.Unit?.IsDead ?? true))
+                    {
+                        actor.SelfPrey.Predator.PredatorComponent.FreeAnyAlivePrey();
                     }
                     if (actor.Unit.Side == armies[0].Side)
                     {

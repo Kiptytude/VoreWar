@@ -1724,7 +1724,7 @@ static class StoredLogTexts
             priority: 9, conditional: s => SizeDiff(s , 3)),
             new EventString((i) => $"<b>{i.Unit.Name}</b> grabs little <b>{i.Target.Name}</b> and brings {GPPHim(i.Target)} to {GPPHis(i.Unit)} ass. Using {(ActorHumanoid(i) ? "a finger" : GPPHis(i.Unit)+" tongue")}, {GPPHe(i.Unit)} shove{SIfSingular(i.Unit)} the struggling {GetRaceDescSingl(i.Target)} inside.",
             priority: 9, conditional: s => SizeDiff(s , 3)),
-            new EventString((i) => $"<b>{i.Unit.Name}</b> grabs the shrunken <b>{i.Target.Name}</b> and brings {GPPHim(i.Target)} to {GPPHis(i.Unit)} ass, shoving {GPPHim(i.Target)} halfway inside {GPPHis(i.Unit)} hole. Using {(ActorHumanoid(i) ? "a finger" : GPPHis(i.Unit)+" tongue")}, {GPPHe(i.Unit)} shove{SIfSingular(i.Unit)} the struggling {GetRaceDescSingl(i.Target)} inside completely.",
+            new EventString((i) => $"<b>{i.Unit.Name}</b> grabs the bite-sized <b>{i.Target.Name}</b> and brings {GPPHim(i.Target)} to {GPPHis(i.Unit)} ass, shoving {GPPHim(i.Target)} halfway inside {GPPHis(i.Unit)} hole. Using {(ActorHumanoid(i) ? "a finger" : GPPHis(i.Unit)+" tongue")}, {GPPHe(i.Unit)} shove{SIfSingular(i.Unit)} the struggling {GetRaceDescSingl(i.Target)} inside completely.",
             priority: 9, conditional: s => SizeDiff(s , 3)),
             new EventString((i) => $"<b>{i.Unit.Name}</b> {(ActorHumanoid(i) ? "reaches" : "leans")} down to grab <b>{i.Target.Name}</b> and holds {GPPHim(i.Target)} in front of {GPPHis(i.Unit)} ass. <b>{i.Unit.Name}</b> lets the 'lucky' {GetRaceDescSingl(i.Target)} get a nice long view of {GPPHis(i.Unit)} assets before shoving {GPPHim(i.Target)} into {GPPHis(i.Unit)} hole.",
             priority: 9, conditional: s => SizeDiff(s , 3)),

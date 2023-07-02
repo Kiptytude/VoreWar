@@ -83,11 +83,11 @@ public class Unit
 
     internal int MaxMana => (int)(GetStatBase(Stat.Mind) + GetStatBase(Stat.Will) * 2 * TraitBoosts.ManaMultiplier);
 
-    private int _maxHealth = 1;
+    private int _maxHealth = 99999;
 
     public int MaxHealth
     {
-        get // Ah yes, a simple getter function u?u. Keeps health percentage consistent after gaining/losing stats mid battle, doesn't break Thrillseeker, doesn't break on save/load... etc.
+        get // Ah yes, a simple getter function u?u. Keeps health percentage consistent after gaining/losing stats mid battle, doesn't break Thrillseeker, doesn't cause prey orphans, doesn't break on save/load... etc.
         {
             if (Stats == null) return 1;
             if (!Config.StatBoostsAffectMaxHP) {
@@ -97,10 +97,11 @@ public class Unit
 
             int oldMax = _maxHealth;
             _maxHealth = GetStat(Stat.Endurance) * 2 + GetStat(Stat.Strength);
-            if (oldMax != 1 && oldMax != 0 && oldMax != _maxHealth)
+            if (oldMax > 1 && oldMax != _maxHealth && _healthPct > 0)
             {
                 int healthChange = (int)Math.Round((_maxHealth - oldMax) * _healthPct);
-                Health = Math.Min(_maxHealth,Math.Max(1, Health + healthChange));
+                if (healthChange > 0)
+                    Health = Math.Min(_maxHealth,Math.Max(1, Health + healthChange));
             }
             return _maxHealth;
         }
@@ -1331,7 +1332,7 @@ public class Unit
             Health = MaxHealth;
         }
         int actualHeal = Math.Min(diff, amount);
-        State.GameManager.TacticalMode.TacticalStats.RegisterHealing(actualHeal, Side);
+        State.GameManager.TacticalMode?.TacticalStats?.RegisterHealing(actualHeal, Side);
         return actualHeal;
     }
 
@@ -1403,7 +1404,7 @@ public class Unit
         RecalculateStatBoosts();
     }
 
-    public void AddPermanentTrait(Traits traitIdToAdd)
+    public bool AddPermanentTrait(Traits traitIdToAdd)
     {
         if (PermanentTraits == null)
             PermanentTraits = new List<Traits>();
@@ -1415,10 +1416,11 @@ public class Unit
         }
 
         if (HasTrait(traitIdToAdd))
-            return;
+            return false;
 
         PermanentTraits.Add(traitIdToAdd);
         RecalculateStatBoosts();
+        return true;
     }
 
     public void RemoveTrait(Traits traitToRemove)

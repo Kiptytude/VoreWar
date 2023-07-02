@@ -320,7 +320,7 @@ static class TacticalUtilities
     static public bool TreatAsHostile(Actor_Unit actor, Actor_Unit target)
     {
         if (actor == target) return false;
-        if (actor.Unit.Side == actor.Unit.FixedSide && !(target.sidesAttackedThisBattle?.Contains(actor.Unit.FixedSide) ?? false) && target.Unit.Side == actor.Unit.Side)
+        if (actor.Unit.Side == actor.Unit.FixedSide && !(target.sidesAttackedThisBattle?.Contains(actor.Unit.FixedSide) ?? false) && target.Unit.Side == actor.Unit.Side && GetMindControlSide(actor.Unit) == -1)
             return false;
         int friendlySide = actor.Unit.Side;
         int defenderSide = State.GameManager.TacticalMode.GetDefenderSide();

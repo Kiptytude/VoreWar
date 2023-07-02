@@ -2008,7 +2008,7 @@ public class Actor_Unit
                 Unit.ApplyStatusEffect(StatusEffectType.Berserk, 1, 3);
             }
         }
-        if ((canKill == false && Unit.IsDead) || (Config.AutoSurrender && Unit.IsDead && State.Rand.NextDouble() < Config.AutoSurrenderChance && Surrendered == false && Unit.HasTrait(Traits.Fearless) == false))
+        if ((canKill == false && Unit.IsDead) || (Config.AutoSurrender && Unit.IsDead && State.Rand.NextDouble() < Config.AutoSurrenderChance && Surrendered == false && Unit.HasTrait(Traits.Fearless) == false && !KilledByDigestion))
         {
             Unit.Health = 1;
             Surrendered = true;
