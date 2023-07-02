@@ -331,7 +331,7 @@ class UnitEditor : UnitCustomizer
 
     internal void ChangeItem(int slot, Item item)
     {
-        Unit.SetItem(item, slot);
+        Unit.SetItem(item, slot, true);
         RefreshStats();
     }
 

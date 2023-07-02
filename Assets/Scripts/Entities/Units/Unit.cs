@@ -771,7 +771,7 @@ public class Unit
             {
                 SpellTypes spell = ((SpellBook)State.World.ItemRepository.GetRandomBook(t, t == 3 ? 4 : t, true)).ContainedSpell;
                 if (!InnateSpells.Contains(spell))
-                InnateSpells.Add(spell);
+                    InnateSpells.Add(spell);
             }
         }
     }
@@ -2092,7 +2092,7 @@ public class Unit
         }
     }
 
-    public void SetItem(Item item, int i)
+    public void SetItem(Item item, int i, bool fromUnitEditor = false)
     {
         if (item == null && (ShifterShapes?.Any() ?? false))
         {
@@ -2106,7 +2106,7 @@ public class Unit
             UnityEngine.Debug.LogWarning("Tried to Assign item to a non-existant slot!");
             return;
         }
-        if (item is SpellBook && HasTrait(Traits.BookEater))
+        if (item is SpellBook && HasTrait(Traits.BookEater) && !fromUnitEditor)
         {
             InnateSpells.Add(((SpellBook)item).ContainedSpell);
             return;

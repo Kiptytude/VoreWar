@@ -222,7 +222,7 @@ static class TacticalActionList
 
 
 
-        UntargetedActions.Add(new UntargetedTacticalAction("Shapeshift", () => State.GameManager.TacticalMode.ButtonCallback(16), (a) => a.Unit.ShifterShapes != null && a.Unit.ShifterShapes.Count > 1));
+        //UntargetedActions.Add(new UntargetedTacticalAction("Shapeshift", () => State.GameManager.TacticalMode.ButtonCallback(16), (a) => a.Unit.ShifterShapes != null && a.Unit.ShifterShapes.Count > 1));
         UntargetedActions.Add(new UntargetedTacticalAction("Flee", () => State.GameManager.TacticalMode.ButtonCallback(10), (a) => true));
         UntargetedActions.Add(new UntargetedTacticalAction("Surrender", () => State.GameManager.TacticalMode.ButtonCallback(9), (a) => true, new Color(.9f, .65f, .65f)));
         UntargetedActions.Add(new UntargetedTacticalAction("Reveal", () => State.GameManager.TacticalMode.ButtonCallback(15), (a) => a.Unit.hiddenFixedSide && TacticalUtilities.PlayerCanSeeTrueSide(a.Unit)));
