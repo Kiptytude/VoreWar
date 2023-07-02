@@ -2225,8 +2225,7 @@ Turns: {currentTurn}
         if (ID == 16)
         {
             if (SelectedUnit != null && SelectedUnit.Targetable)
-                TacticalUtilities.ShapeshifterMenu(SelectedUnit);
-
+                TacticalUtilities.ShapeshifterPanel(SelectedUnit);
         }
     }
 

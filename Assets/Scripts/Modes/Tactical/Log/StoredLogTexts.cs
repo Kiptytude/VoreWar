@@ -1776,7 +1776,7 @@ static class StoredLogTexts
             priority: 9, conditional: s => SizeDiff(s , 3)),
             
             //Abakhanskya 
-            new EventString((i) => $"Feeling lewd, and dominant, <b>{i.Unit.Name}</b> looks over a helpless <b>{i.Target.Name}</b>. It wasn't long until {GPPHeIsAbbr(i.Target)} grappled by the dragoness, and shoved in headfirst through her slit, <b>{i.Unit.Name}</b> cooing softly throughout the i.", actorRace: Race.Abakhanskya, priority: 10),
+            new EventString((i) => $"Feeling lewd, and dominant, <b>{i.Unit.Name}</b> looks over a helpless <b>{i.Target.Name}</b>. It wasn't long until {GPPHeIsAbbr(i.Target)} grappled by the dragoness, and shoved in headfirst through her slit, <b>{i.Unit.Name}</b> cooing softly throughout.", actorRace: Race.Abakhanskya, priority: 10),
             new EventString((i) => $"<b>{i.Unit.Name}</b>, wishing to play with her food, spins herself about on the spot, grabbing her prey with her tail and sending <b>{i.Target.Name}</b> on a trip to her womb, for {GPPHis(i.Target)} demise.", actorRace: Race.Abakhanskya, priority: 10),
             new EventString((i) => $"<b>{i.Unit.Name}</b> feels an erotic itch needing to be scratched, and with <b>{i.Target.Name}</b> in front of her, it wasn't long until {GPPHeIsAbbr(i.Target)} used to scratch it. Up and through her slit {GPPHe(i.Target)} went, legs first!", actorRace: Race.Abakhanskya, priority: 10),
             new EventString((i) => $"After having sensed she had gained the advantage, <b>{i.Unit.Name}</b> seals <b>{i.Target.Name}</b> away lewdly, taking {GPPHim(i.Target)} in head first into her womb, gasping in delight as {GPPHe(i.Target)} passed through her slit.", actorRace: Race.Abakhanskya, priority: 10),

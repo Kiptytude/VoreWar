@@ -1,8 +1,12 @@
 using OdinSerializer;
+using OdinSerializer.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.ConstrainedExecution;
 using UnityEngine;
+using static UnityEngine.UI.CanvasScaler;
 
 public enum UnitType
 {
@@ -47,7 +51,7 @@ public class Unit
     [OdinSerialize]
     public bool hiddenFixedSide = false;
 
-    public static List<Traits> secretTags = new List<Traits>() { Traits.Infiltrator, Traits.Corruption, Traits.Reincarnation, Traits.InfiniteReincarnation, Traits.Transmigration, Traits.InfiniteTransmigration, Traits.Untamable};
+    public static List<Traits> secretTags = new List<Traits>() { Traits.Infiltrator, Traits.Corruption, Traits.Reincarnation, Traits.InfiniteReincarnation, Traits.Transmigration, Traits.InfiniteTransmigration, Traits.Untamable, Traits.Shapeshifter, Traits.Skinwalker};
 
     [OdinSerialize]
     public Race Race;
@@ -100,6 +104,7 @@ public class Unit
             }
             return _maxHealth;
         }
+        set => _maxHealth = value;
     }
     private int GetHealthBoosts()
     {
@@ -520,6 +525,7 @@ public class Unit
         SetGear(race);
 
         InnateSpells = new List<SpellTypes>();
+        ShifterShapes = new List<Unit>();
 
         if (race == Race.Dragon)
         {
@@ -546,6 +552,45 @@ public class Unit
             }
         }
         ReincarnateCheck();
+        if (HasTrait(Traits.Shapeshifter) || HasTrait(Traits.Skinwalker))
+        {
+            AcquireShape(this, true);
+        }
+        SetForcedPermanentTraits();
+    }
+
+    private void SetForcedPermanentTraits()
+    {
+        if (HasTrait(Traits.InfiniteAssimilation))
+        {           
+            RemoveTrait(Traits.InfiniteAssimilation);
+            AddPermanentTrait(Traits.InfiniteAssimilation);
+        }
+        if (HasTrait(Traits.InfiniteReincarnation))
+        {
+            RemoveTrait(Traits.InfiniteReincarnation);
+            AddPermanentTrait(Traits.InfiniteReincarnation);
+        }
+        if (HasTrait(Traits.InfiniteTransmigration))
+        {
+            RemoveTrait(Traits.InfiniteTransmigration);
+            AddPermanentTrait(Traits.InfiniteTransmigration);
+        }
+        if (HasTrait(Traits.Shapeshifter))
+        {
+            RemoveTrait(Traits.Shapeshifter);
+            AddPermanentTrait(Traits.Shapeshifter);
+        }
+        if (HasTrait(Traits.Skinwalker))
+        {
+            RemoveTrait(Traits.Skinwalker);
+            AddPermanentTrait(Traits.Skinwalker);
+        }
+        if (HasTrait(Traits.Extraction))
+        {
+            RemoveTrait(Traits.Extraction);
+            AddPermanentTrait(Traits.Extraction);
+        }
     }
 
     private void ReincarnateCheck()
@@ -567,6 +612,7 @@ public class Unit
             AddPermanentTrait(trait);
         }
         InnateSpells.AddRange(Unit.InnateSpells);
+        ShifterShapes = Unit.ShifterShapes;
         FixedSide = Unit.FixedSide;
         hiddenFixedSide = true;
         SavedCopy = Unit.SavedCopy;
@@ -592,7 +638,7 @@ public class Unit
         StrategicUtilities.SpendLevelUps(this);
     }
 
-    internal void SetGear(Race race)
+    internal void SetGear(Race race, bool skipTraitItems = false)
     {
         if (race >= Race.Vagrants && race < Race.Selicia)
         {
@@ -676,7 +722,8 @@ public class Unit
                     }
                 }
             }
-            GiveTraitBooks();
+            if (!skipTraitItems)
+                GiveTraitBooks();
         }
     }
 
@@ -714,10 +761,16 @@ public class Unit
                 {
                     int t = tiers.Count > 1 ? tiers[State.Rand.Next(tiers.Count - 1)] : tiers[0];
                     Items[i] = State.World.ItemRepository.GetRandomBook(t, t == 3 ? 4 : t, true);
-                    if (t == 4)
-                        tiers.Remove(3);
                     tiers.Remove(t);
                 }
+            }
+        }
+        if (tiers.Count > 0 && HasTrait(Traits.BookEater))
+        {
+            foreach (int t in tiers)
+            {
+                InnateSpells.Add(((SpellBook)State.World.ItemRepository.GetRandomBook(t, t == 3 ? 4 : t, true)).ContainedSpell);
+                tiers.Remove(t);
             }
         }
     }
@@ -1547,16 +1600,23 @@ public class Unit
         if (!State.TutorialMode)
             RandomizeTraits();
         Tags = Tags.Distinct().ToList();
-        if (Tags.Contains(Traits.Prey))
+        if (HasTrait(Traits.Prey))
             Predator = false;
         else if (fixedPredator == false)
             Predator = State.World?.GetEmpireOfRace(Race)?.CanVore ?? true;
         Tags.RemoveAll(s => s == Traits.Prey);
         if (RaceParameters.GetTraitData(this).AllowedVoreTypes.Any() == false)
             Predator = false;
-        if (Predator == false)
+        if (Predator == false && !HasTrait(Traits.Prey))
             Tags.Add(Traits.Prey);
         SetMaxItems();
+        if (HasTrait(Traits.Shapeshifter) || HasTrait(Traits.Skinwalker))
+        {
+            if (ShifterShapes == null)
+                ShifterShapes = new List<Unit>();
+            if (!ShifterShapes.Contains(this))
+                AcquireShape(this, true);
+        }
     }
 
     public void ChangeRace(Race race)
@@ -2033,9 +2093,21 @@ public class Unit
 
     public void SetItem(Item item, int i)
     {
+        if (item == null && (ShifterShapes?.Any() ?? false))
+        {
+            ShifterShapes.Where(shape => shape.GetItem(i) == GetItem(i)).ForEach(s => // test what happens if main has resourceful but shape has not
+            {
+                s.Items[i] = null;
+            });
+        }
         if (Items.Length <= i)
         {
             UnityEngine.Debug.LogWarning("Tried to Assign item to a non-existant slot!");
+            return;
+        }
+        if (item is SpellBook && HasTrait(Traits.BookEater))
+        {
+            InnateSpells.Add(((SpellBook)item).ContainedSpell);
             return;
         }
         if (Items[i] != null)
@@ -2173,6 +2245,28 @@ public class Unit
         if (viewer != null && TacticalUtilities.UnitCanSeeTrueSideOfTarget(viewer, this))
             return FixedSide;
         return hiddenFixedSide ? Side : FixedSide;
+    }
+
+    public void CreateRaceShape(Race race)
+    {
+        var shape = new Unit(Side, race, (int)Experience, true, Type, ImmuneToDefections);
+        foreach (Traits trait in ShifterShapes[0].PermanentTraits)
+        {
+            shape.AddPermanentTrait(trait);
+        }
+        if (Races.GetRace(shape.Race).CanBeGender.Contains(GetGender()))
+        {
+            shape.SetGenderRandomizeName(race,GetGender());
+        }
+        shape.Name = Name;
+        shape.InnateSpells.AddRange(InnateSpells);
+        hiddenFixedSide = false;
+        shape._fixedSide = ShifterShapes[0]._fixedSide;
+        shape.SavedCopy = ShifterShapes[0].SavedCopy;
+        shape.SavedVillage = ShifterShapes[0].SavedVillage;
+        shape.BoundUnit = ShifterShapes[0].BoundUnit;
+        ShifterShapes[0].ShifterShapes.Add(shape);
+        shape.ShifterShapes = ShifterShapes[0].ShifterShapes;
     }
 
     internal void AddBladeDance()
@@ -2321,5 +2415,59 @@ public class Unit
             chance -= 1;
         }
         return traitsToAdd;
+    }
+
+    internal void AcquireShape(Unit unit, bool forceDirect = false)
+    {
+        if (ShifterShapes.Any(shape => shape.Race == unit.Race) && !forceDirect) return;
+        if (HasTrait(Traits.Skinwalker) || forceDirect)
+        {
+            Unit referenceUnit = ShifterShapes.Count > 0 ? ShifterShapes[0] : this;
+            Unit shape = unit.Clone();
+            shape.Side = Side;
+            shape._fixedSide = referenceUnit._fixedSide;
+            if (referenceUnit.HasTrait(Traits.Skinwalker))
+                shape.AddPermanentTrait(Traits.Skinwalker);
+            shape.hiddenFixedSide = referenceUnit.hiddenFixedSide;
+            shape.SavedCopy = referenceUnit.SavedCopy;
+            shape.SavedVillage = referenceUnit.SavedVillage; 
+            shape.BoundUnit = referenceUnit.BoundUnit;
+            referenceUnit.ShifterShapes.Add(shape);
+            shape.ShifterShapes = ShifterShapes[0].ShifterShapes;
+        }
+        else if (HasTrait(Traits.Shapeshifter))
+        {
+            CreateRaceShape(unit.Race);
+        }
+    }
+
+    internal List<Traits> GetPermanentTraits()
+    {
+        return PermanentTraits;
+    }
+
+    internal void UpdateShapeExpAndItems()
+    {
+        if (!HasTrait(Traits.Skinwalker))
+        {
+            ShifterShapes.ForEach(shape =>
+            {
+                shape.SetExp(experience);
+                StrategicUtilities.SpendLevelUps(shape);
+            });
+        }
+        ShifterShapes.ForEach(shape =>
+        {
+            if (!shape.FixedGear)
+            {
+                shape.Items.ForEach((slot, index) =>
+                {
+                   if( slot == null)
+                    {
+                        slot = GetItem(index);
+                    }
+                });
+            }
+        });
     }
 }

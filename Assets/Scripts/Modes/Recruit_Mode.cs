@@ -218,7 +218,7 @@ public class Recruit_Mode : SceneBase
         if (selectedIndex != -1 && army?.Units.Count() > selectedIndex)
             unit = army?.Units[selectedIndex];
         ArmyUI.Rename.interactable = validUnit && unit.Type != UnitType.SpecialMercenary;
-        ArmyUI.Shop.interactable = activatingEmpire < ActivatingEmpire.Observer && validUnit && unit != null && unit.FixedGear == false;
+        ArmyUI.Shop.interactable = activatingEmpire < ActivatingEmpire.Observer && validUnit && unit != null && (unit.FixedGear == false || unit.HasTrait(Traits.BookEater));
         var dismissText = ArmyUI.Dismiss.gameObject.GetComponentInChildren(typeof(Text)) as Text;
 
         if (unit != null && unit.FixedSide == empire.Side && unit.IsInfiltratingSide(unit.Side) && activatingEmpire > ActivatingEmpire.Ally)

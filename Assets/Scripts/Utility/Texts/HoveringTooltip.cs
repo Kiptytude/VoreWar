@@ -441,9 +441,9 @@ public class HoveringTooltip : MonoBehaviour
             case Traits.HealingBelly:
                 return "An accessory trait to endosoma that makes friendly prey receive healing each turn.  (Does nothing without the endosoma trait)\n(Cheat Trait)";
             case Traits.Assimilate:
-                return "If the unit has less than 5 traits, upon finishing absorption of an enemy unit, will take a random trait from them that the unit doesn't currently have.  If the unit has 5 traits, the random trait will replace this trait.\n(Cheat Trait)";
+                return "If the unit has less than 5 traits, upon finishing absorption of an enemy unit, will take a random trait from them that the unit doesn't currently have.  If the unit has 5 traits, the random trait will replace this trait. Transferable via Endosoma.\n(Cheat Trait)";
             case Traits.AdaptiveBiology:
-                return "Upon finishing absorption of an enemy unit, will take a random trait from them that the unit doesn't currently have and add it to a list of 3 rotating traits.  If the list already has 3 rotating traits, the oldest trait is removed.  This can't trigger on the same kill as Assimilate.\n(Cheat Trait)";
+                return "Upon finishing absorption of an enemy unit, will take a random trait from them that the unit doesn't currently have and add it to a list of 3 rotating traits.  If the list already has 3 rotating traits, the oldest trait is removed.  This can't trigger on the same kill as Assimilate. Transferable via Endosoma.\n(Cheat Trait)";
             case Traits.KillerKnowledge:
                 return "Every four weapon / spell kills (but not vore kills), the unit will get a permanent +1 to all stats\n(Cheat Trait)";
             case Traits.PollenProjector:
@@ -457,7 +457,7 @@ public class HoveringTooltip : MonoBehaviour
             case Traits.WillingRace:
                 return "Gives the whole race the willing prey spell effect permanently, which makes them easier to eat, and changes some of the dialogue.";
             case Traits.InfiniteAssimilation:
-                return "Upon finishing absorption of an enemy unit, will take a random trait from them that the unit doesn't currently have.  This version has no cap, so it can be a little bit of a text mess.\n(Cheat Trait)";
+                return "Upon finishing absorption of an enemy unit, will take a random trait from them that the unit doesn't currently have. This version has no cap, so it can be a little bit of a text mess. Transferable via Endosoma.\n(Cheat Trait)";
             case Traits.GlueBomb:
                 return "Gives access to a single use ability that applies the glued status effect to a 3x3 group.  Glued units are very slow, and it takes a while to get it off.";
             case Traits.TasteForBlood:
@@ -518,7 +518,7 @@ public class HoveringTooltip : MonoBehaviour
                 return "Allows unit to attempt force-feeding itself to another unit at will.";
             case Traits.Corruption:
                 return "If a currupted unit is digested, the pred will build up corruption as a status hidden to them. Once the build-up (corrupted prey's stat total) reaches a certain threshold (pred's stat total + will), the side of the corrupted prey controls the pred." +
-                    "\nAlso prevents vore-based conversion\n(Hidden Trait)";
+                    "\nCorrupted units don't change allegiance during vore-based conversion. Transferable via Endosoma.\n(Hidden Trait)";
             case Traits.Reanimator:
                 return "Allows unit to use <b>Reanimate</b>, an attack that brings any unit back to life as the caster's summon, once per battle";
             case Traits.Reincarnation:
@@ -568,7 +568,13 @@ public class HoveringTooltip : MonoBehaviour
             case Traits.Donor:
                 return "Upon being absorbed, this unit bestows all traits that are listed below \"Donor\" in its trait list.";
             case Traits.Extraction:
-                return "Every time digestion progresses, this unit steals one trait from each prey inside them, if only duplicates (or non-assimilable traits) remain, they are turned into exp. Absorbtion steals any that are left.\n(Cheat Trait)";
+                return "Every time digestion progresses, this unit steals one trait from each prey inside them, if only duplicates (or non-assimilable traits) remain, they are turned into exp. Absorbtion steals any that are left. Endoed units instead gain traits.\n(Cheat Trait)";
+            case Traits.Shapeshifter:
+                return "Gives the ability to change into different races after acquiring them via absorbing, being reborn, reincarnating, being endoed or infiltrating. Also Allows Traversal of all terrain at normal speed.";
+            case Traits.Skinwalker:
+                return "Gives the ability to change into specific units after absorbing them or being endoed or infiltrating. Or into the alternate selves acquired by being reborn or reincarnated. Also Allows Traversal of all terrain at normal speed.";
+            case Traits.BookEater:
+                return "When this unit would equip a book, it is instead consumed and the spell becomes innate. Does not consume already equipped books.";
         }  
         return "<b>This trait needs a tooltip!</b>";
     }

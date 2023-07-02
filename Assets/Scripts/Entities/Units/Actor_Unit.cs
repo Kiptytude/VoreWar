@@ -166,21 +166,6 @@ public class Actor_Unit
     public void DrainExp(int damage) => Unit.GiveExp(-1 * damage);
     public void SetPos(Vec2i p) => Position = p;
 
-    public void ChangeRace(Race race)
-    {
-                if (Unit.Race == race)
-                    return;
-                Unit.Race = race;
-                Unit.RandomizeGender(race, Races.GetRace(Unit));                
-                Unit.SetGear(race, true);
-                AnimationController = new AnimationController();
-
-                Races.GetRace(Unit).RandomCustom(Unit);
-
-                Unit.ReloadTraits();
-                Unit.InitializeTraits();
-    }
-
     private void RestoreMP()
     {
         if (WasJustFreed)
@@ -721,13 +706,13 @@ public class Actor_Unit
         return (float)attackStat / (attackStat + (defenseStat * (1 + shift)));
     }
 
-    internal float GetMagicChance(Actor_Unit attacker, Spell currentSpell, float modifier = 0)
+    internal float GetMagicChance(Actor_Unit attacker, Spell currentSpell, float modifier = 0, Stat stat = Stat.Mind)
     {
         if (attacker.Unit.GetApparentSide(Unit) == Unit.GetApparentSide() && attacker.Unit.IsInfiltratingSide(Unit.GetApparentSide())) // sneakAttack
         {
             modifier -= 0.3f;
         }
-        int attackStat = attacker.Unit.GetStat(Stat.Mind);
+        int attackStat = attacker.Unit.GetStat(stat);
         int defenseStat = Unit.GetStat(Stat.Will);
         if (currentSpell?.Resistable ?? false) //Skips if no spell is specified since that only involves AI calcs
         {
@@ -1395,12 +1380,12 @@ public class Actor_Unit
         }
     }
 
-    internal bool DefendSpellCheck(Spell spell, Actor_Unit attacker, out float chance, float mod = 0)
+    internal bool DefendSpellCheck(Spell spell, Actor_Unit attacker, out float chance, float mod = 0, Stat stat = Stat.Mind)
     {
         State.GameManager.TacticalMode.AITimer = Config.TacticalAttackDelay;
         if (State.GameManager.CurrentScene == State.GameManager.TacticalMode && State.GameManager.TacticalMode.IsPlayerInControl == false && State.GameManager.TacticalMode.turboMode == false)
             State.GameManager.CameraCall(Position);
-        chance = spell.Resistable ? GetMagicChance(attacker, spell, mod) : 1;
+        chance = spell.Resistable ? GetMagicChance(attacker, spell, mod, stat) : 1;
         float r = (float)State.Rand.NextDouble();
         return r < chance;
 
@@ -1457,7 +1442,7 @@ public class Actor_Unit
         return false;
     }
 
-    internal bool DefendStatusSpell(StatusSpell spell, Actor_Unit attacker)
+    internal bool DefendStatusSpell(StatusSpell spell, Actor_Unit attacker, Stat stat = Stat.Mind)
     {
         if (spell.Id == "hypno-fart" && Unit.FixedSide == attacker.Unit.FixedSide)
         {
@@ -1476,7 +1461,7 @@ public class Actor_Unit
                 attacker.sidesAttackedThisBattle = new List<int>();
             attacker.sidesAttackedThisBattle.Add(Unit.GetApparentSide());
         }
-        if (DefendSpellCheck(spell, attacker, out float chance, sneakAttack ? -0.3f : 0f))
+        if (DefendSpellCheck(spell, attacker, out float chance, sneakAttack ? -0.3f : 0f, stat))
         {
             State.GameManager.TacticalMode.Log.RegisterSpellHit(attacker.Unit, Unit, spell.SpellType, 0, chance);
             Unit.ApplyStatusEffect(spell.Type, spell.Effect(attacker, this), spell.Duration(attacker, this));
@@ -2300,7 +2285,7 @@ public class Actor_Unit
         }
     }
 
-    internal bool CastStatusSpell(StatusSpell spell, Actor_Unit target, Vec2i targetArea = null)
+    internal bool CastStatusSpell(StatusSpell spell, Actor_Unit target, Vec2i targetArea = null, Stat stat = Stat.Mind)
     {
         if (Unit.SpendMana(spell.ManaCost) == false)
             return false;
@@ -2549,6 +2534,22 @@ public class Actor_Unit
 
     internal void Shapeshift(Unit shape)
     {
+        if (Unit == shape)
+            return;
+        TacticalGraphicalEffects.CreateSmokeCloud(Position, Unit.GetScale()/2);
+        Unit.UpdateShapeExpAndItems();
+        MiscUtilities.DelayedInvoke(() =>
+        {
+            shape.ShifterShapes = Unit.ShifterShapes;
+            shape.Side = Unit.Side;
+            Unit = shape;
+            Unit.hiddenFixedSide = false;
+
+            UnitSprite.UpdateSprites(this, true);
+            AnimationController = new AnimationController();
+            Unit.ReloadTraits();
+            Unit.InitializeTraits();
+        }, 0.4f);
         
     }
 }

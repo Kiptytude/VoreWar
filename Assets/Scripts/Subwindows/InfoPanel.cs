@@ -513,6 +513,15 @@ public class InfoPanel
     {
         if (parentMenu != "unitEditor")
         {
+            if (unit.HasFixedSide() && TacticalUtilities.PlayerCanSeeTrueSide(unit))
+            {
+                if (State.World.MainEmpires == null)
+                {
+                    sb.AppendLine($"Special Allegiance: {(unit.FixedSide == State.GameManager.TacticalMode.GetDefenderSide() ? "Defender" : "Attacker")}");
+                }
+                else
+                    sb.AppendLine($"Special Allegiance: {State.World.GetEmpireOfSide(unit.FixedSide)?.Name ?? "Unkown"}");
+            }
             // Add Equipment
             for (int i = 0; i < unit.Items.Length; i++)
             {

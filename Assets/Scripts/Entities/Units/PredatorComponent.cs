@@ -878,6 +878,16 @@ public class PredatorComponent
                     preyDamage = Math.Min(unit.MaxHealth / -10, -1);
                 else
                     preyDamage = 0;
+                if (unit.HasTrait(Traits.Extraction))
+                {
+                    var possibleTraits = unit.GetTraits.Where(s => !preyUnit.Unit.GetTraits.Contains(s) && State.AssimilateList.CanGet(s)).ToArray();
+
+                    if (possibleTraits.Any())
+                    {
+                        var trait = possibleTraits[State.Rand.Next(possibleTraits.Length)];
+                        preyUnit.Unit.AddPermanentTrait(trait);
+                    }
+                }
                 if (unit.HasTrait(Traits.InfiniteAssimilation) && !preyUnit.Unit.HasTrait(Traits.InfiniteAssimilation) && Config.KuroTenkoEnabled)
                     preyUnit.Unit.AddPermanentTrait(Traits.InfiniteAssimilation);
                 if (unit.HasTrait(Traits.Assimilate) && !preyUnit.Unit.HasTrait(Traits.Assimilate) && Config.KuroTenkoEnabled)
@@ -891,6 +901,10 @@ public class PredatorComponent
                         preyUnit.Unit.FixedSide = unit.FixedSide;
                     preyUnit.Unit.hiddenFixedSide = true;
                     preyUnit.Actor.sidesAttackedThisBattle = new List<int>();
+                }
+                if (preyUnit.Unit.HasTrait(Traits.Shapeshifter) || preyUnit.Unit.HasTrait(Traits.Skinwalker))
+                {
+                    preyUnit.Unit.AcquireShape(unit);
                 }
                 preyUnit.Unit.ReloadTraits();
                 preyUnit.Unit.InitializeTraits();
@@ -1063,6 +1077,7 @@ public class PredatorComponent
             }
             if (unit.HasTrait(Traits.DigestionRebirth) && State.Rand.Next(2) == 0 && preyUnit.Unit.CanBeConverted() && (Config.SpecialMercsCanConvert || unit.Race < Race.Selicia))
             {
+                HandleShapeshifterRebirth(preyUnit);
                 preyUnit.Unit.Health = preyUnit.Unit.MaxHealth / 2;
                 HashSet<Gender> set = new HashSet<Gender>(Races.GetRace(preyUnit.Unit.Race).CanBeGender);
                 bool equals = set.SetEquals(Races.GetRace(unit.Race).CanBeGender);
@@ -1233,6 +1248,7 @@ public class PredatorComponent
                     preyUnit.Actor.Surrendered = false;
                     if (preyUnit.Unit.Race != unit.Race)
                     {
+                        HandleShapeshifterRebirth(preyUnit);
                         HashSet<Gender> set = new HashSet<Gender>(Races.GetRace(preyUnit.Unit.Race).CanBeGender);
                         bool equals = set.SetEquals(Races.GetRace(unit.Race).CanBeGender);
                         preyUnit.Unit.ChangeRace(unit.Race);
@@ -1317,6 +1333,10 @@ public class PredatorComponent
                 if (!State.GameManager.TacticalMode.turboMode)
                     actor.SetAbsorbtionMode();
                 CheckPredTraitAbsorption(preyUnit);
+                if (unit.HasTrait(Traits.Shapeshifter) || unit.HasTrait(Traits.Skinwalker))
+                {
+                    unit.AcquireShape(preyUnit.Unit);
+                }
 
                 if (preyUnit.SubPrey?.Count() > 0) //Catches any dead prey that weren't already properly moved
                 {
@@ -1393,6 +1413,17 @@ public class PredatorComponent
             }
         }
         return totalHeal;
+    }
+
+    private void HandleShapeshifterRebirth(Prey preyUnit)
+    {
+        if (preyUnit.Unit.HasTrait(Traits.Shapeshifter) || preyUnit.Unit.HasTrait(Traits.Skinwalker)) // preserve the unit as it is and rebirth a copy of it instead
+        {
+            Unit clone = preyUnit.Unit.Clone();
+            preyUnit.Unit.ShifterShapes.Add(clone);
+            clone.ShifterShapes = preyUnit.Unit.ShifterShapes;
+            preyUnit.Unit = clone;
+        }
     }
 
     //public List<Actor_Unit> Birth()
