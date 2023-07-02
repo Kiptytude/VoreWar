@@ -226,10 +226,10 @@ public class Army
                 noForest++;
             if (unit.HasTrait(Traits.GrassImpedence))
                 noGrass++;
-            if (unit.HasTrait(Traits.Shapeshifter) || unit.HasTrait(Traits.Skinwalker))
-            {
-                yesLava++; yesMountain++; yesWater++; flying++;
-            }
+            //if (unit.HasTrait(Traits.Shapeshifter) || unit.HasTrait(Traits.Skinwalker))
+            //{
+            //    yesLava++; yesMountain++; yesWater++; flying++;
+            //}
 
             //else if (unit.HasTrait(Traits.Aquatic))
             //    aquatic++;

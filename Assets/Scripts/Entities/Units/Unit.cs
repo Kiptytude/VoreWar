@@ -51,7 +51,7 @@ public class Unit
     [OdinSerialize]
     public bool hiddenFixedSide = false;
 
-    public static List<Traits> secretTags = new List<Traits>() { Traits.Infiltrator, Traits.Corruption, Traits.Reincarnation, Traits.InfiniteReincarnation, Traits.Transmigration, Traits.InfiniteTransmigration, Traits.Untamable, Traits.Shapeshifter, Traits.Skinwalker};
+    public static List<Traits> secretTags = new List<Traits>() { Traits.Infiltrator, Traits.Corruption, Traits.Reincarnation, Traits.InfiniteReincarnation, Traits.Transmigration, Traits.InfiniteTransmigration, Traits.Untamable};
 
     [OdinSerialize]
     public Race Race;
@@ -552,10 +552,10 @@ public class Unit
             }
         }
         ReincarnateCheck();
-        if (HasTrait(Traits.Shapeshifter) || HasTrait(Traits.Skinwalker))
-        {
-            AcquireShape(this, true);
-        }
+        //if (HasTrait(Traits.Shapeshifter) || HasTrait(Traits.Skinwalker))
+        //{
+        //    AcquireShape(this, true);
+        //}
         SetForcedPermanentTraits();
     }
 
@@ -576,16 +576,16 @@ public class Unit
             RemoveTrait(Traits.InfiniteTransmigration);
             AddPermanentTrait(Traits.InfiniteTransmigration);
         }
-        if (HasTrait(Traits.Shapeshifter))
-        {
-            RemoveTrait(Traits.Shapeshifter);
-            AddPermanentTrait(Traits.Shapeshifter);
-        }
-        if (HasTrait(Traits.Skinwalker))
-        {
-            RemoveTrait(Traits.Skinwalker);
-            AddPermanentTrait(Traits.Skinwalker);
-        }
+        //if (HasTrait(Traits.Shapeshifter))
+        //{
+        //    RemoveTrait(Traits.Shapeshifter);
+        //    AddPermanentTrait(Traits.Shapeshifter);
+        //}
+        //if (HasTrait(Traits.Skinwalker))
+        //{
+        //    RemoveTrait(Traits.Skinwalker);
+        //    AddPermanentTrait(Traits.Skinwalker);
+        //}
         if (HasTrait(Traits.Extraction))
         {
             RemoveTrait(Traits.Extraction);
@@ -1610,13 +1610,13 @@ public class Unit
         if (Predator == false && !HasTrait(Traits.Prey))
             Tags.Add(Traits.Prey);
         SetMaxItems();
-        if (HasTrait(Traits.Shapeshifter) || HasTrait(Traits.Skinwalker))
-        {
-            if (ShifterShapes == null)
-                ShifterShapes = new List<Unit>();
-            if (!ShifterShapes.Contains(this))
-                AcquireShape(this, true);
-        }
+        //if (HasTrait(Traits.Shapeshifter) || HasTrait(Traits.Skinwalker))
+        //{
+        //    if (ShifterShapes == null)
+        //        ShifterShapes = new List<Unit>();
+        //    if (!ShifterShapes.Contains(this))
+        //        AcquireShape(this, true);
+        //}
     }
 
     public void ChangeRace(Race race)
@@ -2419,26 +2419,26 @@ public class Unit
 
     internal void AcquireShape(Unit unit, bool forceDirect = false)
     {
-        if (ShifterShapes.Any(shape => shape.Race == unit.Race) && !forceDirect) return;
-        if (HasTrait(Traits.Skinwalker) || forceDirect)
-        {
-            Unit referenceUnit = ShifterShapes.Count > 0 ? ShifterShapes[0] : this;
-            Unit shape = unit.Clone();
-            shape.Side = Side;
-            shape._fixedSide = referenceUnit._fixedSide;
-            if (referenceUnit.HasTrait(Traits.Skinwalker))
-                shape.AddPermanentTrait(Traits.Skinwalker);
-            shape.hiddenFixedSide = referenceUnit.hiddenFixedSide;
-            shape.SavedCopy = referenceUnit.SavedCopy;
-            shape.SavedVillage = referenceUnit.SavedVillage; 
-            shape.BoundUnit = referenceUnit.BoundUnit;
-            referenceUnit.ShifterShapes.Add(shape);
-            shape.ShifterShapes = ShifterShapes[0].ShifterShapes;
-        }
-        else if (HasTrait(Traits.Shapeshifter))
-        {
-            CreateRaceShape(unit.Race);
-        }
+        //if (ShifterShapes.Any(shape => shape.Race == unit.Race) && !forceDirect) return;
+        //if (HasTrait(Traits.Skinwalker) || forceDirect)
+        //{
+        //    Unit referenceUnit = ShifterShapes.Count > 0 ? ShifterShapes[0] : this;
+        //    Unit shape = unit.Clone();
+        //    shape.Side = Side;
+        //    shape._fixedSide = referenceUnit._fixedSide;
+        //    if (referenceUnit.HasTrait(Traits.Skinwalker))
+        //        shape.AddPermanentTrait(Traits.Skinwalker);
+        //    shape.hiddenFixedSide = referenceUnit.hiddenFixedSide;
+        //    shape.SavedCopy = referenceUnit.SavedCopy;
+        //    shape.SavedVillage = referenceUnit.SavedVillage; 
+        //    shape.BoundUnit = referenceUnit.BoundUnit;
+        //    referenceUnit.ShifterShapes.Add(shape);
+        //    shape.ShifterShapes = ShifterShapes[0].ShifterShapes;
+        //}
+        //else if (HasTrait(Traits.Shapeshifter))
+        //{
+        //    CreateRaceShape(unit.Race);
+        //}
     }
 
     internal List<Traits> GetPermanentTraits()
@@ -2448,26 +2448,26 @@ public class Unit
 
     internal void UpdateShapeExpAndItems()
     {
-        if (!HasTrait(Traits.Skinwalker))
-        {
-            ShifterShapes.ForEach(shape =>
-            {
-                shape.SetExp(experience);
-                StrategicUtilities.SpendLevelUps(shape);
-            });
-        }
-        ShifterShapes.ForEach(shape =>
-        {
-            if (!shape.FixedGear)
-            {
-                shape.Items.ForEach((slot, index) =>
-                {
-                   if( slot == null)
-                    {
-                        slot = GetItem(index);
-                    }
-                });
-            }
-        });
+        //if (!HasTrait(Traits.Skinwalker))
+        //{
+        //    ShifterShapes.ForEach(shape =>
+        //    {
+        //        shape.SetExp(experience);
+        //        StrategicUtilities.SpendLevelUps(shape);
+        //    });
+        //}
+        //ShifterShapes.ForEach(shape =>
+        //{
+        //    if (!shape.FixedGear)
+        //    {
+        //        shape.Items.ForEach((slot, index) =>
+        //        {
+        //           if( slot == null)
+        //            {
+        //                slot = GetItem(index);
+        //            }
+        //        });
+        //    }
+        //});
     }
 }

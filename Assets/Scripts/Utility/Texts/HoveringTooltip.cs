@@ -569,10 +569,10 @@ public class HoveringTooltip : MonoBehaviour
                 return "Upon being absorbed, this unit bestows all traits that are listed below \"Donor\" in its trait list.";
             case Traits.Extraction:
                 return "Every time digestion progresses, this unit steals one trait from each prey inside them, if only duplicates (or non-assimilable traits) remain, they are turned into exp. Absorbtion steals any that are left. Endoed units instead gain traits.\n(Cheat Trait)";
-            case Traits.Shapeshifter:
-                return "Gives the ability to change into different races after acquiring them via absorbing, being reborn, reincarnating, being endoed or infiltrating. Also Allows Traversal of all terrain at normal speed.";
-            case Traits.Skinwalker:
-                return "Gives the ability to change into specific units after absorbing them or being endoed or infiltrating. Or into the alternate selves acquired by being reborn or reincarnated. Also Allows Traversal of all terrain at normal speed.";
+            //case Traits.Shapeshifter:
+            //    return "Gives the ability to change into different races after acquiring them via absorbing, being reborn, reincarnating, being endoed or infiltrating. Also Allows Traversal of all terrain at normal speed.";
+            //case Traits.Skinwalker:
+            //    return "Gives the ability to change into specific units after absorbing them or being endoed or infiltrating. Or into the alternate selves acquired by being reborn or reincarnated. Also Allows Traversal of all terrain at normal speed.";
             case Traits.BookEater:
                 return "When this unit would equip a book, it is instead consumed and the spell becomes innate. Does not consume already equipped books.";
         }  

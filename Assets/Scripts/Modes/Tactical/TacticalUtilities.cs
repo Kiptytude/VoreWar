@@ -933,33 +933,33 @@ static class TacticalUtilities
 
     internal static void ShapeshifterPanel(Actor_Unit selectedUnit)
     {
-        int children = UnitPickerUI.ActorFolder.transform.childCount;
-        for (int i = children - 1; i >= 0; i--)
-        {
-            UnityEngine.Object.Destroy(UnitPickerUI.ActorFolder.transform.GetChild(i).gameObject);
-        }
-        foreach (Unit shape in selectedUnit.Unit.ShifterShapes)
-        {
-            GameObject obj = UnityEngine.Object.Instantiate(UnitPickerUI.HiringUnitPanel, UnitPickerUI.ActorFolder);
-            UIUnitSprite sprite = obj.GetComponentInChildren<UIUnitSprite>();
-            Actor_Unit actor = new Actor_Unit(new Vec2i(0, 0), shape);
-            sprite.UpdateSprites(actor);
-            Text text = obj.transform.GetChild(3).GetComponent<Text>();
-            text.text = 
-                $"Items: {shape.GetItem(0)?.Name} {shape.GetItem(1)?.Name}" + (shape.HasTrait(Traits.Resourceful) ? $" { shape.GetItem(2)?.Name}" : "") + "\n" +
-                $"Str: {shape.GetStatBase(Stat.Strength)} Dex: {shape.GetStatBase(Stat.Dexterity)} Agility: {shape.GetStatBase(Stat.Agility)}\n" +
-                $"Mind: {shape.GetStatBase(Stat.Mind)} Will: {shape.GetStatBase(Stat.Will)} Endurance: {shape.GetStatBase(Stat.Endurance)}\n";
-            if (shape.Predator)
-                text.text += $"Vore: {shape.GetStatBase(Stat.Voracity)} Stomach: {shape.GetStatBase(Stat.Stomach)}";
-            sprite.Name.text = InfoPanel.RaceSingular(shape);
-            Button button = obj.GetComponentInChildren<Button>();
-            button.GetComponentInChildren<Text>().text = "Transform";
-            button.onClick.AddListener(() => selectedUnit.Shapeshift(shape));
-            button.onClick.AddListener(() => UnitPickerUI.gameObject.SetActive(false));
-        }
-        UnitPickerUI.ActorFolder.GetComponent<RectTransform>().sizeDelta = new Vector2(0, 300 * (1 + (selectedUnit.Unit.ShifterShapes.Count / 3)));
-        UnitPickerUI.GetComponentInChildren<HirePanel>().GetComponentInChildren<Button>().GetComponentInChildren<Text>().text = "Cancel";
-        UnitPickerUI.gameObject.SetActive(true);
+        //int children = UnitPickerUI.ActorFolder.transform.childCount;
+        //for (int i = children - 1; i >= 0; i--)
+        //{
+        //    UnityEngine.Object.Destroy(UnitPickerUI.ActorFolder.transform.GetChild(i).gameObject);
+        //}
+        //foreach (Unit shape in selectedUnit.Unit.ShifterShapes)
+        //{
+        //    GameObject obj = UnityEngine.Object.Instantiate(UnitPickerUI.HiringUnitPanel, UnitPickerUI.ActorFolder);
+        //    UIUnitSprite sprite = obj.GetComponentInChildren<UIUnitSprite>();
+        //    Actor_Unit actor = new Actor_Unit(new Vec2i(0, 0), shape);
+        //    sprite.UpdateSprites(actor);
+        //    Text text = obj.transform.GetChild(3).GetComponent<Text>();
+        //    text.text = 
+        //        $"Items: {shape.GetItem(0)?.Name} {shape.GetItem(1)?.Name}" + (shape.HasTrait(Traits.Resourceful) ? $" { shape.GetItem(2)?.Name}" : "") + "\n" +
+        //        $"Str: {shape.GetStatBase(Stat.Strength)} Dex: {shape.GetStatBase(Stat.Dexterity)} Agility: {shape.GetStatBase(Stat.Agility)}\n" +
+        //        $"Mind: {shape.GetStatBase(Stat.Mind)} Will: {shape.GetStatBase(Stat.Will)} Endurance: {shape.GetStatBase(Stat.Endurance)}\n";
+        //    if (shape.Predator)
+        //        text.text += $"Vore: {shape.GetStatBase(Stat.Voracity)} Stomach: {shape.GetStatBase(Stat.Stomach)}";
+        //    sprite.Name.text = InfoPanel.RaceSingular(shape);
+        //    Button button = obj.GetComponentInChildren<Button>();
+        //    button.GetComponentInChildren<Text>().text = "Transform";
+        //    button.onClick.AddListener(() => selectedUnit.Shapeshift(shape));
+        //    button.onClick.AddListener(() => UnitPickerUI.gameObject.SetActive(false));
+        //}
+        //UnitPickerUI.ActorFolder.GetComponent<RectTransform>().sizeDelta = new Vector2(0, 300 * (1 + (selectedUnit.Unit.ShifterShapes.Count / 3)));
+        //UnitPickerUI.GetComponentInChildren<HirePanel>().GetComponentInChildren<Button>().GetComponentInChildren<Text>().text = "Cancel";
+        //UnitPickerUI.gameObject.SetActive(true);
     }
 }
 

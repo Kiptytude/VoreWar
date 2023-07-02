@@ -902,10 +902,10 @@ public class PredatorComponent
                     preyUnit.Unit.hiddenFixedSide = true;
                     preyUnit.Actor.sidesAttackedThisBattle = new List<int>();
                 }
-                if (preyUnit.Unit.HasTrait(Traits.Shapeshifter) || preyUnit.Unit.HasTrait(Traits.Skinwalker))
-                {
-                    preyUnit.Unit.AcquireShape(unit);
-                }
+                //if (preyUnit.Unit.HasTrait(Traits.Shapeshifter) || preyUnit.Unit.HasTrait(Traits.Skinwalker))
+                //{
+                //    preyUnit.Unit.AcquireShape(unit);
+                //}
                 preyUnit.Unit.ReloadTraits();
                 preyUnit.Unit.InitializeTraits();
 
@@ -1077,7 +1077,7 @@ public class PredatorComponent
             }
             if (unit.HasTrait(Traits.DigestionRebirth) && State.Rand.Next(2) == 0 && preyUnit.Unit.CanBeConverted() && (Config.SpecialMercsCanConvert || unit.Race < Race.Selicia))
             {
-                HandleShapeshifterRebirth(preyUnit);
+                //HandleShapeshifterRebirth(preyUnit);
                 preyUnit.Unit.Health = preyUnit.Unit.MaxHealth / 2;
                 HashSet<Gender> set = new HashSet<Gender>(Races.GetRace(preyUnit.Unit.Race).CanBeGender);
                 bool equals = set.SetEquals(Races.GetRace(unit.Race).CanBeGender);
@@ -1248,7 +1248,7 @@ public class PredatorComponent
                     preyUnit.Actor.Surrendered = false;
                     if (preyUnit.Unit.Race != unit.Race)
                     {
-                        HandleShapeshifterRebirth(preyUnit);
+                        //HandleShapeshifterRebirth(preyUnit);
                         HashSet<Gender> set = new HashSet<Gender>(Races.GetRace(preyUnit.Unit.Race).CanBeGender);
                         bool equals = set.SetEquals(Races.GetRace(unit.Race).CanBeGender);
                         preyUnit.Unit.ChangeRace(unit.Race);
@@ -1333,10 +1333,10 @@ public class PredatorComponent
                 if (!State.GameManager.TacticalMode.turboMode)
                     actor.SetAbsorbtionMode();
                 CheckPredTraitAbsorption(preyUnit);
-                if (unit.HasTrait(Traits.Shapeshifter) || unit.HasTrait(Traits.Skinwalker))
-                {
-                    unit.AcquireShape(preyUnit.Unit);
-                }
+                //if (unit.HasTrait(Traits.Shapeshifter) || unit.HasTrait(Traits.Skinwalker))
+                //{
+                //    unit.AcquireShape(preyUnit.Unit);
+                //}
 
                 if (preyUnit.SubPrey?.Count() > 0) //Catches any dead prey that weren't already properly moved
                 {
@@ -1417,13 +1417,13 @@ public class PredatorComponent
 
     private void HandleShapeshifterRebirth(Prey preyUnit)
     {
-        if (preyUnit.Unit.HasTrait(Traits.Shapeshifter) || preyUnit.Unit.HasTrait(Traits.Skinwalker)) // preserve the unit as it is and rebirth a copy of it instead
-        {
-            Unit clone = preyUnit.Unit.Clone();
-            preyUnit.Unit.ShifterShapes.Add(clone);
-            clone.ShifterShapes = preyUnit.Unit.ShifterShapes;
-            preyUnit.Unit = clone;
-        }
+        //if (preyUnit.Unit.HasTrait(Traits.Shapeshifter) || preyUnit.Unit.HasTrait(Traits.Skinwalker)) // preserve the unit as it is and rebirth a copy of it instead
+        //{
+        //    Unit clone = preyUnit.Unit.Clone();
+        //    preyUnit.Unit.ShifterShapes.Add(clone);
+        //    clone.ShifterShapes = preyUnit.Unit.ShifterShapes;
+        //    preyUnit.Unit = clone;
+        //}
     }
 
     //public List<Actor_Unit> Birth()
