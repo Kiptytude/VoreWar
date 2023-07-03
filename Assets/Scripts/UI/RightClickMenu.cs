@@ -47,8 +47,16 @@ public class RightClickMenu : MonoBehaviour
 
         if (Rect == null)
             Rect = GetComponent<RectTransform>();
-        gameObject.SetActive(true);
-        CreateButtons(actor, target);
+        if (!target.Hidden)
+        {
+            gameObject.SetActive(true);
+            CreateButtons(actor, target);
+        }
+        else
+        {
+            State.GameManager.TacticalMode.OrderSelectedUnitToMoveTo(target.Position.x, target.Position.y);
+            return;
+        }
         float xAdjust = 10;
         float exceeded = Input.mousePosition.x + (Rect.rect.width * Screen.width / 1920) - Screen.width;
         if (exceeded > 0)

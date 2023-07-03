@@ -229,7 +229,7 @@ static class TraitList
         [Traits.EfficientGuts] = new Booster("Unit receives 50% more healing from absorbing prey", (s) => { s.Incoming.Nutrition *= 1.5f; }),
         [Traits.WastefulProcessing] = new Booster("Unit can't get as much healing out of prey, but they are done with it quicker. (+50% absorb speed, -50% nutrition)", (s) => { s.Incoming.Nutrition *= 0.5f; s.Outgoing.AbsorptionRate *= 1.5f; }),
 		[Traits.NightEye] = new Booster("Increases night time vision range by +1 in Tactical battles and by +1 in stratigic if half of the units in an army have this trait.", (s) => { s.SightRangeBoost += 1;}),
-        [Traits.KeenEye] = new Booster("Unit has the chance to deal increase damage when attacking.", (s) => { s.Outgoing.CritRateShift += 0.05f; }),
+        [Traits.KeenEye] = new Booster("Unit has the chance to deal increase damage when attacking.", (s) => { s.Outgoing.CritRateShift += 0.1f; }),
         [Traits.AccuteDodge] = new Booster("Unit has the chance to minimise recieved damage when being attacked. (Excludes spells and vore damage).", (s) => { s.Outgoing.GrazeRateShift += 0.1f; }),
     };
 

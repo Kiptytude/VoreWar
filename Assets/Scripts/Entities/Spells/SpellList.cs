@@ -860,7 +860,7 @@ static class SpellList
             Name = "Evocation",
             Id = "evocation",
             SpellType = SpellTypes.Evocation,
-            Description = "Regenerate mana per Spell Force stacks, requires at least one Spell Force stack",
+            Description = "Regenerate mana based on Spell Force stacks, requires at least one Spell Force stack but will",
             AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Ally },
             Range = new Range(0),
             Tier = 0,
@@ -869,10 +869,9 @@ static class SpellList
             IsFree = true,
             OnExecute = (a, t) =>
             {
-                a.Unit.RestoreMana(2);
                 a.CastSpell(Evocation, a);
-                int spellforce = a.Unit.GetStatusEffect(StatusEffectType.SpellForce).Duration;
-                a.Unit.RestoreMana(spellforce * 10);
+                int spellforce = (a.Unit.GetStatusEffect(StatusEffectType.SpellForce) != null ? a.Unit.GetStatusEffect(StatusEffectType.SpellForce).Duration : 0);
+                a.Unit.RestoreMana(spellforce * a.Unit.GetStat(Stat.Mind)/10);
                 TacticalGraphicalEffects.CreateGenericMagic(a.Position, t.Position, t, TacticalGraphicalEffects.SpellEffectIcon.PurplePlus);
             }
         };
@@ -884,7 +883,7 @@ static class SpellList
             Id = "spell-burst",
             SpellType = SpellTypes.SpellBurst,
             Description = "Deals damage based on unit and targets mind stat, not resistable",
-            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Ally},
+            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy},
             Range = new Range(3),
             Tier = 1,
             AreaOfEffect = 0,
@@ -914,7 +913,7 @@ static class SpellList
             OnExecute = (a, t) =>
             {
                 a.CastOffensiveSpell(ArcaneDevistation, t);
-                TacticalGraphicalEffects.CreateGenericMagic(a.Position, t.Position, t);
+                TacticalGraphicalEffects.CreateHugeMagic(a.Position, t.Position, t);
                 a.Unit.SpendMana(a.Unit.Mana);
             }
         };

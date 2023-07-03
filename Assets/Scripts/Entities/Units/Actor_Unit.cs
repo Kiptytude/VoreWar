@@ -1488,7 +1488,7 @@ public class Actor_Unit
                 float critchance = Config.BaseCritChance;
                 if (Config.StatCrit)
                 {
-                    critchance = CritCheck(attacker, this);
+                    critchance = CritCheck(attacker, this, true);
                 }
                 critchance += attacker.Unit.TraitBoosts.Outgoing.CritRateShift - Unit.TraitBoosts.Incoming.CritRateShift;
                 if (State.Rand.NextDouble() < critchance)

@@ -279,7 +279,9 @@ public class HoveringTooltip : MonoBehaviour
                     case StatusEffectType.Charmed:
                         return $"Unit fights for the unit that charmed it.";
                    case StatusEffectType.Illuminated:
-                        return $"(Spell) Unit is visible in the dark and can be targeted like normal.\nTurns Remaining: {effect.Duration}";
+                        return $"Unit is visible in the dark and can be targeted like normal.\nTurns Remaining: {effect.Duration}";
+                    case StatusEffectType.SpellForce:
+                        return $"Unit has its mind increased by {effect.Duration * 5} + {effect.Duration}%, but its mana costs are increased by {effect.Duration * 10}%.";
                 }
             }
         }
@@ -544,12 +546,20 @@ public class HoveringTooltip : MonoBehaviour
                 return "Unit generates with a random Tier 3-4 Book.";
             case Traits.Temptation:
                return "Units that are put under a mindcontrol (e.g. Charm, Hypnosis) effect by this unit want to force-feed themselves to it or its close allies.";
+            case Traits.SecondWind:
+                return "Unit heals half of it's max hp when reaching half max hp (once per battle).";
+            case Traits.Perseverance:
+                return "Unit heals after not taking damage for a 3 turns, scaling higer with each turn without damage thereafter.";
             case Traits.NightEye:
-                return "Increases night time vision range by +1 in Tactical battles and by +1 in stratigic if half of the units in an army have this trait.";
+                return "Increases night time vision range by +1 in Tactical battles.";
             case Traits.AccuteDodge:
-                return "Unit has the chance to minimise recieved damage when being attacked. (Excludes spells and vore damage).";
+                return "Unit gains +10% graze chance.";
             case Traits.KeenEye:
-                return "Unit has the chance to deal increase damage when attacking.";
+                return "Unit gains +10% critical strike chance.";
+            case Traits.SavageSortilege:
+                return "Unit's spells can critical strike chance.";
+            case Traits.ArcaneMagistrate:
+                return "Unit gains access to 4 powerful spells.";
         }  
         return "<b>This trait needs a tooltip!</b>";
     }

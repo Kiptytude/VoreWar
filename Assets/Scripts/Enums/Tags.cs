@@ -306,16 +306,14 @@ public enum Traits
 	ManaDependant = 154,
     /// <summary>Unit heals after not taking damage for a bit, scaling higer with each turn without damage.</summary>
     NightEye = 155,
-    /// <summary>Unit heals after not taking damage for a bit, scaling higer with each turn without damage.</summary>
+    /// <summary>Unit gains +10% critical strike chance.</summary>
     KeenEye = 156,
-    /// <summary>Unit heals after not taking damage for a bit, scaling higer with each turn without damage.</summary>
+    /// <summary>Unit gains +10% graze chance.</summary>
 	AccuteDodge = 157,
-    //Not yet implemented
-    AlertStance = 158, // Increased graze chance if MP remaining
-    CheapShot = 159, // Critical hits stun
-    StaggeringForce = 160, // Critical hits stagger
-    SavageSortilege = 161, //Unit Can critically strike magic attacks
-    ArcaneMagistrate = 162, //Unit gains access to a powerful set of spells
+    /// <summary>Unit Can critically strike magic attacks.</summary>
+    SavageSortilege = 158,
+    /// <summary>Unit gains access to 4 powerful spells.</summary>
+    ArcaneMagistrate = 159,
 
 
     //Hidden Traits
