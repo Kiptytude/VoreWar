@@ -379,15 +379,14 @@ static class RaceParameters
             HasTail = true,
             FavoredStat = Stat.Mind,
             RacialTraits = new List<Traits>()
-        {
-            Traits.Charmer,
-            Traits.Temptation,
-            Traits.Possession,
-            Traits.ForceFeeder,
-            Traits.ManaDrain,
-            Traits.CreateSpawn,
-            Traits.SeductiveTouch,
-        },
+            {
+                Traits.Charmer,
+                Traits.Temptation,
+                Traits.Possession,
+                Traits.ForceFeeder,
+                Traits.ManaDrain,
+                Traits.CreateSpawn,
+            },
             SpawnRace = Race.Whisp,
             RaceDescription = "",
         };
@@ -1626,28 +1625,17 @@ static class RaceParameters
             AllowedVoreTypes = new List<VoreType> { VoreType.Oral, VoreType.Unbirth, VoreType.BreastVore, VoreType.CockVore, VoreType.Anal },
             ExpMultiplier = 1.1f,
             PowerAdjustment = 1.2f,
-            RaceStats = new RaceStats()
-            {
-                Strength = new RaceStats.StatRange(4, 8),
-                Dexterity = new RaceStats.StatRange(9, 14),
-                Endurance = new RaceStats.StatRange(6, 12),
-                Mind = new RaceStats.StatRange(14, 22),
-                Will = new RaceStats.StatRange(8, 14),
-                Agility = new RaceStats.StatRange(14, 22),
-                Voracity = new RaceStats.StatRange(8, 14),
-                Stomach = new RaceStats.StatRange(5, 10),
-            },
             RacialTraits = new List<Traits>()
-        {
-                Traits.Whispers,
-                Traits.Corruption,
-                Traits.ForceFeeder,
-                Traits.Metamorphosis,
-                Traits.GreaterChangeling,
-            },
-            SpawnRace = Race.Youko,
-            RaceDescription = ""
-        };
+            {
+                    Traits.Whispers,
+                    Traits.Corruption,
+                    Traits.ForceFeeder,
+                    Traits.Metamorphosis,
+                    Traits.GreaterChangeling,
+                },
+                SpawnRace = Race.Youko,
+                RaceDescription = ""
+            };
 
         FeralAnts = new RaceTraits()
         {

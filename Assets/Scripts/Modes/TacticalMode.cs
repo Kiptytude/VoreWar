@@ -1503,8 +1503,10 @@ Turns: {currentTurn}
             actor.UnitSprite.DisplaySummoned();
         }
 
-        //if (actor.Unit.Side == defenderSide)
-        //actor.Unit.CurrentLeader = DefenderLeader;
+        if (actor.Unit.Side == defenderSide)
+            DefenderConvert(actor);
+        else if (actor.Unit.Side == attackerSide)
+            AttackerConvert(actor);
         return actor;
     }
 
@@ -1518,9 +1520,11 @@ Turns: {currentTurn}
         {
             actor.UnitSprite.HitPercentagesDisplayed(false);
             actor.UnitSprite.DisplaySummoned();
-        }        
-        //if (actor.Unit.Side == defenderSide)
-        //actor.Unit.CurrentLeader = DefenderLeader;
+        }
+        if (actor.Unit.Side == defenderSide)
+            DefenderConvert(actor);
+        else if (actor.Unit.Side == attackerSide)
+            AttackerConvert(actor);
         return actor;
     }
 

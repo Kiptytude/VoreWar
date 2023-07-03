@@ -845,13 +845,13 @@ static class SpellList
             Name = "Whispers",
             Id = "whispers-spell",
             SpellType = SpellTypes.Whispers,
-            Description = "Applies Charm and Prey's Curse for 1 round",
+            Description = "Applies Charm, Prey's Curse, and Temptation for 3 rounds",
             AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy, AbilityTargets.Tile },
-            Range = new Range(8),
-            Duration = (a, t) => 2,
+            Range = new Range(1),
+            Duration = (a, t) => 3,
             Effect = (a, t) => a.Unit.GetApparentSide(t.Unit),
             Type = StatusEffectType.Charmed,
-            Tier = 0,
+            Tier = 3,
             Resistable = true,
             OnExecute = (a, t) =>
             {

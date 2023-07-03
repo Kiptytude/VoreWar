@@ -730,7 +730,7 @@ public class PredatorComponent
 
     void ShareTrait(Traits trait, Prey preyUnit, Traits maxTrait = Traits.Infiltrator)
     {
-        if (trait < maxTrait && TraitsMethods.IsRaceModifying(trait))
+        if (trait < maxTrait && !TraitsMethods.IsRaceModifying(trait))
         {
             if (!unit.HasTrait(trait))
                 unit.AddSharedTrait(trait);
@@ -889,7 +889,7 @@ public class PredatorComponent
             if (preyUnit == template)
                 if (unit.HasTrait(Traits.Changeling) || unit.HasTrait(Traits.GreaterChangeling))
                 {
-                    ResetTemplate();
+                    actor.RevertRace();
                     bool isDead = true;
                     if (unit.HasTrait(Traits.TrueChangeling) || unit.HasTrait(Traits.GreaterChangeling))
                     {
@@ -1636,7 +1636,7 @@ public class PredatorComponent
         }
         else
         {
-            if (preyUnit.Unit.HasTrait(Traits.Whispers))
+            if (preyUnit.Unit.HasTrait(Traits.Whispers) && actor.Unit.GetStatusEffect(StatusEffectType.Temptation) != null)
             {
                 preyUnit.Actor.CastStatusSpell(SpellList.Whispers, actor);
             }

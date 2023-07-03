@@ -347,6 +347,11 @@ public class Actor_Unit
             Unit.SingleUseSpells.Add(SpellList.Charm.SpellType);
             Unit.UpdateSpells();
         }
+        if (Unit.HasTrait(Traits.Whispers) && State.World?.ItemRepository != null) //protection for the create strat screen
+        {
+            Unit.SingleUseSpells.Add(SpellList.Whispers.SpellType);
+            Unit.UpdateSpells();
+        }
         if (Unit.HasTrait(Traits.HypnoticGas) && State.World?.ItemRepository != null) //protection for the create strat screen
         {
             Unit.SingleUseSpells.Add(SpellList.HypnoGas.SpellType);
@@ -1531,9 +1536,11 @@ public class Actor_Unit
                     Unit.ApplyStatusEffect(StatusEffectType.WillingPrey, 0, 3);
                 }
             }
-            if (spell.Id == "Whispers")
+            if (spell.Id == "whispers-spell")
             {
+                UnitSprite.DisplayCharm();
                 Unit.ApplyStatusEffect(StatusEffectType.WillingPrey, 0, spell.Duration(attacker, this));
+                Unit.ApplyStatusEffect(StatusEffectType.Temptation, 0, spell.Duration(attacker, this));
             }
             if (TacticalUtilities.MeetsQualifier(spell.AcceptibleTargets, attacker, this))
                 attacker.Unit.GiveScaledExp(1, attacker.Unit.Level - Unit.Level);
