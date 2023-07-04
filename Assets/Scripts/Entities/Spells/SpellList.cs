@@ -835,8 +835,8 @@ static class SpellList
             Name = "Amplify Magic",
             Id = "amplify-magic",
             SpellType = SpellTypes.AmplifyMagic,
-            Description = "Grant unit and nearby allies a stack of Spell Force",
-            AcceptibleTargets = new List<AbilityTargets>() {AbilityTargets.Ally },
+            Description = "Grant nearby units a stack of Spell Force",
+            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Ally },
             Range = new Range(1),
             Tier = 0,
             AreaOfEffect = 1,
@@ -844,11 +844,10 @@ static class SpellList
             IsFree = true,
             OnExecute = (a, t) =>
             {
-                a.Unit.RestoreMana(2);
                 a.CastSpell(AmplifyMagic, t);
                 foreach (var ally in TacticalUtilities.UnitsWithinTiles(t.Position, 1).Where(s => s.Unit.IsDead == false && s.Unit.Side == a.Unit.Side))
                 {
-                    ally.Unit.AddSpellForce();
+                    ally.Unit.AddFocus(a.Unit.GetStat(Stat.Mind) / 25);
                     TacticalGraphicalEffects.CreateGenericMagic(a.Position, ally.Position, ally, TacticalGraphicalEffects.SpellEffectIcon.Buff);
                 }
             }
@@ -860,18 +859,25 @@ static class SpellList
             Name = "Evocation",
             Id = "evocation",
             SpellType = SpellTypes.Evocation,
-            Description = "Regenerate mana based on Spell Force stacks, requires at least one Spell Force stack but will",
+            Description = "Draw all nearby Unit's Focus stacks into a target, grant the target that many Spell Force stacks.",
             AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Ally },
-            Range = new Range(0),
+            Range = new Range(1),
             Tier = 0,
-            AreaOfEffect = 0,
+            AreaOfEffect = 1,
             Resistable = false,
             IsFree = true,
             OnExecute = (a, t) =>
             {
                 a.CastSpell(Evocation, a);
-                int spellforce = (a.Unit.GetStatusEffect(StatusEffectType.SpellForce) != null ? a.Unit.GetStatusEffect(StatusEffectType.SpellForce).Duration : 0);
-                a.Unit.RestoreMana(spellforce * a.Unit.GetStat(Stat.Mind)/10);
+                foreach (var ally in TacticalUtilities.UnitsWithinTiles(t.Position, 1).Where(s => s.Unit.GetStatusEffect(StatusEffectType.Focus) != null))
+                {
+                    for (int i = 0; i < ally.Unit.GetStatusEffect(StatusEffectType.Focus).Duration; i++)
+                    {
+                        t.Unit.AddSpellForce();
+                    }
+                    ally.Unit.StatusEffects.Remove(ally.Unit.GetStatusEffect(StatusEffectType.Focus));
+                    TacticalGraphicalEffects.CreateGenericMagic(ally.Position, t.Position, t);
+                }
                 TacticalGraphicalEffects.CreateGenericMagic(a.Position, t.Position, t, TacticalGraphicalEffects.SpellEffectIcon.PurplePlus);
             }
         };
@@ -892,8 +898,7 @@ static class SpellList
             OnExecute = (a, t) =>
             {
                 a.CastOffensiveSpell(SpellBurst, t);
-                TacticalGraphicalEffects.CreateGenericMagic(a.Position, t.Position, t);
-                a.Unit.StatusEffects.Remove(a.Unit.GetStatusEffect(StatusEffectType.SpellForce));
+                TacticalGraphicalEffects.CreateGenericMagic(a.Position, t.Position, t);               
             }
         };
         SpellDict[SpellTypes.SpellBurst] = SpellBurst;

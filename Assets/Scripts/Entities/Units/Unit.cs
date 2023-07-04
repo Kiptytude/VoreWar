@@ -1092,11 +1092,15 @@ public class Unit
             bonus += GetStatBase(Stat.Agility) * .1f * GetStatusEffect(StatusEffectType.Tenacious).Duration;
         if (stat == Stat.Voracity && GetStatusEffect(StatusEffectType.Tenacious) != null)
             bonus += GetStatBase(Stat.Voracity) * .1f * GetStatusEffect(StatusEffectType.Tenacious).Duration;
-
+        if (stat == Stat.Mind && GetStatusEffect(StatusEffectType.Focus) != null)
+        {
+            int stacks = GetStatusEffect(StatusEffectType.Focus).Duration;
+            bonus += stacks + (GetStatBase(Stat.Mind) * (stacks / 100));
+        }
         if (stat == Stat.Mind && GetStatusEffect(StatusEffectType.SpellForce) != null)
         {
             int stacks = GetStatusEffect(StatusEffectType.SpellForce).Duration;
-            bonus += (5 * stacks) + (GetStatBase(Stat.Voracity) * (stacks/100));
+            bonus += stacks + (GetStatBase(Stat.Mind) * (stacks/10));
         }
 
         bonus -= GetStatBase(stat) * (GetStatusEffect(StatusEffectType.Shaken)?.Strength ?? 0);
@@ -2137,6 +2141,7 @@ public class Unit
         if (HasEffect(StatusEffectType.Charmed)) ret++;
         if (HasEffect(StatusEffectType.Hypnotized)) ret++;
         if (HasEffect(StatusEffectType.Illuminated)) ret++;
+        if (HasEffect(StatusEffectType.Staggering)) ret++;
 
 
         bool HasEffect(StatusEffectType type)
@@ -2224,17 +2229,59 @@ public class Unit
 
     }
 
-    internal void RemoveSpellForce()
+    internal void AddFocus(int amount)
     {
-        var force = GetStatusEffect(StatusEffectType.SpellForce);
-        if (force != null)
+        var foc = GetStatusEffect(StatusEffectType.Focus);
+        if (foc != null)
         {
-            force.Duration--;
-            force.Strength--;
-            if (force.Duration == 0)
-                StatusEffects.Remove(force);
+            foc.Duration += amount;
+            foc.Strength += amount;
+        }
+        else
+        {
+            ApplyStatusEffect(StatusEffectType.Focus, amount, amount);
         }
 
+    }
+
+    internal void RemoveFocus()
+    {
+        var foc = GetStatusEffect(StatusEffectType.Focus);
+        if (foc != null)
+        {
+            foc.Duration -= 3;
+            foc.Strength -= 3;
+            if (foc.Duration == 0)
+                StatusEffects.Remove(foc);
+        }
+
+    }
+
+    internal void AddStagger()
+    {
+        var stag = GetStatusEffect(StatusEffectType.Staggering);
+        if (stag != null)
+        {
+            stag.Duration++;
+            stag.Strength++;
+        }
+        else
+        {
+            ApplyStatusEffect(StatusEffectType.SpellForce, 1, 1);
+        }
+
+    }
+
+    internal void RemoveStagger()
+    {
+        var stag = GetStatusEffect(StatusEffectType.Staggering);
+        if (stag != null)
+        {
+            stag.Duration--;
+            stag.Strength--;
+            if (stag.Duration == 0)
+                StatusEffects.Remove(stag);
+        }
     }
 
     internal StatusEffect GetLongestStatusEffect(StatusEffectType type)
@@ -2252,8 +2299,10 @@ public class Unit
             NonFatalDamage((int)effect.Strength, "poison");
         foreach (var eff in StatusEffects.ToList())
         {
-            if (eff.Type == StatusEffectType.BladeDance || eff.Type == StatusEffectType.Tenacious || eff.Type == StatusEffectType.SpellForce)
+            if (eff.Type == StatusEffectType.BladeDance || eff.Type == StatusEffectType.Tenacious || eff.Type == StatusEffectType.Focus)
                 continue;
+            if (eff.Type == StatusEffectType.Staggering || eff.Type == StatusEffectType.SpellForce)
+                StatusEffects.Remove(eff);
             eff.Duration -= 1;
             if (eff.Duration <= 0)
             {

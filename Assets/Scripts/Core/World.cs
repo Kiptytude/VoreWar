@@ -51,7 +51,7 @@ public class World
     public List<Reincarnator> Reincarnators;
 
     [OdinSerialize]
-    public bool IsNight = true;
+    public bool IsNight = false;
 	
     public World(bool MapEditorVersion)
     {

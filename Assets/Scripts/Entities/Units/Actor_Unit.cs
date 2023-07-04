@@ -205,6 +205,11 @@ public class Actor_Unit
             Movement = 1;
             Slimed = false;
         }
+        else if (Unit.GetStatusEffect(StatusEffectType.Staggering) != null)
+        {
+            Movement = CurrentMaxMovement() / 2;
+            Slimed = false;
+        }
         else if (Slimed)
         {
             Movement = CurrentMaxMovement() / 2;
@@ -907,9 +912,14 @@ public class Actor_Unit
             {
                 damageScalar *= 1.4f - (target.Unit.HealthPct * .4f) + (0.1f * target.Unit.GetNegativeStatusEffects());
             }
-            damage = (int)(damageScalar * (BestRanged?.Damage ?? 2) * (60 + Unit.GetStat(Stat.Dexterity)) / 60);
+            int statBoost = Unit.GetStat(Stat.Dexterity) + (Unit.HasTrait(Traits.SpellBlade) ? Unit.GetStat(Stat.Mind) / 2 : 0);
+            damage = (int)(damageScalar * (BestRanged?.Damage ?? 2) * (60 + statBoost) / 60);
             if (target.Unit.HasTrait(Traits.Resilient))
                 damage--;
+            if (target.Unit.GetStatusEffect(StatusEffectType.Staggering) != null)
+            {
+                damage += (int)(damage * 0.2f);
+            }
 
         }
         else
@@ -950,13 +960,18 @@ public class Actor_Unit
             {
                 if (Unit.HasTrait(Traits.Feral) && Unit.GetBestMelee() == State.World.ItemRepository.Claws)
                     damageScalar *= 3f;
-                damage = (int)(damageScalar * BestMelee.Damage * (60 + Unit.GetStat(Stat.Strength)) / 60);
+                int statBoost = Unit.GetStat(Stat.Strength) + (Unit.HasTrait(Traits.SpellBlade) ? Unit.GetStat(Stat.Mind) / 2 : 0);
+                damage = (int)(damageScalar * BestMelee.Damage * (60 + statBoost) / 60);
             }
 
 
 
             if (target.Unit.HasTrait(Traits.Resilient))
                 damage--;
+            if (target.Unit.GetStatusEffect(StatusEffectType.Staggering) != null)
+            {
+                damage += (int)(damage * 0.2f);
+            }
         }
         if (Unit.GetApparentSide(target.Unit) == target.Unit.GetApparentSide() && Unit.IsInfiltratingSide(target.Unit.GetApparentSide())) // sneakAttack
         {
@@ -1266,7 +1281,7 @@ public class Actor_Unit
                     if (target.Unit.HasTrait(Traits.Tenacious))
                         target.Unit.AddTenacious();
                     if (target.Unit.GetStatusEffect(StatusEffectType.SpellForce) != null)                  
-                        target.Unit.RemoveSpellForce();
+                        target.Unit.RemoveFocus();
                     
                     TacticalGraphicalEffects.CreateProjectile(this, target);
                     State.GameManager.TacticalMode.TacticalStats.RegisterHit(BestRanged, Mathf.Min(damage, remainingHealth), Unit.Side);
@@ -1337,7 +1352,7 @@ public class Actor_Unit
                     if (target.Unit.HasTrait(Traits.Tenacious))
                         target.Unit.AddTenacious();
                     if (target.Unit.GetStatusEffect(StatusEffectType.SpellForce) != null)
-                        target.Unit.RemoveSpellForce();
+                        target.Unit.RemoveFocus();
                     if (target.Unit.HasTrait(Traits.Toxic) && State.Rand.Next(8) == 0)
                         Unit.ApplyStatusEffect(StatusEffectType.Poisoned, 2 + target.Unit.GetStat(Stat.Endurance) / 20, 3);
                     if (Unit.HasTrait(Traits.ForcefulBlow))
@@ -1483,21 +1498,6 @@ public class Actor_Unit
                 damage = (int)Mathf.Round(damage * Unit.TraitBoosts.FireDamageTaken);
             if (spell.DamageType == DamageTypes.Poison && Unit.HasTrait(Traits.PoisonSpit))
                 damage = 0;
-            if (attacker.Unit.HasTrait(Traits.SavageSortilege))
-            {
-                float critchance = Config.BaseCritChance;
-                if (Config.StatCrit)
-                {
-                    critchance = CritCheck(attacker, this, true);
-                }
-                critchance += attacker.Unit.TraitBoosts.Outgoing.CritRateShift - Unit.TraitBoosts.Incoming.CritRateShift;
-                if (State.Rand.NextDouble() < critchance)
-                {
-                    float calculatedCritDamage = attacker.Unit.TraitBoosts.Outgoing.CritDamageMult * Unit.TraitBoosts.Incoming.CritDamageMult;
-                    damage *= (int)((calculatedCritDamage) * Config.CritDamageMod);
-
-                }
-            }
             State.GameManager.TacticalMode.TacticalStats.RegisterHit(spell, Mathf.Min(damage, Unit.Health), attacker.Unit.Side);
             Damage(damage, true);
             State.GameManager.TacticalMode.Log.RegisterSpellHit(attacker.Unit, Unit, spell.SpellType, damage, chance);
@@ -2062,9 +2062,9 @@ public class Actor_Unit
         {
             Unit.HealPercentage(0.03f * TurnsSinceLastDamage);
         }
-        if (Unit.HasTrait(Traits.ManaDependant))
+        if (Unit.HasTrait(Traits.ManaAttuned))
         {
-            if (!Unit.SpendMana(Unit.MaxMana/20))
+            if (!Unit.SpendMana(Unit.MaxMana/10))
             {
                 Unit.ApplyStatusEffect(StatusEffectType.Shaken, 0.3f, 1);
             }
@@ -2236,22 +2236,15 @@ public class Actor_Unit
             ratio = 5;
         return ratio / 25;
     }
-    public float CritCheck(Actor_Unit actor, Actor_Unit target, bool isSpell = false)
+    public float CritCheck(Actor_Unit actor, Actor_Unit target)
     {
         if (target.Unit.IsDead)
         {
             return 0;
         }
         float ratio = 0;
-        if (!isSpell)
-        {
-            ratio = (float)((actor.Unit.GetStat(Stat.Dexterity) + actor.Unit.GetStat(Stat.Strength)) / 2) /
-                (target.Unit.GetStat(Stat.Endurance) * target.Unit.GetStat(Stat.Endurance) + target.Unit.GetStat(Stat.Will));
-        }
-        else
-        {
-            ratio = (float)(actor.Unit.GetStat(Stat.Mind) / (target.Unit.GetStat(Stat.Will) + target.Unit.GetStat(Stat.Endurance)));
-        }
+        ratio = (float)((actor.Unit.GetStat(Stat.Dexterity) + actor.Unit.GetStat(Stat.Strength)) / 2) /
+            (target.Unit.GetStat(Stat.Endurance) * target.Unit.GetStat(Stat.Endurance) + target.Unit.GetStat(Stat.Will));
 
         if (Config.BaseCritChance > ratio)
             ratio = Config.BaseCritChance;

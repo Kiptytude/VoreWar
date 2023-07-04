@@ -2578,9 +2578,9 @@ static class RaceParameters
             RacialTraits = new List<Traits>()
             {
                 Traits.ArcaneMagistrate,
-                Traits.SavageSortilege,
-                Traits.ManaDependant,
-                Traits.QuickShooter
+                Traits.SpellBlade,
+                Traits.ManaAttuned,
+                Traits.ManaRich
             },
             RaceDescription = "A demi-mouse mage from a different dimension.",
         };

@@ -302,16 +302,16 @@ public enum Traits
 	SecondWind = 152, 
     /// <summary>Unit heals after not taking damage for a bit, scaling higer with each turn without damage.</summary>
 	Perseverance = 153, //
-    /// <summary>Unit needs mana to survive, uses a bit of their mana every turn. Becomes shaken every turn they don't have mana</summary>
-	ManaDependant = 154,
+    /// <summary>Unit thrives on mana, uses a bit of their mana every turn. Becomes shaken every turn they don't have any.</summary>
+	ManaAttuned = 154,
     /// <summary>Unit heals after not taking damage for a bit, scaling higer with each turn without damage.</summary>
     NightEye = 155,
     /// <summary>Unit gains +10% critical strike chance.</summary>
     KeenEye = 156,
     /// <summary>Unit gains +10% graze chance.</summary>
 	AccuteDodge = 157,
-    /// <summary>Unit Can critically strike magic attacks.</summary>
-    SavageSortilege = 158,
+    /// <summary>Unit's attacks also have Mind Stat Scaling.</summary>
+    SpellBlade = 158,
     /// <summary>Unit gains access to 4 powerful spells.</summary>
     ArcaneMagistrate = 159,
 
