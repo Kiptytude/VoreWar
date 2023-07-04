@@ -301,7 +301,7 @@ public class Unit
     {
         get
         {
-            return (_spawnRace == Race.none) ? HiddenRace : _spawnRace;
+            return (_spawnRace == Race.none) ? Race : _spawnRace;
         }
         set => _spawnRace = value;
     }
@@ -311,7 +311,7 @@ public class Unit
     {
         get
         {
-            return (_conversionRace == Race.none) ? HiddenRace : _conversionRace;
+            return (_conversionRace == Race.none) ? Race : _conversionRace;
         }
         set => _conversionRace = value;
     }

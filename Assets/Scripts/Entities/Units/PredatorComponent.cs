@@ -1324,8 +1324,12 @@ public class PredatorComponent
                 State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"{preyUnit.Unit.Name} converted from one side to another thanks to {unit.Name}'s digestion conversion trait.");
                 return 0;
             }
-            if (unit.HasTrait(Traits.DigestionRebirth) && State.Rand.Next(2) == 0 && preyUnit.Unit.CanBeConverted() && (Config.SpecialMercsCanConvert || unit.Race < Race.Selicia))
+            if (unit.HasTrait(Traits.DigestionRebirth) && State.Rand.Next(2) == 0 && preyUnit.Unit.CanBeConverted() && (Config.SpecialMercsCanConvert || DetermineConversionRace(unit) < Race.Selicia))
             {
+                Race conversionRace = DetermineConversionRace(unit);
+                if(unit.HasTrait(Traits.DigestionRebirth) && !unit.HasSharedTrait(Traits.DigestionRebirth))
+                    conversionRace = DetermineConversionRace(unit.HiddenUnit);
+                // use source race IF changeling already had this ability before transforming
                 preyUnit.Unit.Health = preyUnit.Unit.MaxHealth / 2;
                 HashSet<Gender> set = new HashSet<Gender>(Races.GetRace(preyUnit.Unit.Race).CanBeGender);
                 bool equals = set.SetEquals(Races.GetRace(unit.Race).CanBeGender);
@@ -1480,6 +1484,7 @@ public class PredatorComponent
                     Race spawnRace = DetermineSpawnRace(unit);
                     if (!unit.HasSharedTrait(Traits.CreateSpawn))
                         spawnRace = DetermineSpawnRace(unit.HiddenUnit);
+                    // use source race IF changeling already had this ability before transforming
                     CreateSpawn(spawnRace, unit.Side);
                 }
                 
@@ -1492,6 +1497,7 @@ public class PredatorComponent
                     Race conversionRace = DetermineConversionRace(unit);
                     if(unit.HasTrait(Traits.PredRebirther) && !unit.HasSharedTrait(Traits.PredRebirther))
                         conversionRace = DetermineConversionRace(unit.HiddenUnit);
+                    // use source race IF changeling already had this ability before transforming
                     preyUnit.Unit.Health = preyUnit.Unit.MaxHealth / 2;
                     preyUnit.Actor.Movement = 0;
                     if (preyUnit.Unit.Side != unit.Side)
