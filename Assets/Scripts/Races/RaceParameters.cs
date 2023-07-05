@@ -2371,11 +2371,11 @@ static class RaceParameters
 
         Zoey = new RaceTraits()
         {
-            BodySize = 10,
-            StomachSize = 30,
+            BodySize = 12,
+            StomachSize = 40,
             HasTail = true,
             FavoredStat = Stat.Voracity,
-            AllowedVoreTypes = new List<VoreType> { VoreType.Oral },
+            AllowedVoreTypes = new List<VoreType> { VoreType.Oral, VoreType.Anal },
             ExpMultiplier = 1.6f,
             PowerAdjustment = 3f,
             RaceStats = new RaceStats()
@@ -2394,9 +2394,11 @@ static class RaceParameters
                 Traits.Maul,
                 Traits.StrongGullet,
                 Traits.Biter,
+                Traits.Greedy,
+                Traits.BornToMove,
                 Traits.TailStrike,
         },
-            RaceDescription = "An anthropomorphic tiger shark, Zoey is typically lazy. However upon finding her way into the realm, her gluttony left her interested in trying to stomach the local warriors and monsters with some basic martial arts, joining whichever side would pay her first.",
+            RaceDescription = "An anthropomorphic tiger shark from another world.  Zoey is typically a lazy girl who loves watching movies and being a general couch-potato.  However, upon realizing she'd been isekai'd into the realm, her gluttony left her interested in trying to stomach the local warriors and monsters with some basic martial arts, joining whichever side would pay her first.",
         };
 
         Abakhanskya = new RaceTraits()
