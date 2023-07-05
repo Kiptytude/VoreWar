@@ -33,8 +33,8 @@ class ScatV2Discard : MiscDiscard
         }
         else
         {
-            int r = 135 + Random.Range(-10, 0);
-            int g = 107 + Random.Range(-3, 3);
+            int r = 135 + Random.Range(-20, 20);
+            int g = 107 + Random.Range(-5, 5);
             int b = 80 + Random.Range(-5, 5);
             Color defaultColor = new Color(r / 255.0F, g / 255.0F, b / 255.0F);
             scatBack.color = defaultColor;
