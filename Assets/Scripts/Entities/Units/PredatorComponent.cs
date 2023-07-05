@@ -2141,7 +2141,7 @@ public class PredatorComponent
     internal bool MagicConsume(Spell spell, Actor_Unit target, PreyLocation preyLocation = PreyLocation.stomach)
     {
         bool sneakAttack = false;
-        if (actor.Unit.GetApparentSide(target.Unit) == target.Unit.GetApparentSide() && actor.Unit.IsInfiltratingSide(target.Unit.GetApparentSide()) && !actor.Unit.HasTrait(Traits.Endosoma))
+        if (TacticalUtilities.SneakAttackCheck(actor.Unit, target.Unit) && !actor.Unit.HasTrait(Traits.Endosoma))
         {
             actor.Unit.hiddenFixedSide = false;
             sneakAttack = true;
@@ -2250,7 +2250,7 @@ public class PredatorComponent
                 }
             }
             actor.SetPredMode(preyType);
-            if (actor.Unit.GetApparentSide(target.Unit) == target.Unit.GetApparentSide() && actor.Unit.IsInfiltratingSide(target.Unit.GetApparentSide()) && !actor.Unit.HasTrait(Traits.Endosoma))
+            if (TacticalUtilities.SneakAttackCheck(unit, target.Unit) && !actor.Unit.HasTrait(Traits.Endosoma))
             {
                 actor.Unit.hiddenFixedSide = false;
                 boost += 3;

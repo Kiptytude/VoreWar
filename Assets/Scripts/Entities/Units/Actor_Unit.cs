@@ -708,7 +708,7 @@ public class Actor_Unit
 
     internal float GetMagicChance(Actor_Unit attacker, Spell currentSpell, float modifier = 0, Stat stat = Stat.Mind)
     {
-        if (attacker.Unit.GetApparentSide(Unit) == Unit.GetApparentSide() && attacker.Unit.IsInfiltratingSide(Unit.GetApparentSide())) // sneakAttack
+        if (TacticalUtilities.SneakAttackCheck(attacker.Unit, Unit)) // sneakAttack
         {
             modifier -= 0.3f;
         }
@@ -812,7 +812,7 @@ public class Actor_Unit
             else
                 defenderBonusShift += 4;
         }
-        if (attacker.Unit.GetApparentSide(Unit) == Unit.GetApparentSide() && attacker.Unit.IsInfiltratingSide(Unit.GetApparentSide())) // sneakAttack
+        if (TacticalUtilities.SneakAttackCheck(attacker.Unit, Unit)) // sneakAttack
         {
             defenderBonusShift += 2;
         }
@@ -941,7 +941,7 @@ public class Actor_Unit
             if (target.Unit.HasTrait(Traits.Resilient))
                 damage--;
         }
-        if (Unit.GetApparentSide(target.Unit) == target.Unit.GetApparentSide() && Unit.IsInfiltratingSide(target.Unit.GetApparentSide())) // sneakAttack
+        if (TacticalUtilities.SneakAttackCheck(Unit, target.Unit)) // sneakAttack
         {
             damage *= 3;
         }
@@ -1393,7 +1393,7 @@ public class Actor_Unit
 
     internal bool DefendDamageSpell(DamageSpell spell, Actor_Unit attacker, int damage)
     {
-        if (attacker.Unit.GetApparentSide(Unit) == Unit.GetApparentSide() && attacker.Unit.IsInfiltratingSide(Unit.GetApparentSide()))
+        if (TacticalUtilities.SneakAttackCheck(attacker.Unit, Unit))
         {
             attacker.Unit.hiddenFixedSide = false;
             damage *= 3;
@@ -1449,7 +1449,7 @@ public class Actor_Unit
             return false;
         }
         bool sneakAttack = false;
-        if (attacker.Unit.GetApparentSide(Unit) == Unit.GetApparentSide() && attacker.Unit.IsInfiltratingSide(Unit.GetApparentSide()) && !spell.AcceptibleTargets.Contains(AbilityTargets.Ally))     // Replace when there is an unresistable negative status
+        if (TacticalUtilities.SneakAttackCheck(attacker.Unit, Unit) && !spell.AcceptibleTargets.Contains(AbilityTargets.Ally))     // Replace when there is an unresistable negative status
         {
             attacker.Unit.hiddenFixedSide = false;
             sneakAttack = true;
@@ -1515,7 +1515,7 @@ public class Actor_Unit
 
     public bool Defend(Actor_Unit attacker, ref int damage, bool ranged, out float chance, bool canKill = true)
     {
-        if (attacker.Unit.GetApparentSide(Unit) == Unit.GetApparentSide() && attacker.Unit.IsInfiltratingSide(Unit.GetApparentSide()))
+        if (TacticalUtilities.SneakAttackCheck(attacker.Unit, Unit))
         {
             attacker.Unit.hiddenFixedSide = false;
             State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<color=purple>{attacker.Unit.Name} sneak-attacked {Unit.Name}!</color>");
@@ -1585,7 +1585,7 @@ public class Actor_Unit
         defenderScore /= Unit.TraitBoosts.Incoming.VoreOddsMult;
         attackerScore *= attacker.Unit.TraitBoosts.Outgoing.VoreOddsMult;
 
-        if (attacker.Unit.GetApparentSide(Unit) == Unit.GetApparentSide() && attacker.Unit.IsInfiltratingSide(Unit.GetApparentSide())) // sneakAttack
+        if (TacticalUtilities.SneakAttackCheck(attacker.Unit, Unit)) // sneakAttack
         {
             attackerScore *= 3;
         }

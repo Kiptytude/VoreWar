@@ -6,7 +6,6 @@ using TacticalDecorations;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Tilemaps;
-using static UnityEngine.UI.CanvasScaler;
 
 public class TacticalMode : SceneBase
 {
@@ -1956,7 +1955,7 @@ Turns: {currentTurn}
             if (CurrentSpell is DamageSpell damageSpell)
             {
                 spellDamage = damageSpell.Damage(actor, target);
-                if (actor.Unit.GetApparentSide(target.Unit) == target.Unit.GetApparentSide() && actor.Unit.IsInfiltratingSide(target.Unit.GetApparentSide())) // sneakAttack
+                if (TacticalUtilities.SneakAttackCheck(actor.Unit, target.Unit)) // sneakAttack
                 {
                     spellDamage *= 3;
                 }
@@ -2837,7 +2836,7 @@ Turns: {currentTurn}
                             if (actor != null)
                             {
                                 int spellDamage = spell.Damage(SelectedUnit, actor);
-                                if (SelectedUnit.Unit.GetApparentSide(actor.Unit) == actor.Unit.GetApparentSide() && SelectedUnit.Unit.IsInfiltratingSide(actor.Unit.GetApparentSide())) // sneakAttack
+                                if (TacticalUtilities.SneakAttackCheck(SelectedUnit.Unit, actor.Unit)) // sneakAttack
                                 {
                                     spellDamage *= 3;
                                 }
@@ -2853,7 +2852,7 @@ Turns: {currentTurn}
                     foreach (var splashTarget in TacticalUtilities.UnitsWithinTiles(mouseLocation, spell.AreaOfEffect))
                     {
                         int spellDamage = spell.Damage(SelectedUnit, splashTarget);
-                        if (SelectedUnit.Unit.GetApparentSide(splashTarget.Unit) == splashTarget.Unit.GetApparentSide() && SelectedUnit.Unit.IsInfiltratingSide(splashTarget.Unit.GetApparentSide())) // sneakAttack
+                        if (TacticalUtilities.SneakAttackCheck(SelectedUnit.Unit, splashTarget.Unit)) // sneakAttack
                         {
                             spellDamage *= 3;
                         }

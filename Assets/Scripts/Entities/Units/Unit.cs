@@ -3,10 +3,7 @@ using OdinSerializer.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Runtime.ConstrainedExecution;
 using UnityEngine;
-using static UnityEngine.UI.CanvasScaler;
 
 public enum UnitType
 {
@@ -750,6 +747,7 @@ public class Unit
             {
                 if(((SpellBook)Items[i]).Tier == 4)
                         tiers.Remove(3);
+                else
                 tiers.Remove(((SpellBook)Items[i]).Tier);
             }
         }

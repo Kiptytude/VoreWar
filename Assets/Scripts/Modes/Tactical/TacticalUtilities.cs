@@ -438,6 +438,12 @@ static class TacticalUtilities
         return targetSideHostilityP >= targetSideHostilityUP || (target.sidesAttackedThisBattle?.Contains(preferredSide) ?? false) || (target.sidesAttackedThisBattle?.Contains(actor.Unit.FixedSide) ?? false);
     }
 
+    static public bool SneakAttackCheck(Unit attacker, Unit target)
+    {
+        if (GetMindControlSide(attacker) != -1) return false;
+        return attacker.GetApparentSide(target) == target.GetApparentSide() && attacker.IsInfiltratingSide(target.GetApparentSide());
+    }
+
     static public int GetMindControlSide(Unit unit)
     {
         if (unit.GetStatusEffect(StatusEffectType.Hypnotized) != null)

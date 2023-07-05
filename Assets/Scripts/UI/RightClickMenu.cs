@@ -124,7 +124,7 @@ public class RightClickMenu : MonoBehaviour
     {
         bool sneakAttack = false;
         bool rubCreated = false;
-        if (actor.Unit.GetApparentSide(target.Unit) == target.Unit.GetApparentSide() && actor.Unit.IsInfiltratingSide(target.Unit.GetApparentSide()))
+        if (TacticalUtilities.SneakAttackCheck(actor.Unit, target.Unit))
         {
             sneakAttack = true;
         }
