@@ -46,6 +46,8 @@ public class InfoPanel
 
     private void UpdatePanel(Actor_Unit actor)
     {
+        if (actor.Hidden)
+            return;
         UpdateBars(actor.Unit);
         StringBuilder sb = new StringBuilder();
         StringBuilder sb2 = new StringBuilder();

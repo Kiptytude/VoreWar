@@ -330,6 +330,22 @@ public enum Traits
     //SupernaturalPersuasion = 166,
     /// <summary>Like Shapeshifter, only that the forms can be specific people, including their individual traits. These get swapped out only through player input</summary>
     //Skinwalker = 167,
+    /// <summary>Unit heals for half Max HP when taken below half Max HP</summary>
+	SecondWind = 168, 
+    /// <summary>Unit heals after not taking damage for a bit, scaling higer with each turn without damage.</summary>
+	Perseverance = 169, //
+    /// <summary>Unit thrives on mana, uses a bit of their mana every turn. Becomes shaken every turn they don't have any.</summary>
+	ManaAttuned = 170,
+    /// <summary>Unit heals after not taking damage for a bit, scaling higer with each turn without damage.</summary>
+    NightEye = 171,
+    /// <summary>Unit gains +10% critical strike chance.</summary>
+    KeenEye = 172,
+    /// <summary>Unit gains +10% graze chance.</summary>
+	AccuteDodge = 173,
+    /// <summary>Unit's attacks also have Mind Stat Scaling.</summary>
+    SpellBlade = 174,
+    /// <summary>Unit gains access to 4 powerful spells.</summary>
+    ArcaneMagistrate = 175,
 
 
     //Hidden Traits

@@ -118,7 +118,7 @@ namespace LegacyAI
                 for (int i = 0; i < actors.Count; i++)
                 {
                     float d = actors[i].Position.GetDistance(actor.Position);
-                    if (actors[i].Targetable == true && d < 8)
+                    if (actors[i].InSight == true && actors[i].InSight == true && actors[i].Targetable == true && d < 8)
                     {
                         Actor_Unit unit = actors[i];
                         if (unit.Unit.Side != AISide && unit.Bulk() <= cap)
@@ -207,7 +207,7 @@ namespace LegacyAI
             for (int i = 0; i < actors.Count; i++)
             {
                 float d = actors[i].Position.GetNumberOfMovesDistance(actor.Position);
-                if (actors[i].Targetable == true)
+                if (actors[i].InSight == true && actors[i].InSight == true && actors[i].Targetable == true)
                 {
                     Actor_Unit unit = actors[i];
                     if (unit.Unit.Side != AISide && d < distance && (d > 1 || (actor.BestRanged.Omni && d > 0)))
@@ -270,7 +270,7 @@ namespace LegacyAI
             for (int i = 0; i < actors.Count; i++)
             {
                 float d = actors[i].Position.GetDistance(actor.Position);
-                if (actors[i].Targetable == true)
+                if (actors[i].InSight == true && actors[i].InSight == true && actors[i].Targetable == true)
                 {
                     Actor_Unit unit = actors[i];
                     if (unit.Unit.Side != AISide)

@@ -44,5 +44,13 @@
     Corruption = 20,
     /// <summary>Unit wants to force-feed itself to the afflicting side</summary>
     Temptation = 21,
+    /// <summary>Unit can be seen in the darkness</summary>
+    Illuminated = 22,
+    // <summary>Movement is reduced by half and damage taken increased by 20%, all stacks removed end of turn.</summary>
+    Staggering = 23,
+    // <summary>Mind is increased by 1 + 1%.</summary>
+    Focus = 24,
+    // <summary>Mind is increased by 1 + 10% and spell mana cost by 10% per stack.</summary>
+    SpellForce = 25,
 }
 

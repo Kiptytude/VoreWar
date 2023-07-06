@@ -2,6 +2,7 @@
 using OdinSerializer;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.Experimental.UIElements.GraphView;
 using UnityEngine;
 
 public class Actor_Unit
@@ -82,6 +83,12 @@ public class Actor_Unit
     [OdinSerialize]
     public bool Fled;
 
+    // DayNight addition
+    [OdinSerialize]
+    public bool Hidden;
+    [OdinSerialize]
+    public bool InSight;
+	
     [OdinSerialize]
     internal Prey SelfPrey;
 
@@ -101,6 +108,9 @@ public class Actor_Unit
 
     [OdinSerialize]
     public bool GoneBerserk;
+
+    [OdinSerialize]
+    public bool Winded;
 
     [OdinSerialize]
     internal int AIAvoidEat;
@@ -195,6 +205,11 @@ public class Actor_Unit
         else if (Unit.GetStatusEffect(StatusEffectType.Webbed) != null)
         {
             Movement = 1;
+            Slimed = false;
+        }
+        else if (Unit.GetStatusEffect(StatusEffectType.Staggering) != null)
+        {
+            Movement = CurrentMaxMovement() / 2;
             Slimed = false;
         }
         else if (Slimed)
@@ -336,6 +351,14 @@ public class Actor_Unit
         if (unit.HasTrait(Traits.ForceFeeder) && State.World?.ItemRepository != null) //protection for the create strat screen
         {
             unit.MultiUseSpells.Add(SpellList.ForceFeed.SpellType);
+            unit.UpdateSpells();
+        }
+        if (unit.HasTrait(Traits.ArcaneMagistrate) && State.World?.ItemRepository != null) //protection for the create strat screen
+        {
+            unit.MultiUseSpells.Add(SpellList.AmplifyMagic.SpellType);
+            unit.MultiUseSpells.Add(SpellList.Evocation.SpellType);
+            unit.MultiUseSpells.Add(SpellList.SpellBurst.SpellType);
+            unit.MultiUseSpells.Add(SpellList.ArcaneDevistation.SpellType);
             unit.UpdateSpells();
         }
     }
@@ -874,6 +897,7 @@ public class Actor_Unit
         if (ranged)
         {
             float damageScalar = Unit.TraitBoosts.Outgoing.RangedDamage * target.Unit.TraitBoosts.Incoming.RangedDamage;
+			damageScalar *= multiplier;
             if (Unit.HasTrait(Traits.AllOutFirstStrike) && HasAttackedThisCombat == false)
                 damageScalar *= 5;
             if (target.Unit.GetStatusEffect(StatusEffectType.Petrify) != null)
@@ -890,9 +914,14 @@ public class Actor_Unit
             {
                 damageScalar *= 1.4f - (target.Unit.HealthPct * .4f) + (0.1f * target.Unit.GetNegativeStatusEffects());
             }
-            damage = (int)(damageScalar * (BestRanged?.Damage ?? 2) * (60 + Unit.GetStat(Stat.Dexterity)) / 60);
+            int statBoost = Unit.GetStat(Stat.Dexterity) + (Unit.HasTrait(Traits.SpellBlade) ? Unit.GetStat(Stat.Mind) / 2 : 0);
+            damage = (int)(damageScalar * (BestRanged?.Damage ?? 2) * (60 + statBoost) / 60);
             if (target.Unit.HasTrait(Traits.Resilient))
                 damage--;
+            if (target.Unit.GetStatusEffect(StatusEffectType.Staggering) != null)
+            {
+                damage += (int)(damage * 0.2f);
+            }
 
         }
         else
@@ -933,13 +962,18 @@ public class Actor_Unit
             {
                 if (Unit.HasTrait(Traits.Feral) && Unit.GetBestMelee() == State.World.ItemRepository.Claws)
                     damageScalar *= 3f;
-                damage = (int)(damageScalar * BestMelee.Damage * (60 + Unit.GetStat(Stat.Strength)) / 60);
+                int statBoost = Unit.GetStat(Stat.Strength) + (Unit.HasTrait(Traits.SpellBlade) ? Unit.GetStat(Stat.Mind) / 2 : 0);
+                damage = (int)(damageScalar * BestMelee.Damage * (60 + statBoost) / 60);
             }
 
 
 
             if (target.Unit.HasTrait(Traits.Resilient))
                 damage--;
+            if (target.Unit.GetStatusEffect(StatusEffectType.Staggering) != null)
+            {
+                damage += (int)(damage * 0.2f);
+            }
         }
         if (TacticalUtilities.SneakAttackCheck(Unit, target.Unit)) // sneakAttack
         {
@@ -1148,6 +1182,26 @@ public class Actor_Unit
         }
     }
 
+    public bool ExtractMana(Actor_Unit target)
+    {
+        if (Movement < 1 || Unit.HasTrait(Traits.ManaAttuned) == false)
+            return false;
+        List<AbilityTargets> targetTypes = new List<AbilityTargets>();
+        targetTypes.Add(AbilityTargets.Enemy);
+        if (!TacticalUtilities.MeetsQualifier(targetTypes, this, target))
+            return false;
+        if (target.Position.GetNumberOfMovesDistance(Position) > 1)
+            return false;
+
+        int damage = Unit.MaxMana;
+        if (damage >= target.Unit.Health)
+            damage = target.Unit.Health - 1;
+        Unit.RestoreMana(damage);
+        Movement = 0;
+
+        return true;
+    }
+
     public bool Attack(Actor_Unit target, bool ranged, bool forceBite = false, float damageMultiplier = 1, bool canKill = true)
     {
         Weapon weapon;
@@ -1174,7 +1228,46 @@ public class Actor_Unit
                 return false;
             }
         }
+        float origDamageMult = damageMultiplier;
+        bool grazebool = false;
+        bool critbool = false;
+        if (Config.CombatComplicationsEnabled)
+        {
+            // Graze Check
+            float grazechance = Config.BaseGrazeChance;
+            if (Config.StatGraze)
+            {
+                grazechance = GrazeCheck(this, target);
+            }
+            grazechance += Unit.TraitBoosts.Outgoing.GrazeRateShift - target.Unit.TraitBoosts.Incoming.GrazeRateShift;
+            if (State.Rand.NextDouble() < grazechance)
+            {
+                float calculatedGrazeDamage = Unit.TraitBoosts.Outgoing.GrazeDamageMult * target.Unit.TraitBoosts.Incoming.GrazeDamageMult;
+                damageMultiplier *= (calculatedGrazeDamage) * Config.GrazeDamageMod;
+                grazebool = true;
+            }
 
+            //Crit check
+            float critchance = Config.BaseCritChance;
+            if (Config.StatCrit)
+            {
+                critchance = CritCheck(this, target);
+            }
+            critchance += Unit.TraitBoosts.Outgoing.CritRateShift - target.Unit.TraitBoosts.Incoming.CritRateShift;
+            if (State.Rand.NextDouble() < critchance)
+            {
+                float calculatedCritDamage = Unit.TraitBoosts.Outgoing.CritDamageMult * target.Unit.TraitBoosts.Incoming.CritDamageMult;
+                damageMultiplier *= (calculatedCritDamage) * Config.CritDamageMod;
+                critbool = true;
+            }
+            // Crit and graze check (returns attack to normal state if both are true)
+            if (critbool && grazebool)
+            {
+                damageMultiplier = origDamageMult;
+                critbool = false;
+                grazebool = false;
+            }
+        }
         //check range
         int targetRange = target.Position.GetNumberOfMovesDistance(Position);
         if (weapon.Range > 1)
@@ -1209,6 +1302,9 @@ public class Actor_Unit
                         Unit.RemoveTenacious();
                     if (target.Unit.HasTrait(Traits.Tenacious))
                         target.Unit.AddTenacious();
+                    if (target.Unit.GetStatusEffect(StatusEffectType.SpellForce) != null)                  
+                        target.Unit.RemoveFocus();
+                    
                     TacticalGraphicalEffects.CreateProjectile(this, target);
                     State.GameManager.TacticalMode.TacticalStats.RegisterHit(BestRanged, Mathf.Min(damage, remainingHealth), Unit.Side);
                     TacticalUtilities.Log.RegisterHit(Unit, target.Unit, weapon, damage, chance);
@@ -1226,6 +1322,10 @@ public class Actor_Unit
                         State.GameManager.TacticalMode.TacticalStats.RegisterKill(BestRanged, Unit.Side);
                         KillUnit(target, weapon);
                     }
+                    if (critbool)
+                        target.UnitSprite.DisplayCrit();
+                    else if (grazebool)
+                        target.UnitSprite.DisplayGraze();
                     return true;
                 }
                 else
@@ -1273,6 +1373,8 @@ public class Actor_Unit
                         Unit.RemoveTenacious();
                     if (target.Unit.HasTrait(Traits.Tenacious))
                         target.Unit.AddTenacious();
+                    if (target.Unit.GetStatusEffect(StatusEffectType.SpellForce) != null)
+                        target.Unit.RemoveFocus();
                     if (target.Unit.HasTrait(Traits.Toxic) && State.Rand.Next(8) == 0)
                         Unit.ApplyStatusEffect(StatusEffectType.Poisoned, 2 + target.Unit.GetStat(Stat.Endurance) / 20, 3);
                     if (Unit.HasTrait(Traits.ForcefulBlow))
@@ -1295,6 +1397,10 @@ public class Actor_Unit
                         State.GameManager.TacticalMode.TacticalStats.RegisterKill(BestMelee, Unit.Side);
                         KillUnit(target, weapon);
                     }
+                    if (critbool)
+                        target.UnitSprite.DisplayCrit();
+                    else if (grazebool)
+                        target.UnitSprite.DisplayGraze();
                     return true;
                 }
                 else
@@ -1975,6 +2081,17 @@ public class Actor_Unit
             RestoreMP();
         Unit.TickStatusEffects();
         Unit.Heal(Unit.TraitBoosts.HealthRegen);
+        if (Unit.HasTrait(Traits.Perseverance) && TurnsSinceLastDamage > 3)
+        {
+            Unit.HealPercentage(0.03f * TurnsSinceLastDamage);
+        }
+        if (Unit.HasTrait(Traits.ManaAttuned))
+        {
+            if (!Unit.SpendMana(Unit.MaxMana/10))
+            {
+                Unit.ApplyStatusEffect(StatusEffectType.Shaken, 0.3f, 1);
+            }
+        }
         ReceivedRub = false;
         TurnsSinceLastDamage++;
     }
@@ -2006,6 +2123,14 @@ public class Actor_Unit
             {
                 GoneBerserk = true;
                 Unit.ApplyStatusEffect(StatusEffectType.Berserk, 1, 3);
+            }
+        }
+        if (Unit.HasTrait(Traits.SecondWind) && Winded == false)
+        {
+            if (Unit.HealthPct < .5f)
+            {
+                Winded = true;
+                Unit.Heal(Unit.MaxHealth/2);
             }
         }
         if ((canKill == false && Unit.IsDead) || (Config.AutoSurrender && Unit.IsDead && State.Rand.NextDouble() < Config.AutoSurrenderChance && Surrendered == false && Unit.HasTrait(Traits.Fearless) == false && !KilledByDigestion))
@@ -2134,7 +2259,36 @@ public class Actor_Unit
             ratio = 5;
         return ratio / 25;
     }
+    public float CritCheck(Actor_Unit actor, Actor_Unit target)
+    {
+        if (target.Unit.IsDead)
+        {
+            return 0;
+        }
+        float ratio = 0;
+        ratio = (float)((actor.Unit.GetStat(Stat.Dexterity) + actor.Unit.GetStat(Stat.Strength)) / 2) /
+            (target.Unit.GetStat(Stat.Endurance) * target.Unit.GetStat(Stat.Endurance) + target.Unit.GetStat(Stat.Will));
 
+        if (Config.BaseCritChance > ratio)
+            ratio = Config.BaseCritChance;
+
+        return ratio;
+    }
+
+    public float GrazeCheck(Actor_Unit actor, Actor_Unit target)
+    {
+        if (target.Unit.IsDead)
+        {
+            return 0;
+        }
+        float ratio = (float)((actor.Unit.GetStat(Stat.Dexterity) + actor.Unit.GetStat(Stat.Strength)) / 2) / (target.Unit.GetStat(Stat.Endurance) * target.Unit.GetStat(Stat.Endurance) + target.Unit.GetStat(Stat.Will));
+
+        if (Config.BaseGrazeChance > ratio)
+            ratio = Config.BaseGrazeChance;
+
+        return ratio;
+    }
+	
     internal bool CastSpell(Spell spell, Actor_Unit target)
     {
         if (Unit.SpendMana(spell.ManaCost) == false)
