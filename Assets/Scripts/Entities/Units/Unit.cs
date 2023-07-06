@@ -1605,9 +1605,9 @@ internal void SetGenderRandomizeName(Race race, Gender gender)
             SharedTraits = new List<Traits>();
         foreach (Traits trait in SharedTraits)
         {
-            SharedTraits.Remove(trait);
             RemoveTrait(trait);
         }
+        SharedTraits.Clear();
     }
 
     public void RemoveSharedTrait(Traits trait)
@@ -1642,9 +1642,9 @@ internal void SetGenderRandomizeName(Race race, Gender gender)
             PersistentSharedTraits = new List<Traits>();
         foreach (Traits trait in PersistentSharedTraits)
         {
-            PersistentSharedTraits.Remove(trait);
             RemoveTrait(trait);
         }
+        PersistentSharedTraits.Clear();
     }
 
     public void RemovePersistentSharedTrait(Traits trait)

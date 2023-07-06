@@ -312,7 +312,7 @@ public class InfoPanel
             case Race.Whisp:
                 return "Whisp";
             case Race.none:
-                return "NULL";
+                return "None";
         }
         return unit.Race.ToString(); //Updated this so a new race will return the race's name, instead of nothing
     }

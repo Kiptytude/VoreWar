@@ -748,7 +748,7 @@ public class PredatorComponent
                     unit.AddSharedTrait(trait);
     }
 
-    void AddPrey(Prey preyUnit, PreyLocation location)
+    private void OnAddRefresh(Prey preyUnit)
     {
         bool changedRace = false;
         if (unit.HasTrait(Traits.GreaterChangeling)|| unit.HasTrait(Traits.TrueChangeling))
@@ -771,12 +771,16 @@ public class PredatorComponent
             actor.Possessed = actor.Possessed + preyUnit.Unit.GetStatTotal() + preyUnit.Unit.GetStat(Stat.Mind);
             if (actor.Possessed + actor.Corruption >= unit.GetStatTotal() + unit.GetStat(Stat.Will))
             {
-                actor.allowedToDefect = false;
                 if (!unit.HasTrait(Traits.Untamable))
                     unit.FixedSide = preyUnit.Unit.FixedSide;
                 unit.hiddenFixedSide = true;
             }
         }
+    }
+
+    void AddPrey(Prey preyUnit, PreyLocation location)
+    {
+        OnAddRefresh(preyUnit);
         switch (location)
         {
             case PreyLocation.breasts:
@@ -814,33 +818,7 @@ public class PredatorComponent
     
     void AddPrey(Prey preyUnit)
     {
-        bool changedRace = false;
-        if (unit.HasTrait(Traits.GreaterChangeling) || unit.HasTrait(Traits.TrueChangeling))
-        {
-            changedRace = TryChangeRace(preyUnit);
-        }
-        if((preyUnit.Unit.HasTrait(Traits.Symbiote) || unit.HasTrait(Traits.TraitStealer)) && !changedRace)
-        {
-            foreach (Traits trait in preyUnit.Unit.GetTraits)
-            {
-                if ((trait != Traits.Prey) && (trait != Traits.Small))
-                    ShareTrait(trait, preyUnit);
-            }
-            unit.ReloadTraits();
-            unit.InitializeTraits();
-            actor.ReloadSpellTraits();
-        }
-        if(preyUnit.Unit.HasTrait(Traits.Possession))
-        {
-            actor.Possessed = actor.Possessed + preyUnit.Unit.GetStatTotal() + preyUnit.Unit.GetStat(Stat.Mind);
-            if (actor.Possessed + actor.Corruption >= unit.GetStatTotal() + unit.GetStat(Stat.Will))
-            {
-                actor.allowedToDefect = false;
-                if (!unit.HasTrait(Traits.Untamable))
-                    unit.FixedSide = preyUnit.Unit.FixedSide;
-                unit.hiddenFixedSide = true;
-            }
-        }
+        OnAddRefresh(preyUnit);
         prey.Add(preyUnit);
         UpdateAlivePrey();
     }
@@ -881,7 +859,7 @@ public class PredatorComponent
         }
     }
 
-    private void RemovePrey(Prey preyUnit)
+    private void OnRemoveRefresh(Prey preyUnit)
     {
         if(prey.Contains(preyUnit))
         {
@@ -907,17 +885,21 @@ public class PredatorComponent
                 unit.InitializeTraits();
                 actor.ReloadSpellTraits();
             }
-            if(preyUnit.Unit.HasTrait(Traits.Possession))
+            if(preyUnit.Unit.HasTrait(Traits.Possession) && !preyUnit.Unit.IsDead)
             {
                 actor.Possessed = actor.Possessed - preyUnit.Unit.GetStatTotal() - preyUnit.Unit.GetStat(Stat.Mind);
                 if (actor.Possessed + actor.Corruption < unit.GetStatTotal() + unit.GetStat(Stat.Will))
                 {
-                    actor.allowedToDefect = true;
                     unit.FixedSide = unit.Side;
                     unit.hiddenFixedSide = false;
                 }    
             }
         }
+    }
+
+    private void RemovePrey(Prey preyUnit)
+    {
+        OnRemoveRefresh(preyUnit);
         womb.Remove(preyUnit);
         breasts.Remove(preyUnit);
         balls.Remove(preyUnit);
@@ -1151,7 +1133,7 @@ public class PredatorComponent
             preyList = deadPrey;
         else
             preyList = prey;
-        if (preyList.Capacity > 0)
+        if (preyList.Count > 0)
         {
             bestPrey = preyList[State.Rand.Next(1,preyList.Count) - 1];
             if (random)
@@ -1242,6 +1224,7 @@ public class PredatorComponent
             }
             if (preyUnit.Unit.HasTrait(Traits.Metamorphosis))
             {
+                OnRemoveRefresh(preyUnit);
                 Race conversionRace = DetermineSpawnRace(preyUnit.Unit.HiddenUnit);
                 preyUnit.Unit.Health = preyUnit.Unit.MaxHealth;
                 preyUnit.Unit.GiveExp(unit.Experience / 2);
@@ -1272,6 +1255,7 @@ public class PredatorComponent
                     preyUnit.Actor.PredatorComponent?.FreeAnyAlivePrey();
                     preyUnit.Actor.PredatorComponent?.RefreshSharedTraits();
                 }
+                OnAddRefresh(preyUnit);
                 State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"{preyUnit.Unit.Name} changed form within {unit.Name}'s body.");
                 UpdateFullness();
                 return 0;
@@ -1296,6 +1280,15 @@ public class PredatorComponent
                 if (!State.GameManager.TacticalMode.turboMode)
                     actor.SetBirthMode();
                 return 0;
+            }
+            if (preyUnit.Unit.HasTrait(Traits.Possession))
+            {
+                actor.Possessed = actor.Possessed - preyUnit.Unit.GetStatTotal() - preyUnit.Unit.GetStat(Stat.Mind);
+                if (actor.Possessed + actor.Corruption < unit.GetStatTotal() + unit.GetStat(Stat.Will))
+                {
+                    unit.FixedSide = unit.Side;
+                    unit.hiddenFixedSide = false;
+                }
             }
             State.GameManager.TacticalMode.TacticalStats.RegisterDigestion(unit.Side);
             TacticalUtilities.Log.RegisterDigest(unit, preyUnit.Unit, Location(preyUnit));

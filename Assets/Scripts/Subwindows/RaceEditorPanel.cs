@@ -86,6 +86,12 @@ public class RaceEditorPanel : MonoBehaviour
 
     public TextMeshProUGUI InfoText;
 
+    public GameObject GeneralPanel;
+    public GameObject TraitsPanel;
+
+    public Button GeneralButton;
+    public Button TraitsButton;
+
     List<Traits> CurrentTraits;
 
 
@@ -187,6 +193,7 @@ public class RaceEditorPanel : MonoBehaviour
 
         LoadRace();
         UpdateInteractable();
+        ActivateGeneral();
 
     }
 
@@ -774,4 +781,20 @@ public class RaceEditorPanel : MonoBehaviour
         UpdateInteractable();
     }
 
+    public void ActivateGeneral()
+    {
+        GeneralPanel.SetActive(true);
+        TraitsPanel.SetActive(false);
+        GeneralButton.interactable = false;
+        TraitsButton.interactable = true;
+    }
+
+    public void ActivateRaces()
+    {
+        GeneralPanel.SetActive(false);
+        TraitsPanel.SetActive(true);
+        GeneralButton.interactable = true;
+        TraitsButton.interactable = false;
+    }
 }
+    

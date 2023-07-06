@@ -23,7 +23,7 @@ class Youko : Humans
         int StatTotal = actor.Unit.GetStatTotal();
         if (StatTotal < 85)
             return Tails[0];
-        return Tails[Math.Min((int)(StatTotal - 85) / 12,7)+1];
+        return Tails[Math.Min((int)(StatTotal - 85) / 15,7)+1];
     }
     protected override Sprite BeardSprite(Actor_Unit actor)
     {

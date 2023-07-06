@@ -3482,6 +3482,13 @@ Turns: {currentTurn}
             StatusUI.EndTurn.GetComponentInChildren<UnityEngine.UI.Text>().text = "End Turn";
     }
 
+    public bool CanDefect(Actor_Unit unit)
+    {
+        if (unit.Possessed > 0) return false;
+        return TacticalUtilities.GetPreferredSide(unit.Unit, activeSide, attackersTurn ? defenderSide : attackerSide) != activeSide
+                    || units.Any(u => u.Unit.Side != unit.Unit.Side && !u.Unit.IsDead) && !units.Any(u => TacticalUtilities.TreatAsHostile(unit, u) && !u.Unit.IsDead);
+    }
+
     void NewTurn()
     {
         AllSurrenderedCheck();
@@ -3512,8 +3519,7 @@ Turns: {currentTurn}
         {
             if (units[i].Unit.IsDead == false && units[i].Unit.Side == activeSide)
             {
-                units[i].allowedToDefect = TacticalUtilities.GetPreferredSide(units[i].Unit, activeSide, attackersTurn ? defenderSide : attackerSide) != activeSide
-                    || units.Any(u => u.Unit.Side != units[i].Unit.Side && !u.Unit.IsDead) && !units.Any(u => TacticalUtilities.TreatAsHostile(units[i], u) && !u.Unit.IsDead);
+                units[i].allowedToDefect = CanDefect(units[i]);
                 units[i].NewTurn();
             }
             if (units[i].Unit.IsDead && units[i].Unit.Side == activeSide)
