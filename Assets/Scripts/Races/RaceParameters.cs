@@ -2582,7 +2582,7 @@ static class RaceParameters
                 Traits.ManaAttuned,
                 Traits.ManaRich
             },
-            RaceDescription = "A demi-mouse mage from a different dimension.",
+            RaceDescription = "A demi-mouse mage from a different, mana rich dimension. Has had trouble adapting to the absence of mana here, but makes do.",
         };
 
     }

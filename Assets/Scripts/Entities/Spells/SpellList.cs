@@ -890,7 +890,7 @@ static class SpellList
             SpellType = SpellTypes.SpellBurst,
             Description = "Deals damage based on unit and targets mind stat, not resistable",
             AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy},
-            Range = new Range(3),
+            Range = new Range(6),
             Tier = 1,
             AreaOfEffect = 0,
             Damage = (a, t) => t.Unit.GetStat(Stat.Mind) / 5 + a.Unit.GetStat(Stat.Mind) / 5,

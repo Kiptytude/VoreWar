@@ -17,4 +17,5 @@
     ShunGokuSatsu,
     Regurgitate,
     TailStrike,
+    ExtractMana,
 }

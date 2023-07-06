@@ -219,7 +219,14 @@ static class TacticalActionList
           minimumMp: 1));
         TargetedDictionary[SpecialAction.TailStrike] = TargetedActions.Last();
 
-
+        TargetedActions.Add(new TargetedTacticalAction(
+          name: "Extract Mana",
+          requiresPred: false,
+          conditional: (a) => a.Unit.HasTrait(Traits.ManaAttuned) && a.Unit.Mana <= a.Unit.MaxMana * .1f,
+          onClicked: () => State.GameManager.TacticalMode.TrySetSpecialMode(SpecialAction.ExtractMana),
+          onExecute: (a, t) => a.ExtractMana(t),
+          minimumMp: 1));
+        TargetedDictionary[SpecialAction.ExtractMana] = TargetedActions.Last();
 
 
 

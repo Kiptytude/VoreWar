@@ -1180,6 +1180,26 @@ public class Actor_Unit
         }
     }
 
+    public bool ExtractMana(Actor_Unit target)
+    {
+        if (Movement < 1 || Unit.HasTrait(Traits.ManaAttuned) == false)
+            return false;
+        List<AbilityTargets> targetTypes = new List<AbilityTargets>();
+        targetTypes.Add(AbilityTargets.Enemy);
+        if (!TacticalUtilities.MeetsQualifier(targetTypes, this, target))
+            return false;
+        if (target.Position.GetNumberOfMovesDistance(Position) > 1)
+            return false;
+
+        int damage = Unit.MaxMana;
+        if (damage >= target.Unit.Health)
+            damage = target.Unit.Health - 1;
+        Unit.RestoreMana(damage);
+        Movement = 0;
+
+        return true;
+    }
+
     public bool Attack(Actor_Unit target, bool ranged, bool forceBite = false, float damageMultiplier = 1, bool canKill = true)
     {
         Weapon weapon;
