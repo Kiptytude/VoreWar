@@ -967,5 +967,10 @@ static class TacticalUtilities
         //UnitPickerUI.GetComponentInChildren<HirePanel>().GetComponentInChildren<Button>().GetComponentInChildren<Text>().text = "Cancel";
         //UnitPickerUI.gameObject.SetActive(true);
     }
+
+    internal static bool IsPreyEndoTargetForUnit(Prey preyUnit, Unit unit)
+    {
+        return unit.HasTrait(Traits.Endosoma) && (preyUnit.Unit.FixedSide == unit.GetApparentSide(preyUnit.Unit)) && preyUnit.Unit.IsDead == false;
+    }
 }
 

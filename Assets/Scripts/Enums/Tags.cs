@@ -408,7 +408,9 @@ public enum Traits
     /// <summary>Can emit Gas that turns foes into subservient non-combatants once per battle.</summary>
     HypnoticGas = 295,
     /// <summary>Every time digestion progresses, this unit steals one trait from each prey inside them, if only duplicates (or non-assimilable traits) remain, they are turned into exp. Absorbtion steals any that are left.</summary>
-    Extraction = 296,
+    Extraction = 296,    
+    /// <summary>Every time digestion progresses, this unit digests one level from each prey inside them, gaining its experience value. If a unit hits level 0 this way, it dies if it was stil alive and cannot be revived.</summary>
+    Annihilation = 297,
 
     // Growth-related section
     /// <summary>Unit increases in size when absorbing prey.</summary>

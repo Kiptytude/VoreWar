@@ -872,7 +872,7 @@ public class PredatorComponent
                     actor.PredatorComponent.birthStatBoost--;
                 }
             }
-            if (unit.HasTrait(Traits.Endosoma) && (preyUnit.Unit.FixedSide == unit.GetApparentSide(preyUnit.Unit)) && preyUnit.Unit.IsDead == false)
+            if (TacticalUtilities.IsPreyEndoTargetForUnit(preyUnit, unit))
             {
                 if (unit.HasTrait(Traits.HealingBelly))
                     preyDamage = Math.Min(unit.MaxHealth / -10, -1);
@@ -993,7 +993,7 @@ public class PredatorComponent
     {
         int totalHeal = 0;
         bool freshKill = false;
-        if (unit.HasTrait(Traits.Extraction))
+        if (unit.HasTrait(Traits.Extraction) && !TacticalUtilities.IsPreyEndoTargetForUnit(preyUnit, unit))
         {
             var possibleTraits = preyUnit.Unit.GetTraits.Where(s => unit.GetTraits.Contains(s) == false && State.AssimilateList.CanGet(s)).ToArray();
 
@@ -1010,6 +1010,10 @@ public class PredatorComponent
                 unit.GiveRawExp(5);
                 actor.UnitSprite.DisplayDamage(5, false, true);
             }
+        }
+        if (unit.HasTrait(Traits.Annihilation) && !TacticalUtilities.IsPreyEndoTargetForUnit(preyUnit, unit))
+        {
+           
         }
         if (preyUnit.Unit.IsThisCloseToDeath(preyDamage))
         {
