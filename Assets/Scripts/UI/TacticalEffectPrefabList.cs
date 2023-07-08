@@ -14,4 +14,5 @@ public class TacticalEffectPrefabList : MonoBehaviour
     public GameObject Charm;
     public GameObject GasCloud;
     public GameObject SmokeCloud;
+    public GameObject HugeMagic;
 }

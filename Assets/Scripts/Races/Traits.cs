@@ -41,6 +41,7 @@ class PermanentBoosts
     internal float VirtualStrMult = 1;
     internal float FireDamageTaken = 1;
     internal float GrowthDecayRate = 1;
+    internal int SightRangeBoost = 0;
 }
 
 class DirectionalStat
@@ -60,6 +61,10 @@ class DirectionalStat
     internal float VoreOddsMult = 1;
     internal float GrowthRate = 1;
 
+    internal float CritRateShift = 0;
+    internal float CritDamageMult = 1;
+    internal float GrazeRateShift = 0;
+    internal float GrazeDamageMult = 1;
 }
 
 
@@ -224,6 +229,9 @@ static class TraitList
         [Traits.ProteinRich] = new Booster("Absorbing this unit yields more (x2) healing and (with the growth trait) more growth than usual (+80%)", (s) => { s.Outgoing.GrowthRate *= 1.5f; s.Outgoing.Nutrition *= 2f; }),
         [Traits.EfficientGuts] = new Booster("Unit receives 50% more healing from absorbing prey", (s) => { s.Incoming.Nutrition *= 1.5f; }),
         [Traits.WastefulProcessing] = new Booster("Unit can't get as much healing out of prey, but they are done with it quicker. (+50% absorb speed, -50% nutrition)", (s) => { s.Incoming.Nutrition *= 0.5f; s.Outgoing.AbsorptionRate *= 1.5f; }),
+		[Traits.NightEye] = new Booster("Increases night time vision range by +1 in Tactical battles and by +1 in stratigic if half of the units in an army have this trait.", (s) => { s.SightRangeBoost += 1;}),
+        [Traits.KeenEye] = new Booster("Unit has the chance to deal increase damage when attacking.", (s) => { s.Outgoing.CritRateShift += 0.1f; }),
+        [Traits.AccuteDodge] = new Booster("Unit has the chance to minimise recieved damage when being attacked. (Excludes spells and vore damage).", (s) => { s.Outgoing.GrazeRateShift += 0.1f; }),
     };
 
 }

@@ -29,6 +29,12 @@
     GateMaw = 19,
     Resurrection = 20,
 
+    Purify = 21,
+
+    AmplifyMagic = 60,
+    Evocation = 61,
+    SpellBurst = 62,
+    ArcaneDevistation = 63,
 
     AlraunePuff = 70,
     Web = 71,

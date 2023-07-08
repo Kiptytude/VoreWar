@@ -59,7 +59,26 @@ namespace TacticalDecorations
         SnowWreath,
         SnowHolidayRock1,
         SnowHolidayRock2,
-        SnowFootprints
+        SnowFootprints,
+
+        VolcanicBones1,
+        VolcanicBones2,
+        VolcanicBones3,
+        VolcanicBones4,
+        VolcanicOffsetPillar,
+        VolcanicRocks1,
+        VolcanicRocks2,
+        VolcanicRocks3,
+        VolcanicRocks4,
+        VolcanicRocks5,
+        VolcanicRocks6,
+        VolcanicRocks7,
+        VolcanicRocks8,
+        VolcanicMagmaRock1,
+        VolcanicMagmaRock2,
+        VolcanicMagmaRock3,
+        VolcanicMagmaRock4,
+        VolcanicMagmaRock5,
     }
 
     class TacticalDecoration
@@ -138,6 +157,24 @@ namespace TacticalDecorations
             [TacDecType.SnowHolidayRock2] = new TacticalDecoration(1, 1, new int[,] { { 418 } }),
             [TacDecType.SnowFootprints] = new TacticalDecoration(0, 0, new int[,] { { 419 } }),
 
+
+            [TacDecType.VolcanicBones1] = new TacticalDecoration(2, 1, new int[,] { { 502 }, { 503 } }),
+            [TacDecType.VolcanicBones2] = new TacticalDecoration(1, 1, new int[,] { { 504 } }),
+            [TacDecType.VolcanicBones3] = new TacticalDecoration(1, 1, new int[,] { { 505 } }),
+            [TacDecType.VolcanicBones4] = new TacticalDecoration(1, 1, new int[,] { { 506 } }),
+            [TacDecType.VolcanicRocks1] = new TacticalDecoration(1, 1, new int[,] { { 517 } }),
+            [TacDecType.VolcanicRocks2] = new TacticalDecoration(1, 1, new int[,] { { 519, 518 } }),
+            [TacDecType.VolcanicRocks3] = new TacticalDecoration(1, 1, new int[,] { { 520 } }),
+            [TacDecType.VolcanicRocks4] = new TacticalDecoration(1, 1, new int[,] { { 521 } }),
+            [TacDecType.VolcanicRocks5] = new TacticalDecoration(1, 1, new int[,] { { 522 } }),
+            [TacDecType.VolcanicRocks6] = new TacticalDecoration(1, 1, new int[,] { { 523 } }),
+            [TacDecType.VolcanicRocks7] = new TacticalDecoration(1, 1, new int[,] { { 524 } }),
+            [TacDecType.VolcanicRocks8] = new TacticalDecoration(1, 1, new int[,] { { 525 } }),
+            [TacDecType.VolcanicMagmaRock1] = new TacticalDecoration(1, 1, new int[,] { { 526 } }, PathType.Tree),
+            [TacDecType.VolcanicMagmaRock2] = new TacticalDecoration(1, 1, new int[,] { { 527 } }, PathType.Tree),
+            [TacDecType.VolcanicMagmaRock3] = new TacticalDecoration(1, 1, new int[,] { { 528 } }, PathType.Tree),
+            [TacDecType.VolcanicMagmaRock4] = new TacticalDecoration(1, 1, new int[,] { { 529 } }, PathType.Tree),
+            [TacDecType.VolcanicMagmaRock5] = new TacticalDecoration(1, 2, new int[,] { { 532, 531 } }, PathType.Tree),
         };
 
 
@@ -153,7 +190,9 @@ namespace TacticalDecorations
         internal static TacDecType[] SnowEnvironment = new TacDecType[] { TacDecType.SnowTree1, TacDecType.SnowTree2, TacDecType.SnowRock1, TacDecType.SnowMound1, TacDecType.SnowBear };
         internal static TacDecType[] HolidaySnowEnvironment = new TacDecType[] { TacDecType.SnowTree1, TacDecType.SnowTree2, TacDecType.SnowRock1, TacDecType.SnowMound1, TacDecType.SnowBear, TacDecType.SnowHolidayTree1, TacDecType.SnowHolidayTree2, TacDecType.SnowCandyCane1, TacDecType.SnowCandyCane2, TacDecType.SnowPresent, TacDecType.SnowGoblin, TacDecType.SnowWreath, TacDecType.SnowHolidayRock1, TacDecType.SnowHolidayRock2, TacDecType.SnowFootprints };
 
-
+        internal static TacDecType[] CharredBones = new TacDecType[] { TacDecType.VolcanicBones1, TacDecType.VolcanicBones2, TacDecType.VolcanicBones3, TacDecType.VolcanicBones4 };
+        internal static TacDecType[] VolcanicRocks = new TacDecType[] { TacDecType.VolcanicRocks1, TacDecType.VolcanicRocks2, TacDecType.VolcanicRocks3, TacDecType.VolcanicRocks4, TacDecType.VolcanicRocks5, TacDecType.VolcanicRocks6, TacDecType.VolcanicRocks7, TacDecType.VolcanicRocks8 };
+        internal static TacDecType[] VolcanicMagmaRocks = new TacDecType[] { TacDecType.VolcanicMagmaRock1, TacDecType.VolcanicMagmaRock2, TacDecType.VolcanicMagmaRock3, TacDecType.VolcanicMagmaRock4, TacDecType.VolcanicMagmaRock5 };
     }
 }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using UnityEngine.Experimental.UIElements;
 
@@ -57,6 +58,13 @@ static class SpellList
     static internal readonly Spell GateMaw;
     static internal readonly Spell Reanimate;
     static internal readonly Spell Resurrection;
+
+    static internal readonly Spell Purify;
+
+    static internal readonly Spell AmplifyMagic;
+    static internal readonly Spell Evocation;
+    static internal readonly DamageSpell SpellBurst;
+    static internal readonly DamageSpell ArcaneDevistation;
 
     static internal readonly StatusSpell AlraunePuff;
     static internal readonly StatusSpell Web;
@@ -800,7 +808,121 @@ static class SpellList
             },
         };
         SpellDict[SpellTypes.ForceFeed] = ForceFeed;
+		
+        Purify = new Spell()
+        {
+            Name = "Purify",
+            Id = "purify",
+            SpellType = SpellTypes.Purify,
+            Description = "Removes positive and negative status effectso on an ally or enemy.",
+            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy, AbilityTargets.Ally },
+            Range = new Range(4),
+            Tier = 2,
+            AreaOfEffect = 0,
+            Resistable = true,
+            OnExecute = (a, t) =>
+            {
+                foreach (var eff in t.Unit.StatusEffects.ToList())
+                {
+                    t.Unit.StatusEffects.Remove(t.Unit.GetLongestStatusEffect(eff.Type));
+                }
+            }
+        };
+        SpellDict[SpellTypes.Purify] = Purify;
 
+        AmplifyMagic = new Spell()
+        {
+            Name = "Amplify Magic",
+            Id = "amplify-magic",
+            SpellType = SpellTypes.AmplifyMagic,
+            Description = "Grant nearby units a stack of Spell Force",
+            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Ally },
+            Range = new Range(1),
+            Tier = 0,
+            AreaOfEffect = 1,
+            Resistable = false,
+            IsFree = true,
+            OnExecute = (a, t) =>
+            {
+                a.CastSpell(AmplifyMagic, t);
+                foreach (var ally in TacticalUtilities.UnitsWithinTiles(t.Position, 1).Where(s => s.Unit.IsDead == false && s.Unit.Side == a.Unit.Side))
+                {
+                    ally.Unit.AddFocus(a.Unit.GetStat(Stat.Mind) / 25);
+                    TacticalGraphicalEffects.CreateGenericMagic(a.Position, ally.Position, ally, TacticalGraphicalEffects.SpellEffectIcon.Buff);
+                }
+            }
+        };
+        SpellDict[SpellTypes.AmplifyMagic] = AmplifyMagic;
+
+        Evocation = new Spell()
+        {
+            Name = "Evocation",
+            Id = "evocation",
+            SpellType = SpellTypes.Evocation,
+            Description = "Draw all nearby Unit's Focus stacks into a target, grant the target that many Spell Force stacks.",
+            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Ally },
+            Range = new Range(1),
+            Tier = 0,
+            AreaOfEffect = 1,
+            Resistable = false,
+            IsFree = true,
+            OnExecute = (a, t) =>
+            {
+                a.CastSpell(Evocation, a);
+                foreach (var ally in TacticalUtilities.UnitsWithinTiles(t.Position, 1).Where(s => s.Unit.GetStatusEffect(StatusEffectType.Focus) != null))
+                {
+                    for (int i = 0; i < ally.Unit.GetStatusEffect(StatusEffectType.Focus).Duration; i++)
+                    {
+                        t.Unit.AddSpellForce();
+                    }
+                    ally.Unit.StatusEffects.Remove(ally.Unit.GetStatusEffect(StatusEffectType.Focus));
+                    TacticalGraphicalEffects.CreateGenericMagic(ally.Position, t.Position, t);
+                }
+                TacticalGraphicalEffects.CreateGenericMagic(a.Position, t.Position, t, TacticalGraphicalEffects.SpellEffectIcon.PurplePlus);
+            }
+        };
+        SpellDict[SpellTypes.Evocation] = Evocation;
+
+        SpellBurst = new DamageSpell()
+        {
+            Name = "SpellBurst",
+            Id = "spell-burst",
+            SpellType = SpellTypes.SpellBurst,
+            Description = "Deals damage based on unit and targets mind stat, not resistable",
+            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy},
+            Range = new Range(6),
+            Tier = 1,
+            AreaOfEffect = 0,
+            Damage = (a, t) => t.Unit.GetStat(Stat.Mind) / 5 + a.Unit.GetStat(Stat.Mind) / 5,
+            Resistable = false,
+            OnExecute = (a, t) =>
+            {
+                a.CastOffensiveSpell(SpellBurst, t);
+                TacticalGraphicalEffects.CreateGenericMagic(a.Position, t.Position, t);               
+            }
+        };
+        SpellDict[SpellTypes.SpellBurst] = SpellBurst;
+
+        ArcaneDevistation = new DamageSpell()
+        {
+            Name = "Arcane Devistation",
+            Id = "arcane-devistation",
+            SpellType = SpellTypes.ArcaneDevistation,
+            Description = "Deals massive damage, damage is increased by current mana, but uses all it.",
+            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy },
+            Range = new Range(6),
+            Tier = 0,
+            AreaOfEffect = 0,
+            Damage = (a, t) => (a.Unit.Mana/5) + a.Unit.GetStat(Stat.Mind)/2,
+            Resistable = true,
+            OnExecute = (a, t) =>
+            {
+                a.CastOffensiveSpell(ArcaneDevistation, t);
+                TacticalGraphicalEffects.CreateHugeMagic(a.Position, t.Position, t);
+                a.Unit.SpendMana(a.Unit.Mana);
+            }
+        };
+        SpellDict[SpellTypes.ArcaneDevistation] = ArcaneDevistation;
     }
 
 
@@ -822,10 +944,12 @@ public class Spell
     internal bool Resistable;
     internal float ResistanceMult = 1;
     internal Action<Actor_Unit, Actor_Unit> OnExecute;
+    internal bool IsFree = false;
+    
 
     internal bool TryCast(Actor_Unit actor, Vec2i location)
     {
-        if (actor.Unit.Mana >= ManaCost && actor.Movement > 0)
+        if ((actor.Unit.Mana >= ManaCost || IsFree) && actor.Movement > 0)
         {
             int startMana = actor.Unit.Mana;
             OnExecuteTile(actor, location);
@@ -840,7 +964,7 @@ public class Spell
     }
     internal bool TryCast(Actor_Unit actor, Actor_Unit target)
     {
-        if (actor.Unit.Mana >= ManaCost && actor.Movement > 0)
+        if ((actor.Unit.Mana >= ManaCost || IsFree) && actor.Movement > 0)
         {
             int startMana = actor.Unit.Mana;
             OnExecute(actor, target);

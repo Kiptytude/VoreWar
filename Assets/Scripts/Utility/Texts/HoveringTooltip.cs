@@ -278,6 +278,14 @@ public class HoveringTooltip : MonoBehaviour
                         return $"Unit is berserk, its strength and voracity are greatly increased for a brief period\nTurns Remaining: {effect.Duration}";
                     case StatusEffectType.Charmed:
                         return $"Unit fights for the unit that charmed it.";
+                    case StatusEffectType.Sleeping:
+                        return $"Unit is fast asleep and cannot perform any actions, are easy to hit and eat, and can't struggle.\nTurns Remaining: {effect.Duration}";
+                    case StatusEffectType.Focus:
+                        return $"Unit has its mind increased by {effect.Duration} + {effect.Duration}%. Lose 3 stacks when hit by an attack.";
+                    case StatusEffectType.SpellForce:
+                        return $"Unit has its mind increased by {effect.Duration} + {effect.Duration * 10}%, but its mana costs are increased by {effect.Duration * 10}%.";
+                    case StatusEffectType.Staggering:
+                        return $"Unit has lost balance, increasing damage taken by 20% and halving MP recovery. 1 stack removed per hit.\nCurrent Stacks: {effect.Duration}";
                 }
             }
         }
@@ -575,6 +583,22 @@ public class HoveringTooltip : MonoBehaviour
             //    return "Gives the ability to change into specific units after absorbing them or being endoed or infiltrating. Or into the alternate selves acquired by being reborn or reincarnated. Also Allows Traversal of all terrain at normal speed.";
             case Traits.BookEater:
                 return "When this unit would equip a book, it is instead consumed and the spell becomes innate. Does not consume already equipped books, but does consume one if the unit would gain more than it could carry via BookWorm.";
+            case Traits.SecondWind:
+                return "Unit heals half of it's max hp when reaching half max hp (once per battle).";
+            case Traits.Perseverance:
+                return "Unit heals after not taking damage for a 3 turns, scaling higer with each turn without damage thereafter.";
+            case Traits.ManaAttuned:
+                return "Unit thrives on mana, uses 10% of their max mana every turn. Unit falls asleep for 2 turns if they don't have enough mana, but regenerate 50% max mana every turn they are asleep.";
+            case Traits.NightEye:
+                return "Increases night time vision range by +1 in Tactical battles.";
+            case Traits.AccuteDodge:
+                return "Unit gains +10% graze chance.";
+            case Traits.KeenEye:
+                return "Unit gains +10% critical strike chance.";
+            case Traits.SpellBlade:
+                return "Unit's weapon damage also scales with mind. (Half as effectively as weapons main stat)";
+            case Traits.ArcaneMagistrate:
+                return "Unit gains access to 4 powerful spells.";
         }  
         return "<b>This trait needs a tooltip!</b>";
     }

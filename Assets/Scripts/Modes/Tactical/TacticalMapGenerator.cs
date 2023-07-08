@@ -12,6 +12,7 @@ class TacticalMapGenerator
         Snow,
         Forest,
         Desert,
+        Volcanic,
     }
 
     TerrainType terrainType;
@@ -43,6 +44,11 @@ class TacticalMapGenerator
         {
             terrainType = TerrainType.Desert;
             defaultType = TacticalTileType.RockOverSand;
+        }
+        else if (stratTiletype == StrategicTileType.volcanic)
+        {
+            terrainType = TerrainType.Volcanic;
+            defaultType = TacticalTileType.VolcanicOverGravel;
         }
         else
         {
@@ -132,6 +138,50 @@ class TacticalMapGenerator
                             decType = TacticalDecorationList.Rocks[State.Rand.Next(TacticalDecorationList.Rocks.Length)];
                         else
                             decType = TacticalDecorationList.Bones[State.Rand.Next(TacticalDecorationList.Bones.Length)];
+                        decoration = TacticalDecorationList.DecDict[decType];
+                        if (j > Config.TacticalSizeY / 2 || village == null)
+                            TryToPlaceDecoration(i, j, decoration, decType);
+                        else
+                        {
+                            if (State.Rand.Next(3) == 0)
+                                TryToPlaceDecoration(i, j, decoration, decType);
+                        }
+                    }
+
+                }
+            }
+            if (village != null)
+            {
+                PlaceRowOfBuildings(tiles, buildings, HalfX - 2, Config.TacticalSizeY / 4 + 1, -1);
+                PlaceRowOfBuildings(tiles, buildings, HalfX - 2, Config.TacticalSizeY / 4 - 2, -1);
+                PlaceRowOfBuildings(tiles, buildings, HalfX + 1, Config.TacticalSizeY / 4 + 1, 1);
+                PlaceRowOfBuildings(tiles, buildings, HalfX + 1, Config.TacticalSizeY / 4 - 2, 1);
+            }
+        }
+        else if (terrainType == TerrainType.Volcanic)
+        {
+            for (int i = 0; i < Config.TacticalSizeX; i++)
+            {
+                for (int j = 0; j < Config.TacticalSizeY; j++)
+                {
+
+                    if (he_array[i, j] < Config.TacticalWaterValue - (0.01f * attempt))
+                        tiles[i, j] = TacticalTileType.VolcanicOverLava;
+                    else if (he_array[i, j] < .65f)
+                        tiles[i, j] = TacticalTileType.VolcanicOverGravel;
+                    else
+                        tiles[i, j] = (TacticalTileType)201;
+
+                    if (tiles[i, j] != TacticalTileType.VolcanicOverLava && State.Rand.Next(6) == 0 && decTilesUsed[i, j] == 0)
+                    {
+                        TacticalDecoration decoration;
+                        TacDecType decType;
+                        if (State.Rand.Next(3) == 0)
+                            decType = TacticalDecorationList.VolcanicMagmaRocks[State.Rand.Next(TacticalDecorationList.Cactus.Length)];
+                        else if (State.Rand.Next(2) == 0)
+                            decType = TacticalDecorationList.VolcanicRocks[State.Rand.Next(TacticalDecorationList.Rocks.Length)];
+                        else
+                            decType = TacticalDecorationList.CharredBones[State.Rand.Next(TacticalDecorationList.Bones.Length)];
                         decoration = TacticalDecorationList.DecDict[decType];
                         if (j > Config.TacticalSizeY / 2 || village == null)
                             TryToPlaceDecoration(i, j, decoration, decType);
