@@ -212,6 +212,11 @@ public class Actor_Unit
             Movement = CurrentMaxMovement() / 2;
             Slimed = false;
         }
+        else if (Unit.GetStatusEffect(StatusEffectType.Sleeping) != null)
+        {
+            Movement = 0;
+            Slimed = false;
+        }
         else if (Slimed)
         {
             Movement = CurrentMaxMovement() / 2;
@@ -800,7 +805,7 @@ public class Actor_Unit
         }
 
         int range = attacker.Position.GetNumberOfMovesDistance(Position);
-        if (Surrendered || Unit.GetStatusEffect(StatusEffectType.Petrify) != null)
+        if (Surrendered || Unit.GetStatusEffect(StatusEffectType.Petrify) != null || Unit.GetStatusEffect(StatusEffectType.Sleeping) != null)
             return 1f;
         const int maximumBoost = 75;
         const int minimumOdds = 25;
@@ -1180,26 +1185,6 @@ public class Actor_Unit
                 Attack(sideTarget, false, damageMultiplier: .66f);
             }
         }
-    }
-
-    public bool ExtractMana(Actor_Unit target)
-    {
-        if (Movement < 1 || Unit.HasTrait(Traits.ManaAttuned) == false)
-            return false;
-        List<AbilityTargets> targetTypes = new List<AbilityTargets>();
-        targetTypes.Add(AbilityTargets.Enemy);
-        if (!TacticalUtilities.MeetsQualifier(targetTypes, this, target))
-            return false;
-        if (target.Position.GetNumberOfMovesDistance(Position) > 1)
-            return false;
-
-        int damage = Unit.MaxMana;
-        if (damage >= target.Unit.Health)
-            damage = target.Unit.Health - 1;
-        Unit.RestoreMana(damage);
-        Movement = 0;
-
-        return true;
     }
 
     public bool Attack(Actor_Unit target, bool ranged, bool forceBite = false, float damageMultiplier = 1, bool canKill = true)
@@ -1670,7 +1655,7 @@ public class Actor_Unit
         float defenderHealthPct = Unit.HealthPct;
         float defenderScore = 20 + (2 * (preyStrength + 2 * preyWill) * defenderHealthPct * defenderHealthPct * ((10 + BodySize()) / 2));
 
-        if (Unit.GetStatusEffect(StatusEffectType.WillingPrey) != null)
+        if (Unit.GetStatusEffect(StatusEffectType.WillingPrey) != null || Unit.GetStatusEffect(StatusEffectType.Sleeping) != null)
         {
             defenderScore /= 2;
         }
@@ -2074,7 +2059,17 @@ public class Actor_Unit
         }
 
         AIAvoidEat--;
-
+        if (Unit.HasTrait(Traits.ManaAttuned))
+        {
+            if (!Unit.SpendMana(Unit.MaxMana / 10))
+                if (Unit.Mana > 0)
+                    Unit.SpendMana(Unit.Mana); //Zero out mana
+                else
+                    Unit.ApplyStatusEffect(StatusEffectType.Sleeping, 1, 2);
+            if (Unit.GetStatusEffect(StatusEffectType.Sleeping) != null)
+                Unit.RestoreMana(Unit.MaxMana / 2);
+            
+        }
         UnitSprite.UpdateHealthBar(this);
         TurnsSinceLastParalysis++;
         if (Targetable && Visible && Surrendered == false && Fled == false)
@@ -2084,13 +2079,6 @@ public class Actor_Unit
         if (Unit.HasTrait(Traits.Perseverance) && TurnsSinceLastDamage > 3)
         {
             Unit.HealPercentage(0.03f * TurnsSinceLastDamage);
-        }
-        if (Unit.HasTrait(Traits.ManaAttuned))
-        {
-            if (!Unit.SpendMana(Unit.MaxMana/10))
-            {
-                Unit.ApplyStatusEffect(StatusEffectType.Shaken, 0.3f, 1);
-            }
         }
         ReceivedRub = false;
         TurnsSinceLastDamage++;

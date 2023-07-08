@@ -21,6 +21,9 @@
     RockOverSand = 81,
     GrassOverWater = 82,
 
+    VolcanicOverGravel = 83,
+    VolcanicOverLava = 84,
+
     greengrass = 100,
     grassBush,
     grassFlower,

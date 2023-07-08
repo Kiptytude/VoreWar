@@ -278,10 +278,10 @@ public class HoveringTooltip : MonoBehaviour
                         return $"Unit is berserk, its strength and voracity are greatly increased for a brief period\nTurns Remaining: {effect.Duration}";
                     case StatusEffectType.Charmed:
                         return $"Unit fights for the unit that charmed it.";
-                    case StatusEffectType.Illuminated:
-                        return $"Unit is visible in the dark and can be targeted like normal.\nTurns Remaining: {effect.Duration}";
+                    case StatusEffectType.Sleeping:
+                        return $"Unit is fast asleep and cannot perform any actions, are easy to hit and eat, and can't struggle.\nTurns Remaining: {effect.Duration}";
                     case StatusEffectType.Focus:
-                        return $"Unit has its mind increased by {effect.Duration} + {effect.Duration}%.";
+                        return $"Unit has its mind increased by {effect.Duration} + {effect.Duration}%. Lose 3 stacks when hit by an attack.";
                     case StatusEffectType.SpellForce:
                         return $"Unit has its mind increased by {effect.Duration} + {effect.Duration * 10}%, but its mana costs are increased by {effect.Duration * 10}%.";
                     case StatusEffectType.Staggering:
@@ -588,7 +588,7 @@ public class HoveringTooltip : MonoBehaviour
             case Traits.Perseverance:
                 return "Unit heals after not taking damage for a 3 turns, scaling higer with each turn without damage thereafter.";
             case Traits.ManaAttuned:
-                return "Unit thrives on mana, uses 10% of their max mana every turn. Becomes shaken every turn they don't have enough mana, but gain the ability to restore it.";
+                return "Unit thrives on mana, uses 10% of their max mana every turn. Unit falls asleep for 2 turns if they don't have enough mana, but regenerate 50% max mana every turn they are asleep.";
             case Traits.NightEye:
                 return "Increases night time vision range by +1 in Tactical battles.";
             case Traits.AccuteDodge:

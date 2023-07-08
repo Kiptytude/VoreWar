@@ -219,15 +219,6 @@ static class TacticalActionList
           minimumMp: 1));
         TargetedDictionary[SpecialAction.TailStrike] = TargetedActions.Last();
 
-        TargetedActions.Add(new TargetedTacticalAction(
-          name: "Extract Mana",
-          requiresPred: false,
-          conditional: (a) => a.Unit.HasTrait(Traits.ManaAttuned) && a.Unit.Mana <= a.Unit.MaxMana * .1f,
-          onClicked: () => State.GameManager.TacticalMode.TrySetSpecialMode(SpecialAction.ExtractMana),
-          onExecute: (a, t) => a.ExtractMana(t),
-          minimumMp: 1));
-        TargetedDictionary[SpecialAction.ExtractMana] = TargetedActions.Last();
-
 
         //UntargetedActions.Add(new UntargetedTacticalAction("Shapeshift", () => State.GameManager.TacticalMode.ButtonCallback(16), (a) => a.Unit.ShifterShapes != null && a.Unit.ShifterShapes.Count > 1));
         UntargetedActions.Add(new UntargetedTacticalAction("Flee", () => State.GameManager.TacticalMode.ButtonCallback(10), (a) => true));

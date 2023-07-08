@@ -61,7 +61,7 @@ class Prey
         preyScore *= Unit.TraitBoosts.Incoming.ChanceToEscape;
         predScore /= Predator.Unit.TraitBoosts.Outgoing.ChanceToEscape;
 
-        if (Predator.Unit.HasTrait(Traits.Inescapable))
+        if (Predator.Unit.HasTrait(Traits.Inescapable) || Unit.GetStatusEffect(StatusEffectType.Sleeping) != null)
             preyScore = 0;
 
         if (Predator.Unit.HasTrait(Traits.DualStomach))

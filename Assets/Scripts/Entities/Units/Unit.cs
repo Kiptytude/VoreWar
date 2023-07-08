@@ -2249,7 +2249,7 @@ public class Unit
         if (HasEffect(StatusEffectType.WillingPrey)) ret++;
         if (HasEffect(StatusEffectType.Charmed)) ret++;
         if (HasEffect(StatusEffectType.Hypnotized)) ret++;
-        if (HasEffect(StatusEffectType.Illuminated)) ret++;
+        if (HasEffect(StatusEffectType.Sleeping)) ret++;
         if (HasEffect(StatusEffectType.Staggering)) ret++;
 
 
