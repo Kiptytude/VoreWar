@@ -2565,7 +2565,7 @@ static class RaceParameters
             FavoredStat = Stat.Dexterity,
             AllowedVoreTypes = new List<VoreType> { VoreType.Oral, VoreType.Unbirth, VoreType.BreastVore, VoreType.Anal, VoreType.CockVore },
             ExpMultiplier = 2.4f,
-            PowerAdjustment = 2f,
+            PowerAdjustment = 5f,
             RaceStats = new RaceStats()
             {
                 Strength = new RaceStats.StatRange(6, 10),

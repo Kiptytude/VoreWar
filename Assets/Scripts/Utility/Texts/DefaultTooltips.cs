@@ -650,6 +650,44 @@ Does not retroactively affect already created units.";
                 return @"Enables the Goodra monster packs";
             case 258:
                 return "Normally only base endurance and strength influence HP. With this, size and other boosts (green/red numbers) will be used as well.";
+            case 259:
+                return "Enables critical (chance for bonus damage) and graze (Chance for reduced damage) attacks.";
+            case 260:
+                return "If enabled, Critical strike chance is calculated using unit stats. Uses the following formula: \n <color=red>Attacker's (Dex + Str) / Defender's (Endr^2 + Will) </color>\n A lvl 1 unit with default stats would have ~23% chance to crit on average, depending on stat spread.";
+            case 261:
+                return "If enabled, Graze chance is calculated using unit stats. Uses the following formula: \n <color=green>Defender's Agi / Attacker's ((Dex + Str)/2)^2</color>\n A lvl 1 unit with default stats would have ~15% chance to be grazed on average, depending on stat spread.";
+            case 262:
+                return "Base chance for a critical strike if not calculated from stats. If 'Stat Based Crit' is enabled with this, the chance will never be lower than this percentage, but it can be higher. Set to 0 to disable.(excludes bonuses given by traits).";
+            case 263:
+                return "Damage dealt by critical attacks is multiplied by this number.\n At default value (1.5), 10 damage is modified to 15";
+            case 264:
+                return "Base chance for a graze if not calculated from stats. If 'Stat Based Graze' is enabled, the chance will never be lower than this percentage, but it can be higher. Set to 0 to disable (excludes bonuses given by traits).";
+            case 265:
+                return "Damage dealt by graze attacks is multiplied by this number. At default value (0.3), 10 damage is modified to 3";
+            case 266:
+                return "If enabled, night can occur on a random turn. This is per empire/monster turn, not round.  (Can be used with Scheduled Night)";
+            case 267:
+                return "If enabled, it will be night every X rounds for X rounds, based on the 'Cycle Length' slider.";
+            case 268:
+                return "If enabled, night time will have no effect in tactical mode, aside from the looks.";
+            case 269:
+                return "Enables the Day/Night cycle system";
+            case 270:
+                return "If enabled, monster armies will only spawn if it is night time, keeping their spawn rate.";
+            case 271:
+                return "If enabled, monster armies will only recover MP at night.";
+            case 272:
+                return "It will be night for the entire round every X rounds. (Set to 1 for every round, 2 for every other, etc.)";
+            case 273:
+                return "The % chance that it will be night on a given turn. Night will only last that Empire's turn and can occur multiple times per round.";
+            case 274:
+                return "This value is added to the % chance it will be night on a given turn every turn it is not night. (% chance resets to the base chance after a night turn)";
+            case 275:
+                return "Range of a unit's vision at night in a tactical setting. Things like traits can also increase this.";
+            case 276:
+                return "This value is subtracted from the 'Fog Distace Slider'.\n (You won't be able to see if this is too high)";
+            case 278:
+                return "The tactical turn where every unit is revealed.";
             default:
                 return "";
         }

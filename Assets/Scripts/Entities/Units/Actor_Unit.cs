@@ -2254,8 +2254,8 @@ public class Actor_Unit
             return 0;
         }
         float ratio = 0;
-        ratio = (float)((actor.Unit.GetStat(Stat.Dexterity) + actor.Unit.GetStat(Stat.Strength)) / 2) /
-            (target.Unit.GetStat(Stat.Endurance) * target.Unit.GetStat(Stat.Endurance) + target.Unit.GetStat(Stat.Will));
+        ratio = (float)((actor.Unit.GetStat(Stat.Dexterity) + actor.Unit.GetStat(Stat.Strength)) /
+            (target.Unit.GetStat(Stat.Endurance) * target.Unit.GetStat(Stat.Endurance) + target.Unit.GetStat(Stat.Will)));
 
         if (Config.BaseCritChance > ratio)
             ratio = Config.BaseCritChance;
@@ -2269,7 +2269,9 @@ public class Actor_Unit
         {
             return 0;
         }
-        float ratio = (float)((actor.Unit.GetStat(Stat.Dexterity) + actor.Unit.GetStat(Stat.Strength)) / 2) / (target.Unit.GetStat(Stat.Endurance) * target.Unit.GetStat(Stat.Endurance) + target.Unit.GetStat(Stat.Will));
+
+        int actor_stats = (actor.Unit.GetStat(Stat.Dexterity) + actor.Unit.GetStat(Stat.Strength)) / 2;
+        float ratio = target.Unit.GetStat(Stat.Agility) / (actor_stats * actor_stats);
 
         if (Config.BaseGrazeChance > ratio)
             ratio = Config.BaseGrazeChance;
