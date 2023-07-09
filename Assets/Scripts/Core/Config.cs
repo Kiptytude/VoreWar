@@ -325,6 +325,8 @@ static class Config
     internal static bool BurpOnDigest => World.GetValue("BurpOnDigest");
     public static bool FartOnAbsorb => World.GetValue("FartOnAbsorb");
 
+    public static bool StatBoostsAffectMaxHP => World.GetValue("StatBoostsAffectMaxHP");
+
     internal static bool WinterActive()
     {
         if (World.WinterStuff == SeasonalType.AlwaysOn)

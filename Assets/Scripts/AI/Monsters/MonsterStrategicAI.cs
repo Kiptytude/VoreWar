@@ -398,7 +398,7 @@ class MonsterStrategicAI : IStrategicAI
     {
         if (targetPosition != null)
         {
-            path = StrategyPathfinder.GetPath(empire, army.Position, targetPosition, army.RemainingMP, army.movementMode == Army.MovementMode.Flight);
+            path = StrategyPathfinder.GetPath(empire, army, targetPosition, army.RemainingMP, army.movementMode == Army.MovementMode.Flight);
             return;
         }
         army.RemainingMP = 0;
@@ -408,14 +408,14 @@ class MonsterStrategicAI : IStrategicAI
     {
         if (targetPositions != null && targetPositions.Length > 1)
         {
-            path = StrategyPathfinder.GetMonsterPathToClosestObject(empire, army.Position, targetPositions, army.RemainingMP, maxDistance, army.movementMode == Army.MovementMode.Flight);
+            path = StrategyPathfinder.GetMonsterPathToClosestObject(empire, army, targetPositions, army.RemainingMP, maxDistance, army.movementMode == Army.MovementMode.Flight);
             return;
         }
         else if (targetPositions.Length == 1)
         {
             if (targetPositions[0] != null)
             {
-                path = StrategyPathfinder.GetMonsterPath(empire, army.Position, targetPositions[0], army.RemainingMP, army.movementMode == Army.MovementMode.Flight);
+                path = StrategyPathfinder.GetMonsterPath(empire, army, targetPositions[0], army.RemainingMP, army.movementMode == Army.MovementMode.Flight);
                 return;
             }
             army.RemainingMP = 0;
@@ -428,7 +428,7 @@ class MonsterStrategicAI : IStrategicAI
     {
         if (targetPositions != null && targetPositions.Length > 1)
         {
-            path = StrategyPathfinder.GetPathToClosestObject(empire, army.Position, targetPositions, army.RemainingMP, maxDistance, army.movementMode == Army.MovementMode.Flight, targetPriorities);
+            path = StrategyPathfinder.GetPathToClosestObject(empire, army, targetPositions, army.RemainingMP, maxDistance, army.movementMode == Army.MovementMode.Flight, targetPriorities);
             return;
         }
         else if (targetPositions.Length == 1)

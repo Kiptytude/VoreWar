@@ -412,7 +412,7 @@ class StrategicArmyCommander
         float need = 32 * (((float)maxArmySize - army.Units.Count()) / maxArmySize) + StrategicUtilities.NumberOfDesiredUpgrades(army);
         if (need > 4 && empire.Gold >= 40 && empire.Income > 25)
         {
-            var path = StrategyPathfinder.GetPathToClosestObject(empire, army.Position, Villages.Where(s => s.Side == army.Side).Select(s => s.Position).ToArray(), army.RemainingMP, 5, army.movementMode == Army.MovementMode.Flight);
+            var path = StrategyPathfinder.GetPathToClosestObject(empire, army, Villages.Where(s => s.Side == army.Side).Select(s => s.Position).ToArray(), army.RemainingMP, 5, army.movementMode == Army.MovementMode.Flight);
             if (path != null && path.Count() < need / 2)
                 army.AIMode = AIMode.Resupply;
 
@@ -603,7 +603,7 @@ class StrategicArmyCommander
     {
         if (targetPosition != null)
         {
-            path = StrategyPathfinder.GetPath(empire, army.Position, targetPosition, army.RemainingMP, army.movementMode == Army.MovementMode.Flight, maxDistance);
+            path = StrategyPathfinder.GetPath(empire, army, targetPosition, army.RemainingMP, army.movementMode == Army.MovementMode.Flight, maxDistance);
             return;
         }
         army.RemainingMP = 0;
@@ -613,7 +613,7 @@ class StrategicArmyCommander
     {
         if (targetPositions != null && targetPositions.Length > 1)
         {
-            path = StrategyPathfinder.GetPathToClosestObject(empire, army.Position, targetPositions, army.RemainingMP, maxDistance, army.movementMode == Army.MovementMode.Flight);
+            path = StrategyPathfinder.GetPathToClosestObject(empire, army, targetPositions, army.RemainingMP, maxDistance, army.movementMode == Army.MovementMode.Flight);
             return;
         }
         else if (targetPositions.Length == 1)
@@ -628,7 +628,7 @@ class StrategicArmyCommander
     {
         if (targetPositions != null && targetPositions.Length > 1)
         {
-            path = StrategyPathfinder.GetPathToClosestObject(empire, army.Position, targetPositions, army.RemainingMP, maxDistance, army.movementMode == Army.MovementMode.Flight, targetPriorities);
+            path = StrategyPathfinder.GetPathToClosestObject(empire, army, targetPositions, army.RemainingMP, maxDistance, army.movementMode == Army.MovementMode.Flight, targetPriorities);
             return;
         }
         else if (targetPositions.Length == 1)

@@ -215,7 +215,18 @@ static class StrategicUtilities
 
     public static List<int> GetAllHumanSides()
     {
-        return State.World.AllActiveEmpires?.Where(emp => emp.StrategicAI == null).ToList().ConvertAll(emp => emp.Side) ?? new List<int>();
+        if (State.World.MainEmpires != null)
+            return State.World.AllActiveEmpires?.Where(emp => emp.StrategicAI == null).ToList().ConvertAll(emp => emp.Side) ?? new List<int>();
+        else
+        {
+            var list = new List<int>();
+            if (!State.GameManager.TacticalMode.AIAttacker)
+                list.Add(State.GameManager.TacticalMode.GetAttackerSide());
+            if (!State.GameManager.TacticalMode.AIDefender)
+                list.Add(State.GameManager.TacticalMode.GetDefenderSide());
+            return list;
+        }
+
     }
 
     public static int Get80thExperiencePercentile()
@@ -724,7 +735,7 @@ static class StrategicUtilities
 
     internal static void ProcessTravelingUnits(List<Unit> travelingUnits, Army army)
     {
-        var loc = StrategyPathfinder.GetPathToClosestObject(null, army.Position, State.World.Villages.Where(s => travelingUnits[0].Side == s.Side).Select(s => s.Position).ToArray(), army.GetMaxMovement(), 999, army.movementMode == Army.MovementMode.Flight);
+        var loc = StrategyPathfinder.GetPathToClosestObject(null, army, State.World.Villages.Where(s => travelingUnits[0].Side == s.Side).Select(s => s.Position).ToArray(), army.GetMaxMovement(), 999, army.movementMode == Army.MovementMode.Flight);
 
         int turns = 9999;
         int flightTurns = 9999;
@@ -737,9 +748,9 @@ static class StrategicUtilities
         if (loc != null && loc.Count > 0)
         {
             destination = new Vec2i(loc.Last().X, loc.Last().Y);
-            turns = StrategyPathfinder.TurnsToReach(null, army.Position, destination, army.GetMaxMovement(), false);
+            turns = StrategyPathfinder.TurnsToReach(null, army, destination, army.GetMaxMovement(), false);
             if (flyersExist)
-                flightTurns = StrategyPathfinder.TurnsToReach(null, army.Position, destination, army.GetMaxMovement(), true);
+                flightTurns = StrategyPathfinder.TurnsToReach(null, army, destination, army.GetMaxMovement(), true);
         }
         if (turns < 999)
         {
@@ -771,13 +782,13 @@ static class StrategicUtilities
     {
         if (travelingUnit.Type == UnitType.SpecialMercenary && travelingUnit.HasTrait(Traits.Eternal) == false)
             return;
-        var loc = StrategyPathfinder.GetPathToClosestObject(null, army.Position, State.World.Villages.Where(s => travelingUnit.Side == s.Side).Select(s => s.Position).ToArray(), army.GetMaxMovement(), 999, army.movementMode == Army.MovementMode.Flight);
+        var loc = StrategyPathfinder.GetPathToClosestObject(null, army, State.World.Villages.Where(s => travelingUnit.Side == s.Side).Select(s => s.Position).ToArray(), army.GetMaxMovement(), 999, army.movementMode == Army.MovementMode.Flight);
         int turns = 9999;
         Vec2i destination = null;
         if (loc != null && loc.Count > 0)
         {
             destination = new Vec2i(loc.Last().X, loc.Last().Y);
-            turns = StrategyPathfinder.TurnsToReach(null, army.Position, destination, army.GetMaxMovement(), travelingUnit.HasTrait(Traits.Pathfinder));
+            turns = StrategyPathfinder.TurnsToReach(null, army, destination, army.GetMaxMovement(), travelingUnit.HasTrait(Traits.Pathfinder));
         }
         if (turns < 999)
             CreateInvisibleTravelingArmy(travelingUnit, GetVillageAt(destination), turns);
@@ -995,13 +1006,29 @@ static class StrategicUtilities
             originArmy.Units.Remove(unit);
             Debug.Log($"{unit.Name} has infiltrated {chosenVillage?.Name ?? ("a mercanary camp")}");
         }
+        if (!originArmy.Units.Contains(unit))
+            unit.OnDiscard = () =>
+            {
+                var closestFriendlyVillage = State.World.Villages.Where(s => s.Side == unit.Side).OrderBy(s => s.Position.GetNumberOfMovesDistance(originArmy.Position)).FirstOrDefault();
+                if (closestFriendlyVillage == null)
+                    closestFriendlyVillage = State.World.Villages.Where(s => s.Empire.IsAlly(State.World.GetEmpireOfSide(unit.Side))).OrderBy(s => s.Position.GetNumberOfMovesDistance(originArmy.Position)).FirstOrDefault();
+                if (closestFriendlyVillage != null)
+                {
+                    StrategicUtilities.CreateInvisibleTravelingArmy(unit, closestFriendlyVillage, 1);
+                    Debug.Log(unit.Name + " is returning to " + closestFriendlyVillage.Name);
+                }
+            };
     }
 
-    internal static void TryInfiltrate(Army originArmy, Unit unit, Village village)
+    internal static void TryInfiltrate(Army originArmy, Unit unit, Village village, MercenaryHouse mercHouse = null)
     {
         List<MercenaryContainer> mercDestination = null;
         List<Unit> destination = null;
-        if (village.Empire.StrategicAI == null && village.NetBoosts.MercsPerTurnAdd > 0)
+        if (village == null && mercHouse != null)
+        {
+            mercDestination = mercHouse.Mercenaries;
+        }
+        else if (village.Empire.StrategicAI == null && village.NetBoosts.MercsPerTurnAdd > 0)
             mercDestination = village.Mercenaries;
         else destination = village.GetRecruitables();
    
@@ -1024,8 +1051,20 @@ static class StrategicUtilities
             merc.Cost = (int)((25 + State.Rand.Next(15) + (.12 * unit.Experience)) * UnityEngine.Random.Range(0.8f, 1.2f) * power);
             mercDestination.Add(merc);
             originArmy.Units.Remove(unit);
-            Debug.Log($"{unit.Name} has infiltrated {village.Name}");
+            Debug.Log($"{unit.Name} has infiltrated {village?.Name ?? ("a mercanary camp")}");
         }
+        if (!originArmy.Units.Contains(unit))
+            unit.OnDiscard = () =>
+        {
+            var closestFriendlyVillage = State.World.Villages.Where(s => s.Side == unit.Side).OrderBy(s => s.Position.GetNumberOfMovesDistance(originArmy.Position)).FirstOrDefault();
+            if (closestFriendlyVillage == null)
+                closestFriendlyVillage = State.World.Villages.Where(s => s.Empire.IsAlly(State.World.GetEmpireOfSide(unit.Side))).OrderBy(s => s.Position.GetNumberOfMovesDistance(originArmy.Position)).FirstOrDefault();
+            if (closestFriendlyVillage != null)
+            {
+                StrategicUtilities.CreateInvisibleTravelingArmy(unit, closestFriendlyVillage, 1);
+                Debug.Log(unit.Name + " is returning to " + closestFriendlyVillage.Name);
+            }
+        };
     }
 }
 

@@ -10,7 +10,7 @@ class FeralLions : BlankSlate
     public FeralLions()
     {
         CanBeGender = new List<Gender>() { Gender.Male, Gender.Female, Gender.Hermaphrodite, Gender.Maleherm };
-        HairStyles = 9; // Manes
+        HairStyles = 10; // Manes
         GentleAnimation = true;
         SkinColors = ColorPaletteMap.GetPaletteCount(ColorPaletteMap.SwapType.FeralLionsFur);
         EyeColors = ColorPaletteMap.GetPaletteCount(ColorPaletteMap.SwapType.FeralLionsEyes);
@@ -58,7 +58,7 @@ class FeralLions : BlankSlate
         if (hindView)
         {
             Body.layer = 15;
-            return Sprites[57];
+            return Sprites[59];
         }
         Body.layer = 3;
         return Sprites[0];
@@ -68,7 +68,7 @@ class FeralLions : BlankSlate
     {
         if (hindView)
         {
-            return Sprites[47];
+            return Sprites[48];
         }
         if (actor.IsAttacking || actor.IsOralVoring)
         {
@@ -82,16 +82,16 @@ class FeralLions : BlankSlate
         if (!hindView)
         {
             BodyAccessory.layer = 10;
-            return actor.IsAttacking || actor.IsOralVoring || actor.IsAbsorbing || actor.IsBeingSuckled || actor.DamagedColors ? Sprites[41] : Sprites[42];
+            return actor.IsAttacking || actor.IsOralVoring || actor.IsAbsorbing || actor.IsBeingSuckled || actor.DamagedColors ? Sprites[42] : Sprites[43];
         }
         BodyAccessory.layer = 1;
-        return Sprites[46];
+        return Sprites[47];
     }
 
     protected override Sprite BodyAccentSprite(Actor_Unit actor) // Hind legs / Front legs hind view
     {
         BodyAccent.layer = hindView ? 1 : 8;
-        return hindView ? Sprites[48] : Sprites[11];
+        return hindView ? Sprites[49] : Sprites[11];
     }
 
     protected override Sprite BodyAccentSprite2(Actor_Unit actor) // Face
@@ -99,12 +99,12 @@ class FeralLions : BlankSlate
         if (actor.IsOralVoring || actor.IsAttacking || hindView)
             return null;
         if (actor.Targetable == false && actor.Visible == true && actor.Surrendered)
-            return Sprites[40];
+            return Sprites[41];
         if (actor.IsDigesting || actor.IsAbsorbing || actor.IsBeingSuckled)
-            return Sprites[39];
+            return Sprites[40];
         if (actor.HasJustVored || actor.IsSuckling || actor.IsBeingRubbed)
-            return Sprites[38];
-        return Sprites[37];
+            return Sprites[39];
+        return Sprites[38];
     }
 
     protected override Sprite EyesSprite(Actor_Unit actor)
@@ -113,7 +113,7 @@ class FeralLions : BlankSlate
         {
             return null;
         }
-        return Sprites[36];
+        return Sprites[37];
     }
 
     protected override Sprite BodyAccentSprite3(Actor_Unit actor) // Manes
@@ -122,20 +122,20 @@ class FeralLions : BlankSlate
         {
             return null;
         }
-        else return hindView ? Sprites[49 + actor.Unit.HairStyle - 1] : Sprites[28 + actor.Unit.HairStyle - 1];
+        else return hindView ? Sprites[50 + actor.Unit.HairStyle - 1] : Sprites[28 + actor.Unit.HairStyle - 1];
     }
 
     protected override Sprite BodyAccentSprite4(Actor_Unit actor) // Mane over Ears
     {
         if (hindView)
             return null;
-        return actor.Unit.HairStyle == 0 ? null : actor.IsAttacking || actor.IsOralVoring || actor.IsAbsorbing || actor.DamagedColors ? Sprites[44] : Sprites[43];
+        return actor.Unit.HairStyle == 0 ? null : actor.IsAttacking || actor.IsOralVoring || actor.IsAbsorbing || actor.DamagedColors ? Sprites[45] : Sprites[44];
     }
 
-    protected override Sprite BodyAccentSprite5(Actor_Unit actor) => hindView ? Sprites[88] : Sprites[12]; // Tailtip
-    protected override Sprite BodyAccentSprite6(Actor_Unit actor) => !actor.IsAttacking && !actor.IsOralVoring ? null : Sprites[45];
+    protected override Sprite BodyAccentSprite5(Actor_Unit actor) => hindView ? Sprites[90] : Sprites[12]; // Tailtip
+    protected override Sprite BodyAccentSprite6(Actor_Unit actor) => !actor.IsAttacking && !actor.IsOralVoring ? null : Sprites[46];
 
-    protected override Sprite MouthSprite(Actor_Unit actor) => !actor.IsAttacking && !actor.IsOralVoring ? null : Sprites[89];
+    protected override Sprite MouthSprite(Actor_Unit actor) => !actor.IsAttacking && !actor.IsOralVoring ? null : Sprites[91];
 
     internal override Sprite BellySprite(Actor_Unit actor, GameObject belly)
     {
@@ -143,8 +143,8 @@ class FeralLions : BlankSlate
             return null;
         Belly.layer = hindView ? 14 : 4;
         if (actor.PredatorComponent.IsUnitOfSpecificationInPrey(Race.Selicia, true, PreyLocation.stomach, PreyLocation.womb))
-            return hindView ? Sprites[73] : Sprites[10];
-        return hindView ? Sprites[59 + actor.GetStomachSize(13)] : Sprites[1 + actor.GetStomachSize(8)];
+            return hindView ? Sprites[75] : Sprites[10];
+        return hindView ? Sprites[60 + actor.GetStomachSize(13)] : Sprites[1 + actor.GetStomachSize(8)];
     }
 
     protected override Sprite BallsSprite(Actor_Unit actor)
@@ -155,11 +155,11 @@ class FeralLions : BlankSlate
         if (actor.PredatorComponent?.BallsFullness > 0)
         {
             if (actor.PredatorComponent.IsUnitOfSpecificationInPrey(Race.Selicia, true, PreyLocation.balls))
-                return hindView ? Sprites[84] : Sprites[25];
+                return hindView ? Sprites[86] : Sprites[25];
 
-            return hindView ? Sprites[76 + actor.GetBallSize(7)] : Sprites[15 + actor.GetBallSize(9)];
+            return hindView ? Sprites[78 + actor.GetBallSize(7)] : Sprites[15 + actor.GetBallSize(9)];
         }
-        return hindView ? Sprites[75] : Sprites[14];
+        return hindView ? Sprites[77] : Sprites[14];
     }
 
     protected override Sprite DickSprite(Actor_Unit actor)
@@ -172,7 +172,7 @@ class FeralLions : BlankSlate
             return null;
         if (actor.IsErect())
         {
-            return hindView ? Sprites[74] : Sprites[13];
+            return hindView ? Sprites[76] : Sprites[13];
         }
         return null;
     }
@@ -181,14 +181,14 @@ class FeralLions : BlankSlate
     {
         if (!actor.Unit.HasVagina)
             return null;
-        return hindView ? Sprites[86] : null;
+        return hindView ? Sprites[88] : null;
     }
 
     protected override Sprite SecondaryAccessorySprite(Actor_Unit actor) // AV and UB
     {
         if (!actor.IsAnalVoring && !actor.IsUnbirthing)
             return null;
-        return actor.IsAnalVoring ? Sprites[85] : Sprites[87];
+        return actor.IsAnalVoring ? Sprites[87] : Sprites[89];
     }
 
 

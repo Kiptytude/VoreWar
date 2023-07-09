@@ -24,7 +24,7 @@ public class HelpPanel : MonoBehaviour
         CreatePageButton(HelpText.Vore, "Vore");
         CreatePageButton(HelpText.Experience, "Experience");
         CreatePageButton(HelpText.Controls, "Controls");
-        CreatePageButton(HelpText.Teams, "Teams");
+        CreatePageButton(HelpText.Teams, "Teams and Sides");
         CreatePageButton(HelpText.Diplomacy, "Diplomacy");
         CreatePageButton(HelpText.Traits(), "Traits");
         CreatePageButton(HelpText.Spells(), "Spells");

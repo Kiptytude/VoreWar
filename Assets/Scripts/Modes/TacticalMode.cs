@@ -6,7 +6,6 @@ using TacticalDecorations;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Tilemaps;
-using static UnityEngine.UI.CanvasScaler;
 
 public class TacticalMode : SceneBase
 {
@@ -385,6 +384,7 @@ public class TacticalMode : SceneBase
 
     public void Begin(StrategicTileType tiletype, Village village, Army invader, Army defender, TacticalAIType AIinvader, TacticalAIType AIdefender, TacticalBattleOverride tacticalBattleOverride = TacticalBattleOverride.Ignore)
     {
+        BattleReviewText.gameObject.SetActive(false);
         CheatAttackerControl = false;
         CheatDefenderControl = false;
         SpectatorMode = false;
@@ -498,7 +498,9 @@ public class TacticalMode : SceneBase
         foreach (Actor_Unit actor in units)
         {
             actor.Unit.EnemiesKilledThisBattle = 0;
-            actor.allowedToDefect = TacticalUtilities.GetPreferredSide(actor.Unit, actor.Unit.Side, actor.Unit.Side == attackerSide ? defenderSide : attackerSide) != actor.Unit.Side;
+            actor.allowedToDefect = !actor.DefectedThisTurn && TacticalUtilities.GetPreferredSide(actor.Unit, actor.Unit.Side, actor.Unit.Side == attackerSide ? defenderSide : attackerSide) != actor.Unit.Side;
+            actor.DefectedThisTurn = false;
+            actor.Unit.Heal(actor.Unit.GetLeaderBonus() * 3); // mainly for the new Stat boosts => maxHealth option, but eh why not have it for everyone anyway?
         }
 
 
@@ -1604,6 +1606,8 @@ Turns: {currentTurn}
         string description = $"Remains of {name}";
         if (type == BoneTypes.CumPuddle)
             miscDiscards.Add(new MiscDiscard(location, MiscDiscardType.Cum, spriteNum, sortOrder, color, description));
+        else if (type == BoneTypes.DisposedCondom)
+            miscDiscards.Add(new MiscDiscard(location, MiscDiscardType.DisposedCondom, spriteNum, sortOrder, color, description));
         else
             miscDiscards.Add(new MiscDiscard(location, MiscDiscardType.Bones, spriteNum, sortOrder, color, description));
         miscDiscards.Last().GenerateSpritePrefab(ActorFolder);
@@ -1955,7 +1959,7 @@ Turns: {currentTurn}
             if (CurrentSpell is DamageSpell damageSpell)
             {
                 spellDamage = damageSpell.Damage(actor, target);
-                if (actor.Unit.GetApparentSide(target.Unit) == target.Unit.GetApparentSide() && actor.Unit.IsInfiltratingSide(target.Unit.GetApparentSide())) // sneakAttack
+                if (TacticalUtilities.SneakAttackCheck(actor.Unit, target.Unit)) // sneakAttack
                 {
                     spellDamage *= 3;
                 }
@@ -2223,7 +2227,11 @@ Turns: {currentTurn}
                 SelectedUnit.Unit.hiddenFixedSide = false;
 
         }
-
+        if (ID == 16)
+        {
+            if (SelectedUnit != null && SelectedUnit.Targetable)
+                TacticalUtilities.ShapeshifterPanel(SelectedUnit);
+        }
     }
 
     internal void ProcessSkip(bool surrender, bool watchRest)
@@ -2537,7 +2545,6 @@ Turns: {currentTurn}
                 {
                     unit.UnitSprite.AnimateBalls(unit.PredatorComponent.PreyNearLocation(PreyLocation.balls, true) * 0.0022f);
                 }
-
                 if (unit.PredatorComponent?.BreastFullness > 0 && unit.PredatorComponent?.AlivePrey > 0)
                 {
                     unit.UnitSprite.AnimateBoobs(unit.PredatorComponent.PreyNearLocation(PreyLocation.breasts, true) * 0.0022f);
@@ -2545,6 +2552,12 @@ Turns: {currentTurn}
 
                 if (unit.PredatorComponent?.LeftBreastFullness > 0 && unit.PredatorComponent?.AlivePrey > 0)
                 {
+                    if (Config.FairyBVType == FairyBVType.Shared)
+                    {
+                    unit.UnitSprite.AnimateBoobs(unit.PredatorComponent.PreyNearLocation(PreyLocation.leftBreast, true) * 0.022f);
+                    unit.UnitSprite.AnimateSecondBoobs(unit.PredatorComponent.PreyNearLocation(PreyLocation.leftBreast, true) * 0.022f);
+                    }
+                    else
                     unit.UnitSprite.AnimateBoobs(unit.PredatorComponent.PreyNearLocation(PreyLocation.leftBreast, true) * 0.0022f);
                 }
 
@@ -2832,7 +2845,7 @@ Turns: {currentTurn}
                             if (actor != null)
                             {
                                 int spellDamage = spell.Damage(SelectedUnit, actor);
-                                if (SelectedUnit.Unit.GetApparentSide(actor.Unit) == actor.Unit.GetApparentSide() && SelectedUnit.Unit.IsInfiltratingSide(actor.Unit.GetApparentSide())) // sneakAttack
+                                if (TacticalUtilities.SneakAttackCheck(SelectedUnit.Unit, actor.Unit)) // sneakAttack
                                 {
                                     spellDamage *= 3;
                                 }
@@ -2848,7 +2861,7 @@ Turns: {currentTurn}
                     foreach (var splashTarget in TacticalUtilities.UnitsWithinTiles(mouseLocation, spell.AreaOfEffect))
                     {
                         int spellDamage = spell.Damage(SelectedUnit, splashTarget);
-                        if (SelectedUnit.Unit.GetApparentSide(splashTarget.Unit) == splashTarget.Unit.GetApparentSide() && SelectedUnit.Unit.IsInfiltratingSide(splashTarget.Unit.GetApparentSide())) // sneakAttack
+                        if (TacticalUtilities.SneakAttackCheck(SelectedUnit.Unit, splashTarget.Unit)) // sneakAttack
                         {
                             spellDamage *= 3;
                         }
@@ -3286,10 +3299,13 @@ Turns: {currentTurn}
 
     internal void SwitchAlignment(Actor_Unit actor)
     {
+        int startingSide = actor.Unit.Side;
         if (actor.Unit.Side == defenderSide)
             AttackerConvert(actor);
         else
             DefenderConvert(actor);
+        actor.DefectedThisTurn = startingSide != actor.Unit.Side;
+        actor.sidesAttackedThisBattle = new List<int>();
     }
 
     internal bool IsDefender(Actor_Unit actor)
@@ -3490,8 +3506,9 @@ Turns: {currentTurn}
         {
             if (units[i].Unit.IsDead == false && units[i].Unit.Side == activeSide)
             {
-                units[i].allowedToDefect = TacticalUtilities.GetPreferredSide(units[i].Unit, activeSide, attackersTurn ? defenderSide : attackerSide) != activeSide
-                    || units.Any(u => u.Unit.Side != units[i].Unit.Side && !u.Unit.IsDead) && !units.Any(u => TacticalUtilities.TreatAsHostile(units[i], u) && !u.Unit.IsDead);
+                units[i].allowedToDefect = !units[i].DefectedThisTurn && (TacticalUtilities.GetPreferredSide(units[i].Unit, activeSide, attackersTurn ? defenderSide : attackerSide) != activeSide
+                    || units.Any(u => u.Unit.Side != units[i].Unit.Side && u.Targetable && u.Visible && !u.Fled) && !units.Any(u => TacticalUtilities.TreatAsHostile(units[i], u) && u.Targetable && u.Visible && !u.Fled));
+                units[i].DefectedThisTurn = false;
                 units[i].NewTurn();
             }
             if (units[i].Unit.IsDead && units[i].Unit.Side == activeSide)
@@ -4051,6 +4068,10 @@ Turns: {currentTurn}
                         actor.Targetable = true;
                         actor.Visible = true;
                     }
+                    if (actor.SelfPrey?.Predator != null && (actor.SelfPrey.Predator.Unit?.IsDead ?? true))
+                    {
+                        actor.SelfPrey.Predator.PredatorComponent.FreeAnyAlivePrey();
+                    }
                     if (actor.Unit.Side == armies[0].Side)
                     {
                         remainingAttackers++;
@@ -4451,5 +4472,17 @@ Turns: {currentTurn}
         EffectTileMap.ClearAllTiles();
         RightClickMenu.CloseAll();
         TacticalUtilities.ResetData();
+    }
+
+    internal void HandleReanimationSideEffects(Unit caster, Actor_Unit target)
+    {
+        armies[0].Units.Remove(target.Unit);
+        State.GameManager.TacticalMode.extraAttackers.Remove(target);
+        garrison.Remove(target);
+        armies[1]?.Units.Remove(target.Unit);
+        State.GameManager.TacticalMode.extraDefenders.Remove(target);
+        village?.GetRecruitables().Remove(target.Unit);
+        target.Unit.Side = caster.Side;
+        State.GameManager.TacticalMode.UpdateActorColor(target);
     }
 }

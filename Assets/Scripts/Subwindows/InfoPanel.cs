@@ -513,6 +513,15 @@ public class InfoPanel
     {
         if (parentMenu != "unitEditor")
         {
+            if (unit.HasFixedSide() && TacticalUtilities.PlayerCanSeeTrueSide(unit))
+            {
+                if (State.World.MainEmpires == null)
+                {
+                    sb.AppendLine($"Special Allegiance: {(unit.FixedSide == State.GameManager.TacticalMode.GetDefenderSide() ? "Defender" : "Attacker")}");
+                }
+                else
+                    sb.AppendLine($"Special Allegiance: {State.World.GetEmpireOfSide(unit.FixedSide)?.Name ?? "Unkown"}");
+            }
             // Add Equipment
             for (int i = 0; i < unit.Items.Length; i++)
             {
@@ -546,7 +555,7 @@ public class InfoPanel
                 sb.AppendLine($"Digestions: {unit.DigestedUnits}");
             if (unit.TimesKilled > 0)
                 sb.AppendLine($"Deaths: {unit.TimesKilled}");
-            string traits = unit.ListTraits(!(TacticalUtilities.IsUnitControlledByPlayer(unit) && !unit.IsInfiltratingSide(unit.Side)));
+            string traits = unit.ListTraits(!(TacticalUtilities.IsUnitControlledByPlayer(unit) && TacticalUtilities.PlayerCanSeeTrueSide(unit)));
             if (traits != "")
                 sb.AppendLine("Traits:\n" + traits);
             StringBuilder sbSecond = new StringBuilder();
@@ -560,7 +569,7 @@ public class InfoPanel
             if (actor?.Paralyzed ?? false)
                 sbSecond.AppendLine("Paralyzed");
             if (actor?.Corruption > 0 && !TacticalUtilities.IsUnitControlledByPlayer(unit))
-                sbSecond.AppendLine($"Corruption ({unit.GetStatTotal() + unit.GetStat(Stat.Will)}/{actor.Corruption})");
+                sbSecond.AppendLine($"Corruption ({actor.Corruption}/{unit.GetStatTotal() + unit.GetStat(Stat.Will)})");
             if (unit.StatusEffects?.Any() ?? false)
             {
                 foreach (StatusEffectType type in (StatusEffectType[])Enum.GetValues(typeof(StatusEffectType)))

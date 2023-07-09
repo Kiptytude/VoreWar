@@ -187,7 +187,7 @@ public class Shop
                 continue;
             }
             Item item = State.World.ItemRepository.GetItem(i);
-            if (unit.HasTrait(Traits.Feral) && item is Weapon)
+            if ((unit.HasTrait(Traits.Feral) || unit.FixedGear) && item is Weapon)
             {
                 shopUI.BuyPanels[i].gameObject.SetActive(false);
                 continue;

@@ -137,7 +137,8 @@ public class VillagePopulation
     {
         if (Population.Count == 0)
         {
-            AddRacePop(Village.Race, 1);
+            if (!State.RaceSettings.GetRaceTraits(Village.Race).Contains(Traits.Infertile))
+                AddRacePop(Village.Race, 1);
         }
         else
         {
@@ -222,15 +223,20 @@ public class VillagePopulation
     private int RandomRacePlaceByWeight()
     {
         int totalPop = 0;
-        for (int x = 0; x < Population.Count; x++)
+        var BreedablePop = Population.Where(pop =>
         {
-            totalPop += Population[x].Population;
+            var traits = State.RaceSettings.GetRaceTraits(pop.Race);
+            return !traits.Contains(Traits.Infertile);
+        }).ToList();
+        for (int x = 0; x < BreedablePop.Count; x++)
+        { 
+            totalPop += BreedablePop[x].Population;
         }
         int randomPop = State.Rand.Next(totalPop);
-        for (int x = 0; x < Population.Count; x++)
+        for (int x = 0; x < BreedablePop.Count; x++)
         {
 
-            randomPop -= Population[x].Population;
+            randomPop -= BreedablePop[x].Population;
             if (randomPop < 0)
             {
                 return x;
@@ -432,7 +438,10 @@ public class VillagePopulation
         if (rec != null)
         {
             RemoveRacePop(rec.Race, 1);
-            NamedRecruitables.Remove(NamedRecruitables.OrderBy(s => s.Experience).First());
+            var lowest = NamedRecruitables.OrderBy(s => s.Experience).First();
+            NamedRecruitables.Remove(lowest);
+            if (lowest.OnDiscard != null)
+                lowest.OnDiscard();
         }
 
 
@@ -451,6 +460,8 @@ public class VillagePopulation
         if (rec != null)
         {
             NamedRecruitables.Remove(rec);
+            if (rec.OnDiscard != null)
+                rec.OnDiscard();
         }
 
 
@@ -471,6 +482,8 @@ public class VillagePopulation
             {
                 var race = NamedRecruitables[x].Race;
                 NamedRecruitables.Remove(NamedRecruitables[x]);
+                if (NamedRecruitables[x].OnDiscard != null)
+                    NamedRecruitables[x].OnDiscard();
                 RemoveRacePop(race, 1);
                 endCount--;
                 x--;
