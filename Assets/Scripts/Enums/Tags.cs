@@ -298,12 +298,46 @@ public enum Traits
     BookWormIII = 150,
     /// <summary>Units that are put under a mindcontrol (e.g. Charm, Hypnosis) effect by this unit want to force-feed themselves to it or its close allies.</summary>
     Temptation = 151,
+    /// <summary>Unit cannot reproduce.</summary>
+    Infertile = 152,
+    /// <summary>Unit treats hills as unpassable.</summary>
+    HillImpedence = 162,
+    /// <summary>Unit doesn't treat lava as unpassable.</summary>
+    LavaWalker = 153,
+    /// <summary>Unit treats snow as unpassable.</summary>
+    SnowImpedence = 154,
+    /// <summary>Unit doesn't treat any kind of mountain (or broken cliff) as unpassable.</summary>
+    MountainWalker = 155,
+    /// <summary>Unit treats volcanic ground as unpassable.</summary>
+    VolcanicImpedence = 156,
+    /// <summary>Unit treats sand as unpassable.</summary>
+    DesertImpedence = 157,
+    /// <summary>Unit doesn't treat water as unpassable.</summary>
+    WaterWalker = 158,
+    /// <summary>Unit treats forests as unpassable.</summary>
+    ForestImpedence = 159,
+    /// <summary>Unit treats swamps as unpassable.</summary>
+    SwampImpedence = 160,
+    /// <summary>Unit treats grass as unpassable.</summary>
+    GrassImpedence = 161,
+    /// <summary>When this unit is absorbed, it passes on all traits listed below "Donor" to the predator.</summary>
+    Donor = 163,
+    /// <summary>Gives the ability to change into different races after acquiring them via absorbing, being reborn, reincarnating, or infiltrating.</summary>
+    //Shapeshifter = 164,
+    /// <summary>When this unit would equip a book, it is instead consumed and the spell becomes innate.</summary>
+    BookEater = 165,
+    /// <summary>Allows attempting to join an army by being the only attacker. Chance is affected by this unit's Mind stat as well as the highest Will stat among enemies.</summary>
+    //SupernaturalPersuasion = 166,
+    /// <summary>Like Shapeshifter, only that the forms can be specific people, including their individual traits. These get swapped out only through player input</summary>
+    //Skinwalker = 167,
     /// <summary>When eaten, Predator is afflicted by Prey's curse, and has a chance to be charmed each round</summary>
-    Whispers = 152,
+    Whispers = 168,
     /// <summary>While digesting, Prey deals damage to predator</summary>
-    UnpleasantDigestion = 153,
+    UnpleasantDigestion = 169,
     /// <summary>While digesting, Predator is able to use prey's normal traits</summary>
-    TraitStealer = 1543,
+    TraitStealer = 170,
+
+
 
 
 
@@ -396,10 +430,14 @@ public enum Traits
     SeductiveTouch = 266,
     /// <summary>Can emit Gas that turns foes into subservient non-combatants once per battle.</summary>
     HypnoticGas = 295,
+    /// <summary>Every time digestion progresses, this unit steals one trait from each prey inside them, if only duplicates (or non-assimilable traits) remain, they are turned into exp. Absorbtion steals any that are left.</summary>
+    Extraction = 296,    
+    /// <summary>Every time digestion progresses, this unit digests one level from each prey inside them, gaining its experience value. If a unit hits level 0 this way, it dies if it was stil alive and cannot be revived.</summary>
+    Annihilation = 297,
     /// <summary>Shares generic traits with pred</summary>
-    Symbiote = 296,
+    Symbiote = 298,
     /// <summary>creates a spawn unit on prey Absorption</summary>
-    CreateSpawn = 297,
+    CreateSpawn = 299,
 
     // Growth-related section
     /// <summary>Unit increases in size when absorbing prey.</summary>

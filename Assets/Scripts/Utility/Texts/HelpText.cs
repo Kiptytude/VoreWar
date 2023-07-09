@@ -136,7 +136,20 @@ on a message box, space will close it";
 
 If someone on a team takes back a village that is a teammate's race from the enemy, that village will switch to the side of its race.  
 
-Right now the only benefit shared across teams is the +exp bonus from the number of training facilities built. ";
+Right now the only benefit shared across teams is the +exp bonus from the number of training facilities built. 
+
+
+Each empire has its own side, regardless of teams or diplomacy, which generally determines who controls something and on whose turn. In tactical, the sides can be taken literally, as they correspond to what half of the battlefield a unit starts in.
+
+However, units with certain traits, like Infiltrator, can have a fixed allegiance that's different to their side and can end up being controlled by the enemy or a third party in the middle of their supposed side's turn. If that allegiance is not known to an enemy, they can be sneak-attacked for extra hit/vore chance and extra attack damage.
+
+Certaín effects can cause or prevent a change in this allegiance. Normal defection does not affect it, and can thus be used by infiltrators to infiltrate.
+Units with the Untamable trait cannot be converted by any means other than vore – e.g the DigestionConversion trait or Unbirth with KuroTenko rebirth/conversion settings.
+Corruption prevents these vore-based conversions and may instead corrupt the predator, changing their allegiance to the prey's (unless they have Untamable).
+Check the Traits help section or a trait's tooltip for more info. As a rule of thumb, hidden traits will have something to do with special allegiances.
+
+If only units that are friendly to eachother remain on the battlefield, Infiltrators will flee and other units with a special allegiance will defect.
+";
 
     public static string Diplomacy = @"If diplomacy is enabled, you can declare war, or ask for peace and alliances from allies, you need a minimum amount of influence to achieve peace or alliances. 
 

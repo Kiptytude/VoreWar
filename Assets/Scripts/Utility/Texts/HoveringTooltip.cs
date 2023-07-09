@@ -443,9 +443,9 @@ public class HoveringTooltip : MonoBehaviour
             case Traits.HealingBelly:
                 return "An accessory trait to endosoma that makes friendly prey receive healing each turn.  (Does nothing without the endosoma trait)\n(Cheat Trait)";
             case Traits.Assimilate:
-                return "If the unit has less than 5 traits, upon finishing absorption of an enemy unit, will take a random trait from them that the unit doesn't currently have.  If the unit has 5 traits, the random trait will replace this trait.\n(Cheat Trait)";
+                return "If the unit has less than 5 traits, upon finishing absorption of an enemy unit, will take a random trait from them that the unit doesn't currently have.  If the unit has 5 traits, the random trait will replace this trait. Transferable via Endosoma.\n(Cheat Trait)";
             case Traits.AdaptiveBiology:
-                return "Upon finishing absorption of an enemy unit, will take a random trait from them that the unit doesn't currently have and add it to a list of 3 rotating traits.  If the list already has 3 rotating traits, the oldest trait is removed.  This can't trigger on the same kill as Assimilate.\n(Cheat Trait)";
+                return "Upon finishing absorption of an enemy unit, will take a random trait from them that the unit doesn't currently have and add it to a list of 3 rotating traits.  If the list already has 3 rotating traits, the oldest trait is removed.  This can't trigger on the same kill as Assimilate. Transferable via Endosoma.\n(Cheat Trait)";
             case Traits.KillerKnowledge:
                 return "Every four weapon / spell kills (but not vore kills), the unit will get a permanent +1 to all stats\n(Cheat Trait)";
             case Traits.PollenProjector:
@@ -459,7 +459,7 @@ public class HoveringTooltip : MonoBehaviour
             case Traits.WillingRace:
                 return "Gives the whole race the willing prey spell effect permanently, which makes them easier to eat, and changes some of the dialogue.";
             case Traits.InfiniteAssimilation:
-                return "Upon finishing absorption of an enemy unit, will take a random trait from them that the unit doesn't currently have.  This version has no cap, so it can be a little bit of a text mess.\n(Cheat Trait)";
+                return "Upon finishing absorption of an enemy unit, will take a random trait from them that the unit doesn't currently have. This version has no cap, so it can be a little bit of a text mess. Transferable via Endosoma.\n(Cheat Trait)";
             case Traits.GlueBomb:
                 return "Gives access to a single use ability that applies the glued status effect to a 3x3 group.  Glued units are very slow, and it takes a while to get it off.";
             case Traits.TasteForBlood:
@@ -522,16 +522,6 @@ public class HoveringTooltip : MonoBehaviour
 				return "Temporarily control a Pred unit while digesting inside\n (Cheat Hidded Trait)";    
             case Traits.Corruption:
                 return "If a currupted unit is digested, the pred will build up corruption as a hidden status. Once corrupted prey with a stat total equal to that of the pred has been digested, they are under control of the side of the last-digested corrupted.\n(Hidden Trait)";
-            case Traits.Parasite:
-                return "A parasite prey will give the host CreateSpawn and set infection after digestion, host Takes minor damage on prey absorption and major damage when creating spawn";
-            case Traits.Metamorphosis:
-                return "A Metamorphosis prey will revive and change form after digestion to the spawn race";
-            case Traits.UnpleasantDigestion:
-                return "Unit will damage a predator while digesting";
-            case Traits.Symbiote:
-                return "Shares generic traits with pred";
-            case Traits.CreateSpawn:
-                return "creates a spawn unit on prey Absorption";
             case Traits.Reanimator:
                 return "Allows unit to use <b>Reanimate</b>, an attack that brings any unit back to life as the caster's summon, once per battle";
             case Traits.Reincarnation:
@@ -556,6 +546,38 @@ public class HoveringTooltip : MonoBehaviour
                 return "Unit generates with a random Tier 3-4 Book.";
             case Traits.Temptation:
                return "Units that are put under a mindcontrol (e.g. Charm, Hypnosis) effect by this unit want to force-feed themselves to it or its close allies.";
+            case Traits.Infertile:
+                return "Unit cannot contribute to village population growth.";
+            case Traits.HillImpedence:
+                return "Unit treats all hills as impassable.\nMore than half of the army has to have this trait to have an effect";
+            case Traits.GrassImpedence:
+                return "Unit treats grass as impassable.\nMore than half of the army has to have this trait to have an effect";
+            case Traits.MountainWalker:
+                return "Unit can cross over mountains and broken cliffs (but not stop on one).\nAt least half of the army has to have this trait to have an effect";
+            case Traits.WaterWalker:
+                return "Unit can cross over water (but not stop on it).\nAt least half of the army has to have this trait to have an effect";
+            case Traits.LavaWalker:
+                return "Unit can cross over lava (but not stop on it).\nAt least half of the army has to have this trait to have an effect";
+            case Traits.SwampImpedence:
+                return "Unit treats swamps as impassable.\nMore than half of the army has to have this trait to have an effect";
+            case Traits.ForestImpedence:
+                return "Unit treats forests as impassable.\nMore than half of the army has to have this trait to have an effect";
+            case Traits.DesertImpedence:
+                return "Unit treats deserts and sand hills as impassable.\nMore than half of the army has to have this trait to have an effect";
+            case Traits.SnowImpedence:
+                return "Unit treats snow and snow hills as impassable.\nMore than half of the army has to have this trait to have an effect";
+            case Traits.VolcanicImpedence:
+                return "Unit treats volcanic ground as impassable.\nMore than half of the army has to have this trait to have an effect";
+            case Traits.Donor:
+                return "Upon being absorbed, this unit bestows all traits that are listed below \"Donor\" in its trait list.";
+            case Traits.Extraction:
+                return "Every time digestion progresses, this unit steals one trait from each prey inside them, if only duplicates (or non-assimilable traits) remain, they are turned into exp. Absorbtion steals any that are left. Endoed units instead gain traits.\n(Cheat Trait)";
+            //case Traits.Shapeshifter:
+            //    return "Gives the ability to change into different races after acquiring them via absorbing, being reborn, reincarnating, being endoed or infiltrating. Also Allows Traversal of all terrain at normal speed.";
+            //case Traits.Skinwalker:
+            //    return "Gives the ability to change into specific units after absorbing them or being endoed or infiltrating. Or into the alternate selves acquired by being reborn or reincarnated. Also Allows Traversal of all terrain at normal speed.";
+            case Traits.BookEater:
+                return "When this unit would equip a book, it is instead consumed and the spell becomes innate. Does not consume already equipped books, but does consume one if the unit would gain more than it could carry via BookWorm.";
             case Traits.Whispers:
                 return "When eaten, Predator is afflicted by Prey's curse, and has a chance to be charmed each round";
             case Traits.TraitStealer:

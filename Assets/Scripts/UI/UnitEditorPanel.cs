@@ -1,5 +1,4 @@
-﻿using CruxClothing;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -200,6 +199,8 @@ public class UnitEditorPanel : CustomizerPanel
 
     private string DetermineAllignment(Unit unit)
     {
+        if (!unit.HasFixedSide())
+            return "Default";
         if (State.World?.MainEmpires != null)
         {
             return State.World.GetEmpireOfSide(unit.FixedSide)?.Name ?? unit.Race.ToString();
@@ -246,14 +247,23 @@ public class UnitEditorPanel : CustomizerPanel
 
     public void Close()
     {
-        UnitEditor.Unit.InnateSpells.Clear();
         for (int i = 0; i < SpellDropdown.Length; i++)
         {
             SpellTypes spell = (SpellTypes)SpellDropdown[i].value;
             if (spell > SpellTypes.Resurrection)
                 spell = spell - SpellTypes.Resurrection + SpellTypes.AlraunePuff - 1;
             if (spell != SpellTypes.None)
-                UnitEditor.Unit.InnateSpells.Add(spell);
+            {
+                if (UnitEditor.Unit.InnateSpells.Count > i)
+                    UnitEditor.Unit.InnateSpells[i] = (spell);
+                else if (!UnitEditor.Unit.InnateSpells.Contains(spell))
+                    UnitEditor.Unit.InnateSpells.Add(spell);
+            }
+            else if (UnitEditor.Unit.InnateSpells.Count > i)
+            {
+                UnitEditor.Unit.InnateSpells.RemoveAt(i);
+
+            }
         }
         UnitEditor.Unit.UpdateSpells();
         gameObject.SetActive(false);

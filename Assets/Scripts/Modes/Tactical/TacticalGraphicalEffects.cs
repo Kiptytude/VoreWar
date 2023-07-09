@@ -213,6 +213,16 @@ static class TacticalGraphicalEffects
 
     }
 
+    internal static void CreateSmokeCloud(Vec2i location, float scale)
+    {
+        if (State.GameManager.TacticalMode.turboMode)
+            return;
+        var prefab = State.GameManager.TacticalEffectPrefabList.SmokeCloud;
+        GameObject obj = Object.Instantiate(prefab, new Vector3(location.x, location.y, 0), new Quaternion());
+        obj.transform.localScale *= scale;
+        
+    }
+
     internal static void CreateGlueBomb(Vec2i startLocation, Vec2i endLocation)
     {
         if (State.GameManager.TacticalMode.turboMode)

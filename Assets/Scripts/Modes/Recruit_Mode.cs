@@ -218,7 +218,7 @@ public class Recruit_Mode : SceneBase
         if (selectedIndex != -1 && army?.Units.Count() > selectedIndex)
             unit = army?.Units[selectedIndex];
         ArmyUI.Rename.interactable = validUnit && unit.Type != UnitType.SpecialMercenary;
-        ArmyUI.Shop.interactable = activatingEmpire < ActivatingEmpire.Observer && validUnit && unit != null && unit.FixedGear == false;
+        ArmyUI.Shop.interactable = activatingEmpire < ActivatingEmpire.Observer && validUnit && unit != null && (unit.FixedGear == false || unit.HasTrait(Traits.BookEater));
         var dismissText = ArmyUI.Dismiss.gameObject.GetComponentInChildren(typeof(Text)) as Text;
 
         if (unit != null && unit.FixedSide == empire.Side && unit.IsInfiltratingSide(unit.Side) && activatingEmpire > ActivatingEmpire.Ally)
@@ -1272,21 +1272,6 @@ public class Recruit_Mode : SceneBase
                 empire.SpendGold(merc.Cost);
                 mercenaryHouse.Mercenaries.Remove(merc);
                 MercenaryHouse.UniqueMercs.Remove(merc);
-                if (merc.Unit.HasTrait(Traits.Infiltrator) && !merc.Unit.IsInfiltratingSide(village.Side))
-                {
-                    merc.Unit.OnDiscard = () =>
-                    {
-                        var closestFriendlyVillage = State.World.Villages.Where(s => s.Side == merc.Unit.Side).OrderBy(s => s.Position.GetNumberOfMovesDistance(mercenaryHouse.Position)).FirstOrDefault();
-                        if (closestFriendlyVillage == null)
-                            closestFriendlyVillage = State.World.Villages.Where(s => s.Empire.IsAlly(State.World.GetEmpireOfSide(merc.Unit.Side))).OrderBy(s => s.Position.GetNumberOfMovesDistance(mercenaryHouse.Position)).FirstOrDefault();
-                        if (closestFriendlyVillage != null)
-                        {
-                            StrategicUtilities.CreateInvisibleTravelingArmy(merc.Unit, closestFriendlyVillage, 1);
-                            village.VillagePopulation.AddHireable(merc.Unit);
-                            Debug.Log(merc.Unit.Name + " is returning to " + closestFriendlyVillage.Name);
-                        }
-                    };
-                }
                 Destroy(obj);
                 UpdateActorList();
                 UpdateMercenaryScreenText();
@@ -1299,14 +1284,6 @@ public class Recruit_Mode : SceneBase
     {
         if (village.HireSpecialUnit(empire, army, merc))
         {
-            if (merc.Unit.HasTrait(Traits.Infiltrator) && !merc.Unit.IsInfiltratingSide(village.Side))
-            {
-                merc.Unit.OnDiscard = () =>
-                {
-                    village.VillagePopulation.AddHireable(merc.Unit);
-                    Debug.Log(merc.Unit.Name + " is returning to " + village.Name);
-                };
-            }
             Destroy(obj);
             UpdateActorList();
             UpdateMercenaryScreenText();

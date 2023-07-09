@@ -396,7 +396,7 @@ public class RaceEditorPanel : MonoBehaviour
                 item.Stats.Stomach.Roll = 1 + Convert.ToInt32(MaxStomach.text) - item.Stats.Stomach.Minimum;
                 if (item.Stats.Stomach.Roll < 1) item.Stats.Strength.Roll = 1;
 
-                item.PowerAdjustment = Convert.ToSingle(PowerAdjustment.text);
+                item.PowerAdjustment = Convert.ToInt32(PowerAdjustment.text)/100f;
 
                 item.FemaleTraits = TextToTraitList(FemaleTraits.text);
                 item.MaleTraits = TextToTraitList(MaleTraits.text);
@@ -587,15 +587,7 @@ public class RaceEditorPanel : MonoBehaviour
             {
                 powerAdj = racePar.PowerAdjustment;
             }
-            PowerAdjustment.text = powerAdj.ToString();
-            PowerAdjustment.onValueChanged.AddListener((v) =>
-            {
-                float res;
-                if (v.Length < 1 || !float.TryParse(v, out res) || res < 0)
-                {
-                    PowerAdjustment.text = "0";
-                }
-            });
+            PowerAdjustment.text = (powerAdj*100).ToString();
             FemaleTraits.text = TraitListToText(item.FemaleTraits);
             MaleTraits.text = TraitListToText(item.MaleTraits);
             HermTraits.text = TraitListToText(item.HermTraits);

@@ -376,7 +376,7 @@ static class SpellList
             Range = new Range(4),
             Tier = 3,
             Resistable = true,
-            OnExecute = (a, t) => a.CastMaw(Maw, t),
+            OnExecute = (a, t) => a.CastMawWithLocation(Maw, t),
         };
         SpellDict[SpellTypes.Maw] = Maw;
 
@@ -525,8 +525,8 @@ static class SpellList
             Tier = 4,
             AreaOfEffect = 1,
             Resistable = true,
-            OnExecute = (a, t) => a.CastMaw(GateMaw, t),
-            OnExecuteTile = (a, l) => a.CastMaw(GateMaw, null, l),
+            OnExecute = (a, t) => a.CastMawWithLocation(GateMaw, t),
+            OnExecuteTile = (a, l) => a.CastMawWithLocation(GateMaw, null, l),
         };
         SpellDict[SpellTypes.GateMaw] = GateMaw;
 
@@ -729,7 +729,7 @@ static class SpellList
             Name = "Hypnotic Gas",
             Id = "hypno-fart",
             SpellType = SpellTypes.HypnoGas,
-            Description = "Applies Hypnotized in a 4x4 area near on the caster. Hypnotized units become noncombatants that serve the caster's side.",
+            Description = "Applies Hypnotized in a 4x4 area near the caster. Hypnotized units become noncombatants that serve the caster's side.",
             AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Tile, AbilityTargets.Enemy },
             Range = new Range(1),
             Duration = (a, t) => 5,
@@ -741,7 +741,7 @@ static class SpellList
             ResistanceMult = 0.5f,
             OnExecute = (a, t) =>
             {
-                a.CastStatusSpell(HypnoGas, t);
+                a.CastStatusSpell(HypnoGas, t, null, Stat.Voracity);
                 if (Config.FartOnAbsorb)
                 {
                     a.SetPredMode(PreyLocation.anal);
@@ -756,7 +756,7 @@ static class SpellList
             },
             OnExecuteTile = (a, loc) =>
             {
-                a.CastStatusSpell(HypnoGas, null, loc);
+                a.CastStatusSpell(HypnoGas, null, loc, Stat.Voracity);
                 if (Config.FartOnAbsorb)
                 {
                     a.SetPredMode(PreyLocation.anal);

@@ -37,7 +37,8 @@ class PermanentBoosts
     internal bool OnLevelUpAllowAnyStat = false;
     internal float Scale = 1f;
     internal float StatMult = 1f;
-
+    internal float VirtualDexMult = 1;
+    internal float VirtualStrMult = 1;
     internal float FireDamageTaken = 1;
     internal float GrowthDecayRate = 1;
 }
@@ -125,13 +126,13 @@ static class TraitList
         [Traits.Stinger] = new Stinger(),
         [Traits.DefensiveStance] = new DefensiveStance(),
         [Traits.Ravenous] = new Ravenous(),
-        [Traits.Tempered] = new Booster("Reduces damage taken from ranged attacks.\nIncreases damage taken from melee attacks", (s) => { s.Incoming.RangedDamage *= .7f; s.Incoming.MeleeDamage *= 1.3f; }),
+        [Traits.Tempered] = new Booster("Reduces damage taken from ranged attacks.\nIncreases damage taken from melee attacks", (s) => { s.Incoming.RangedDamage *= .7f; s.Incoming.MeleeDamage *= 1.3f; s.VirtualDexMult *= 1.1f; }),
         [Traits.GelatinousBody] = new Booster("Takes less damage from attacks, but is easier to vore", (s) => { s.Incoming.RangedDamage *= .75f; s.Incoming.MeleeDamage *= 0.8f; s.Incoming.VoreOddsMult *= 1.15f; }),
         [Traits.MetalBody] = new Booster("Provides vore resistance, and their remains are only worth half as much healing", (s) => { s.Incoming.VoreOddsMult *= .7f; s.Outgoing.Nutrition *= .5f; }),
         [Traits.EasyToVore] = new Booster("Unit is easier to vore than normal", (s) => s.Incoming.VoreOddsMult *= 1.25f),
         [Traits.Defenseless] = new Booster("Unit is incredibly easy to vore", (s) => s.Incoming.VoreOddsMult *= 1000),
         [Traits.BornToMove] = new Booster("Experienced at carrying extra weight.\nUnit suffers a smaller defense penalty and no movement penalty from units it is carrying.", (s) => { s.SpeedLossFromWeightMultiplier = 0; s.DodgeLossFromWeightMultiplier = 0.2f; }),
-        [Traits.Maul] = new Booster("Allows unit to attack twice in melee.\nEach attack uses half of max mp", (s) => s.MeleeAttacks += 1),
+        [Traits.Maul] = new Booster("Allows unit to attack twice in melee.\nEach attack uses half of max mp", (s) => { s.MeleeAttacks += 1; s.VirtualStrMult *= 1.8f; }),
         [Traits.DoubleAttack] = new Booster("Allows unit to attack twice in melee or ranged.\nEach attack uses half of max mp", (s) => { s.MeleeAttacks += 1; s.RangedAttacks += 1; }),
         [Traits.Nauseous] = new Booster("This unit has a higher than average chance of having prey escape", (s) => s.Outgoing.ChanceToEscape *= 2),
         [Traits.EscapeArtist] = new Booster("Unit is much more likely to escape from predators", (s) => s.Incoming.ChanceToEscape *= 2),
@@ -140,8 +141,8 @@ static class TraitList
         [Traits.Prey] = new Booster("Unit can not vore other units.\nReceives 15% more exp, and heals twice as fast in towns", (s) => { s.ExpGain *= 1.15f; s.PassiveHeal *= 2; }),
         [Traits.Clever] = new Booster("Requires less experience to level up", (s) => s.ExpRequired *= 0.7f),
         [Traits.Foolish] = new Booster("Requires additional experience to level up", (s) => s.ExpRequired *= 1.4f),
-        [Traits.StrongMelee] = new Booster("Does additional damage in melee", (s) => s.Outgoing.MeleeDamage *= 1.2f),
-        [Traits.WeakAttack] = new Booster("Does reduced damage in melee", (s) => s.Outgoing.MeleeDamage *= 0.8f),
+        [Traits.StrongMelee] = new Booster("Does additional damage in melee", (s) => { s.Outgoing.MeleeDamage *= 1.2f; s.VirtualStrMult *= 1.2f; }),
+        [Traits.WeakAttack] = new Booster("Does reduced damage in melee", (s) => { s.Outgoing.MeleeDamage *= 0.8f; s.VirtualDexMult *= 1.2f; }),
         [Traits.FastDigestion] = new Booster("Does additional acid damage to prey", (s) => s.Outgoing.DigestionRate *= 2f),
         [Traits.SlowDigestion] = new Booster("Does reduced acid damage to prey", (s) => s.Outgoing.DigestionRate *= 0.5f),
         [Traits.Tasty] = new Booster("Provides additonal healing when consumed", (s) => s.Outgoing.Nutrition *= 2f),
@@ -166,11 +167,11 @@ static class TraitList
         [Traits.SlowMovement] = new Booster("Unit is slower than normal, but suffers reduced prey penalties to speed.", (s) => { s.SpeedMultiplier *= 0.75f; s.MinSpeed = 2; s.SpeedLossFromWeightMultiplier = 0.5f; }),
         [Traits.VerySlowMovement] = new Booster("Unit is considerably slower than normal, but suffers no prey penalties to speed.", (s) => { s.SpeedMultiplier *= 0.65f; s.MinSpeed = 2; s.SpeedLossFromWeightMultiplier = 0; }),
         [Traits.Toxic] = new Booster("Melee attackers have a chance to be poisoned on hitting this unit, and it provides no healing when absorbed.", (s) => s.Outgoing.Nutrition = 0),
-        [Traits.HardSkin] = new Booster("Its skin is hard and ranged weapons have a harder time penetrating it.", (s) => s.Incoming.RangedDamage *= .75f),
-        [Traits.QuickShooter] = new Booster("Unit is quite adept with ranged weapons and is able to attack twice with them.", (s) => s.RangedAttacks += 1),
+        [Traits.HardSkin] = new Booster("Its skin is hard and ranged weapons have a harder time penetrating it.", (s) => { s.Incoming.RangedDamage *= .75f; s.VirtualDexMult *= 1.1f; }),
+        [Traits.QuickShooter] = new Booster("Unit is quite adept with ranged weapons and is able to attack twice with them.", (s) => { s.RangedAttacks += 1; s.VirtualDexMult *= 2.2f; }),
         [Traits.FastCaster] = new Booster("Unit is quite adept with spells and is able to cast two spells per turn.", (s) => s.SpellAttacks += 1),
-        [Traits.RangedIneptitude] = new Booster("Unit's ranged weapons do less damage than normal", (s) => s.Outgoing.RangedDamage *= 0.8f),
-        [Traits.KeenShot] = new Booster("Unit's ranged weapons do additional damage", (s) => s.Outgoing.RangedDamage *= 1.2f),
+        [Traits.RangedIneptitude] = new Booster("Unit's ranged weapons do less damage than normal", (s) => {s.Outgoing.RangedDamage *= 0.8f; s.VirtualStrMult *= 1.2f; }),
+        [Traits.KeenShot] = new Booster("Unit's ranged weapons do additional damage", (s) => { s.Outgoing.RangedDamage *= 1.2f; s.VirtualDexMult *= 1.2f;}),
         [Traits.HotBlooded] = new Booster("Unit is used to the heat and takes significantly less damage from fire spells", (s) => s.FireDamageTaken *= .25f),
         [Traits.FocusedDevelopment] = new Booster("Allows picking of any stat on level up", (s) => { s.OnLevelUpAllowAnyStat = true; }),
         [Traits.ManaRich] = new Booster("Unit has higher mana cap, units absorbing this unit will recover some of their mana", (s) => { s.ManaMultiplier *= 1.5f; s.Outgoing.ManaAbsorbHundreths += 40; }),
@@ -201,7 +202,7 @@ static class TraitList
         [Traits.Tiny] = new Booster("Unit is far smaller than normal. \n(Cheat Trait)", (s) => s.Scale /= 3.0f),
         [Traits.AdaptiveTactics] = new Booster("Unit earns double the normal amount of experience from actions.\n(Cheat Trait)", (s) => s.ExpGain *= 2),
         [Traits.SlowMetabolism] = new Booster("Unit digests and absorbs prey very slowly (effectively the slow digestion and slow absorbtion traits combined, but is also slower than those)", (s) => { s.Outgoing.AbsorptionRate *= 0.25f; s.Outgoing.DigestionRate *= 0.25f; }),
-        [Traits.LightFrame] = new Booster("Unit can melee attack twice in a turn, though it loses this ability while it contains any prey.  Unit also takes 25% more damage from all sources", (s) => { s.Incoming.MeleeDamage *= 1.25f; s.Incoming.RangedDamage *= 1.25f; s.Incoming.MagicDamage *= 1.25f; }),
+        [Traits.LightFrame] = new Booster("Unit can melee attack twice in a turn, though it loses this ability while it contains any prey.  Unit also takes 25% more damage from all sources", (s) => { s.Incoming.MeleeDamage *= 1.25f; s.Incoming.RangedDamage *= 1.25f; s.Incoming.MagicDamage *= 1.25f; s.VirtualStrMult *= 1.7f; }),
         [Traits.Featherweight] = new Booster("Unit moves slightly faster (+1 AP) and gets a melee/vore dodge bonus, but takes extra damage from melee.", (s) => { s.SpeedBonus += 1; s.Incoming.MeleeShift += .75f; s.Incoming.VoreOddsMult *= 0.75f; s.Incoming.MeleeDamage *= 1.2f; }),
         [Traits.PeakCondition] = new Booster("Unit is at the height of their physical condition (+50% all stats)", (s) => s.StatMult *= 1.5f),
         [Traits.Fit] = new Booster("Unit is in better shape than the average unit (+20% all stats)", (s) => s.StatMult *= 1.2f),
@@ -209,7 +210,7 @@ static class TraitList
         [Traits.Diseased] = new Booster("Unit is in terrible shape, and is only a shadow of its former self (-50% all stats)", (s) => s.StatMult *= 0.5f),
         [Traits.StretchyInsides] = new Booster("This unit can hold twice as many units as normal.", (s) => s.CapacityMult *= 2),
         [Traits.UnlimitedCapacity] = new Booster("This unit effectively has no limit on consumed prey.\n(Cheat Trait)", (s) => s.CapacityMult *= 1000),
-        [Traits.Clumsy] = new Booster("This unit moves slower, and has slightly reduced melee accuracy and damage.", (s) => { s.SpeedMultiplier *= 0.85f; s.Outgoing.MeleeDamage *= .9f; s.Outgoing.MeleeShift += .3f; }),
+        [Traits.Clumsy] = new Booster("This unit moves slower, and has slightly reduced melee accuracy and damage.", (s) => { s.SpeedMultiplier *= 0.85f; s.Outgoing.MeleeDamage *= .9f; s.Outgoing.MeleeShift += .3f; s.VirtualDexMult *= 1.1f; }),
         [Traits.Honeymaker] = new Booster("When feeding another unit, more exprience is given and prey is absorbed slower.", (s) => { s.Incoming.RangedDamage *= 1.0f; }),
         [Traits.WetNurse] = new Booster("When feeding another unit, more health is healed and less AP is consumed.", (s) => { s.Incoming.RangedDamage *= 1.0f; }),
         [Traits.HighlyAbsorbable] = new Booster("This unit's body gets absorbed more readily. (+50% absorb speed)", (s) => { s.Incoming.AbsorptionRate *= 1.5f; }),
@@ -249,7 +250,8 @@ internal class ThrillSeeker : Trait, IStatBoost
     public int StatBoost(Unit unit, Stat stat)
     {
         int ret = 0;
-        ret = (int)(unit.GetStatBase(stat) * (0.11f - (0.11f * unit.HealthPct)));
+        ret = (int)(unit.GetStatBase(stat) * (0.11f - (0.11f * unit.GetHealthPctWithoutUpdating())));
+        if (ret < 0) return 0;
         return ret;
     }
 }

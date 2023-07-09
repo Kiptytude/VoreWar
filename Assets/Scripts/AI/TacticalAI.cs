@@ -157,11 +157,11 @@ public abstract class TacticalAI : ITacticalAI
                 }
                 else
                 {
-                    if (retreating && (enemyPower > 0) && (friendlyPower / enemyPower) > 1.2f * retreatPlan.MinPowerRatio)
+                    if (retreating && (enemyPower > 0) && (friendlyPower / enemyPower) > 1.2f * retreatPlan.MinPowerRatio && !onlyForeignTroopsLeft)
                     {
                         State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<color=orange>{(actors[0].Unit.Side == AISide ? "Attackers" : "Defenders")} are no longer fleeing</color>");
+                        retreating = false;
                     }
-                    retreating = false;
                 }
             }
             else if (retreatPlan.acceptableLossRatio > 0.0001) // Made because it somewhat considers how the battle is developing instead of just a snapshot metric
@@ -213,11 +213,11 @@ public abstract class TacticalAI : ITacticalAI
                 }
                 else
                 {
-                    if (retreating && (enemyLoss > 0) && (friendLoss / enemyLoss) < 0.8f * retreatPlan.acceptableLossRatio)
+                    if (retreating && (enemyLoss > 0) && (friendLoss / enemyLoss) < 0.8f * retreatPlan.acceptableLossRatio && !onlyForeignTroopsLeft)
                     {
                         State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<color=orange>{(aIisAttacker ? "Attackers" : "Defenders")} are no longer fleeing</color>");
+                        retreating = false;
                     }
-                    retreating = false;
                 }
             }
         }
@@ -1656,13 +1656,22 @@ public abstract class TacticalAI : ITacticalAI
     public virtual void HandleLeftoverForeigns(Actor_Unit actor) 
     {
         actor.Unit.hiddenFixedSide = false;
-       if (actor.Unit.HasTrait(Traits.Infiltrator)) // You were there to cause the enemy a headache, get right back to it!
+       if (actor.Unit.HasTrait(Traits.Infiltrator) && actor.Unit.Type != UnitType.Summon) // You were there to cause the enemy a headache, get right back to it!
         {
-            retreating = true;                      // Will hopefully cause inattentive opponents to have these sneaking right back into their cities
-            return;
+            if (State.GameManager.TacticalMode.currentTurn < 500) // Someone just got STUCK trying to flee forever. Wow.
+            {
+                if (!retreating) { 
+                    retreating = true;                      // Will hopefully cause inattentive opponents to have these sneaking right back into their cities
+                    State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<color=orange>{(actors[0].Unit.Side == AISide ? "Attackers" : "Defenders")} are now fleeing</color>");
+                }
+                return;
+            }
         }
-        if (actor.allowedToDefect)
+        if (actor.allowedToDefect || (State.GameManager.TacticalMode.currentTurn > 500 && !actor.DefectedThisTurn))
+        {
             State.GameManager.TacticalMode.SwitchAlignment(actor);
+            actor.DefectedThisTurn = true;
+        }
     }
 
 

@@ -243,7 +243,7 @@ static class StrategicTileInfo
     static internal int WalkCost(int x, int y)
     {
         if ((x >= 0 && x < Config.StrategicWorldSizeX && y >= 0 && y < Config.StrategicWorldSizeY) == false)
-            return 999;
+            return 9999;
         if (State.World.Doodads != null && State.World.Doodads[x, y] >= StrategicDoodadType.bridgeVertical && State.World.Doodads[x, y] <= StrategicDoodadType.virtualBridgeIntersection)
             return 1;
         return WalkCost(State.World.Tiles[x, y]);
@@ -273,7 +273,7 @@ static class StrategicTileInfo
             case StrategicTileType.snowTrees:
                 return 2;
             default:
-                return 9999;
+                return 1;
         }
     }
 

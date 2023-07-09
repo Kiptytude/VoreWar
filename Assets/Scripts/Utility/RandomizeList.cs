@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using UnityEngine;
 
@@ -19,7 +20,7 @@ public class RandomizeList
 
     public override string ToString()
     {
-        string str = id + ", " + name + ", " + chance.ToString().Replace(",",".") + ", ";
+        string str = id + ", " + name + ", " + chance.ToString("N", new CultureInfo("en-US")) + ", ";
         RandomTraits.ForEach(rt => str += (int)rt + "|");
         str = str.Remove(str.Length - 1);
         return str;

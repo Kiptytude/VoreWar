@@ -11,7 +11,7 @@ class Prey
     [OdinSerialize]
     public Actor_Unit Actor { get; private set; }
     [OdinSerialize]
-    public Unit Unit { get; private set; }
+    public Unit Unit { get; set; }
     [OdinSerialize]
     public List<Prey> SubPrey { get; private set; }
     [OdinSerialize]

@@ -66,24 +66,18 @@ public class RecruitCheatsPanel : MonoBehaviour
             State.GameManager.CreateMessageBox("Invalid Empire, try repicking from the dropdown.");
             return;
         }
+        var emp = State.World.MainEmpires.Where(s => s.Name == ArmyPicker.captionText.text).First();
         if (Army.Units.Where(s => s.Type == UnitType.Leader).Any())
         {
             State.GameManager.CreateMessageBox("That army had a leader in it, unexpected behavior may occur when the leader dies.");
         }
         State.GameManager.Recruit_Mode.ButtonCallback(86);
         State.GameManager.SwitchToStrategyMode();
-        foreach (Empire empire in State.World.AllActiveEmpires)
+        Army.Units.ForEach(unit =>
         {
-            if (empire.Armies.Contains(Army))
-                empire.Armies.Remove(Army);
-        }
-        foreach (Empire empire in State.World.MainEmpires.Where(s => s.Name == ArmyPicker.captionText.text))
-        {
-            Army newArmy = new Army(empire, Army.Position, empire.Side);
-            newArmy.Units = Army.Units;
-            empire.Armies.Add(newArmy);
-            break;
-        }
+            unit.Side = emp.Side;
+        });
+        State.GameManager.StrategyMode.RedrawArmies();
     }
 
     void AddTrait()
