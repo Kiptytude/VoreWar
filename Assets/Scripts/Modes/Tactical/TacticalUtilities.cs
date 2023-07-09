@@ -912,10 +912,10 @@ static class TacticalUtilities
             PreyLocation preyLocation = PreyLocation.stomach;
             var possibilities = new Dictionary<string, PreyLocation>();
             possibilities.Add("Maw", PreyLocation.stomach);
-            if (targetPred.Unit.CanAnalVore) possibilities.Add("Anus", PreyLocation.anal);
-            if (targetPred.Unit.CanBreastVore) possibilities.Add("Breast", PreyLocation.breasts);
-            if (targetPred.Unit.CanCockVore) possibilities.Add("Cock", PreyLocation.balls);
-            if (targetPred.Unit.CanUnbirth) possibilities.Add("Pussy", PreyLocation.womb);
+            if (targetPred.Unit.CanAnalVore && State.RaceSettings.GetVoreTypes(targetPred.Unit.Race).Contains(VoreType.Anal)) possibilities.Add("Anus", PreyLocation.anal);
+            if (targetPred.Unit.CanBreastVore && State.RaceSettings.GetVoreTypes(targetPred.Unit.Race).Contains(VoreType.BreastVore)) possibilities.Add("Breast", PreyLocation.breasts);
+            if (targetPred.Unit.CanCockVore && State.RaceSettings.GetVoreTypes(targetPred.Unit.Race).Contains(VoreType.CockVore)) possibilities.Add("Cock", PreyLocation.balls);
+            if (targetPred.Unit.CanUnbirth && State.RaceSettings.GetVoreTypes(targetPred.Unit.Race).Contains(VoreType.Unbirth)) possibilities.Add("Pussy", PreyLocation.womb);
 
             if (State.GameManager.TacticalMode.IsPlayerInControl && State.GameManager.CurrentScene == State.GameManager.TacticalMode && possibilities.Count > 1)
             {
