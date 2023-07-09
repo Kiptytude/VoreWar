@@ -50,7 +50,11 @@ static class TacticalTileInfo
 
     static internal bool CanWalkInto(TacticalTileType type, Actor_Unit actor)
     {
+        if (type >= (TacticalTileType)2300 && type < (TacticalTileType)2399)
+            return true;
         if (type >= (TacticalTileType)2000 && type < (TacticalTileType)2099)
+            return true;
+        if (type >= (TacticalTileType)500 && type < (TacticalTileType)599)
             return true;
         if (type >= (TacticalTileType)400 && type < (TacticalTileType)499)
             return true;

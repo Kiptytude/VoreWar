@@ -30,6 +30,22 @@ TextureImporter:
     21300050: TacticalPaths_21
     21300052: TacticalPaths_22
     21300054: TacticalPaths_23
+    21300056: TacticalPaths_24
+    21300058: TacticalPaths_25
+    21300060: TacticalPaths_26
+    21300062: TacticalPaths_27
+    21300064: TacticalPaths_28
+    21300066: TacticalPaths_29
+    21300068: TacticalPaths_30
+    21300070: TacticalPaths_31
+    21300072: TacticalPaths_32
+    21300074: TacticalPaths_33
+    21300076: TacticalPaths_34
+    21300078: TacticalPaths_35
+    21300080: TacticalPaths_36
+    21300082: TacticalPaths_37
+    21300084: TacticalPaths_38
+    21300086: TacticalPaths_39
   externalObjects: {}
   serializedVersion: 9
   mipmaps:
@@ -116,7 +132,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 256
+        y: 448
         width: 64
         height: 64
       alignment: 0
@@ -126,7 +142,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: eaebc972c95e0b242bf86f9e5a105c7d
+      spriteID: a12d5464346b739498e2f443de8d530d
       vertices: []
       indices: 
       edges: []
@@ -136,7 +152,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 64
-        y: 256
+        y: 448
         width: 64
         height: 64
       alignment: 0
@@ -146,7 +162,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4eb8d98eb21862347a8c589a9b2b0986
+      spriteID: 61d3cd01ebaba544ab711306d4d438fb
       vertices: []
       indices: 
       edges: []
@@ -156,7 +172,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 128
-        y: 256
+        y: 448
         width: 64
         height: 64
       alignment: 0
@@ -166,7 +182,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f774faca0d75ede46a26f7d1f1ba7f84
+      spriteID: 7334151aa587cfc4a86db512a118955a
       vertices: []
       indices: 
       edges: []
@@ -176,7 +192,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 192
-        y: 256
+        y: 448
         width: 64
         height: 64
       alignment: 0
@@ -186,7 +202,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 609e2d783e195354ca740c1b9e299e7b
+      spriteID: 402bcd707f8b2744baf1506b4e537aff
       vertices: []
       indices: 
       edges: []
@@ -196,6 +212,226 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 256
+        y: 448
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c534b8fce799880488a75f434d448430
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TacticalPaths_5
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 384
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d8970686a0b7fc343859e8648f5c6be6
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TacticalPaths_6
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 384
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 13438b8e7bb4dcf4c9643e701976269f
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TacticalPaths_7
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 384
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 445f80aca969a8a48a56af6b4fb8b4dc
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TacticalPaths_8
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 384
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 04d9b68a87023ae4ca9ec573339c8b77
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TacticalPaths_9
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 384
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f3278d80427881848832c9a81eba4e36
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TacticalPaths_10
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 320
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8b652a30774afde479959e9e0813e536
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TacticalPaths_11
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 320
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bfa56f604c5da7a47a7d6b4028b10d10
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TacticalPaths_12
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 320
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 04ff58267651d2d4ab3bfd6970036081
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TacticalPaths_13
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 320
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 67e8df5daaa20cc45830cc590c05bbe0
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TacticalPaths_14
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 320
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fa806983257c5b048aa85fbfbe82197d
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TacticalPaths_15
+      rect:
+        serializedVersion: 2
+        x: 0
         y: 256
         width: 64
         height: 64
@@ -206,227 +442,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 52241e4a2e1b561429b43dfd39a15853
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: TacticalPaths_5
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 192
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: e397f0a8ddde4214c81d9c9d420ce6c7
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: TacticalPaths_6
-      rect:
-        serializedVersion: 2
-        x: 64
-        y: 192
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: f14c43a3f431d9d4fa1516c83478e249
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: TacticalPaths_7
-      rect:
-        serializedVersion: 2
-        x: 128
-        y: 192
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: e79d13ea28eb93443859cd0a2eabffec
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: TacticalPaths_8
-      rect:
-        serializedVersion: 2
-        x: 192
-        y: 192
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: e9d59afe01a62884cabacf31a0344286
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: TacticalPaths_9
-      rect:
-        serializedVersion: 2
-        x: 256
-        y: 192
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 924053e3c9cf3b44aa0cc7f870358c1f
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: TacticalPaths_10
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 128
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 0bce74ef1aabee54d9bada09e3db9eb9
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: TacticalPaths_11
-      rect:
-        serializedVersion: 2
-        x: 64
-        y: 128
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 92c5ccf5899baff408d4dc1fd67f051f
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: TacticalPaths_12
-      rect:
-        serializedVersion: 2
-        x: 128
-        y: 128
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 6c9bc0d975b14664480e938f6b796ce8
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: TacticalPaths_13
-      rect:
-        serializedVersion: 2
-        x: 192
-        y: 128
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 2ec367ccb78a590418df90a442f47273
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: TacticalPaths_14
-      rect:
-        serializedVersion: 2
-        x: 256
-        y: 128
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 050915850ad42b7448abf649c04dbbdd
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: TacticalPaths_15
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 64
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 64171ce989565c2449a6b5258154dae7
+      spriteID: 4e4c40db92f31a347b7ede09d24510e9
       vertices: []
       indices: 
       edges: []
@@ -436,6 +452,286 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 64
+        y: 256
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 66f0fe3c961d22246b4910cc77e9d2c5
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TacticalPaths_17
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 256
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fa8ad53491b7fbc419312210978d009c
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TacticalPaths_18
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 256
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 15155d09d51c1304f9903a16f44ab60b
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TacticalPaths_19
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 256
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2be04756971f36c4497a62970c373640
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TacticalPaths_20
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 192
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6a50d5b71bbb7d2409d2fd3c110131c4
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TacticalPaths_21
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 192
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 85c4419e2ea15e04a9bb8b3608217a4d
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TacticalPaths_22
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 192
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 65145e358e8d3084fa56cad2b39be57d
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TacticalPaths_23
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 192
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f73a3a4e3cfc03949909d5b15ec4c651
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TacticalPaths_24
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 192
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1739058da80e0d94eacfadd925933b56
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TacticalPaths_25
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 128
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a7b8feb18c3371a42a0b6dc6e41c440b
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TacticalPaths_26
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 128
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2b45735bc310b6a4c9bc92becb8b1dbb
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TacticalPaths_27
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 128
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1145d7fecfe9296409206f3d5f3f4493
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TacticalPaths_28
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 128
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a70da8ed165f87b4690f994d5f9f5776
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TacticalPaths_29
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 128
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 88ac64916fc7beb40888ce533f6d646c
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TacticalPaths_30
+      rect:
+        serializedVersion: 2
+        x: 0
         y: 64
         width: 64
         height: 64
@@ -446,13 +742,33 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 32daf74aaa03e84418114c56212882ea
+      spriteID: 704e682d7fee7fa4ea888273dfac93cc
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: TacticalPaths_17
+      name: TacticalPaths_31
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 64
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6da30605fcb430846be8ccdbfa441a69
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TacticalPaths_32
       rect:
         serializedVersion: 2
         x: 128
@@ -466,13 +782,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3f16cbe18e0832749bf971b1920b7cb9
+      spriteID: 97dea6423bba8724eb50c275ebec4221
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: TacticalPaths_18
+      name: TacticalPaths_33
       rect:
         serializedVersion: 2
         x: 192
@@ -486,13 +802,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4f5f271e28cac4f4ba5ffbad9eff627d
+      spriteID: 24387cec7699ba244afa5d537ee51d57
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: TacticalPaths_19
+      name: TacticalPaths_34
       rect:
         serializedVersion: 2
         x: 256
@@ -506,13 +822,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: cfa70159cc8d5b442b1beafa61009dad
+      spriteID: dd8ce2fe2b81d0442ab4d40058ef72d5
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: TacticalPaths_20
+      name: TacticalPaths_35
       rect:
         serializedVersion: 2
         x: 0
@@ -526,13 +842,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 42c175d256f5e644aa3c3e0565c0847c
+      spriteID: 034e2841a9960aa4a98b8f3397550238
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: TacticalPaths_21
+      name: TacticalPaths_36
       rect:
         serializedVersion: 2
         x: 64
@@ -546,13 +862,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ead1a22cd42577f488c6c057e5dfa21b
+      spriteID: 6f0c576aa8b3e994e938b7734850ea41
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: TacticalPaths_22
+      name: TacticalPaths_37
       rect:
         serializedVersion: 2
         x: 128
@@ -566,13 +882,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4807b081245076b449ac196a178fc3f3
+      spriteID: 81b37bf79dd52da4eb5602e04897260b
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: TacticalPaths_23
+      name: TacticalPaths_38
       rect:
         serializedVersion: 2
         x: 192
@@ -586,7 +902,27 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 01f732940bfb4bf49b2f9df5a4da411a
+      spriteID: 625f1cbd06b25f54f8b64f5ffb28ca7f
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TacticalPaths_39
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4acab1f2755c41647b30d93874ccddfd
       vertices: []
       indices: 
       edges: []

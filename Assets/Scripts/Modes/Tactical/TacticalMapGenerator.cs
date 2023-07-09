@@ -167,10 +167,10 @@ class TacticalMapGenerator
 
                     if (he_array[i, j] < Config.TacticalWaterValue - (0.01f * attempt))
                         tiles[i, j] = TacticalTileType.VolcanicOverLava;
-                    else if (he_array[i, j] < .65f)
+                    else if (he_array[i, j] < .5f)
                         tiles[i, j] = TacticalTileType.VolcanicOverGravel;
                     else
-                        tiles[i, j] = (TacticalTileType)201;
+                        tiles[i, j] = (TacticalTileType)501;
 
                     if (tiles[i, j] != TacticalTileType.VolcanicOverLava && State.Rand.Next(6) == 0 && decTilesUsed[i, j] == 0)
                     {

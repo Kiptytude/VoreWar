@@ -1350,7 +1350,15 @@ Turns: {currentTurn}
                         }
                         break;
                     default:
-                        if (tiles[i, j] >= (TacticalTileType)2200)
+                        if (tiles[i, j] >= (TacticalTileType)2400)
+                        {
+                            Tilemap.SetTile(new Vector3Int(i, j, 0), TileDictionary.VolcanicOverLava[(int)tiles[i, j] - 2400]);
+                        }
+                        else if (tiles[i, j] >= (TacticalTileType)2300)
+                        {
+                            Tilemap.SetTile(new Vector3Int(i, j, 0), TileDictionary.VolcanicOverGravel[(int)tiles[i, j] - 2300]);
+                        }
+                        else if (tiles[i, j] >= (TacticalTileType)2200)
                         {
                             Tilemap.SetTile(new Vector3Int(i, j, 0), TileDictionary.GrassOverWater[(int)tiles[i, j] - 2200]);
                         }
@@ -1361,6 +1369,10 @@ Turns: {currentTurn}
                         else if (tiles[i, j] >= (TacticalTileType)2000)
                         {
                             Tilemap.SetTile(new Vector3Int(i, j, 0), TileDictionary.RocksOverSand[(int)tiles[i, j] - 2000]);
+                        }
+                        else if (tiles[i, j] >= (TacticalTileType)500)
+                        {
+                            Tilemap.SetTile(new Vector3Int(i, j, 0), TileDictionary.VolcanicTileTypes[(int)tiles[i, j] - 500]);
                         }
                         else if (tiles[i, j] >= (TacticalTileType)400)
                         {
@@ -1402,7 +1414,21 @@ Turns: {currentTurn}
                         if (i >= tiles.GetLength(0) || j >= tiles.GetLength(1))
                             continue;
                         int type = decoration.TacDec.Tile[x, y];
-                        if (type >= 400)
+                        if (type >= 500)
+                        {
+                            if (type < 507)
+                                FrontTilemap.SetTile(new Vector3Int(i, j, 0), TileDictionary.VolcanicTileTypes[type - 500]);
+                            else
+                            {
+                                var obj = Instantiate(State.GameManager.SpriteRendererPrefab, TerrainFolder).GetComponent<SpriteRenderer>();
+                                obj.sprite = TileDictionary.VolcanicTileSprites[type - 500];
+                                obj.sortingOrder = 20000 - (30 * (i + (j * 3)));
+                                obj.transform.position = new Vector3(i, j, 0);
+                                if (y >= decoration.TacDec.Height)
+                                    obj.sortingOrder += 30;
+                            }
+                        }
+                        else if (type >= 400)
                         {
                             FrontTilemap.SetTile(new Vector3Int(i, j, 0), TileDictionary.SnowEnviroment[type - 400]);
                         }

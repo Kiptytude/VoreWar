@@ -1650,23 +1650,19 @@ public class StrategyMode : SceneBase
         }
 
         float NightRoll = (float)State.Rand.NextDouble();
-        Debug.Log(Config.World.GetValue("DayNightEnabled"));
         if (Config.DayNightEnabled)
         {           
             if (Config.DayNightSchedule && State.World.Turn % Config.World.NightRounds == 0)
             {
-                Debug.Log("Night time!");
                 State.World.IsNight = true;
             }
             else if (Config.DayNightRandom && NightRoll < NightChance)
             {
-                Debug.Log("Night time!");
                 State.World.IsNight = true;
                 NightChance = Config.BaseNightChance;
             }
             else
             {
-                Debug.Log("Day time!");
                 State.World.IsNight = false;
                 NightChance += Config.NightChanceIncrease;
             }
