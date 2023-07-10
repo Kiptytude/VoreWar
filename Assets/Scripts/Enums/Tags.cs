@@ -472,6 +472,8 @@ static class TraitsMethods
             case Traits.Changeling:
             case Traits.GreaterChangeling:
             case Traits.TrueChangeling:
+            //case Traits.Shapeshifter:
+            //case Traits.Skinwalker:
                 return true;
             default:
                 return false;

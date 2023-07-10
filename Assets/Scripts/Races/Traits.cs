@@ -6,6 +6,23 @@ abstract class Trait
     internal string Description;
 }
 
+abstract class VoreTrait : Trait
+{
+    public int ProcessingPriority = 0;//lower runs first
+    public abstract bool IsPredTrait { get; }//is the trait triggered from the pred or the prey side
+    /* 
+     * use the boolean return to skip lower priority traits, eg. if the unit has already
+     *  been removed and as part of a trait like digestive conversion, it shouldn't run the digestive rebirth trait it stole with extraction 
+    */
+    public abstract bool OnSwallow(Prey preyUnit, Actor_Unit predUnit);//any time prey is added (living or dead)
+    public abstract bool OnRemove(Prey preyUnit, Actor_Unit predUnit);//any time prey is removed (living or dead)
+    public abstract bool OnDigestion(Prey preyUnit, Actor_Unit predUnit);//any time living prey is digested but won't die yet
+    public abstract bool OnFinishDigestion(Prey preyUnit, Actor_Unit predUnit);//right before unit dies
+    public abstract bool OnDigestionKill(Prey preyUnit, Actor_Unit predUnit);//right after unit dies
+    public abstract bool OnAbsorption(Prey preyUnit, Actor_Unit predUnit);//any time a dead unit is being absorbed
+    public abstract bool OnFinishAbsorption(Prey preyUnit, Actor_Unit predUnit);//unit is done absorbing, but not removed yet
+}
+
 class PermanentBoosts
 {
     internal float ExpRequired = 1.0f;
@@ -88,6 +105,8 @@ interface IPhysicalDefenseOdds
     void PhysicalDefense(Actor_Unit defender, ref float defMult);
 }
 
+
+
 class Booster : Trait
 {
     internal Action<PermanentBoosts> Boost;
@@ -126,6 +145,8 @@ static class TraitList
         [Traits.Stinger] = new Stinger(),
         [Traits.DefensiveStance] = new DefensiveStance(),
         [Traits.Ravenous] = new Ravenous(),
+        [Traits.Possession] = new Possession(),
+        [Traits.UnpleasantDigestion] = new UnpleasantDigestion(),
         [Traits.Tempered] = new Booster("Reduces damage taken from ranged attacks.\nIncreases damage taken from melee attacks", (s) => { s.Incoming.RangedDamage *= .7f; s.Incoming.MeleeDamage *= 1.3f; s.VirtualDexMult *= 1.1f; }),
         [Traits.GelatinousBody] = new Booster("Takes less damage from attacks, but is easier to vore", (s) => { s.Incoming.RangedDamage *= .75f; s.Incoming.MeleeDamage *= 0.8f; s.Incoming.VoreOddsMult *= 1.15f; }),
         [Traits.MetalBody] = new Booster("Provides vore resistance, and their remains are only worth half as much healing", (s) => { s.Incoming.VoreOddsMult *= .7f; s.Outgoing.Nutrition *= .5f; }),
@@ -371,6 +392,144 @@ internal class Ravenous : Trait, IVoreAttackOdds
     }
 }
 
+internal class UnpleasantDigestion : VoreTrait
+{
+    public UnpleasantDigestion()
+    {
+        Description = "While digesting, Prey deals damage to predator";
+    }
+
+    public override bool IsPredTrait
+    {
+        get { return false; }
+    }
+
+    public override bool OnAbsorption(Prey preyUnit, Actor_Unit predUnit)
+    {
+        return true;
+    }
+
+    public override bool OnDigestion(Prey preyUnit, Actor_Unit predUnit)
+    {
+        predUnit.Damage(1);
+        return true;
+    }
+
+    public override bool OnFinishAbsorption(Prey preyUnit, Actor_Unit predUnit)
+    {
+        return true;
+    }
+
+    public override bool OnFinishDigestion(Prey preyUnit, Actor_Unit predUnit)
+    {
+        return true;
+    }
+
+    public override bool OnDigestionKill(Prey preyUnit, Actor_Unit predUnit)
+    {
+        return true;
+    }
+
+    public override bool OnRemove(Prey preyUnit, Actor_Unit predUnit)
+    {
+        return true;
+    }
+
+    public override bool OnSwallow(Prey preyUnit, Actor_Unit predUnit)
+    {
+        return true;
+    }
+}
+
+internal class Possession : VoreTrait
+{
+    public Possession()
+    {
+        Description = "If a possession unit is eaten, the pred will be possessed as a hidden status. " +
+        "Once possessed prey's stat total plus the Preds corruption is equal to that of the pred, they are under control of the side of the last-eaten possessed.";
+    }
+
+    public override bool IsPredTrait
+    {
+        get { return false; }
+    }
+
+    internal void RemovePossession(Prey preyUnit, Actor_Unit predUnit)
+    {
+        predUnit.Possessed = predUnit.Possessed - preyUnit.Unit.GetStatTotal() - preyUnit.Unit.GetStat(Stat.Mind);
+        if (predUnit.Possessed + predUnit.Corruption < predUnit.Unit.GetStatTotal() + predUnit.Unit.GetStat(Stat.Will))
+        {
+            if(predUnit.Unit.FixedSide != predUnit.Unit.Side)
+            {
+                predUnit.Unit.FixedSide = predUnit.Unit.Side;
+                predUnit.Unit.hiddenFixedSide = false;
+            }
+
+        }
+    }
+    
+    internal void CheckPossession(Prey preyUnit, Actor_Unit predUnit)
+    {
+        if (predUnit.Possessed + predUnit.Corruption >= predUnit.Unit.GetStatTotal() + predUnit.Unit.GetStat(Stat.Will))
+        {
+            if(predUnit.Unit.FixedSide != preyUnit.Unit.FixedSide)
+            {
+                if (!predUnit.Unit.HasTrait(Traits.Untamable))
+                    predUnit.Unit.FixedSide = preyUnit.Unit.FixedSide;
+                    predUnit.Unit.hiddenFixedSide = true;
+            }
+        }
+    }
+
+    public override bool OnRemove(Prey preyUnit, Actor_Unit predUnit)
+    {
+        if (!preyUnit.Unit.IsDead)
+        {
+            RemovePossession(preyUnit, predUnit);
+        }
+        return true;
+    }
+
+    public override bool OnFinishDigestion(Prey preyUnit, Actor_Unit predUnit)
+    {
+        return true;
+    }
+
+    public override bool OnDigestionKill(Prey preyUnit, Actor_Unit predUnit)
+    {
+        RemovePossession(preyUnit, predUnit);
+        return true;
+    }
+
+    public override bool OnDigestion(Prey preyUnit, Actor_Unit predUnit)
+    {
+        CheckPossession(preyUnit, predUnit);
+        return true;
+    }
+
+    public override bool OnSwallow(Prey preyUnit, Actor_Unit predUnit)
+    {
+        if (!preyUnit.Unit.IsDead)
+        {
+            predUnit.Possessed = predUnit.Possessed + preyUnit.Unit.GetStatTotal() + preyUnit.Unit.GetStat(Stat.Mind);
+            CheckPossession(preyUnit, predUnit);
+        }
+        return true;
+    }
+
+    public override bool OnAbsorption(Prey preyUnit, Actor_Unit predUnit)
+    {
+        return true;
+    }
+
+    public override bool OnFinishAbsorption(Prey preyUnit, Actor_Unit predUnit)
+    {
+        return true;
+    }
+}
+    
+
+    
 
 
 

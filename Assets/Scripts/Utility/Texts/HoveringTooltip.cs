@@ -587,7 +587,9 @@ public class HoveringTooltip : MonoBehaviour
             case Traits.GreaterChangeling:
                 return "While digesing a prey, Becomes that prey's Race until absorption";
             case Traits.TrueChangeling:
-                return "While digesing a prey, Becomes that prey's Race until dispelled";    
+                return "While digesing a prey, Becomes that prey's Race until dispelled";
+            case Traits.Metamorphosis:
+                return "Unit changes Race upon digestion";
         }  
         return "<b>This trait needs a tooltip!</b>";
     }
