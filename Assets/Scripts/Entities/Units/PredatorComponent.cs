@@ -4,7 +4,22 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-
+interface IVoreCallbacks
+{
+    int ProcessingPriority { get; }//lower runs first
+    bool IsPredTrait { get; }//is the trait triggered from the pred or the prey side
+    /* 
+     * use the boolean return to skip lower priority traits, eg. if the unit has already
+     *  been removed and as part of a trait like digestive conversion, it shouldn't run the digestive rebirth trait it stole with extraction 
+    */
+    bool OnSwallow(Prey preyUnit, Actor_Unit predUnit);//any time prey is added (living or dead)
+    bool OnRemove(Prey preyUnit, Actor_Unit predUnit);//any time prey is removed (living or dead)
+    bool OnDigestion(Prey preyUnit, Actor_Unit predUnit);//any time living prey is digested but won't die yet
+    bool OnFinishDigestion(Prey preyUnit, Actor_Unit predUnit);//right before unit dies
+    bool OnDigestionKill(Prey preyUnit, Actor_Unit predUnit);//right after unit dies
+    bool OnAbsorption(Prey preyUnit, Actor_Unit predUnit);//any time a dead unit is being absorbed
+    bool OnFinishAbsorption(Prey preyUnit, Actor_Unit predUnit);//unit is done absorbing, but not removed yet
+}
 
 public enum PreyLocation
 {
@@ -749,21 +764,22 @@ public class PredatorComponent
                     unit.AddSharedTrait(trait);
     }
 
-    private List<VoreTrait> PopulateCallbacks(Prey preyUnit)
+    private List<IVoreCallbacks> PopulateCallbacks(Prey preyUnit)
     {
-        List<VoreTrait> Callbacks = new List<VoreTrait>();
-        foreach (Traits trait in unit.GetTraits.Where(t => (TraitList.GetTrait(t) != null) && TraitList.GetTrait(t) is VoreTrait))
+        List<IVoreCallbacks> Callbacks = new List<IVoreCallbacks>();
+        foreach (Traits trait in unit.GetTraits.Where(t => (TraitList.GetTrait(t) != null) && TraitList.GetTrait(t) is IVoreCallbacks))
         {
-            VoreTrait callback = (VoreTrait)TraitList.GetTrait(trait);
+            IVoreCallbacks callback = (IVoreCallbacks)TraitList.GetTrait(trait);
             if (callback.IsPredTrait == true)
                 Callbacks.Add(callback);
         }
-        foreach (Traits trait in preyUnit.Unit.GetTraits.Where(t => (TraitList.GetTrait(t) != null) && TraitList.GetTrait(t) is VoreTrait))
+        foreach (Traits trait in preyUnit.Unit.GetTraits.Where(t => (TraitList.GetTrait(t) != null) && TraitList.GetTrait(t) is IVoreCallbacks))
         {
-            VoreTrait callback = (VoreTrait)TraitList.GetTrait(trait);
+            IVoreCallbacks callback = (IVoreCallbacks)TraitList.GetTrait(trait);
             if (callback.IsPredTrait == false)
                 Callbacks.Add(callback);
         }
+        //future idea: create status effect classes that can ALSO implement vore related callbacks
         return Callbacks;
     }
 
@@ -785,7 +801,7 @@ public class PredatorComponent
             unit.InitializeTraits();
             actor.ReloadSpellTraits();
         }
-        foreach(VoreTrait callback in PopulateCallbacks(preyUnit).OrderBy((vt) => vt.ProcessingPriority))
+        foreach(IVoreCallbacks callback in PopulateCallbacks(preyUnit).OrderBy((vt) => vt.ProcessingPriority))
         {
             if(!callback.OnSwallow(preyUnit, actor))
                 return;
@@ -899,7 +915,7 @@ public class PredatorComponent
                 unit.InitializeTraits();
                 actor.ReloadSpellTraits();
             }
-            foreach (VoreTrait callback in PopulateCallbacks(preyUnit).OrderBy((vt) => vt.ProcessingPriority))
+            foreach (IVoreCallbacks callback in PopulateCallbacks(preyUnit).OrderBy((vt) => vt.ProcessingPriority))
             {
                 if (!callback.OnRemove(preyUnit, actor))
                     return;
@@ -1224,7 +1240,7 @@ public class PredatorComponent
 
     private int DigestOneUnit(Prey preyUnit, int preyDamage)
     {
-        List<VoreTrait> Callbacks = PopulateCallbacks(preyUnit).OrderBy((vt) => vt.ProcessingPriority).ToList();
+        List<IVoreCallbacks> Callbacks = PopulateCallbacks(preyUnit).OrderBy((vt) => vt.ProcessingPriority).ToList();
         int totalHeal = 0;
         bool freshKill = false;
         if (unit.HasTrait(Traits.Extraction) && !TacticalUtilities.IsPreyEndoTargetForUnit(preyUnit, unit))
@@ -1251,61 +1267,17 @@ public class PredatorComponent
         }
         if (preyUnit.Unit.IsThisCloseToDeath(preyDamage))
         {
-            foreach (VoreTrait callback in Callbacks)
-            {
-                if (!callback.OnFinishDigestion(preyUnit, actor))
-                    return 0;
-            }
-            if (preyUnit.Unit.HasTrait(Traits.Parasite))
-            {
-                actor.Infected = true;
-                actor.InfectedRace = DetermineSpawnRace(preyUnit.Unit);
-                if (!unit.HasSharedTrait(Traits.Parasite))
-                    actor.InfectedRace = DetermineSpawnRace(preyUnit.Unit.HiddenUnit);
-                actor.InfectedSide = preyUnit.Unit.FixedSide;
-            }
+
+
             if (preyUnit.Unit.HasTrait(Traits.Corruption))
             {
                 actor.AddCorruption(preyUnit.Unit.GetStatTotal(), preyUnit.Unit.FixedSide);
                 preyUnit.Unit.RemoveTrait(Traits.Corruption);
             }
-            if (preyUnit.Unit.HasTrait(Traits.Metamorphosis))
+            foreach (IVoreCallbacks callback in Callbacks)
             {
-                OnRemoveCallbacks(preyUnit);
-                Race conversionRace = DetermineSpawnRace(preyUnit.Unit.HiddenUnit);
-                preyUnit.Unit.Health = preyUnit.Unit.MaxHealth;
-                preyUnit.Unit.GiveExp(unit.Experience / 2);
-                preyUnit.Actor.Movement = 0;
-
-                preyUnit.Actor.Surrendered = false;
-                if (preyUnit.Unit.Race != preyUnit.Unit.HiddenRace)
-                {
-                    preyUnit.Unit.ResetSharedTraits();
-                    preyUnit.Actor.RevertRace();
-                }
-                if (preyUnit.Unit.Race != conversionRace)
-                {
-                    HashSet<Gender> set = new HashSet<Gender>(Races.GetRace(preyUnit.Unit.Race).CanBeGender);
-                    bool equals = set.SetEquals(Races.GetRace(conversionRace).CanBeGender);
-                    preyUnit.Unit.ChangeRace(conversionRace);
-                    preyUnit.Unit.SetGear(conversionRace);
-                    if (equals == false || Config.AlwaysRandomizeConverted)
-                        preyUnit.Unit.TotalRandomizeAppearance();
-                    else
-                    {
-                        var race = Races.GetRace(conversionRace);
-                        race.RandomCustom(preyUnit.Unit);
-                    }
-                    preyUnit.Actor.AnimationController = new AnimationController();
-                    preyUnit.Actor.Unit.ReloadTraits();
-                    preyUnit.Actor.Unit.InitializeTraits();
-                    preyUnit.Actor.PredatorComponent?.FreeAnyAlivePrey();
-                    preyUnit.Actor.PredatorComponent?.RefreshSharedTraits();
-                }
-                OnSwallowCallbacks(preyUnit);
-                State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"{preyUnit.Unit.Name} changed form within {unit.Name}'s body.");
-                UpdateFullness();
-                return 0;
+                if (!callback.OnFinishDigestion(preyUnit, actor))
+                    return 0;
             }
             if (preyUnit.Unit.CanBeConverted() &&
              (Location(preyUnit) == PreyLocation.womb || Config.KuroTenkoConvertsAllTypes) &&
@@ -1447,7 +1419,7 @@ public class PredatorComponent
         {
             preyUnit.Actor.Unit.Health = 0;
             TryChangeRace(preyUnit);
-            foreach (VoreTrait callback in Callbacks)
+            foreach (IVoreCallbacks callback in Callbacks)
             {
                 if (!callback.OnDigestionKill(preyUnit, actor))
                     return 0;
@@ -1486,7 +1458,7 @@ public class PredatorComponent
             var baseManaGain = healthReduction * (preyUnit.Unit.TraitBoosts.Outgoing.ManaAbsorbHundreths + unit.TraitBoosts.Incoming.ManaAbsorbHundreths);
             var totalManaGain = baseManaGain / 100 + (State.Rand.Next(100) < (baseManaGain % 100) ? 1 : 0);
             unit.RestoreMana(totalManaGain);
-            foreach (VoreTrait callback in Callbacks)
+            foreach (IVoreCallbacks callback in Callbacks)
             {
                 if (!callback.OnAbsorption(preyUnit, actor))
                     return 0;
@@ -1533,16 +1505,16 @@ public class PredatorComponent
             }
             if (preyUnit.Unit.IsDeadAndOverkilledBy(preyUnit.Unit.MaxHealth))
             {
-                foreach (VoreTrait callback in Callbacks)
-                {
-                    if (!callback.OnFinishAbsorption(preyUnit, actor))
-                        return 0;
-                }
                 if (actor.Infected)
                 {
                     actor.Damage(totalHeal * 2);
                     totalHeal = 0;
                     CreateSpawn(actor.InfectedRace, actor.InfectedSide, unit.Experience/2, true);
+                }
+                foreach (IVoreCallbacks callback in Callbacks)
+                {
+                    if (!callback.OnFinishAbsorption(preyUnit, actor))
+                        return 0;
                 }
                 if (unit.HasTrait(Traits.CreateSpawn))
                 {
@@ -1720,7 +1692,7 @@ public class PredatorComponent
         }
         else
         {
-            foreach (VoreTrait callback in Callbacks)
+            foreach (IVoreCallbacks callback in Callbacks)
             {
                 if (!callback.OnDigestion(preyUnit, actor))
                     return 0;

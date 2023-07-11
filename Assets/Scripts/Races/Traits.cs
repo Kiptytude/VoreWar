@@ -6,21 +6,25 @@ abstract class Trait
     internal string Description;
 }
 
-abstract class VoreTrait : Trait
+abstract class VoreTrait : Trait, IVoreCallbacks
 {
-    public int ProcessingPriority = 0;//lower runs first
-    public abstract bool IsPredTrait { get; }//is the trait triggered from the pred or the prey side
-    /* 
-     * use the boolean return to skip lower priority traits, eg. if the unit has already
-     *  been removed and as part of a trait like digestive conversion, it shouldn't run the digestive rebirth trait it stole with extraction 
-    */
-    public abstract bool OnSwallow(Prey preyUnit, Actor_Unit predUnit);//any time prey is added (living or dead)
-    public abstract bool OnRemove(Prey preyUnit, Actor_Unit predUnit);//any time prey is removed (living or dead)
-    public abstract bool OnDigestion(Prey preyUnit, Actor_Unit predUnit);//any time living prey is digested but won't die yet
-    public abstract bool OnFinishDigestion(Prey preyUnit, Actor_Unit predUnit);//right before unit dies
-    public abstract bool OnDigestionKill(Prey preyUnit, Actor_Unit predUnit);//right after unit dies
-    public abstract bool OnAbsorption(Prey preyUnit, Actor_Unit predUnit);//any time a dead unit is being absorbed
-    public abstract bool OnFinishAbsorption(Prey preyUnit, Actor_Unit predUnit);//unit is done absorbing, but not removed yet
+    public virtual int ProcessingPriority => 0;
+
+    public abstract bool IsPredTrait { get; }
+
+    public virtual bool OnAbsorption(Prey preyUnit, Actor_Unit predUnit) => true;
+
+    public virtual bool OnDigestion(Prey preyUnit, Actor_Unit predUnit) => true;
+
+    public virtual bool OnDigestionKill(Prey preyUnit, Actor_Unit predUnit) => true;
+
+    public virtual bool OnFinishAbsorption(Prey preyUnit, Actor_Unit predUnit) => true;
+
+    public virtual bool OnFinishDigestion(Prey preyUnit, Actor_Unit predUnit) => true;
+
+    public virtual bool OnRemove(Prey preyUnit, Actor_Unit predUnit) => true;
+
+    public virtual bool OnSwallow(Prey preyUnit, Actor_Unit predUnit) => true;
 }
 
 class PermanentBoosts
@@ -399,45 +403,83 @@ internal class UnpleasantDigestion : VoreTrait
         Description = "While digesting, Prey deals damage to predator";
     }
 
-    public override bool IsPredTrait
-    {
-        get { return false; }
-    }
-
-    public override bool OnAbsorption(Prey preyUnit, Actor_Unit predUnit)
-    {
-        return true;
-    }
+    public override bool IsPredTrait => false;
 
     public override bool OnDigestion(Prey preyUnit, Actor_Unit predUnit)
     {
         predUnit.Damage(1);
         return true;
     }
+}
 
-    public override bool OnFinishAbsorption(Prey preyUnit, Actor_Unit predUnit)
+internal class Parasite : VoreTrait
+{
+    public Parasite()
     {
-        return true;
+        Description = "A parasite prey will give the host CreateSpawn and set infection after digestion, host Takes minor damage on prey absorption and major damage when creating spawn";
     }
+
+    public override bool IsPredTrait => false;
 
     public override bool OnFinishDigestion(Prey preyUnit, Actor_Unit predUnit)
     {
+        predUnit.Infected = true;
+        predUnit.InfectedRace = predUnit.PredatorComponent.DetermineSpawnRace(preyUnit.Unit);
+        if (!preyUnit.Unit.HasSharedTrait(Traits.Parasite))
+            predUnit.InfectedRace = predUnit.PredatorComponent.DetermineSpawnRace(preyUnit.Unit.HiddenUnit);
+        predUnit.InfectedSide = preyUnit.Unit.FixedSide;
         return true;
     }
+}
 
-    public override bool OnDigestionKill(Prey preyUnit, Actor_Unit predUnit)
+internal class Metamorphosis : VoreTrait
+{
+    public Metamorphosis()
     {
-        return true;
+        Description = "Unit changes Race upon digestion";
     }
 
-    public override bool OnRemove(Prey preyUnit, Actor_Unit predUnit)
-    {
-        return true;
-    }
+    public override bool IsPredTrait => false;
 
-    public override bool OnSwallow(Prey preyUnit, Actor_Unit predUnit)
+    public override int ProcessingPriority => 50;
+
+    public override bool OnFinishDigestion(Prey preyUnit, Actor_Unit predUnit)
     {
-        return true;
+        predUnit.PredatorComponent.OnRemoveCallbacks(preyUnit);
+        Race conversionRace = predUnit.PredatorComponent.DetermineSpawnRace(preyUnit.Unit.HiddenUnit);
+        preyUnit.Unit.Health = preyUnit.Unit.MaxHealth;
+        preyUnit.Unit.GiveExp(predUnit.Unit.Experience / 2);
+        preyUnit.Actor.Movement = 0;
+
+        preyUnit.Actor.Surrendered = false;
+        if (preyUnit.Unit.Race != preyUnit.Unit.HiddenRace)
+        {
+            preyUnit.Unit.ResetSharedTraits();
+            preyUnit.Actor.RevertRace();
+        }
+        if (preyUnit.Unit.Race != conversionRace)
+        {
+            HashSet<Gender> set = new HashSet<Gender>(Races.GetRace(preyUnit.Unit.Race).CanBeGender);
+            bool equals = set.SetEquals(Races.GetRace(conversionRace).CanBeGender);
+            preyUnit.Unit.ChangeRace(conversionRace);
+            preyUnit.Unit.SetGear(conversionRace);
+            if (equals == false || Config.AlwaysRandomizeConverted)
+                preyUnit.Unit.TotalRandomizeAppearance();
+            else
+            {
+                var race = Races.GetRace(conversionRace);
+                race.RandomCustom(preyUnit.Unit);
+            }
+            preyUnit.Actor.AnimationController = new AnimationController();
+            preyUnit.Actor.Unit.ReloadTraits();
+            preyUnit.Actor.Unit.InitializeTraits();
+            preyUnit.Actor.PredatorComponent?.FreeAnyAlivePrey();
+            preyUnit.Actor.PredatorComponent?.RefreshSharedTraits();
+        }
+        predUnit.PredatorComponent.OnSwallowCallbacks(preyUnit);
+        State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"{preyUnit.Unit.Name} changed form within {predUnit.Unit.Name}'s body.");
+        predUnit.PredatorComponent.UpdateFullness();
+        return false;
     }
 }
 
@@ -449,10 +491,7 @@ internal class Possession : VoreTrait
         "Once possessed prey's stat total plus the Preds corruption is equal to that of the pred, they are under control of the side of the last-eaten possessed.";
     }
 
-    public override bool IsPredTrait
-    {
-        get { return false; }
-    }
+    public override bool IsPredTrait => false;
 
     internal void RemovePossession(Prey preyUnit, Actor_Unit predUnit)
     {
@@ -490,11 +529,6 @@ internal class Possession : VoreTrait
         return true;
     }
 
-    public override bool OnFinishDigestion(Prey preyUnit, Actor_Unit predUnit)
-    {
-        return true;
-    }
-
     public override bool OnDigestionKill(Prey preyUnit, Actor_Unit predUnit)
     {
         RemovePossession(preyUnit, predUnit);
@@ -514,16 +548,6 @@ internal class Possession : VoreTrait
             predUnit.Possessed = predUnit.Possessed + preyUnit.Unit.GetStatTotal() + preyUnit.Unit.GetStat(Stat.Mind);
             CheckPossession(preyUnit, predUnit);
         }
-        return true;
-    }
-
-    public override bool OnAbsorption(Prey preyUnit, Actor_Unit predUnit)
-    {
-        return true;
-    }
-
-    public override bool OnFinishAbsorption(Prey preyUnit, Actor_Unit predUnit)
-    {
         return true;
     }
 }
