@@ -6,7 +6,7 @@ abstract class Trait
     internal string Description;
 }
 
-abstract class VoreTrait : Trait, IVoreCallbacks
+abstract class VoreTrait : Trait, IVoreCallback
 {
     public virtual int ProcessingPriority => 0;
 
@@ -123,7 +123,7 @@ class Booster : AbstractBooster
     }
 }
 
-abstract class VoreTraitBooster : AbstractBooster, IVoreCallbacks
+abstract class VoreTraitBooster : AbstractBooster, IVoreCallback
 {
     public virtual int ProcessingPriority => 0;
 

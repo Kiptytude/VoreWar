@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-interface IVoreCallbacks
+interface IVoreCallback
 {
     int ProcessingPriority { get; }//lower runs first
     bool IsPredTrait { get; }//is the trait triggered from the pred or the prey side
@@ -764,18 +764,18 @@ public class PredatorComponent
                     unit.AddSharedTrait(trait);
     }
 
-    private List<IVoreCallbacks> PopulateCallbacks(Prey preyUnit)
+    private List<IVoreCallback> PopulateCallbacks(Prey preyUnit)
     {
-        List<IVoreCallbacks> Callbacks = new List<IVoreCallbacks>();
-        foreach (Traits trait in unit.GetTraits.Where(t => (TraitList.GetTrait(t) != null) && TraitList.GetTrait(t) is IVoreCallbacks))
+        List<IVoreCallback> Callbacks = new List<IVoreCallback>();
+        foreach (Traits trait in unit.GetTraits.Where(t => (TraitList.GetTrait(t) != null) && TraitList.GetTrait(t) is IVoreCallback))
         {
-            IVoreCallbacks callback = (IVoreCallbacks)TraitList.GetTrait(trait);
+            IVoreCallback callback = (IVoreCallback)TraitList.GetTrait(trait);
             if (callback.IsPredTrait == true)
                 Callbacks.Add(callback);
         }
-        foreach (Traits trait in preyUnit.Unit.GetTraits.Where(t => (TraitList.GetTrait(t) != null) && TraitList.GetTrait(t) is IVoreCallbacks))
+        foreach (Traits trait in preyUnit.Unit.GetTraits.Where(t => (TraitList.GetTrait(t) != null) && TraitList.GetTrait(t) is IVoreCallback))
         {
-            IVoreCallbacks callback = (IVoreCallbacks)TraitList.GetTrait(trait);
+            IVoreCallback callback = (IVoreCallback)TraitList.GetTrait(trait);
             if (callback.IsPredTrait == false)
                 Callbacks.Add(callback);
         }
@@ -785,7 +785,7 @@ public class PredatorComponent
 
     internal void OnSwallowCallbacks(Prey preyUnit)
     {
-        foreach(IVoreCallbacks callback in PopulateCallbacks(preyUnit).OrderBy((vt) => vt.ProcessingPriority))
+        foreach(IVoreCallback callback in PopulateCallbacks(preyUnit).OrderBy((vt) => vt.ProcessingPriority))
         {
             if(!callback.OnSwallow(preyUnit, actor))
                 return;
@@ -878,7 +878,7 @@ public class PredatorComponent
         if(prey.Contains(preyUnit))
         {
             prey.Remove(preyUnit);
-            foreach (IVoreCallbacks callback in PopulateCallbacks(preyUnit).OrderBy((vt) => vt.ProcessingPriority))
+            foreach (IVoreCallback callback in PopulateCallbacks(preyUnit).OrderBy((vt) => vt.ProcessingPriority))
             {
                 if (!callback.OnRemove(preyUnit, actor))
                     return;
@@ -1199,7 +1199,7 @@ public class PredatorComponent
 
     private int DigestOneUnit(Prey preyUnit, int preyDamage)
     {
-        List<IVoreCallbacks> Callbacks = PopulateCallbacks(preyUnit).OrderBy((vt) => vt.ProcessingPriority).ToList();
+        List<IVoreCallback> Callbacks = PopulateCallbacks(preyUnit).OrderBy((vt) => vt.ProcessingPriority).ToList();
         int totalHeal = 0;
         bool freshKill = false;
         if (unit.HasTrait(Traits.Extraction) && !TacticalUtilities.IsPreyEndoTargetForUnit(preyUnit, unit))
@@ -1211,7 +1211,7 @@ public class PredatorComponent
                 var trait = possibleTraits[State.Rand.Next(possibleTraits.Length)];
                 unit.AddPermanentTrait(trait);
                 //process vore traits appropriately
-                if (TraitList.GetTrait(trait) is IVoreCallbacks callback)
+                if (TraitList.GetTrait(trait) is IVoreCallback callback)
                 {
                     if (callback.IsPredTrait == true)
                         callback.OnSwallow(preyUnit, actor);
@@ -1239,7 +1239,7 @@ public class PredatorComponent
                 actor.AddCorruption(preyUnit.Unit.GetStatTotal(), preyUnit.Unit.FixedSide);
                 preyUnit.Unit.RemoveTrait(Traits.Corruption);
             }
-            foreach (IVoreCallbacks callback in Callbacks)
+            foreach (IVoreCallback callback in Callbacks)
             {
                 if (!callback.OnFinishDigestion(preyUnit, actor))
                     return 0;
@@ -1335,7 +1335,7 @@ public class PredatorComponent
         {
             preyUnit.Actor.Unit.Health = 0;
             TryChangeRace(preyUnit);
-            foreach (IVoreCallbacks callback in Callbacks)
+            foreach (IVoreCallback callback in Callbacks)
             {
                 if (!callback.OnDigestionKill(preyUnit, actor))
                     return 0;
@@ -1374,7 +1374,7 @@ public class PredatorComponent
             var baseManaGain = healthReduction * (preyUnit.Unit.TraitBoosts.Outgoing.ManaAbsorbHundreths + unit.TraitBoosts.Incoming.ManaAbsorbHundreths);
             var totalManaGain = baseManaGain / 100 + (State.Rand.Next(100) < (baseManaGain % 100) ? 1 : 0);
             unit.RestoreMana(totalManaGain);
-            foreach (IVoreCallbacks callback in Callbacks)
+            foreach (IVoreCallback callback in Callbacks)
             {
                 if (!callback.OnAbsorption(preyUnit, actor))
                     return 0;
@@ -1427,7 +1427,7 @@ public class PredatorComponent
                     totalHeal = 0;
                     CreateSpawn(actor.InfectedRace, actor.InfectedSide, unit.Experience/2, true);
                 }
-                foreach (IVoreCallbacks callback in Callbacks)
+                foreach (IVoreCallback callback in Callbacks)
                 {
                     if (!callback.OnFinishAbsorption(preyUnit, actor))
                         return 0;
@@ -1582,7 +1582,7 @@ public class PredatorComponent
         }
         else
         {
-            foreach (IVoreCallbacks callback in Callbacks)
+            foreach (IVoreCallback callback in Callbacks)
             {
                 if (!callback.OnDigestion(preyUnit, actor))
                     return 0;
