@@ -109,18 +109,41 @@ interface IPhysicalDefenseOdds
     void PhysicalDefense(Actor_Unit defender, ref float defMult);
 }
 
-
-
-class Booster : Trait
+abstract class AbstractBooster : Trait
 {
     internal Action<PermanentBoosts> Boost;
+}
 
+class Booster : AbstractBooster
+{
     public Booster(string desc, Action<PermanentBoosts> boost)
     {
         Description = desc;
         Boost = boost;
     }
 }
+
+abstract class VoreTraitBooster : AbstractBooster, IVoreCallbacks
+{
+    public virtual int ProcessingPriority => 0;
+
+    public abstract bool IsPredTrait { get; }
+
+    public virtual bool OnAbsorption(Prey preyUnit, Actor_Unit predUnit) => true;
+
+    public virtual bool OnDigestion(Prey preyUnit, Actor_Unit predUnit) => true;
+
+    public virtual bool OnDigestionKill(Prey preyUnit, Actor_Unit predUnit) => true;
+
+    public virtual bool OnFinishAbsorption(Prey preyUnit, Actor_Unit predUnit) => true;
+
+    public virtual bool OnFinishDigestion(Prey preyUnit, Actor_Unit predUnit) => true;
+
+    public virtual bool OnRemove(Prey preyUnit, Actor_Unit predUnit) => true;
+
+    public virtual bool OnSwallow(Prey preyUnit, Actor_Unit predUnit) => true;
+}
+
 
 static class TraitList
 {
@@ -435,11 +458,12 @@ internal class Whispers : VoreTrait
     }
 }
 
-internal class Parasite : VoreTrait
+internal class Parasite : VoreTraitBooster
 {
     public Parasite()
     {
         Description = "A parasite prey will give the host CreateSpawn and set infection after digestion, host Takes minor damage on prey absorption and major damage when creating spawn";
+        Boost = (s) => s.Incoming.ChanceToEscape *= 0;
     }
 
     public override bool IsPredTrait => false;
@@ -482,12 +506,13 @@ internal class Metamorphosis : VoreTrait
     }
 }
 
-internal class Possession : VoreTrait
+internal class Possession : VoreTraitBooster
 {
     public Possession()
     {
         Description = "If a possession unit is eaten, the pred will be possessed as a hidden status. " +
         "Once possessed prey's stat total plus the Preds corruption is equal to that of the pred, they are under control of the side of the last-eaten possessed.";
+        Boost = (s) => s.Incoming.ChanceToEscape *= 0;
     }
 
     public override bool IsPredTrait => false;

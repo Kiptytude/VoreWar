@@ -785,17 +785,6 @@ public class PredatorComponent
 
     internal void OnSwallowCallbacks(Prey preyUnit)
     {
-        if ((preyUnit.Unit.HasTrait(Traits.Symbiote) || unit.HasTrait(Traits.TraitBorrower)) && !changedRace)
-        {
-            foreach(Traits trait in preyUnit.Unit.GetTraits)
-            {
-                if((trait != Traits.Prey) && (trait != Traits.Small))
-                    ShareTrait(trait,preyUnit);
-            }
-            unit.ReloadTraits();
-            unit.InitializeTraits();
-            actor.ReloadSpellTraits();
-        }
         foreach(IVoreCallbacks callback in PopulateCallbacks(preyUnit).OrderBy((vt) => vt.ProcessingPriority))
         {
             if(!callback.OnSwallow(preyUnit, actor))
@@ -1222,9 +1211,8 @@ public class PredatorComponent
                 var trait = possibleTraits[State.Rand.Next(possibleTraits.Length)];
                 unit.AddPermanentTrait(trait);
                 //process vore traits appropriately
-                if (TraitList.GetTrait(trait) is IVoreCallbacks)
+                if (TraitList.GetTrait(trait) is IVoreCallbacks callback)
                 {
-                    var callback = (IVoreCallbacks)TraitList.GetTrait(trait);
                     if (callback.IsPredTrait == true)
                         callback.OnSwallow(preyUnit, actor);
                     else
@@ -1610,7 +1598,7 @@ public class PredatorComponent
                 escapeMult = 1.4f + 2 * ((Fullness / cap) - 1);
                 actor.Damage((int)(FreeCap()*-1)/2);
             }
-            if (State.Rand.NextDouble() < preyUnit.EscapeRate * escapeMult && preyUnit.Actor.Surrendered == false && !preyUnit.Unit.HasTrait(Traits.Possession) && !preyUnit.Unit.HasTrait(Traits.Parasite))
+            if (State.Rand.NextDouble() < preyUnit.EscapeRate * escapeMult && preyUnit.Actor.Surrendered == false)
             {
                 if (stomach2.Contains(preyUnit))
                 {

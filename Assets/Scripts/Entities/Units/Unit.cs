@@ -1599,7 +1599,7 @@ internal void SetGenderRandomizeName(Race race, Gender gender)
                     PhysicalDefenseOdds.Add(physicalDefenseOdds);
                 if (ITrait is IAttackStatusEffect attackStatusEffect)
                     AttackStatusEffects.Add(attackStatusEffect);
-                if (ITrait is Booster booster)
+                if (ITrait is AbstractBooster booster)
                     booster.Boost(TraitBoosts);
             }
         }
@@ -1619,7 +1619,27 @@ internal void SetGenderRandomizeName(Race race, Gender gender)
                     PhysicalDefenseOdds.Add(physicalDefenseOdds);
                 if (ITrait is IAttackStatusEffect attackStatusEffect)
                     AttackStatusEffects.Add(attackStatusEffect);
-                if (ITrait is Booster booster)
+                if (ITrait is AbstractBooster booster)
+                    booster.Boost(TraitBoosts);
+            }
+        }
+
+        if (SharedTraits != null)
+        {
+            foreach (var trait in SharedTraits)
+            {
+                Trait ITrait = TraitList.GetTrait(trait);
+                if (ITrait is IStatBoost boost)
+                    StatBoosts.Add(boost);
+                if (ITrait is IVoreAttackOdds voreAttackOdds)
+                    VoreAttackOdds.Add(voreAttackOdds);
+                if (ITrait is IVoreDefenseOdds voreDefenseOdds)
+                    VoreDefenseOdds.Add(voreDefenseOdds);
+                if (ITrait is IPhysicalDefenseOdds physicalDefenseOdds)
+                    PhysicalDefenseOdds.Add(physicalDefenseOdds);
+                if (ITrait is IAttackStatusEffect attackStatusEffect)
+                    AttackStatusEffects.Add(attackStatusEffect);
+                if (ITrait is AbstractBooster booster)
                     booster.Boost(TraitBoosts);
             }
         }
