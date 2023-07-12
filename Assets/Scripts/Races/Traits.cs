@@ -151,6 +151,13 @@ static class TraitList
         [Traits.Ravenous] = new Ravenous(),
         [Traits.Possession] = new Possession(),
         [Traits.UnpleasantDigestion] = new UnpleasantDigestion(),
+        [Traits.Parasite] = new Parasite(),
+        [Traits.Whispers] = new Whispers(),
+        [Traits.Metamorphosis] = new Metamorphosis(),
+        [Traits.Changeling] = new Changeling(),
+        [Traits.GreaterChangeling] = new GreaterChangeling(),
+        [Traits.Symbiote] = new Symbiote(),
+        [Traits.TraitBorrower] = new TraitBorrower(),
         [Traits.Tempered] = new Booster("Reduces damage taken from ranged attacks.\nIncreases damage taken from melee attacks", (s) => { s.Incoming.RangedDamage *= .7f; s.Incoming.MeleeDamage *= 1.3f; s.VirtualDexMult *= 1.1f; }),
         [Traits.GelatinousBody] = new Booster("Takes less damage from attacks, but is easier to vore", (s) => { s.Incoming.RangedDamage *= .75f; s.Incoming.MeleeDamage *= 0.8f; s.Incoming.VoreOddsMult *= 1.15f; }),
         [Traits.MetalBody] = new Booster("Provides vore resistance, and their remains are only worth half as much healing", (s) => { s.Incoming.VoreOddsMult *= .7f; s.Outgoing.Nutrition *= .5f; }),
@@ -412,6 +419,22 @@ internal class UnpleasantDigestion : VoreTrait
     }
 }
 
+internal class Whispers : VoreTrait
+{
+    public Whispers()
+    {
+        Description = "When eaten, Predator is afflicted by Prey's curse, and has a chance to be charmed each round";
+    }
+
+    public override bool IsPredTrait => false;
+
+    public override bool OnDigestion(Prey preyUnit, Actor_Unit predUnit)
+    {
+        preyUnit.Actor.CastStatusSpell(SpellList.Whispers, predUnit);
+        return true;
+    }
+}
+
 internal class Parasite : VoreTrait
 {
     public Parasite()
@@ -445,38 +468,14 @@ internal class Metamorphosis : VoreTrait
 
     public override bool OnFinishDigestion(Prey preyUnit, Actor_Unit predUnit)
     {
-        predUnit.PredatorComponent.OnRemoveCallbacks(preyUnit);
         Race conversionRace = predUnit.PredatorComponent.DetermineSpawnRace(preyUnit.Unit.HiddenUnit);
         preyUnit.Unit.Health = preyUnit.Unit.MaxHealth;
         preyUnit.Unit.GiveExp(predUnit.Unit.Experience / 2);
-        preyUnit.Actor.Movement = 0;
 
-        preyUnit.Actor.Surrendered = false;
-        if (preyUnit.Unit.Race != preyUnit.Unit.HiddenRace)
-        {
-            preyUnit.Unit.ResetSharedTraits();
-            preyUnit.Actor.RevertRace();
-        }
         if (preyUnit.Unit.Race != conversionRace)
         {
-            HashSet<Gender> set = new HashSet<Gender>(Races.GetRace(preyUnit.Unit.Race).CanBeGender);
-            bool equals = set.SetEquals(Races.GetRace(conversionRace).CanBeGender);
-            preyUnit.Unit.ChangeRace(conversionRace);
-            preyUnit.Unit.SetGear(conversionRace);
-            if (equals == false || Config.AlwaysRandomizeConverted)
-                preyUnit.Unit.TotalRandomizeAppearance();
-            else
-            {
-                var race = Races.GetRace(conversionRace);
-                race.RandomCustom(preyUnit.Unit);
-            }
-            preyUnit.Actor.AnimationController = new AnimationController();
-            preyUnit.Actor.Unit.ReloadTraits();
-            preyUnit.Actor.Unit.InitializeTraits();
-            preyUnit.Actor.PredatorComponent?.FreeAnyAlivePrey();
-            preyUnit.Actor.PredatorComponent?.RefreshSharedTraits();
+            preyUnit.ChangeRace(conversionRace);
         }
-        predUnit.PredatorComponent.OnSwallowCallbacks(preyUnit);
         State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"{preyUnit.Unit.Name} changed form within {predUnit.Unit.Name}'s body.");
         predUnit.PredatorComponent.UpdateFullness();
         return false;
@@ -493,51 +492,24 @@ internal class Possession : VoreTrait
 
     public override bool IsPredTrait => false;
 
-    internal void RemovePossession(Prey preyUnit, Actor_Unit predUnit)
-    {
-        predUnit.Possessed = predUnit.Possessed - preyUnit.Unit.GetStatTotal() - preyUnit.Unit.GetStat(Stat.Mind);
-        if (predUnit.Possessed + predUnit.Corruption < predUnit.Unit.GetStatTotal() + predUnit.Unit.GetStat(Stat.Will))
-        {
-            if(predUnit.Unit.FixedSide != predUnit.Unit.Side)
-            {
-                predUnit.Unit.FixedSide = predUnit.Unit.Side;
-                predUnit.Unit.hiddenFixedSide = false;
-            }
-
-        }
-    }
-    
-    internal void CheckPossession(Prey preyUnit, Actor_Unit predUnit)
-    {
-        if (predUnit.Possessed + predUnit.Corruption >= predUnit.Unit.GetStatTotal() + predUnit.Unit.GetStat(Stat.Will))
-        {
-            if(predUnit.Unit.FixedSide != preyUnit.Unit.FixedSide)
-            {
-                if (!predUnit.Unit.HasTrait(Traits.Untamable))
-                    predUnit.Unit.FixedSide = preyUnit.Unit.FixedSide;
-                    predUnit.Unit.hiddenFixedSide = true;
-            }
-        }
-    }
-
     public override bool OnRemove(Prey preyUnit, Actor_Unit predUnit)
     {
         if (!preyUnit.Unit.IsDead)
         {
-            RemovePossession(preyUnit, predUnit);
+            predUnit.RemovePossession(preyUnit.Actor);
         }
         return true;
     }
 
     public override bool OnDigestionKill(Prey preyUnit, Actor_Unit predUnit)
     {
-        RemovePossession(preyUnit, predUnit);
+        predUnit.RemovePossession(preyUnit.Actor);
         return true;
     }
 
     public override bool OnDigestion(Prey preyUnit, Actor_Unit predUnit)
     {
-        CheckPossession(preyUnit, predUnit);
+        predUnit.CheckPossession(preyUnit.Actor);
         return true;
     }
 
@@ -545,15 +517,133 @@ internal class Possession : VoreTrait
     {
         if (!preyUnit.Unit.IsDead)
         {
-            predUnit.Possessed = predUnit.Possessed + preyUnit.Unit.GetStatTotal() + preyUnit.Unit.GetStat(Stat.Mind);
-            CheckPossession(preyUnit, predUnit);
+            predUnit.AddPossession(preyUnit.Actor);
         }
         return true;
     }
 }
-    
 
-    
+internal class Changeling : VoreTrait
+{
+    public Changeling()
+    {
+        Description = "While absorbing a prey, Becomes that prey's Race";
+    }
+
+    public override bool IsPredTrait => true;
+
+    public override int ProcessingPriority => 51;
+
+    public virtual bool TargetIsDead => true;
+
+    public override bool OnRemove(Prey preyUnit, Actor_Unit predUnit)
+    {
+        if (preyUnit == predUnit.PredatorComponent.template)
+        {
+            predUnit.RevertRace();
+            predUnit.PredatorComponent.ChangeRaceAuto(TargetIsDead, false);
+            return false;
+        }
+        return true;
+    }
+
+    public override bool OnDigestionKill(Prey preyUnit, Actor_Unit predUnit)
+    {
+        predUnit.PredatorComponent.TryChangeRace(preyUnit);
+        return true;
+    }
+
+}
+
+internal class GreaterChangeling : Changeling
+{
+    public GreaterChangeling()
+    {
+        Description = "While digesting a prey, Becomes that prey's Race";
+    }
+
+    public override bool IsPredTrait => true;
+
+    public override int ProcessingPriority => 50;
+
+    public override bool TargetIsDead => false;
+
+    public override bool OnSwallow(Prey preyUnit, Actor_Unit predUnit)
+    {
+        return !predUnit.PredatorComponent.TryChangeRace(preyUnit);
+    }
+}
+
+internal class Symbiote : VoreTrait
+{
+    public Symbiote()
+    {
+        Description = "Shares generic traits with pred";
+    }
+
+    public override bool IsPredTrait => false;
+
+    public override int ProcessingPriority => 100;
+
+    public override bool OnSwallow(Prey preyUnit, Actor_Unit predUnit)
+    {
+        foreach (Traits trait in preyUnit.Unit.GetTraits)
+        {
+            if ((trait != Traits.Prey) && (trait != Traits.Small))
+                predUnit.PredatorComponent.ShareTrait(trait, preyUnit);
+        }
+        predUnit.Unit.ReloadTraits();
+        predUnit.Unit.InitializeTraits();
+        predUnit.ReloadSpellTraits();
+        return true;
+    }
+
+    public override bool OnRemove(Prey preyUnit, Actor_Unit predUnit)
+    {
+        foreach (Traits trait in preyUnit.SharedTraits)
+            predUnit.Unit.RemoveSharedTrait(trait);
+        predUnit.PredatorComponent.RefreshSharedTraits();
+        predUnit.Unit.InitializeTraits();
+        predUnit.ReloadSpellTraits();
+        return true;
+    }
+}
+internal class TraitBorrower : VoreTrait
+{
+    public TraitBorrower()
+    {
+        Description = "borrows generic traits from prey";
+    }
+
+    public override bool IsPredTrait => true;
+
+    public override int ProcessingPriority => 100;
+
+    public override bool OnSwallow(Prey preyUnit, Actor_Unit predUnit)
+    {
+        foreach (Traits trait in preyUnit.Unit.GetTraits)
+        {
+            if ((trait != Traits.Prey) && (trait != Traits.Small))
+                predUnit.PredatorComponent.ShareTrait(trait, preyUnit);
+        }
+        predUnit.Unit.ReloadTraits();
+        predUnit.Unit.InitializeTraits();
+        predUnit.ReloadSpellTraits();
+        return true;
+    }
+
+    public override bool OnRemove(Prey preyUnit, Actor_Unit predUnit)
+    {
+        foreach (Traits trait in preyUnit.SharedTraits)
+            predUnit.Unit.RemoveSharedTrait(trait);
+        predUnit.PredatorComponent.RefreshSharedTraits();
+        predUnit.Unit.InitializeTraits();
+        predUnit.ReloadSpellTraits();
+        return true;
+    }
+}
+
+
 
 
 

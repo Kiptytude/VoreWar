@@ -580,7 +580,7 @@ public class HoveringTooltip : MonoBehaviour
                 return "When this unit would equip a book, it is instead consumed and the spell becomes innate. Does not consume already equipped books, but does consume one if the unit would gain more than it could carry via BookWorm.";
             case Traits.Whispers:
                 return "When eaten, Predator is afflicted by Prey's curse, and has a chance to be charmed each round";
-            case Traits.TraitStealer:
+            case Traits.TraitBorrower:
                 return "While digesting, , Predator is able to use prey's normal traits";
             case Traits.Changeling:
                 return "While Absorbing a prey, Becomes that prey's Race until absorption";

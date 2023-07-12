@@ -335,7 +335,7 @@ public enum Traits
     /// <summary>While digesting, Prey deals damage to predator</summary>
     UnpleasantDigestion = 169,
     /// <summary>While digesting, Predator is able to use prey's normal traits</summary>
-    TraitStealer = 170,
+    TraitBorrower = 170,
 
 
 

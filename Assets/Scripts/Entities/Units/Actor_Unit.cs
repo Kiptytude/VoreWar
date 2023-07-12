@@ -2638,6 +2638,40 @@ public class Actor_Unit
             Corruption = 0;
     }
 
+    internal void AddPossession(Actor_Unit possessor)
+    {
+        this.Possessed = this.Possessed + possessor.Unit.GetStatTotal() + possessor.Unit.GetStat(Stat.Mind);
+        CheckPossession(possessor);
+    }
+
+    internal void RemovePossession(Actor_Unit possessor)
+    {
+        this.Possessed = this.Possessed - possessor.Unit.GetStatTotal() - possessor.Unit.GetStat(Stat.Mind);
+        CheckPossession(possessor);
+    }
+
+    internal void CheckPossession(Actor_Unit possessor)
+    {
+        if (this.Possessed + this.Corruption >= this.Unit.GetStatTotal() + this.Unit.GetStat(Stat.Will))
+        {
+            if (this.Unit.FixedSide != possessor.Unit.FixedSide)
+            {
+                if (!this.Unit.HasTrait(Traits.Untamable))
+                    this.Unit.FixedSide = possessor.Unit.FixedSide;
+                this.Unit.hiddenFixedSide = true;
+                sidesAttackedThisBattle = new List<int>();
+            }
+        }
+        else
+        {
+            if (this.Unit.FixedSide != this.Unit.Side)
+            {
+                this.Unit.FixedSide = this.Unit.Side;
+                this.Unit.hiddenFixedSide = false;
+            }
+        }
+    }
+
     internal void Shapeshift(Unit shape)
     {
         if (Unit == shape)

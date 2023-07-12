@@ -126,7 +126,7 @@ public class PredatorComponent
     [OdinSerialize]
     public int birthStatBoost;
     [OdinSerialize]
-    private Prey template = null;
+    internal Prey template = null;
 
 
     public int AlivePrey { get; set; }
@@ -744,7 +744,7 @@ public class PredatorComponent
 
     }
 
-    void ShareTrait(Traits trait, Prey preyUnit, Traits maxTrait = Traits.Infiltrator)
+    internal void ShareTrait(Traits trait, Prey preyUnit, Traits maxTrait = Traits.Infiltrator)
     {
         if (trait < maxTrait && !TraitsMethods.IsRaceModifying(trait))
         {
@@ -785,12 +785,7 @@ public class PredatorComponent
 
     internal void OnSwallowCallbacks(Prey preyUnit)
     {
-        bool changedRace = false;
-        if (unit.HasTrait(Traits.GreaterChangeling)|| unit.HasTrait(Traits.TrueChangeling))
-        {
-            changedRace = TryChangeRace(preyUnit);
-        }
-        if ((preyUnit.Unit.HasTrait(Traits.Symbiote) || unit.HasTrait(Traits.TraitStealer)) && !changedRace)
+        if ((preyUnit.Unit.HasTrait(Traits.Symbiote) || unit.HasTrait(Traits.TraitBorrower)) && !changedRace)
         {
             foreach(Traits trait in preyUnit.Unit.GetTraits)
             {
@@ -894,27 +889,6 @@ public class PredatorComponent
         if(prey.Contains(preyUnit))
         {
             prey.Remove(preyUnit);
-            if (preyUnit == template)
-                if (unit.HasTrait(Traits.Changeling) || unit.HasTrait(Traits.GreaterChangeling))
-                {
-                    actor.RevertRace();
-                    bool isDead = true;
-                    if (unit.HasTrait(Traits.TrueChangeling) || unit.HasTrait(Traits.GreaterChangeling))
-                    {
-                        isDead = false;
-                    }
-                    ChangeRaceAuto(isDead, false);
-                }
-                else
-                    template = null;
-            else if (preyUnit.Unit.HasTrait(Traits.Symbiote) || unit.HasTrait(Traits.TraitStealer))
-            {
-                foreach (Traits trait in preyUnit.SharedTraits)
-                    unit.RemoveSharedTrait(trait);
-                RefreshSharedTraits();
-                unit.InitializeTraits();
-                actor.ReloadSpellTraits();
-            }
             foreach (IVoreCallbacks callback in PopulateCallbacks(preyUnit).OrderBy((vt) => vt.ProcessingPriority))
             {
                 if (!callback.OnRemove(preyUnit, actor))
@@ -1208,7 +1182,7 @@ public class PredatorComponent
         }
     }
 
-    private bool TryChangeRace(Prey preyUnit)
+    internal bool TryChangeRace(Prey preyUnit)
     {
         if (CheckChangeRace(preyUnit))
         {
@@ -1218,10 +1192,6 @@ public class PredatorComponent
             unit.SpawnRace = DetermineSpawnRace(preyUnit.Unit);
             foreach (Traits trait in preyUnit.Unit.GetTraits)
             {
-                if(unit.HasTrait(Traits.TrueChangeling) && (!unit.HasTrait(trait)||unit.HasSharedTrait(trait)) && !TraitsMethods.IsRaceModifying(trait))
-                {
-                    unit.AddPersistentSharedTrait(trait);
-                }
                 ShareTrait(trait, preyUnit, TraitsMethods.LastTrait());
             }
             actor.AnimationController = new AnimationController();
@@ -1251,6 +1221,15 @@ public class PredatorComponent
             {
                 var trait = possibleTraits[State.Rand.Next(possibleTraits.Length)];
                 unit.AddPermanentTrait(trait);
+                //process vore traits appropriately
+                if (TraitList.GetTrait(trait) is IVoreCallbacks)
+                {
+                    var callback = (IVoreCallbacks)TraitList.GetTrait(trait);
+                    if (callback.IsPredTrait == true)
+                        callback.OnSwallow(preyUnit, actor);
+                    else
+                        callback.OnRemove(preyUnit, actor);
+                }
                 preyUnit.Unit.RemoveTrait(trait);
             } else
             if (preyUnit.Unit.GetTraits.Any())
@@ -1267,8 +1246,6 @@ public class PredatorComponent
         }
         if (preyUnit.Unit.IsThisCloseToDeath(preyDamage))
         {
-
-
             if (preyUnit.Unit.HasTrait(Traits.Corruption))
             {
                 actor.AddCorruption(preyUnit.Unit.GetStatTotal(), preyUnit.Unit.FixedSide);
@@ -1287,19 +1264,7 @@ public class PredatorComponent
             {
                 preyUnit.Unit.Health = preyUnit.Unit.MaxHealth / 2;
                 preyUnit.Actor.Movement = 0;
-                if (preyUnit.Unit.Side != unit.Side)
-                    State.GameManager.TacticalMode.SwitchAlignment(preyUnit.Actor);
-                if (unit.HasTrait(Traits.Corruption) || preyUnit.Unit.HasTrait(Traits.Corruption))
-                {
-                    preyUnit.Unit.hiddenFixedSide = true;
-                    preyUnit.Actor.sidesAttackedThisBattle = new List<int>();
-                    preyUnit.Unit.RemoveTrait(Traits.Corruption);
-                    preyUnit.Unit.AddPermanentTrait(Traits.Corruption);
-                }
-                if (!preyUnit.Unit.HasTrait(Traits.Corruption))
-                    preyUnit.Unit.FixedSide = unit.FixedSide;
-
-                preyUnit.Actor.Surrendered = false;
+                preyUnit.ChangeSide(unit.Side);
                 FreeUnit(preyUnit.Actor);
                 TacticalUtilities.Log.RegisterBirth(unit, preyUnit.Unit, 1f);
                 if (!State.GameManager.TacticalMode.turboMode)
@@ -1318,19 +1283,8 @@ public class PredatorComponent
             {
                 preyUnit.Unit.Health = preyUnit.Unit.MaxHealth / 2;
                 preyUnit.Actor.Movement = 0;
-                if (preyUnit.Unit.Side != unit.Side)
-                    State.GameManager.TacticalMode.SwitchAlignment(preyUnit.Actor);
-                if (unit.HasTrait(Traits.Corruption) || preyUnit.Unit.HasTrait(Traits.Corruption))
-                {
-                    preyUnit.Unit.hiddenFixedSide = true;
-                    preyUnit.Actor.sidesAttackedThisBattle = new List<int>();
-                    preyUnit.Unit.RemoveTrait(Traits.Corruption);
-                    preyUnit.Unit.AddPermanentTrait(Traits.Corruption);
-                }
-                if (!preyUnit.Unit.HasTrait(Traits.Corruption))
-                    preyUnit.Unit.FixedSide = unit.FixedSide;
 
-                preyUnit.Actor.Surrendered = false;
+                preyUnit.ChangeSide(unit.Side);
                 State.GameManager.TacticalMode.TacticalStats.RegisterRegurgitation(unit.Side);
                 FreeUnit(preyUnit.Actor);
 
@@ -1345,36 +1299,10 @@ public class PredatorComponent
                     conversionRace = DetermineConversionRace(unit.HiddenUnit);
                 // use source race IF changeling already had this ability before transforming
                 preyUnit.Unit.Health = preyUnit.Unit.MaxHealth / 2;
-                HashSet<Gender> set = new HashSet<Gender>(Races.GetRace(preyUnit.Unit.Race).CanBeGender);
-                bool equals = set.SetEquals(Races.GetRace(unit.Race).CanBeGender);
-                preyUnit.Unit.ChangeRace(unit.Race);
-                preyUnit.Unit.SetGear(unit.Race);
-                if (equals == false || Config.AlwaysRandomizeConverted)
-                    preyUnit.Unit.TotalRandomizeAppearance();
-                else
-                {
-                    var race = Races.GetRace(unit.Race);
-                    race.RandomCustom(preyUnit.Unit);
-                }
-                preyUnit.Actor.Movement = 0;
-                if (preyUnit.Unit.Side != unit.Side)
-                    State.GameManager.TacticalMode.SwitchAlignment(preyUnit.Actor);
-                if (unit.HasTrait(Traits.Corruption) || preyUnit.Unit.HasTrait(Traits.Corruption))
-                {
-                    preyUnit.Unit.hiddenFixedSide = true;
-                    preyUnit.Actor.sidesAttackedThisBattle = new List<int>();
-                    preyUnit.Unit.RemoveTrait(Traits.Corruption);
-                    preyUnit.Unit.AddPermanentTrait(Traits.Corruption);
-                }
-                if (!preyUnit.Unit.HasTrait(Traits.Corruption))
-                    preyUnit.Unit.FixedSide = unit.FixedSide;
-
+                preyUnit.ChangeSide(unit.Side);
+                preyUnit.ChangeRace(conversionRace);
                 TacticalUtilities.Log.RegisterBirth(unit, preyUnit.Unit, 0.5f);
                     FreeUnit(preyUnit.Actor);
-                preyUnit.Actor.AnimationController = new AnimationController();
-                preyUnit.Actor.Surrendered = false;
-                preyUnit.Actor.Unit.ReloadTraits();
-                preyUnit.Actor.Unit.InitializeTraits();
                 State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"{preyUnit.Unit.Name} converted from one side to another and changed race thanks to {unit.Name}'s converting digestion rebirth trait.");
                 return 0;
             }
@@ -1536,37 +1464,11 @@ public class PredatorComponent
                         conversionRace = DetermineConversionRace(unit.HiddenUnit);
                     // use source race IF changeling already had this ability before transforming
                     preyUnit.Unit.Health = preyUnit.Unit.MaxHealth / 2;
-                    preyUnit.Actor.Movement = 0;
-                    if (preyUnit.Unit.Side != unit.Side)
-                        State.GameManager.TacticalMode.SwitchAlignment(preyUnit.Actor);
-                    if (unit.HasTrait(Traits.Corruption) || preyUnit.Unit.HasTrait(Traits.Corruption))
-                    {
-                        preyUnit.Unit.hiddenFixedSide = true;
-                        preyUnit.Actor.sidesAttackedThisBattle = new List<int>();
-                        preyUnit.Unit.RemoveTrait(Traits.Corruption);
-                        preyUnit.Unit.AddPermanentTrait(Traits.Corruption);
-                    }
-                    if (!preyUnit.Unit.HasTrait(Traits.Corruption))
-                        preyUnit.Unit.FixedSide = unit.FixedSide;
-                    preyUnit.Actor.Surrendered = false;
+                    preyUnit.ChangeSide(unit.Side);
                     if (preyUnit.Unit.Race != conversionRace)
                     {
                         //HandleShapeshifterRebirth(preyUnit);
-                        HashSet<Gender> set = new HashSet<Gender>(Races.GetRace(preyUnit.Unit.Race).CanBeGender);
-                        bool equals = set.SetEquals(Races.GetRace(conversionRace).CanBeGender);
-                        preyUnit.Unit.ChangeRace(conversionRace);
-                        preyUnit.Unit.SetGear(conversionRace);
-                        if (equals == false || Config.AlwaysRandomizeConverted)
-                            preyUnit.Unit.TotalRandomizeAppearance();
-                        else
-                        {
-                            var race = Races.GetRace(conversionRace);
-                            race.RandomCustom(preyUnit.Unit);
-                        }
-                        preyUnit.Actor.AnimationController = new AnimationController();
-                        preyUnit.Unit.RemoveTrait(Traits.Infertile);
-                        preyUnit.Actor.Unit.ReloadTraits();
-                        preyUnit.Actor.Unit.InitializeTraits();
+                        preyUnit.ChangeRace(conversionRace);
                     }
                     FreeUnit(preyUnit.Actor);
                     TacticalUtilities.Log.RegisterBirth(unit, preyUnit.Unit, 1f);
@@ -1696,10 +1598,6 @@ public class PredatorComponent
             {
                 if (!callback.OnDigestion(preyUnit, actor))
                     return 0;
-            }
-            if (preyUnit.Unit.HasTrait(Traits.Whispers) && actor.Unit.GetStatusEffect(StatusEffectType.Temptation) != null)
-            {
-                preyUnit.Actor.CastStatusSpell(SpellList.Whispers, actor);
             }
             preyUnit.TurnsDigested++;
             AlivePrey++;
