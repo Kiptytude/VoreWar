@@ -1517,6 +1517,12 @@ static class StoredLogTexts
             new EventString((i) =>$"<b>{i.Unit.Name}</b> massages {(i.Unit == i.Target ? GPPHis(i.Target) : "<b>" + i.Target.Name + "</b>'s")} full breasts, milk leaking out of {(i.Unit == i.Target ? GPPHis(i.Target) : "<b>" + i.Target.Name + "</b>'s")} engorged nipples.", priority: 8),
             new EventString((i) =>$"<b>{i.Unit.Name}</b> grabs {GPPHis(i.Unit)} {i.preyLocation.ToSyn()}, lifting them up and then letting them bounce against {GPPHis(i.Unit)} chest, sloshing their contents about!", priority: 8, conditional: s => s.Target == s.Unit),
             new EventString((i) =>$"With a happy sigh, <b>{i.Unit.Name}</b> places {GPPHis(i.Unit)} arms behind {GPPHis(i.Unit)} back and shakes {GPPHis(i.Unit)} torso vigorusly, giving {GPPHis(i.Unit)} {i.preyLocation.ToSyn()} a good stirring. ", priority: 8, conditional: s => s.Target == s.Unit),
+
+            //Kangaroos (pouch vore)
+            new EventString((i) => $"<b>{i.Unit.Name}</b> approaches <b>{i.Target.Name}</b> and rubs {GPPHis(i.Target)} still squirming {GetRandomStringFrom("lower torso", "pouch", "marsupium")}, feeling <b>{i.Prey.Name}</b> within, and tiring <b>{i.Prey.Name}</b> out a little bit more.",
+            actorRace: Race.Kangaroos, priority: 11, conditional: s => s.Target != s.Unit && !PreyDead(s)),
+            new EventString((i) => $"<b>{i.Unit.Name}</b> approaches <b>{i.Target.Name}</b> and rubs {GPPHis(i.Target)} {GetRandomStringFrom("lower torso", "pouch", "marsupium")}. Curiously, the bulge <b>{i.Prey.Name}</b> makes in <b>{i.Target.Name}</b>'s figure seems slightly smaller than before.",
+            actorRace: Race.Kangaroos, priority: 11, conditional: s => s.Target != s.Unit && PreyDead(s)),
             
             //succs
             new EventString((i) =>$"The mere touch of <b>{i.Unit.Name}</b> is enough to make <b>{i.Target.Name}</b> gasp and quiver in pleasure.", actorRace: Race.Succubi, priority: 9, conditional: s=> s.Target.Side == s.Unit.Side),
@@ -1638,6 +1644,9 @@ static class StoredLogTexts
             //Slime prey
             new EventString((i) => $"<b>{i.Unit.Name}</b> reaches for <b>{ApostrophizeWithOrWithoutS(i.Target.Name)}</b> core, shoving it into {GPPHis(i.Unit)} cleavage!", targetRace: Race.Slimes, priority: 10),
             new EventString((i) => $"<b>{i.Unit.Name}</b> grabs <b>{ApostrophizeWithOrWithoutS(i.Target.Name)}</b> viscous form and slurps {GPPHim(i.Target)} into {GPPHis(i.Unit)} nipples!", targetRace: Race.Slimes, priority: 10),
+
+            //Kangaroo pred (pouch vore)
+            new EventString((i) => $"<b>{i.Unit.Name}</b> grabs <b>{i.Target.Name}</b> and shoves {GPPHim(i.Target)} into {GPPHis(i.Unit)} pouch. Once <b>{i.Target.Name}</b> is fully inside, the pouch entrance seals tight.", actorRace: Race.Kangaroos, priority: 10),
 
             new EventString((i) => $"<b>{i.Unit.Name}</b> and <b>{i.Target.Name}</b> grapple each other tightly, grinding their breasts hard against one another until <b>{i.Target.Name}</b> sinks into <b>{ApostrophizeWithOrWithoutS(i.Unit.Name)}</b> bosom!", priority: 8, conditional: s => ActorBoobs(s) && TargetBoobs(s)),
             new EventString((i) => $"<b>{i.Unit.Name}</b> presses {GPPHis(i.Unit)} breasts over <b>{ApostrophizeWithOrWithoutS(i.Target.Name)}</b> head, muffling the voice of the leader of the {GetPreyDesc(i.Target)} {GetRaceDescSingl(i.Target)} and absorbing {GPPHim(i.Unit)} into the hungry breast flesh.", priority: 8, conditional: s => Lewd(s) && TargetLeader(s)),
@@ -2029,6 +2038,9 @@ static class StoredLogTexts
             new EventString((i) => $"{i.Unit.Name}</b> can’t help but rub {GPPHis(i.Unit)} nipples and curse with delight as <b>{i.Target.Name}</b> attempts a final desperate plan of escape. It does naught but excite the panting panther into orgasm.",
             actorRace: Race.Panthers, priority: 9, conditional: InBreasts),
 
+            //Kangaroo pred (pouch vore)
+            new EventString((i) => $"Within <b>{i.Unit.Name}</b>'s pouch, <b>{i.Target.Name}</b> finally stops moving, succumbing to {GPPHis(i.Target)} fate.", actorRace: Race.Kangaroos, priority: 10),
+
             new EventString((i) => $"The violent jiggling in <b>{ApostrophizeWithOrWithoutS(i.Unit.Name)}</b> {i.preyLocation.ToSyn()} becomes still, much to <b>{ApostrophizeWithOrWithoutS(i.Unit.Name)}</b> displeasure. \"You can't even survive my {i.preyLocation.ToSyn()}. How weak.\"",
             priority: 9, conditional: s => InBreasts(s) && ActorHumanoid(s)),
             new EventString((i) => $"<b>{i.Unit.Name}</b> arches {GPPHis(i.Unit)} back, revealing the busty outline of <b>{i.Target.Name}</b> pressing against the inside of {GPPHis(i.Unit)} mighty bosom before the struggling of {GPPHis(i.Unit)} prey ends.",
@@ -2238,6 +2250,9 @@ static class StoredLogTexts
 
             //Slimes exclusive
             new EventString((i) => $"The dark lump in <b>{ApostrophizeWithOrWithoutS(i.Unit.Name)}</b> translucent form disappears completely.", actorRace: Race.Slimes, priority: 10),
+            //Kangaroo pred (pouch vore)
+            new EventString((i) => $"As <b>{i.Unit.Name}</b>'s {GetRandomStringFrom("lower torso", "pouch", "marsupium")} shrinks back to its original shape, <b>{i.Unit.Name}</b>'s pouchs entrance unseals, revealing nothing inside, as though <b>{i.Target.Name}</b> never existed.", actorRace: Race.Kangaroos, priority: 10),
+            new EventString((i) => $"As <b>{i.Unit.Name}</b>'s {GetRandomStringFrom("lower torso", "pouch", "marsupium")} shrinks back to its original shape, <b>{i.Unit.Name}</b>'s pouchs entrance unseals, revealing it to be empty save for a pile of crumpled, but otherwise unharmed, clothes. There is no trace of <b>{i.Target.Name}</b>.", actorRace: Race.Kangaroos, priority: 10),
         };
         TransferMessages = new List<EventString>()
         {
