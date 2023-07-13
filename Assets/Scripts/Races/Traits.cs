@@ -667,7 +667,27 @@ internal class TraitBorrower : VoreTrait
         return true;
     }
 }
+internal class CreateSpawn : VoreTrait
+{
+    public CreateSpawn()
+    {
+        Description = "creates a spawn unit on prey Absorption";
+    }
 
+    public override bool IsPredTrait => true;
+
+    public override int ProcessingPriority => 0;
+
+    public override bool OnFinishAbsorption(Prey preyUnit, Actor_Unit predUnit)
+    {
+        Race spawnRace = predUnit.PredatorComponent.DetermineSpawnRace(predUnit.Unit);
+        if (!predUnit.Unit.HasSharedTrait(Traits.CreateSpawn))
+            spawnRace = predUnit.PredatorComponent.DetermineSpawnRace(predUnit.Unit.HiddenUnit);
+        // use source race IF changeling already had this ability before transforming
+        predUnit.PredatorComponent.CreateSpawn(spawnRace, predUnit.Unit.Side, predUnit.Unit.Experience / 2);
+        return true;
+    }
+}
 
 
 

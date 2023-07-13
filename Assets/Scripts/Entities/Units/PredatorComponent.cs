@@ -1432,15 +1432,6 @@ public class PredatorComponent
                     if (!callback.OnFinishAbsorption(preyUnit, actor))
                         return 0;
                 }
-                if (unit.HasTrait(Traits.CreateSpawn))
-                {
-                    Race spawnRace = DetermineSpawnRace(unit);
-                    if (!unit.HasSharedTrait(Traits.CreateSpawn))
-                        spawnRace = DetermineSpawnRace(unit.HiddenUnit);
-                    // use source race IF changeling already had this ability before transforming
-                    CreateSpawn(spawnRace, unit.Side, unit.Experience / 2);
-                }
-                
                 if (preyUnit.Unit.CanBeConverted() &&
                  (Location(preyUnit) == PreyLocation.womb || Config.KuroTenkoConvertsAllTypes) &&
                  ((Config.KuroTenkoEnabled && (Config.UBConversion == UBConversion.Both || Config.UBConversion == UBConversion.RebirthOnly)) || unit.HasTrait(Traits.PredRebirther)) &&
