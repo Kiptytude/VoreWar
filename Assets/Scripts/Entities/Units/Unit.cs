@@ -1454,6 +1454,7 @@ public class Unit
 
     protected void RecalculateStatBoosts()
     {
+        float healthBefore = HealthPct;
         RefreshSecrecy();
         InitializeFixedSide(Side);
         if (Tags == null)
