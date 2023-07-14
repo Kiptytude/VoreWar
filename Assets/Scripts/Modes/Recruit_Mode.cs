@@ -106,6 +106,7 @@ public class Recruit_Mode : SceneBase
         mercenaryHouse = null;
         InitializeBanners();
         SetArmy();
+        ArmyUI.RecruitSoldier.text = "Recruit Soldier (" + Config.ArmyCost + "G)";
         ArmyUI.ShopText.text = "Shop";
         RecruitUI.TownName.text = this.village.Name;
         ArmyUI.ArmyName.text = army?.Name ?? "";
@@ -1259,18 +1260,21 @@ public class Recruit_Mode : SceneBase
             GameObject obj = Instantiate(MercenaryScreenUI.HireableObject, MercenaryScreenUI.Folder);
             UIUnitSprite sprite = obj.GetComponentInChildren<UIUnitSprite>();
             Actor_Unit actor = new Actor_Unit(new Vec2i(0, 0), merc.Unit);
-            Text text = obj.transform.GetChild(3).GetComponent<Text>();
-            text.text = $"{merc.Title}\nLevel: {merc.Unit.Level} Exp: {(int)merc.Unit.Experience}\n" +
-                $"Items: {merc.Unit.GetItem(0)?.Name} {merc.Unit.GetItem(1)?.Name}\n" +
-                $"Str: {merc.Unit.GetStatBase(Stat.Strength)} Dex: {merc.Unit.GetStatBase(Stat.Dexterity)} Agility: {merc.Unit.GetStatBase(Stat.Agility)}\n" +
-                $"Mind: {merc.Unit.GetStatBase(Stat.Mind)} Will: {merc.Unit.GetStatBase(Stat.Will)} Endurance: {merc.Unit.GetStatBase(Stat.Endurance)}\n";
-            if (actor.Unit.Predator)
-                text.text += $"Vore: {merc.Unit.GetStatBase(Stat.Voracity)} Stomach: {merc.Unit.GetStatBase(Stat.Stomach)}";
+            Text GenderText = obj.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>();
+            Text EXPText = obj.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(1).GetComponent<Text>();
+            GameObject EquipRow = obj.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(2).gameObject;
+            GameObject StatRow1 = obj.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(3).gameObject;
+            GameObject StatRow2 = obj.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(4).gameObject;
+            GameObject StatRow3 = obj.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(5).gameObject;
+            GameObject StatRow4 = obj.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(6).gameObject;
+            Text TraitList = obj.transform.GetChild(2).GetChild(0).GetChild(1).GetChild(0).GetChild(0).gameObject.GetComponent<Text>();
+            Text HireButton = obj.transform.GetChild(2).GetChild(1).GetChild(0).gameObject.GetComponent<Text>();
+
             string gender;
 
             if (merc.Unit.GetGender() == Gender.None)
             {
-                text.text += $"\nCost: {merc.Cost}";
+                GenderText.text += $"{merc.Title}";
             }
             else
             {
@@ -1279,9 +1283,39 @@ public class Recruit_Mode : SceneBase
 
                 else
                     gender = merc.Unit.GetGender().ToString();
-                text.text += $"\nCost: {merc.Cost} Gender: {gender}";
+                GenderText.text = $"{gender} {merc.Title}";
             }
-            text.text += "\nTraits: " + RaceEditorPanel.TraitListToText(merc.Unit.GetTraits, true);
+            EXPText.text = $"Level {merc.Unit.Level} ({(int)merc.Unit.Experience} EXP)";
+
+            if (actor.Unit.HasTrait(Traits.Resourceful))
+            {
+                EquipRow.transform.GetChild(2).gameObject.SetActive(true);
+                EquipRow.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = merc.Unit.GetItem(0)?.Name;
+                EquipRow.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = merc.Unit.GetItem(1)?.Name;
+                EquipRow.transform.GetChild(2).GetChild(0).GetComponent<Text>().text = merc.Unit.GetItem(2)?.Name;
+            }
+            else
+            {
+                EquipRow.transform.GetChild(2).gameObject.SetActive(false);
+                EquipRow.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = merc.Unit.GetItem(0)?.Name;
+                EquipRow.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = merc.Unit.GetItem(1)?.Name;
+            }
+
+            StatRow1.transform.GetChild(0).GetChild(1).GetComponent<Text>().text = merc.Unit.GetStatBase(Stat.Strength).ToString();
+            StatRow1.transform.GetChild(1).GetChild(1).GetComponent<Text>().text = merc.Unit.GetStatBase(Stat.Dexterity).ToString();
+            StatRow2.transform.GetChild(0).GetChild(1).GetComponent<Text>().text = merc.Unit.GetStatBase(Stat.Mind).ToString();
+            StatRow2.transform.GetChild(1).GetChild(1).GetComponent<Text>().text = merc.Unit.GetStatBase(Stat.Will).ToString();
+            StatRow3.transform.GetChild(0).GetChild(1).GetComponent<Text>().text = merc.Unit.GetStatBase(Stat.Endurance).ToString();
+            StatRow3.transform.GetChild(1).GetChild(1).GetComponent<Text>().text = merc.Unit.GetStatBase(Stat.Agility).ToString();
+            if (actor.PredatorComponent != null)
+            {
+                StatRow4.transform.GetChild(0).GetChild(1).GetComponent<Text>().text = merc.Unit.GetStatBase(Stat.Voracity).ToString();
+                StatRow4.transform.GetChild(1).GetChild(1).GetComponent<Text>().text = merc.Unit.GetStatBase(Stat.Stomach).ToString();
+            }
+            else
+                StatRow4.SetActive(false);
+            HireButton.text = "Hire Unit (" + merc.Cost.ToString() + "G)";
+            TraitList.text = RaceEditorPanel.TraitListToText(merc.Unit.GetTraits, true).Replace(", ", "\n");
 
             actor.UpdateBestWeapons();
             sprite.UpdateSprites(actor);
@@ -1337,18 +1371,22 @@ public class Recruit_Mode : SceneBase
             GameObject obj = Instantiate(MercenaryScreenUI.HireableObject, MercenaryScreenUI.Folder);
             UIUnitSprite sprite = obj.GetComponentInChildren<UIUnitSprite>();
             Actor_Unit actor = new Actor_Unit(new Vec2i(0, 0), merc.Unit);
-            Text text = obj.transform.GetChild(3).GetComponent<Text>();
-            text.text = $"{merc.Title}\nLevel: {merc.Unit.Level} Exp: {(int)merc.Unit.Experience}\n" +
-                $"Items: {merc.Unit.GetItem(0)?.Name} {merc.Unit.GetItem(1)?.Name}\n" +
-                 $"Str: {merc.Unit.GetStatBase(Stat.Strength)} Dex: {merc.Unit.GetStatBase(Stat.Dexterity)} Agility: {merc.Unit.GetStatBase(Stat.Agility)}\n" +
-                $"Mind: {merc.Unit.GetStatBase(Stat.Mind)} Will: {merc.Unit.GetStatBase(Stat.Will)} Endurance: {merc.Unit.GetStatBase(Stat.Endurance)}\n";
-            if (actor.Unit.Predator)
-                text.text += $"Vore: {merc.Unit.GetStatBase(Stat.Voracity)} Stomach: {merc.Unit.GetStatBase(Stat.Stomach)}";
+            //Text text = obj.transform.GetChild(3).GetComponent<Text>();
+            Text GenderText = obj.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>();
+            Text EXPText = obj.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(1).GetComponent<Text>();
+            GameObject EquipRow = obj.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(2).gameObject;
+            GameObject StatRow1 = obj.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(3).gameObject;
+            GameObject StatRow2 = obj.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(4).gameObject;
+            GameObject StatRow3 = obj.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(5).gameObject;
+            GameObject StatRow4 = obj.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(6).gameObject;
+            Text TraitList = obj.transform.GetChild(2).GetChild(0).GetChild(1).GetChild(0).GetChild(0).gameObject.GetComponent<Text>();
+            Text HireButton = obj.transform.GetChild(2).GetChild(1).GetChild(0).gameObject.GetComponent<Text>();
+
             string gender;
 
             if (merc.Unit.GetGender() == Gender.None)
             {
-                text.text += $"\nCost: {merc.Cost}";
+                GenderText.text += $"{merc.Title}";
             }
             else
             {
@@ -1357,9 +1395,44 @@ public class Recruit_Mode : SceneBase
 
                 else
                     gender = merc.Unit.GetGender().ToString();
-                text.text += $"\nCost: {merc.Cost} Gender: {gender}";
+                GenderText.text = $"{gender} {merc.Title}";
             }
-            text.text += "\nTraits: " + RaceEditorPanel.TraitListToText(merc.Unit.GetTraits, true);
+            TraitList.text = RaceEditorPanel.TraitListToText(merc.Unit.GetTraits, true).Replace(", ","\n");
+            EXPText.text = $"Level {merc.Unit.Level} ({(int)merc.Unit.Experience} EXP)";
+            if (actor.Unit.HasTrait(Traits.Resourceful))
+            {
+                EquipRow.transform.GetChild(2).gameObject.SetActive(true);
+                EquipRow.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = merc.Unit.GetItem(0)?.Name;
+                EquipRow.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = merc.Unit.GetItem(1)?.Name;
+                EquipRow.transform.GetChild(2).GetChild(0).GetComponent<Text>().text = merc.Unit.GetItem(2)?.Name;
+            }
+            else
+            {
+                EquipRow.transform.GetChild(2).gameObject.SetActive(false);
+                EquipRow.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = merc.Unit.GetItem(0)?.Name;
+                EquipRow.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = merc.Unit.GetItem(1)?.Name;
+            }
+            StatRow1.transform.GetChild(0).GetChild(1).GetComponent<Text>().text = merc.Unit.GetStatBase(Stat.Strength).ToString();
+            StatRow1.transform.GetChild(1).GetChild(1).GetComponent<Text>().text = merc.Unit.GetStatBase(Stat.Dexterity).ToString();
+            StatRow2.transform.GetChild(0).GetChild(1).GetComponent<Text>().text = merc.Unit.GetStatBase(Stat.Mind).ToString();
+            StatRow2.transform.GetChild(1).GetChild(1).GetComponent<Text>().text = merc.Unit.GetStatBase(Stat.Will).ToString();
+            StatRow3.transform.GetChild(0).GetChild(1).GetComponent<Text>().text = merc.Unit.GetStatBase(Stat.Endurance).ToString();
+            StatRow3.transform.GetChild(1).GetChild(1).GetComponent<Text>().text = merc.Unit.GetStatBase(Stat.Agility).ToString();
+            if (actor.PredatorComponent != null)
+            {
+                StatRow4.transform.GetChild(0).GetChild(1).GetComponent<Text>().text = merc.Unit.GetStatBase(Stat.Voracity).ToString();
+                StatRow4.transform.GetChild(1).GetChild(1).GetComponent<Text>().text = merc.Unit.GetStatBase(Stat.Stomach).ToString();
+            }
+            else
+                StatRow4.SetActive(false);
+            HireButton.text = "Hire Unit (" + merc.Cost.ToString() + "G)";
+
+            //text.text = $"{merc.Title}\nLevel: {merc.Unit.Level} Exp: {(int)merc.Unit.Experience}\n" +
+            //    $"Items: {merc.Unit.GetItem(0)?.Name} {merc.Unit.GetItem(1)?.Name}\n" +
+            //     $"Str: {merc.Unit.GetStatBase(Stat.Strength)} Dex: {merc.Unit.GetStatBase(Stat.Dexterity)} Agility: {merc.Unit.GetStatBase(Stat.Agility)}\n" +
+            //    $"Mind: {merc.Unit.GetStatBase(Stat.Mind)} Will: {merc.Unit.GetStatBase(Stat.Will)} Endurance: {merc.Unit.GetStatBase(Stat.Endurance)}\n";
+            //if (actor.Unit.Predator)
+            //    text.text += $"Vore: {merc.Unit.GetStatBase(Stat.Voracity)} Stomach: {merc.Unit.GetStatBase(Stat.Stomach)}";
 
             actor.UpdateBestWeapons();
             sprite.UpdateSprites(actor);
@@ -1407,8 +1480,16 @@ public class Recruit_Mode : SceneBase
             GameObject obj = Instantiate(HireUI.HiringUnitPanel, HireUI.ActorFolder);
             UIUnitSprite sprite = obj.GetComponentInChildren<UIUnitSprite>();
             Actor_Unit actor = new Actor_Unit(new Vec2i(0, 0), unit);
-            Text text = obj.transform.GetChild(3).GetComponent<Text>();
-            text.text = $"Level {unit.Level} ({(int)unit.Experience} EXP)";
+            //Text text = obj.transform.GetChild(3).GetComponent<Text>();
+            Text GenderText = obj.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>();
+            Text EXPText = obj.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(1).GetComponent<Text>();
+            GameObject EquipRow = obj.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(2).gameObject;
+            GameObject StatRow1 = obj.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(3).gameObject;
+            GameObject StatRow2 = obj.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(4).gameObject;
+            GameObject StatRow3 = obj.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(5).gameObject;
+            GameObject StatRow4 = obj.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(6).gameObject;
+            Text TraitList = obj.transform.GetChild(2).GetChild(0).GetChild(1).GetChild(0).GetChild(0).gameObject.GetComponent<Text>();
+
             string gender;
             if (actor.Unit.GetGender() != Gender.None)
             {
@@ -1416,18 +1497,41 @@ public class Recruit_Mode : SceneBase
                     gender = "Herm";
                 else
                     gender = actor.Unit.GetGender().ToString();
-                text.text += $" {gender}";
+                GenderText.text = $"{gender}";
             }
+            EXPText.text = $"Level {unit.Level} ({(int)unit.Experience} EXP)";
             if (actor.Unit.HasTrait(Traits.Resourceful))
-                text.text += $"\n{unit.GetItem(0)?.Name} | {unit.GetItem(1)?.Name} | {unit.GetItem(2)?.Name}\n";
+            {
+                EquipRow.transform.GetChild(2).gameObject.SetActive(true);
+                EquipRow.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = unit.GetItem(0)?.Name;
+                EquipRow.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = unit.GetItem(1)?.Name;
+                EquipRow.transform.GetChild(2).GetChild(0).GetComponent<Text>().text = unit.GetItem(2)?.Name;
+            }
             else
-                text.text += $"\n{unit.GetItem(0)?.Name} | {unit.GetItem(1)?.Name}\n";
-            text.text += $"STR: {unit.GetStatBase(Stat.Strength)} DEX: { unit.GetStatBase(Stat.Dexterity)}\n" +
-                $"MND: {unit.GetStatBase(Stat.Mind)} WLL: { unit.GetStatBase(Stat.Will)} \n" +
-                $"END: {unit.GetStatBase(Stat.Endurance)} AGI: {unit.GetStatBase(Stat.Agility)}\n";
+            {
+                EquipRow.transform.GetChild(2).gameObject.SetActive(false);
+                EquipRow.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = unit.GetItem(0)?.Name;
+                EquipRow.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = unit.GetItem(1)?.Name;
+            }
+            StatRow1.transform.GetChild(0).GetChild(1).GetComponent<Text>().text = unit.GetStatBase(Stat.Strength).ToString();
+            StatRow1.transform.GetChild(1).GetChild(1).GetComponent<Text>().text = unit.GetStatBase(Stat.Dexterity).ToString();
+            StatRow2.transform.GetChild(0).GetChild(1).GetComponent<Text>().text = unit.GetStatBase(Stat.Mind).ToString();
+            StatRow2.transform.GetChild(1).GetChild(1).GetComponent<Text>().text = unit.GetStatBase(Stat.Will).ToString();
+            StatRow3.transform.GetChild(0).GetChild(1).GetComponent<Text>().text = unit.GetStatBase(Stat.Endurance).ToString();
+            StatRow3.transform.GetChild(1).GetChild(1).GetComponent<Text>().text = unit.GetStatBase(Stat.Agility).ToString();
             if (actor.PredatorComponent != null)
-                text.text += $"VOR: {unit.GetStatBase(Stat.Voracity)} STM: { unit.GetStatBase(Stat.Stomach)}";
-
+            {
+                StatRow4.transform.GetChild(0).GetChild(1).GetComponent<Text>().text = unit.GetStatBase(Stat.Voracity).ToString();
+                StatRow4.transform.GetChild(1).GetChild(1).GetComponent<Text>().text = unit.GetStatBase(Stat.Stomach).ToString();
+            }
+            else
+                StatRow4.SetActive(false);
+            TraitList.text = RaceEditorPanel.TraitListToText(unit.GetTraits, true).Replace(", ", "\n");
+            //text.text += $"STR: {unit.GetStatBase(Stat.Strength)} DEX: { unit.GetStatBase(Stat.Dexterity)}\n" +
+            //    $"MND: {unit.GetStatBase(Stat.Mind)} WLL: { unit.GetStatBase(Stat.Will)} \n" +
+            //    $"END: {unit.GetStatBase(Stat.Endurance)} AGI: {unit.GetStatBase(Stat.Agility)}\n";
+            //if (actor.PredatorComponent != null)
+            //    text.text += $"VOR: {unit.GetStatBase(Stat.Voracity)} STM: { unit.GetStatBase(Stat.Stomach)}";
             actor.UpdateBestWeapons();
             sprite.UpdateSprites(actor);
             sprite.Name.text = unit.Name;

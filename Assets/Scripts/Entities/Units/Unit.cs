@@ -1573,6 +1573,7 @@ internal void SetGenderRandomizeName(Race race, Gender gender)
 
     protected void RecalculateStatBoosts()
     {
+        float healthBefore = HealthPct;
         RefreshSecrecy();
         InitializeFixedSide(Side);
         if (Tags == null)
