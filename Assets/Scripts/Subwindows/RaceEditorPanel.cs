@@ -781,7 +781,7 @@ public class RaceEditorPanel : MonoBehaviour
         TraitsButton.interactable = true;
     }
 
-    public void ActivateRaces()
+    public void ActivateTraits()
     {
         GeneralPanel.SetActive(false);
         TraitsPanel.SetActive(true);
