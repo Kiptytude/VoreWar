@@ -154,7 +154,7 @@ public class MercenaryHouse
         StrategicUtilities.SetAIClass(merc.Unit);
         StrategicUtilities.SpendLevelUps(merc.Unit);
         merc.Cost = (int)((25 + State.Rand.Next(15) + (.12 * exp)) * Random.Range(0.8f, 1.2f) * power);
-        merc.Title = $"{race} - Mercenary";
+        merc.Title = $"{InfoPanel.RaceSingular(merc.Unit)} - Mercenary";
 
         return merc;
     }
