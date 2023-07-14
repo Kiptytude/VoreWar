@@ -10,6 +10,7 @@ public class ArmySectionsPanel : MonoBehaviour
     public Button LevelUp;
     public Button Customizer;
     public Button ConfigAutoLevelUp;
+    public Text RecruitSoldier;
 
     public Button Shop;
     public Text ShopText;

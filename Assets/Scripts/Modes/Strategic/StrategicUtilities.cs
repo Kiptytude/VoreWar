@@ -995,7 +995,7 @@ static class StrategicUtilities
         {
             MercenaryContainer merc = new MercenaryContainer();
             merc.Unit = unit;
-            merc.Title = $"{unit.Race} - Mercenary";
+            merc.Title = $"{InfoPanel.RaceSingular(merc.Unit)} - Mercenary";
             var power = State.RaceSettings.Get(merc.Unit.Race).PowerAdjustment;
             if (power == 0)
             {
@@ -1042,7 +1042,7 @@ static class StrategicUtilities
         {
             MercenaryContainer merc = new MercenaryContainer();
             merc.Unit = unit;
-            merc.Title = $"{unit.Race} - Mercenary";
+            merc.Title = $"{InfoPanel.RaceSingular(merc.Unit)} - Mercenary";
             var power = State.RaceSettings.Get(merc.Unit.Race).PowerAdjustment;
             if (power == 0)
             {
