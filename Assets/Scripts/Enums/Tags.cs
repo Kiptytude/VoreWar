@@ -373,6 +373,8 @@ public enum Traits
     TrueChangeling = 355,
 
 
+    /// <summary>Unit can only cock vore or unbirth pery if the prey is 1/3 the size of this unit, but Diminishment does not fade while prey is inside this unit's cock or womb.</summary>
+    TightNethers,
 
 
     //Everything after this is a cheat trait

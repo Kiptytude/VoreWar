@@ -2283,9 +2283,9 @@ public class PredatorComponent
         List<VoreType> voreTypes = new List<VoreType>();
         if (allowedVoreTypes.Contains(VoreType.Oral) && Config.OralWeight > 0)
             options.Add(VoreType.Oral, Config.OralWeight);
-        if (allowedVoreTypes.Contains(VoreType.Unbirth) && unit.CanUnbirth && Config.UnbirthWeight > 0)
+        if (allowedVoreTypes.Contains(VoreType.Unbirth) && unit.CanUnbirth && Config.UnbirthWeight > 0 && (actor.BodySize() >= target.BodySize() * 3 || !actor.Unit.HasTrait(Traits.TightNethers)))
             options.Add(VoreType.Unbirth, Config.UnbirthWeight);
-        if (allowedVoreTypes.Contains(VoreType.CockVore) && unit.CanCockVore && Config.CockWeight > 0)
+        if (allowedVoreTypes.Contains(VoreType.CockVore) && unit.CanCockVore && Config.CockWeight > 0 && (actor.BodySize() >= target.BodySize() * 3 || !actor.Unit.HasTrait(Traits.TightNethers)))
             options.Add(VoreType.CockVore, Config.CockWeight);
         if (allowedVoreTypes.Contains(VoreType.BreastVore) && unit.CanBreastVore && Config.BreastWeight > 0)
             options.Add(VoreType.BreastVore, Config.BreastWeight);
@@ -2441,7 +2441,7 @@ public class PredatorComponent
         if (target.Unit == unit)
             return false;
 
-        if (target.Bulk() <= FreeCap())
+        if (target.Bulk() <= FreeCap() && (actor.BodySize() >= target.BodySize() * 3 || !actor.Unit.HasTrait(Traits.TightNethers) || (preyType != PreyLocation.womb && preyType != PreyLocation.balls)))
         {
             bool bit = false;
             if (target.Unit.HasTrait(Traits.Dazzle) && target.Surrendered == false)
@@ -2799,12 +2799,11 @@ public class PredatorComponent
         {
             if (target.PredatorComponent.PreyInLocation(PreyLocation.breasts, false) + target.PredatorComponent.PreyInLocation(PreyLocation.leftBreast, false) + target.PredatorComponent.PreyInLocation(PreyLocation.rightBreast, false) + target.PredatorComponent.PreyInLocation(PreyLocation.balls, false) == 0)
                 return new int[] { 0, 0 };
-            bool rng = State.Rand.NextDouble() >= 0.5f;
             if (Config.SucklingPermission == SucklingPermission.AlwaysBreast || Config.FeedingType == FeedingType.BreastfeedOnly)
                 return target.PredatorComponent.CalcFeedValue(actor, "breast").Item1;
             if (Config.SucklingPermission == SucklingPermission.AlwaysCock || Config.FeedingType == FeedingType.CumFeedOnly)
                 return target.PredatorComponent.CalcFeedValue(actor, "cock").Item1;
-            if (Config.SucklingPermission == SucklingPermission.Auto || Config.SucklingPermission == SucklingPermission.Random && !rng)
+            if (Config.SucklingPermission == SucklingPermission.Auto || Config.SucklingPermission == SucklingPermission.Random)
                 return target.PredatorComponent.CalcFeedValue(actor, "any").Item1;
 
         }

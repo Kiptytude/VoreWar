@@ -86,6 +86,8 @@ public class WorldConfig
 
     [OdinSerialize]
     internal float AutoSurrenderChance = 1;
+    [OdinSerialize]
+    internal float AutoSurrenderDefectChance = 0.25f;
 
     [OdinSerialize]
     internal float MaleFraction = 0;

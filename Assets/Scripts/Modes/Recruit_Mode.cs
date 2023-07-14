@@ -532,6 +532,38 @@ public class Recruit_Mode : SceneBase
                 CheatMenu.gameObject.SetActive(false);
                 BlockerUI.SetActive(false);
                 break;
+            case 2001:
+                BlockerUI.SetActive(true);
+                BuildHiringView("STR");
+                break;
+            case 2002:
+                BlockerUI.SetActive(true);
+                BuildHiringView("DEX");
+                break;
+            case 2003:
+                BlockerUI.SetActive(true);
+                BuildHiringView("MND");
+                break;
+            case 2004:
+                BlockerUI.SetActive(true);
+                BuildHiringView("WLL");
+                break;
+            case 2005:
+                BlockerUI.SetActive(true);
+                BuildHiringView("END");
+                break;
+            case 2006:
+                BlockerUI.SetActive(true);
+                BuildHiringView("AGI");
+                break;
+            case 2007:
+                BlockerUI.SetActive(true);
+                BuildHiringView("VOR");
+                break;
+            case 2008:
+                BlockerUI.SetActive(true);
+                BuildHiringView("STM");
+                break;
             case 4000:
                 BannerType.gameObject.SetActive(true);
                 ShowBanner.gameObject.SetActive(false);
@@ -1345,7 +1377,7 @@ public class Recruit_Mode : SceneBase
         MercenaryScreenUI.RemainingGold.text = $"Remaining Gold: {empire.Gold}";
     }
 
-    void BuildHiringView()
+    void BuildHiringView(string sorting = "")
     {
 
         int children = HireUI.ActorFolder.transform.childCount;
@@ -1353,30 +1385,48 @@ public class Recruit_Mode : SceneBase
         {
             Destroy(HireUI.ActorFolder.transform.GetChild(i).gameObject);
         }
-        foreach (Unit unit in village.VillagePopulation.GetRecruitables())
+        List<Unit> units = village.VillagePopulation.GetRecruitables().OrderByDescending(t => t.Experience).OrderByDescending(t => t.Level).ToList();
+        if (sorting == "STR")
+            units = units.OrderByDescending(t => t.GetStat(Stat.Strength)).ToList();
+        else if (sorting == "DEX")
+            units = units.OrderByDescending(t => t.GetStat(Stat.Dexterity)).ToList();
+        else if (sorting == "MND")
+            units = units.OrderByDescending(t => t.GetStat(Stat.Mind)).ToList();
+        else if (sorting == "WLL")
+            units = units.OrderByDescending(t => t.GetStat(Stat.Will)).ToList();
+        else if (sorting == "END")
+            units = units.OrderByDescending(t => t.GetStat(Stat.Endurance)).ToList();
+        else if (sorting == "AGI")
+            units = units.OrderByDescending(t => t.GetStat(Stat.Agility)).ToList();
+        else if (sorting == "VOR")
+            units = units.OrderByDescending(t => t.GetStat(Stat.Voracity)).ToList();
+        else if (sorting == "STM")
+            units = units.OrderByDescending(t => t.GetStat(Stat.Stomach)).ToList();
+        foreach (Unit unit in units)
         {
             GameObject obj = Instantiate(HireUI.HiringUnitPanel, HireUI.ActorFolder);
             UIUnitSprite sprite = obj.GetComponentInChildren<UIUnitSprite>();
             Actor_Unit actor = new Actor_Unit(new Vec2i(0, 0), unit);
             Text text = obj.transform.GetChild(3).GetComponent<Text>();
-            text.text = $"Level: {unit.Level} Exp: {(int)unit.Experience}\n" +
-                $"Health : {100 * unit.HealthPct}%\n" +
-                $"Items: {unit.GetItem(0)?.Name} {unit.GetItem(1)?.Name}\n" +
-                $"Str: {unit.GetStatBase(Stat.Strength)} Dex: {unit.GetStatBase(Stat.Dexterity)} Agility: {unit.GetStatBase(Stat.Agility)}\n" +
-                $"Mind: {unit.GetStatBase(Stat.Mind)} Will: {unit.GetStatBase(Stat.Will)} Endurance: {unit.GetStatBase(Stat.Endurance)}\n";
-            if (actor.Unit.Predator)
-                text.text += $"Vore: {unit.GetStatBase(Stat.Voracity)} Stomach: {unit.GetStatBase(Stat.Stomach)}";
+            text.text = $"Level {unit.Level} ({(int)unit.Experience} EXP)";
             string gender;
-
             if (actor.Unit.GetGender() != Gender.None)
             {
                 if (actor.Unit.GetGender() == Gender.Hermaphrodite)
                     gender = "Herm";
                 else
                     gender = actor.Unit.GetGender().ToString();
-                text.text += $"\nGender: {gender}";
+                text.text += $" {gender}";
             }
-            text.text += "\nTraits: " + RaceEditorPanel.TraitListToText(actor.Unit.GetTraits, true);
+            if (actor.Unit.HasTrait(Traits.Resourceful))
+                text.text += $"\n{unit.GetItem(0)?.Name} | {unit.GetItem(1)?.Name} | {unit.GetItem(2)?.Name}\n";
+            else
+                text.text += $"\n{unit.GetItem(0)?.Name} | {unit.GetItem(1)?.Name}\n";
+            text.text += $"STR: {unit.GetStatBase(Stat.Strength)} DEX: { unit.GetStatBase(Stat.Dexterity)}\n" +
+                $"MND: {unit.GetStatBase(Stat.Mind)} WLL: { unit.GetStatBase(Stat.Will)} \n" +
+                $"END: {unit.GetStatBase(Stat.Endurance)} AGI: {unit.GetStatBase(Stat.Agility)}\n";
+            if (actor.PredatorComponent != null)
+                text.text += $"VOR: {unit.GetStatBase(Stat.Voracity)} STM: { unit.GetStatBase(Stat.Stomach)}";
 
             actor.UpdateBestWeapons();
             sprite.UpdateSprites(actor);

@@ -2069,7 +2069,7 @@ public class Actor_Unit
             Movement = 0;
             if (Config.AutoSurrender && Config.SurrenderedCanConvert && Unit.CanBeConverted())
             {
-                if (State.Rand.Next(4) == 0)
+                if (State.Rand.NextDouble() <= Config.AutoSurrenderDefectChance)
                 {
                     State.GameManager.TacticalMode.SwitchAlignment(this);
                     AIAvoidEat = 2;
