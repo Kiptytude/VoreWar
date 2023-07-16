@@ -349,11 +349,6 @@ public class Actor_Unit
             Unit.SingleUseSpells.Add(SpellList.Charm.SpellType);
             Unit.UpdateSpells();
         }
-        if (Unit.HasTrait(Traits.Whispers) && State.World?.ItemRepository != null) //protection for the create strat screen
-        {
-            Unit.SingleUseSpells.Add(SpellList.Whispers.SpellType);
-            Unit.UpdateSpells();
-        }
         if (Unit.HasTrait(Traits.HypnoticGas) && State.World?.ItemRepository != null) //protection for the create strat screen
         {
             Unit.SingleUseSpells.Add(SpellList.HypnoGas.SpellType);
@@ -375,11 +370,20 @@ public class Actor_Unit
             Unit.MultiUseSpells.Add(SpellList.ForceFeed.SpellType);
             Unit.UpdateSpells();
         }
-        if ((Unit.HasTrait(Traits.Changeling) || Unit.HasTrait(Traits.GreaterChangeling) || Unit.HasTrait(Traits.TrueChangeling)) && State.World?.ItemRepository != null) //protection for the create strat screen
+        if (State.World?.ItemRepository != null) //protection for the create strat screen
         {
-            Unit.MultiUseSpells.Add(SpellList.AssumeForm.SpellType);
-            if(Unit.HiddenRace != Unit.Race)
-                Unit.MultiUseSpells.Add(SpellList.RevertForm.SpellType);
+            foreach (Traits trait in Unit.GetTraits.Where(t => (TraitList.GetTrait(t) != null) && TraitList.GetTrait(t) is IProvidesSingleSpell))
+            {
+                IProvidesSingleSpell callback = (IProvidesSingleSpell)TraitList.GetTrait(trait);
+                foreach(SpellTypes spell in callback.GetSingleSpells(Unit))
+                    Unit.SingleUseSpells.Add(spell);
+            }
+            foreach (Traits trait in Unit.GetTraits.Where(t => (TraitList.GetTrait(t) != null) && TraitList.GetTrait(t) is IProvidesMultiSpell))
+            {
+                IProvidesMultiSpell callback = (IProvidesMultiSpell)TraitList.GetTrait(trait);
+                foreach (SpellTypes spell in callback.GetMultiSpells(Unit))
+                    Unit.MultiUseSpells.Add(spell);
+            }
             Unit.UpdateSpells();
         }
     }
@@ -2569,7 +2573,16 @@ public class Actor_Unit
         return true;
     }
 
-    public void ChangeRaceAny(Unit template)
+    internal void ShareTrait(Traits trait,Traits maxTrait = Traits.Infiltrator)
+    {
+        if (trait < maxTrait && !TraitsMethods.IsRaceModifying(trait))
+        {
+            if (!Unit.HasTrait(trait))
+                Unit.AddSharedTrait(trait);
+        }
+    }
+
+    public bool ChangeRaceAny(Unit template, bool permanent, bool isPrey)
     {
         if (Unit.HiddenRace == Unit.Race)
         {
@@ -2577,7 +2590,10 @@ public class Actor_Unit
             foreach (Traits trait in template.GetTraits)
             {
                 if ((!Unit.HasTrait(trait) || Unit.HasSharedTrait(trait)) && !TraitsMethods.IsRaceModifying(trait))
-                    Unit.AddPersistentSharedTrait(trait);
+                    if (permanent)
+                        Unit.AddPermanentTrait(trait);
+                    else
+                        ShareTrait(trait, TraitsMethods.LastTrait());
             }
             AnimationController = new AnimationController();
             Unit.ReloadTraits();
@@ -2587,7 +2603,9 @@ public class Actor_Unit
             Unit.FixedSide = Unit.Side;
             Unit.Side = template.Side;
             Unit.hiddenFixedSide = true;
+            return true;
         }
+        return false;
     }
 
     public void ChangeRacePrey()
@@ -2595,7 +2613,7 @@ public class Actor_Unit
         if (Unit.HiddenRace == Unit.Race)
         {
             bool isDead = true;
-            if (Unit.HasTrait(Traits.TrueChangeling) || Unit.HasTrait(Traits.GreaterChangeling))
+            if (Unit.HasTrait(Traits.GreaterChangeling))
             {
                 isDead = false;
             }
@@ -2611,6 +2629,7 @@ public class Actor_Unit
             Unit.SpawnRace = Race.none;
             State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"{Unit.Name} shifted back to normal");
             Unit.Side = Unit.FixedSide;
+            Unit.FixedSide = -1;
             Unit.hiddenFixedSide = false;
             PredatorComponent?.ResetTemplate();
             Unit.ResetPersistentSharedTraits();
@@ -2640,36 +2659,43 @@ public class Actor_Unit
 
     internal void AddPossession(Actor_Unit possessor)
     {
-        this.Possessed = this.Possessed + possessor.Unit.GetStatTotal() + possessor.Unit.GetStat(Stat.Mind);
+        if (this.Unit.FixedSide != possessor.Unit.FixedSide)
+        {
+            this.Possessed = this.Possessed + possessor.Unit.GetStatTotal() + possessor.Unit.GetStat(Stat.Mind);
+        }
         CheckPossession(possessor);
     }
 
     internal void RemovePossession(Actor_Unit possessor)
     {
         this.Possessed = this.Possessed - possessor.Unit.GetStatTotal() - possessor.Unit.GetStat(Stat.Mind);
+        if (this.Possessed <= 0)
+            this.Possessed = 0;
         CheckPossession(possessor);
     }
 
-    internal void CheckPossession(Actor_Unit possessor)
+    internal bool CheckPossession(Actor_Unit possessor)
     {
         if (this.Possessed + this.Corruption >= this.Unit.GetStatTotal() + this.Unit.GetStat(Stat.Will))
         {
-            if (this.Unit.FixedSide != possessor.Unit.FixedSide)
+            if (this.Unit.Controller != possessor.Unit)
             {
                 if (!this.Unit.HasTrait(Traits.Untamable))
-                    this.Unit.FixedSide = possessor.Unit.FixedSide;
+                    this.Unit.Controller = possessor.Unit;
                 this.Unit.hiddenFixedSide = true;
                 sidesAttackedThisBattle = new List<int>();
             }
+            return true;
         }
         else
         {
-            if (this.Unit.FixedSide != this.Unit.Side)
+            if (this.Unit.Controller == possessor.Unit)
             {
-                this.Unit.FixedSide = this.Unit.Side;
+                this.Unit.Controller = null;
                 this.Unit.hiddenFixedSide = false;
             }
         }
+        return false;
     }
 
     internal void Shapeshift(Unit shape)

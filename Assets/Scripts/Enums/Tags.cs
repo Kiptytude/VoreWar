@@ -356,6 +356,8 @@ public enum Traits
     Changeling = 205,
     /// <summary>While digesting a prey, Becomes that prey's Race</summary>
     GreaterChangeling = 206,
+    /// <summary>Pred Unit will gain the metamorphosis trait on Prey death</summary>
+    ForcedMetamorphosis = 207,
 
 
     //Hidden Cheat Traits
@@ -369,8 +371,8 @@ public enum Traits
     Possession = 353,
     /// <summary>A parasite prey will give the host CreateSpawn and set infection after digestion, host Takes minor damage on prey absorption and major damage when creating spawn</summary>
     Parasite = 354,
-    /// <summary>While digesting a prey, Becomes that prey's Race, new form lasts until dispersed</summary>
-    TrueChangeling = 355,
+    /// <summary>Units soul continues to possess pred after death</summary>
+    SpiritPossession = 355,
 
 
     /// <summary>Unit can only cock vore or unbirth pery if the prey is 1/3 the size of this unit, but Diminishment does not fade while prey is inside this unit's cock or womb.</summary>
@@ -473,7 +475,6 @@ static class TraitsMethods
             case Traits.Metamorphosis:
             case Traits.Changeling:
             case Traits.GreaterChangeling:
-            case Traits.TrueChangeling:
             //case Traits.Shapeshifter:
             //case Traits.Skinwalker:
                 return true;
@@ -481,8 +482,9 @@ static class TraitsMethods
                 return false;
         }
     }
+
     static public Traits LastTrait()
     {
-        return Traits.TrueChangeling;
+        return Traits.SpiritPossession;
     }
 }

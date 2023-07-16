@@ -388,7 +388,8 @@ static class RaceParameters
                 Traits.CreateSpawn,
             },
             SpawnRace = Race.Whisp,
-            RaceDescription = "",
+            ConversionRace = Race.Foxes,
+            RaceDescription = "Foxes that were changed by spirit energy",
         };
 
         Wolves = new RaceTraits()
@@ -1628,9 +1629,10 @@ static class RaceParameters
             RacialTraits = new List<Traits>()
             {
                     Traits.Whispers,
-                    Traits.Corruption,
+                    Traits.SpiritPossession,
                     Traits.ForceFeeder,
-                    Traits.Metamorphosis,
+                    Traits.ForcedMetamorphosis,
+                    Traits.Symbiote,
                     Traits.GreaterChangeling,
                 },
                 SpawnRace = Race.Youko,

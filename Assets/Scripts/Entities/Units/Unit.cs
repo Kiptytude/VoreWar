@@ -35,6 +35,29 @@ public class Unit
     [OdinSerialize]
     public int Side;
     [OdinSerialize]
+    internal Unit _controller = null;
+
+    internal Unit Controller
+    {
+        get
+        {
+            if(_controller != null)
+                if (_controller.Controller != null)
+                    return _controller.Controller;
+            return _controller;
+        }
+        set
+        {
+            if (value == null)
+                _controller = value;
+            else if ((_controller == null) || (_controller.GetStat(Stat.Mind) < value.GetStat(Stat.Mind)))
+                if (value == this || value.Controller == this)
+                    return;
+                else
+                    _controller = value;
+        }
+    }
+    [OdinSerialize]
     private int _fixedSide = -1;
 
     internal bool HasFixedSide() => _fixedSide != -1;
@@ -42,6 +65,8 @@ public class Unit
     {
         get
         {
+            if (Controller != null)
+                return _controller.FixedSide;
             return (_fixedSide == -1) ? Side : _fixedSide;
         }
         set => _fixedSide = value;
@@ -49,7 +74,9 @@ public class Unit
     [OdinSerialize]
     public bool hiddenFixedSide = false;
 
-    public static List<Traits> secretTags = new List<Traits>() { Traits.Infiltrator, Traits.Corruption, Traits.Parasite, Traits.Metamorphosis, Traits.Possession, Traits.Changeling, Traits.Reincarnation, Traits.InfiniteReincarnation, Traits.Transmigration, Traits.InfiniteTransmigration, Traits.Untamable};
+    public static List<Traits> secretTags = new List<Traits>() { Traits.Infiltrator, Traits.Corruption, Traits.Parasite, Traits.Metamorphosis,
+        Traits.Possession, Traits.Changeling, Traits.Reincarnation, Traits.InfiniteReincarnation, Traits.Transmigration, Traits.InfiniteTransmigration,
+        Traits.Untamable, Traits.GreaterChangeling, Traits.SpiritPossession, Traits.ForcedMetamorphosis};
 
     [OdinSerialize]
     public Race Race;
@@ -1224,6 +1251,7 @@ internal void SetGenderRandomizeName(Race race, Gender gender)
     internal int BaseTraitsCount => Tags.Count + PermanentTraits.Count;
 
     public int GetStatBase(Stat stat) => Stats[(int)stat];
+    public void SetStatBase(Stat stat, int value) => Stats[(int)stat] = value;
     public int GetLeaderBonus()
     {
         if (CurrentLeader == null)
@@ -2765,4 +2793,24 @@ internal void SetGenderRandomizeName(Race race, Gender gender)
         else
             AddTrait(Traits.Small);
     }
+
+    public Race DetermineSpawnRace()
+    {
+        if (SpawnRace != Race)
+        {
+            return SpawnRace;
+        }
+
+        else
+            return State.RaceSettings.GetSpawnRace(Race);
+    }
+
+    public Race DetermineConversionRace()
+    {
+        if (ConversionRace != Race)
+            return ConversionRace;
+        else
+            return State.RaceSettings.GetConversionRace(Race);
+    }
+
 }
