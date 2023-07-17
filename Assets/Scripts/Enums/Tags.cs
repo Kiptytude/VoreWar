@@ -358,6 +358,8 @@ public enum Traits
     GreaterChangeling = 206,
     /// <summary>Pred Unit will gain the metamorphosis trait on Prey death</summary>
     ForcedMetamorphosis = 207,
+    /// <summary>Unit changes Race and side upon digestion</summary>
+    MetamorphicConversion = 208,
 
 
     //Hidden Cheat Traits

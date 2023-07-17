@@ -199,6 +199,7 @@ static class TraitList
         [Traits.CreateSpawn] = new CreateSpawn(),
         [Traits.SpiritPossession] = new SpiritPossession(),
         [Traits.ForcedMetamorphosis] = new ForcedMetamorphosis(),
+        [Traits.MetamorphicConversion] = new MetamorphicConversion(),
         [Traits.Tempered] = new Booster("Reduces damage taken from ranged attacks.\nIncreases damage taken from melee attacks", (s) => { s.Incoming.RangedDamage *= .7f; s.Incoming.MeleeDamage *= 1.3f; s.VirtualDexMult *= 1.1f; }),
         [Traits.GelatinousBody] = new Booster("Takes less damage from attacks, but is easier to vore", (s) => { s.Incoming.RangedDamage *= .75f; s.Incoming.MeleeDamage *= 0.8f; s.Incoming.VoreOddsMult *= 1.15f; }),
         [Traits.MetalBody] = new Booster("Provides vore resistance, and their remains are only worth half as much healing", (s) => { s.Incoming.VoreOddsMult *= .7f; s.Outgoing.Nutrition *= .5f; }),
@@ -465,7 +466,7 @@ internal class Whispers : VoreTrait, IProvidesSingleSpell
 {
     public Whispers()
     {
-        Description = "When eaten, Predator is afflicted by Prey's curse, and has a chance to be charmed each round";
+        Description = "Predator has a chance to be charmed and afflicted by Prey's curse each round";
     }
 
     public override bool IsPredTrait => false;
@@ -524,6 +525,25 @@ internal class Metamorphosis : VoreTrait, INoAutoEscape
         preyUnit.Unit.RemoveTrait(Traits.Metamorphosis);//no metamorphosis loops
         State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"{preyUnit.Unit.Name} changed form within {predUnit.Unit.Name}'s body.");
         predUnit.PredatorComponent.UpdateFullness();
+        return false;
+    }
+}
+
+internal class MetamorphicConversion : Metamorphosis
+{
+    public MetamorphicConversion()
+    {
+        Description = "Unit changes Race and side upon digestion";
+    }
+
+    public override bool IsPredTrait => false;
+
+    public override int ProcessingPriority => 49;
+
+    public override bool OnFinishDigestion(Prey preyUnit, Actor_Unit predUnit)
+    {
+        base.OnFinishDigestion(preyUnit, predUnit);
+        preyUnit.ChangeSide(predUnit.Unit.FixedSide);
         return false;
     }
 }
@@ -730,7 +750,7 @@ internal class SpiritPossession : Possession
         {
             if (predUnit.Unit.Side != preyUnit.Unit.Side)
                 State.GameManager.TacticalMode.SwitchAlignment(predUnit);
-            //@TODO: This game needs some form of true fusion mechanic. 
+            //TODO: This game needs some form of true fusion mechanic. 
             //this is an approximation of fusion with the result taking the appearance of the pred, and the side of the prey
             if (predUnit.Unit.Side == preyUnit.Unit.Side)
                 predUnit.Unit.FixedSide = -1;
@@ -748,11 +768,16 @@ internal class ForcedMetamorphosis : VoreTraitBooster
         Boost = (s) => s.Incoming.ChanceToEscape *= 0;
     }
 
+    public override int ProcessingPriority => 10;
+
     public override bool IsPredTrait => false;
 
     public override bool OnDigestionKill(Prey preyUnit, Actor_Unit predUnit)
     {
-        predUnit.Unit.AddPermanentTrait(Traits.Metamorphosis);
+        //TODO: Make this a status effect instead
+        if((predUnit.Unit.FixedSide == preyUnit.Unit.FixedSide) && (predUnit.Unit.FixedSide == predUnit.Unit.Side))
+            predUnit.Unit.AddPermanentTrait(Traits.Metamorphosis);
+        else predUnit.Unit.AddPermanentTrait(Traits.MetamorphicConversion);
         predUnit.Unit.SpawnRace = preyUnit.Unit.HiddenUnit.DetermineSpawnRace();
         return true;
     }

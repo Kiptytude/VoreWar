@@ -592,6 +592,8 @@ public class HoveringTooltip : MonoBehaviour
                 return "Pred Unit will gain the metamorphosis trait on Prey death";
             case Traits.Metamorphosis:
                 return "Unit changes Race upon digestion";
+            case Traits.MetamorphicConversion:
+                return "Unit changes Race and side upon digestion";
         }  
         return "<b>This trait needs a tooltip!</b>";
     }

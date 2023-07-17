@@ -2603,6 +2603,7 @@ public class Actor_Unit
             Unit.FixedSide = Unit.Side;
             Unit.Side = template.Side;
             Unit.hiddenFixedSide = true;
+            PredatorComponent?.UpdateFullness();
             return true;
         }
         return false;
@@ -2637,6 +2638,7 @@ public class Actor_Unit
             Unit.ReloadTraits();
             Unit.InitializeTraits();
             ReloadSpellTraits();
+            PredatorComponent?.UpdateFullness();
         }
     }
     

@@ -839,31 +839,31 @@ public class PredatorComponent
 
     internal PreyLocation Location(Prey preyUnit)
     {
-        if (womb.Contains(preyUnit))
+        if (womb.Contains(preyUnit) && unit.CanUnbirth)
         {
             return PreyLocation.womb;
         }
-        if (breasts.Contains(preyUnit))
+        if (breasts.Contains(preyUnit) && unit.CanBreastVore)
         {
             return PreyLocation.breasts;
         }
-        if (balls.Contains(preyUnit))
+        if (balls.Contains(preyUnit) && unit.CanCockVore)
         {
             return PreyLocation.balls;
         }
-        if (tail.Contains(preyUnit))
+        if (tail.Contains(preyUnit) && unit.CanTailVore)
         {
             return PreyLocation.tail;
         }
-        if (stomach2.Contains(preyUnit))
+        if (stomach2.Contains(preyUnit) && unit.HasTrait(Traits.DualStomach))
         {
             return PreyLocation.stomach2;
         }
-        if (leftBreast.Contains(preyUnit))
+        if (leftBreast.Contains(preyUnit) && unit.CanBreastVore)
         {
             return PreyLocation.leftBreast;
         }
-        if (rightBreast.Contains(preyUnit))
+        if (rightBreast.Contains(preyUnit) && unit.CanBreastVore)
         {
             return PreyLocation.rightBreast;
         }
@@ -2030,34 +2030,35 @@ public class PredatorComponent
         float exclusiveStomachFullness = 0;
         foreach (Prey preyUnit in prey.ToList()) //ToList to cover the rare case it needs to do the pop unit out of itself condition in the bulk function. (It has happened, once at least)
         {
+            var location = Location(preyUnit);
             fullness += preyUnit.Actor.Bulk();
-            if (breasts.Contains(preyUnit))
+            if (location == PreyLocation.breasts)
             {
                 breastFullness += preyUnit.Actor.Bulk();
             }
-            else if (balls.Contains(preyUnit))
+            else if (location == PreyLocation.balls)
             {
                 ballsFullness += preyUnit.Actor.Bulk();
             }
-            else if (stomach2.Contains(preyUnit))
+            else if (location == PreyLocation.stomach2)
             {
                 stomach2ndFullness += preyUnit.Actor.Bulk();
             }
-            else if (tail.Contains(preyUnit))
+            else if (location == PreyLocation.tail)
             {
                 tailFullness += preyUnit.Actor.Bulk();
             }
-            else if (leftBreast.Contains(preyUnit))
+            else if (location == PreyLocation.leftBreast)
             {
                 leftBreastFullness += preyUnit.Actor.Bulk();
             }
-            else if (rightBreast.Contains(preyUnit))
+            else if (location == PreyLocation.rightBreast)
             {
                 rightBreastFullness += preyUnit.Actor.Bulk();
             }
             else
             {
-                if (womb.Contains(preyUnit))
+                if (location == PreyLocation.womb)
                     wombFullness += preyUnit.Actor.Bulk();
                 else
                     exclusiveStomachFullness += preyUnit.Actor.Bulk();

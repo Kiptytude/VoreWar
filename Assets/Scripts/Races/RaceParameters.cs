@@ -1628,16 +1628,14 @@ static class RaceParameters
             PowerAdjustment = 1.2f,
             RacialTraits = new List<Traits>()
             {
-                    Traits.Whispers,
-                    Traits.SpiritPossession,
-                    Traits.ForceFeeder,
-                    Traits.ForcedMetamorphosis,
-                    Traits.Symbiote,
-                    Traits.GreaterChangeling,
-                },
-                SpawnRace = Race.Youko,
-                RaceDescription = ""
-            };
+                Traits.Whispers,
+                Traits.ForceFeeder,
+                Traits.ForcedMetamorphosis,
+                Traits.GreaterChangeling,
+            },
+            SpawnRace = Race.Youko,
+            RaceDescription = ""
+        };
 
         FeralAnts = new RaceTraits()
         {
