@@ -362,8 +362,8 @@ public class Actor_Unit
         {
             unit.MultiUseSpells.Add(SpellList.AmplifyMagic.SpellType);
             unit.MultiUseSpells.Add(SpellList.Evocation.SpellType);
-            unit.MultiUseSpells.Add(SpellList.SpellBurst.SpellType);
-            unit.MultiUseSpells.Add(SpellList.ArcaneDevistation.SpellType);
+            unit.MultiUseSpells.Add(SpellList.ManaFlux.SpellType);
+            unit.MultiUseSpells.Add(SpellList.UnstableMana.SpellType);
             unit.UpdateSpells();
         }
     }

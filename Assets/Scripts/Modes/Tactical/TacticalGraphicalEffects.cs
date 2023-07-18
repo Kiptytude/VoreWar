@@ -253,7 +253,7 @@ static class TacticalGraphicalEffects
 
     }
 
-    internal static void CreateHugeMagic(Vec2i startLocation, Vec2i endLocation, Actor_Unit target)
+    internal static void CreateHugeMagic(Vec2i startLocation, Vec2i endLocation, Actor_Unit target, bool landed)
     {
         if (State.GameManager.TacticalMode.turboMode)
             return;
@@ -261,6 +261,24 @@ static class TacticalGraphicalEffects
         var effect = Object.Instantiate(prefab, new Vector3(startLocation.x, startLocation.y, 0), new Quaternion()).GetComponent<ArrowEffect>();
         effect.Setup(startLocation, endLocation, target, null, null);
         effect.totalTime *= 2;
+        System.Action hitEffect = null;
+        if (landed)
+        {
+           hitEffect = () =>
+            {
+                CreateMagicExplosion(new Vec2i(endLocation.x, endLocation.y));
+            };
+        }   
+        effect.Setup(startLocation, endLocation, target, null, hitEffect);
+    }
+
+    internal static void CreateMagicExplosion(Vec2i location)
+    {
+        if (State.GameManager.TacticalMode.turboMode)
+            return;
+        var prefab = State.GameManager.TacticalEffectPrefabList.MagicExplosion;
+        Object.Instantiate(prefab, new Vector3(location.x, location.y, 0), new Quaternion());
+
     }
 
     internal static void CreateGenericMagic(Vec2i startLocation, Vec2i endLocation, Actor_Unit target, SpellEffectIcon icon = SpellEffectIcon.None)

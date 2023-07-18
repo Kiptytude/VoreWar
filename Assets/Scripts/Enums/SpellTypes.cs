@@ -33,8 +33,8 @@
 
     AmplifyMagic = 60,
     Evocation = 61,
-    SpellBurst = 62,
-    ArcaneDevistation = 63,
+    ManaFlux = 62,
+    UnstableMana = 63,
 
     AlraunePuff = 70,
     Web = 71,
@@ -47,6 +47,8 @@
 
     ViperDamage = 110,
     ForceFeed = 111,
+    ManaExpolsion = 112,
+
 
 }
 

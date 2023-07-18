@@ -49,7 +49,7 @@ class Salix : DefaultRaceData
 
         AllowedWaistTypes = new List<MainClothing>() //Bottoms
         {
-            new GenericBottom(26, 26, 0, 63, 8, State.GameManager.SpriteDictionary.Salix, 840),
+            new GenericBottom(26, 26, 0, 63, 8, Sprites, 1300),
         };
 
         AllowedClothingHatTypes = new List<ClothingAccessory>();
@@ -419,7 +419,7 @@ class Salix : DefaultRaceData
             coversBreasts = false;
             blocksDick = false;
             clothing1 = new SpriteExtraInfo(17, null, WhiteColored);
-            Type = 1422;
+            Type = 1301;
         }
 
         public override void Configure(CompleteSprite sprite, Actor_Unit actor)
@@ -470,8 +470,6 @@ class Salix : DefaultRaceData
         {
             clothing1.GetSprite = (s) => sheet[sprF + actor.Unit.BodySize];
             base.Configure(sprite, actor);
-
-
         }
 
 
@@ -488,9 +486,9 @@ class Salix : DefaultRaceData
             clothing3 = new SpriteExtraInfo(3, null, WhiteColored); //BackCloak 
             blocksDick = false;
             coversBreasts = false;
-            DiscardSprite = State.GameManager.SpriteDictionary.Salix[65 + (whole ? 0 : 1)];
-            DiscardUsesPalettes = true;
-            Type = 444;
+            DiscardSprite = State.GameManager.SpriteDictionary.Salix[65 + (whole ? 1 : 0)];
+            DiscardUsesPalettes = false;
+            Type = 1302;
             OccupiesAllSlots = true;
             clothing1.YOffset = 0 * .625f;
             clothing2.YOffset = 0 * .625f;
@@ -560,10 +558,6 @@ class Salix : DefaultRaceData
     internal override void RandomCustom(Unit unit)
     {
         base.RandomCustom(unit);
-        unit.BodySize = 0;
-        unit.DickSize = 0;
-        unit.HasVagina = false;
-        unit.DefaultBreastSize = -1;
         unit.ClothingType = 1;
         unit.ClothingType2 = 1;
         
