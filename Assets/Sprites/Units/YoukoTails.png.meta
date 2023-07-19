@@ -11,6 +11,9 @@ TextureImporter:
     21300012: YoukoTails_4
     21300014: YoukoTails_5
     21300016: YoukoTails_8
+    21300018: YoukoTails_9
+    21300020: YoukoTails_10
+    21300022: YoukoTails_11
   externalObjects: {}
   serializedVersion: 9
   mipmaps:
@@ -101,13 +104,13 @@ TextureImporter:
         width: 160
         height: 160
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 962be4d63cba64b45adbe4261adc395b
+      spriteID: d3e9f518cef75ac40b17a7240f84f97e
       vertices: []
       indices: 
       edges: []
@@ -121,13 +124,13 @@ TextureImporter:
         width: 160
         height: 160
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1e0f7c6bc81c7d84eaeb97d6c259db5b
+      spriteID: ea0ede86cb07e3848b2f6d6dbc1e449d
       vertices: []
       indices: 
       edges: []
@@ -141,13 +144,13 @@ TextureImporter:
         width: 160
         height: 160
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9aaed5a13afffaf45a0a1815055598a7
+      spriteID: 599b663a5624824498259c711097aecc
       vertices: []
       indices: 
       edges: []
@@ -161,13 +164,13 @@ TextureImporter:
         width: 160
         height: 160
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 14a05cbe25fc7c749a412b469e7e8065
+      spriteID: c25d2ec4ab0d16e4d9b8f2b38abc7f46
       vertices: []
       indices: 
       edges: []
@@ -181,13 +184,13 @@ TextureImporter:
         width: 160
         height: 160
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 670ee4016792e9441bf46a17c9b3d7c3
+      spriteID: eb471f66063fe384696396d6bd02730b
       vertices: []
       indices: 
       edges: []
@@ -201,13 +204,13 @@ TextureImporter:
         width: 160
         height: 160
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: cc465e52b9beb344cbb7da41f6abd301
+      spriteID: f32f44d31381b3e41a097c536dd0ed23
       vertices: []
       indices: 
       edges: []
@@ -221,13 +224,13 @@ TextureImporter:
         width: 160
         height: 160
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a53b5b828cb9fe347bbf7afe791422ce
+      spriteID: eeee73839ab424548b6ee91e4c6cccd6
       vertices: []
       indices: 
       edges: []
@@ -241,13 +244,13 @@ TextureImporter:
         width: 160
         height: 160
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 750d8cc238451f249bc93ef2ba58900c
+      spriteID: 4281da816099ee748b1f090f5f4e60b1
       vertices: []
       indices: 
       edges: []
@@ -267,7 +270,27 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b868eb464b31a1a4dbfc31821a01a50c
+      spriteID: 2a6027a050086cf4db0123a1e48da497
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: YoukoTails_9
+      rect:
+        serializedVersion: 2
+        x: 1440
+        y: 0
+        width: 160
+        height: 160
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: db43fedcac6aa8b46872aca6a5006eed
       vertices: []
       indices: 
       edges: []
