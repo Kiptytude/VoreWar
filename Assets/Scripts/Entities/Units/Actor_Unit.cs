@@ -2223,10 +2223,10 @@ public class Actor_Unit
         PreyLocation preyLocation = PreyLocation.stomach;
         var possibilities = new Dictionary<string, PreyLocation>();
         possibilities.Add("Maw", PreyLocation.stomach);
-        if (Unit.CanAnalVore) possibilities.Add("Anus", PreyLocation.anal);
-        if (Unit.CanBreastVore) possibilities.Add("Breast", PreyLocation.breasts);
-        if (Unit.CanCockVore) possibilities.Add("Cock", PreyLocation.balls);
-        if (Unit.CanUnbirth) possibilities.Add("Pussy", PreyLocation.womb);
+        if (PredatorComponent.CanAnalVore()) possibilities.Add("Anus", PreyLocation.anal);
+        if (PredatorComponent.CanBreastVore()) possibilities.Add("Breast", PreyLocation.breasts);
+        if (PredatorComponent.CanCockVore()) possibilities.Add("Cock", PreyLocation.balls);
+        if (PredatorComponent.CanUnbirth()) possibilities.Add("Pussy", PreyLocation.womb);
 
         if (State.GameManager.TacticalMode.IsPlayerInControl && State.GameManager.CurrentScene == State.GameManager.TacticalMode && possibilities.Count > 1)
         {
@@ -2586,6 +2586,7 @@ public class Actor_Unit
     {
         if (Unit.HiddenRace == Unit.Race)
         {
+            TacticalGraphicalEffects.CreateSmokeCloud(Position, Unit.GetScale() / 2);
             Unit.HideRace(template.Race, template);
             foreach (Traits trait in template.GetTraits)
             {
@@ -2626,6 +2627,7 @@ public class Actor_Unit
     {
         if (Unit.HiddenRace != Unit.Race)
         {
+            TacticalGraphicalEffects.CreateSmokeCloud(Position, Unit.GetScale() / 2);
             Unit.UnhideRace();
             Unit.SpawnRace = Race.none;
             State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"{Unit.Name} shifted back to normal");

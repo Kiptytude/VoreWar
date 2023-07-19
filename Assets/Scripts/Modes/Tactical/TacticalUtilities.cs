@@ -944,10 +944,10 @@ static class TacticalUtilities
             PreyLocation preyLocation = PreyLocation.stomach;
             var possibilities = new Dictionary<string, PreyLocation>();
             possibilities.Add("Maw", PreyLocation.stomach);
-            if (targetPred.Unit.CanAnalVore) possibilities.Add("Anus", PreyLocation.anal);
-            if (targetPred.Unit.CanBreastVore) possibilities.Add("Breast", PreyLocation.breasts);
-            if (targetPred.Unit.CanCockVore) possibilities.Add("Cock", PreyLocation.balls);
-            if (targetPred.Unit.CanUnbirth) possibilities.Add("Pussy", PreyLocation.womb);
+            if (targetPred.PredatorComponent.CanAnalVore(actor)) possibilities.Add("Anus", PreyLocation.anal);
+            if (targetPred.PredatorComponent.CanBreastVore(actor)) possibilities.Add("Breast", PreyLocation.breasts);
+            if (targetPred.PredatorComponent.CanCockVore(actor)) possibilities.Add("Cock", PreyLocation.balls);
+            if (targetPred.PredatorComponent.CanUnbirth(actor)) possibilities.Add("Pussy", PreyLocation.womb);
 
             if (State.GameManager.TacticalMode.IsPlayerInControl && State.GameManager.CurrentScene == State.GameManager.TacticalMode && possibilities.Count > 1)
             {

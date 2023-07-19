@@ -12,13 +12,22 @@ interface IVoreCallback
      * use the boolean return to skip lower priority traits, eg. if the unit has already
      *  been removed and as part of a trait like digestive conversion, it shouldn't run the digestive rebirth trait it stole with extraction 
     */
-    bool OnSwallow(Prey preyUnit, Actor_Unit predUnit);//any time prey is added (living or dead)
-    bool OnRemove(Prey preyUnit, Actor_Unit predUnit);//any time prey is removed (living or dead)
-    bool OnDigestion(Prey preyUnit, Actor_Unit predUnit);//any time living prey is digested but won't die yet
-    bool OnFinishDigestion(Prey preyUnit, Actor_Unit predUnit);//right before unit dies
-    bool OnDigestionKill(Prey preyUnit, Actor_Unit predUnit);//right after unit dies
-    bool OnAbsorption(Prey preyUnit, Actor_Unit predUnit);//any time a dead unit is being absorbed
-    bool OnFinishAbsorption(Prey preyUnit, Actor_Unit predUnit);//unit is done absorbing, but not removed yet
+    bool OnSwallow(Prey preyUnit, Actor_Unit predUnit, PreyLocation location);//any time prey is added (living or dead)
+    bool OnRemove(Prey preyUnit, Actor_Unit predUnit, PreyLocation location);//any time prey is removed (living or dead)
+    bool OnDigestion(Prey preyUnit, Actor_Unit predUnit, PreyLocation location);//any time living prey is digested but won't die yet
+    bool OnFinishDigestion(Prey preyUnit, Actor_Unit predUnit, PreyLocation location);//right before unit dies
+    bool OnDigestionKill(Prey preyUnit, Actor_Unit predUnit, PreyLocation location);//right after unit dies
+    bool OnAbsorption(Prey preyUnit, Actor_Unit predUnit, PreyLocation location);//any time a dead unit is being absorbed
+    bool OnFinishAbsorption(Prey preyUnit, Actor_Unit predUnit, PreyLocation location);//unit is done absorbing, but not removed yet
+}
+
+interface IVoreRestrictions
+{
+    /* Notes: 
+     * CheckVore needs to handle a null target
+     * Only specialVore types can be affected, disableing Vore overall will take more work
+     */
+    bool CheckVore(Actor_Unit actor, Actor_Unit target, PreyLocation location);
 }
 
 public enum PreyLocation
@@ -32,6 +41,22 @@ public enum PreyLocation
     anal,
     leftBreast,
     rightBreast
+}
+
+static class PreyLocationMethods
+{
+
+    static public bool IsGenital(PreyLocation location)
+    {
+        switch (location)
+        {
+            case PreyLocation.womb:
+            case PreyLocation.balls:
+                return true;
+            default:
+                return false;
+        }
+    }
 }
 
 public class PredatorComponent
@@ -129,7 +154,105 @@ public class PredatorComponent
     internal Prey template = null;
 
 
+    [OdinSerialize]
+    private List<IVoreRestrictions> _voreRestrictions = null;
+    internal List<IVoreRestrictions> VoreRestrictions
+    {
+        get
+        {
+            if(_voreRestrictions == null)
+            {
+                _voreRestrictions = new List<IVoreRestrictions>();
+                if (Races.GetRace(unit.Race) is IVoreRestrictions restriction1)
+                    _voreRestrictions.Add(restriction1);
+                foreach (Traits trait in unit.GetTraits.Where(t => (TraitList.GetTrait(t) != null) && TraitList.GetTrait(t) is IVoreRestrictions))
+                {
+                    IVoreRestrictions restriction = (IVoreRestrictions)TraitList.GetTrait(trait);
+                    _voreRestrictions.Add(restriction);
+                }
+            }
+            return _voreRestrictions;
+        }
+        set
+        {
+            if(value == null)
+                _voreRestrictions = null;
+        }
+    }
+    internal bool CanVore(PreyLocation location, Actor_Unit preyTarget = null)
+    {
+        if (!unit.CanVore(location))
+            return false;
+        foreach (IVoreRestrictions callback in VoreRestrictions)
+            if (!callback.CheckVore(actor, preyTarget, location))
+                return false;
+        return true;
+    }
+    internal bool CanUnbirth(Actor_Unit preyTarget = null)
+    {
+        if (!unit.CanUnbirth)
+            return false;
+        foreach (IVoreRestrictions callback in VoreRestrictions)
+            if (!callback.CheckVore(actor, preyTarget,PreyLocation.womb))
+                return false;
+        return true;
+    }
+    internal bool CanCockVore(Actor_Unit preyTarget = null)
+    {
+        if (!unit.CanCockVore)
+            return false;
+        foreach (IVoreRestrictions callback in VoreRestrictions)
+            if (!callback.CheckVore(actor, preyTarget, PreyLocation.balls))
+                return false;
+        return true;
+    }
+    internal bool CanBreastVore(Actor_Unit preyTarget = null)
+    {
+        if (!unit.CanBreastVore)
+            return false;
+        foreach (IVoreRestrictions callback in VoreRestrictions)
+            if (!callback.CheckVore(actor, preyTarget, PreyLocation.breasts))
+                return false;
+        return true;
+    }
+    internal bool CanAnalVore(Actor_Unit preyTarget = null)
+    {
+        if (!unit.CanAnalVore)
+            return false;
+        foreach (IVoreRestrictions callback in VoreRestrictions)
+            if (!callback.CheckVore(actor, preyTarget, PreyLocation.anal))
+                return false;
+        return true;
+    }
+    internal bool CanTailVore(Actor_Unit preyTarget = null)
+    {
+        if (!unit.CanTailVore)
+            return false;
+        foreach (IVoreRestrictions callback in VoreRestrictions)
+            if (!callback.CheckVore(actor, preyTarget, PreyLocation.tail))
+                return false;
+        return true;
+    }
     public int AlivePrey { get; set; }
+
+    private List<IVoreCallback> PopulateCallbacks(Prey preyUnit)
+    {
+        List<IVoreCallback> Callbacks = new List<IVoreCallback>();
+        foreach (Traits trait in unit.GetTraits.Where(t => (TraitList.GetTrait(t) != null) && TraitList.GetTrait(t) is IVoreCallback))
+        {
+            IVoreCallback callback = (IVoreCallback)TraitList.GetTrait(trait);
+            if (callback.IsPredTrait == true)
+                Callbacks.Add(callback);
+        }
+        foreach (Traits trait in preyUnit.Unit.GetTraits.Where(t => (TraitList.GetTrait(t) != null) && TraitList.GetTrait(t) is IVoreCallback))
+        {
+            IVoreCallback callback = (IVoreCallback)TraitList.GetTrait(trait);
+            if (callback.IsPredTrait == false)
+                Callbacks.Add(callback);
+        }
+        //future idea: create status effect classes that can ALSO implement vore related callbacks
+        return Callbacks;
+    }
 
     // lumps prey in similar locations together
 
@@ -764,30 +887,13 @@ public class PredatorComponent
                     unit.AddSharedTrait(trait);
     }
 
-    private List<IVoreCallback> PopulateCallbacks(Prey preyUnit)
-    {
-        List<IVoreCallback> Callbacks = new List<IVoreCallback>();
-        foreach (Traits trait in unit.GetTraits.Where(t => (TraitList.GetTrait(t) != null) && TraitList.GetTrait(t) is IVoreCallback))
-        {
-            IVoreCallback callback = (IVoreCallback)TraitList.GetTrait(trait);
-            if (callback.IsPredTrait == true)
-                Callbacks.Add(callback);
-        }
-        foreach (Traits trait in preyUnit.Unit.GetTraits.Where(t => (TraitList.GetTrait(t) != null) && TraitList.GetTrait(t) is IVoreCallback))
-        {
-            IVoreCallback callback = (IVoreCallback)TraitList.GetTrait(trait);
-            if (callback.IsPredTrait == false)
-                Callbacks.Add(callback);
-        }
-        //future idea: create status effect classes that can ALSO implement vore related callbacks
-        return Callbacks;
-    }
-
     internal void OnSwallowCallbacks(Prey preyUnit)
     {
+        var location = preyUnit.Location;
         foreach(IVoreCallback callback in PopulateCallbacks(preyUnit).OrderBy((vt) => vt.ProcessingPriority))
         {
-            if(!callback.OnSwallow(preyUnit, actor))
+
+            if(!callback.OnSwallow(preyUnit, actor, location))
                 return;
         }
     }
@@ -875,12 +981,13 @@ public class PredatorComponent
 
     internal void OnRemoveCallbacks(Prey preyUnit)
     {
-        if(prey.Contains(preyUnit))
+        if (prey.Contains(preyUnit))
         {
+            var location = preyUnit.Location;
             prey.Remove(preyUnit);
             foreach (IVoreCallback callback in PopulateCallbacks(preyUnit).OrderBy((vt) => vt.ProcessingPriority))
             {
-                if (!callback.OnRemove(preyUnit, actor))
+                if (!callback.OnRemove(preyUnit, actor, location))
                     return;
             }
         }
@@ -1187,6 +1294,7 @@ public class PredatorComponent
     private int DigestOneUnit(Prey preyUnit, int preyDamage)
     {
         List<IVoreCallback> Callbacks = PopulateCallbacks(preyUnit).OrderBy((vt) => vt.ProcessingPriority).ToList();
+        var location = preyUnit.Location;
         int totalHeal = 0;
         bool freshKill = false;
         if (unit.HasTrait(Traits.Extraction) && !TacticalUtilities.IsPreyEndoTargetForUnit(preyUnit, unit))
@@ -1201,9 +1309,9 @@ public class PredatorComponent
                 if (TraitList.GetTrait(trait) is IVoreCallback callback)
                 {
                     if (callback.IsPredTrait == true)
-                        callback.OnSwallow(preyUnit, actor);
+                        callback.OnSwallow(preyUnit, actor, location);
                     else
-                        callback.OnRemove(preyUnit, actor);
+                        callback.OnRemove(preyUnit, actor, location);
                 }
                 preyUnit.Unit.RemoveTrait(trait);
             } else
@@ -1228,7 +1336,7 @@ public class PredatorComponent
             }
             foreach (IVoreCallback callback in Callbacks)
             {
-                if (!callback.OnFinishDigestion(preyUnit, actor))
+                if (!callback.OnFinishDigestion(preyUnit, actor, location))
                     return 0;
             }
             if (preyUnit.Unit.CanBeConverted() &&
@@ -1323,7 +1431,7 @@ public class PredatorComponent
             preyUnit.Actor.Unit.Health = 0;
             foreach (IVoreCallback callback in Callbacks)
             {
-                if (!callback.OnDigestionKill(preyUnit, actor))
+                if (!callback.OnDigestionKill(preyUnit, actor, location))
                     return 0;
             }
         }
@@ -1362,7 +1470,7 @@ public class PredatorComponent
             unit.RestoreMana(totalManaGain);
             foreach (IVoreCallback callback in Callbacks)
             {
-                if (!callback.OnAbsorption(preyUnit, actor))
+                if (!callback.OnAbsorption(preyUnit, actor, location))
                     return 0;
             }
             if (preyUnit.Unit.IsDeadAndOverkilledBy(healthReduction * 2) && preyUnit.SubPrey?.Count() > 0)
@@ -1371,37 +1479,7 @@ public class PredatorComponent
                 for (int i = 0; i < aliveSubUnits.Length; i++)
                 {
                     Prey newPrey = new Prey(aliveSubUnits[i].Actor, actor, aliveSubUnits[i].SubPrey);
-                    AddPrey(newPrey);
-                    switch (Location(preyUnit))
-                    {
-                        case PreyLocation.womb:
-                            womb.Add(newPrey);
-                            break;
-                        case PreyLocation.balls:
-                            balls.Add(newPrey);
-                            break;
-                        case PreyLocation.breasts:
-                            breasts.Add(newPrey);
-                            break;
-                        case PreyLocation.stomach:
-                            stomach.Add(newPrey);
-                            break;
-                        case PreyLocation.tail:
-                            tail.Add(newPrey);
-                            break;
-                        case PreyLocation.leftBreast:
-                            leftBreast.Add(newPrey);
-                            break;
-                        case PreyLocation.rightBreast:
-                            rightBreast.Add(newPrey);
-                            break;
-                        case PreyLocation.stomach2:
-                            stomach2.Add(newPrey);
-                            break;
-                        default:
-                            stomach.Add(newPrey);
-                            break;
-                    }
+                    AddPrey(newPrey, Location(preyUnit));
                     preyUnit.SubPrey.Remove(aliveSubUnits[i]);
                 }
             }
@@ -1415,7 +1493,7 @@ public class PredatorComponent
                 }
                 foreach (IVoreCallback callback in Callbacks)
                 {
-                    if (!callback.OnFinishAbsorption(preyUnit, actor))
+                    if (!callback.OnFinishAbsorption(preyUnit, actor, location))
                         return 0;
                 }
                 if (preyUnit.Unit.CanBeConverted() &&
@@ -1513,37 +1591,7 @@ public class PredatorComponent
                     for (int i = 0; i < subUnits.Length; i++)
                     {
                         Prey newPrey = new Prey(subUnits[i].Actor, actor, subUnits[i].SubPrey);
-                        AddPrey(newPrey);
-                        switch (Location(preyUnit))
-                        {
-                            case PreyLocation.womb:
-                                womb.Add(newPrey);
-                                break;
-                            case PreyLocation.balls:
-                                balls.Add(newPrey);
-                                break;
-                            case PreyLocation.breasts:
-                                breasts.Add(newPrey);
-                                break;
-                            case PreyLocation.stomach:
-                                stomach.Add(newPrey);
-                                break;
-                            case PreyLocation.stomach2:
-                                stomach2.Add(newPrey);
-                                break;
-                            case PreyLocation.tail:
-                                tail.Add(newPrey);
-                                break;
-                            case PreyLocation.leftBreast:
-                                leftBreast.Add(newPrey);
-                                break;
-                            case PreyLocation.rightBreast:
-                                rightBreast.Add(newPrey);
-                                break;
-                            default:
-                                stomach.Add(newPrey);
-                                break;
-                        }
+                        AddPrey(newPrey, Location(preyUnit));
                         preyUnit.SubPrey.Remove(subUnits[i]);
                     }
                 }
@@ -1561,7 +1609,7 @@ public class PredatorComponent
         {
             foreach (IVoreCallback callback in Callbacks)
             {
-                if (!callback.OnDigestion(preyUnit, actor))
+                if (!callback.OnDigestion(preyUnit, actor, location))
                     return 0;
             }
             preyUnit.TurnsDigested++;
@@ -2242,23 +2290,23 @@ public class PredatorComponent
                     return Consume(target, Devour, PreyLocation.stomach);
                 break;
             case VoreType.Unbirth:
-                if (allowedVoreTypes.Contains(VoreType.Unbirth) && unit.CanUnbirth)
+                if (allowedVoreTypes.Contains(VoreType.Unbirth) && CanUnbirth(target))
                     return Consume(target, Unbirth, PreyLocation.womb);
                 break;
             case VoreType.CockVore:
-                if (allowedVoreTypes.Contains(VoreType.CockVore) && unit.CanCockVore)
+                if (allowedVoreTypes.Contains(VoreType.CockVore) && CanCockVore(target))
                     return Consume(target, CockVore, PreyLocation.balls);
                 break;
             case VoreType.BreastVore:
-                if (allowedVoreTypes.Contains(VoreType.BreastVore) && unit.CanBreastVore)
+                if (allowedVoreTypes.Contains(VoreType.BreastVore) && CanBreastVore(target))
                     return Consume(target, BreastVore, PreyLocation.breasts);
                 break;
             case VoreType.TailVore:
-                if (allowedVoreTypes.Contains(VoreType.TailVore) && unit.CanTailVore)
+                if (allowedVoreTypes.Contains(VoreType.TailVore) && CanTailVore(target))
                     return Consume(target, TailVore, PreyLocation.tail);
                 break;
             case VoreType.Anal:
-                if (allowedVoreTypes.Contains(VoreType.Anal) && unit.CanAnalVore)
+                if (allowedVoreTypes.Contains(VoreType.Anal) && CanAnalVore(target))
                     return Consume(target, AnalVore, PreyLocation.anal);
                 break;
         }
@@ -2270,15 +2318,15 @@ public class PredatorComponent
         List<VoreType> voreTypes = new List<VoreType>();
         if (allowedVoreTypes.Contains(VoreType.Oral) && Config.OralWeight > 0)
             options.Add(VoreType.Oral, Config.OralWeight);
-        if (allowedVoreTypes.Contains(VoreType.Unbirth) && unit.CanUnbirth && Config.UnbirthWeight > 0 && (actor.BodySize() >= target.BodySize() * 3 || !actor.Unit.HasTrait(Traits.TightNethers)))
+        if (allowedVoreTypes.Contains(VoreType.Unbirth) && CanUnbirth(target) && Config.UnbirthWeight > 0 && (actor.BodySize() >= target.BodySize() * 3 || !actor.Unit.HasTrait(Traits.TightNethers)))
             options.Add(VoreType.Unbirth, Config.UnbirthWeight);
-        if (allowedVoreTypes.Contains(VoreType.CockVore) && unit.CanCockVore && Config.CockWeight > 0 && (actor.BodySize() >= target.BodySize() * 3 || !actor.Unit.HasTrait(Traits.TightNethers)))
+        if (allowedVoreTypes.Contains(VoreType.CockVore) && CanCockVore(target) && Config.CockWeight > 0 && (actor.BodySize() >= target.BodySize() * 3 || !actor.Unit.HasTrait(Traits.TightNethers)))
             options.Add(VoreType.CockVore, Config.CockWeight);
-        if (allowedVoreTypes.Contains(VoreType.BreastVore) && unit.CanBreastVore && Config.BreastWeight > 0)
+        if (allowedVoreTypes.Contains(VoreType.BreastVore) && CanBreastVore(target) && Config.BreastWeight > 0)
             options.Add(VoreType.BreastVore, Config.BreastWeight);
-        if (allowedVoreTypes.Contains(VoreType.TailVore) && unit.CanTailVore && Config.TailWeight > 0)
+        if (allowedVoreTypes.Contains(VoreType.TailVore) && CanTailVore(target) && Config.TailWeight > 0)
             options.Add(VoreType.TailVore, Config.TailWeight);
-        if (allowedVoreTypes.Contains(VoreType.Anal) && unit.CanAnalVore && Config.AnalWeight > 0)
+        if (allowedVoreTypes.Contains(VoreType.Anal) && CanAnalVore(target) && Config.AnalWeight > 0)
             options.Add(VoreType.Anal, Config.AnalWeight);
 
         var type = options.GetResult();
@@ -2382,8 +2430,8 @@ public class PredatorComponent
 
                 target.Movement = 0;
                 Prey preyref = new Prey(target, actor, target.PredatorComponent?.prey);
-                AddPrey(preyref);
                 MagicDevour(target, v, preyref, preyLocation);
+                AddPrey(preyref);
                 UpdateFullness();
                 return true;
             }
@@ -2427,7 +2475,8 @@ public class PredatorComponent
         }
         if (target.Unit == unit)
             return false;
-
+        if (unit.CanVore(preyType) != CanVore(preyType, target))
+            return false;
         if (target.Bulk() <= FreeCap() && (actor.BodySize() >= target.BodySize() * 3 || !actor.Unit.HasTrait(Traits.TightNethers) || (preyType != PreyLocation.womb && preyType != PreyLocation.balls)))
         {
             bool bit = false;
@@ -2546,8 +2595,8 @@ public class PredatorComponent
         }
         target.Movement = 0;
         Prey preyref = new Prey(target, actor, target.PredatorComponent?.prey);
-        AddPrey(preyref);
         action(target, odds, preyref, delay);
+        AddPrey(preyref);
         UpdateFullness();
     }
 
@@ -3306,7 +3355,6 @@ public class PredatorComponent
                 return true;
             }
         }
-        recipient.PredatorComponent.AddPrey(preyref);
         if (preyUnit.Unit.IsDead == false)
         {
             recipient.PredatorComponent.AlivePrey++;
@@ -3332,6 +3380,7 @@ public class PredatorComponent
                 TacticalUtilities.Log.RegisterTransferSuccess(unit, recipient.Unit, preyUnit.Unit, 1.0f, PreyLocation.stomach);
                 break;
         }
+        recipient.PredatorComponent.AddPrey(preyref);
         recipient.Unit.GiveScaledExp(4 * preyUnit.Unit.ExpMultiplier, recipient.Unit.Level - preyUnit.Unit.Level, true);
         if (preyUnit.Unit.IsDead && Config.NoScatForDeadTransfers)
             preyUnit.ScatDisabled = true;
@@ -3440,7 +3489,7 @@ public class PredatorComponent
 
     private bool VoreStealFinalize(Actor_Unit donor, Prey preyUnit, Prey preyref, PreyLocation destination, PreyLocation oldLocation)
     {
-        actor.PredatorComponent.AddPrey(preyref);
+
         actor.PredatorComponent.AlivePrey++;
         donor.PredatorComponent.AlivePrey--;
         switch (destination)
@@ -3458,6 +3507,7 @@ public class PredatorComponent
                 TacticalUtilities.Log.RegisterVoreStealSuccess(donor.Unit, actor.Unit, preyUnit.Unit, 1.0f, PreyLocation.stomach, oldLocation);
                 break;
         }
+        actor.PredatorComponent.AddPrey(preyref);
         actor.Unit.GiveScaledExp(4 * preyUnit.Unit.ExpMultiplier, actor.Unit.Level - preyUnit.Unit.Level, true);
         UpdateFullness();
         donor.PredatorComponent.RemovePrey(preyUnit);
@@ -3502,7 +3552,6 @@ public class PredatorComponent
         }
         forcePrey.Movement = 0;
         Prey preyref = new Prey(forcePrey, actor, forcePrey.PredatorComponent?.prey);
-        AddPrey(preyref);
         switch (preyLocation)
         {
             case PreyLocation.womb:
@@ -3548,6 +3597,7 @@ public class PredatorComponent
                 AddToStomach(preyref, 1f);
                 break;
         }
+        AddPrey(preyref);
         actor.SetPredMode(preyLocation);
         actor.SetVoreSuccessMode();
         UpdateFullness();

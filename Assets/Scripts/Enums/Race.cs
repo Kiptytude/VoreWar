@@ -31,7 +31,6 @@
     Frogs = 26,
     Sharks = 27,
     Deer = 28,
-    Youko = 29,
 
     Succubi = 50,
     Tigers = 51,
@@ -45,7 +44,7 @@
     Komodos = 59,
     Cockatrice = 60,
     Vargul = 61,
-
+    Youko = 62,
 
     Vagrants = 100,
     Serpents = 101,

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System;
 
-class Youko : Humans
+class Youko : Humans, IVoreRestrictions
 {
     readonly Sprite[] Sprites2 = State.GameManager.SpriteDictionary.HumansBodySprites2;
     readonly Sprite[] Sprites3 = State.GameManager.SpriteDictionary.HumansBodySprites3;
@@ -17,13 +17,22 @@ class Youko : Humans
         BeardStyles = 0;
     }
 
-    protected override Sprite AccessorySprite(Actor_Unit actor) => Sprites3[8]; //ears
-    protected override Sprite SecondaryAccessorySprite(Actor_Unit actor)
+    private int GetNumTails(Actor_Unit actor)
     {
         int StatTotal = actor.Unit.GetStatTotal();
         if (StatTotal < 85)
-            return Tails[0];
-        return Tails[Math.Min((int)(StatTotal - 85) / 15,7)+1];
+            return 0;
+        return Math.Min((int)(StatTotal - 85) / 15, 7) + 1;
+
+    }
+
+    protected override Sprite AccessorySprite(Actor_Unit actor) => Sprites3[8]; //ears
+    protected override Sprite SecondaryAccessorySprite(Actor_Unit actor)
+    {
+        int tailCount = GetNumTails(actor);
+        if (actor.Unit.Predator && actor.PredatorComponent.TailFullness > 0)
+            return Tails[9];
+        return Tails[tailCount];
     }
     protected override Sprite BeardSprite(Actor_Unit actor)
     {
@@ -94,4 +103,13 @@ class Youko : Humans
         }
     }
 
+    public bool CheckVore(Actor_Unit actor, Actor_Unit target, PreyLocation location)
+    {
+        if(location == PreyLocation.tail)
+        {
+            int tailCount = GetNumTails(actor);
+            return (tailCount >= 4) && (actor.PredatorComponent.TailFullness < 1);
+        }
+        return true;
+    }
 }

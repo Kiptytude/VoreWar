@@ -369,6 +369,7 @@ static class RaceParameters
             Traits.ArtfulDodge,
             Traits.ThrillSeeker
         },
+            LeaderRace = Race.Youko,
             RaceDescription = "Natives of this realm, the Foxes seem unable of taking danger seriously. They dodge attacks at the last second and only seem to grow ever bolder as death approaches them. Entire armies have fallen exhausted as a group of foxes dances among them, ready to be devoured once the time is right.",
         };
 
@@ -378,6 +379,7 @@ static class RaceParameters
             StomachSize = 15,
             HasTail = true,
             FavoredStat = Stat.Mind,
+            AllowedVoreTypes = new List<VoreType> { VoreType.Oral, VoreType.Unbirth, VoreType.CockVore, VoreType.BreastVore, VoreType.Anal, VoreType.TailVore },
             RacialTraits = new List<Traits>()
             {
                 Traits.Charmer,

@@ -426,6 +426,25 @@ public class Unit
     internal bool CanAnalVore => Config.AnalVore;
     internal bool CanTailVore => Config.TailVore;
 
+    public bool CanVore(PreyLocation location)
+    {
+        switch (location)
+        {
+            case PreyLocation.womb:
+                return CanUnbirth;
+            case PreyLocation.balls:
+                return CanCockVore;
+            case PreyLocation.breasts:
+                return CanBreastVore;
+            case PreyLocation.anal:
+                return CanAnalVore;
+            case PreyLocation.tail:
+                return CanTailVore;
+            default:
+                return true;
+        }
+    }
+
     internal bool HasWeapon
     {
         get

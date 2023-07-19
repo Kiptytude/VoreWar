@@ -1636,7 +1636,7 @@ Turns: {currentTurn}
     }
 
 
-    void ShowVoreHitPercentages(Actor_Unit actor, bool genital = false)
+    void ShowVoreHitPercentages(Actor_Unit actor, PreyLocation location = PreyLocation.stomach)
     {
         foreach (Actor_Unit target in units)
         {
@@ -1646,7 +1646,9 @@ Turns: {currentTurn}
                 continue;
             Vec2i pos = target.Position;
             target.UnitSprite.HitPercentagesDisplayed(true);
-            if (actor.PredatorComponent.FreeCap() < target.Bulk() || (actor.BodySize() < target.BodySize() * 3 && actor.Unit.HasTrait(Traits.TightNethers) && genital))
+            if (actor.PredatorComponent.FreeCap() < target.Bulk() || (actor.BodySize() < target.BodySize() * 3 && actor.Unit.HasTrait(Traits.TightNethers) && PreyLocationMethods.IsGenital(location)))
+                target.UnitSprite.DisplayHitPercentage(target.GetDevourChance(actor, true), Color.yellow);
+            else if (actor.Unit.CanVore(location) != actor.PredatorComponent.CanVore(location))
                 target.UnitSprite.DisplayHitPercentage(target.GetDevourChance(actor, true), Color.yellow);
             else if (actor.Position.GetNumberOfMovesDistance(target.Position) < 2)
                 target.UnitSprite.DisplayHitPercentage(target.GetDevourChance(actor, true), Color.red);
@@ -1711,13 +1713,19 @@ Turns: {currentTurn}
         switch (specialType)
         {
             case SpecialAction.Unbirth:
+                ShowVoreHitPercentages(actor, PreyLocation.womb);
+                break;
             case SpecialAction.CockVore:
-                ShowVoreHitPercentages(actor, true);
+                ShowVoreHitPercentages(actor, PreyLocation.balls);
                 break;
             case SpecialAction.TailVore:
+                ShowVoreHitPercentages(actor, PreyLocation.tail);
+                break;
             case SpecialAction.AnalVore:
+                ShowVoreHitPercentages(actor, PreyLocation.anal);
+                break;
             case SpecialAction.BreastVore:
-                ShowVoreHitPercentages(actor);
+                ShowVoreHitPercentages(actor, PreyLocation.breasts);
                 break;
             case SpecialAction.Transfer:
                 ShowCockVoreTransferPercentages(actor);
