@@ -811,7 +811,7 @@ public class PredatorComponent
         preyUnit.Actor.SelfPrey = null;
     }
 
-    void FreePrey(Prey preyUnit, bool forcePop)
+    internal void FreePrey(Prey preyUnit, bool forcePop)
     {
 
         if (actor.Visible || forcePop || actor.Fled)
@@ -979,12 +979,13 @@ public class PredatorComponent
         }
     }
 
-    internal void OnRemoveCallbacks(Prey preyUnit)
+    internal void OnRemoveCallbacks(Prey preyUnit, bool remove = true)
     {
         if (prey.Contains(preyUnit))
         {
             var location = preyUnit.Location;
-            prey.Remove(preyUnit);
+            if(remove)
+                prey.Remove(preyUnit);
             foreach (IVoreCallback callback in PopulateCallbacks(preyUnit).OrderBy((vt) => vt.ProcessingPriority))
             {
                 if (!callback.OnRemove(preyUnit, actor, location))

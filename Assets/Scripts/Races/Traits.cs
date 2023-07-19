@@ -524,6 +524,12 @@ internal class Metamorphosis : VoreTrait, INoAutoEscape
         }
         preyUnit.Unit.RemoveTrait(Traits.Metamorphosis);//no metamorphosis loops
         State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"{preyUnit.Unit.Name} changed form within {predUnit.Unit.Name}'s body.");
+        if (predUnit.Unit.HasTrait(Traits.Greedy) == false && preyUnit.Unit.GetApparentSide(predUnit.Unit) == predUnit.Unit.FixedSide && TacticalUtilities.GetMindControlSide(preyUnit.Unit) == -1 && preyUnit.Unit.Health > 0 && preyUnit.Actor.Surrendered == false)
+        {
+            State.GameManager.TacticalMode.TacticalStats.RegisterRegurgitation(predUnit.Unit.Side);
+            TacticalUtilities.Log.RegisterRegurgitated(predUnit.Unit, preyUnit.Unit, location);
+            predUnit.PredatorComponent.FreePrey(preyUnit, false);
+        }
         predUnit.PredatorComponent.UpdateFullness();
         return false;
     }
@@ -542,8 +548,9 @@ internal class MetamorphicConversion : Metamorphosis
 
     public override bool OnFinishDigestion(Prey preyUnit, Actor_Unit predUnit, PreyLocation location)
     {
-        base.OnFinishDigestion(preyUnit, predUnit, location);
         preyUnit.ChangeSide(predUnit.Unit.FixedSide);
+        base.OnFinishDigestion(preyUnit, predUnit, location);
+        preyUnit.Unit.RemoveTrait(Traits.MetamorphicConversion);
         return false;
     }
 }
@@ -760,7 +767,7 @@ internal class SpiritPossession : Possession
         return true;
     }
 }
-internal class ForcedMetamorphosis : VoreTraitBooster
+internal class ForcedMetamorphosis : VoreTraitBooster, INoAutoEscape
 {
     public ForcedMetamorphosis()
     {

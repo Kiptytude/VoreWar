@@ -218,30 +218,30 @@ class RaceSettings
 
     internal Race GetSpawnRace(Race race)
     {
-        Race spawnRace;
+        Race spawnRace = Race.none;
         if (Races.ContainsKey(race))
             spawnRace = Get(race).SpawnRace;
-        else
+        if (spawnRace == Race.none)
             spawnRace = RaceParameters.GetRaceTraits(race).SpawnRace; 
         return (spawnRace == Race.none) ? race : spawnRace;
     }
 
     internal Race GetConversionRace(Race race)
     {
-        Race conversionRace;
+        Race conversionRace = Race.none;
         if (Races.ContainsKey(race))
             conversionRace = Get(race).ConversionRace;
-        else
+        if (conversionRace == Race.none)
             conversionRace = RaceParameters.GetRaceTraits(race).ConversionRace; 
         return (conversionRace == Race.none) ? race : conversionRace;
     }
 
     internal Race GetLeaderRace(Race race)
     {
-        Race leaderRace;
+        Race leaderRace = Race.none;
         if (Races.ContainsKey(race))
             leaderRace = Get(race).LeaderRace;
-        else
+        if (leaderRace == Race.none)
             leaderRace = RaceParameters.GetRaceTraits(race).LeaderRace; 
         return (leaderRace == Race.none) ? race : leaderRace;
     }

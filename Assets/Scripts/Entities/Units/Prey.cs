@@ -164,7 +164,7 @@ class Prey
             Actor.RevertRace();
         }
 
-        Predator.PredatorComponent.OnRemoveCallbacks(this);
+        Predator.PredatorComponent.OnRemoveCallbacks(this, false);
         HashSet<Gender> set = new HashSet<Gender>(Races.GetRace(Unit.Race).CanBeGender);
         bool equals = set.SetEquals(Races.GetRace(race).CanBeGender);
         Unit.ChangeRace(race);
