@@ -389,6 +389,17 @@ static class RaceParameters
                 Traits.ManaDrain,
                 Traits.CreateSpawn,
             },
+            RaceStats = new RaceStats()
+            {
+                Strength = new RaceStats.StatRange(6, 14),
+                Dexterity = new RaceStats.StatRange(6, 14),
+                Endurance = new RaceStats.StatRange(6, 14),
+                Mind = new RaceStats.StatRange(14, 22),
+                Will = new RaceStats.StatRange(8, 16),
+                Agility = new RaceStats.StatRange(8, 18),
+                Voracity = new RaceStats.StatRange(12, 18),
+                Stomach = new RaceStats.StatRange(12, 18),
+            },
             SpawnRace = Race.Whisp,
             ConversionRace = Race.Foxes,
             RaceDescription = "Foxes that were changed by spirit energy",
