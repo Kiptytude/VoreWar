@@ -12,6 +12,7 @@ public class UnitInfoPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     public UIUnitSprite Sprite;
     public TextMeshProUGUI BasicInfo;
     public TextMeshProUGUI InfoText;
+    public GameObject StatBlock;
     public Slider ExpBar;
     public Slider HealthBar;
     public Slider ManaBar;

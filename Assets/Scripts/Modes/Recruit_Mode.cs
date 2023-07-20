@@ -1287,19 +1287,15 @@ public class Recruit_Mode : SceneBase
             }
             EXPText.text = $"Level {merc.Unit.Level} ({(int)merc.Unit.Experience} EXP)";
 
+            EquipRow.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = merc.Unit.GetItem(0)?.Name;
+            EquipRow.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = merc.Unit.GetItem(1)?.Name;
             if (actor.Unit.HasTrait(Traits.Resourceful))
             {
                 EquipRow.transform.GetChild(2).gameObject.SetActive(true);
-                EquipRow.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = merc.Unit.GetItem(0)?.Name;
-                EquipRow.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = merc.Unit.GetItem(1)?.Name;
                 EquipRow.transform.GetChild(2).GetChild(0).GetComponent<Text>().text = merc.Unit.GetItem(2)?.Name;
             }
             else
-            {
                 EquipRow.transform.GetChild(2).gameObject.SetActive(false);
-                EquipRow.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = merc.Unit.GetItem(0)?.Name;
-                EquipRow.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = merc.Unit.GetItem(1)?.Name;
-            }
 
             StatRow1.transform.GetChild(0).GetChild(1).GetComponent<Text>().text = merc.Unit.GetStatBase(Stat.Strength).ToString();
             StatRow1.transform.GetChild(1).GetChild(1).GetComponent<Text>().text = merc.Unit.GetStatBase(Stat.Dexterity).ToString();

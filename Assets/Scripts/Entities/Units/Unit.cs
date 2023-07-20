@@ -1223,17 +1223,17 @@ public class Unit
         if (modStat > baseStat)
         {
             if (Config.HideBaseStats)
-                return $"{stat}: <color=#007000ff>{modStat}</color>";
-            return $"{stat}: <color=#007000ff>{modStat}</color> ({baseStat})";
+                return $"<color=#007000ff>{modStat}</color>";
+            return $"<color=#007000ff>{modStat}</color> ({baseStat})";
         }
         else if (modStat < baseStat)
         {
             if (Config.HideBaseStats)
-                return $"{stat}: <color=red>{modStat}</color>";
-            return $"{stat}: <color=red>{modStat}</color> ({baseStat})";
+                return $"<color=red>{modStat}</color>";
+            return $"<color=red>{modStat}</color> ({baseStat})";
         }
         else
-            return $"{stat}: {modStat}";
+            return $"{modStat}";
     }
 
     public void SetExp(float exp) => experience = exp;
