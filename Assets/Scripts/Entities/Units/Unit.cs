@@ -1355,7 +1355,13 @@ public class Unit
             {
                 if (ret != "")
                     ret += "\n";
-                ret += Tags[i].ToString();
+                if (TemporaryTraits != null && TemporaryTraits.Count > 0 && TemporaryTraits.Contains(Tags[i]))
+                {
+                    if (PermanentTraits != null && PermanentTraits.Count > 0 && !PermanentTraits.Contains(Tags[i]))
+                        ret += "<color=#402B8Dff>" + Tags[i].ToString() + "</color>";
+                }
+                else
+                    ret += Tags[i].ToString();
             }
         }
         if (PermanentTraits != null && PermanentTraits.Count > 0)
