@@ -1013,6 +1013,7 @@ public class PredatorComponent
         foreach (Traits trait in preyUnit.Unit.GetTraits.Where(t => (TraitList.GetTrait(t) != null) && TraitList.GetTrait(t) is INoAutoEscape))
         {
             INoAutoEscape callback = (INoAutoEscape)TraitList.GetTrait(trait);
+            if(!callback.CanEscape(preyUnit, actor))
             return false;
         }
         return true;

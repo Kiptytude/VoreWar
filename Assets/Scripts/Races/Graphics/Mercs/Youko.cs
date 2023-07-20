@@ -31,7 +31,11 @@ class Youko : Humans, IVoreRestrictions
     {
         int tailCount = GetNumTails(actor);
         if (actor.Unit.Predator && actor.PredatorComponent.TailFullness > 0)
+        {
+            if(tailCount >= 7)
+                return Tails[10];
             return Tails[9];
+        }
         return Tails[tailCount];
     }
     protected override Sprite BeardSprite(Actor_Unit actor)
@@ -108,6 +112,11 @@ class Youko : Humans, IVoreRestrictions
         if(location == PreyLocation.tail)
         {
             int tailCount = GetNumTails(actor);
+            if ((target != null) && (actor.PredatorComponent.TailFullness < 1))
+                if ((float)target.Bulk() < (actor.PredatorComponent.TotalCapacity() / 2))
+                    return (tailCount >= 4);
+                else
+                    return (tailCount >= 7);
             return (tailCount >= 4) && (actor.PredatorComponent.TailFullness < 1);
         }
         return true;

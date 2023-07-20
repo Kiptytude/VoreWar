@@ -121,7 +121,7 @@ interface IProvidesMultiSpell
 
 interface INoAutoEscape
 {
-    //maybe put a flavor text function here later
+    bool CanEscape(Prey preyUnit, Actor_Unit predUnit);
 }
 
 abstract class AbstractBooster : Trait
@@ -513,6 +513,11 @@ internal class Metamorphosis : VoreTrait, INoAutoEscape
 
     public override int ProcessingPriority => 50;
 
+    public bool CanEscape(Prey preyUnit, Actor_Unit predUnit)
+    {
+        return false;
+    }
+
     public override bool OnFinishDigestion(Prey preyUnit, Actor_Unit predUnit, PreyLocation location)
     {
         Race conversionRace = preyUnit.Unit.HiddenUnit.DetermineSpawnRace();
@@ -524,12 +529,6 @@ internal class Metamorphosis : VoreTrait, INoAutoEscape
         }
         preyUnit.Unit.RemoveTrait(Traits.Metamorphosis);//no metamorphosis loops
         State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"{preyUnit.Unit.Name} changed form within {predUnit.Unit.Name}'s body.");
-        if (predUnit.Unit.HasTrait(Traits.Greedy) == false && preyUnit.Unit.GetApparentSide(predUnit.Unit) == predUnit.Unit.FixedSide && TacticalUtilities.GetMindControlSide(preyUnit.Unit) == -1 && preyUnit.Unit.Health > 0 && preyUnit.Actor.Surrendered == false)
-        {
-            State.GameManager.TacticalMode.TacticalStats.RegisterRegurgitation(predUnit.Unit.Side);
-            TacticalUtilities.Log.RegisterRegurgitated(predUnit.Unit, preyUnit.Unit, location);
-            predUnit.PredatorComponent.FreePrey(preyUnit, false);
-        }
         predUnit.PredatorComponent.UpdateFullness();
         return false;
     }
@@ -594,6 +593,11 @@ internal class Possession : VoreTraitBooster, INoAutoEscape
             predUnit.AddPossession(preyUnit.Actor);
         }
         return true;
+    }
+
+    public bool CanEscape(Prey preyUnit, Actor_Unit predUnit)
+    {
+        return !predUnit.CheckPossession(preyUnit.Actor);
     }
 }
 
@@ -778,6 +782,11 @@ internal class ForcedMetamorphosis : VoreTraitBooster, INoAutoEscape
     public override int ProcessingPriority => 10;
 
     public override bool IsPredTrait => false;
+
+    public bool CanEscape(Prey preyUnit, Actor_Unit predUnit)
+    {
+        return false;
+    }
 
     public override bool OnDigestionKill(Prey preyUnit, Actor_Unit predUnit, PreyLocation location)
     {
