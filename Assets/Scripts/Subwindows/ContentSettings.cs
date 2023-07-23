@@ -139,6 +139,7 @@ public class ContentSettings : MonoBehaviour
     public Toggle Scat;
     public Toggle ScatV2;
     public Toggle ScatBones;
+    public Toggle CondomsForCV;
     public Toggle ClothingDiscards;
 
     public Toggle ErectionsFromVore;
@@ -275,6 +276,7 @@ public class ContentSettings : MonoBehaviour
             new ToggleObject(Scat, "Scat", false),
             new ToggleObject(ScatV2, "ScatV2", false),
             new ToggleObject(ScatBones, "ScatBones", false),
+            new ToggleObject(CondomsForCV, "CondomsForCV", false),
             new ToggleObject(ErectionsFromVore, "ErectionsFromVore", false),
             new ToggleObject(ErectionsFromCockVore, "ErectionsFromCockVore", false),
             new ToggleObject(AutoSurrender, "AutoSurrender", false),

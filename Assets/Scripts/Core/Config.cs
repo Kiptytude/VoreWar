@@ -314,6 +314,7 @@ static class Config
     public static bool Scat => World.GetValue("Scat");
     public static bool ScatV2 => World.GetValue("ScatV2");
     public static bool ScatBones => World.GetValue("ScatBones");
+    public static bool CondomsForCV => World.GetValue("CondomsForCV");
     public static bool ClothingDiscards => World.GetValue("ClothingDiscards");
     public static bool AutoSurrender => World.GetValue("AutoSurrender");
     public static bool SurrenderedCanConvert => World.GetValue("SurrenderedCanConvert");
