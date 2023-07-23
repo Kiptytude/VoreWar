@@ -330,6 +330,15 @@ public enum Traits
     //SupernaturalPersuasion = 166,
     /// <summary>Like Shapeshifter, only that the forms can be specific people, including their individual traits. These get swapped out only through player input</summary>
     //Skinwalker = 167,
+    /// <summary>When eaten, Predator is afflicted by Prey's curse, and has a chance to be charmed each round</summary>
+    Whispers = 168,
+    /// <summary>While digesting, Prey deals damage to predator</summary>
+    UnpleasantDigestion = 169,
+    /// <summary>While digesting, Predator is able to use prey's normal traits</summary>
+    TraitBorrower = 170,
+
+
+
 
 
     //Hidden Traits
@@ -341,6 +350,17 @@ public enum Traits
     Reincarnation = 202,
     /// <summary>Soon after this unit is digested, one of the new Units that come into being for the pred's race will be a reincarnation of them.</summary>
     Transmigration = 203,
+    /// <summary>Unit changes Race upon digestion</summary>
+    Metamorphosis = 204,
+    /// <summary>While Absorbing a prey, Becomes that prey's Race</summary>
+    Changeling = 205,
+    /// <summary>While digesting a prey, Becomes that prey's Race</summary>
+    GreaterChangeling = 206,
+    /// <summary>Pred Unit will gain the metamorphosis trait on Prey death</summary>
+    ForcedMetamorphosis = 207,
+    /// <summary>Unit changes Race and side upon digestion</summary>
+    MetamorphicConversion = 208,
+
 
     //Hidden Cheat Traits
     /// <summary>If a currupted unit is digested, the pred will build up corruption as a hidden status. Once corrupted prey with a stat total equal to that of the pred has been digested, they are under control of the side of the last-digested corrupted.</summary>
@@ -349,7 +369,16 @@ public enum Traits
     InfiniteReincarnation = 351,
     /// <summary>Soon after this unit is digested, one of the new Units that come into being as the pred's race will be a reincarnation of them. The reincarnation will also have this trait.</summary>
     InfiniteTransmigration = 352,
+    /// <summary>If a possession unit is eaten, the pred will be possessed as a hidden status. Once possessed prey's stat total plus the Preds corruption is equal to that of the pred, they are under control of the side of the last-eaten possessed.</summary>
+    Possession = 353,
+    /// <summary>A parasite prey will give the host CreateSpawn and set infection after digestion, host Takes minor damage on prey absorption and major damage when creating spawn</summary>
+    Parasite = 354,
+    /// <summary>Units soul continues to possess pred after death</summary>
+    SpiritPossession = 355,
 
+
+    /// <summary>Unit can only cock vore or unbirth pery if the prey is 1/3 the size of this unit, but Diminishment does not fade while prey is inside this unit's cock or womb.</summary>
+    TightNethers,
 
 
     //Everything after this is a cheat trait
@@ -411,6 +440,10 @@ public enum Traits
     Extraction = 296,    
     /// <summary>Every time digestion progresses, this unit digests one level from each prey inside them, gaining its experience value. If a unit hits level 0 this way, it dies if it was stil alive and cannot be revived.</summary>
     Annihilation = 297,
+    /// <summary>Shares generic traits with pred</summary>
+    Symbiote = 298,
+    /// <summary>creates a spawn unit on prey Absorption</summary>
+    CreateSpawn = 299,
 
     // Growth-related section
     /// <summary>Unit increases in size when absorbing prey.</summary>
@@ -430,5 +463,30 @@ public enum Traits
     /// <summary>Unit's absorption growth decays 2x as fast.</summary>
     FleetingGrowth = 274,
     /// <summary>Doubles healing provided when absorbing unit and increases growth provided by 50%.</summary>
-    ProteinRich = 275,
+    ProteinRich = 275
+
+}
+
+static class TraitsMethods
+{
+
+    static public bool IsRaceModifying(Traits trait)
+    {
+        switch (trait)
+        {
+            case Traits.Metamorphosis:
+            case Traits.Changeling:
+            case Traits.GreaterChangeling:
+            //case Traits.Shapeshifter:
+            //case Traits.Skinwalker:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    static public Traits LastTrait()
+    {
+        return Traits.SpiritPossession;
+    }
 }

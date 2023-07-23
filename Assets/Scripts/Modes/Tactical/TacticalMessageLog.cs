@@ -580,6 +580,10 @@ public class TacticalMessageLog
         }
         else
         {
+            if (action.preyLocation == PreyLocation.breasts && action.Unit.Race == Race.Kangaroos)
+            {
+                return $"Just when all hope seemed lost, <b>{action.Target.Name}</b> manages to pry <b>{action.Unit.Name}</b>'s pouch entrance open, and clambers out, taking large breaths of fresh air. {odds}";
+            }
             return GetRandomStringFrom(
                 $"<b>{action.Target.Name}</b> escaped from <b>{action.Unit.Name}</b>'s {action.preyLocation.ToSyn()}.{odds}",
                 $"From within <b>{action.Unit.Name}</b>’s {action.preyLocation.ToSyn()}, <b>{action.Target.Name}</b> remembers all the loved ones that would miss {GPPHim(action.Target)}, and with this incentive forces {GPPHis(action.Target)} way out.{odds}",
@@ -647,6 +651,10 @@ public class TacticalMessageLog
             string locs = (loc.EndsWith("s") ? "" : "s");
             GetRandomStringFrom($"<b>{action.Unit.Name}</b> hears {GPPHis(action.Unit)} {loc} gurgle{locs} intensely. {Capitalize(GPPHe(action.Unit))} feels <b>{action.Target.Name}</b> begin to slip under {GPPHis(action.Unit)} turbulent acids.",
                                 $"<b>{action.Unit.Name}</b>'s {loc} glurt{locs} and blort{locs}, {GPPHis(action.Unit)} {GetPredDesc(action.Target)} prey starting to break down. <b>{action.Target.Name}</b> seems doomed.");
+        }
+        if (action.preyLocation == PreyLocation.breasts && action.Unit.Race == Race.Kangaroos)
+        {
+            return $"The lack of air within <b>{action.Unit.Name}</b>'s pouch has taken its toll on <b>{action.Target.Name}</b>, whose struggles have begun to slow.";
         }
         int ran = Random.Range(0, 9);
         switch (ran)

@@ -24,6 +24,9 @@ public class RaceEditorPanel : MonoBehaviour
     public InputField StomachSize;
 
     public TMP_Dropdown InnateSpellDropdown;
+    public TMP_Dropdown SpawnRaceDropdown;
+    public TMP_Dropdown ConversionRaceDropdown;
+    public TMP_Dropdown LeaderRaceDropdown;
 
     public TMP_Dropdown TraitDropdown;
     public TextMeshProUGUI TraitList;
@@ -72,6 +75,8 @@ public class RaceEditorPanel : MonoBehaviour
     public InputField MaleTraits;
     public InputField FemaleTraits;
     public InputField HermTraits;
+    public InputField SpawnTraits;
+    public InputField LeaderTraits;
 
     public TMP_Dropdown BannerType;
 
@@ -80,6 +85,12 @@ public class RaceEditorPanel : MonoBehaviour
     public TMP_Dropdown RaceAIDropdown;
 
     public TextMeshProUGUI InfoText;
+
+    public GameObject GeneralPanel;
+    public GameObject TraitsPanel;
+
+    public Button GeneralButton;
+    public Button TraitsButton;
 
     List<Traits> CurrentTraits;
 
@@ -90,7 +101,7 @@ public class RaceEditorPanel : MonoBehaviour
     {
         if (RaceDropdown.options?.Any() == false)
         {
-            foreach (Race race in ((Race[])Enum.GetValues(typeof(Race))).OrderBy((s) => s.ToString()))
+            foreach (Race race in (((Race[])Enum.GetValues(typeof(Race))).Where(s => (int)s >= 0)).OrderBy((s) => s.ToString()))
             {
                 RaceDropdown.options.Add(new TMP_Dropdown.OptionData(race.ToString()));
             }
@@ -129,6 +140,33 @@ public class RaceEditorPanel : MonoBehaviour
             InnateSpellDropdown.RefreshShownValue();
         }
 
+        if (SpawnRaceDropdown.options?.Any() == false)
+        {
+            foreach (Race race in ((Race[])Enum.GetValues(typeof(Race))).OrderBy((s) => s.ToString()))
+            {
+                SpawnRaceDropdown.options.Add(new TMP_Dropdown.OptionData(race.ToString()));
+            }
+            SpawnRaceDropdown.RefreshShownValue();
+        }
+
+        if (ConversionRaceDropdown.options?.Any() == false)
+        {
+            foreach (Race race in ((Race[])Enum.GetValues(typeof(Race))).OrderBy((s) => s.ToString()))
+            {
+                ConversionRaceDropdown.options.Add(new TMP_Dropdown.OptionData(race.ToString()));
+            }
+            ConversionRaceDropdown.RefreshShownValue();
+        }
+
+        if (LeaderRaceDropdown.options?.Any() == false)
+        {
+            foreach (Race race in ((Race[])Enum.GetValues(typeof(Race))).OrderBy((s) => s.ToString()))
+            {
+                LeaderRaceDropdown.options.Add(new TMP_Dropdown.OptionData(race.ToString()));
+            }
+            LeaderRaceDropdown.RefreshShownValue();
+        }
+
         if (BannerType.options.Count < 4)
         {
             foreach (BannerTypes type in (BannerTypes[])Enum.GetValues(typeof(BannerTypes)))
@@ -155,6 +193,7 @@ public class RaceEditorPanel : MonoBehaviour
 
         LoadRace();
         UpdateInteractable();
+        ActivateGeneral();
 
     }
 
@@ -273,6 +312,12 @@ public class RaceEditorPanel : MonoBehaviour
                     value = value - SpellTypes.Resurrection + SpellTypes.AlraunePuff - 1;
 
                 item.InnateSpell = value;
+                if(Enum.TryParse(SpawnRaceDropdown.options[SpawnRaceDropdown.value].text, out Race spawnRace))
+                    item.SpawnRace = spawnRace;
+                if (Enum.TryParse(ConversionRaceDropdown.options[ConversionRaceDropdown.value].text, out Race conversionRace))
+                    item.ConversionRace = conversionRace;
+                if (Enum.TryParse(LeaderRaceDropdown.options[LeaderRaceDropdown.value].text, out Race leaderRace))
+                    item.LeaderRace = leaderRace;    
 
                 item.overrideBoob = OverrideBoob.isOn;
                 item.MinBoob = Convert.ToInt32(MinBoob.text) - 1;
@@ -324,6 +369,8 @@ public class RaceEditorPanel : MonoBehaviour
                 if (TailVoreDisabled.isOn) newtypes.Remove(VoreType.TailVore);
                 item.AllowedVoreTypes = newtypes;
 
+
+
                 item.Stats.Strength.Minimum = Convert.ToInt32(MinStrength.text);
                 item.Stats.Strength.Roll = 1 + Convert.ToInt32(MaxStrength.text) - item.Stats.Strength.Minimum;
                 if (item.Stats.Strength.Roll < 1) item.Stats.Strength.Roll = 1;
@@ -354,7 +401,8 @@ public class RaceEditorPanel : MonoBehaviour
                 item.FemaleTraits = TextToTraitList(FemaleTraits.text);
                 item.MaleTraits = TextToTraitList(MaleTraits.text);
                 item.HermTraits = TextToTraitList(HermTraits.text);
-
+                item.SpawnTraits = TextToTraitList(SpawnTraits.text);
+                item.LeaderTraits = TextToTraitList(LeaderTraits.text);
             }
         }
         catch
@@ -470,6 +518,35 @@ public class RaceEditorPanel : MonoBehaviour
 
             InnateSpellDropdown.RefreshShownValue();
 
+            var spawnRace = State.RaceSettings.GetSpawnRace(race);
+            foreach(TMP_Dropdown.OptionData option in SpawnRaceDropdown.options.ToList())
+                if(option.text == spawnRace.ToString())
+                {
+                    SpawnRaceDropdown.value = SpawnRaceDropdown.options.IndexOf(option);
+                    break;
+                }
+
+            SpawnRaceDropdown.RefreshShownValue();
+
+            var conversionRace = State.RaceSettings.GetConversionRace(race);
+            foreach(TMP_Dropdown.OptionData option in ConversionRaceDropdown.options.ToList())
+                if(option.text == conversionRace.ToString())
+                {
+                    ConversionRaceDropdown.value = ConversionRaceDropdown.options.IndexOf(option);
+                    break;
+                }
+
+            ConversionRaceDropdown.RefreshShownValue();
+
+            var leaderRace = State.RaceSettings.GetLeaderRace(race);
+            foreach(TMP_Dropdown.OptionData option in LeaderRaceDropdown.options.ToList())
+                if(option.text == leaderRace.ToString())
+                {
+                    LeaderRaceDropdown.value = LeaderRaceDropdown.options.IndexOf(option);
+                    break;
+                }
+
+            LeaderRaceDropdown.RefreshShownValue();
 
             BodySize.text = item.BodySize.ToString();
             StomachSize.text = item.StomachSize.ToString();
@@ -514,6 +591,8 @@ public class RaceEditorPanel : MonoBehaviour
             FemaleTraits.text = TraitListToText(item.FemaleTraits);
             MaleTraits.text = TraitListToText(item.MaleTraits);
             HermTraits.text = TraitListToText(item.HermTraits);
+            SpawnTraits.text = TraitListToText(item.SpawnTraits);
+            LeaderTraits.text = TraitListToText(item.LeaderTraits);
         }
     }
 
@@ -694,4 +773,20 @@ public class RaceEditorPanel : MonoBehaviour
         UpdateInteractable();
     }
 
+    public void ActivateGeneral()
+    {
+        GeneralPanel.SetActive(true);
+        TraitsPanel.SetActive(false);
+        GeneralButton.interactable = false;
+        TraitsButton.interactable = true;
+    }
+
+    public void ActivateTraits()
+    {
+        GeneralPanel.SetActive(false);
+        TraitsPanel.SetActive(true);
+        GeneralButton.interactable = true;
+        TraitsButton.interactable = false;
+    }
 }
+    

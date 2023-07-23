@@ -14,6 +14,7 @@ public static class ColorPaletteMap
         FurStrict,
         Skin,
         RedSkin,
+        RedFur,
         Mouth,
         EyeColor,
         LizardMain,
@@ -157,6 +158,7 @@ public static class ColorPaletteMap
         List<ColorSwapPalette> WildHairSwaps = WireUp(SwapType.WildHair);
         List<ColorSwapPalette> UniversalHairSwaps = WireUp(SwapType.UniversalHair);
         List<ColorSwapPalette> SkinColorSwaps = WireUp(SwapType.Skin);
+        List<ColorSwapPalette> RedFurColorSwaps = WireUp(SwapType.RedFur);
         List<ColorSwapPalette> RedSkinColorSwaps = WireUp(SwapType.RedSkin);
         List<ColorSwapPalette> SkinToClothingSwaps = WireUp(SwapType.SkinToClothing);
         List<ColorSwapPalette> MouthColorSwaps = WireUp(SwapType.Mouth);
@@ -338,6 +340,36 @@ public static class ColorPaletteMap
             clear[255] = true;
             swap = new ColorSwapPalette(swapDict, clear);
             MouthColorSwaps.Add(swap);
+        }
+
+        map = State.GameManager.PaletteDictionary.Skin;
+        for (int pixelY = 0; pixelY < map.height; pixelY++)
+        {
+            Dictionary<int, Color> swapDict = new Dictionary<int, Color>
+            {
+                [50] = map.GetPixel(4, pixelY),
+                [100] = map.GetPixel(3, pixelY),
+                [150] = map.GetPixel(2, pixelY),
+                [200] = map.GetPixel(1, pixelY),
+                [250] = map.GetPixel(0, pixelY),
+            };
+            ColorSwapPalette swap = new ColorSwapPalette(swapDict, maxClearRange: 0);
+            RedSkinColorSwaps.Add(swap);
+        }
+
+        map = State.GameManager.PaletteDictionary.SimpleHair;
+        for (int pixelY = 0; pixelY < map.height; pixelY++)
+        {
+            Dictionary<int, Color> swapDict = new Dictionary<int, Color>
+            {
+                [50] = map.GetPixel(4, pixelY),
+                [100] = map.GetPixel(3, pixelY),
+                [150] = map.GetPixel(2, pixelY),
+                [200] = map.GetPixel(1, pixelY),
+                [250] = map.GetPixel(0, pixelY),
+            };
+            ColorSwapPalette swap = new ColorSwapPalette(swapDict, maxClearRange: 0);
+            RedFurColorSwaps.Add(swap);
         }
 
         map = State.GameManager.PaletteDictionary.Skin;

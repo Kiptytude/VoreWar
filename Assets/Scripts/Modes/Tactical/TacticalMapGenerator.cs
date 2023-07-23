@@ -477,6 +477,7 @@ class TacticalMapGenerator
                     if (State.Rand.Next(2) == 0)
                         return GetRandomBuildingFrom(loc, typeof(CatHouse), typeof(YellowCobbleStoneHouse));
                     break;
+                case Race.Youko:
                 case Race.Foxes:
                     if (State.Rand.Next(3) == 0)
                         return new FoxStoneHouse(loc);

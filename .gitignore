@@ -377,3 +377,7 @@ FodyWeavers.xsd
 /UserData/*.txt
 /UserData/*.cst
 /UserData/Maps
+*.bak
+*.bak.meta
+.vsconfig
+LibraryBackup

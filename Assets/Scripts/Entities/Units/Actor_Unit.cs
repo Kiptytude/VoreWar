@@ -94,6 +94,18 @@ public class Actor_Unit
     public int Corruption;
 
     [OdinSerialize]
+    public int Possessed;
+
+    [OdinSerialize]
+    public bool Infected;
+
+    [OdinSerialize]
+    public Race InfectedRace;
+
+    [OdinSerialize]
+    public int InfectedSide;
+
+    [OdinSerialize]
     public bool KilledByDigestion;
 
     [OdinSerialize]
@@ -268,6 +280,21 @@ public class Actor_Unit
         Targetable = true;
     }
 
+    public Actor_Unit(Unit unit, Actor_Unit reciepient)
+    {
+        PredatorComponent = new PredatorComponent(this, unit);
+        unit.SetBreastSize(-1); //Resets to default
+        Mode = DisplayMode.None;
+        modeQueue = new List<KeyValuePair<int, float>>();
+        animationUpdateTime = 0;
+        Position = reciepient.Position;
+        Unit = unit;
+        Visible = false;
+        Targetable = false;
+        RestoreMP();
+        ReloadSpellTraits();
+    }
+
     public Actor_Unit(Vec2i p, Unit unit)
     {
         PredatorComponent = new PredatorComponent(this, unit);
@@ -280,63 +307,84 @@ public class Actor_Unit
         Visible = true;
         Targetable = true;
         RestoreMP();
-        unit.SingleUseSpells = new List<SpellTypes>();
-        unit.MultiUseSpells = new List<SpellTypes>();
-        if (unit.HasTrait(Traits.MadScience) && State.World?.ItemRepository != null) //protection for the create strat screen
+        ReloadSpellTraits();
+    }
+
+    public void ReloadSpellTraits()
+    {
+        Unit.SingleUseSpells = new List<SpellTypes>();
+        Unit.MultiUseSpells = new List<SpellTypes>();
+        if (Unit.HasTrait(Traits.MadScience) && State.World?.ItemRepository != null) //protection for the create strat screen
         {
-            unit.SingleUseSpells.Add(((SpellBook)State.World.ItemRepository.GetRandomBook(1, 4)).ContainedSpell);
-            unit.UpdateSpells();
+            Unit.SingleUseSpells.Add(((SpellBook)State.World.ItemRepository.GetRandomBook(1, 4)).ContainedSpell);
+            Unit.UpdateSpells();
         }
-        if (unit.HasTrait(Traits.PollenProjector) && State.World?.ItemRepository != null) //protection for the create strat screen
+        if (Unit.HasTrait(Traits.PollenProjector) && State.World?.ItemRepository != null) //protection for the create strat screen
         {
-            unit.SingleUseSpells.Add(SpellList.AlraunePuff.SpellType);
-            unit.UpdateSpells();
+            Unit.SingleUseSpells.Add(SpellList.AlraunePuff.SpellType);
+            Unit.UpdateSpells();
         }
-        if (unit.HasTrait(Traits.Webber) && State.World?.ItemRepository != null) //protection for the create strat screen
+        if (Unit.HasTrait(Traits.Webber) && State.World?.ItemRepository != null) //protection for the create strat screen
         {
-            unit.SingleUseSpells.Add(SpellList.Web.SpellType);
-            unit.UpdateSpells();
+            Unit.SingleUseSpells.Add(SpellList.Web.SpellType);
+            Unit.UpdateSpells();
         }
-        if (unit.HasTrait(Traits.GlueBomb) && State.World?.ItemRepository != null) //protection for the create strat screen
+        if (Unit.HasTrait(Traits.GlueBomb) && State.World?.ItemRepository != null) //protection for the create strat screen
         {
-            unit.SingleUseSpells.Add(SpellList.GlueBomb.SpellType);
-            unit.UpdateSpells();
+            Unit.SingleUseSpells.Add(SpellList.GlueBomb.SpellType);
+            Unit.UpdateSpells();
         }
-        if (unit.HasTrait(Traits.PoisonSpit) && State.World?.ItemRepository != null) //protection for the create strat screen
+        if (Unit.HasTrait(Traits.PoisonSpit) && State.World?.ItemRepository != null) //protection for the create strat screen
         {
-            unit.SingleUseSpells.Add(SpellList.ViperPoisonStatus.SpellType);
-            unit.UpdateSpells();
+            Unit.SingleUseSpells.Add(SpellList.ViperPoisonStatus.SpellType);
+            Unit.UpdateSpells();
         }
-        if (unit.HasTrait(Traits.Petrifier) && State.World?.ItemRepository != null) //protection for the create strat screen
+        if (Unit.HasTrait(Traits.Petrifier) && State.World?.ItemRepository != null) //protection for the create strat screen
         {
-            unit.SingleUseSpells.Add(SpellList.Petrify.SpellType);
-            unit.UpdateSpells();
+            Unit.SingleUseSpells.Add(SpellList.Petrify.SpellType);
+            Unit.UpdateSpells();
         }
-        if (unit.HasTrait(Traits.Charmer) && State.World?.ItemRepository != null) //protection for the create strat screen
+        if (Unit.HasTrait(Traits.Charmer) && State.World?.ItemRepository != null) //protection for the create strat screen
         {
-            unit.SingleUseSpells.Add(SpellList.Charm.SpellType);
-            unit.UpdateSpells();
+            Unit.SingleUseSpells.Add(SpellList.Charm.SpellType);
+            Unit.UpdateSpells();
         }
-        if (unit.HasTrait(Traits.HypnoticGas) && State.World?.ItemRepository != null) //protection for the create strat screen
+        if (Unit.HasTrait(Traits.HypnoticGas) && State.World?.ItemRepository != null) //protection for the create strat screen
         {
-            unit.SingleUseSpells.Add(SpellList.HypnoGas.SpellType);
-            unit.UpdateSpells();
+            Unit.SingleUseSpells.Add(SpellList.HypnoGas.SpellType);
+            Unit.UpdateSpells();
         }
-        if (unit.HasTrait(Traits.Reanimator) && State.World?.ItemRepository != null) //protection for the create strat screen
+        if (Unit.HasTrait(Traits.Reanimator) && State.World?.ItemRepository != null) //protection for the create strat screen
         {
-            unit.SingleUseSpells.Add(SpellList.Reanimate.SpellType);
-            unit.UpdateSpells();
+            Unit.SingleUseSpells.Add(SpellList.Reanimate.SpellType);
+            Unit.UpdateSpells();
         }
-        if (unit.HasTrait(Traits.Binder) && State.World?.ItemRepository != null) //protection for the create strat screen
+        if (Unit.HasTrait(Traits.Binder) && State.World?.ItemRepository != null) //protection for the create strat screen
         {
-            unit.SingleUseSpells.Add(SpellList.Bind.SpellType);
-            unit.UpdateSpells();
+            Unit.SingleUseSpells.Add(SpellList.Bind.SpellType);
+            Unit.UpdateSpells();
         }
         // Multi-use section
-        if (unit.HasTrait(Traits.ForceFeeder) && State.World?.ItemRepository != null) //protection for the create strat screen
+        if (Unit.HasTrait(Traits.ForceFeeder) && State.World?.ItemRepository != null) //protection for the create strat screen
         {
-            unit.MultiUseSpells.Add(SpellList.ForceFeed.SpellType);
-            unit.UpdateSpells();
+            Unit.MultiUseSpells.Add(SpellList.ForceFeed.SpellType);
+            Unit.UpdateSpells();
+        }
+        if (State.World?.ItemRepository != null) //protection for the create strat screen
+        {
+            foreach (Traits trait in Unit.GetTraits.Where(t => (TraitList.GetTrait(t) != null) && TraitList.GetTrait(t) is IProvidesSingleSpell))
+            {
+                IProvidesSingleSpell callback = (IProvidesSingleSpell)TraitList.GetTrait(trait);
+                foreach(SpellTypes spell in callback.GetSingleSpells(Unit))
+                    Unit.SingleUseSpells.Add(spell);
+            }
+            foreach (Traits trait in Unit.GetTraits.Where(t => (TraitList.GetTrait(t) != null) && TraitList.GetTrait(t) is IProvidesMultiSpell))
+            {
+                IProvidesMultiSpell callback = (IProvidesMultiSpell)TraitList.GetTrait(trait);
+                foreach (SpellTypes spell in callback.GetMultiSpells(Unit))
+                    Unit.MultiUseSpells.Add(spell);
+            }
+            Unit.UpdateSpells();
         }
     }
 
@@ -835,11 +883,15 @@ public class Actor_Unit
         {
             if (attacker.BestRanged?.AccuracyModifier > 1)
                 attack = (int)(attack * attacker.BestRanged.AccuracyModifier);
+            if (attacker.BestRanged?.Magic == true)
+                attack = attack + attacker.Unit.GetStat(Stat.Mind);
         }
         else
         {
             if (attacker.BestMelee?.AccuracyModifier > 1)
                 attack = (int)(attack * attacker.BestMelee.AccuracyModifier);
+            if (attacker.BestMelee?.Magic == true)
+                attack = attack + attacker.Unit.GetStat(Stat.Mind);
         }
 
         float ratio = (float)attack / defense;
@@ -1490,6 +1542,12 @@ public class Actor_Unit
                     Unit.ApplyStatusEffect(StatusEffectType.WillingPrey, 0, 3);
                 }
             }
+            if (spell.Id == "whispers-spell")
+            {
+                UnitSprite.DisplayCharm();
+                Unit.ApplyStatusEffect(StatusEffectType.WillingPrey, 0, spell.Duration(attacker, this));
+                Unit.ApplyStatusEffect(StatusEffectType.Temptation, 0, spell.Duration(attacker, this));
+            }
             if (TacticalUtilities.MeetsQualifier(spell.AcceptibleTargets, attacker, this))
                 attacker.Unit.GiveScaledExp(1, attacker.Unit.Level - Unit.Level);
             else
@@ -2015,7 +2073,7 @@ public class Actor_Unit
             Movement = 0;
             if (Config.AutoSurrender && Config.SurrenderedCanConvert && Unit.CanBeConverted())
             {
-                if (State.Rand.Next(4) == 0)
+                if (State.Rand.NextDouble() <= Config.AutoSurrenderDefectChance)
                 {
                     State.GameManager.TacticalMode.SwitchAlignment(this);
                     AIAvoidEat = 2;
@@ -2165,10 +2223,10 @@ public class Actor_Unit
         PreyLocation preyLocation = PreyLocation.stomach;
         var possibilities = new Dictionary<string, PreyLocation>();
         possibilities.Add("Maw", PreyLocation.stomach);
-        if (Unit.CanAnalVore) possibilities.Add("Anus", PreyLocation.anal);
-        if (Unit.CanBreastVore) possibilities.Add("Breast", PreyLocation.breasts);
-        if (Unit.CanCockVore) possibilities.Add("Cock", PreyLocation.balls);
-        if (Unit.CanUnbirth) possibilities.Add("Pussy", PreyLocation.womb);
+        if (PredatorComponent.CanAnalVore()) possibilities.Add("Anus", PreyLocation.anal);
+        if (PredatorComponent.CanBreastVore()) possibilities.Add("Breast", PreyLocation.breasts);
+        if (PredatorComponent.CanCockVore()) possibilities.Add("Cock", PreyLocation.balls);
+        if (PredatorComponent.CanUnbirth()) possibilities.Add("Pussy", PreyLocation.womb);
 
         if (State.GameManager.TacticalMode.IsPlayerInControl && State.GameManager.CurrentScene == State.GameManager.TacticalMode && possibilities.Count > 1)
         {
@@ -2515,6 +2573,77 @@ public class Actor_Unit
         return true;
     }
 
+    internal void ShareTrait(Traits trait,Traits maxTrait = Traits.Infiltrator)
+    {
+        if (trait < maxTrait && !TraitsMethods.IsRaceModifying(trait))
+        {
+            if (!Unit.HasTrait(trait))
+                Unit.AddSharedTrait(trait);
+        }
+    }
+
+    public bool ChangeRaceAny(Unit template, bool permanent, bool isPrey)
+    {
+        if (Unit.HiddenRace == Unit.Race)
+        {
+            TacticalGraphicalEffects.CreateSmokeCloud(Position, Unit.GetScale() / 2);
+            Unit.HideRace(template.Race, template);
+            foreach (Traits trait in template.GetTraits)
+            {
+                if ((!Unit.HasTrait(trait) || Unit.HasSharedTrait(trait)) && !TraitsMethods.IsRaceModifying(trait))
+                    if (permanent)
+                        Unit.AddPermanentTrait(trait);
+                    else
+                        ShareTrait(trait, TraitsMethods.LastTrait());
+            }
+            AnimationController = new AnimationController();
+            Unit.ReloadTraits();
+            Unit.InitializeTraits();
+            ReloadSpellTraits();
+            State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"{Unit.Name} shifted form to resemble {template.Name}");
+            Unit.FixedSide = Unit.Side;
+            Unit.Side = template.Side;
+            Unit.hiddenFixedSide = true;
+            PredatorComponent?.UpdateFullness();
+            return true;
+        }
+        return false;
+    }
+
+    public void ChangeRacePrey()
+    {
+        if (Unit.HiddenRace == Unit.Race)
+        {
+            bool isDead = true;
+            if (Unit.HasTrait(Traits.GreaterChangeling))
+            {
+                isDead = false;
+            }
+            PredatorComponent?.ChangeRaceAuto(isDead,true);
+        }
+    }
+
+    public void RevertRace()
+    {
+        if (Unit.HiddenRace != Unit.Race)
+        {
+            TacticalGraphicalEffects.CreateSmokeCloud(Position, Unit.GetScale() / 2);
+            Unit.UnhideRace();
+            Unit.SpawnRace = Race.none;
+            State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"{Unit.Name} shifted back to normal");
+            Unit.Side = Unit.FixedSide;
+            Unit.FixedSide = -1;
+            Unit.hiddenFixedSide = false;
+            PredatorComponent?.ResetTemplate();
+            Unit.ResetPersistentSharedTraits();
+            AnimationController = new AnimationController();
+            Unit.ReloadTraits();
+            Unit.InitializeTraits();
+            ReloadSpellTraits();
+            PredatorComponent?.UpdateFullness();
+        }
+    }
+    
     internal void AddCorruption(int amount, int side)
     {
         if (!Unit.HasTrait(Traits.Corruption)) { 
@@ -2530,6 +2659,47 @@ public class Actor_Unit
             }
         } else
             Corruption = 0;
+    }
+
+    internal void AddPossession(Actor_Unit possessor)
+    {
+        if (this.Unit.FixedSide != possessor.Unit.FixedSide)
+        {
+            this.Possessed = this.Possessed + possessor.Unit.GetStatTotal() + possessor.Unit.GetStat(Stat.Mind);
+        }
+        CheckPossession(possessor);
+    }
+
+    internal void RemovePossession(Actor_Unit possessor)
+    {
+        this.Possessed = this.Possessed - possessor.Unit.GetStatTotal() - possessor.Unit.GetStat(Stat.Mind);
+        if (this.Possessed <= 0)
+            this.Possessed = 0;
+        CheckPossession(possessor);
+    }
+
+    internal bool CheckPossession(Actor_Unit possessor)
+    {
+        if (this.Possessed + this.Corruption >= this.Unit.GetStatTotal() + this.Unit.GetStat(Stat.Will))
+        {
+            if (this.Unit.Controller != possessor.Unit)
+            {
+                if (!this.Unit.HasTrait(Traits.Untamable))
+                    this.Unit.Controller = possessor.Unit;
+                this.Unit.hiddenFixedSide = true;
+                sidesAttackedThisBattle = new List<int>();
+            }
+            return true;
+        }
+        else
+        {
+            if (this.Unit.Controller == possessor.Unit)
+            {
+                this.Unit.Controller = null;
+                this.Unit.hiddenFixedSide = false;
+            }
+        }
+        return false;
     }
 
     internal void Shapeshift(Unit shape)
