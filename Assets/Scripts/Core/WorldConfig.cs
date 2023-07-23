@@ -292,6 +292,7 @@ public class WorldConfig
             ["Bones"] = true,
             ["Scat"] = false,
             ["ScatBones"] = false,
+            ["CondomsForCV"] = false,
             ["AutoSurrender"] = false,
             ["EatSurrenderedAllies"] = false,
             ["NewGraphics"] = true,
