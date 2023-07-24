@@ -1107,6 +1107,18 @@ public class Actor_Unit
 
         return true;
     }
+    
+    // Hey, wanna see the hackiest code I'll ever cobble together?
+    public bool Regurgitate(Actor_Unit a, Vec2i l)
+    {
+        Prey regurged = a.PredatorComponent.FreeRandomPreyToSquare(l);
+        if (regurged != null)
+        {
+            return true;
+        }
+        else
+            return false;
+    }
 
     public bool TailStrike(Actor_Unit target)
     {

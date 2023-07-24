@@ -628,22 +628,22 @@ public class PredatorComponent
     /// </summary>
     /// <param name="location"></param>
     /// <returns></returns>
-    internal bool FreeRandomPreyToSquare(Vec2i location)
+    internal Prey FreeRandomPreyToSquare(Vec2i location)
     {
         if (actor.Position.GetNumberOfMovesDistance(location) > 1)
-            return false;
+            return null;
         if (actor.Movement == 0)
-            return false;
+            return null;
         if (actor.Unit.Predator == false)
-            return false;
+            return null;
         var alives = prey.Where(s => s.Unit.IsDead == false && !TacticalUtilities.TreatAsHostile(actor, s.Actor)).ToArray();
         if (alives.Length == 0)
             alives = prey.Where(s => s.Unit.IsDead == false).ToArray();
         if (alives.Length == 0)
-            return false;
+            return null;
         var target = alives[State.Rand.Next(alives.Length)];
         if (TacticalUtilities.OpenTile(location, target.Actor) == false)
-            return false;
+            return null;
         if (!unit.HasTrait(Traits.Endosoma) || !(target.Unit.FixedSide == unit.GetApparentSide(target.Unit)))
             unit.GiveScaledExp(-4, unit.Level - target.Unit.Level, true);
         target.Actor.SetPos(location);
@@ -651,11 +651,10 @@ public class PredatorComponent
         target.Actor.Targetable = true;
         TacticalUtilities.UpdateActorLocations();
         target.Actor.UnitSprite.DisplayEscape();
+        TacticalUtilities.Log.RegisterRegurgitate(actor.Unit, target.Actor.Unit, actor.PredatorComponent.Location(target));
         RemovePrey(target);
         UpdateFullness();
-        return true;
-
-
+        return target;
     }
 
     internal void FreeGreatEscapePrey(Prey preyUnit)
