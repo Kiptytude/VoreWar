@@ -6,6 +6,8 @@ public static class PreyLocStrings
     static readonly List<string> breastSyn = new List<string>() { "breasts", "bosom", "bust", "mammaries", "boobs", "cleavage", "tits" };
     static readonly List<string> breastSynPlural = new List<string>() { "breasts", "mammaries", "boobs", "tits" };
     static readonly List<string> ballsSyn = new List<string>() { "balls", "scrotum", "testicles", "nuts", "orbs", "nutsack" };
+    static readonly List<string> ballsSynSing = new List<string>() { "scrotum", "nutsack", "sack", "ballsack" };
+    static readonly List<string> ballsSynPlural = new List<string>() { "balls", "testicles", "nuts", "orbs", "testis" };
     static readonly List<string> stomachSyn = new List<string>() { "gut", "stomach", "belly", "tummy", "middle" };
     static readonly List<string> analSyn = new List<string>() { "butt", "ass", "bottom", "backside", "bum", "rear", "rump", "booty", "tush" };
     static readonly List<string> cockSyn = new List<string>() { "wang", "dick", "cock", "phallus", "member", "shaft", "pecker", "schlong" };
@@ -35,6 +37,14 @@ public static class PreyLocStrings
         int index = State.Rand.Next() % options.Count;
         return options[index];
     }
+
+    /// <summary>
+    /// Gets a random synonym for the body part(s) associatied with the provided <c>PreyLocation</c>.
+    /// <br></br>
+    /// NOTICE: Using this function for balls or breasts may return a singular or plural noun!
+    /// <br></br>
+    /// If specifically needing a singluar or plural noun, use <c>ToBreastSynPlural()</c>, <c>ToBallSynPlural()</c>, or <c>ToBallSynSing()</c> instead.
+    /// </summary>
     public static string ToSyn(this PreyLocation preyLocation)
     {
         switch (preyLocation)
@@ -62,14 +72,36 @@ public static class PreyLocStrings
         }
     }
 
+    /// <summary>
+    /// Gets a random synonym for penis.
+    /// </summary>
     public static string ToCockSyn()
     {
         return genRandom(cockSyn);
     }
 
+    /// <summary>
+    /// Gets a random plural synonym for breasts.
+    /// </summary>
     public static string ToBreastSynPlural()
     {
         return genRandom(breastSynPlural);
+    }
+
+    /// <summary>
+    /// Gets a random plural synonym for scrotum.
+    /// </summary>
+    public static string ToBallSynPlural()
+    {
+        return genRandom(ballsSynPlural);
+    }
+
+    /// <summary>
+    /// Gets a random singular synonym for scrotum.
+    /// </summary>
+    public static string ToBallSynSing()
+    {
+        return genRandom(ballsSynSing);
     }
 
     public static string ToFluid(this PreyLocation preyLocation)
