@@ -148,6 +148,8 @@ public class InfoPanel
                 return "Dog";
             case Race.Foxes:
                 return "Fox";
+            case Race.Youko:
+                return "Youko";    
             case Race.Wolves:
                 return "Wolf";
             case Race.Bunnies:
@@ -307,6 +309,10 @@ public class InfoPanel
                 return "Lion";
             case Race.Kobolds:
                 return "Kobold";
+            case Race.Whisp:
+                return "Whisp";
+            case Race.none:
+                return "None";
         }
         return unit.Race.ToString(); //Updated this so a new race will return the race's name, instead of nothing
     }
@@ -477,6 +483,8 @@ public class InfoPanel
                 return "Dratopyr";
             case Race.FeralLions:
                 return "Lion";
+            case Race.Whisp:
+                return "Whisp";
         }
         return empire.ReplacedRace.ToString();
     }
@@ -635,6 +643,10 @@ public class InfoPanel
                 sbSecond.AppendLine("Paralyzed");
             if (actor?.Corruption > 0 && !TacticalUtilities.IsUnitControlledByPlayer(unit))
                 sbSecond.AppendLine($"Corruption ({actor.Corruption}/{unit.GetStatTotal() + unit.GetStat(Stat.Will)})");
+            if (actor?.Possessed > 0 && !TacticalUtilities.IsUnitControlledByPlayer(unit))
+                sbSecond.AppendLine($"Possessed ({actor.Corruption + actor.Possessed}/{unit.GetStatTotal() + unit.GetStat(Stat.Will)})");
+            if (actor?.Infected ?? false)
+                sbSecond.AppendLine($"Infected");
             if (unit.StatusEffects?.Any() ?? false)
             {
                 foreach (StatusEffectType type in (StatusEffectType[])Enum.GetValues(typeof(StatusEffectType)))

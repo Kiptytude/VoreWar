@@ -121,6 +121,8 @@ public class WorldConfig
     internal List<Traits> FemaleTraits;
     [OdinSerialize]
     internal List<Traits> HermTraits;
+    [OdinSerialize]
+    internal List<Traits> SpawnTraits;
 
     [OdinSerialize]
     internal float CustomEventFrequency = 0;
@@ -294,6 +296,7 @@ public class WorldConfig
             ["Bones"] = true,
             ["Scat"] = false,
             ["ScatBones"] = false,
+            ["CondomsForCV"] = false,
             ["AutoSurrender"] = false,
             ["EatSurrenderedAllies"] = false,
             ["NewGraphics"] = true,

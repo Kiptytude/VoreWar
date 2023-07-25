@@ -234,6 +234,8 @@ public class HoveringTooltip : MonoBehaviour
                     return "A unique mercenary, only one of each can exist in the world at once, can not retreat and will return to the merc camp if dismissed";
                 case UnitType.Adventurer:
                     return "An adventurer, recruited not from the village population, but from an inn";
+                case UnitType.Spawn:
+                    return "A weaker unit, created under certain conditions";
             }
         }
 
@@ -516,9 +518,10 @@ public class HoveringTooltip : MonoBehaviour
                 return "Can emit Gas that turns foes into subservient non-combatants that are easy to vore, use buff spells if they have any, and rub bellies. Units of identical alignment are unaffected.";
             case Traits.ForceFeeder:
                 return "Allows unit to attempt force-feeding itself to another unit at will.";
+            case Traits.Possession:
+				return "Temporarily control a Pred unit while digesting inside\n (Cheat Hidded Trait)";    
             case Traits.Corruption:
-                return "If a currupted unit is digested, the pred will build up corruption as a status hidden to them. Once the build-up (corrupted prey's stat total) reaches a certain threshold (pred's stat total + will), the side of the corrupted prey controls the pred." +
-                    "\nCorrupted units don't change allegiance during vore-based conversion. Transferable via Endosoma.\n(Hidden Trait)";
+                return "If a currupted unit is digested, the pred will build up corruption as a hidden status. Once corrupted prey with a stat total equal to that of the pred has been digested, they are under control of the side of the last-digested corrupted.\n(Hidden Trait)";
             case Traits.Reanimator:
                 return "Allows unit to use <b>Reanimate</b>, an attack that brings any unit back to life as the caster's summon, once per battle";
             case Traits.Reincarnation:
@@ -575,6 +578,22 @@ public class HoveringTooltip : MonoBehaviour
             //    return "Gives the ability to change into specific units after absorbing them or being endoed or infiltrating. Or into the alternate selves acquired by being reborn or reincarnated. Also Allows Traversal of all terrain at normal speed.";
             case Traits.BookEater:
                 return "When this unit would equip a book, it is instead consumed and the spell becomes innate. Does not consume already equipped books, but does consume one if the unit would gain more than it could carry via BookWorm.";
+            case Traits.Whispers:
+                return "When eaten, Predator is afflicted by Prey's curse, and has a chance to be charmed each round";
+            case Traits.TraitBorrower:
+                return "While digesting, , Predator is able to use prey's normal traits";
+            case Traits.Changeling:
+                return "While Absorbing a prey, Becomes that prey's Race until absorption";
+            case Traits.GreaterChangeling:
+                return "While digesing a prey, Becomes that prey's Race until absorption";
+            case Traits.SpiritPossession:
+                return "Units soul continues to possess pred after death";
+            case Traits.ForcedMetamorphosis:
+                return "Pred Unit will gain the metamorphosis trait on Prey death";
+            case Traits.Metamorphosis:
+                return "Unit changes Race upon digestion";
+            case Traits.MetamorphicConversion:
+                return "Unit changes Race and side upon digestion";
         }  
         return "<b>This trait needs a tooltip!</b>";
     }

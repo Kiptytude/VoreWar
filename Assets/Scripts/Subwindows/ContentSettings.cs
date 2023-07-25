@@ -140,6 +140,7 @@ public class ContentSettings : MonoBehaviour
     public Toggle Scat;
     public Toggle ScatV2;
     public Toggle ScatBones;
+    public Toggle CondomsForCV;
     public Toggle ClothingDiscards;
 
     public Toggle ErectionsFromVore;
@@ -215,6 +216,7 @@ public class ContentSettings : MonoBehaviour
     public InputField MaleTraits;
     public InputField FemaleTraits;
     public InputField HermTraits;
+    public InputField SpawnTraits;
 
     public Slider MaxArmies;
 
@@ -276,6 +278,7 @@ public class ContentSettings : MonoBehaviour
             new ToggleObject(Scat, "Scat", false),
             new ToggleObject(ScatV2, "ScatV2", false),
             new ToggleObject(ScatBones, "ScatBones", false),
+            new ToggleObject(CondomsForCV, "CondomsForCV", false),
             new ToggleObject(ErectionsFromVore, "ErectionsFromVore", false),
             new ToggleObject(ErectionsFromCockVore, "ErectionsFromCockVore", false),
             new ToggleObject(AutoSurrender, "AutoSurrender", false),
@@ -652,6 +655,7 @@ public class ContentSettings : MonoBehaviour
         Config.World.MaleTraits = RaceEditorPanel.TextToTraitList(PlayerPrefs.GetString("MaleTraits", ""));
         Config.World.FemaleTraits = RaceEditorPanel.TextToTraitList(PlayerPrefs.GetString("FemaleTraits", ""));
         Config.World.HermTraits = RaceEditorPanel.TextToTraitList(PlayerPrefs.GetString("HermTraits", ""));
+        Config.World.SpawnTraits = RaceEditorPanel.TextToTraitList(PlayerPrefs.GetString("SpawnTraits", ""));
         Config.World.OverallMonsterCapModifier = PlayerPrefs.GetFloat("OverallMonsterCapModifier", 1);
         Config.World.OverallMonsterSpawnRateModifier = PlayerPrefs.GetFloat("OverallMonsterSpawnRateModifier", 1);
         MonsterDropdownChanged();
@@ -781,6 +785,7 @@ public class ContentSettings : MonoBehaviour
         MaleTraits.text = RaceEditorPanel.TraitListToText(Config.MaleTraits);
         FemaleTraits.text = RaceEditorPanel.TraitListToText(Config.FemaleTraits);
         HermTraits.text = RaceEditorPanel.TraitListToText(Config.HermTraits);
+        SpawnTraits.text = RaceEditorPanel.TraitListToText(Config.SpawnTraits);
         RefreshSliderText();
 
         foreach (MonsterSpawnerPanel spawner in MonsterSpawners)
@@ -954,6 +959,7 @@ public class ContentSettings : MonoBehaviour
         Config.World.MaleTraits = RaceEditorPanel.TextToTraitList(MaleTraits.text);
         Config.World.FemaleTraits = RaceEditorPanel.TextToTraitList(FemaleTraits.text);
         Config.World.HermTraits = RaceEditorPanel.TextToTraitList(HermTraits.text);
+        Config.World.SpawnTraits = RaceEditorPanel.TextToTraitList(SpawnTraits.text);
         Config.World.OralWeight = (int)OralWeight.value;
         Config.World.UnbirthWeight = (int)UnbirthWeight.value;
         Config.World.CockWeight = (int)CockWeight.value;
@@ -1122,6 +1128,7 @@ public class ContentSettings : MonoBehaviour
         PlayerPrefs.SetString("MaleTraits", MaleTraits.text);
         PlayerPrefs.SetString("FemaleTraits", FemaleTraits.text);
         PlayerPrefs.SetString("HermTraits", HermTraits.text);
+        PlayerPrefs.SetString("SpawnTraits", SpawnTraits.text);
         PlayerPrefs.SetInt("OralWeight", (int)OralWeight.value);
         PlayerPrefs.SetInt("AnalWeight", (int)AnalWeight.value);
         PlayerPrefs.SetInt("BreastWeight", (int)BreastWeight.value);

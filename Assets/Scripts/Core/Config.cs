@@ -223,7 +223,6 @@ static class Config
 
     internal static int ArmyMP => World.ArmyMP;
     internal static int MaxArmies => World.MaxArmies;
-
     internal static bool RaceTraitsEnabled => World.GetValue("RaceTraitsEnabled");
     internal static bool RagsForSlaves => World.GetValue("RagsForSlaves");
     internal static bool VisibleCorpses => World.GetValue("VisibleCorpses");
@@ -233,6 +232,7 @@ static class Config
     internal static List<Traits> MaleTraits => World.MaleTraits;
     internal static List<Traits> FemaleTraits => World.FemaleTraits;
     internal static List<Traits> HermTraits => World.HermTraits;
+    internal static List<Traits> SpawnTraits => World.SpawnTraits;
 
     internal static bool NoAIRetreat => World.GetValue("NoAIRetreat");
     internal static bool AICanCheatSpecialMercs => World.GetValue("AICanCheatSpecialMercs");
@@ -315,6 +315,7 @@ static class Config
     public static bool Scat => World.GetValue("Scat");
     public static bool ScatV2 => World.GetValue("ScatV2");
     public static bool ScatBones => World.GetValue("ScatBones");
+    public static bool CondomsForCV => World.GetValue("CondomsForCV");
     public static bool ClothingDiscards => World.GetValue("ClothingDiscards");
     public static bool AutoSurrender => World.GetValue("AutoSurrender");
     public static bool SurrenderedCanConvert => World.GetValue("SurrenderedCanConvert");

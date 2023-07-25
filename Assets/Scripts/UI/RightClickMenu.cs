@@ -152,7 +152,7 @@ public class RightClickMenu : MonoBehaviour
         {
             foreach (Spell spell in actor.Unit.UseableSpells)
             {
-                if (spell.AcceptibleTargets.Contains(AbilityTargets.Ally))
+                if (spell.AcceptibleTargets.Contains(AbilityTargets.Ally) || spell.AcceptibleTargets.Contains(AbilityTargets.Self))
                 {
                     currentButton = AddSpell(spell, actor, target, currentButton, range, 1);
                 }

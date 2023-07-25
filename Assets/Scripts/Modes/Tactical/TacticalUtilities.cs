@@ -151,6 +151,36 @@ static class TacticalUtilities
         }
     }
 
+    static internal void GenerateAnotherArmy(List<Unit> leftoverUnits)
+    {
+        if (leftoverUnits.Any() == false)
+            return;
+        if (Config.MonstersCanReform == false)
+            return;
+        for (int x = -1; x < 2; x++)
+        {
+            for (int y = -1; y < 2; y++)
+            {
+                if (x == 0 && y == 0)
+                    continue;
+                Vec2i loc = new Vec2i(armies[0].Position.x + x, armies[0].Position.y + y);
+                if (loc.x < 0 || loc.y < 0 || loc.x >= Config.StrategicWorldSizeX || loc.y >= Config.StrategicWorldSizeY)
+                    continue;
+                if (StrategicUtilities.IsTileClear(loc))
+                {
+                    MonsterEmpire monsterEmp = (MonsterEmpire)State.World.GetEmpireOfSide(leftoverUnits[0].Side);
+                    if (monsterEmp == null)
+                        return;
+                    var army = new Army(monsterEmp, loc, leftoverUnits[0].Side);
+                    army.RemainingMP = 0;
+                    monsterEmp.Armies.Add(army);
+                    army.Units.AddRange(leftoverUnits);
+                    return;
+                }
+            }
+        }
+    }
+
     static internal void CleanVillage(int remainingAttackers)
     {
         bool MonsterAttacker = armies[0].Side >= 100;
@@ -838,6 +868,8 @@ static class TacticalUtilities
             return true;
         if (targets.Contains(AbilityTargets.Enemy) && Config.AllowInfighting)
             return true;
+        if (targets.Contains(AbilityTargets.Self) && actor.Unit == target.Unit)
+            return true;
         return false;
 
     }
@@ -949,10 +981,11 @@ static class TacticalUtilities
             PreyLocation preyLocation = PreyLocation.stomach;
             var possibilities = new Dictionary<string, PreyLocation>();
             possibilities.Add("Maw", PreyLocation.stomach);
-            if (targetPred.Unit.CanAnalVore) possibilities.Add("Anus", PreyLocation.anal);
-            if (targetPred.Unit.CanBreastVore) possibilities.Add("Breast", PreyLocation.breasts);
-            if (targetPred.Unit.CanCockVore) possibilities.Add("Cock", PreyLocation.balls);
-            if (targetPred.Unit.CanUnbirth) possibilities.Add("Pussy", PreyLocation.womb);
+
+            if (targetPred.Unit.CanAnalVore && State.RaceSettings.GetVoreTypes(targetPred.Unit.Race).Contains(VoreType.Anal)) possibilities.Add("Anus", PreyLocation.anal);
+            if (targetPred.Unit.CanBreastVore && State.RaceSettings.GetVoreTypes(targetPred.Unit.Race).Contains(VoreType.BreastVore)) possibilities.Add("Breast", PreyLocation.breasts);
+            if (targetPred.Unit.CanCockVore && State.RaceSettings.GetVoreTypes(targetPred.Unit.Race).Contains(VoreType.CockVore)) possibilities.Add("Cock", PreyLocation.balls);
+            if (targetPred.Unit.CanUnbirth && State.RaceSettings.GetVoreTypes(targetPred.Unit.Race).Contains(VoreType.Unbirth)) possibilities.Add("Pussy", PreyLocation.womb);
 
             if (State.GameManager.TacticalMode.IsPlayerInControl && State.GameManager.CurrentScene == State.GameManager.TacticalMode && possibilities.Count > 1)
             {
@@ -972,6 +1005,14 @@ static class TacticalUtilities
             State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<b>{actor.Unit.Name}</b> couldn't force feed {LogUtilities.GPPHimself(actor.Unit)} to <b>{targetPred.Unit.Name}</b>.");
             actor.Movement = 0;
         }
+    }
+    internal static void AssumeForm(Actor_Unit actor, Actor_Unit target)
+    {
+        actor.ChangeRacePrey();
+    }
+    internal static void RevertForm(Actor_Unit actor, Actor_Unit target)
+    {
+        actor.RevertRace();
     }
 
     internal static void ShapeshifterPanel(Actor_Unit selectedUnit)
