@@ -613,6 +613,15 @@ public class TacticalMessageLog
             return $"<b>{action.Unit.Name}</b> regurgitates <b>{action.Target.Name}</b>.";
         }
         List<string> possibleLines = new List<string>();
+        if (action.Unit.Race == Race.Slimes)
+        {
+            possibleLines.Add($"As <b>{action.Unit.Name}</b> moves forward, {GPPHis(action.Unit)} slimey body contorts, leaving behind <b>{action.Target.Name}</b>, covered in goo, but otherwise alive.");
+            if (action.Target.Race != Race.Slimes)
+                possibleLines.Add($"For a moment, <b>{action.Unit.Name}</b> appears to be undergoing mitosis, splitting in half. Then, one half pulls itself off a slightly freaked out <b>{action.Target.Name}</b>, the other becoming <b>{action.Unit.Name}</b> once again.");
+            else
+                possibleLines.Add($"For a moment, <b>{action.Unit.Name}</b> appears to be undergoing mitosis, splitting in half. Then, one half begins to shift slightly as <b>{action.Target.Name}</b> becomes a seperate slime once more.");
+            return GetRandomStringFrom(possibleLines.ToArray());
+        }
         possibleLines.Add($"<b>{action.Unit.Name}</b> {GetRandomStringFrom("regurgitated", "released", "freed", "pushed out")} <b>{action.Target.Name}</b>{GetRandomStringFrom("", $"from {GPPHis(action.Unit)} {PreyLocStrings.ToSyn(action.preyLocation)}")}.");
         possibleLines.Add($"<b>{action.Unit.Name}</b> decides to eject <b>{action.Target.Name}</b> from {GPPHis(action.Unit)} {PreyLocStrings.ToSyn(action.preyLocation)}.");
         possibleLines.Add($"As <b>{action.Unit.Name}</b> hears a gurgle{GetRandomStringFrom("", $" eminate from {GPPHis(action.Unit)} {PreyLocStrings.ToSyn(action.preyLocation)}")}, {GPPHe(action.Unit)} force{SIfSingular(action.Unit)} <b>{action.Target.Name}</b> out, not wishing to digest {GPPHim(action.Target)}.");            
