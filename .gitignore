@@ -115,4 +115,8 @@ $RECYCLE.BIN/
 *.bak
 *.bak.meta
 .vsconfig
-LibraryBackup
+LibraryBackupi
+
+# Git 
+*.orig
+/.git
