@@ -127,7 +127,7 @@ static class StoredLogTexts
         if (SwallowMessages != null)
             return;
         bool PreyDead(EventLog s) => s.Prey.IsDead;
-        bool PreyCumgested(EventLog s) => TacticalUtilities.GetPredatorComponentOfUnit(s.Unit)?.PreyInLocation(PreyLocation.balls, false) == 1;
+        bool PreyCumgested(EventLog s) => s.Prey.IsDead && InBalls(s);
         bool CanBurp(EventLog s) => Config.BurpFraction > .1f;
         bool Farts(EventLog s) => Config.FartOnAbsorb;
         bool Scat(EventLog s) => Config.Scat && (s.preyLocation == PreyLocation.stomach || s.preyLocation == PreyLocation.stomach2);
@@ -151,6 +151,7 @@ static class StoredLogTexts
         bool Cursed(EventLog s) => s.Target.GetStatusEffect(StatusEffectType.WillingPrey) != null;
         bool Shrunk(EventLog s) => s.Target.GetStatusEffect(StatusEffectType.Diminished) != null;
         bool SizeDiff(EventLog s, float ratio) => State.RaceSettings.GetBodySize(s.Unit.Race) * s.Unit.GetScale(1) >= State.RaceSettings.GetBodySize(s.Target.Race) * s.Target.GetScale(1) * ratio;
+        bool SizeDiffPrey(EventLog s, float ratio) => State.RaceSettings.GetBodySize(s.Unit.Race) * s.Unit.GetScale(1) >= State.RaceSettings.GetBodySize(s.Prey.Race) * s.Target.GetScale(1) * ratio;
         //bool ReqSSW(EventLog s) => SameSexWarrior(s.Unit) != "NULL";
         bool ReqOSW(EventLog s) => AttractedWarrior(s.Unit) != null;
         bool ReqOSWLewd(EventLog s) => AttractedWarrior(s.Unit) != null && Lewd(s);
@@ -1639,8 +1640,20 @@ static class StoredLogTexts
             new EventString((i) => $"<b>{i.Unit.Name}</b> gets <b>{i.Target.Name}</b> onto {GPPHis(i.Target)} back, kneads {GPPHis(i.Target)} {PreyLocStrings.ToSyn(PreyLocation.balls)} and suckles {GPPHis(i.Target)} erect rod, but carefully has {GPPHim(i.Target)} remain off the edge. {Capitalize(GPPHe(i.Unit))} even gives the {PreyLocStrings.ToSyn(PreyLocation.balls)} some gentle nibbles – all to turn <b>{i.Prey.Name}</b> into lion cummies.",
             priority: 16, conditional: s => s.Target != s.Unit ,targetRace: Race.FeralLions, actorRace: Race.FeralLions),
 
-            new EventString((i) =>$"<b>{i.Unit.Name}</b> massages <b>{ApostrophizeWithOrWithoutS(i.Target.Name)}</b> full scrotum.", priority: 8),
-            new EventString((i) =>$"<b>{i.Unit.Name}</b> massages <b>{ApostrophizeWithOrWithoutS(i.Target.Name)}</b> full scrotum, a bit of pre leaking out of {(i.Unit == i.Target ? GPPHis(i.Target) : "<b>" + i.Target.Name + "</b>'s")} erect {PreyLocStrings.ToCockSyn()}.", priority: 8),
+            // Merged original 1.5 line(s) into one entry that now handles self vs. ally rubbing
+            new EventString((i) =>$"<b>{i.Unit.Name}</b> massages {(i.Unit == i.Target ? $"{GPPHis(i.Target)} own" : $"<b>{ApostrophizeWithOrWithoutS(i.Target.Name)}</b>")} full scrotum{GetRandomStringFrom(".",$", a bit of pre leaking out of {(i.Unit == i.Target ? GPPHis(i.Target) : "<b>" + i.Target.Name + "</b>'s")} erect {PreyLocStrings.ToCockSyn()}.")}.", priority: 8),
+            // New lines (Thanks Cartography! :thumbsup:)
+            new EventString((i) =>$"<b>{i.Unit.Name}</b> fondles {(i.Unit == i.Target ? $"{GPPHis(i.Target)} own" : $"<b>{ApostrophizeWithOrWithoutS(i.Target.Name)}</b>")} squirming {PreyLocStrings.ToSyn(PreyLocation.balls)}, feeling <b>{i.Prey.Name}</b> within.", priority: 8),
+            new EventString((i) =>$"<b>{i.Target.Name}</b> {(i.Unit == i.Target ? $"feels {GPPHis(i.Target)} own" : $"has <b>{i.Unit.Name}</b> feel {GPPHis(i.Target)}")} {PreyLocStrings.ToSyn(PreyLocation.balls)}, soaking poor <b>{i.Prey.Name}</b> within further.", priority: 8),
+            new EventString((i) =>$"<b>{i.Unit.Name}</b> rubs over <b>{i.Target.Name}</b>'s wiggling {GetRandomStringFrom($"{PreyLocStrings.ToBallSynSing()}, amazed that it",$"{PreyLocStrings.ToBallSynPlural()}, amazed that they")} can contain a whole {GetRaceDescSingl(i.Prey)}.", priority: 8, conditional: s => !SizeDiffPrey(s, 0.75f) && s.Unit != s.Target),
+            new EventString((i) =>$"As <b>{i.Target.Name}</b> walks, {GPPHis(i.Target)} wriggling {GetRandomStringFrom($"{PreyLocStrings.ToBallSynSing()} slides",$"{PreyLocStrings.ToBallSynPlural()} slide")} along the ground, hastening <b>{i.Prey.Name}</b>'s digestion within.", priority: 8, conditional: s => s.Unit == s.Target),
+            new EventString((i) =>$"<b>{i.Target.Name}</b> rests {GPPHis(i.Target)} {PreyLocStrings.ToSyn(PreyLocation.balls)} on the ground and shifts {GPPHis(i.Target)} hips around, jostling <b>{i.Prey.Name}</b> around inside.", priority: 8, conditional: s => s.Unit == s.Target),
+
+            // PreyCumgested() is now finally used! :partying_face:
+            new EventString((i) =>$"<b>{i.Unit.Name}</b> fondles {(i.Unit == i.Target ? $"{GPPHis(i.Target)} own" : $"<b>{ApostrophizeWithOrWithoutS(i.Target.Name)}</b>")} bulging {GetRandomStringFrom($"{PreyLocStrings.ToBallSynSing()}, sloshing around its",$"{PreyLocStrings.ToBallSynPlural()}, sloshing around their")} contents.", priority: 12, conditional: s => PreyCumgested(s)),
+            new EventString((i) =>$"<b>{i.Target.Name}</b> {(i.Unit == i.Target ? $"feels {GPPHis(i.Target)} own" : $"has <b>{i.Unit.Name}</b> feel {GPPHis(i.Target)}")} {PreyLocStrings.ToSyn(PreyLocation.balls)}. {(i.Unit == i.Target ? $"As {GPPHe(i.Target)} touch{EsIfSingular(i.Target)} {GPPHimself(i.Target)}" : $"At {GPPHis(i.Unit)} touch")}, <b>{i.Target.Name}</b>'s {GetRandomStringFrom($"{PreyLocStrings.ToBallSynSing()} shrinks",$"{PreyLocStrings.ToBallSynPlural()} shrink")} down a little.", priority: 12, conditional: s => PreyCumgested(s)),
+            new EventString((i) =>$"<b>{i.Unit.Name}</b> rubs over <b>{i.Target.Name}</b>'s stuffed {GetRandomStringFrom($"{PreyLocStrings.ToBallSynSing()}, feeling the warmth it gives",$"{PreyLocStrings.ToBallSynPlural()}, feeling the warmth they give")} off as <b>{i.Prey.Name}</b> is absorbed within.", priority: 12, conditional: s => PreyCumgested(s)),
+            new EventString((i) =>$"As <b>{i.Target.Name}</b> walks, {GPPHis(i.Target)} full {GetRandomStringFrom($"{PreyLocStrings.ToBallSynSing()} slides",$"{PreyLocStrings.ToBallSynPlural()} slide")} along the ground, speeding up <b>{ApostrophizeWithOrWithoutS(i.Prey.Name)}</b> conversion to liquid within.", priority: 12, conditional: s => PreyCumgested(s)),
 
             new EventString((i) =>$"<b>{i.Unit.Name}</b> forcefully strokes <b>{ApostrophizeWithOrWithoutS(i.Target.Name)}</b> erect cock, either waiting for the prey inside {GPPHis(i.Target)} balls to melt down faster, or for {GPPHim(i.Target)} to spurt it out for <b>{i.Unit.Name}</b> to snatch it.", priority: 9, conditional:s=>s.Target != s.Unit && ReqTargetCompatibleLewd(s)),
             new EventString((i) =>$"<b>{i.Unit.Name}</b> puts <b>{ApostrophizeWithOrWithoutS(i.Target.Name)}</b> throbbing member between {GPPHis(i.Unit)} breasts, stroking and squishing it, waiting for release.", priority: 9, conditional: s=> ReqTargetCompatibleLewd(s) && ActorBoobs(s)),
@@ -1648,7 +1661,7 @@ static class StoredLogTexts
             //succs
             new EventString((i) =>$"The mere touch of <b>{i.Unit.Name}</b> is enough to make <b>{i.Target.Name}</b> gasp and quiver in pleasure.", actorRace: Race.Succubi, priority: 9),
             new EventString((i) =>$"\"My, my, what a beautiful ensemble we have here~\" coos <b>{i.Unit.Name}</b> straddling <b>{ApostrophizeWithOrWithoutS(i.Target.Name)}</b> sloshing balls and stroking {GPPHis(i.Unit)} erection - \"Now, would you let me take care of it?\"", actorRace: Race.Succubi, priority: 9, conditional: ReqTargetCompatibleLewd),
-            new EventString((i) =>$"<b>{i.Unit.Name}</b> gives a gentle kiss to <b>{ApostrophizeWithOrWithoutS(i.Target.Name)}</b> cockhead, giggling at {GPPHis(i.Unit)} muffled gasp of pleasure.", actorRace: Race.Succubi, priority: 9, conditional: ReqTargetCompatibleLewd),
+            new EventString((i) =>$"<b>{i.Unit.Name}</b> gives a gentle kiss to <b>{ApostrophizeWithOrWithoutS(i.Target.Name)}</b> cockhead, giggling at {GPPHis(i.Unit)} muffled gasp of pleasure.", actorRace: Race.Succubi, priority: 9),
 
              new EventString((i) => $"<b>{i.Unit.Name}</b> begins massaging <b>{ApostrophizeWithOrWithoutS(i.Target.Name)}</b> full {PreyLocStrings.ToSyn(PreyLocation.balls)}, causing the dragon to groan in pleasure.",
             actorRace: Race.Kobolds, priority: 10, conditional: s => Lewd(s) && s.Target.Race == Race.Dragon || s.Target.Race == Race.EasternDragon),
