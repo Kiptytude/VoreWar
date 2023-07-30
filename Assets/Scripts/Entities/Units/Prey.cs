@@ -164,7 +164,7 @@ class Prey
             Actor.RevertRace();
         }
 
-        Predator.PredatorComponent.OnRemoveCallbacks(this, false);
+        Predator.PredatorComponent.RemovePrey(this);
         HashSet<Gender> set = new HashSet<Gender>(Races.GetRace(Unit.Race).CanBeGender);
         bool equals = set.SetEquals(Races.GetRace(race).CanBeGender);
         Unit.ChangeRace(race);
@@ -182,12 +182,14 @@ class Prey
         Actor.Unit.InitializeTraits();
         Actor.PredatorComponent?.FreeAnyAlivePrey();
         Actor.PredatorComponent?.RefreshSharedTraits();
-        Predator.PredatorComponent.OnSwallowCallbacks(this);
+        Predator.PredatorComponent.AddPrey(this);
         Actor.Surrendered = false;
     }
 
     public void ChangeSide(int side)
     {
+        if (!Unit.CanBeConverted())
+            return;
         if (Unit.Side != side)
             State.GameManager.TacticalMode.SwitchAlignment(Actor);
         if (Predator.Unit.HasTrait(Traits.Corruption) || Unit.HasTrait(Traits.Corruption))

@@ -521,14 +521,14 @@ internal class Metamorphosis : VoreTrait, INoAutoEscape
     public override bool OnFinishDigestion(Prey preyUnit, Actor_Unit predUnit, PreyLocation location)
     {
         Race conversionRace = preyUnit.Unit.HiddenUnit.DetermineSpawnRace();
-        preyUnit.Unit.Health = preyUnit.Unit.MaxHealth;
-        preyUnit.Unit.GiveExp(predUnit.Unit.Experience / 2);
         if (preyUnit.Unit.Race != conversionRace)
         {
             preyUnit.ChangeRace(conversionRace);
+            preyUnit.Unit.Health = preyUnit.Unit.MaxHealth;
+            preyUnit.Unit.GiveExp(predUnit.Unit.Experience / 2);
+            State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"{preyUnit.Unit.Name} changed form within {predUnit.Unit.Name}'s body.");
         }
         preyUnit.Unit.RemoveTrait(Traits.Metamorphosis);//no metamorphosis loops
-        State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"{preyUnit.Unit.Name} changed form within {predUnit.Unit.Name}'s body.");
         predUnit.PredatorComponent.UpdateFullness();
         return false;
     }
@@ -791,6 +791,8 @@ internal class ForcedMetamorphosis : VoreTraitBooster, INoAutoEscape
     public override bool OnDigestionKill(Prey preyUnit, Actor_Unit predUnit, PreyLocation location)
     {
         //TODO: Make this a status effect instead
+        if (!predUnit.Unit.CanBeConverted())
+            return true;
         if((predUnit.Unit.FixedSide == preyUnit.Unit.FixedSide) && (predUnit.Unit.FixedSide == predUnit.Unit.Side))
             predUnit.Unit.AddPermanentTrait(Traits.Metamorphosis);
         else predUnit.Unit.AddPermanentTrait(Traits.MetamorphicConversion);

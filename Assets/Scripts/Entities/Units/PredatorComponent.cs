@@ -897,7 +897,7 @@ public class PredatorComponent
         }
     }
 
-    void AddPrey(Prey preyUnit, PreyLocation location)
+    internal void AddPrey(Prey preyUnit, PreyLocation location)
     {
         OnSwallowCallbacks(preyUnit);
         switch (location)
@@ -935,7 +935,7 @@ public class PredatorComponent
         UpdateAlivePrey();
     }
     
-    void AddPrey(Prey preyUnit)
+    internal void AddPrey(Prey preyUnit)
     {
         OnSwallowCallbacks(preyUnit);
         prey.Add(preyUnit);
@@ -993,7 +993,7 @@ public class PredatorComponent
         }
     }
 
-    private void RemovePrey(Prey preyUnit)
+    internal void RemovePrey(Prey preyUnit)
     {
         OnRemoveCallbacks(preyUnit);
         womb.Remove(preyUnit);

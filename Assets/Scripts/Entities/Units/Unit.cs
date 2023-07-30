@@ -417,7 +417,7 @@ public class Unit
 
     internal bool CanBeConverted()
     {
-        return Type != UnitType.Summon && Type != UnitType.Leader && Type != UnitType.SpecialMercenary && HasTrait(Traits.Eternal) == false && SavedCopy == null;
+        return Type != UnitType.Summon && Type != UnitType.Leader && Type != UnitType.SpecialMercenary && HasTrait(Traits.Eternal) == false && SavedCopy == null && HasTrait(Traits.Untamable) == false;
     }
 
     internal bool CanUnbirth => Config.Unbirth && HasVagina;
@@ -2347,7 +2347,14 @@ internal void SetGenderRandomizeName(Race race, Gender gender)
         return best;
     }
 
-    public Item GetItem(int i) => Items[i];
+    public Item GetItem(int i) 
+    {
+        if (Items.Length > i)
+            return Items[i];
+        else
+            return null;
+    }
+
     public int GetItemSlot(Item item)
     {
         for (int i = 0; i < Items.Length; i++)
@@ -2838,4 +2845,13 @@ internal void SetGenderRandomizeName(Race race, Gender gender)
             return State.RaceSettings.GetConversionRace(Race);
     }
 
+    public bool CanChangeRace()
+    {
+        return true;
+    }
+
+    public bool CanChangeSide()
+    {
+        return true;
+    }
 }
