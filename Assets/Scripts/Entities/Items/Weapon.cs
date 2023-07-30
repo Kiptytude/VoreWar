@@ -11,6 +11,8 @@ public class Weapon : Item
     public int Range { get; private set; }
     [OdinSerialize]
     public bool Omni { get; private set; }
+    [OdinSerialize]
+    public bool Magic { get; private set; }
 
     [OdinSerialize]
     public float AccuracyModifier { get; private set; }
@@ -21,7 +23,7 @@ public class Weapon : Item
     }
 
 
-    public Weapon(string name, string description, int cost, int graphic, int damage, int range, float accuracyModifier = 1f, bool omniWeapon = false, bool lockedItem = false)
+    public Weapon(string name, string description, int cost, int graphic, int damage, int range, float accuracyModifier = 1f, bool omniWeapon = false, bool lockedItem = false,bool magicWeapon = false)
     {
         Name = name;
         Description = description;
@@ -31,6 +33,7 @@ public class Weapon : Item
         Range = range;
         AccuracyModifier = accuracyModifier;
         Omni = omniWeapon;
+        Magic = magicWeapon;
         LockedItem = lockedItem;
     }
 }

@@ -95,11 +95,11 @@ public class VillagePopulation
                     highestRace = race;
                 }
             }
-            return $"{GetTotalPop()} Total - {highestRace.Race} {highestRace.Population}";
+            return $"Pop. {GetTotalPop()} ({highestRace.Population} {highestRace.Race})";
         }
         else if (Population.Count == 1)
         {
-            return $"{GetTotalPop()} {Population[0].Race}";
+            return $"Pop. {GetTotalPop()} {Population[0].Race}";
         }
         else
         {

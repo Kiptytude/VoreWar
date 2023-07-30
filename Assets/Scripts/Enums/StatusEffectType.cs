@@ -44,5 +44,9 @@
     Corruption = 20,
     /// <summary>Unit wants to force-feed itself to the afflicting side</summary>
     Temptation = 21,
+    /// <summary>Unit has been possessed by a prey unit</summary>
+    Possessed = 22,
+    /// <summary>Unit has been infected by a parasite prey unit</summary>
+    Infected = 23,
 }
 

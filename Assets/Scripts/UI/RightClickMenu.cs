@@ -152,7 +152,7 @@ public class RightClickMenu : MonoBehaviour
         {
             foreach (Spell spell in actor.Unit.UseableSpells)
             {
-                if (spell.AcceptibleTargets.Contains(AbilityTargets.Ally))
+                if (spell.AcceptibleTargets.Contains(AbilityTargets.Ally) || spell.AcceptibleTargets.Contains(AbilityTargets.Self))
                 {
                     currentButton = AddSpell(spell, actor, target, currentButton, range, 1);
                 }
@@ -384,7 +384,6 @@ public class RightClickMenu : MonoBehaviour
                 {
                     Buttons[currentButton].GetComponentInChildren<Text>().text = $"Too bulky to vore";
                     Buttons[currentButton].interactable = false;
-
                 }
                 currentButton++;
             }
@@ -394,7 +393,6 @@ public class RightClickMenu : MonoBehaviour
             currentButton = AltVore(actor, currentButton, SpecialAction.Unbirth, data);
             currentButton = AltVore(actor, currentButton, SpecialAction.AnalVore, data);
             currentButton = AltVore(actor, currentButton, SpecialAction.TailVore, data);
-
 
         }
 
@@ -411,6 +409,8 @@ public class RightClickMenu : MonoBehaviour
                 Buttons[currentButton].onClick.AddListener(FinishAction);
                 if (actionType == SpecialAction.TailVore && actor.Unit.Race == Race.Terrorbird)
                     Buttons[currentButton].GetComponentInChildren<Text>().text = $"Crop Vore {data.DevourChance}%";
+                else if (actionType == SpecialAction.BreastVore && actor.Unit.Race == Race.Kangaroos)
+                    Buttons[currentButton].GetComponentInChildren<Text>().text = $"Pouch Vore {data.DevourChance}%";
                 else
                     Buttons[currentButton].GetComponentInChildren<Text>().text = $"{targetedAction.Name} {data.DevourChance}%";
                 if (actor.Unit.HasTrait(Traits.RangedVore))
@@ -426,6 +426,12 @@ public class RightClickMenu : MonoBehaviour
                 if (data.Actor.PredatorComponent.FreeCap() < data.Target.Bulk())
                 {
                     Buttons[currentButton].GetComponentInChildren<Text>().text = $"Too bulky to {targetedAction.Name}";
+                    Buttons[currentButton].interactable = false;
+
+                }
+                else if (data.Actor.BodySize() < data.Target.BodySize() * 3 && actor.Unit.HasTrait(Traits.TightNethers) && (actionType == SpecialAction.CockVore || actionType == SpecialAction.Unbirth))
+                {
+                    Buttons[currentButton].GetComponentInChildren<Text>().text = $"Too large to {targetedAction.Name}";
                     Buttons[currentButton].interactable = false;
 
                 }
@@ -565,6 +571,12 @@ public class RightClickMenu : MonoBehaviour
                     PounceButtons[currentButton].GetComponentInChildren<Text>().text = $"Too bulky to {targetedAction.Name}";
                     PounceButtons[currentButton].interactable = false;
                 }
+                else if (data.Actor.BodySize() < data.Target.BodySize() * 3 && data.Actor.Unit.HasTrait(Traits.TightNethers) && (type == SpecialAction.CockVore || type == SpecialAction.Unbirth))
+                {
+                    PounceButtons[currentButton].GetComponentInChildren<Text>().text = $"Too large to {targetedAction.Name}";
+                    PounceButtons[currentButton].interactable = false;
+
+                }
                 else
                     PounceButtons[currentButton].GetComponentInChildren<Text>().text = $"{targetedAction.Name} Pounce {data.DevourChance}%";
                 if (data.Range < 2 || data.Range > 4)
@@ -620,7 +632,7 @@ public class RightClickMenu : MonoBehaviour
                     currentButton++;
                 }
             }
-            if (actor.PredatorComponent.CanSuckle() && actor.PredatorComponent.GetSuckle(data.Target)[0] != 0)
+            if (actor.PredatorComponent.CanSuckle() && actor.PredatorComponent.GetSuckle(data.Target)[0] + actor.PredatorComponent.GetSuckle(data.Target)[1] != 0)
             {
                 Buttons[currentButton].onClick.AddListener(() => data.Actor.PredatorComponent.Suckle(data.Target));
                 Buttons[currentButton].onClick.AddListener(FinishAction);

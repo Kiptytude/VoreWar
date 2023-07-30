@@ -82,6 +82,7 @@ public class ContentSettings : MonoBehaviour
     public Slider DefaultStartingWeight;
 
     public Slider AutoSurrenderChance;
+    public Slider AutoSurrenderDefectChance;
 
     public Slider OverallMonsterCapModifier;
     public Slider OverallMonsterSpawnRateModifier;
@@ -215,6 +216,7 @@ public class ContentSettings : MonoBehaviour
     public InputField MaleTraits;
     public InputField FemaleTraits;
     public InputField HermTraits;
+    public InputField SpawnTraits;
 
     public Slider MaxArmies;
 
@@ -621,6 +623,7 @@ public class ContentSettings : MonoBehaviour
         Config.World.CockSizeModifier = PlayerPrefs.GetInt("CockSizeModifier", 0);
         Config.World.DefaultStartingWeight = PlayerPrefs.GetInt("StartingWeight", 2);
         Config.World.AutoSurrenderChance = PlayerPrefs.GetFloat("AutoSurrenderChance", 1);
+        Config.World.AutoSurrenderDefectChance = PlayerPrefs.GetFloat("AutoSurrenderDefectChance", 0.25f);
         Config.World.OralWeight = PlayerPrefs.GetInt("OralWeight", 40);
         Config.World.BreastWeight = PlayerPrefs.GetInt("BreastWeight", 40);
         Config.World.AnalWeight = PlayerPrefs.GetInt("AnalWeight", 40);
@@ -652,6 +655,7 @@ public class ContentSettings : MonoBehaviour
         Config.World.MaleTraits = RaceEditorPanel.TextToTraitList(PlayerPrefs.GetString("MaleTraits", ""));
         Config.World.FemaleTraits = RaceEditorPanel.TextToTraitList(PlayerPrefs.GetString("FemaleTraits", ""));
         Config.World.HermTraits = RaceEditorPanel.TextToTraitList(PlayerPrefs.GetString("HermTraits", ""));
+        Config.World.SpawnTraits = RaceEditorPanel.TextToTraitList(PlayerPrefs.GetString("SpawnTraits", ""));
         Config.World.OverallMonsterCapModifier = PlayerPrefs.GetFloat("OverallMonsterCapModifier", 1);
         Config.World.OverallMonsterSpawnRateModifier = PlayerPrefs.GetFloat("OverallMonsterSpawnRateModifier", 1);
         MonsterDropdownChanged();
@@ -739,6 +743,7 @@ public class ContentSettings : MonoBehaviour
         AnalWeight.value = Config.AnalWeight;
         TailWeight.value = Config.TailWeight;
         AutoSurrenderChance.value = Config.AutoSurrenderChance;
+        AutoSurrenderDefectChance.value = Config.AutoSurrenderDefectChance;
         MonsterConquest.value = (int)Config.MonsterConquest + 1;
         VoreRate.value = Config.VoreRate + 1;
         EscapeRate.value = Config.EscapeRate + 1;
@@ -780,6 +785,7 @@ public class ContentSettings : MonoBehaviour
         MaleTraits.text = RaceEditorPanel.TraitListToText(Config.MaleTraits);
         FemaleTraits.text = RaceEditorPanel.TraitListToText(Config.FemaleTraits);
         HermTraits.text = RaceEditorPanel.TraitListToText(Config.HermTraits);
+        SpawnTraits.text = RaceEditorPanel.TraitListToText(Config.SpawnTraits);
         RefreshSliderText();
 
         foreach (MonsterSpawnerPanel spawner in MonsterSpawners)
@@ -923,6 +929,7 @@ public class ContentSettings : MonoBehaviour
         Config.World.TacticalTerrainFrequency = TacticalTerrainFrequency.value;
         Config.World.TacticalWaterValue = TacticalWaterValue.value;
         Config.World.AutoSurrenderChance = AutoSurrenderChance.value;
+        Config.World.AutoSurrenderDefectChance = AutoSurrenderDefectChance.value;
         Config.World.HermBreastSizeModifier = (int)HermBreastSizeModifier.value;
         Config.World.BreastSizeModifier = (int)BreastSizeModifier.value;
         Config.World.CockSizeModifier = (int)CockSizeModifier.value;
@@ -952,6 +959,7 @@ public class ContentSettings : MonoBehaviour
         Config.World.MaleTraits = RaceEditorPanel.TextToTraitList(MaleTraits.text);
         Config.World.FemaleTraits = RaceEditorPanel.TextToTraitList(FemaleTraits.text);
         Config.World.HermTraits = RaceEditorPanel.TextToTraitList(HermTraits.text);
+        Config.World.SpawnTraits = RaceEditorPanel.TextToTraitList(SpawnTraits.text);
         Config.World.OralWeight = (int)OralWeight.value;
         Config.World.UnbirthWeight = (int)UnbirthWeight.value;
         Config.World.CockWeight = (int)CockWeight.value;
@@ -1103,6 +1111,7 @@ public class ContentSettings : MonoBehaviour
         PlayerPrefs.SetInt("ArmyMP", (int)ArmyMP.value);
         PlayerPrefs.SetFloat("CustomEventFrequency", CustomEventFrequency.value);
         PlayerPrefs.SetFloat("AutoSurrenderChance", AutoSurrenderChance.value);
+        PlayerPrefs.SetFloat("AutoSurrenderDefectChance", AutoSurrenderDefectChance.value);
         PlayerPrefs.SetInt("MaxArmies", (int)MaxArmies.value);
         PlayerPrefs.SetInt("FemalesLike", FemalesLike.value);
         PlayerPrefs.SetInt("WinterStuff", WinterStuff.value);
@@ -1119,6 +1128,7 @@ public class ContentSettings : MonoBehaviour
         PlayerPrefs.SetString("MaleTraits", MaleTraits.text);
         PlayerPrefs.SetString("FemaleTraits", FemaleTraits.text);
         PlayerPrefs.SetString("HermTraits", HermTraits.text);
+        PlayerPrefs.SetString("SpawnTraits", SpawnTraits.text);
         PlayerPrefs.SetInt("OralWeight", (int)OralWeight.value);
         PlayerPrefs.SetInt("AnalWeight", (int)AnalWeight.value);
         PlayerPrefs.SetInt("BreastWeight", (int)BreastWeight.value);

@@ -206,7 +206,7 @@ static class TacticalActionList
             conditional: (a) => a.PredatorComponent?.AlivePrey > 0 && a.Unit.HasTrait(Traits.Greedy) == false,
             onClicked: () => State.GameManager.TacticalMode.TrySetSpecialMode(SpecialAction.Regurgitate),
             onExecute: null,
-            onExecuteLocation: (a, l) => a.PredatorComponent.FreeRandomPreyToSquare(l),
+            onExecuteLocation: (a, l) => a.Regurgitate(a, l),
             minimumMp: 1));
         TargetedDictionary[SpecialAction.Regurgitate] = TargetedActions.Last();
 

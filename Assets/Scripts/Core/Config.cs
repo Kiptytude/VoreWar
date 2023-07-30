@@ -200,6 +200,7 @@ static class Config
     internal static float TacticalTerrainFrequency => World.TacticalTerrainFrequency;
 
     internal static float AutoSurrenderChance => World.AutoSurrenderChance;
+    internal static float AutoSurrenderDefectChance => World.AutoSurrenderDefectChance;
 
     internal static float OverallMonsterSpawnRateModifier => World.OverallMonsterSpawnRateModifier;
     internal static float OverallMonsterCapModifier => World.OverallMonsterCapModifier;
@@ -222,7 +223,6 @@ static class Config
 
     internal static int ArmyMP => World.ArmyMP;
     internal static int MaxArmies => World.MaxArmies;
-
     internal static bool RaceTraitsEnabled => World.GetValue("RaceTraitsEnabled");
     internal static bool RagsForSlaves => World.GetValue("RagsForSlaves");
     internal static bool VisibleCorpses => World.GetValue("VisibleCorpses");
@@ -232,6 +232,7 @@ static class Config
     internal static List<Traits> MaleTraits => World.MaleTraits;
     internal static List<Traits> FemaleTraits => World.FemaleTraits;
     internal static List<Traits> HermTraits => World.HermTraits;
+    internal static List<Traits> SpawnTraits => World.SpawnTraits;
 
     internal static bool NoAIRetreat => World.GetValue("NoAIRetreat");
     internal static bool AICanCheatSpecialMercs => World.GetValue("AICanCheatSpecialMercs");

@@ -151,6 +151,36 @@ static class TacticalUtilities
         }
     }
 
+    static internal void GenerateAnotherArmy(List<Unit> leftoverUnits)
+    {
+        if (leftoverUnits.Any() == false)
+            return;
+        if (Config.MonstersCanReform == false)
+            return;
+        for (int x = -1; x < 2; x++)
+        {
+            for (int y = -1; y < 2; y++)
+            {
+                if (x == 0 && y == 0)
+                    continue;
+                Vec2i loc = new Vec2i(armies[0].Position.x + x, armies[0].Position.y + y);
+                if (loc.x < 0 || loc.y < 0 || loc.x >= Config.StrategicWorldSizeX || loc.y >= Config.StrategicWorldSizeY)
+                    continue;
+                if (StrategicUtilities.IsTileClear(loc))
+                {
+                    MonsterEmpire monsterEmp = (MonsterEmpire)State.World.GetEmpireOfSide(leftoverUnits[0].Side);
+                    if (monsterEmp == null)
+                        return;
+                    var army = new Army(monsterEmp, loc, leftoverUnits[0].Side);
+                    army.RemainingMP = 0;
+                    monsterEmp.Armies.Add(army);
+                    army.Units.AddRange(leftoverUnits);
+                    return;
+                }
+            }
+        }
+    }
+
     static internal void CleanVillage(int remainingAttackers)
     {
         bool MonsterAttacker = armies[0].Side >= 100;
@@ -713,14 +743,51 @@ static class TacticalUtilities
         {
             GameObject obj = UnityEngine.Object.Instantiate(UnitPickerUI.HiringUnitPanel, UnitPickerUI.ActorFolder);
             UIUnitSprite sprite = obj.GetComponentInChildren<UIUnitSprite>();
-            Text text = obj.transform.GetChild(3).GetComponent<Text>();
-            text.text = $"Level: {actor.Unit.Level} Exp: {(int)actor.Unit.Experience}\n" +
-                $"Health : {100 * actor.Unit.HealthPct}%\n" +
-                $"Items: {actor.Unit.GetItem(0)?.Name} {actor.Unit.GetItem(1)?.Name}\n" +
-                $"Str: {actor.Unit.GetStatBase(Stat.Strength)} Dex: {actor.Unit.GetStatBase(Stat.Dexterity)} Agility: {actor.Unit.GetStatBase(Stat.Agility)}\n" +
-                $"Mind: {actor.Unit.GetStatBase(Stat.Mind)} Will: {actor.Unit.GetStatBase(Stat.Will)} Endurance: {actor.Unit.GetStatBase(Stat.Endurance)}\n";
-            if (actor.Unit.Predator)
-                text.text += $"Vore: {actor.Unit.GetStatBase(Stat.Voracity)} Stomach: {actor.Unit.GetStatBase(Stat.Stomach)}";
+            Text GenderText = obj.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>();
+            Text EXPText = obj.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(1).GetComponent<Text>();
+            GameObject EquipRow = obj.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(2).gameObject;
+            GameObject StatRow1 = obj.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(3).gameObject;
+            GameObject StatRow2 = obj.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(4).gameObject;
+            GameObject StatRow3 = obj.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(5).gameObject;
+            GameObject StatRow4 = obj.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(6).gameObject;
+            Text TraitList = obj.transform.GetChild(2).GetChild(0).GetChild(1).GetChild(0).GetChild(0).gameObject.GetComponent<Text>();
+            Text HireButton = obj.transform.GetChild(2).GetChild(1).GetChild(0).gameObject.GetComponent<Text>();
+
+            string gender;
+                if (actor.Unit.GetGender() == Gender.Hermaphrodite)
+                    gender = "Herm";
+
+                else
+                    gender = actor.Unit.GetGender().ToString();
+                GenderText.text = $"{gender}";
+            TraitList.text = RaceEditorPanel.TraitListToText(actor.Unit.GetTraits, true).Replace(", ","\n");
+            EXPText.text = $"Level {actor.Unit.Level} ({(int)actor.Unit.Experience} EXP)";
+            if (actor.Unit.HasTrait(Traits.Resourceful))
+            {
+                EquipRow.transform.GetChild(2).gameObject.SetActive(true);
+                EquipRow.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = actor.Unit.GetItem(0)?.Name;
+                EquipRow.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = actor.Unit.GetItem(1)?.Name;
+                EquipRow.transform.GetChild(2).GetChild(0).GetComponent<Text>().text = actor.Unit.GetItem(2)?.Name;
+            }
+            else
+            {
+                EquipRow.transform.GetChild(2).gameObject.SetActive(false);
+                EquipRow.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = actor.Unit.GetItem(0)?.Name;
+                EquipRow.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = actor.Unit.GetItem(1)?.Name;
+            }
+            StatRow1.transform.GetChild(0).GetChild(1).GetComponent<Text>().text = actor.Unit.GetStatBase(Stat.Strength).ToString();
+            StatRow1.transform.GetChild(1).GetChild(1).GetComponent<Text>().text = actor.Unit.GetStatBase(Stat.Dexterity).ToString();
+            StatRow2.transform.GetChild(0).GetChild(1).GetComponent<Text>().text = actor.Unit.GetStatBase(Stat.Mind).ToString();
+            StatRow2.transform.GetChild(1).GetChild(1).GetComponent<Text>().text = actor.Unit.GetStatBase(Stat.Will).ToString();
+            StatRow3.transform.GetChild(0).GetChild(1).GetComponent<Text>().text = actor.Unit.GetStatBase(Stat.Endurance).ToString();
+            StatRow3.transform.GetChild(1).GetChild(1).GetComponent<Text>().text = actor.Unit.GetStatBase(Stat.Agility).ToString();
+            if (actor.PredatorComponent != null)
+            {
+                StatRow4.transform.GetChild(0).GetChild(1).GetComponent<Text>().text = actor.Unit.GetStatBase(Stat.Voracity).ToString();
+                StatRow4.transform.GetChild(1).GetChild(1).GetComponent<Text>().text = actor.Unit.GetStatBase(Stat.Stomach).ToString();
+            }
+            else
+                StatRow4.SetActive(false);
             actor.UpdateBestWeapons();
             sprite.UpdateSprites(actor);
             sprite.Name.text = actor.Unit.Name;
@@ -800,6 +867,8 @@ static class TacticalUtilities
         if ((target.Unit.GetApparentSide() == actor.Unit.GetApparentSide() || target.Unit.GetApparentSide() == actor.Unit.FixedSide) && target.Surrendered && targets.Contains(AbilityTargets.SurrenderedAlly))
             return true;
         if (targets.Contains(AbilityTargets.Enemy) && Config.AllowInfighting)
+            return true;
+        if (targets.Contains(AbilityTargets.Self) && actor.Unit == target.Unit)
             return true;
         return false;
 
@@ -912,10 +981,11 @@ static class TacticalUtilities
             PreyLocation preyLocation = PreyLocation.stomach;
             var possibilities = new Dictionary<string, PreyLocation>();
             possibilities.Add("Maw", PreyLocation.stomach);
-            if (targetPred.Unit.CanAnalVore) possibilities.Add("Anus", PreyLocation.anal);
-            if (targetPred.Unit.CanBreastVore) possibilities.Add("Breast", PreyLocation.breasts);
-            if (targetPred.Unit.CanCockVore) possibilities.Add("Cock", PreyLocation.balls);
-            if (targetPred.Unit.CanUnbirth) possibilities.Add("Pussy", PreyLocation.womb);
+
+            if (targetPred.Unit.CanAnalVore && State.RaceSettings.GetVoreTypes(targetPred.Unit.Race).Contains(VoreType.Anal)) possibilities.Add("Anus", PreyLocation.anal);
+            if (targetPred.Unit.CanBreastVore && State.RaceSettings.GetVoreTypes(targetPred.Unit.Race).Contains(VoreType.BreastVore)) possibilities.Add("Breast", PreyLocation.breasts);
+            if (targetPred.Unit.CanCockVore && State.RaceSettings.GetVoreTypes(targetPred.Unit.Race).Contains(VoreType.CockVore)) possibilities.Add("Cock", PreyLocation.balls);
+            if (targetPred.Unit.CanUnbirth && State.RaceSettings.GetVoreTypes(targetPred.Unit.Race).Contains(VoreType.Unbirth)) possibilities.Add("Pussy", PreyLocation.womb);
 
             if (State.GameManager.TacticalMode.IsPlayerInControl && State.GameManager.CurrentScene == State.GameManager.TacticalMode && possibilities.Count > 1)
             {
@@ -935,6 +1005,14 @@ static class TacticalUtilities
             State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<b>{actor.Unit.Name}</b> couldn't force feed {LogUtilities.GPPHimself(actor.Unit)} to <b>{targetPred.Unit.Name}</b>.");
             actor.Movement = 0;
         }
+    }
+    internal static void AssumeForm(Actor_Unit actor, Actor_Unit target)
+    {
+        actor.ChangeRacePrey();
+    }
+    internal static void RevertForm(Actor_Unit actor, Actor_Unit target)
+    {
+        actor.RevertRace();
     }
 
     internal static void ShapeshifterPanel(Actor_Unit selectedUnit)
