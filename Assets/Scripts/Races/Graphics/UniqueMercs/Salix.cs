@@ -15,7 +15,7 @@ class Salix : DefaultRaceData
 
     internal List<MainClothing> AllClothing;
 
-    const float stomachMult = 1.1f;
+    const float stomachMult = 1f;
 
     internal Salix()
     {
@@ -49,7 +49,7 @@ class Salix : DefaultRaceData
 
         AllowedWaistTypes = new List<MainClothing>() //Bottoms
         {
-            new GenericBottom(26, 26, 0, 63, 8, Sprites, 1300),
+            new GenericBottom(26, 26, 0, 63, 13, Sprites, 1300),
         };
 
         AllowedClothingHatTypes = new List<ClothingAccessory>();
@@ -112,6 +112,8 @@ class Salix : DefaultRaceData
         oversize = false;
         base.RunFirst(actor);
     }
+
+
 
     protected override Sprite AccessorySprite(Actor_Unit actor)
     {
@@ -328,7 +330,7 @@ class Salix : DefaultRaceData
             Balls.layer = 10;
         }
         int size = actor.Unit.DickSize;
-        int offset = actor.GetBallSize(28, .8f);
+        int offset = actor.GetBallSize(28, 0.8f);
         if ((actor.PredatorComponent?.IsUnitOfSpecificationInPrey(Race.Selicia, true, PreyLocation.balls) ?? false) && offset == 28)
         {
             AddOffset(Balls, 0, -22 * .625f);
@@ -344,42 +346,43 @@ class Salix : DefaultRaceData
             AddOffset(Balls, 0, -22 * .625f);
             return Sprites3[81];
         }
-        else if (offset >= 26)
+        else if (offset >= 17)
         {
             AddOffset(Balls, 0, -22 * .625f);
         }
-        else if (offset == 25)
+        else if (offset == 16)
         {
             AddOffset(Balls, 0, -16 * .625f);
         }
-        else if (offset == 24)
+        else if (offset == 15)
         {
             AddOffset(Balls, 0, -13 * .625f);
         }
-        else if (offset == 23)
+        else if (offset == 14)
         {
             AddOffset(Balls, 0, -11 * .625f);
         }
-        else if (offset == 22)
+        else if (offset == 13)
         {
             AddOffset(Balls, 0, -10 * .625f);
         }
-        else if (offset == 21)
+        else if (offset == 12)
         {
             AddOffset(Balls, 0, -7 * .625f);
         }
-        else if (offset == 20)
+        else if (offset == 11)
         {
             AddOffset(Balls, 0, -6 * .625f);
         }
-        else if (offset == 19)
+        else if (offset == 10)
         {
             AddOffset(Balls, 0, -4 * .625f);
         }
-        else if (offset == 18)
+        else if (offset == 9)
         {
             AddOffset(Balls, 0, -1 * .625f);
         }
+
 
         if (offset > 0)
             return Sprites3[Math.Min(62 + offset, 80)];
@@ -457,7 +460,7 @@ class Salix : DefaultRaceData
         public GenericBottom(int femaleSprite, int maleSprite, int bulge, int discard, int layer, Sprite[] sheet, int type)
         {
             coversBreasts = false;
-            blocksDick = true;
+            blocksDick = false;
             sprF = femaleSprite;
             sprM = maleSprite;
             this.sheet = sheet;
@@ -537,7 +540,7 @@ class Salix : DefaultRaceData
         {
             coversBreasts = false;
             blocksDick = false;
-            clothing1 = new SpriteExtraInfo(10, null, WhiteColored);
+            clothing1 = new SpriteExtraInfo(1, null, WhiteColored);
             Type = 9764;
         }
         public override void Configure(CompleteSprite sprite, Actor_Unit actor)

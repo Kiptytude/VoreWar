@@ -2618,8 +2618,8 @@ static class RaceParameters
 
         Salix = new RaceTraits()
         {
-            BodySize = 13,
-            StomachSize = 10,
+            BodySize = 10,
+            StomachSize = 15,
             HasTail = true,
             FavoredStat = Stat.Dexterity,
             AllowedVoreTypes = new List<VoreType> { VoreType.Oral, VoreType.Unbirth, VoreType.BreastVore, VoreType.Anal, VoreType.CockVore },
