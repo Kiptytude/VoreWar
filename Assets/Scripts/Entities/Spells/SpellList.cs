@@ -928,12 +928,12 @@ static class SpellList
             Name = "Mana Flux",
             Id = "mana-flux",
             SpellType = SpellTypes.ManaFlux,
-            Description = "Deals increased damage if the unit has less mana than the target. Damage is based on the difference.",
+            Description = "Deals damage which is increased by missing mana.",
             AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy },
             Range = new Range(6),
             Tier = 1,
             AreaOfEffect = 0,
-            Damage = (a, t) => a.Unit.GetStat(Stat.Mind) / 5 + ((t.Unit.Mana / t.Unit.MaxMana) > (a.Unit.Mana / a.Unit.MaxMana) ? t.Unit.Mana - a.Unit.Mana : 0),
+            Damage = (a, t) => (a.Unit.GetStat(Stat.Mind) / 5) + ((a.Unit.MaxMana - a.Unit.Mana)/10),
             Resistable = true,
             OnExecute = (a, t) =>
             {
