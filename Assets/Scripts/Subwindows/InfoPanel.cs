@@ -150,6 +150,8 @@ public class InfoPanel
                 return "Dog";
             case Race.Foxes:
                 return "Fox";
+            case Race.Youko:
+                return "Youko";    
             case Race.Wolves:
                 return "Wolf";
             case Race.Bunnies:
@@ -309,6 +311,10 @@ public class InfoPanel
                 return "Lion";
             case Race.Kobolds:
                 return "Kobold";
+            case Race.Whisp:
+                return "Whisp";
+            case Race.none:
+                return "None";
         }
         return unit.Race.ToString(); //Updated this so a new race will return the race's name, instead of nothing
     }
@@ -479,6 +485,8 @@ public class InfoPanel
                 return "Dratopyr";
             case Race.FeralLions:
                 return "Lion";
+            case Race.Whisp:
+                return "Whisp";
         }
         return empire.ReplacedRace.ToString();
     }
@@ -524,39 +532,104 @@ public class InfoPanel
                 else
                     sb.AppendLine($"Special Allegiance: {State.World.GetEmpireOfSide(unit.FixedSide)?.Name ?? "Unkown"}");
             }
-            // Add Equipment
-            for (int i = 0; i < unit.Items.Length; i++)
+            UnityEngine.Transform EquipRow = UnitInfoPanel.StatBlock.transform.GetChild(5);
+
+            EquipRow.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = unit.GetItem(0)?.Name;
+            EquipRow.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = unit.GetItem(1)?.Name;
+            if (unit.HasTrait(Traits.Resourceful))
             {
-                sb.AppendLine(unit.GetItem(i)?.Name ?? "empty");
+                EquipRow.transform.GetChild(2).gameObject.SetActive(true);
+                EquipRow.transform.GetChild(2).GetChild(0).GetComponent<Text>().text = unit.GetItem(2)?.Name;
             }
+            else
+                EquipRow.transform.GetChild(2).gameObject.SetActive(false);
+
+            // Add Equipment
+            //for (int i = 0; i < unit.Items.Length; i++)
+            //{
+            //    sb.AppendLine(unit.GetItem(i)?.Name ?? "empty");
+            //}
+
+            Text STRVal = UnitInfoPanel.StatBlock.transform.GetChild(0).GetChild(0).GetChild(1).GetComponent<Text>();
+            Text DEXVal = UnitInfoPanel.StatBlock.transform.GetChild(0).GetChild(1).GetChild(1).GetComponent<Text>();
+            Text MNDVal = UnitInfoPanel.StatBlock.transform.GetChild(1).GetChild(0).GetChild(1).GetComponent<Text>();
+            Text WLLVal = UnitInfoPanel.StatBlock.transform.GetChild(1).GetChild(1).GetChild(1).GetComponent<Text>();
+            Text ENDVal = UnitInfoPanel.StatBlock.transform.GetChild(2).GetChild(0).GetChild(1).GetComponent<Text>();
+            Text AGIVal = UnitInfoPanel.StatBlock.transform.GetChild(2).GetChild(1).GetChild(1).GetComponent<Text>();
+            Text VORVal = UnitInfoPanel.StatBlock.transform.GetChild(3).GetChild(0).GetChild(1).GetComponent<Text>();
+            Text STMVal = UnitInfoPanel.StatBlock.transform.GetChild(3).GetChild(1).GetChild(1).GetComponent<Text>();
+            Text LDRVal = UnitInfoPanel.StatBlock.transform.GetChild(4).GetChild(0).GetChild(1).GetComponent<Text>();
 
             // Add Battle Stats
-            sb.AppendLine(unit.GetStatInfo(Stat.Strength));
-            sb.AppendLine(unit.GetStatInfo(Stat.Dexterity));
-            sb.AppendLine(unit.GetStatInfo(Stat.Endurance));
-            sb.AppendLine(unit.GetStatInfo(Stat.Agility));
-            sb.AppendLine(unit.GetStatInfo(Stat.Mind));
-            sb.AppendLine(unit.GetStatInfo(Stat.Will));
+            STRVal.text = unit.GetStatInfo(Stat.Strength);
+            DEXVal.text = unit.GetStatInfo(Stat.Dexterity);
+            ENDVal.text = unit.GetStatInfo(Stat.Endurance);
+            AGIVal.text = unit.GetStatInfo(Stat.Agility);
+            MNDVal.text = unit.GetStatInfo(Stat.Mind);
+            WLLVal.text = unit.GetStatInfo(Stat.Will);
             if (CanVore)
             {
-                sb.AppendLine(unit.GetStatInfo(Stat.Voracity));
-                sb.AppendLine(unit.GetStatInfo(Stat.Stomach));
+                UnitInfoPanel.StatBlock.transform.GetChild(3).gameObject.SetActive(true);
+                VORVal.text = unit.GetStatInfo(Stat.Voracity);
+                STMVal.text = unit.GetStatInfo(Stat.Stomach);
             }
+            else
+                UnitInfoPanel.StatBlock.transform.GetChild(3).gameObject.SetActive(false);
+
+            UnityEngine.Transform FifthLine = UnitInfoPanel.StatBlock.transform.GetChild(4);
 
             // Add Leadership Stat if unit is a Leader
             if (unit.Type == UnitType.Leader)
-                sb.AppendLine($"Leadership: {unit.GetStatBase(Stat.Leadership)}");
+            {
+                FifthLine.gameObject.SetActive(true);
+                FifthLine.GetChild(0).gameObject.SetActive(true);
+                LDRVal.text = unit.GetStatInfo(Stat.Leadership);
+            }
+            else
+                FifthLine.GetChild(0).gameObject.SetActive(false);
+
+            UnityEngine.Transform killSection = FifthLine.GetChild(1).GetChild(0);
+            UnityEngine.Transform digestSection = FifthLine.GetChild(1).GetChild(1);
+            UnityEngine.Transform deathSection = FifthLine.GetChild(1).GetChild(2);
+            // Set kill counter, hide otherwise
+            if (unit.KilledUnits > 0)
+            {
+                FifthLine.gameObject.SetActive(true);
+                FifthLine.GetChild(1).gameObject.SetActive(true);
+                killSection.gameObject.SetActive(true);
+                killSection.GetChild(1).GetComponent<Text>().text = unit.KilledUnits.ToString();
+            }
+            else
+                killSection.gameObject.SetActive(false);
+            // Set digestion counter, hide otherwise
+            if (unit.DigestedUnits > 0)
+            {
+                FifthLine.gameObject.SetActive(true);
+                FifthLine.GetChild(1).gameObject.SetActive(true);
+                digestSection.gameObject.SetActive(true);
+                digestSection.GetChild(1).GetComponent<Text>().text = unit.DigestedUnits.ToString();
+            }
+            else
+                digestSection.gameObject.SetActive(false);
+            // Set death counter, hide otherwise
+            if (unit.TimesKilled > 0)
+            {
+                FifthLine.gameObject.SetActive(true);
+                FifthLine.GetChild(1).gameObject.SetActive(true);
+                deathSection.gameObject.SetActive(true);
+                deathSection.GetChild(1).GetComponent<Text>().text = unit.TimesKilled.ToString();
+            }
+            else
+                deathSection.gameObject.SetActive(false);
+            if (!killSection.gameObject.activeSelf && !digestSection.gameObject.activeSelf && !deathSection.gameObject.activeSelf)
+                FifthLine.GetChild(1).gameObject.SetActive(false);
+            if (!FifthLine.GetChild(0).gameObject.activeSelf && !FifthLine.GetChild(1).gameObject.activeSelf)
+                FifthLine.gameObject.SetActive(false);
 
             if (unit.SavedCopy != null && unit.SavedVillage != null)
                 sb.AppendLine($"Imprinted");
             if (actor?.Surrendered ?? false)
                 sb.AppendLine("Unit has surrendered!");
-            if (unit.KilledUnits > 0)
-                sb.AppendLine($"Kills: {unit.KilledUnits}");
-            if (unit.DigestedUnits > 0)
-                sb.AppendLine($"Digestions: {unit.DigestedUnits}");
-            if (unit.TimesKilled > 0)
-                sb.AppendLine($"Deaths: {unit.TimesKilled}");
             string traits = unit.ListTraits(!(TacticalUtilities.IsUnitControlledByPlayer(unit) && TacticalUtilities.PlayerCanSeeTrueSide(unit)));
             if (traits != "")
                 sb.AppendLine("Traits:\n" + traits);
@@ -572,6 +645,10 @@ public class InfoPanel
                 sbSecond.AppendLine("Paralyzed");
             if (actor?.Corruption > 0 && !TacticalUtilities.IsUnitControlledByPlayer(unit))
                 sbSecond.AppendLine($"Corruption ({actor.Corruption}/{unit.GetStatTotal() + unit.GetStat(Stat.Will)})");
+            if (actor?.Possessed > 0 && !TacticalUtilities.IsUnitControlledByPlayer(unit))
+                sbSecond.AppendLine($"Possessed ({actor.Corruption + actor.Possessed}/{unit.GetStatTotal() + unit.GetStat(Stat.Will)})");
+            if (actor?.Infected ?? false)
+                sbSecond.AppendLine($"Infected");
             if (unit.StatusEffects?.Any() ?? false)
             {
                 foreach (StatusEffectType type in (StatusEffectType[])Enum.GetValues(typeof(StatusEffectType)))

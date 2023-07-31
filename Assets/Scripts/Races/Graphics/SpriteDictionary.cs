@@ -217,6 +217,8 @@ public class SpriteDictionary : MonoBehaviour
     public Sprite[] HumansBodySprites5;
     public Sprite[] HumansVoreSprites;
 
+    public Sprite[] YoukoTails;
+
     [Header("Unique Mercenaries")]
     public Sprite[] Selicia;
     public Sprite[] Vision;
@@ -286,7 +288,7 @@ public class SpriteDictionary : MonoBehaviour
     public Sprite[] Dratopyr;
     public Sprite[] FeralLions;
     public Sprite[] Goodra;
-
+    public Sprite[] Whisp;
 
 
     public Sprite[] Cake;

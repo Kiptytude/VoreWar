@@ -1,0 +1,19 @@
+{
+  "name": "com.unity.git",
+  "displayName": "Git for Unity",
+  "description": "Git for Unity brings [Git](https://git-scm.com/) into [Unity](https://unity3d.com/), integrating source control into your work with friendly and accessible tools and workflows.",
+  "version": "2.1.28-preview",
+  "license" : "MIT",
+    "author": {
+      "email": "shana@spoiledcat.net"
+    },
+    "repository" : {
+      "type" : "git",
+      "url": "git@github.com/Unity-Technologies/Git-for-Unity.git",
+      "directory": "src/com.unity.git",
+      "revision": "ce43a169005ab11cebc63ae635bb99a9eea0594c"
+    },
+    "relatedPackages": {
+      "com.unity.git.tests": "2.1.28-preview"
+    }
+}

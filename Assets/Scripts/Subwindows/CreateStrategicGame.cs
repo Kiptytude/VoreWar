@@ -718,6 +718,7 @@ public class CreateStrategicGame : MonoBehaviour
         }
         for (int i = 0; i < Config.NumberOfRaces; i++)
         {
+
             if (Empires[i].gameObject.activeSelf)
                 continue;
             GameObject obj = Instantiate(RaceUI.RaceUnitPanel, RaceUI.RaceFolder);

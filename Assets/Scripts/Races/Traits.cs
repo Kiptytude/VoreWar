@@ -6,6 +6,27 @@ abstract class Trait
     internal string Description;
 }
 
+abstract class VoreTrait : Trait, IVoreCallback
+{
+    public virtual int ProcessingPriority => 0;
+
+    public abstract bool IsPredTrait { get; }
+
+    public virtual bool OnAbsorption(Prey preyUnit, Actor_Unit predUnit, PreyLocation location) => true;
+
+    public virtual bool OnDigestion(Prey preyUnit, Actor_Unit predUnit, PreyLocation location) => true;
+
+    public virtual bool OnDigestionKill(Prey preyUnit, Actor_Unit predUnit, PreyLocation location) => true;
+
+    public virtual bool OnFinishAbsorption(Prey preyUnit, Actor_Unit predUnit, PreyLocation location) => true;
+
+    public virtual bool OnFinishDigestion(Prey preyUnit, Actor_Unit predUnit, PreyLocation location) => true;
+
+    public virtual bool OnRemove(Prey preyUnit, Actor_Unit predUnit, PreyLocation location) => true;
+
+    public virtual bool OnSwallow(Prey preyUnit, Actor_Unit predUnit, PreyLocation location) => true;
+}
+
 class PermanentBoosts
 {
     internal float ExpRequired = 1.0f;
@@ -93,16 +114,56 @@ interface IPhysicalDefenseOdds
     void PhysicalDefense(Actor_Unit defender, ref float defMult);
 }
 
-class Booster : Trait
+interface IProvidesSingleSpell
+{
+    List<SpellTypes> GetSingleSpells(Unit unit);
+}
+
+interface IProvidesMultiSpell
+{
+    List<SpellTypes> GetMultiSpells(Unit unit);
+}
+
+interface INoAutoEscape
+{
+    bool CanEscape(Prey preyUnit, Actor_Unit predUnit);
+}
+
+abstract class AbstractBooster : Trait
 {
     internal Action<PermanentBoosts> Boost;
+}
 
+class Booster : AbstractBooster
+{
     public Booster(string desc, Action<PermanentBoosts> boost)
     {
         Description = desc;
         Boost = boost;
     }
 }
+
+abstract class VoreTraitBooster : AbstractBooster, IVoreCallback
+{
+    public virtual int ProcessingPriority => 0;
+
+    public abstract bool IsPredTrait { get; }
+
+    public virtual bool OnAbsorption(Prey preyUnit, Actor_Unit predUnit, PreyLocation location) => true;
+
+    public virtual bool OnDigestion(Prey preyUnit, Actor_Unit predUnit, PreyLocation location) => true;
+
+    public virtual bool OnDigestionKill(Prey preyUnit, Actor_Unit predUnit, PreyLocation location) => true;
+
+    public virtual bool OnFinishAbsorption(Prey preyUnit, Actor_Unit predUnit, PreyLocation location) => true;
+
+    public virtual bool OnFinishDigestion(Prey preyUnit, Actor_Unit predUnit, PreyLocation location) => true;
+
+    public virtual bool OnRemove(Prey preyUnit, Actor_Unit predUnit, PreyLocation location) => true;
+
+    public virtual bool OnSwallow(Prey preyUnit, Actor_Unit predUnit, PreyLocation location) => true;
+}
+
 
 static class TraitList
 {
@@ -131,6 +192,19 @@ static class TraitList
         [Traits.Stinger] = new Stinger(),
         [Traits.DefensiveStance] = new DefensiveStance(),
         [Traits.Ravenous] = new Ravenous(),
+        [Traits.Possession] = new Possession(),
+        [Traits.UnpleasantDigestion] = new UnpleasantDigestion(),
+        [Traits.Parasite] = new Parasite(),
+        [Traits.Whispers] = new Whispers(),
+        [Traits.Metamorphosis] = new Metamorphosis(),
+        [Traits.Changeling] = new Changeling(),
+        [Traits.GreaterChangeling] = new GreaterChangeling(),
+        [Traits.Symbiote] = new Symbiote(),
+        [Traits.TraitBorrower] = new TraitBorrower(),
+        [Traits.CreateSpawn] = new CreateSpawn(),
+        [Traits.SpiritPossession] = new SpiritPossession(),
+        [Traits.ForcedMetamorphosis] = new ForcedMetamorphosis(),
+        [Traits.MetamorphicConversion] = new MetamorphicConversion(),
         [Traits.Tempered] = new Booster("Reduces damage taken from ranged attacks.\nIncreases damage taken from melee attacks", (s) => { s.Incoming.RangedDamage *= .7f; s.Incoming.MeleeDamage *= 1.3f; s.VirtualDexMult *= 1.1f; }),
         [Traits.GelatinousBody] = new Booster("Takes less damage from attacks, but is easier to vore", (s) => { s.Incoming.RangedDamage *= .75f; s.Incoming.MeleeDamage *= 0.8f; s.Incoming.VoreOddsMult *= 1.15f; }),
         [Traits.MetalBody] = new Booster("Provides vore resistance, and their remains are only worth half as much healing", (s) => { s.Incoming.VoreOddsMult *= .7f; s.Outgoing.Nutrition *= .5f; }),
@@ -229,6 +303,7 @@ static class TraitList
         [Traits.ProteinRich] = new Booster("Absorbing this unit yields more (x2) healing and (with the growth trait) more growth than usual (+80%)", (s) => { s.Outgoing.GrowthRate *= 1.5f; s.Outgoing.Nutrition *= 2f; }),
         [Traits.EfficientGuts] = new Booster("Unit receives 50% more healing from absorbing prey", (s) => { s.Incoming.Nutrition *= 1.5f; }),
         [Traits.WastefulProcessing] = new Booster("Unit can't get as much healing out of prey, but they are done with it quicker. (+50% absorb speed, -50% nutrition)", (s) => { s.Incoming.Nutrition *= 0.5f; s.Outgoing.AbsorptionRate *= 1.5f; }),
+        [Traits.TightNethers] = new Booster("This unit can only take much smaller units into their nethers, but their prey will not enlarge while inside their genitals.", (s) => { s.Incoming.RangedDamage *= 1.0f; }),
 		[Traits.NightEye] = new Booster("Increases night time vision range by +1 in Tactical battles and by +1 in stratigic if half of the units in an army have this trait.", (s) => { s.SightRangeBoost += 1;}),
         [Traits.KeenEye] = new Booster("Unit has the chance to deal increase damage when attacking.", (s) => { s.Outgoing.CritRateShift += 0.1f; }),
         [Traits.AccuteDodge] = new Booster("Unit has the chance to minimise recieved damage when being attacked. (Excludes spells and vore damage).", (s) => { s.Outgoing.GrazeRateShift += 0.1f; }),
@@ -379,6 +454,356 @@ internal class Ravenous : Trait, IVoreAttackOdds
     }
 }
 
+internal class UnpleasantDigestion : VoreTrait
+{
+    public UnpleasantDigestion()
+    {
+        Description = "While digesting, Prey deals damage to predator";
+    }
 
+    public override bool IsPredTrait => false;
 
+    public override bool OnDigestion(Prey preyUnit, Actor_Unit predUnit, PreyLocation location)
+    {
+        predUnit.Damage(1);
+        return true;
+    }
+}
+
+internal class Whispers : VoreTrait, IProvidesSingleSpell
+{
+    public Whispers()
+    {
+        Description = "Predator has a chance to be charmed and afflicted by Prey's curse each round";
+    }
+
+    public override bool IsPredTrait => false;
+
+    public List<SpellTypes> GetSingleSpells(Unit unit) => new List<SpellTypes> { SpellList.Whispers.SpellType };
+
+    public override bool OnDigestion(Prey preyUnit, Actor_Unit predUnit, PreyLocation location)
+    {
+        if(predUnit.Unit.FixedSide != preyUnit.Unit.FixedSide)
+            preyUnit.Actor.CastStatusSpell(SpellList.Whispers, predUnit);
+        return true;
+    }
+}
+
+internal class Parasite : VoreTraitBooster
+{
+    public Parasite()
+    {
+        Description = "A parasite prey will give the host CreateSpawn and set infection after digestion, host Takes minor damage on prey absorption and major damage when creating spawn";
+        Boost = (s) => s.Incoming.ChanceToEscape *= 0;
+    }
+
+    public override bool IsPredTrait => false;
+
+    public override bool OnFinishDigestion(Prey preyUnit, Actor_Unit predUnit, PreyLocation location)
+    {
+        predUnit.Infected = true;
+        predUnit.InfectedRace = preyUnit.Unit.DetermineSpawnRace();
+        if (!preyUnit.Unit.HasSharedTrait(Traits.Parasite))
+            predUnit.InfectedRace = preyUnit.Unit.HiddenUnit.DetermineSpawnRace();
+        predUnit.InfectedSide = preyUnit.Unit.FixedSide;
+        return true;
+    }
+}
+
+internal class Metamorphosis : VoreTrait, INoAutoEscape
+{
+    public Metamorphosis()
+    {
+        Description = "Unit changes Race upon digestion";
+    }
+
+    public override bool IsPredTrait => false;
+
+    public override int ProcessingPriority => 50;
+
+    public bool CanEscape(Prey preyUnit, Actor_Unit predUnit)
+    {
+        return false;
+    }
+
+    public override bool OnFinishDigestion(Prey preyUnit, Actor_Unit predUnit, PreyLocation location)
+    {
+        Race conversionRace = preyUnit.Unit.HiddenUnit.DetermineSpawnRace();
+        preyUnit.Unit.Health = preyUnit.Unit.MaxHealth;
+        preyUnit.Unit.GiveExp(predUnit.Unit.Experience / 2);
+        if (preyUnit.Unit.Race != conversionRace)
+        {
+            preyUnit.ChangeRace(conversionRace);
+        }
+        preyUnit.Unit.RemoveTrait(Traits.Metamorphosis);//no metamorphosis loops
+        State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"{preyUnit.Unit.Name} changed form within {predUnit.Unit.Name}'s body.");
+        predUnit.PredatorComponent.UpdateFullness();
+        return false;
+    }
+}
+
+internal class MetamorphicConversion : Metamorphosis
+{
+    public MetamorphicConversion()
+    {
+        Description = "Unit changes Race and side upon digestion";
+    }
+
+    public override bool IsPredTrait => false;
+
+    public override int ProcessingPriority => 49;
+
+    public override bool OnFinishDigestion(Prey preyUnit, Actor_Unit predUnit, PreyLocation location)
+    {
+        preyUnit.ChangeSide(predUnit.Unit.FixedSide);
+        base.OnFinishDigestion(preyUnit, predUnit, location);
+        preyUnit.Unit.RemoveTrait(Traits.MetamorphicConversion);
+        return false;
+    }
+}
+
+internal class Possession : VoreTraitBooster, INoAutoEscape
+{
+    public Possession()
+    {
+        Description = "If a possession unit is eaten, the pred will be possessed as a hidden status. " +
+        "Once possessed prey's stat total plus the Preds corruption is equal to that of the pred, they are under control of the side of the last-eaten possessed.";
+        Boost = (s) => s.Incoming.ChanceToEscape *= 0;
+    }
+
+    public override bool IsPredTrait => false;
+
+    public override bool OnRemove(Prey preyUnit, Actor_Unit predUnit, PreyLocation location)
+    {
+        if (!preyUnit.Unit.IsDead)
+        {
+            predUnit.RemovePossession(preyUnit.Actor);
+        }
+        return true;
+    }
+
+    public override bool OnDigestionKill(Prey preyUnit, Actor_Unit predUnit, PreyLocation location)
+    {
+        predUnit.RemovePossession(preyUnit.Actor);
+        return true;
+    }
+
+    public override bool OnDigestion(Prey preyUnit, Actor_Unit predUnit, PreyLocation location)
+    {
+        predUnit.CheckPossession(preyUnit.Actor);
+        return true;
+    }
+
+    public override bool OnSwallow(Prey preyUnit, Actor_Unit predUnit, PreyLocation location)
+    {
+        if (!preyUnit.Unit.IsDead)
+        {
+            predUnit.AddPossession(preyUnit.Actor);
+        }
+        return true;
+    }
+
+    public bool CanEscape(Prey preyUnit, Actor_Unit predUnit)
+    {
+        return !predUnit.CheckPossession(preyUnit.Actor);
+    }
+}
+
+internal class Changeling : VoreTrait, IProvidesMultiSpell
+{
+    public Changeling()
+    {
+        Description = "While absorbing a prey, Becomes that prey's Race";
+    }
+
+    public override bool IsPredTrait => true;
+
+    public override int ProcessingPriority => 51;
+
+    public virtual bool TargetIsDead => true;
+
+    public override bool OnRemove(Prey preyUnit, Actor_Unit predUnit, PreyLocation location)
+    {
+        if (preyUnit == predUnit.PredatorComponent.template)
+        {
+            predUnit.RevertRace();
+            predUnit.PredatorComponent.ChangeRaceAuto(TargetIsDead, false);
+            return false;
+        }
+        return true;
+    }
+
+    public override bool OnDigestionKill(Prey preyUnit, Actor_Unit predUnit, PreyLocation location)
+    {
+        predUnit.PredatorComponent.TryChangeRace(preyUnit);
+        return true;
+    }
+
+    public List<SpellTypes> GetMultiSpells(Unit unit) => new List<SpellTypes> { SpellList.AssumeForm.SpellType, SpellList.RevertForm.SpellType };
+}
+
+internal class GreaterChangeling : Changeling
+{
+    public GreaterChangeling()
+    {
+        Description = "While digesting a prey, Becomes that prey's Race";
+    }
+
+    public override bool IsPredTrait => true;
+
+    public override int ProcessingPriority => 50;
+
+    public override bool TargetIsDead => false;
+
+    public override bool OnSwallow(Prey preyUnit, Actor_Unit predUnit, PreyLocation location)
+    {
+        return !predUnit.PredatorComponent.TryChangeRace(preyUnit);
+    }
+}
+
+internal class Symbiote : VoreTrait
+{
+    public Symbiote()
+    {
+        Description = "Shares generic traits with pred";
+    }
+
+    public override bool IsPredTrait => false;
+
+    public override int ProcessingPriority => 100;
+
+    public override bool OnSwallow(Prey preyUnit, Actor_Unit predUnit, PreyLocation location)
+    {
+        foreach (Traits trait in preyUnit.Unit.GetTraits)
+        {
+            if ((trait != Traits.Prey) && (trait != Traits.Small))
+                predUnit.PredatorComponent.ShareTrait(trait, preyUnit);
+        }
+        predUnit.Unit.ReloadTraits();
+        predUnit.Unit.InitializeTraits();
+        predUnit.ReloadSpellTraits();
+        return true;
+    }
+
+    public override bool OnRemove(Prey preyUnit, Actor_Unit predUnit, PreyLocation location)
+    {
+        foreach (Traits trait in preyUnit.SharedTraits)
+            predUnit.Unit.RemoveSharedTrait(trait);
+        predUnit.PredatorComponent.RefreshSharedTraits();
+        predUnit.Unit.InitializeTraits();
+        predUnit.ReloadSpellTraits();
+        return true;
+    }
+}
+internal class TraitBorrower : VoreTrait
+{
+    public TraitBorrower()
+    {
+        Description = "borrows generic traits from prey";
+    }
+
+    public override bool IsPredTrait => true;
+
+    public override int ProcessingPriority => 100;
+
+    public override bool OnSwallow(Prey preyUnit, Actor_Unit predUnit, PreyLocation location)
+    {
+        foreach (Traits trait in preyUnit.Unit.GetTraits)
+        {
+            if ((trait != Traits.Prey) && (trait != Traits.Small))
+                predUnit.PredatorComponent.ShareTrait(trait, preyUnit);
+        }
+        predUnit.Unit.ReloadTraits();
+        predUnit.Unit.InitializeTraits();
+        predUnit.ReloadSpellTraits();
+        return true;
+    }
+
+    public override bool OnRemove(Prey preyUnit, Actor_Unit predUnit, PreyLocation location)
+    {
+        foreach (Traits trait in preyUnit.SharedTraits)
+            predUnit.Unit.RemoveSharedTrait(trait);
+        predUnit.PredatorComponent.RefreshSharedTraits();
+        predUnit.Unit.InitializeTraits();
+        predUnit.ReloadSpellTraits();
+        return true;
+    }
+}
+internal class CreateSpawn : VoreTrait
+{
+    public CreateSpawn()
+    {
+        Description = "creates a spawn unit on prey Absorption";
+    }
+
+    public override bool IsPredTrait => true;
+
+    public override int ProcessingPriority => 0;
+
+    public override bool OnFinishAbsorption(Prey preyUnit, Actor_Unit predUnit, PreyLocation location)
+    {
+        Race spawnRace = predUnit.Unit.DetermineSpawnRace();
+        if (!predUnit.Unit.HasSharedTrait(Traits.CreateSpawn))
+            spawnRace = predUnit.Unit.HiddenUnit.DetermineSpawnRace();
+        // use source race IF changeling already had this ability before transforming
+        predUnit.PredatorComponent.CreateSpawn(spawnRace, predUnit.Unit.Side, predUnit.Unit.Experience / 2);
+        return true;
+    }
+}
+
+internal class SpiritPossession : Possession
+{
+    public SpiritPossession()
+    {
+        Description = "Units soul continues to possess pred after death";
+        Boost = (s) => s.Incoming.ChanceToEscape *= 0;
+    }
+
+    public override bool IsPredTrait => false;
+
+    public override bool OnDigestionKill(Prey preyUnit, Actor_Unit predUnit, PreyLocation location)
+    {
+        var possessed = predUnit.CheckPossession(preyUnit.Actor);
+        predUnit.RemovePossession(preyUnit.Actor);
+        if(possessed)
+        {
+            if (predUnit.Unit.Side != preyUnit.Unit.Side)
+                State.GameManager.TacticalMode.SwitchAlignment(predUnit);
+            //TODO: This game needs some form of true fusion mechanic. 
+            //this is an approximation of fusion with the result taking the appearance of the pred, and the side of the prey
+            if (predUnit.Unit.Side == preyUnit.Unit.Side)
+                predUnit.Unit.FixedSide = -1;
+            predUnit.Unit.Name = preyUnit.Unit.Name;
+            predUnit.Unit.GiveExp(preyUnit.Unit.Experience);
+        }
+        return true;
+    }
+}
+internal class ForcedMetamorphosis : VoreTraitBooster, INoAutoEscape
+{
+    public ForcedMetamorphosis()
+    {
+        Description = "Pred Unit will gain the metamorphosis trait on Prey death";
+        Boost = (s) => s.Incoming.ChanceToEscape *= 0;
+    }
+
+    public override int ProcessingPriority => 10;
+
+    public override bool IsPredTrait => false;
+
+    public bool CanEscape(Prey preyUnit, Actor_Unit predUnit)
+    {
+        return false;
+    }
+
+    public override bool OnDigestionKill(Prey preyUnit, Actor_Unit predUnit, PreyLocation location)
+    {
+        //TODO: Make this a status effect instead
+        if((predUnit.Unit.FixedSide == preyUnit.Unit.FixedSide) && (predUnit.Unit.FixedSide == predUnit.Unit.Side))
+            predUnit.Unit.AddPermanentTrait(Traits.Metamorphosis);
+        else predUnit.Unit.AddPermanentTrait(Traits.MetamorphicConversion);
+        predUnit.Unit.SpawnRace = preyUnit.Unit.HiddenUnit.DetermineSpawnRace();
+        return true;
+    }
+}
 

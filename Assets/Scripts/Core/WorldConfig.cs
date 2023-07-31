@@ -86,6 +86,8 @@ public class WorldConfig
 
     [OdinSerialize]
     internal float AutoSurrenderChance = 1;
+    [OdinSerialize]
+    internal float AutoSurrenderDefectChance = 0.25f;
 
     [OdinSerialize]
     internal float MaleFraction = 0;
@@ -119,6 +121,8 @@ public class WorldConfig
     internal List<Traits> FemaleTraits;
     [OdinSerialize]
     internal List<Traits> HermTraits;
+    [OdinSerialize]
+    internal List<Traits> SpawnTraits;
 
     [OdinSerialize]
     internal float CustomEventFrequency = 0;
@@ -317,6 +321,7 @@ public class WorldConfig
             ["Bones"] = true,
             ["Scat"] = false,
             ["ScatBones"] = false,
+            ["CondomsForCV"] = false,
             ["AutoSurrender"] = false,
             ["EatSurrenderedAllies"] = false,
             ["NewGraphics"] = true,

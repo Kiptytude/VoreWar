@@ -14,6 +14,7 @@ public class NameGenerator
     List<string> catTownNames;
     List<string> dogTownNames;
     List<string> foxTownNames;
+    List<string> youkoTownNames;
     List<string> wolfTownNames;
     List<string> bunnyTownNames;
     List<string> bunnyPreyTownNames;
@@ -370,6 +371,16 @@ public class NameGenerator
             "Preyland",
             "Den of the Ruthless",
             "Den of Gnarling",
+        };
+        youkoTownNames = new List<string>
+        {
+            "Takama-ga-hara",
+            "Yamato-no-shi",
+            "Inari-no-shi",
+            "Zenko-no-machi",
+            "Yakan-no-machi",
+            "Ooji-no-machi",
+            "Onji-no-machi",
         };
         wolfTownNames = new List<string>
         {
@@ -1055,6 +1066,11 @@ public class NameGenerator
         {
             if (i >= 0 && i < foxTownNames.Count)
                 return foxTownNames[i];
+        }
+        else if (race == Race.Youko)
+        {
+            if (i >= 0 && i < youkoTownNames.Count)
+                return youkoTownNames[i];
         }
         else if (race == Race.Wolves)
         {

@@ -74,8 +74,8 @@ The starting spots are assigned counter-clockwise from low team number to high t
             case 27:
                 return "Sets a hard level cap.  This will be the absolute maximum level a unit can reach.";
             case 30:
-                return @"Enables weight gain for units, only works for some races.
-For a more pronounced effect and allow more room to grow, you might want to have breast size and body size set to minimum for this";
+                return @"When enabled, preds of certain races can gain weight when absorbing prey.
+It is recommended to set units' breast/body/cock sizes to lower vales for a more pronounced effect and to allow more room to grow.";
             case 31:
                 return @"Controls the amount of females vs males that appear.  
 Does not retroactively affect already created units.";
@@ -130,19 +130,19 @@ Visible corpses must be on to enable this";
                 return @"Imports the saved global content settings into this game
 Useful for bringing old save games up to speed, but new games are automatically generated with the saved global settings";
             case 48:
-                return "Bellies with prey in them will be animated";
+                return "When enabled, preds' bellies (or balls in the case of CV) will be animated.";
             case 49:
-                return "There's a brief skull that flashes up when a unit is digested that lasts under a second";
+                return "When enabled, a brief skull effect displays when a pred finishes diegesting and begins absorbing a prey.";
             case 50:
-                return "Affects the percentage of burps when a unit has finished the absorption phase (digestion if that option is on)";
+                return "Affects how likely a unit is to burp after absorbing prey, or after digesting if \"Burp after Digestion\" is enabled.";
             case 51:
-                return @"Whether Scat (i.e. poop) is generated when a unit is finishing absorbing
-Also toggles any scat related tactical log messages on or off.";
+                return @"When enabled, scat (i.e. poop) is generated when a unit is finishes absorbing a unit
+and scat-related tactical log messages will be displayed.";
             case 52:
                 return @"Causes units to surrender when they receive what would normally be a killing blow, allowing them to be eaten, or possibly survive.
 You can adjust the fractional odds of it occuring, to anywhere from 0% to 100% of the time.";
             case 53:
-                return "Whether scat can contain bones (it's random whether or not they're visible)";
+                return "When enabled, scat can contain bones (it's random whether or not they're visible).";
             case 54:
                 return @"Uses the new unit graphics for the races that have it. (Most of the races except the first 8 or so only have new graphics)
 <color=yellow>CAUTION: This will cause any race that has a different new graphic and old graphic to re-randomize all of its units' customizations</color>";
@@ -212,7 +212,7 @@ But you can breast vore enemies to increase it
 The weights affect how often the AI will choose one in comparison to the others.  
 (I.e. if unbirth is high, and everything else is low, unbirth will be a high % of what they choose, provided that the race is capable of it.)";
             case 83:
-                return @"Enables KuroTenko's mod that provide additional effects for breast vore, cock vore, and unbirth.  The particulars can be controlled by the settings below.
+                return @"Enables KuroTenko's mod, providing additional effects for breast vore, cock vore, and unbirth. The particulars can be controlled by the settings below.
 Since this affects vore types differently, it will affect balance in some cases.  
 Was restored and expanded by Scarabyte, and should be in working order, though it's possible a bug might have slipped through.";
             case 84:
@@ -225,8 +225,8 @@ Right now each race has set traits, but random traits will be in at some point a
 Can help even the odds when auto-surrender is on and a weaker army might not kill as many attackers
 Happens off-screen after the end of the battle";
             case 87:
-                return @"Controls whether bones are generated at the end of the absorption phase
-Note that scat overrides this as they both compete for the same slot and ground area";
+                return @"When enabled, bones are generated when a pred finishes absorbing prey.
+Note that scat overrides this as they both compete for the same slot and ground area.";
 
             case 88:
                 return @"Enables the Serpent monster packs";
@@ -235,9 +235,8 @@ Note that scat overrides this as they both compete for the same slot and ground 
             case 90:
                 return @"Enables the Compy monster packs (a small cockvore predator)";
             case 91:
-                return @"If turned on, oral weight gain has a chance of raising the cock/breast size
-Breastvore and cockvore always have a chance of raising their respective part.
-Only currently functions if weight gain is on.";
+                return @"When enabled, oral vore has a chance of raising cock/breast size.
+Breast vore and cock vore always have a chance of enlarging their respective body parts.";
             case 92:
                 return @"Enables the Sky Shark monster packs";
             case 93:
@@ -391,11 +390,13 @@ Relations will slowly move towards certain values depending on whether you're at
             case 149:
                 return "Makes the camera scroll if the mouse cursor is near the edge of the screen.  Not recommended if not in full-screen";
             case 150:
-                return @"An alternate scat system created by dddddd2 with more variety.";
+                return @"When enabled, an alternate scat system created by dddddd2 with more variety
+will be used in place of the default scat system.";
             case 151:
                 return "Armies are prevented from moving during the first turn to allow the building of garrisons";
             case 152:
-                return "Units will slowly lose weight over time (20% chance per turn each to drop a size of body/breast/dick)";
+                return @"When enabled, units will slowly lose weight over time.
+By default, body/breast/cock sizes each have a 20% chance to drop each turn.";
             case 153:
                 return @"Enables the Frog monster packs";
             case 154:
@@ -409,7 +410,7 @@ Always attracted to herms if they exist to keep logic simple";
             case 156:
                 return @"Whether lewd actions will show up in the tactical combat log";
             case 157:
-                return "Whether hard vore messages show up (i.e. stronger references to acids, etc)";
+                return "When enabled, the message log may make stonger references to digestive acids, blood, etc.";
             case 158:
                 return "Controls the % chance for each category that weight will be lost every turn, only happens if weight loss is on";
             case 159:
@@ -435,7 +436,8 @@ Affects mountains as well as hills, so extreme values will start to close off te
             case 166:
                 return @"Allows the AI to hire special Mercenaries (though it will be rare)";
             case 167:
-                return "If enabled, prey will be freed with 2 to 5 AP, rather than having full AP.   Enough to allow them to defend themselves and reposition, but not go flying off.";
+                return @"When enabled, prey will be freed with 2 to 5 AP, rather than having full AP, which is
+usually enough to allow them to defend themselves and reposition, but not go flying off.";
             case 168:
                 return @"Affects odds of vore success, note that this can affect the balance between races";
             case 169:
@@ -506,7 +508,7 @@ Designed to be a way to get more of them in play if you don't usually buy them y
             case 194:
                 return "Enables the Slug monster packs - it's a pack of four different slugs with complimentary abilities.";
             case 195:
-                return "Enabling this will prevent weight gain from letting boobs/dick/weight go past whatever limits of random generation you set in the race editor.";
+                return "When enabled, weight gain will not enlarge a unit's body/breast/cock size past the maximum set for their race in the Race Editor.";
             case 196:
                 return @"For compatibility reasons, oral vore is permanently enabled, though you can adjust its weight using the weight system.
 
@@ -533,7 +535,7 @@ It should be fairly stable though.  There are a few places that are still keyed 
             case 204:
                 return "Enables the Eastern Dragon monster packs";
             case 205:
-                return "Disables any race specific prey graphics (i.e. Selicia prey graphics, or similiar things)\nBasically makes bulges smooth";
+                return "When enabled, all prey will show as the the standard round bulges, and race-specific bulges (e.g. Selicia prey graphics) will not be used.";
             case 206:
                 return "Herms will only use female hair, instead of picking randomly from all possible hair types (has no effect if the race isn't divided into male/female hair)";
             case 207:
@@ -561,18 +563,18 @@ It should be fairly stable though.  There are a few places that are still keyed 
             case 218:
                 return "Changes which types of feeding are allowed. After a unit digests a unit in their breast(s) or cock, they can use that organ to feed allies in order to heal them.";
             case 219:
-                return "If enabled, feeding a unit while their health is already maxed will result in a boost in EXP that scales with the digested unit's level(s).";
+                return "When enabled, feeding a unit past their max health will result in a boost in EXP that scales with the level(s) of the digested prey.";
             case 220:
                 return "Changes how unbirth is handled. If conversion is enabled, unbirthed units will be converted to their pred's side upon being digested. If rebirth is enabled, unbirthed units will be reborn as units of their pred's race as well as converted to their pred's side upon being absorbed. If both are enabled, conversion will occur first, but units can still be rebirthed by unbirthing a corpse or transferring a unit through CV.";
             case 221:
-                return "If enabled, males and herms will be able to transfer cock vored units to their allies, allowing their allies to digest/absorb them. Prey has a chance of escaping if they are still alive when transferring. Prey can be transferred to a ally's stomach, or womb if they are female (or herm if herms have vaginas).";
+                return "When enabled, cock vored units can transferred to allies, allowing their allies to digest/absorb them. Prey has a chance of escaping if they are still alive when transferring. Prey can be transferred to an ally's stomach or womb if the ally has a vagina.";
             case 222:
-                return "If enabled, preds can transfer units they have 'cumgested' through cock vore to strengthen a target unit. The target unit must be unbirthed by one of the pred's allies, as well as either be on the pred's side themselves, or have already been digested inside the pred's ally's womb.";
+                return "When enabled, preds can transfer units they have 'cumgested' through cock vore to strengthen a target unit. The target unit must be unbirthed by one of the pred's allies, as well as either be on the pred's side themselves, or have already been digested inside the pred's ally's womb.";
             case 223:
-                return @"If enabled, any unit that's converted by the conversion trait or the KuroTenko mod will completely randomize their name and gender each time.
-If disabled, it will only randomize if the two races don't have the same set of allowed genders (which most commonly are the same, except a good percentage of the monster races).";
+                return @"When enabled, converting a unit with a conversion trait or KuroTenko will randomize their name and gender every time.
+If disabled, converting will only randomize anme and gender if the two races don't have the same set of allowed genders (e.g. humanoid -> most monsters or vice versa).";
             case 224:
-                return "If enabled, special mercenaries can convert other units to copies of themselves with the kurotenko rebirth or the rebirth trait.";
+                return "When enabled, special mercenaries can convert other units to copies of themselves through KuroTenko rebirth or a rebirth trait.";
             case 225:
                 return "Enables the Earthworm monster packs";
             case 226:
@@ -582,7 +584,7 @@ If disabled, it will only randomize if the two races don't have the same set of 
             case 228:
                 return @"The Max level of the random spell book assigned (1-4)";
             case 229:
-                return @"Disables scat after a transfer of someone dead.  It's assumed you're not passing along enough matter for them to create that.  
+                return @"When enabled, scat will not be generated after transferring dead prey.  It's assumed you're not passing along enough matter for them to create that.  
 (You might argue the first pred still should, but that would require doubling up the prey, so it's best kept simple.)";
             case 230:
                 return "Enables the Feral Lizard monster packs";
@@ -609,13 +611,13 @@ Note, due to the way this is set up, you have to restart the game client for cha
             case 240:
                 return "Hides the vulva / slits on female vipers. This causes their nethers to look similar to males without their dick out";
             case 241:
-                return "Whether cumstains / milk puddles are created on the ground after absorption finishes for UB CV and BV.";
+                return "When enabled, cumstains (UB/CV)/milk puddles (BV) are created on the ground when a pred finishes absorbing prey.";
             case 242:
-                return "Changes the timing when burps occur to be after digestion. By default it's after absorption.";
+                return "When enabled, burps will occur after digestion, rather than after absorption.";
             case 243:
-                return "Enables farts after absorption, as well as fart content for tactical logs.";
+                return "When enabled, units may fart after absorbing prey, and the tactical log may include fart content.";
             case 244:
-                return "Affects the percentage of farts when a unit has finished the absorption phase";
+                return "Affects how likely a unit is to fart when absorbing prey.";
             case 245:
                 return "Whether tactical log fluff may break the fourth wall sometimes, having units treat the player as another unit they can address." +
                     "\nCan also be turned on selectively for either side";
@@ -650,43 +652,47 @@ Does not retroactively affect already created units.";
                 return @"Enables the Goodra monster packs";
             case 258:
                 return "Normally only base endurance and strength influence HP. With this, size and other boosts (green/red numbers) will be used as well.";
-            case 259:
-                return "Enables critical (chance for bonus damage) and graze (Chance for reduced damage) attacks.";
             case 260:
-                return "If enabled, Critical strike chance is calculated using unit stats. Uses the following formula: \n <color=red>Attacker's (Dex + Str) / Defender's (Endr^2 + Will) </color>\n A lvl 1 unit with default stats would have ~23% chance to crit on average, depending on stat spread.";
+                return @"If enabled, condoms of varying colors will be used for Cock Vore disposal.
+                Otherwise the standard cumstain will be used.
+                Does nothing if the Milk/Cumstains option is toggled off.";
             case 261:
-                return "If enabled, Graze chance is calculated using unit stats. Uses the following formula: \n <color=green>Defender's Agi / Attacker's ((Dex + Str)/2)^2</color>\n A lvl 1 unit with default stats would have ~15% chance to be grazed on average, depending on stat spread.";
+                return "Enables critical (chance for bonus damage) and graze (Chance for reduced damage) attacks.";
             case 262:
-                return "Base chance for a critical strike if not calculated from stats. If 'Stat Based Crit' is enabled with this, the chance will never be lower than this percentage, but it can be higher. Set to 0 to disable.(excludes bonuses given by traits).";
+                return "If enabled, Critical strike chance is calculated using unit stats. Uses the following formula: \n <color=red>Attacker's (Dex + Str) / Defender's (Endr^2 + Will) </color>\n A lvl 1 unit with default stats would have ~23% chance to crit on average, depending on stat spread.";
             case 263:
-                return "Damage dealt by critical attacks is multiplied by this number.\n At default value (1.5), 10 damage is modified to 15";
+                return "If enabled, Graze chance is calculated using unit stats. Uses the following formula: \n <color=green>Defender's Agi / Attacker's ((Dex + Str)/2)^2</color>\n A lvl 1 unit with default stats would have ~15% chance to be grazed on average, depending on stat spread.";
             case 264:
-                return "Base chance for a graze if not calculated from stats. If 'Stat Based Graze' is enabled, the chance will never be lower than this percentage, but it can be higher. Set to 0 to disable (excludes bonuses given by traits).";
+                return "Base chance for a critical strike if not calculated from stats. If 'Stat Based Crit' is enabled with this, the chance will never be lower than this percentage, but it can be higher. Set to 0 to disable.(excludes bonuses given by traits).";
             case 265:
-                return "Damage dealt by graze attacks is multiplied by this number. At default value (0.3), 10 damage is modified to 3";
+                return "Damage dealt by critical attacks is multiplied by this number.\n At default value (1.5), 10 damage is modified to 15";
             case 266:
-                return "If enabled, night can occur on a random turn. This is per empire/monster turn, not round.  (Can be used with Scheduled Night)";
+                return "Base chance for a graze if not calculated from stats. If 'Stat Based Graze' is enabled, the chance will never be lower than this percentage, but it can be higher. Set to 0 to disable (excludes bonuses given by traits).";
             case 267:
-                return "If enabled, it will be night every X rounds for X rounds, based on the 'Cycle Length' slider.";
+                return "Damage dealt by graze attacks is multiplied by this number. At default value (0.3), 10 damage is modified to 3";
             case 268:
-                return "If enabled, night time will have no effect in tactical mode, aside from the looks.";
+                return "If enabled, night can occur on a random turn. This is per empire/monster turn, not round.  (Can be used with Scheduled Night)";
             case 269:
-                return "Enables the Day/Night cycle system";
+                return "If enabled, it will be night every X rounds for X rounds, based on the 'Cycle Length' slider.";
             case 270:
-                return "If enabled, monster armies will only spawn if it is night time, keeping their spawn rate.";
+                return "If enabled, night time will have no effect in tactical mode, aside from the looks.";
             case 271:
-                return "If enabled, monster armies will only recover MP at night.";
+                return "Enables the Day/Night cycle system";
             case 272:
-                return "It will be night for the entire round every X rounds. (Set to 1 for every round, 2 for every other, etc.)";
+                return "If enabled, monster armies will only spawn if it is night time, keeping their spawn rate.";
             case 273:
-                return "The % chance that it will be night on a given turn. Night will only last that Empire's turn and can occur multiple times per round.";
+                return "If enabled, monster armies will only recover MP at night.";
             case 274:
-                return "This value is added to the % chance it will be night on a given turn every turn it is not night. (% chance resets to the base chance after a night turn)";
+                return "It will be night for the entire round every X rounds. (Set to 1 for every round, 2 for every other, etc.)";
             case 275:
-                return "Range of a unit's vision at night in a tactical setting. Things like traits can also increase this.";
+                return "The % chance that it will be night on a given turn. Night will only last that Empire's turn and can occur multiple times per round.";
             case 276:
-                return "This value is subtracted from the 'Fog Distace Slider'.\n (You won't be able to see if this is too high)";
+                return "This value is added to the % chance it will be night on a given turn every turn it is not night. (% chance resets to the base chance after a night turn)";
+            case 277:
+                return "Range of a unit's vision at night in a tactical setting. Things like traits can also increase this.";
             case 278:
+                return "This value is subtracted from the 'Fog Distace Slider'.\n (You won't be able to see if this is too high)";
+            case 279:
                 return "The tactical turn where every unit is revealed.";
             default:
                 return "";

@@ -7,6 +7,7 @@ static class RaceParameters
     static readonly RaceTraits Cats;
     static readonly RaceTraits Dogs;
     static readonly RaceTraits Foxes;
+    static readonly RaceTraits Youko;
     static readonly RaceTraits Wolves;
     static readonly RaceTraits Bunnies;
     static readonly RaceTraits Lizards;
@@ -95,6 +96,7 @@ static class RaceParameters
     static readonly RaceTraits Auri;
     static readonly RaceTraits Erin;
     static readonly RaceTraits Goodra;
+    static readonly RaceTraits Whisp;
     static readonly RaceTraits Salix;
 
     static Unit tempUnit;
@@ -127,6 +129,8 @@ static class RaceParameters
                 return Dogs;
             case Race.Foxes:
                 return Foxes;
+            case Race.Youko:
+                return Youko;    
             case Race.Wolves:
                 return Wolves;
             case Race.Bunnies:
@@ -303,6 +307,8 @@ static class RaceParameters
                 return Erin;
 			case Race.Goodra:
                 return Goodra;
+            case Race.Whisp:
+                return Whisp;
             case Race.Salix:
                 return Salix;
             case (Race)700: //Singled out so that it doesn't make the debug message
@@ -366,7 +372,40 @@ static class RaceParameters
             Traits.ArtfulDodge,
             Traits.ThrillSeeker
         },
+            LeaderRace = Race.Youko,
             RaceDescription = "Natives of this realm, the Foxes seem unable of taking danger seriously. They dodge attacks at the last second and only seem to grow ever bolder as death approaches them. Entire armies have fallen exhausted as a group of foxes dances among them, ready to be devoured once the time is right.",
+        };
+
+        Youko = new RaceTraits()
+        {
+            BodySize = 10,
+            StomachSize = 15,
+            HasTail = true,
+            FavoredStat = Stat.Mind,
+            AllowedVoreTypes = new List<VoreType> { VoreType.Oral, VoreType.Unbirth, VoreType.CockVore, VoreType.BreastVore, VoreType.Anal, VoreType.TailVore },
+            RacialTraits = new List<Traits>()
+            {
+                Traits.Charmer,
+                Traits.Temptation,
+                Traits.Possession,
+                Traits.ForceFeeder,
+                Traits.ManaDrain,
+                Traits.CreateSpawn,
+            },
+            RaceStats = new RaceStats()
+            {
+                Strength = new RaceStats.StatRange(6, 14),
+                Dexterity = new RaceStats.StatRange(6, 14),
+                Endurance = new RaceStats.StatRange(6, 14),
+                Mind = new RaceStats.StatRange(14, 22),
+                Will = new RaceStats.StatRange(8, 16),
+                Agility = new RaceStats.StatRange(8, 18),
+                Voracity = new RaceStats.StatRange(12, 18),
+                Stomach = new RaceStats.StatRange(12, 18),
+            },
+            SpawnRace = Race.Whisp,
+            ConversionRace = Race.Foxes,
+            RaceDescription = "Foxes that were changed by spirit energy",
         };
 
         Wolves = new RaceTraits()
@@ -1594,6 +1633,26 @@ static class RaceParameters
             RaceDescription = ""
         };
 
+        Whisp = new RaceTraits()
+        {
+            BodySize = 7,
+            StomachSize = 10,
+            HasTail = false,
+            FavoredStat = Stat.Mind,
+            AllowedVoreTypes = new List<VoreType> { VoreType.Oral, VoreType.Unbirth, VoreType.BreastVore, VoreType.CockVore, VoreType.Anal },
+            ExpMultiplier = 1.1f,
+            PowerAdjustment = 1.2f,
+            RacialTraits = new List<Traits>()
+            {
+                Traits.Whispers,
+                Traits.ForceFeeder,
+                Traits.ForcedMetamorphosis,
+                Traits.GreaterChangeling,
+            },
+            SpawnRace = Race.Youko,
+            RaceDescription = ""
+        };
+
         FeralAnts = new RaceTraits()
         {
             BodySize = 3,
@@ -2608,8 +2667,13 @@ internal class RaceTraits
     internal bool HasTail;
     internal Stat FavoredStat;
     internal List<Traits> RacialTraits;
+    internal List<Traits> LeaderTraits;
+    internal List<Traits> SpawnTraits;
     //internal List<Traits> RandomTraits;
     internal List<VoreType> AllowedVoreTypes = new List<VoreType> { VoreType.Anal, VoreType.Oral, VoreType.CockVore, VoreType.BreastVore, VoreType.Unbirth };
+    internal Race SpawnRace = Race.none;
+    internal Race ConversionRace = Race.none;
+    internal Race LeaderRace = Race.none;
     internal List<SpellTypes> InnateSpells = new List<SpellTypes>();
     internal RaceStats RaceStats = new RaceStats();
     /// <summary>

@@ -138,6 +138,20 @@ class RaceSettings
         return null;
     }
 
+    internal List<Traits> GetSpawnRaceTraits(Race race)
+    {
+        if (Races.ContainsKey(race))
+            return Get(race).SpawnTraits;
+        return RaceParameters.GetRaceTraits(race).SpawnTraits;
+    }
+
+    internal List<Traits> GetLeaderRaceTraits(Race race)
+    {
+        if (Races.ContainsKey(race))
+            return Get(race).LeaderTraits;
+        return RaceParameters.GetRaceTraits(race).LeaderTraits;
+    }
+
     internal Stat GetFavoredStat(Race race)
     {
         if (Races.ContainsKey(race))
@@ -202,6 +216,36 @@ class RaceSettings
         return RaceParameters.GetRaceTraits(race).RaceStats;
     }
 
+    internal Race GetSpawnRace(Race race)
+    {
+        Race spawnRace = Race.none;
+        if (Races.ContainsKey(race))
+            spawnRace = Get(race).SpawnRace;
+        if (spawnRace == Race.none)
+            spawnRace = RaceParameters.GetRaceTraits(race).SpawnRace; 
+        return (spawnRace == Race.none) ? race : spawnRace;
+    }
+
+    internal Race GetConversionRace(Race race)
+    {
+        Race conversionRace = Race.none;
+        if (Races.ContainsKey(race))
+            conversionRace = Get(race).ConversionRace;
+        if (conversionRace == Race.none)
+            conversionRace = RaceParameters.GetRaceTraits(race).ConversionRace; 
+        return (conversionRace == Race.none) ? race : conversionRace;
+    }
+
+    internal Race GetLeaderRace(Race race)
+    {
+        Race leaderRace = Race.none;
+        if (Races.ContainsKey(race))
+            leaderRace = Get(race).LeaderRace;
+        if (leaderRace == Race.none)
+            leaderRace = RaceParameters.GetRaceTraits(race).LeaderRace; 
+        return (leaderRace == Race.none) ? race : leaderRace;
+    }
+
     //internal Race GetDisplayedGraphic(Race race)
     //{
     //    if (Races.ContainsKey(race))
@@ -255,6 +299,13 @@ class RaceSettingsItem
     internal List<VoreType> AllowedVoreTypes;
 
     [OdinSerialize]
+    internal Race SpawnRace;
+    [OdinSerialize]
+    internal Race ConversionRace;
+    [OdinSerialize]
+    internal Race LeaderRace;
+
+    [OdinSerialize]
     internal RaceStats Stats;
 
     [OdinSerialize]
@@ -292,6 +343,10 @@ class RaceSettingsItem
     internal List<Traits> FemaleTraits;
     [OdinSerialize]
     internal List<Traits> HermTraits;
+    [OdinSerialize]
+    internal List<Traits> SpawnTraits;
+    [OdinSerialize]
+    internal List<Traits> LeaderTraits;
 
     [OdinSerialize]
     internal bool FavoredStatSet;
@@ -329,6 +384,10 @@ class RaceSettingsItem
         RaceTraits = racePar.RacialTraits.ToList();
         AllowedVoreTypes = racePar.AllowedVoreTypes.ToList();
 
+        SpawnRace = racePar.SpawnRace;
+        ConversionRace = racePar.ConversionRace;
+        LeaderRace = racePar.ConversionRace;
+
         var baseStats = racePar.RaceStats;
 
         Stats = new RaceStats() //Generates a clean copy instead of a reference.  
@@ -364,6 +423,8 @@ class RaceSettingsItem
         MaleTraits = new List<Traits>();
         FemaleTraits = new List<Traits>();
         HermTraits = new List<Traits>();
+        SpawnTraits = new List<Traits>();
+        LeaderTraits = new List<Traits>();
 
         FavoredStatSet = true;
         FavoredStat = racePar.FavoredStat;
