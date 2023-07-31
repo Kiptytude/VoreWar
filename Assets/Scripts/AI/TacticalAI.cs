@@ -113,6 +113,7 @@ public abstract class TacticalAI : ITacticalAI
         bool tooBig = true;
         if (onlySurrenderedEnemies)
         {
+            //Array of all opposing live units
             var enemies = actors.Where(s => s.Unit.Side != AISide && s.Unit.IsDead == false);
             foreach (var actor in preds)
             {
@@ -569,6 +570,8 @@ public abstract class TacticalAI : ITacticalAI
                 if (distance - 1 + (actor.MaxMovement() / 3) <= moves)
                 {
                     if (distance > 1 && TacticalUtilities.FreeSpaceAroundTarget(unit.Position, actor) == false)
+                        continue;
+                    if (unit.PredatorComponent.CanFeed() || unit.PredatorComponent.CanFeedCum())
                         continue;
                     targets.Add(new PotentialTarget(unit, 100, distance, 4, 100 - (unit == actor ? 100 - unit.Unit.HealthPct + 10 : 100 - unit.Unit.HealthPct))); // self is weighted a little lower than the rest
                 }
@@ -1655,6 +1658,21 @@ public abstract class TacticalAI : ITacticalAI
 
                 }
             }
+            else if (!TacticalUtilities.TreatAsHostile(actor, unit) && spell.AcceptibleTargets.Contains(AbilityTargets.Self))
+            {
+                if (actor.Unit != unit.Unit)
+                    continue;
+                if (spell == SpellList.AssumeForm && unit?.PredatorComponent.PreyCount <= 0)
+                    continue;
+                if (spell == SpellList.RevertForm && unit.Unit.Race == unit.Unit.HiddenRace)
+                    continue;
+                if (unit.Targetable == true && unit.Surrendered == false)
+                {
+                    int distance = unit.Position.GetNumberOfMovesDistance(position);
+                    float chance = unit.GetMagicChance(unit, spell);
+                    targets.Add(new PotentialTarget(unit, chance, distance, unit.Unit.Level));
+                }
+            }
         }
         return targets.OrderByDescending(t => t.utility).ToList();
     }
@@ -1687,5 +1705,129 @@ public abstract class TacticalAI : ITacticalAI
         }
     }
 
+    public void RunFeed(Actor_Unit actor, string feedType, bool forCombatHealing = false)
+    {
+        // Fail if no possible targets
+        List<PotentialTarget> targets = GetListOfPotentialFeedTargets(actor);
+        if (!targets.Any())
+            return;
+        if (targets[0].chance <= 1.0f && forCombatHealing)
+            return;
+
+        // If possible targets present
+        while (targets.Any())
+        {
+            // If target is in range
+            if (targets[0].distance < 2)
+            {
+                if (feedType == "breast")
+                    actor.PredatorComponent.Feed(targets[0].actor);
+                if (feedType == "cock")
+                    actor.PredatorComponent.FeedCum(targets[0].actor);
+                didAction = true;
+                break;
+            }
+            else
+            {
+                if (feedType == "breast")
+                    MoveToAndAction(actor, targets[0].actor.Position, 1, actor.Movement - 1, () => actor.PredatorComponent.Feed(targets[0].actor));
+                if (feedType == "cock")
+                    MoveToAndAction(actor, targets[0].actor.Position, 1, actor.Movement - 1, () => actor.PredatorComponent.FeedCum(targets[0].actor));
+                if (foundPath && path.Path.Count() < actor.Movement)
+                    break;
+                else
+                {
+                    foundPath = false;
+                    path = null;
+                }
+            }
+            targets.RemoveAt(0);
+        }
+    }
+
+    List<PotentialTarget> GetListOfPotentialFeedTargets(Actor_Unit actor)
+    {
+        List<PotentialTarget> targets = new List<PotentialTarget>();
+        foreach (Actor_Unit unit in actors)
+        {
+            if (unit.Targetable && unit.Unit.Side == AISide)
+            {
+                int distance = unit.Position.GetNumberOfMovesDistance(actor.Position);
+                if (distance < actor.Movement)
+                {
+                    if ((distance > 1 && TacticalUtilities.FreeSpaceAroundTarget(unit.Position, actor) == false) || (unit.Unit.HealthPct == 1.0f && !Config.OverhealEXP) || unit == actor)
+                        continue;
+                    if (Config.OverhealEXP && unit.Unit.HealthPct == 1.0f)
+                        targets.Add(new PotentialTarget(unit, 1.0f + unit.Unit.Experience, distance, 4));
+                    else
+                        targets.Add(new PotentialTarget(unit, unit.Unit.HealthPct, distance, 4));
+                }
+            }
+        }
+        PotentialTarget primeTarget = targets.Where(t => t.distance == 1).OrderBy(s => s.chance).FirstOrDefault();
+        if (primeTarget != null)
+            return new List<PotentialTarget>() { primeTarget };
+        return targets.OrderBy(t => t.chance).ToList();
+    }
+
+    public void RunSuckle(Actor_Unit actor)
+    {
+        // Fail if no possible targets
+        List<PotentialTarget> targets = GetListOfPotentialSuckleTargets(actor);
+        if (!targets.Any())
+            return;
+        // If unit can vore and possible targets present
+        while (targets.Any())
+        {
+            // If target is in range
+            if (targets[0].distance < 2)
+            {
+                actor.PredatorComponent.Suckle(targets[0].actor);
+                didAction = true;
+                break;
+            }
+            else
+            {
+                MoveToAndAction(actor, targets[0].actor.Position, 1, 999, () => actor.PredatorComponent.Suckle(targets[0].actor));
+                if (foundPath && path.Path.Count() < actor.Movement)
+                    break;
+                else
+                {
+                    foundPath = false;
+                    path = null;
+                }
+            }
+            targets.RemoveAt(0);
+        }
+    }
+
+    List<PotentialTarget> GetListOfPotentialSuckleTargets(Actor_Unit actor)
+    {
+        List<PotentialTarget> targets = new List<PotentialTarget>();
+        foreach (Actor_Unit unit in actors)
+        {
+            if (unit.Unit.Predator)
+            {
+                if (unit.Targetable && unit.Unit.Side == AISide && (unit.PredatorComponent.CanFeed() || unit.PredatorComponent.CanFeedCum()))
+                {
+                    int distance = unit.Position.GetNumberOfMovesDistance(actor.Position);
+                    if (distance < actor.Movement)
+                    {
+                        if ((distance > 1 && TacticalUtilities.FreeSpaceAroundTarget(unit.Position, actor) == false) || (unit.Unit.HealthPct == 1.0f && !Config.OverhealEXP) || unit == actor)
+                            continue;
+                        int[] suckling = actor.PredatorComponent.GetSuckle(unit);
+                        if (actor.Unit.HealthPct < 1.0f && suckling[0] == 0)
+                            targets.Add(new PotentialTarget(unit, suckling[0], distance, 4));
+                        if (Config.OverhealEXP && suckling[1] != 0)
+                            targets.Add(new PotentialTarget(unit, suckling[1], distance, 4));
+                    }
+                }
+            }
+        }
+        PotentialTarget primeTarget = targets.Where(t => t.distance == 1).OrderByDescending(s => s.chance).FirstOrDefault();
+        if (primeTarget != null)
+            return new List<PotentialTarget>() { primeTarget };
+        return targets.OrderByDescending(t => t.chance).ToList();
+    }
 
 }

@@ -352,7 +352,7 @@ public class Empire
             capital = State.World.Villages.Where(s => s.Side == Side).FirstOrDefault();
         if (capital == null)
             return;
-        Leader = new Leader(Side, Race, 0);
+        Leader = new Leader(Side, State.RaceSettings.GetLeaderRace(Race), 0);
         PlaceLeader(capital);
     }
 

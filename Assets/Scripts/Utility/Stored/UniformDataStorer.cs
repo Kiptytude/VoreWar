@@ -107,7 +107,7 @@ static class UniformDataStorer
         if (Data.Uniforms.TryGetValue(race, out var values))
         {
             if (type == UnitType.Leader)
-                return values.Where(s => s.Type == type && GenderOkay(s.Gender, gender)).ToList();
+                return values.Where(s => s.Type == type && GenderOkay(s.Gender, gender)).ToList();;
             return values.Where(s => GenderOkay(s.Gender, gender) && (s.Type == type || s.Type != UnitType.Leader)).ToList();
         }
         return null;
@@ -133,7 +133,7 @@ static class UniformDataStorer
         if (Data.Uniforms.TryGetValue(race, out var values))
         {
             if (type == UnitType.Leader)
-                return values.Where(s => !(s.Type == type && GenderOkay(s.Gender, gender))).ToList();
+                return values.Where(s => !(s.Type == type && GenderOkay(s.Gender, gender))).ToList();   
             return values.Where(s => !(GenderOkay(s.Gender, gender) && (s.Type == type || s.Type != UnitType.Leader))).ToList();
         }
         return null;

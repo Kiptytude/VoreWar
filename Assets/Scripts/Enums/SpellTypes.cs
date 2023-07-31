@@ -29,8 +29,6 @@
     GateMaw = 19,
     Resurrection = 20,
 
-    Purify = 21,
-
     AmplifyMagic = 60,
     Evocation = 61,
     ManaFlux = 62,
@@ -43,11 +41,14 @@
     Petrify = 74,
     HypnoGas = 75,
     Bind = 76,
-    //Corrupt = 77,
+    Whispers = 77,
+    //Corrupt = 78,
 
     ViperDamage = 110,
     ForceFeed = 111,
-    ManaExpolsion = 112,
+    AssumeForm = 112,
+    RevertForm = 113,
+    ManaExpolsion = 114,
 
 
 }

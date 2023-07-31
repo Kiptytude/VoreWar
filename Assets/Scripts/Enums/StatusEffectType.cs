@@ -44,13 +44,17 @@
     Corruption = 20,
     /// <summary>Unit wants to force-feed itself to the afflicting side</summary>
     Temptation = 21,
+    /// <summary>Unit has been possessed by a prey unit</summary>
+    Possessed = 22,
+    /// <summary>Unit has been infected by a parasite prey unit</summary>
+    Infected = 23,
     /// <summary>Prevents movement, dodging, and struggling, they are easy to eat</summary>
-    Sleeping = 22,
+    Sleeping = 24,
     // <summary>Movement is reduced by half and damage taken increased by 20%, all stacks removed end of turn.</summary>
-    Staggering = 23,
+    Staggering = 25,
     // <summary>Mind is increased by 1 + 1%.</summary>
-    Focus = 24,
+    Focus = 26,
     // <summary>Mind is increased by 1 + 10% and spell mana cost by 10% per stack.</summary>
-    SpellForce = 25,
+    SpellForce = 27,
 }
 

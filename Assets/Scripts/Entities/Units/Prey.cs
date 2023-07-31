@@ -29,6 +29,9 @@ class Prey
     [OdinSerialize]
     public bool ScatDisabled { get; set; }
 
+    [OdinSerialize]
+    public List<Traits> SharedTraits;
+
     public PreyLocation Location => Predator?.PredatorComponent.Location(this) ?? PreyLocation.stomach;
 
     public Prey(Actor_Unit actor, Actor_Unit predator, List<Prey> preyList)
@@ -38,6 +41,7 @@ class Prey
         Predator = predator;
         Unit = actor.Unit;
         SubPrey = preyList;
+        SharedTraits = new List<Traits>();
     }
 
     public void UpdateEscapeRate()
@@ -152,6 +156,51 @@ class Prey
         }
     }
 
+    public void ChangeRace(Race race)
+    {
+        if (Unit.Race != Unit.HiddenRace)
+        {
+            Unit.ResetSharedTraits();
+            Actor.RevertRace();
+        }
+
+        Predator.PredatorComponent.OnRemoveCallbacks(this, false);
+        HashSet<Gender> set = new HashSet<Gender>(Races.GetRace(Unit.Race).CanBeGender);
+        bool equals = set.SetEquals(Races.GetRace(race).CanBeGender);
+        Unit.ChangeRace(race);
+        Unit.SetGear(race);
+        if (equals == false || Config.AlwaysRandomizeConverted)
+            Unit.TotalRandomizeAppearance();
+        else
+        {
+            var raceAppearance = Races.GetRace(race);
+            raceAppearance.RandomCustom(Unit);
+        }
+        Actor.Movement = 0;
+        Actor.AnimationController = new AnimationController();
+        Actor.Unit.ReloadTraits();
+        Actor.Unit.InitializeTraits();
+        Actor.PredatorComponent?.FreeAnyAlivePrey();
+        Actor.PredatorComponent?.RefreshSharedTraits();
+        Predator.PredatorComponent.OnSwallowCallbacks(this);
+        Actor.Surrendered = false;
+    }
+
+    public void ChangeSide(int side)
+    {
+        if (Unit.Side != side)
+            State.GameManager.TacticalMode.SwitchAlignment(Actor);
+        if (Predator.Unit.HasTrait(Traits.Corruption) || Unit.HasTrait(Traits.Corruption))
+        {
+            Unit.hiddenFixedSide = true;
+            Actor.sidesAttackedThisBattle = new List<int>();
+            Unit.RemoveTrait(Traits.Corruption);
+            Unit.AddPermanentTrait(Traits.Corruption);
+        }
+        if (!Unit.HasTrait(Traits.Corruption))
+            Unit.FixedSide = Predator.Unit.FixedSide;
+        Actor.Surrendered = false;
+    }
     public List<BoneInfo> GetBoneTypes()
     {
         List<BoneInfo> rtn = new List<BoneInfo>();
@@ -239,4 +288,5 @@ class Prey
         }
         return rtn;
     }
+
 }

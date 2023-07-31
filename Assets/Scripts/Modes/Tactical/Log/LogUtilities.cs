@@ -304,6 +304,7 @@ static class LogUtilities
                 return GetRandomStringFrom("whiskered", "hissing", "bristle tailed");
             case Race.Dogs:
                 return GetRandomStringFrom("yelping", "curly tailed", "whining", "domesticated");
+            case Race.Youko:
             case Race.Foxes:
                 return GetRandomStringFrom("fluffy tailed", "squirming", "whimpering");
             case Race.Wolves:
@@ -381,6 +382,7 @@ static class LogUtilities
                 return GetRandomStringFrom("purring", "sharp-toothed", "whiskered");
             case Race.Dogs:
                 return GetRandomStringFrom("wagging", "panting");
+            case Race.Youko:
             case Race.Foxes:
                 return GetRandomStringFrom("cunning", "grinning", "sly");
             case Race.Wolves:
@@ -456,6 +458,7 @@ static class LogUtilities
                 return GetRandomStringFrom("cat", GetGenderString(unit, "queen", "tom", "cat"), "feline");
             case Race.Dogs:
                 return GetRandomStringFrom("dog", GetGenderString(unit, "bitch", "dog", "dog"), "canine");
+            case Race.Youko:
             case Race.Foxes:
                 return GetRandomStringFrom("fox", GetGenderString(unit, "vixen", "tod", "fox"), "vulpine", "canid");
             case Race.Wolves:

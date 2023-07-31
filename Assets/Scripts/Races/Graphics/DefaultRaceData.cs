@@ -201,7 +201,6 @@ abstract class DefaultRaceData
         SecondaryBreasts = null;
         Dick = new SpriteExtraInfo(9, DickSprite, null, (s) => FurryColor(s));
         Balls = new SpriteExtraInfo(8, BallsSprite, null, (s) => FurryColor(s));
-        
     }
 
     protected void AddOffset(SpriteExtraInfo sprite, float xOffset, float yOffset)

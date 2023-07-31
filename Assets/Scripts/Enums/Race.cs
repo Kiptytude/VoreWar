@@ -1,5 +1,6 @@
 ﻿public enum Race : int
 {
+    none = -1,
     //Rough system is 0 starts main races, 50 starts mercs, 100 starts monsters, 170 starts unique mercs
     Cats = 0,
     Dogs = 1,
@@ -30,6 +31,7 @@
     Frogs = 26,
     Sharks = 27,
     Deer = 28,
+
     Succubi = 50,
     Tigers = 51,
     Goblins = 52,
@@ -42,6 +44,7 @@
     Komodos = 59,
     Cockatrice = 60,
     Vargul = 61,
+    Youko = 62,
 
     Vagrants = 100,
     Serpents = 101,
@@ -82,6 +85,7 @@
     Dratopyr = 136,
     FeralLions = 137,
     Goodra = 138,
+    Whisp = 139,
 
     Selicia = 170,
     Vision = 171,

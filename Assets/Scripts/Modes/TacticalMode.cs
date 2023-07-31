@@ -1021,6 +1021,7 @@ Turns: {currentTurn}
                 case Race.Lamia:
                     wallType = WallType.Lamia;
                     break;
+                case Race.Youko:
                 case Race.Foxes:
                     wallType = WallType.Fox;
                     break;
@@ -1528,6 +1529,25 @@ Turns: {currentTurn}
 
     }
 
+    internal Actor_Unit AddUnitToBattle(Unit unit,  Actor_Unit reciepient)
+    {
+        Actor_Unit actor = new Actor_Unit(unit, reciepient);
+        units.Add(actor);
+        actor.UpdateBestWeapons();
+        UpdateActorColor(actor);
+        if (actor.UnitSprite != null)
+        {
+            actor.UnitSprite.HitPercentagesDisplayed(false);
+            actor.UnitSprite.DisplaySummoned();
+        }
+
+        if (actor.Unit.Side == defenderSide)
+            DefenderConvert(actor);
+        else if (actor.Unit.Side == attackerSide)
+            AttackerConvert(actor);
+        return actor;
+    }
+
     internal Actor_Unit AddUnitToBattle(Unit unit, Vec2i position)
     {
         Actor_Unit actor = new Actor_Unit(position, unit);
@@ -1538,9 +1558,11 @@ Turns: {currentTurn}
         {
             actor.UnitSprite.HitPercentagesDisplayed(false);
             actor.UnitSprite.DisplaySummoned();
-        }        
-        //if (actor.Unit.Side == defenderSide)
-        //actor.Unit.CurrentLeader = DefenderLeader;
+        }
+        if (actor.Unit.Side == defenderSide)
+            DefenderConvert(actor);
+        else if (actor.Unit.Side == attackerSide)
+            AttackerConvert(actor);
         return actor;
     }
 
@@ -1650,7 +1672,7 @@ Turns: {currentTurn}
     }
 
 
-    void ShowVoreHitPercentages(Actor_Unit actor)
+    void ShowVoreHitPercentages(Actor_Unit actor, PreyLocation location = PreyLocation.stomach)
     {
         foreach (Actor_Unit target in units)
         {
@@ -1660,7 +1682,9 @@ Turns: {currentTurn}
                 continue;
             Vec2i pos = target.Position;
             target.UnitSprite.HitPercentagesDisplayed(true);
-            if (actor.PredatorComponent.FreeCap() < target.Bulk())
+            if (actor.PredatorComponent.FreeCap() < target.Bulk() || (actor.BodySize() < target.BodySize() * 3 && actor.Unit.HasTrait(Traits.TightNethers) && PreyLocationMethods.IsGenital(location)))
+                target.UnitSprite.DisplayHitPercentage(target.GetDevourChance(actor, true), Color.yellow);
+            else if (actor.Unit.CanVore(location) != actor.PredatorComponent.CanVore(location,target))
                 target.UnitSprite.DisplayHitPercentage(target.GetDevourChance(actor, true), Color.yellow);
             else if (actor.Position.GetNumberOfMovesDistance(target.Position) < 2)
                 target.UnitSprite.DisplayHitPercentage(target.GetDevourChance(actor, true), Color.red);
@@ -1725,11 +1749,19 @@ Turns: {currentTurn}
         switch (specialType)
         {
             case SpecialAction.Unbirth:
+                ShowVoreHitPercentages(actor, PreyLocation.womb);
+                break;
             case SpecialAction.CockVore:
+                ShowVoreHitPercentages(actor, PreyLocation.balls);
+                break;
             case SpecialAction.TailVore:
+                ShowVoreHitPercentages(actor, PreyLocation.tail);
+                break;
             case SpecialAction.AnalVore:
+                ShowVoreHitPercentages(actor, PreyLocation.anal);
+                break;
             case SpecialAction.BreastVore:
-                ShowVoreHitPercentages(actor);
+                ShowVoreHitPercentages(actor, PreyLocation.breasts);
                 break;
             case SpecialAction.Transfer:
                 ShowCockVoreTransferPercentages(actor);
@@ -1982,6 +2014,8 @@ Turns: {currentTurn}
     {
         foreach (Actor_Unit target in units)
         {
+            if (CurrentSpell.AcceptibleTargets.Contains(AbilityTargets.Self) == true && actor.Unit != target.Unit)
+                continue;
             if (CurrentSpell.AcceptibleTargets.Contains(AbilityTargets.Ally) == false && (TacticalUtilities.IsUnitControlledByPlayer(target.Unit) && Config.AllowInfighting == false && !(!AIDefender && !AIAttacker)))
                 continue;
             if (CurrentSpell.AcceptibleTargets.Contains(AbilityTargets.Enemy) == false && !(TacticalUtilities.IsUnitControlledByPlayer(target.Unit) || target.Unit.Side == actor.Unit.Side) && !(!AIDefender && !AIAttacker))
@@ -3514,6 +3548,14 @@ Turns: {currentTurn}
             StatusUI.EndTurn.GetComponentInChildren<UnityEngine.UI.Text>().text = "End Turn";
     }
 
+    public bool CanDefect(Actor_Unit unit)
+    {
+        if (unit.Possessed > 0 || unit.DefectedThisTurn) return false;
+        return TacticalUtilities.GetPreferredSide(unit.Unit, activeSide, attackersTurn ? defenderSide : attackerSide) != activeSide
+                    || units.Any(u => u.Unit.Side != unit.Unit.Side && u.Targetable && u.Visible && !u.Fled) && !units.Any(u => TacticalUtilities.TreatAsHostile(unit, u) && u.Targetable && u.Visible && !u.Fled);
+                
+    }
+
     void NewTurn()
     {
         AllSurrenderedCheck();
@@ -3548,8 +3590,7 @@ Turns: {currentTurn}
         {
             if (units[i].Unit.IsDead == false && units[i].Unit.Side == activeSide)
             {
-                units[i].allowedToDefect = !units[i].DefectedThisTurn && (TacticalUtilities.GetPreferredSide(units[i].Unit, activeSide, attackersTurn ? defenderSide : attackerSide) != activeSide
-                    || units.Any(u => u.Unit.Side != units[i].Unit.Side && u.Targetable && u.Visible && !u.Fled) && !units.Any(u => TacticalUtilities.TreatAsHostile(units[i], u) && u.Targetable && u.Visible && !u.Fled));
+                units[i].allowedToDefect = CanDefect(units[i]);
                 units[i].DefectedThisTurn = false;
                 units[i].NewTurn();
             }
@@ -3886,9 +3927,14 @@ Turns: {currentTurn}
                 }
             }
             if (remainingAttackers > 0 && extraAttackers != null && extraAttackers.Any())
+            {
                 AssignLeftoverTroops(armies[0], extraAttackers);
+            }
             else if (remainingDefenders > 0 && extraDefenders != null && extraDefenders.Any())
+            {
                 AssignLeftoverTroops(armies[1], extraDefenders);
+            }
+                
 
             ProcessFledUnits();
             remainingAttackers = 0;
@@ -4215,7 +4261,7 @@ Turns: {currentTurn}
                 retreatedDefenders.Remove(actor.Unit);
             }
         }
-
+        List<Actor_Unit> leftover = new List<Actor_Unit>();
         if (army != null)
         {
             foreach (Actor_Unit actor in actors.ToList()) //Prevent doubling up of retreated defected units
@@ -4244,7 +4290,6 @@ Turns: {currentTurn}
                 var last = army.Units.Last();
                 army.Units.Remove(last);
                 actors.Add(new Actor_Unit(last));
-
             }
         }
 
