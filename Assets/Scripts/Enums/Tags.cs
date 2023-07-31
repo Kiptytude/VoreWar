@@ -336,22 +336,20 @@ public enum Traits
     UnpleasantDigestion = 169,
     /// <summary>While digesting, Predator is able to use prey's normal traits</summary>
     TraitBorrower = 170,
-    /// <summary>Unit heals for half Max HP when taken below half Max HP</summary>
-	SecondWind = 171, 
     /// <summary>Unit heals after not taking damage for a bit, scaling higer with each turn without damage.</summary>
-	Perseverance = 172, //
+	Perseverance = 171, //
     /// <summary>Unit thrives on mana, uses a bit of their mana every turn. Becomes shaken every turn they don't have any.</summary>
-	ManaAttuned = 173,
+	ManaAttuned = 172,
     /// <summary>Unit heals after not taking damage for a bit, scaling higer with each turn without damage.</summary>
-    NightEye = 174,
+    NightEye = 173,
     /// <summary>Unit gains +10% critical strike chance.</summary>
-    KeenEye = 175,
+    KeenEye = 174,
     /// <summary>Unit gains +10% graze chance.</summary>
-	AccuteDodge = 176,
+	AccuteDodge = 175,
     /// <summary>Unit's attacks also have Mind Stat Scaling.</summary>
-    SpellBlade = 177,
+    SpellBlade = 176,
     /// <summary>Unit gains access to 4 powerful spells.</summary>
-    ArcaneMagistrate = 178,
+    ArcaneMagistrate = 177,
 
 
 

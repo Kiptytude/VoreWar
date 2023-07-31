@@ -602,8 +602,6 @@ public class HoveringTooltip : MonoBehaviour
                 return "Unit changes Race upon digestion";
             case Traits.MetamorphicConversion:
                 return "Unit changes Race and side upon digestion";
-            case Traits.SecondWind:
-                return "Unit heals half of it's max hp when reaching half max hp (once per battle).";
             case Traits.Perseverance:
                 return "Unit heals after not taking damage for a 3 turns, scaling higer with each turn without damage thereafter.";
             case Traits.ManaAttuned:

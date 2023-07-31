@@ -883,9 +883,10 @@ static class SpellList
             OnExecute = (a, t) =>
             {
                 a.CastSpell(AmplifyMagic, t);
+                int amt = a.Unit.GetStat(Stat.Will) / 25;
                 foreach (var ally in TacticalUtilities.UnitsWithinTiles(t.Position, 1).Where(s => s.Unit.IsDead == false && s.Unit.Side == a.Unit.Side))
                 {
-                    ally.Unit.AddFocus(a.Unit.GetStat(Stat.Will) / 25);
+                    ally.Unit.AddFocus(((amt > 1) ? amt : 1));
                     TacticalGraphicalEffects.CreateGenericMagic(a.Position, ally.Position, ally, TacticalGraphicalEffects.SpellEffectIcon.Buff);
                 }
             }
@@ -924,8 +925,8 @@ static class SpellList
 
         ManaFlux = new DamageSpell()
         {
-            Name = "Spell Burst",
-            Id = "spell-burst",
+            Name = "Mana Flux",
+            Id = "mana-flux",
             SpellType = SpellTypes.ManaFlux,
             Description = "Deals increased damage if the unit has less mana than the target. Damage is based on the difference.",
             AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy },

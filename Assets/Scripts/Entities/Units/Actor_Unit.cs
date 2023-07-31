@@ -2,7 +2,6 @@
 using OdinSerializer;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor.Experimental.UIElements.GraphView;
 using UnityEngine;
 
 public class Actor_Unit
@@ -120,9 +119,6 @@ public class Actor_Unit
 
     [OdinSerialize]
     public bool GoneBerserk;
-
-    [OdinSerialize]
-    public bool Winded;
 
     [OdinSerialize]
     internal int AIAvoidEat;
@@ -2181,14 +2177,6 @@ public class Actor_Unit
             {
                 GoneBerserk = true;
                 Unit.ApplyStatusEffect(StatusEffectType.Berserk, 1, 3);
-            }
-        }
-        if (Unit.HasTrait(Traits.SecondWind) && Winded == false)
-        {
-            if (Unit.HealthPct < .5f)
-            {
-                Winded = true;
-                Unit.Heal(Unit.MaxHealth/2);
             }
         }
         if ((canKill == false && Unit.IsDead) || (Config.AutoSurrender && Unit.IsDead && State.Rand.NextDouble() < Config.AutoSurrenderChance && Surrendered == false && Unit.HasTrait(Traits.Fearless) == false && !KilledByDigestion))

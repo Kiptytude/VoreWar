@@ -691,7 +691,7 @@ Does not retroactively affect already created units.";
             case 277:
                 return "Range of a unit's vision at night in a tactical setting. Things like traits can also increase this.";
             case 278:
-                return "This value is subtracted from the 'Fog Distace Slider'.\n (You won't be able to see if this is too high)";
+                return "This value is subtracted from the 'Fog Distace Slider'.\n If this is higher than 'Fog Distace Slider' you won't be able to see at all";
             case 279:
                 return "The tactical turn where every unit is revealed.";
             default:
