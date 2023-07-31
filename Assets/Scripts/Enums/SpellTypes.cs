@@ -29,8 +29,6 @@
     GateMaw = 19,
     Resurrection = 20,
 
-    Purify = 21,
-
     AmplifyMagic = 60,
     Evocation = 61,
     ManaFlux = 62,

@@ -406,13 +406,13 @@ public class Actor_Unit
             }
             Unit.UpdateSpells();
         }
-        if (unit.HasTrait(Traits.ArcaneMagistrate) && State.World?.ItemRepository != null) //protection for the create strat screen
+        if (Unit.HasTrait(Traits.ArcaneMagistrate) && State.World?.ItemRepository != null) //protection for the create strat screen
         {
-            unit.MultiUseSpells.Add(SpellList.AmplifyMagic.SpellType);
-            unit.MultiUseSpells.Add(SpellList.Evocation.SpellType);
-            unit.MultiUseSpells.Add(SpellList.ManaFlux.SpellType);
-            unit.MultiUseSpells.Add(SpellList.UnstableMana.SpellType);
-            unit.UpdateSpells();
+            Unit.MultiUseSpells.Add(SpellList.AmplifyMagic.SpellType);
+            Unit.MultiUseSpells.Add(SpellList.Evocation.SpellType);
+            Unit.MultiUseSpells.Add(SpellList.ManaFlux.SpellType);
+            Unit.MultiUseSpells.Add(SpellList.UnstableMana.SpellType);
+            Unit.UpdateSpells();
         }
     }
 

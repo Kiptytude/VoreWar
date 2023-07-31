@@ -60,8 +60,6 @@ static class SpellList
     static internal readonly Spell Reanimate;
     static internal readonly Spell Resurrection;
 
-    static internal readonly Spell Purify;
-
     static internal readonly Spell AmplifyMagic;
     static internal readonly Spell Evocation;
     static internal readonly DamageSpell ManaFlux;
@@ -855,7 +853,7 @@ static class SpellList
             Id = "whispers-spell",
             SpellType = SpellTypes.Whispers,
             Description = "Applies Charm, Prey's Curse, and Temptation for 3 rounds",
-            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy},
+            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy },
             Range = new Range(1),
             Duration = (a, t) => 3,
             Effect = (a, t) => a.Unit.GetApparentSide(t.Unit),
@@ -869,31 +867,10 @@ static class SpellList
 
         };
         SpellDict[SpellTypes.Whispers] = Whispers;
-    }
-    Purify = new Spell()
-    {
-        Name = "Purify",
-            Id = "purify",
-            SpellType = SpellTypes.Purify,
-            Description = "Removes positive and negative status effectso on an ally or enemy.",
-            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy, AbilityTargets.Ally },
-            Range = new Range(4),
-            Tier = 2,
-            AreaOfEffect = 0,
-            Resistable = true,
-            OnExecute = (a, t) =>
-            {
-                foreach (var eff in t.Unit.StatusEffects.ToList())
-                {
-                    t.Unit.StatusEffects.Remove(t.Unit.GetLongestStatusEffect(eff.Type));
-                }
-            }
-        };
-    SpellDict[SpellTypes.Purify] = Purify;
 
-    AmplifyMagic = new Spell()
-    {
-        Name = "Amplify Magic",
+        AmplifyMagic = new Spell()
+        {
+            Name = "Amplify Magic",
             Id = "amplify-magic",
             SpellType = SpellTypes.AmplifyMagic,
             Description = "Grant nearby units stacks of Focus, scaling with will.",
@@ -913,12 +890,12 @@ static class SpellList
                 }
             }
         };
-    SpellDict[SpellTypes.AmplifyMagic] = AmplifyMagic;
+        SpellDict[SpellTypes.AmplifyMagic] = AmplifyMagic;
 
         Evocation = new Spell()
-    {
-        Name = "Fuse Mana",
-            Id = "fuse-mana",
+        {
+            Name = "Evocation",
+            Id = "evocation",
             SpellType = SpellTypes.Evocation,
             Description = "Draw all nearby Unit's Focus onto a target, inspiring it. Grants the target equivalent Overload stacks and half as much MP.",
             AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Ally },
@@ -943,14 +920,14 @@ static class SpellList
                 TacticalGraphicalEffects.CreateGenericMagic(a.Position, t.Position, t, TacticalGraphicalEffects.SpellEffectIcon.PurplePlus);
             }
         };
-    SpellDict[SpellTypes.Evocation] = Evocation;
+        SpellDict[SpellTypes.Evocation] = Evocation;
 
         ManaFlux = new DamageSpell()
-    {
-        Name = "SpellBurst",
+        {
+            Name = "Spell Burst",
             Id = "spell-burst",
             SpellType = SpellTypes.ManaFlux,
-            Description = "Deals increased damage if the unit has less mana than the target.",
+            Description = "Deals increased damage if the unit has less mana than the target. Damage is based on the difference.",
             AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy },
             Range = new Range(6),
             Tier = 1,
@@ -963,54 +940,52 @@ static class SpellList
                 TacticalGraphicalEffects.CreateGenericMagic(a.Position, t.Position, t);
             }
         };
-    SpellDict[SpellTypes.ManaFlux] = ManaFlux;
-    UnstableMana = new DamageSpell()
-    {
-        Name = "Unstable Mana",
-        Id = "unstable-mana",
-        SpellType = SpellTypes.UnstableMana,
-        Description = "Deals damage increased unit's current mana, then uses it all. The target explodes, dealing half of their current mana as damage around them.",
-        AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy },
-        Range = new Range(6),
-        Tier = 0,
-        AreaOfEffect = 0,
-        Damage = (a, t) => (a.Unit.Mana/4) + a.Unit.GetStat(Stat.Mind)/5,
-        Resistable = true,
-        OnExecute = (a, t) =>
+        SpellDict[SpellTypes.ManaFlux] = ManaFlux;
+        UnstableMana = new DamageSpell()
         {
-            int curr = t.Unit.Health;
-            a.CastOffensiveSpell(UnstableMana, t);
-            bool didSpellHit = curr != t.Unit.Health;
-            TacticalGraphicalEffects.CreateHugeMagic(a.Position, t.Position, t, didSpellHit);
-            if (didSpellHit)
+            Name = "Unstable Mana",
+            Id = "unstable-mana",
+            SpellType = SpellTypes.UnstableMana,
+            Description = "Deals damage increased unit's current mana, then uses it all. The target explodes, dealing half of their current mana as damage around them.",
+            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy },
+            Range = new Range(6),
+            Tier = 0,
+            AreaOfEffect = 0,
+            Damage = (a, t) => (a.Unit.Mana / 4) + a.Unit.GetStat(Stat.Mind) / 5,
+            Resistable = true,
+            OnExecute = (a, t) =>
             {
-                a.CastOffensiveSpell(ManaExpolsion, t);
+                int curr = t.Unit.Health;
+                a.CastOffensiveSpell(UnstableMana, t);
+                bool didSpellHit = curr != t.Unit.Health;
+                TacticalGraphicalEffects.CreateHugeMagic(a.Position, t.Position, t, didSpellHit);
+                if (didSpellHit)
+                {
+                    a.CastOffensiveSpell(ManaExpolsion, t);
+                }
+                a.Unit.SpendMana(a.Unit.Mana);
             }
-            a.Unit.SpendMana(a.Unit.Mana);
-        }
-    };
-    SpellDict[SpellTypes.UnstableMana] = UnstableMana;
+        };
+        SpellDict[SpellTypes.UnstableMana] = UnstableMana;
 
-    ManaExpolsion = new DamageSpell()
-    {
-        Name = "Mana Expolsion",
-        Id = "Mana Expolsion",
-        SpellType = SpellTypes.ManaExpolsion,
-        Description = "(Second half of Unstable Mana Spell)",
-        AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy },
-        Range = new Range(6),
-        Tier = 0,
-        AreaOfEffect = 1,
-        Damage = (a, t) => t.Unit.Mana/2,
-        Resistable = true,
-        OnExecute = (a, t) =>
+        ManaExpolsion = new DamageSpell()
         {
-        }
-    };
-    SpellDict[SpellTypes.ManaExpolsion] = ManaExpolsion;
+            Name = "Mana Expolsion",
+            Id = "Mana Expolsion",
+            SpellType = SpellTypes.ManaExpolsion,
+            Description = "(Second half of Unstable Mana Spell)",
+            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy },
+            Range = new Range(6),
+            Tier = 0,
+            AreaOfEffect = 1,
+            Damage = (a, t) => t.Unit.Mana / 2,
+            Resistable = true,
+            OnExecute = (a, t) =>
+            {
+            }
+        };
+        SpellDict[SpellTypes.ManaExpolsion] = ManaExpolsion;
     }
-
-
 }
 
 
