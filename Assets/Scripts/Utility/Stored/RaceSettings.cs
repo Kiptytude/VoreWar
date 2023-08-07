@@ -23,7 +23,12 @@ class RaceSettings
             if (entry.Value.ConversionRace == Race.none) entry.Value.ConversionRace = RaceParameters.GetRaceTraits(entry.Key).ConversionRace;
             if (entry.Value.LeaderRace == Race.none) entry.Value.LeaderRace = RaceParameters.GetRaceTraits(entry.Key).LeaderRace;
             if (entry.Value.SpawnRace == Race.none) entry.Value.SpawnRace = RaceParameters.GetRaceTraits(entry.Key).SpawnRace;
-            if (entry.Value.ConversionRace == Race.Cats && entry.Value.LeaderRace == Race.Cats && entry.Value.SpawnRace == Race.Cats && entry.Key != Race.Cats) entry.Value.SpawnRace = RaceParameters.GetRaceTraits(entry.Key).SpawnRace;
+            if (entry.Value.ConversionRace == Race.Cats && entry.Value.LeaderRace == Race.Cats && entry.Value.SpawnRace == Race.Cats && entry.Key != Race.Cats)
+            {
+                entry.Value.ConversionRace = RaceParameters.GetRaceTraits(entry.Key).ConversionRace;
+                entry.Value.LeaderRace = RaceParameters.GetRaceTraits(entry.Key).LeaderRace;
+                entry.Value.SpawnRace = RaceParameters.GetRaceTraits(entry.Key).SpawnRace;
+            }
         }
         foreach (RaceSettingsItem item in Races.Values)
         {
