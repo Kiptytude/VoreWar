@@ -18,6 +18,12 @@ class RaceSettings
 
     internal void Sanitize()
     {
+        foreach (KeyValuePair<Race, RaceSettingsItem> entry in Races)
+        {
+            if (entry.Value.ConversionRace == Race.none) entry.Value.ConversionRace = RaceParameters.GetRaceTraits(entry.Key).ConversionRace;
+            if (entry.Value.ConversionRace == Race.none) entry.Value.LeaderRace = RaceParameters.GetRaceTraits(entry.Key).LeaderRace;
+            if (entry.Value.ConversionRace == Race.none) entry.Value.SpawnRace = RaceParameters.GetRaceTraits(entry.Key).SpawnRace;
+        }
         foreach (RaceSettingsItem item in Races.Values)
         {
             if (item.Stats.Strength.Roll < 1) item.Stats.Strength.Roll = 1;
