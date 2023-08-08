@@ -30,15 +30,17 @@ public class UnitInfoPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
         if (Unit == null)
             return;
-
-        TextMeshProUGUI HoverBox = InfoText;
-        int wordIndex = TMP_TextUtilities.FindIntersectingWord(InfoText, Input.mousePosition, null);
-        if (wordIndex <= -1 && BasicInfo)
-        {
-            wordIndex = TMP_TextUtilities.FindIntersectingWord(BasicInfo, Input.mousePosition, null);
+        TextMeshProUGUI HoverBox;
+        if (Input.mousePosition.y > InfoText.transform.parent.position.y)
             HoverBox = BasicInfo;
-        }
-
+        else
+            HoverBox = InfoText;
+        int wordIndex = TMP_TextUtilities.FindIntersectingWord(HoverBox, Input.mousePosition, null);
+        //if (wordIndex <= -1 && BasicInfo)
+        //{
+        //    wordIndex = TMP_TextUtilities.FindIntersectingWord(BasicInfo, Input.mousePosition, null);
+        //    HoverBox = BasicInfo;
+        //}
         if (wordIndex > -1)
         {
             string[] words = new string[5];
