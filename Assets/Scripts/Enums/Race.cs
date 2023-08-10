@@ -31,6 +31,7 @@
     Frogs = 26,
     Sharks = 27,
     Deer = 28,
+    Aabayx = 29,
 
     Succubi = 50,
     Tigers = 51,

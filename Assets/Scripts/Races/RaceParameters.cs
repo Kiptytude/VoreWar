@@ -34,6 +34,7 @@ static class RaceParameters
     static readonly RaceTraits Demifrogs;
     static readonly RaceTraits Demisharks;
     static readonly RaceTraits Deer;
+    static readonly RaceTraits Aabayx;
     static readonly RaceTraits Succubi;
     static readonly RaceTraits Tigers;
     static readonly RaceTraits Goblins;
@@ -178,6 +179,8 @@ static class RaceParameters
                 return Demisharks;
             case Race.Deer:
                 return Deer;
+            case Race.Aabayx:
+                return Aabayx;
             case Race.Succubi:
                 return Succubi;
             case Race.Tigers:
@@ -800,6 +803,22 @@ static class RaceParameters
                 Traits.PackDefense,
         },
             RaceDescription = "",
+        };
+
+        Aabayx = new RaceTraits()
+        {
+            BodySize = 7,
+            StomachSize = 15,
+            HasTail = true,
+            FavoredStat = Stat.Agility,
+            AllowedVoreTypes = new List<VoreType> { VoreType.Oral, VoreType.Unbirth, VoreType.CockVore, VoreType.Anal },
+            RacialTraits = new List<Traits>()
+        {
+                Traits.EvasiveBattler,
+                Traits.ArtfulDodge,
+                Traits.PackDefense,
+        },
+            RaceDescription = "The Aabayx are a species of virosapiens who recently revealed themselves to the world and were quick to commit to the stage of war.  Strangely enough, they are not new arrivals to the realm, but rather have been in extreme isolation at an unknown location and waiting for the exact right time to resurface and conquer the masses.  That time is now.",
         };
 
         Succubi = new RaceTraits()
