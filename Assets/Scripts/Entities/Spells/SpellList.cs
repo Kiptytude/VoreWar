@@ -72,6 +72,7 @@ static class SpellList
 
     static internal readonly DamageSpell ViperPoisonDamage;
     static internal readonly StatusSpell ViperPoisonStatus;
+    static internal readonly StatusSpell ViralInfection;
 
     static internal Dictionary<SpellTypes, Spell> SpellDict;
 
@@ -860,6 +861,27 @@ static class SpellList
 
         };
         SpellDict[SpellTypes.Whispers] = Whispers;
+
+        ViralInfection = new StatusSpell()
+        {
+            Name = "ViralInfection",
+            Id = "viralinfection",
+            SpellType = SpellTypes.ViralInfection,
+            Description = "Applies virus to enemy, dealing damage over time.",
+            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Ally, AbilityTargets.Enemy, AbilityTargets.Self},
+            Range = new Range(8),
+            Duration = (a, t) => 4 + a.Unit.GetStat(Stat.Mind) / 5,
+            Effect = (a, t) => 1 + a.Unit.GetStat(Stat.Mind) / 10,
+            Type = StatusEffectType.Virus,
+            Tier = 2,
+            Resistable = false,
+            OnExecute = (a, t) =>
+            {
+                if (a.CastStatusSpell(ViralInfection, t))
+                    TacticalGraphicalEffects.CreateGenericMagic(a.Position, t.Position, t, TacticalGraphicalEffects.SpellEffectIcon.Poison);
+            },
+        };
+        SpellDict[SpellTypes.ViralInfection] = ViralInfection;
     }
 
 

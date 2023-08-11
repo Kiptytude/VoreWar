@@ -48,5 +48,7 @@
     Possessed = 22,
     /// <summary>Unit has been infected by a parasite prey unit</summary>
     Infected = 23,
+    /// <summary>Unit has been infected by a virus</summary>
+    Virus = 24
 }
 

@@ -2536,6 +2536,7 @@ internal void SetGenderRandomizeName(Race race, Gender gender)
         if (HasEffect(StatusEffectType.WillingPrey)) ret++;
         if (HasEffect(StatusEffectType.Charmed)) ret++;
         if (HasEffect(StatusEffectType.Hypnotized)) ret++;
+        if (HasEffect(StatusEffectType.Virus)) ret++;
 
         bool HasEffect(StatusEffectType type)
         {
@@ -2642,6 +2643,9 @@ internal void SetGenderRandomizeName(Race race, Gender gender)
         effect = GetStatusEffect(StatusEffectType.Poisoned);
         if (effect != null)
             NonFatalDamage((int)effect.Strength, "poison");
+        effect = GetStatusEffect(StatusEffectType.Virus);
+        if (effect != null)
+            NonFatalDamage((int)effect.Strength, "virus");
         foreach (var eff in StatusEffects.ToList())
         {
             if (eff.Type == StatusEffectType.BladeDance || eff.Type == StatusEffectType.Tenacious)

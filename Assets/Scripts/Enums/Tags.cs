@@ -336,6 +336,8 @@ public enum Traits
     UnpleasantDigestion = 169,
     /// <summary>While digesting, Predator is able to use prey's normal traits</summary>
     TraitBorrower = 170,
+    /// <summary>Damage over time effect recieved from being devoured by an Aabayx</summary>
+    ViralDigestion = 171,
 
 
 

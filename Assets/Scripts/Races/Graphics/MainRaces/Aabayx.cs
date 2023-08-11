@@ -39,7 +39,7 @@ class Aabayx : DefaultRaceData
         Eyes = new SpriteExtraInfo(8, EyesSprite, WhiteColored);
         SecondaryEyes = null;
         SecondaryAccessory = null;
-        Belly = new SpriteExtraInfo(14, null, null, null);
+        Belly = new SpriteExtraInfo(14, null, null,  (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.AabayxSkin, s.Unit.AccessoryColor));
         Weapon = new SpriteExtraInfo(1, WeaponSprite, WhiteColored);
         BackWeapon = null;
         BodySize = null;
@@ -98,7 +98,12 @@ class Aabayx : DefaultRaceData
         else return null;
     }
     protected override Sprite HeadSprite(Actor_Unit actor) => State.GameManager.SpriteDictionary.Aabayx[2 + (actor.IsOralVoring ? 1 : 0)];
-    protected override Sprite EyesSprite(Actor_Unit actor) => State.GameManager.SpriteDictionary.Aabayx[12 + actor.Unit.EyeType];
+    protected override Sprite EyesSprite(Actor_Unit actor)
+    {
+        if (actor.IsEating)
+            return null;
+        else return State.GameManager.SpriteDictionary.Aabayx[12 + actor.Unit.EyeType];
+    }
     protected override Sprite BodyAccentSprite3(Actor_Unit actor)
     {
         return State.GameManager.SpriteDictionary.Aabayx[60 + actor.Unit.TailType];

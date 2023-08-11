@@ -814,11 +814,11 @@ static class RaceParameters
             AllowedVoreTypes = new List<VoreType> { VoreType.Oral, VoreType.Unbirth, VoreType.CockVore, VoreType.Anal },
             RacialTraits = new List<Traits>()
         {
-                Traits.EvasiveBattler,
+                Traits.ViralDigestion,
                 Traits.ArtfulDodge,
-                Traits.PackDefense,
+                Traits.Toxic,
         },
-            RaceDescription = "The Aabayx are a species of virosapiens who recently revealed themselves to the world and were quick to commit to the stage of war.  Strangely enough, they are not new arrivals to the realm, but rather have been in extreme isolation at an unknown location and waiting for the exact right time to resurface and conquer the masses.  That time is now.",
+            RaceDescription = "The Aabayx are a species of virosapiens who recently revealed themselves to the world and were quick to commit to the stage of war.  Strangely enough, they are not new arrivals to the realm, but rather have been in extreme isolation in an unknown location and were waiting for the exact right time to resurface and conquer the masses.  That time is now.",
         };
 
         Succubi = new RaceTraits()

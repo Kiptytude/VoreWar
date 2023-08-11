@@ -280,6 +280,8 @@ public class HoveringTooltip : MonoBehaviour
                         return $"Unit is berserk, its strength and voracity are greatly increased for a brief period\nTurns Remaining: {effect.Duration}";
                     case StatusEffectType.Charmed:
                         return $"Unit fights for the unit that charmed it.";
+                    case StatusEffectType.Virus:
+                        return $"(Spell) Unit is taking damage over time\nTurns Remaining: {effect.Duration}";
                 }
             }
         }

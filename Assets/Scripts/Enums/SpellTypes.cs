@@ -28,6 +28,7 @@
     Diminishment = 18,
     GateMaw = 19,
     Resurrection = 20,
+    ViralInfection = 21,
 
 
     AlraunePuff = 70,
