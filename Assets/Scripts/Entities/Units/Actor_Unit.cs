@@ -1347,7 +1347,7 @@ public class Actor_Unit
                         Unit.RemoveTenacious();
                     if (target.Unit.HasTrait(Traits.Tenacious))
                         target.Unit.AddTenacious();
-                    if (target.Unit.GetStatusEffect(StatusEffectType.SpellForce) != null)                  
+                    if (target.Unit.GetStatusEffect(StatusEffectType.Focus) != null)                  
                         target.Unit.RemoveFocus();
                     
                     TacticalGraphicalEffects.CreateProjectile(this, target);
@@ -1418,7 +1418,7 @@ public class Actor_Unit
                         Unit.RemoveTenacious();
                     if (target.Unit.HasTrait(Traits.Tenacious))
                         target.Unit.AddTenacious();
-                    if (target.Unit.GetStatusEffect(StatusEffectType.SpellForce) != null)
+                    if (target.Unit.GetStatusEffect(StatusEffectType.Focus) != null)
                         target.Unit.RemoveFocus();
                     if (target.Unit.HasTrait(Traits.Toxic) && State.Rand.Next(8) == 0)
                         Unit.ApplyStatusEffect(StatusEffectType.Poisoned, 2 + target.Unit.GetStat(Stat.Endurance) / 20, 3);
@@ -2158,7 +2158,12 @@ public class Actor_Unit
         TurnsSinceLastDamage = -1;
     }
 
-    public bool Damage(int damage, bool spellDamage = false, bool canKill = true)
+    public int CalculateDamageWithResistance(int damage, DamageTypes damageType)
+    {
+        return 0;
+    }
+
+    public bool Damage(int damage, bool spellDamage = false, bool canKill = true, DamageTypes damageType = DamageTypes.Generic)
     {
         if (Unit.IsDead)
         {
@@ -2169,8 +2174,9 @@ public class Actor_Unit
             Debug.Log("Attack performed on target that was already dead");
             return false;
         }
-        UnitSprite.DisplayDamage(damage, spellDamage);
-        SubtractHealth(damage);
+        int modifiedDamage = CalculateDamageWithResistance(damage, damageType);
+        UnitSprite.DisplayDamage(modifiedDamage, spellDamage);
+        SubtractHealth(modifiedDamage);
         if (Unit.HasTrait(Traits.Berserk) && GoneBerserk == false)
         {
             if (Unit.HealthPct < .5f)
