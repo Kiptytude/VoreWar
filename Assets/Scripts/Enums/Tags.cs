@@ -338,6 +338,8 @@ public enum Traits
     TraitBorrower = 170,
     /// <summary>Damage over time effect recieved from being devoured by an Aabayx</summary>
     ViralDigestion = 171,
+    /// <summary>This unit has a very strange body type, making them harder to swallow and providing less sustenance as prey.</summary>
+    AwkwardShape = 172,
 
 
 

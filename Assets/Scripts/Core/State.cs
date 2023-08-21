@@ -81,6 +81,10 @@ public static class State
                 File.Copy($"{Application.streamingAssetsPath}{Path.DirectorySeparatorChar}maleFeralLions.txt", $"{StorageDirectory}maleFeralLions.txt");
             if (File.Exists($"{StorageDirectory}customTraits.txt") == false)
                 File.Copy($"{Application.streamingAssetsPath}{Path.DirectorySeparatorChar}customTraits.txt", $"{StorageDirectory}customTraits.txt");
+            if (File.Exists($"{StorageDirectory}femaleAabayx.txt") == false)
+                File.Copy($"{Application.streamingAssetsPath}{Path.DirectorySeparatorChar}femaleAabayx.txt", $"{StorageDirectory}femaleAabayx.txt");
+            if (File.Exists($"{StorageDirectory}maleAabayx.txt") == false)
+                File.Copy($"{Application.streamingAssetsPath}{Path.DirectorySeparatorChar}maleAabayx.txt", $"{StorageDirectory}maleAabayx.txt");
         }
         catch
         {

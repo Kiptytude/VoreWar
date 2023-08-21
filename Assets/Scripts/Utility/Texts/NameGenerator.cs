@@ -42,6 +42,7 @@ public class NameGenerator
     List<string> frogTownNames;
     List<string> sharkTownNames;
     List<string> deerTownNames;
+    List<string> aabayxTownNames;
 
     List<string> compyNames;
     List<string> vagrantNames;
@@ -50,7 +51,7 @@ public class NameGenerator
     List<string> youngWyvernNames;
     List<string> gryphonNames;
     List<string> feralLionNames;
-	
+    
 	List<string> goodraNames;
 	
     Dictionary<Race, List<string>> RaceMaleNames;
@@ -813,6 +814,29 @@ public class NameGenerator
             "Dragoo",
             "Gooigi",
         };
+        aabayxTownNames = new List<string>
+        {
+            "Akaryocyte",  ///(this one is the capital, by the way)
+            "Infection Site Zero",
+            "Arenai",
+            "Temple of Twenty",
+            "Adnaviria",
+            "Ysynsr aaz Lextrnl's Domain",
+            "Duplodnaviria",
+            "Bacteriophage",
+            "Monodnaviria",
+            "Aychkaynienteeseven",
+            "Riboviria",
+            "Capsid",
+            "Ribozyviria",
+            "Lipid Envelope",
+            "Varidnaviria",
+            "Mimi",
+            "Tevenvirinae",
+            "Myoviridae",
+            "Podoviridae",
+            "Autographiviridae",
+        };
 
         Encoding encoding = Encoding.GetEncoding("iso-8859-1");
 
@@ -1201,6 +1225,11 @@ public class NameGenerator
         {
             if (i >= 0 && i < deerTownNames.Count)
                 return deerTownNames[i];
+        }
+        else if (race == Race.Aabayx)
+        {
+            if (i >= 0 && i < aabayxTownNames.Count)
+                return aabayxTownNames[i];
         }
 
 

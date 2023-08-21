@@ -807,16 +807,17 @@ static class RaceParameters
 
         Aabayx = new RaceTraits()
         {
-            BodySize = 7,
+            BodySize = 6,
             StomachSize = 15,
             HasTail = true,
-            FavoredStat = Stat.Agility,
+            FavoredStat = Stat.Strength,
             AllowedVoreTypes = new List<VoreType> { VoreType.Oral, VoreType.Unbirth, VoreType.CockVore, VoreType.Anal },
             RacialTraits = new List<Traits>()
         {
                 Traits.ViralDigestion,
-                Traits.ArtfulDodge,
-                Traits.Toxic,
+                Traits.AwkwardShape,
+                Traits.SlowAbsorption,
+                Traits.SlowBreeder,
         },
             RaceDescription = "The Aabayx are a species of virosapiens who recently revealed themselves to the world and were quick to commit to the stage of war.  Strangely enough, they are not new arrivals to the realm, but rather have been in extreme isolation in an unknown location and were waiting for the exact right time to resurface and conquer the masses.  That time is now.",
         };

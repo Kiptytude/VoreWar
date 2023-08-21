@@ -17,11 +17,11 @@ class Aabayx : DefaultRaceData
         MouthTypes = 0;
         TailTypes = 16;
         SpecialAccessoryCount = 0;
-        AccessoryColors = ColorPaletteMap.GetPaletteCount(ColorPaletteMap.SwapType.AabayxSkin); // Skin color
-        SkinColors = ColorPaletteMap.GetPaletteCount(ColorPaletteMap.SwapType.AabayxSkin); // Head color
+        AccessoryColors = ColorPaletteMap.GetPaletteCount(ColorPaletteMap.SwapType.AabayxSkin); // Head color
+        SkinColors = ColorPaletteMap.GetPaletteCount(ColorPaletteMap.SwapType.AabayxSkin);
 
-        Body = new SpriteExtraInfo(4, BodySprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.AabayxSkin, s.Unit.AccessoryColor));
-        Head = new SpriteExtraInfo(6, HeadSprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.AabayxSkin, s.Unit.SkinColor));
+        Body = new SpriteExtraInfo(4, BodySprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.AabayxSkin, s.Unit.SkinColor));
+        Head = new SpriteExtraInfo(5, HeadSprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.AabayxSkin, s.Unit.AccessoryColor));
         BodyAccessory = null;
         BodyAccent = null;
         BodyAccent2 = null;
@@ -31,7 +31,7 @@ class Aabayx : DefaultRaceData
         BodyAccent6 = null;
         BodyAccent7 = null;
         BodyAccent8 = null;
-        Mouth = null;
+        Mouth = new SpriteExtraInfo(7, MouthSprite, WhiteColored); // Mouth
         Hair = null;
         Hair2 = null;
         Hair3 = null; // Eyebrows
@@ -39,15 +39,15 @@ class Aabayx : DefaultRaceData
         Eyes = new SpriteExtraInfo(8, EyesSprite, WhiteColored);
         SecondaryEyes = null;
         SecondaryAccessory = null;
-        Belly = new SpriteExtraInfo(14, null, null,  (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.AabayxSkin, s.Unit.AccessoryColor));
+        Belly = new SpriteExtraInfo(14, null, null,  (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.AabayxSkin, s.Unit.SkinColor));
         Weapon = new SpriteExtraInfo(1, WeaponSprite, WhiteColored);
         BackWeapon = null;
         BodySize = null;
         Breasts = null;
         SecondaryBreasts = null;
         BreastShadow = null;
-        Dick = new SpriteExtraInfo(11, DickSprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.AabayxSkin, s.Unit.AccessoryColor));
-        Balls = new SpriteExtraInfo(10, BallsSprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.AabayxSkin, s.Unit.AccessoryColor));
+        Dick = new SpriteExtraInfo(11, DickSprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.AabayxSkin, s.Unit.SkinColor));
+        Balls = new SpriteExtraInfo(10, BallsSprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.AabayxSkin, s.Unit.SkinColor));
 
         AllowedMainClothingTypes = new List<MainClothing>()
         {
@@ -67,6 +67,16 @@ class Aabayx : DefaultRaceData
             new AabayxPants3(),
             new AabayxPants4(),
             new AabayxPants5(),
+        };
+        ExtraMainClothing1Types = new List<MainClothing>()
+        {
+            new AabayxFacePaint1(),
+            new AabayxFacePaint2(),
+            new AabayxFacePaint3(),
+            new AabayxFacePaint4(),
+            new AabayxFacePaint5(),
+            new AabayxFacePaint6(),
+            new AabayxFacePaint7(),
         };
     }
 
@@ -97,10 +107,16 @@ class Aabayx : DefaultRaceData
             return State.GameManager.SpriteDictionary.Aabayx[10 + (actor.IsAttacking ? 1 : 0)];
         else return null;
     }
-    protected override Sprite HeadSprite(Actor_Unit actor) => State.GameManager.SpriteDictionary.Aabayx[2 + (actor.IsOralVoring ? 1 : 0)];
+    protected override Sprite HeadSprite(Actor_Unit actor) => State.GameManager.SpriteDictionary.Aabayx[2];
+    protected override Sprite MouthSprite(Actor_Unit actor)
+    {
+        if (actor.IsOralVoring)
+            return State.GameManager.SpriteDictionary.Aabayx[3];
+        else return null;
+    }
     protected override Sprite EyesSprite(Actor_Unit actor)
     {
-        if (actor.IsEating)
+        if (actor.IsOralVoring)
             return null;
         else return State.GameManager.SpriteDictionary.Aabayx[12 + actor.Unit.EyeType];
     }
@@ -229,7 +245,7 @@ class Aabayx : DefaultRaceData
             DiscardSprite = null;
             coversBreasts = false;
             blocksDick = false;
-            clothing1 = new SpriteExtraInfo(13, null, null);
+            clothing1 = new SpriteExtraInfo(15, null, null);
             Type = 60018;
         }
 
@@ -246,7 +262,7 @@ class Aabayx : DefaultRaceData
             DiscardSprite = null;
             coversBreasts = false;
             blocksDick = false;
-            clothing1 = new SpriteExtraInfo(13, null, null);
+            clothing1 = new SpriteExtraInfo(15, null, null);
             Type = 60018;
         }
 
@@ -263,7 +279,7 @@ class Aabayx : DefaultRaceData
             DiscardSprite = null;
             coversBreasts = false;
             blocksDick = false;
-            clothing1 = new SpriteExtraInfo(13, null, null);
+            clothing1 = new SpriteExtraInfo(15, null, null);
             Type = 60018;
         }
 
@@ -280,7 +296,7 @@ class Aabayx : DefaultRaceData
             DiscardSprite = null;
             coversBreasts = false;
             blocksDick = false;
-            clothing1 = new SpriteExtraInfo(13, null, null);
+            clothing1 = new SpriteExtraInfo(15, null, null);
             Type = 60018;
         }
 
@@ -297,7 +313,7 @@ class Aabayx : DefaultRaceData
             DiscardSprite = null;
             coversBreasts = false;
             blocksDick = false;
-            clothing1 = new SpriteExtraInfo(13, null, null);
+            clothing1 = new SpriteExtraInfo(15, null, null);
             Type = 60018;
         }
 
@@ -314,7 +330,7 @@ class Aabayx : DefaultRaceData
             DiscardSprite = null;
             coversBreasts = false;
             blocksDick = false;
-            clothing1 = new SpriteExtraInfo(13, null, null);
+            clothing1 = new SpriteExtraInfo(15, null, null);
             Type = 60018;
         }
 
@@ -331,7 +347,7 @@ class Aabayx : DefaultRaceData
             DiscardSprite = null;
             coversBreasts = false;
             blocksDick = false;
-            clothing1 = new SpriteExtraInfo(13, null, null);
+            clothing1 = new SpriteExtraInfo(15, null, null);
             Type = 60018;
         }
 
@@ -415,7 +431,7 @@ class Aabayx : DefaultRaceData
         {
             DiscardSprite = null;
             coversBreasts = false;
-            blocksDick = false;
+            blocksDick = true;
             clothing1 = new SpriteExtraInfo(13, null, null);
             Type = 60018;
         }
@@ -423,6 +439,160 @@ class Aabayx : DefaultRaceData
         public override void Configure(CompleteSprite sprite, Actor_Unit actor)
         {
             clothing1.GetSprite = (s) => State.GameManager.SpriteDictionary.Aabayx[59];
+            base.Configure(sprite, actor);
+        }
+    }
+    class AabayxFacePaint1 : MainClothing
+    {
+        public AabayxFacePaint1()
+        {
+            leaderOnly = false;
+            blocksDick = false;
+            clothing1 = new SpriteExtraInfo(10, null, WhiteColored);
+        }
+
+        public override void Configure(CompleteSprite sprite, Actor_Unit actor)
+        {
+            clothing1.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.AabayxSkin, actor.Unit.SkinColor);
+            clothing1.GetSprite = (s) =>
+            {
+                if (actor.IsOralVoring)
+                    return State.GameManager.SpriteDictionary.AabayxFacePaint[7];
+                else 
+                    return State.GameManager.SpriteDictionary.AabayxFacePaint[0];
+            };
+            base.Configure(sprite, actor);
+        }
+    }
+    class AabayxFacePaint2 : MainClothing
+    {
+        public AabayxFacePaint2()
+        {
+            leaderOnly = false;
+            blocksDick = false;
+            clothing1 = new SpriteExtraInfo(10, null, WhiteColored);
+        }
+
+        public override void Configure(CompleteSprite sprite, Actor_Unit actor)
+        {
+            clothing1.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.AabayxSkin, actor.Unit.SkinColor);
+            clothing1.GetSprite = (s) =>
+            {
+                if (actor.IsOralVoring)
+                    return State.GameManager.SpriteDictionary.AabayxFacePaint[8];
+                else 
+                    return State.GameManager.SpriteDictionary.AabayxFacePaint[1];
+            };
+            base.Configure(sprite, actor);
+        }
+    }
+    class AabayxFacePaint3 : MainClothing
+    {
+        public AabayxFacePaint3()
+        {
+            leaderOnly = false;
+            blocksDick = false;
+            clothing1 = new SpriteExtraInfo(10, null, WhiteColored);
+        }
+
+        public override void Configure(CompleteSprite sprite, Actor_Unit actor)
+        {
+            clothing1.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.AabayxSkin, actor.Unit.SkinColor);
+            clothing1.GetSprite = (s) =>
+            {
+                if (actor.IsOralVoring)
+                    return State.GameManager.SpriteDictionary.AabayxFacePaint[9];
+                else 
+                    return State.GameManager.SpriteDictionary.AabayxFacePaint[2];
+            };
+            base.Configure(sprite, actor);
+        }
+    }
+    class AabayxFacePaint4 : MainClothing
+    {
+        public AabayxFacePaint4()
+        {
+            leaderOnly = false;
+            blocksDick = false;
+            clothing1 = new SpriteExtraInfo(10, null, WhiteColored);
+        }
+
+        public override void Configure(CompleteSprite sprite, Actor_Unit actor)
+        {
+            clothing1.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.AabayxSkin, actor.Unit.SkinColor);
+            clothing1.GetSprite = (s) =>
+            {
+                if (actor.IsOralVoring)
+                    return State.GameManager.SpriteDictionary.AabayxFacePaint[10];
+                else 
+                    return State.GameManager.SpriteDictionary.AabayxFacePaint[3];
+            };
+            base.Configure(sprite, actor);
+        }
+    }
+    class AabayxFacePaint5 : MainClothing
+    {
+        public AabayxFacePaint5()
+        {
+            leaderOnly = false;
+            blocksDick = false;
+            clothing1 = new SpriteExtraInfo(10, null, WhiteColored);
+        }
+
+        public override void Configure(CompleteSprite sprite, Actor_Unit actor)
+        {
+            clothing1.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.AabayxSkin, actor.Unit.SkinColor);
+            clothing1.GetSprite = (s) =>
+            {
+                if (actor.IsOralVoring)
+                    return State.GameManager.SpriteDictionary.AabayxFacePaint[11];
+                else 
+                    return State.GameManager.SpriteDictionary.AabayxFacePaint[4];
+            };
+            base.Configure(sprite, actor);
+        }
+    }
+    class AabayxFacePaint6 : MainClothing
+    {
+        public AabayxFacePaint6()
+        {
+            leaderOnly = false;
+            blocksDick = false;
+            clothing1 = new SpriteExtraInfo(10, null, WhiteColored);
+        }
+
+        public override void Configure(CompleteSprite sprite, Actor_Unit actor)
+        {
+            clothing1.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.AabayxSkin, actor.Unit.SkinColor);
+            clothing1.GetSprite = (s) =>
+            {
+                if (actor.IsOralVoring)
+                    return State.GameManager.SpriteDictionary.AabayxFacePaint[12];
+                else 
+                    return State.GameManager.SpriteDictionary.AabayxFacePaint[5];
+            };
+            base.Configure(sprite, actor);
+        }
+    }
+    class AabayxFacePaint7 : MainClothing
+    {
+        public AabayxFacePaint7()
+        {
+            leaderOnly = false;
+            blocksDick = false;
+            clothing1 = new SpriteExtraInfo(10, null, WhiteColored);
+        }
+
+        public override void Configure(CompleteSprite sprite, Actor_Unit actor)
+        {
+            clothing1.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.AabayxSkin, actor.Unit.SkinColor);
+            clothing1.GetSprite = (s) =>
+            {
+                if (actor.IsOralVoring)
+                    return null;
+                else 
+                    return State.GameManager.SpriteDictionary.AabayxFacePaint[6];
+            };
             base.Configure(sprite, actor);
         }
     }
