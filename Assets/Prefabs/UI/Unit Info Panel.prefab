@@ -3126,6 +3126,7 @@ GameObject:
   - component: {fileID: 5425435649155107161}
   - component: {fileID: 5425435649155107160}
   - component: {fileID: 5425435649155107175}
+  - component: {fileID: 8691207144875775171}
   m_Layer: 5
   m_Name: Scroll View
   m_TagString: Untagged
@@ -3224,6 +3225,18 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+--- !u!114 &8691207144875775171
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5425435649155107173}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -146154839, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5425435649165648101
 GameObject:
   m_ObjectHideFlags: 0
@@ -4010,15 +4023,6 @@ MonoBehaviour:
   BasicInfo: {fileID: 5425435649549140238}
   InfoText: {fileID: 5425435649311893561}
   StatBlock: {fileID: 5425435649522781904}
-  STRVal: {fileID: 5425435648849878488}
-  DEXVal: {fileID: 5425435649227566206}
-  MNDVal: {fileID: 5425435648020850025}
-  WLLVal: {fileID: 5425435649891323202}
-  ENDVal: {fileID: 5425435648979183977}
-  AGIVal: {fileID: 5425435648264854612}
-  VORVal: {fileID: 5425435647933667017}
-  STMVal: {fileID: 5425435649408428671}
-  LDRVal: {fileID: 5425435649450686942}
   ExpBar: {fileID: 5425435648651162953}
   HealthBar: {fileID: 5425435649393887484}
   ManaBar: {fileID: 5425435648794656002}
