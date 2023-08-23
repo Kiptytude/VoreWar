@@ -29,6 +29,10 @@
     GateMaw = 19,
     Resurrection = 20,
 
+    AmplifyMagic = 60,
+    Evocation = 61,
+    ManaFlux = 62,
+    UnstableMana = 63,
 
     AlraunePuff = 70,
     Web = 71,
@@ -44,5 +48,8 @@
     ForceFeed = 111,
     AssumeForm = 112,
     RevertForm = 113,
+    ManaExpolsion = 114,
+
+
 }
 

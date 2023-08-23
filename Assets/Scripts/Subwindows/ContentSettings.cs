@@ -73,6 +73,30 @@ public class ContentSettings : MonoBehaviour
 
     public Toggle LeadersRerandomizeOnDeath;
 
+    public Toggle DayNightEnabled;
+    public Toggle DayNightCosmetic;
+    public Toggle DayNightSchedule;
+    public Toggle DayNightRandom;
+    public Toggle NightMonsters;
+    public Toggle NightMoveMonsters;
+    public Slider NightRounds;
+    public Slider BaseNightChance;
+    public Slider NightChanceIncrease;
+    public Slider DefualtTacticalSightRange;
+    public Slider NightStrategicSightReduction;
+    public InputField RevealTurn;
+
+
+    public Toggle CombatComplicationsEnabled;
+    public Toggle StatCrit;
+    public Toggle StatGraze;
+    public Slider BaseCritChance;
+    public Slider CritDamageMod;
+    public Slider BaseGrazeChance;
+    public Slider GrazeDamageMod;
+
+
+
     public Toggle AllowHugeBreasts;
     public Toggle AllowHugeDicks;
     public Toggle AllowTopless;
@@ -323,6 +347,15 @@ public class ContentSettings : MonoBehaviour
             new ToggleObject(BurpOnDigest, "BurpOnDigest", false),
             new ToggleObject(FartOnAbsorb, "FartOnAbsorb", false),
             new ToggleObject(CanUseStomachRubOnEnemies, "CanUseStomachRubOnEnemies", false),
+            new ToggleObject(DayNightEnabled, "DayNightEnabled", true),
+            new ToggleObject(DayNightCosmetic, "DayNightCosmetic", false),
+            new ToggleObject(DayNightSchedule, "DayNightSchedule", true),
+            new ToggleObject(DayNightRandom, "DayNightRandom", true),
+            new ToggleObject(NightMonsters, "NightMonsters", false),
+            new ToggleObject(NightMoveMonsters, "NightMoveMonsters", false),
+            new ToggleObject(CombatComplicationsEnabled, "CombatComplicationsEnabled", false),
+            new ToggleObject(StatCrit, "StatCrit", false),
+            new ToggleObject(StatGraze, "StatGraze", false),
             new ToggleObject(StatBoostsAffectMaxHP, "StatBoostsAffectMaxHP", false),
 
         };
@@ -658,6 +691,7 @@ public class ContentSettings : MonoBehaviour
         Config.World.SpawnTraits = RaceEditorPanel.TextToTraitList(PlayerPrefs.GetString("SpawnTraits", ""));
         Config.World.OverallMonsterCapModifier = PlayerPrefs.GetFloat("OverallMonsterCapModifier", 1);
         Config.World.OverallMonsterSpawnRateModifier = PlayerPrefs.GetFloat("OverallMonsterSpawnRateModifier", 1);
+        Config.World.RevealTurn = PlayerPrefs.GetInt("RevealTurn", 50);
         MonsterDropdownChanged();
         if (Config.World.SpawnerInfo == null)
             Config.World.ResetSpawnerDictionary();
@@ -735,6 +769,16 @@ public class ContentSettings : MonoBehaviour
         HermBreastSizeModifier.value = Config.HermBreastSizeModifier;
         CockSizeModifier.value = Config.CockSizeModifier;
         FogDistance.value = Config.FogDistance;
+        DefualtTacticalSightRange.value = Config.DefualtTacticalSightRange;
+        NightStrategicSightReduction.value = Config.NightStrategicSightReduction;
+        NightRounds.value = Config.NightRounds;
+        BaseNightChance.value = Config.BaseNightChance;
+        NightChanceIncrease.value = Config.NightChanceIncrease;
+        RevealTurn.text = Config.RevealTurn.ToString();
+        BaseCritChance.value = Config.BaseCritChance;
+        CritDamageMod.value = Config.CritDamageMod;
+        BaseGrazeChance.value = Config.BaseGrazeChance;
+        GrazeDamageMod.value = Config.GrazeDamageMod;
         DefaultStartingWeight.value = Config.DefaultStartingWeight;
         OralWeight.value = Config.OralWeight;
         BreastWeight.value = Config.BreastWeight;
@@ -967,6 +1011,19 @@ public class ContentSettings : MonoBehaviour
         Config.World.TailWeight = (int)TailWeight.value;
         Config.World.BreastWeight = (int)BreastWeight.value;
         Config.World.FogDistance = (int)FogDistance.value;
+        Config.World.DefualtTacticalSightRange = (int)DefualtTacticalSightRange.value;
+        Config.World.NightStrategicSightReduction = (int)NightStrategicSightReduction.value;
+        Config.World.NightRounds = (int)NightRounds.value;
+        Config.World.BaseNightChance = BaseNightChance.value;
+        Config.World.NightChanceIncrease = NightChanceIncrease.value;
+        if (int.TryParse(RevealTurn.text, out int rvl))
+            Config.World.RevealTurn = rvl;
+        else
+            Config.World.RevealTurn = 50;
+        Config.World.BaseCritChance = BaseCritChance.value;
+        Config.World.CritDamageMod = CritDamageMod.value;
+        Config.World.BaseGrazeChance = BaseGrazeChance.value;
+        Config.World.GrazeDamageMod = GrazeDamageMod.value;
         Config.World.OverallMonsterCapModifier = OverallMonsterCapModifier.value;
         Config.World.OverallMonsterSpawnRateModifier = OverallMonsterSpawnRateModifier.value;
 
@@ -1136,6 +1193,19 @@ public class ContentSettings : MonoBehaviour
         PlayerPrefs.SetInt("CockWeight", (int)CockWeight.value);
         PlayerPrefs.SetInt("TailWeight", (int)TailWeight.value);
         PlayerPrefs.SetInt("FogDistance", (int)FogDistance.value);
+        PlayerPrefs.SetInt("DefualtTacticalSightRange", (int)DefualtTacticalSightRange.value);
+        PlayerPrefs.SetInt("NightStrategicSightReduction", (int)NightStrategicSightReduction.value);
+        PlayerPrefs.SetInt("NightRounds", (int)NightRounds.value);
+        if (int.TryParse(RevealTurn.text, out int rvl))
+            PlayerPrefs.SetFloat("RevealTurn", rvl);
+        else
+            PlayerPrefs.SetFloat("RevealTurn", 50);
+        PlayerPrefs.SetFloat("BaseNightChance", BaseNightChance.value);
+        PlayerPrefs.SetFloat("NightChanceIncrease", NightChanceIncrease.value);
+        PlayerPrefs.SetFloat("BaseCritChance", BaseCritChance.value);
+        PlayerPrefs.SetFloat("CritDamageMod", CritDamageMod.value);
+        PlayerPrefs.SetFloat("BaseGrazeChance", BaseGrazeChance.value);
+        PlayerPrefs.SetFloat("GrazeDamageMod", GrazeDamageMod.value);
 
         foreach (MonsterSpawnerPanel spawner in MonsterSpawners)
         {

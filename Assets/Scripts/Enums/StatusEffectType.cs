@@ -48,5 +48,13 @@
     Possessed = 22,
     /// <summary>Unit has been infected by a parasite prey unit</summary>
     Infected = 23,
+    /// <summary>Prevents movement, dodging, and struggling, they are easy to eat</summary>
+    Sleeping = 24,
+    // <summary>Movement is reduced by half and damage taken increased by 20%, all stacks removed end of turn.</summary>
+    Staggering = 25,
+    // <summary>Mind is increased by 1 + 1%.</summary>
+    Focus = 26,
+    // <summary>Mind is increased by 1 + 10% and spell mana cost by 10% per stack.</summary>
+    SpellForce = 27,
 }
 

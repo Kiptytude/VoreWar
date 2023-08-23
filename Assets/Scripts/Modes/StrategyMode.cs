@@ -137,6 +137,8 @@ public class StrategyMode : SceneBase
 
     public EventScreen EventUI;
 
+    public float NightChance = Config.BaseNightChance;
+	
     public GameObject NotificationWindow;
     public TMPro.TextMeshProUGUI NotificationText;
     float remainingNotificationTime;
@@ -654,7 +656,7 @@ public class StrategyMode : SceneBase
 
     void UpdateFog()
     {
-        if (Config.FogOfWar == false)
+        if (Config.FogOfWar == false && State.World.IsNight == false)
         {
             if (FogOfWar.gameObject.activeSelf)
             {
@@ -1647,6 +1649,25 @@ public class StrategyMode : SceneBase
             ActingEmpire = State.World.EmpireOrder[startingIndex + 1];
         }
 
+        float NightRoll = (float)State.Rand.NextDouble();
+        if (Config.DayNightEnabled)
+        {           
+            if (Config.DayNightSchedule && State.World.Turn % Config.World.NightRounds == 0)
+            {
+                State.World.IsNight = true;
+            }
+            else if (Config.DayNightRandom && NightRoll < NightChance)
+            {
+                State.World.IsNight = true;
+                NightChance = Config.BaseNightChance;
+            }
+            else
+            {
+                State.World.IsNight = false;
+                NightChance += Config.NightChanceIncrease;
+            }
+
+        }
         if (ActingEmpire is MonsterEmpire)
         {
             if (ActingEmpire.Race == Race.Goblins)
