@@ -27,8 +27,10 @@
     //Raze,
     Diminishment = 18,
     GateMaw = 19,
-    Resurrection = 20,
-    ViralInfection = 21,
+    ViralInfection = 20,
+    DivinitysEmbrace = 21,
+
+    Resurrection = 22,
 
     AlraunePuff = 70,
     Web = 71,

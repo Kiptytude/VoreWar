@@ -2584,13 +2584,13 @@ static class RaceParameters
             PowerAdjustment = 2f,
             RaceStats = new RaceStats()
             {
-                Strength = new RaceStats.StatRange(16, 16),
-                Dexterity = new RaceStats.StatRange(20, 20),
-                Endurance = new RaceStats.StatRange(26, 30),
-                Mind = new RaceStats.StatRange(20, 20),
-                Will = new RaceStats.StatRange(14, 20),
+                Strength = new RaceStats.StatRange(5, 10),
+                Dexterity = new RaceStats.StatRange(5, 10),
+                Endurance = new RaceStats.StatRange(20, 25),
+                Mind = new RaceStats.StatRange(20, 25),
+                Will = new RaceStats.StatRange(20, 25),
                 Agility = new RaceStats.StatRange(24, 26),
-                Voracity = new RaceStats.StatRange(16, 20),
+                Voracity = new RaceStats.StatRange(10, 15),
                 Stomach = new RaceStats.StatRange(9, 10),
             },
             RacialTraits = new List<Traits>()
@@ -2601,7 +2601,9 @@ static class RaceParameters
                 Traits.Flight,
                 Traits.TheGreatEscape
             },
-            RaceDescription = "An incredibly delicious angel catgirl.",
+            InnateSpells = new List<SpellTypes>()
+            { SpellTypes.DivinitysEmbrace },
+            RaceDescription = "Erin belongs to a very rare species known as a Nyangel, the lovechild of an angel and a catgirl.  Thanks to this divine heritage they aremostly all incredible healers... But they're also incredibly tasty.  Every Nyangel has a unique trait to set them apart from eachother, and Erin is no exception to this rule.  Her quirk is total acid resistance, the perfect defense against the raveous predators of this realm.  That doesn't stop her from being devoured, however, and that is unfortunately an all-too-common outcome for the girl.  Regardless of how many times she ends up eaten, the loveable Nyangel still tries her best to heal those she can.",
         };
 		
 		Goodra = new RaceTraits()

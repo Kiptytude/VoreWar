@@ -58,5 +58,7 @@
     SpellForce = 27,
     /// <summary>Unit has been infected by a virus</summary>
     Virus = 28,
+    /// <summary>Unit has been embraced by the heavens, providing damage mitigation for a few turns</summary>
+    DivineShield = 29,
 }
 

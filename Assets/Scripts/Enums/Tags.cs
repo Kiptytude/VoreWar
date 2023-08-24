@@ -351,9 +351,9 @@ public enum Traits
     /// <summary>Unit gains access to 4 powerful spells.</summary>
     ArcaneMagistrate = 177,
     /// <summary>Damage over time effect recieved from being devoured by an Aabayx</summary>
-    ViralDigestion = 171,
+    ViralDigestion = 178,
     /// <summary>This unit has a very strange body type, making them harder to swallow and providing less sustenance as prey.</summary>
-    AwkwardShape = 172,
+    AwkwardShape = 179,
 
 
 

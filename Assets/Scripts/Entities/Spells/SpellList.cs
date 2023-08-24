@@ -80,6 +80,7 @@ static class SpellList
     static internal readonly DamageSpell ViperPoisonDamage;
     static internal readonly StatusSpell ViperPoisonStatus;
     static internal readonly StatusSpell ViralInfection;
+    static internal readonly StatusSpell DivinitysEmbrace;
 
     static internal Dictionary<SpellTypes, Spell> SpellDict;
 
@@ -868,6 +869,7 @@ static class SpellList
 
         };
         SpellDict[SpellTypes.Whispers] = Whispers;
+
         ViralInfection = new StatusSpell()
         {
             Name = "ViralInfection",
@@ -888,7 +890,28 @@ static class SpellList
             },
         };
         SpellDict[SpellTypes.ViralInfection] = ViralInfection;
-    }
+
+        DivinitysEmbrace = new StatusSpell()
+        {
+            Name = "Divinity's Embrace",
+            Id = "divinitysembrace",
+            SpellType = SpellTypes.DivinitysEmbrace,
+            Description = "Shower an ally in divine light, providing instant healing as well as damage mitigation for a few turns.",
+            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Ally },
+            Range = new Range(4),
+            Duration = (a, t) => 2 + a.Unit.GetStat(Stat.Mind) / 10,
+            Effect = (a, t) => .25f,
+            Type = StatusEffectType.DivineShield,
+            Tier = 3,
+            Resistable = false,
+            OnExecute = (a, t) =>
+            {
+                a.CastStatusSpell(DivinitysEmbrace, t);
+                TacticalGraphicalEffects.CreateGenericMagic(a.Position, t.Position, t, TacticalGraphicalEffects.SpellEffectIcon.Buff);
+                t.Damage(-5 - a.Unit.GetStat(Stat.Mind));
+            },
+        };
+        SpellDict[SpellTypes.DivinitysEmbrace] = DivinitysEmbrace;
 
         Evocation = new Spell()
         {
@@ -983,6 +1006,7 @@ static class SpellList
             }
         };
         SpellDict[SpellTypes.ManaExpolsion] = ManaExpolsion;
+        
     }
 }
 
