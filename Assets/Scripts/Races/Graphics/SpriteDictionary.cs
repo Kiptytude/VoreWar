@@ -240,6 +240,9 @@ public class SpriteDictionary : MonoBehaviour
     public Sprite[] AuriHoliday;
     public Sprite[] AuriVore;
     public Sprite[] Erin;
+    public Sprite[] Salix;
+    public Sprite[] SalixVore;
+    public Sprite[] SalixGen;
 
     [Header("Monsters")]
     public Sprite[] Vagrants;

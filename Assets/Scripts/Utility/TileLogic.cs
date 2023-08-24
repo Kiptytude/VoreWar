@@ -74,6 +74,18 @@ class TacticalTileLogic
                             newtiles[x, y] = (TacticalTileType)(2200 + type);
                             break;
                         }
+                    case TacticalTileType.VolcanicOverGravel:
+                        {
+                            int type = DetermineType(new Vec2(x, y), TacticalTileType.VolcanicOverGravel);
+                            newtiles[x, y] = (TacticalTileType)(2300 + type);
+                            break;
+                        }
+                    case TacticalTileType.VolcanicOverLava:
+                        {
+                            int type = DetermineType(new Vec2(x, y), TacticalTileType.VolcanicOverLava);
+                            newtiles[x, y] = (TacticalTileType)(2400 + type);
+                            break;
+                        }
                     default:
                         newtiles[x, y] = tiles[x, y];
                         continue;

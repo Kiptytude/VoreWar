@@ -256,7 +256,8 @@ public class SoundManager : MonoBehaviour
 
         volume *= PositionSound(source, actor.UnitSprite.transform.position, sfxFloor);
 
-        PlaySfx(clip, source, volume);
+        if (actor.InSight) //Keeps a Unity warning from popping up
+            PlaySfx(clip, source, volume);
     }
 
     internal void PlayMisc(string name, Actor_Unit actor)
@@ -284,6 +285,7 @@ public class SoundManager : MonoBehaviour
 
         volume *= PositionSound(source, actor.UnitSprite.transform.position, sfxFloor);
 
-        PlaySfx(clip, source, volume);
+        if (actor.InSight) //Keeps a Unity warning from popping up
+            PlaySfx(clip, source, volume);
     }
 }

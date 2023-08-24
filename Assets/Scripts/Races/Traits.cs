@@ -62,6 +62,7 @@ class PermanentBoosts
     internal float VirtualStrMult = 1;
     internal float FireDamageTaken = 1;
     internal float GrowthDecayRate = 1;
+    internal int SightRangeBoost = 0;
 }
 
 class DirectionalStat
@@ -81,6 +82,10 @@ class DirectionalStat
     internal float VoreOddsMult = 1;
     internal float GrowthRate = 1;
 
+    internal float CritRateShift = 0;
+    internal float CritDamageMult = 1;
+    internal float GrazeRateShift = 0;
+    internal float GrazeDamageMult = 1;
 }
 
 
@@ -299,6 +304,9 @@ static class TraitList
         [Traits.EfficientGuts] = new Booster("Unit receives 50% more healing from absorbing prey", (s) => { s.Incoming.Nutrition *= 1.5f; }),
         [Traits.WastefulProcessing] = new Booster("Unit can't get as much healing out of prey, but they are done with it quicker. (+50% absorb speed, -50% nutrition)", (s) => { s.Incoming.Nutrition *= 0.5f; s.Outgoing.AbsorptionRate *= 1.5f; }),
         [Traits.TightNethers] = new Booster("This unit can only take much smaller units into their nethers, but their prey will not enlarge while inside their genitals.", (s) => { s.Incoming.RangedDamage *= 1.0f; }),
+		[Traits.NightEye] = new Booster("Increases night time vision range by +1 in Tactical battles and by +1 in stratigic if half of the units in an army have this trait.", (s) => { s.SightRangeBoost += 1;}),
+        [Traits.KeenEye] = new Booster("Unit has the chance to deal increase damage when attacking.", (s) => { s.Outgoing.CritRateShift += 0.1f; }),
+        [Traits.AccuteDodge] = new Booster("Unit has the chance to minimise recieved damage when being attacked. (Excludes spells and vore damage).", (s) => { s.Outgoing.GrazeRateShift += 0.1f; }),
         [Traits.ViralDigestion] = new ViralDigestion(),
         [Traits.AwkwardShape] = new Booster("This unit has a very strange body type, making them harder to swallow and providing less sustenance as prey.", (s) => { s.Incoming.VoreOddsMult *= 0.75f; s.Outgoing.Nutrition *= 0.25f; }),
     };

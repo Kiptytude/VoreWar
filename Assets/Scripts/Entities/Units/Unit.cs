@@ -497,9 +497,10 @@ public class Unit
 
     internal bool SpendMana(int amount)
     {
-        if (Mana >= amount)
+        int ModifiedManaCost = amount + (amount * (GetStatusEffect(StatusEffectType.SpellForce) != null ? GetStatusEffect(StatusEffectType.SpellForce).Duration/10 : 0));
+        if (Mana >= ModifiedManaCost)
         {
-            Mana -= amount;
+            Mana -= ModifiedManaCost;
             return true;
         }
         return false;
@@ -807,6 +808,11 @@ public class Unit
         {
             FixedGear = true;
             Items[0] = State.World.ItemRepository.GetSpecialItem(SpecialItems.AurilikaWeapon);
+        }
+        else if (race == Race.Salix)
+        {
+            FixedGear = true;
+            Items[0] = State.World.ItemRepository.GetSpecialItem(SpecialItems.SalixWeapon);
         }
         else
         {
@@ -1346,6 +1352,16 @@ internal void SetGenderRandomizeName(Race race, Gender gender)
             bonus += GetStatBase(Stat.Agility) * .1f * GetStatusEffect(StatusEffectType.Tenacious).Duration;
         if (stat == Stat.Voracity && GetStatusEffect(StatusEffectType.Tenacious) != null)
             bonus += GetStatBase(Stat.Voracity) * .1f * GetStatusEffect(StatusEffectType.Tenacious).Duration;
+        if (stat == Stat.Mind && GetStatusEffect(StatusEffectType.Focus) != null)
+        {
+            int stacks = GetStatusEffect(StatusEffectType.Focus).Duration;
+            bonus += stacks + (GetStatBase(Stat.Mind) * (stacks / 100));
+        }
+        if (stat == Stat.Mind && GetStatusEffect(StatusEffectType.SpellForce) != null)
+        {
+            int stacks = GetStatusEffect(StatusEffectType.SpellForce).Duration;
+            bonus += stacks + (GetStatBase(Stat.Mind) * (stacks/10));
+        }
 
         bonus -= GetStatBase(stat) * (GetStatusEffect(StatusEffectType.Shaken)?.Strength ?? 0);
 
@@ -2536,6 +2552,8 @@ internal void SetGenderRandomizeName(Race race, Gender gender)
         if (HasEffect(StatusEffectType.WillingPrey)) ret++;
         if (HasEffect(StatusEffectType.Charmed)) ret++;
         if (HasEffect(StatusEffectType.Hypnotized)) ret++;
+        if (HasEffect(StatusEffectType.Sleeping)) ret++;
+        if (HasEffect(StatusEffectType.Staggering)) ret++;
         if (HasEffect(StatusEffectType.Virus)) ret++;
 
         bool HasEffect(StatusEffectType type)
@@ -2630,6 +2648,76 @@ internal void SetGenderRandomizeName(Race race, Gender gender)
 
     }
 
+    internal void AddSpellForce()
+    {
+        var force = GetStatusEffect(StatusEffectType.SpellForce);
+        if (force != null)
+        {
+            force.Duration++;
+            force.Strength++;
+        }
+        else
+        {
+            ApplyStatusEffect(StatusEffectType.SpellForce, 1, 1);
+        }
+
+    }
+
+    internal void AddFocus(int amount)
+    {
+        var foc = GetStatusEffect(StatusEffectType.Focus);
+        if (foc != null)
+        {
+            foc.Duration += amount;
+            foc.Strength += amount;
+        }
+        else
+        {
+            ApplyStatusEffect(StatusEffectType.Focus, amount, amount);
+        }
+
+    }
+
+    internal void RemoveFocus()
+    {
+        var foc = GetStatusEffect(StatusEffectType.Focus);
+        if (foc != null)
+        {
+            foc.Duration -= 3;
+            foc.Strength -= 3;
+            if (foc.Duration == 0)
+                StatusEffects.Remove(foc);
+        }
+
+    }
+
+    internal void AddStagger()
+    {
+        var stag = GetStatusEffect(StatusEffectType.Staggering);
+        if (stag != null)
+        {
+            stag.Duration++;
+            stag.Strength++;
+        }
+        else
+        {
+            ApplyStatusEffect(StatusEffectType.SpellForce, 1, 1);
+        }
+
+    }
+
+    internal void RemoveStagger()
+    {
+        var stag = GetStatusEffect(StatusEffectType.Staggering);
+        if (stag != null)
+        {
+            stag.Duration--;
+            stag.Strength--;
+            if (stag.Duration == 0)
+                StatusEffects.Remove(stag);
+        }
+    }
+
     internal StatusEffect GetLongestStatusEffect(StatusEffectType type)
     {
         return StatusEffects.Where(s => s.Type == type).OrderByDescending(s => s.Duration).FirstOrDefault();
@@ -2648,7 +2736,7 @@ internal void SetGenderRandomizeName(Race race, Gender gender)
             NonFatalDamage((int)effect.Strength, "virus");
         foreach (var eff in StatusEffects.ToList())
         {
-            if (eff.Type == StatusEffectType.BladeDance || eff.Type == StatusEffectType.Tenacious)
+            if (eff.Type == StatusEffectType.BladeDance || eff.Type == StatusEffectType.Tenacious || eff.Type == StatusEffectType.Focus)
                 continue;
             var actor = TacticalUtilities.Units.Where(s => s.Unit == this).FirstOrDefault();
             var pred = actor.SelfPrey?.Predator;
@@ -2659,6 +2747,8 @@ internal void SetGenderRandomizeName(Race race, Gender gender)
                     continue;
                 }
             }
+            if (eff.Type == StatusEffectType.Staggering || eff.Type == StatusEffectType.SpellForce)
+                StatusEffects.Remove(eff);
             eff.Duration -= 1;
             if (eff.Duration <= 0)
             {

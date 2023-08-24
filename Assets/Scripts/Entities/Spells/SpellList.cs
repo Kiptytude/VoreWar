@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using UnityEngine.Experimental.UIElements;
 
@@ -58,6 +59,12 @@ static class SpellList
     static internal readonly Spell GateMaw;
     static internal readonly Spell Reanimate;
     static internal readonly Spell Resurrection;
+
+    static internal readonly Spell AmplifyMagic;
+    static internal readonly Spell Evocation;
+    static internal readonly DamageSpell ManaFlux;
+    static internal readonly DamageSpell UnstableMana;
+    static internal readonly DamageSpell ManaExpolsion;
 
     static internal readonly StatusSpell AlraunePuff;
     static internal readonly StatusSpell Web;
@@ -847,7 +854,7 @@ static class SpellList
             Id = "whispers-spell",
             SpellType = SpellTypes.Whispers,
             Description = "Applies Charm, Prey's Curse, and Temptation for 3 rounds",
-            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy},
+            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy },
             Range = new Range(1),
             Duration = (a, t) => 3,
             Effect = (a, t) => a.Unit.GetApparentSide(t.Unit),
@@ -861,7 +868,6 @@ static class SpellList
 
         };
         SpellDict[SpellTypes.Whispers] = Whispers;
-
         ViralInfection = new StatusSpell()
         {
             Name = "ViralInfection",
@@ -884,7 +890,100 @@ static class SpellList
         SpellDict[SpellTypes.ViralInfection] = ViralInfection;
     }
 
+        Evocation = new Spell()
+        {
+            Name = "Evocation",
+            Id = "evocation",
+            SpellType = SpellTypes.Evocation,
+            Description = "Draw all nearby Unit's Focus onto a target, inspiring it. Grants the target equivalent Overload stacks and half as much MP.",
+            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Ally },
+            Range = new Range(1),
+            Tier = 0,
+            AreaOfEffect = 1,
+            Resistable = false,
+            IsFree = true,
+            OnExecute = (a, t) =>
+            {
+                a.CastSpell(Evocation, a);
+                foreach (var ally in TacticalUtilities.UnitsWithinTiles(t.Position, 1).Where(s => s.Unit.GetStatusEffect(StatusEffectType.Focus) != null))
+                {
+                    for (int i = 0; i < ally.Unit.GetStatusEffect(StatusEffectType.Focus).Duration; i++)
+                    {
+                        t.Unit.AddSpellForce();
+                    }
+                    ally.Unit.StatusEffects.Remove(ally.Unit.GetStatusEffect(StatusEffectType.Focus));
+                    TacticalGraphicalEffects.CreateGenericMagic(ally.Position, t.Position, t);
+                }
+                t.Movement += 1;
+                TacticalGraphicalEffects.CreateGenericMagic(a.Position, t.Position, t, TacticalGraphicalEffects.SpellEffectIcon.PurplePlus);
+            }
+        };
+        SpellDict[SpellTypes.Evocation] = Evocation;
 
+        ManaFlux = new DamageSpell()
+        {
+            Name = "Mana Flux",
+            Id = "mana-flux",
+            SpellType = SpellTypes.ManaFlux,
+            Description = "Deals damage which is increased by missing mana.",
+            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy },
+            Range = new Range(6),
+            Tier = 1,
+            AreaOfEffect = 0,
+            Damage = (a, t) => (a.Unit.GetStat(Stat.Mind) / 5) + ((a.Unit.MaxMana - a.Unit.Mana)/10),
+            Resistable = true,
+            OnExecute = (a, t) =>
+            {
+                a.CastOffensiveSpell(ManaFlux, t);
+                TacticalGraphicalEffects.CreateGenericMagic(a.Position, t.Position, t);
+            }
+        };
+        SpellDict[SpellTypes.ManaFlux] = ManaFlux;
+        UnstableMana = new DamageSpell()
+        {
+            Name = "Unstable Mana",
+            Id = "unstable-mana",
+            SpellType = SpellTypes.UnstableMana,
+            Description = "Deals damage increased unit's current mana, then uses it all. The target explodes, dealing half of their current mana as damage around them.",
+            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy },
+            Range = new Range(6),
+            Tier = 0,
+            AreaOfEffect = 0,
+            Damage = (a, t) => (a.Unit.Mana / 4) + a.Unit.GetStat(Stat.Mind) / 5,
+            Resistable = true,
+            OnExecute = (a, t) =>
+            {
+                int curr = t.Unit.Health;
+                a.CastOffensiveSpell(UnstableMana, t);
+                bool didSpellHit = curr != t.Unit.Health;
+                TacticalGraphicalEffects.CreateHugeMagic(a.Position, t.Position, t, didSpellHit);
+                if (didSpellHit)
+                {
+                    a.CastOffensiveSpell(ManaExpolsion, t);
+                }
+                a.Unit.SpendMana(a.Unit.Mana);
+            }
+        };
+        SpellDict[SpellTypes.UnstableMana] = UnstableMana;
+
+        ManaExpolsion = new DamageSpell()
+        {
+            Name = "Mana Expolsion",
+            Id = "Mana Expolsion",
+            SpellType = SpellTypes.ManaExpolsion,
+            Description = "(Second half of Unstable Mana Spell)",
+            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy },
+            Range = new Range(6),
+            Tier = 0,
+            AreaOfEffect = 1,
+            Damage = (a, t) => t.Unit.Mana / 2,
+            Resistable = true,
+            OnExecute = (a, t) =>
+            {
+            }
+        };
+        SpellDict[SpellTypes.ManaExpolsion] = ManaExpolsion;
+    }
 }
 
 
@@ -903,10 +1002,12 @@ public class Spell
     internal bool Resistable;
     internal float ResistanceMult = 1;
     internal Action<Actor_Unit, Actor_Unit> OnExecute;
+    internal bool IsFree = false;
+    
 
     internal bool TryCast(Actor_Unit actor, Vec2i location)
     {
-        if (actor.Unit.Mana >= ManaCost && actor.Movement > 0)
+        if ((actor.Unit.Mana >= ManaCost || IsFree) && actor.Movement > 0)
         {
             int startMana = actor.Unit.Mana;
             OnExecuteTile(actor, location);
@@ -921,7 +1022,7 @@ public class Spell
     }
     internal bool TryCast(Actor_Unit actor, Actor_Unit target)
     {
-        if (actor.Unit.Mana >= ManaCost && actor.Movement > 0)
+        if ((actor.Unit.Mana >= ManaCost || IsFree) && actor.Movement > 0)
         {
             int startMana = actor.Unit.Mana;
             OnExecute(actor, target);
