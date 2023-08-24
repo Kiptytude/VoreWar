@@ -412,6 +412,8 @@ public class TacticalMessageLog
                 return $"<b>{action.Unit.Name}</b>'s glue bomb affected <b>{action.Target.Name}</b>.";
             case SpellTypes.Petrify:
                 return $"<b>{action.Unit.Name}</b> petrified <b>{action.Target.Name}</b>.";
+            case SpellTypes.DivinitysEmbrace:
+                return $"<b>{action.Unit.Name}</b> wrapped their angelic wings around <b>{action.Target.Name}</b>, healing their wounds and granting them <b>Divine Shield</b>!";
             default:
                 return $"<b>{action.Unit.Name}</b> hit <b>{action.Target.Name}</b> with the {spell.Name} spell, dealing <color=red>{action.Damage}</color> damage.";
         }

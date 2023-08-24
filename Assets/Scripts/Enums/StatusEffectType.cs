@@ -49,6 +49,9 @@
     /// <summary>Unit has been infected by a parasite prey unit</summary>
     Infected = 23,
     /// <summary>Unit has been infected by a virus</summary>
-    Virus = 24
+    Virus = 24,
+    /// <summary>Unit has been embraced by the Divine, reducing incoming damage. /// </summary>
+    DivineShield = 25,
+
 }
 

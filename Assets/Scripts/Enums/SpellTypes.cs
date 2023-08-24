@@ -27,9 +27,10 @@
     //Raze,
     Diminishment = 18,
     GateMaw = 19,
-    Resurrection = 20,
-    ViralInfection = 21,
+    ViralInfection = 20,
+    DivinitysEmbrace = 21,
 
+    Resurrection = 22, // This must be the last spell before AlraunePuff because of a line of code who's purpose I don't fully understand.  If you wish to add a new spell, change the number of Resurrection accordingly or weirdness will happen in the right hand menu and give you Web. -Flame Valxsarion
 
     AlraunePuff = 70,
     Web = 71,

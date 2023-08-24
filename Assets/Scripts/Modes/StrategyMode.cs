@@ -378,10 +378,10 @@ public class StrategyMode : SceneBase
                 }
                 if (army.Side < 30)
                 {
-                    if (army.BannerStyle > (int)BannerTypes.VoreWar && CustomBannerTest.Sprites[army.BannerStyle - 23] != null)
+                    if (army.BannerStyle > (int)BannerTypes.VoreWar && CustomBannerTest.Sprites[army.BannerStyle - 24] != null)
                     {
                         army.Sprite = Instantiate(SpriteCategories[1], new Vector3(army.Position.x, army.Position.y), new Quaternion(), ArmyFolder).GetComponent<SpriteRenderer>();
-                        army.Sprite.sprite = CustomBannerTest.Sprites[army.BannerStyle - 23];
+                        army.Sprite.sprite = CustomBannerTest.Sprites[army.BannerStyle - 24];
                     }
                     else
                     {

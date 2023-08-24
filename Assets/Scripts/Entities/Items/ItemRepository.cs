@@ -38,6 +38,7 @@ public enum ItemType
     Diminishment,
     GateMaw,
     Resurrection,
+    DivinitysEmbrace,
 }
 
 
@@ -53,6 +54,8 @@ public enum SpecialItems
     ZeraWeapon,
     AbakWeapon,
     AurilikaWeapon,
+    ErinWeapon,
+    ErinWings,
 }
 
 
@@ -86,7 +89,7 @@ public class ItemRepository
             new Accessory(name:"Body Armor", description:"+6 endurance", cost:6, changedStat:(int)Stat.Endurance, statBonus:6 ),
             new Accessory(name:"Gauntlet", description:"+6 strength", cost:8, changedStat:(int)Stat.Strength, statBonus:6 ),
             new Accessory(name:"Gloves", description:"+6 dexterity", cost:10, changedStat:(int)Stat.Dexterity, statBonus:6 ),
-            new Accessory(name:"Shoes", description:"+2 agility, +1 movement tile", cost:6, changedStat:(int)Stat.Agility, statBonus:2),
+            new Accessory(name:"Shoes", description:"+2 agility, +1 movement tile", cost:6, changedStat:(int)Stat.Agility, statBonus:2 ),
 
 
             new SpellBook("Fireball Book", "Allows the casting of Fireball", 30, 1, SpellTypes.Fireball),
@@ -170,6 +173,8 @@ public class ItemRepository
             new Weapon(name:"Zera's Claws", description:"Claw Attack", cost:4, graphic:0, damage:8, range:1),
             new Weapon(name:"Abakhanskya's Bite", description:"Bite Attack", cost:4, graphic:0, damage:8, range:1),
             new Weapon(name:"Aurilika's Gohei", description:"A sacred talisman", cost:4, graphic:0, damage:4, range:1, accuracyModifier: 5f, lockedItem:true),
+            new Weapon(name:"Nyangel Claws", description:"Swing those helpless fists!", cost:4, graphic:0, damage:2, range:1, lockedItem:true),
+            new Accessory(name:"Nyangel Wings", description:"The softest and most delicious looking pair of wings you've ever seen. \n+5 Willpower.", cost:6, changedStat:(int)Stat.Will, statBonus:5, lockedItem: true ),
         };
 
 
