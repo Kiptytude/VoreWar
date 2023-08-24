@@ -659,9 +659,9 @@ Does not retroactively affect already created units.";
             case 261:
                 return "Enables critical (chance for bonus damage) and graze (Chance for reduced damage) attacks.";
             case 262:
-                return "If enabled, Critical strike chance is calculated using unit stats. Uses the following formula: \n <color=red>Attacker's (Dex + Str) / Defender's (Endr^2 + Will) </color>\n A lvl 1 unit with default stats would have ~23% chance to crit on average, depending on stat spread.";
+                return "If enabled, critical strike chance is calculated using unit stats. Uses the following formula: \n <color=red>Attacker's (Dex + Str) / Defender's (Endr^2 + Will) </color>\n A lvl 1 unit with default stats would have ~23% chance to crit on average, depending on stat spread.";
             case 263:
-                return "If enabled, Graze chance is calculated using unit stats. Uses the following formula: \n <color=green>Defender's Agi / Attacker's ((Dex + Str)/2)^2</color>\n A lvl 1 unit with default stats would have ~15% chance to be grazed on average, depending on stat spread.";
+                return "If enabled, graze chance is calculated using unit stats. Uses the following formula: \n <color=green>Defender's Agi / Attacker's ((Dex + Str)/2)^2</color>\n A lvl 1 unit with default stats would have ~15% chance to be grazed on average, depending on stat spread.";
             case 264:
                 return "Base chance for a critical strike if not calculated from stats. If 'Stat Based Crit' is enabled with this, the chance will never be lower than this percentage, but it can be higher. Set to 0 to disable.(excludes bonuses given by traits).";
             case 265:
@@ -671,7 +671,7 @@ Does not retroactively affect already created units.";
             case 267:
                 return "Damage dealt by graze attacks is multiplied by this number. At default value (0.3), 10 damage is modified to 3";
             case 268:
-                return "If enabled, night can occur on a random turn. This is per empire/monster turn, not round.  (Can be used with Scheduled Night)";
+                return "If enabled, night can occur on a random turn. This is per empire/monster turn, not round. (Can be used with Scheduled Night)";
             case 269:
                 return "If enabled, it will be night every X rounds for X rounds, based on the 'Cycle Length' slider.";
             case 270:
@@ -691,7 +691,7 @@ Does not retroactively affect already created units.";
             case 277:
                 return "Range of a unit's vision at night in a tactical setting. Things like traits can also increase this.";
             case 278:
-                return "This value is subtracted from the 'Fog Distace Slider'.\n If this is higher than 'Fog Distace Slider' you won't be able to see at all";
+                return " The amount your sight is decreased at night in strategic mode.\nThis value is subtracted from the 'Fog Distace Slider'.\n If this is higher than 'Fog Distace Slider' you won't be able to see at all";
             case 279:
                 return "The tactical turn where every unit is revealed.";
             default:

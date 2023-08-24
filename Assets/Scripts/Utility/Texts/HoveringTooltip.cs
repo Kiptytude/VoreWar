@@ -108,7 +108,7 @@ public class HoveringTooltip : MonoBehaviour
         remainingFrames = 3;
         text.text = description;
         float xAdjust = 10;
-        float exceeded = Input.mousePosition.x + (rect.rect.width * Screen.width / 1920) - Screen.width;
+        float exceeded = Input.mousePosition.x + 640 - Screen.width;
         if (exceeded > 0)
             xAdjust = -exceeded;
         transform.position = Input.mousePosition + new Vector3(xAdjust, 0, 0);

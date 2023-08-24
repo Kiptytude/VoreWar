@@ -280,9 +280,13 @@ public static class State
                 TutorialMode = false;
             }
 
+            // New version check. Initially considered making an array of applicable versions to bridge gaps, but just grabbing the version number should be plenty
+            string versionStr = System.Text.RegularExpressions.Regex.Match(World.SaveVersion, @"\d+").Value;
+            int version = int.Parse(versionStr);
+
 
             VillageBuildingList.SetBuildings(World.crazyBuildings);
-            if (string.Compare(World.SaveVersion, "12") < 0)
+            if (version < 12)
             {
                 World = null;
                 GameManager.CreateMessageBox("This save file is from before version 12.  I took the liberty of doing a clean sweep when I added the new garrisons to improve the code quality. Sorry.  You can still load .map files from before version 12 though.");
@@ -345,7 +349,7 @@ public static class State
                             if (World.EmpireOrder.Where(s => s.Side == 702).Any() == false)
                                 World.EmpireOrder.Add(World.GetEmpireOfSide(702));
                         } */
-                if (string.Compare(World.SaveVersion, "30") < 0)
+                if (version < 30 + 1)
                 {
                     if (World.AllActiveEmpires != null)
                     {
@@ -384,9 +388,7 @@ public static class State
                     Config.World.MaxSpellLevelDrop = 4;
             }
 
-
-
-            if (string.Compare(World.SaveVersion, "18") < 0)
+            if (version < 18 + 1)
             {
                 if (Config.LeaderLossLevels == 0)
                     Config.World.LeaderLossLevels = 1;
@@ -400,7 +402,7 @@ public static class State
                 }
             }
 
-            if (string.Compare(World.SaveVersion, "20") < 0)
+            if (version < 20 + 1)
             {
                 if (World.AllActiveEmpires != null)
                 {
@@ -413,7 +415,7 @@ public static class State
                 }
             }
 
-            if (string.Compare(World.SaveVersion, "21") < 0)
+            if (version < 21 + 1)
             {
                 if (World.Villages != null)
                 {
@@ -431,7 +433,7 @@ public static class State
                 }
             }
 
-            if (string.Compare(World.SaveVersion, "21D") < 0)
+            if (version < 21D + 1)
             {
                 if (World.AllActiveEmpires != null)
                 {
@@ -466,7 +468,7 @@ public static class State
 
             }
 
-            if (string.Compare(World.SaveVersion, "22") < 0)
+            if (version < 22 + 1)
             {
                 if (World.AllActiveEmpires != null)
                 {
@@ -477,7 +479,7 @@ public static class State
                 }
             }
 
-            if (string.Compare(World.SaveVersion, "26") < 0)
+            if (version < 26 + 1)
             {
                 if (World.AllActiveEmpires != null)
                 {
@@ -496,7 +498,7 @@ public static class State
                 }
             }
 
-            if (string.Compare(World.SaveVersion, "26A") < 0)
+            if (version < 26 + 1)
             {
                 if (World.AllActiveEmpires != null)
                 {
@@ -518,7 +520,7 @@ public static class State
                 }
             }
 
-            if (string.Compare(World.SaveVersion, "26D") < 0)
+            if (version < 26D + 1)
             {
                 if (World.AllActiveEmpires != null)
                 {
@@ -530,12 +532,12 @@ public static class State
                 }
             }
 
-            if (string.Compare(World.SaveVersion, "27A") < 0)
+            if (version < 27 + 1)
             {
                 Config.World.Toggles["Defections"] = true;
             }
 
-            if (string.Compare(World.SaveVersion, "28") < 0)
+            if (version < 28 + 1)
             {
                 Config.World.OralWeight = 40;
                 Config.World.BreastWeight = 40;
@@ -545,7 +547,7 @@ public static class State
                 Config.World.AnalWeight = 40;
             }
 
-            if (string.Compare(World.SaveVersion, "28C") < 0)
+            if (version < 28 + 1)
             {
                 if (World.AllActiveEmpires != null)
                 {
@@ -567,7 +569,7 @@ public static class State
                 }
             }
 
-            if (string.Compare(World.SaveVersion, "28C") < 0)
+            if (version < 28 + 1)
             {
                 if (World.AllActiveEmpires != null)
                 {
@@ -581,13 +583,13 @@ public static class State
                 }
             }
 
-            if (string.Compare(World.SaveVersion, "29") < 0)
+            if (version < 29 + 1)
             {
                 World.ConfigStorage.OverallMonsterCapModifier = 1;
                 World.ConfigStorage.OverallMonsterSpawnRateModifier = 1;
             }
 
-            if (string.Compare(World.SaveVersion, "30F") < 0)
+            if (version < 30 + 1)
             {
                 if (World.AllActiveEmpires != null)
                 {
@@ -601,13 +603,13 @@ public static class State
 
             }
 
-            if (string.Compare(World.SaveVersion, "30H") < 0)
+            if (version < 30 + 1)
             {
                 Config.World.AutoSurrenderChance = 1;
 
             }
 
-            if (string.Compare(World.SaveVersion, "31") < 0)
+            if (version < 31 + 1)
             {
                 if (World.AllActiveEmpires != null)
                 {
@@ -621,7 +623,7 @@ public static class State
                 }
             }
 
-            if (string.Compare(World.SaveVersion, "32") < 0)
+            if (version < 32 + 1)
             {
                 World.ConfigStorage.StartingPopulation = 99999;
                 if (World.AllActiveEmpires != null)
@@ -643,7 +645,7 @@ public static class State
                 }
             }
 
-            if (string.Compare(World.SaveVersion, "34") < 0)
+            if (version < 34 + 1)
             {
                 if (World.AllActiveEmpires != null)
                 {
@@ -658,7 +660,7 @@ public static class State
             }
 
 
-            if (string.Compare(World.SaveVersion, "34B") < 0)
+            if (version < 34 + 1)
             {
                 if (World.AllActiveEmpires != null)
                 {
@@ -672,7 +674,7 @@ public static class State
                 }
             }
 
-            if (string.Compare(World.SaveVersion, "35B") < 0)
+            if (version < 35 + 1)
             {
                 if (World.AllActiveEmpires != null)
                 {
@@ -680,7 +682,7 @@ public static class State
                 }
             }
 
-            if (string.Compare(World.SaveVersion, "37A") < 0)
+            if (version < 37 + 1)
             {
                 foreach (var unit in StrategicUtilities.GetAllUnits())
                 {
@@ -698,7 +700,7 @@ public static class State
                 }
             }
 
-            if (string.Compare(World.SaveVersion, "38C") < 0)
+            if (version < 38 + 1)
             {
                 if (World.AllActiveEmpires != null)
                 {
@@ -724,7 +726,7 @@ public static class State
             }
 
 
-            if (string.Compare(World.SaveVersion, "38G") < 0)
+            if (version < 38 + 1)
             {
                 if (World.AllActiveEmpires != null)
                 {
@@ -739,7 +741,7 @@ public static class State
 
             }
 
-            if (string.Compare(World.SaveVersion, "39") < 0)
+            if (version < 39 + 1)
             {
                 World.ConfigStorage.FogDistance = 2;
 
@@ -755,7 +757,7 @@ public static class State
                 }
             }
 
-            if (string.Compare(World.SaveVersion, "40B") < 0)
+            if (version < 40 + 1)
             {
                 if (World.TacticalData != null)
                 {
@@ -777,7 +779,7 @@ public static class State
             }
 
 
-            if (string.Compare(World.SaveVersion, "41E") < 0)
+            if (version < 41 + 1)
             {
                 if (World.AllActiveEmpires != null)
                 {
@@ -867,6 +869,23 @@ public static class State
 
             if (Config.World.TacticalWaterValue == 0)
                 Config.World.TacticalWaterValue = .29f;
+
+            World.ItemRepository = new ItemRepository();
+
+            if (version < 41 + 1)
+            {
+                if (Config.World.BaseCritChance == 0)
+                    Config.World.BaseCritChance = .05f;
+
+                if (Config.World.CritDamageMod == 0)
+                    Config.World.CritDamageMod = 1.5f;
+
+                if (Config.World.BaseGrazeChance == 0)
+                    Config.World.BaseGrazeChance = .05f;
+
+                if (Config.World.GrazeDamageMod == 0)
+                    Config.World.GrazeDamageMod = .3f;
+            }
 
             bool pureTactical = false;
             if (World.MainEmpires != null) //Is the detector for a pure tactical game.
