@@ -29,11 +29,6 @@
     GateMaw = 19,
     Resurrection = 20,
 
-    AmplifyMagic = 60,
-    Evocation = 61,
-    ManaFlux = 62,
-    UnstableMana = 63,
-
     AlraunePuff = 70,
     Web = 71,
     GlueBomb = 72,
@@ -43,6 +38,10 @@
     Bind = 76,
     Whispers = 77,
     //Corrupt = 78,
+    AmplifyMagic = 79,
+    Evocation = 80,
+    ManaFlux = 81,
+    UnstableMana = 82,
 
     ViperDamage = 110,
     ForceFeed = 111,
