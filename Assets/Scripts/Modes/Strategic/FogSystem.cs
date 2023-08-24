@@ -111,7 +111,7 @@ class FogSystem
 
     void ClearWithinXTilesOf(Vec2i pos)
     {
-        int dist = Config.FogDistance;
+        int dist = Config.FogDistance - ((State.World.IsNight) ? Config.NightStrategicSightReduction : 0);
         for (int x = pos.x - dist; x <= pos.x + dist; x++)
         {
             for (int y = pos.y - dist; y <= pos.y + dist; y++)

@@ -531,7 +531,7 @@ static class TacticalUtilities
         {
             for (int i = 0; i < Units.Count; i++)
             {
-                if (Units[i].Targetable == true)
+                if (Units[i].Targetable == true && !Units[i].Hidden)
                 {
                     if (Units[i].Position.x == x && Units[i].Position.y == y)
                     {

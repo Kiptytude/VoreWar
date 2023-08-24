@@ -164,7 +164,32 @@ public class WorldConfig
     internal int CockSizeModifier = 0;
     [OdinSerialize]
     internal int DefaultStartingWeight = 3;
+	
+    // DayNight configuration
+    [OdinSerialize, AllowEditing, IntegerRange(1, 10), Description("It will be night for the entire round every X round. (Set to 1 for every round, 2 for every other, etc.)")]
+    internal int NightRounds = 2;
+    [OdinSerialize, AllowEditing, ProperName("Base Night Chance"), FloatRange(0, 1), Description("The % chance that it will be night on a given turn. Night will only last that Empire's turn and can occur multiple times per round.")]
+    internal float BaseNightChance = 0.01f;
+    [OdinSerialize, AllowEditing, ProperName("Night Chance Increase"), FloatRange(0, 1), Description("The increase of the % chance it will be night on a given turn, increasing every turn it is not night.  (% chance resets to the base chance after a night turn)")]
+    internal float NightChanceIncrease = 0.01f;
+    [OdinSerialize, AllowEditing, ProperName("Defualt Vision Radius"), IntegerRange(1,5), Description("Radius of a unit's vision at night. Things like traits can also increase this.")]
+    internal int DefualtTacticalSightRange = 1;
+    [OdinSerialize, AllowEditing, ProperName("Defualt Vision Radius"), IntegerRange(0, 7), Description("Radius of a unit's vision at night. Things like traits can also increase this.")]
+    internal int NightStrategicSightReduction = 1;
+    [OdinSerialize, AllowEditing, ProperName("Reveal Turn"), Description("The tactical turn where every unit is revealed.")]
+    internal int RevealTurn = 50;
 
+    // CombatComplications configuration
+    // Critical strikes
+    [OdinSerialize, AllowEditing, ProperName("Base Critical Chance"), FloatRange(0, 1), Description("Base chance for a critical strike if not calculated from stats. If 'Stat Based Crit' is enabled with this, the chance will never be lower than this percentage, but it can be higher. Set to 0 to disable.")]
+    internal float BaseCritChance = 0.05f;
+    [OdinSerialize, AllowEditing, ProperName("Critical Damage Multiplier"), FloatRange(0, 1), Description("Damage is multiplied by this number. At default value (1.5), 10 damage is modified to 15")]
+    internal float CritDamageMod = 1.5f;
+    // Graze
+    [OdinSerialize, AllowEditing, ProperName("Base Graze Chance"), FloatRange(0, 1), Description("Base chance for a graze if not calculated from stats. If 'Stat Based Graze' is enabled, the chance will never be lower than this percentage, but it can be higher. Set to 0 to disable.")]
+    internal float BaseGrazeChance = 0.10f;
+    [OdinSerialize, AllowEditing, ProperName("Graze Damage Multiplier"), FloatRange(0, 1), Description("Damage is multiplied by this number. At default value (0.3), 10 damage is modified to 3")]
+    internal float GrazeDamageMod = 0.30f;
 
     [OdinSerialize]
     internal bool FactionLeaders;
@@ -311,7 +336,16 @@ public class WorldConfig
             ["HideViperSlit"] = false,
             ["BurpOnDigest"] = false,
             ["FartOnAbsorb"] = false,
-            ["StatBoostsAffectMaxHP"] = false
+            ["StatBoostsAffectMaxHP"] = false,
+            ["DayNightEnabled"] = true,
+            ["DayNightCosmetic"] = false,
+            ["DayNightSchedule"] = true,
+            ["DayNightRandom"] = true,
+            ["NightMonsters"] = false,
+            ["NightMoveMonsters"] = false,
+            ["CombatComplicationsEnabled"] = false,
+            ["StatCrit"] = false,
+            ["StatGraze"] = false,
         };
 
         foreach (Race race in (Race[])Enum.GetValues(typeof(Race)))

@@ -97,6 +97,7 @@ static class RaceParameters
     static readonly RaceTraits Erin;
     static readonly RaceTraits Goodra;
     static readonly RaceTraits Whisp;
+    static readonly RaceTraits Salix;
 
     static Unit tempUnit;
 
@@ -308,6 +309,8 @@ static class RaceParameters
                 return Goodra;
             case Race.Whisp:
                 return Whisp;
+            case Race.Salix:
+                return Salix;
             case (Race)700: //Singled out so that it doesn't make the debug message
                 return Default;
             case (Race)701:
@@ -2613,6 +2616,35 @@ static class RaceParameters
             RaceDescription = "Goodra, the Slug Dragon Pokemon. Goodra are large soft dragon type pokemon coated in slime. They love to give hugs and often confuse friends from food."
         };
 
+        Salix = new RaceTraits()
+        {
+            BodySize = 10,
+            StomachSize = 15,
+            HasTail = true,
+            FavoredStat = Stat.Dexterity,
+            AllowedVoreTypes = new List<VoreType> { VoreType.Oral, VoreType.Unbirth, VoreType.BreastVore, VoreType.Anal, VoreType.CockVore },
+            ExpMultiplier = 2.4f,
+            PowerAdjustment = 5f,
+            RaceStats = new RaceStats()
+            {
+                Strength = new RaceStats.StatRange(6, 10),
+                Dexterity = new RaceStats.StatRange(10, 15),
+                Endurance = new RaceStats.StatRange(15, 20),
+                Mind = new RaceStats.StatRange(25, 30),
+                Will = new RaceStats.StatRange(20, 25),
+                Agility = new RaceStats.StatRange(24, 26),
+                Voracity = new RaceStats.StatRange(16, 20),
+                Stomach = new RaceStats.StatRange(11, 16),
+            },
+            RacialTraits = new List<Traits>()
+            {
+                Traits.ArcaneMagistrate,
+                Traits.SpellBlade,
+                Traits.ManaAttuned,
+                Traits.ManaRich
+            },
+            RaceDescription = "A demi-mouse mage from a different, mana rich dimension. Has had trouble adapting to the absence of mana here, but makes do.",
+        };
 
     }
 
