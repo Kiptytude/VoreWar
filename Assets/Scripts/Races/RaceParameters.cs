@@ -2581,14 +2581,14 @@ static class RaceParameters
             PowerAdjustment = 2f,
             RaceStats = new RaceStats()
             {
-                Strength = new RaceStats.StatRange(5, 10),
-                Dexterity = new RaceStats.StatRange(5, 10),
-                Endurance = new RaceStats.StatRange(20, 25),
-                Mind = new RaceStats.StatRange(20, 30),
-                Will = new RaceStats.StatRange(20, 25),
+                Strength = new RaceStats.StatRange(16, 16),
+                Dexterity = new RaceStats.StatRange(20, 20),
+                Endurance = new RaceStats.StatRange(26, 30),
+                Mind = new RaceStats.StatRange(20, 20),
+                Will = new RaceStats.StatRange(14, 20),
                 Agility = new RaceStats.StatRange(24, 26),
                 Voracity = new RaceStats.StatRange(16, 20),
-                Stomach = new RaceStats.StatRange(5, 10),
+                Stomach = new RaceStats.StatRange(9, 10),
             },
             RacialTraits = new List<Traits>()
             {
@@ -2598,8 +2598,7 @@ static class RaceParameters
                 Traits.Flight,
                 Traits.TheGreatEscape
             },
-            InnateSpells = new List<SpellTypes>() { SpellTypes.DivinitysEmbrace },
-            RaceDescription = "Erin belongs to an incredibly rare species known as a Nyangel, the lovechild of a catgirl and an angel.  Due to their divine heritage, most of them are incredible healers... but also incredibly tasty.  All Nyangels possess a unique trait that sets them apart from each other, and Erin is no exception to that rule.  Her particular quirk is immunity to acids, which is the perfect defense against the voracious predators of this realm.  That doesn't prevent her from being eaten however, an unfortunate fact that she is frequently reminded of...  Regardless of how many times she's devoured, she still seeks to help those in need of healing on the battlefields.",
+            RaceDescription = "An incredibly delicious angel catgirl.",
         };
 		
 		Goodra = new RaceTraits()

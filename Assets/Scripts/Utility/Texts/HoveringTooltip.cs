@@ -282,8 +282,6 @@ public class HoveringTooltip : MonoBehaviour
                         return $"Unit fights for the unit that charmed it.";
                     case StatusEffectType.Virus:
                         return $"(Spell) Unit is taking damage over time\nTurns Remaining: {effect.Duration}";
-                    case StatusEffectType.DivineShield:
-                        return $"(Spell) Unit has been embraced by the heavens, reducing incoming damage for: {effect.Duration} turns.";
                 }
             }
         }

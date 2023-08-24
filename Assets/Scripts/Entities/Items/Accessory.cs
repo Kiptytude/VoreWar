@@ -6,18 +6,13 @@ public class Accessory : Item
     public int ChangedStat { get; private set; }
     [OdinSerialize]
     public int StatBonus { get; private set; }
-    [OdinSerialize]
-    public int ChangedStat2 { get; private set; }
-    [OdinSerialize]
-    public int Stat2Bonus { get; private set; }
 
-    public Accessory(string name, string description, int cost, int changedStat, int statBonus, bool lockedItem = false)
+    public Accessory(string name, string description, int cost, int changedStat, int statBonus)
     {
         Name = name;
         Cost = cost;
         Description = description;
         ChangedStat = changedStat;
         StatBonus = statBonus;
-        LockedItem = lockedItem;
     }
 }

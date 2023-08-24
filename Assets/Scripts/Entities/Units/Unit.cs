@@ -808,12 +808,6 @@ public class Unit
             FixedGear = true;
             Items[0] = State.World.ItemRepository.GetSpecialItem(SpecialItems.AurilikaWeapon);
         }
-        else if (race == Race.Erin)
-        {
-            FixedGear = true;
-            Items[0] = State.World.ItemRepository.GetSpecialItem(SpecialItems.ErinWeapon);
-            Items[1] = State.World.ItemRepository.GetSpecialItem(SpecialItems.ErinWings);
-        }
         else
         {
             FixedGear = false;
