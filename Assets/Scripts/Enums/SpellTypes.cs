@@ -27,7 +27,14 @@
     //Raze,
     Diminishment = 18,
     GateMaw = 19,
-    Resurrection = 20,
+
+    AmplifyMagic = 22,
+    Evocation = 23,
+    ManaFlux = 24,
+    UnstableMana = 25,
+    Resurrection = 26,
+
+
 
     AlraunePuff = 70,
     Web = 71,
@@ -38,10 +45,6 @@
     Bind = 76,
     Whispers = 77,
     //Corrupt = 78,
-    AmplifyMagic = 79,
-    Evocation = 80,
-    ManaFlux = 81,
-    UnstableMana = 82,
 
     ViperDamage = 110,
     ForceFeed = 111,

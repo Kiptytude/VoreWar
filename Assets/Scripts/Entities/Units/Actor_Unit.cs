@@ -402,14 +402,6 @@ public class Actor_Unit
             }
             Unit.UpdateSpells();
         }
-        if (Unit.HasTrait(Traits.ArcaneMagistrate) && State.World?.ItemRepository != null) //protection for the create strat screen
-        {
-            Unit.MultiUseSpells.Add(SpellList.AmplifyMagic.SpellType);
-            Unit.MultiUseSpells.Add(SpellList.Evocation.SpellType);
-            Unit.MultiUseSpells.Add(SpellList.ManaFlux.SpellType);
-            Unit.MultiUseSpells.Add(SpellList.UnstableMana.SpellType);
-            Unit.UpdateSpells();
-        }
     }
 
     public void GenerateSpritePrefab(Transform folder)
@@ -1572,6 +1564,10 @@ public class Actor_Unit
                     Unit.StatusEffects.Remove(charm);                // betrayal dispels charm
                 }
             }
+            if (attacker.Unit.HasTrait(Traits.ArcaneMagistrate))
+            {
+                attacker.Unit.AddFocus((Unit.IsDead ? 5 : 1));
+            }
             attacker.Unit.GiveScaledExp(1 * Unit.ExpMultiplier, Unit.Level - Unit.Level);
             if (Unit.IsDead)
             {
@@ -2353,7 +2349,7 @@ public class Actor_Unit
 	
     internal bool CastSpell(Spell spell, Actor_Unit target)
     {
-        if (Unit.SpendMana(spell.ManaCost) == false)
+        if (Unit.SpendMana(spell.ManaCost) == false && spell.IsFree != true)
             return false;
         Unit.GiveExp(1);
         //if (target != null && target.DefendSpellCheck(spell, this, out float chance) == false)
@@ -2401,7 +2397,7 @@ public class Actor_Unit
     {
         if (Unit.Predator == false)
             return;
-        if (Unit.SpendMana(spell.ManaCost) == false)
+        if (Unit.SpendMana(spell.ManaCost) == false && spell.IsFree != true)
             return;
 
         State.GameManager.SoundManager.PlaySpellCast(spell, this);
@@ -2448,7 +2444,7 @@ public class Actor_Unit
     }
     internal void CastOffensiveSpell(DamageSpell spell, Actor_Unit target, Vec2i targetArea = null)
     {
-        if (Unit.SpendMana(spell.ManaCost) == false)
+        if (Unit.SpendMana(spell.ManaCost) == false && spell.IsFree != true)
             return;
         State.GameManager.SoundManager.PlaySpellCast(spell, this);
 
@@ -2503,7 +2499,7 @@ public class Actor_Unit
 
     internal bool CastStatusSpell(StatusSpell spell, Actor_Unit target, Vec2i targetArea = null, Stat stat = Stat.Mind)
     {
-        if (Unit.SpendMana(spell.ManaCost) == false)
+        if (Unit.SpendMana(spell.ManaCost) == false && spell.IsFree != true)
             return false;
 
         bool hit = false;
@@ -2561,7 +2557,7 @@ public class Actor_Unit
             return false;
         var binder = TacticalUtilities.Units.Where(a => a.Unit.BoundUnit?.Unit == t.Unit).FirstOrDefault();
         if (binder?.Unit.FixedSide == Unit.FixedSide) return false;
-        if (Unit.SpendMana(spell.ManaCost) == false) return false;
+        if (Unit.SpendMana(spell.ManaCost) == false && spell.IsFree != true) return false;
 
 
         if (binder != null)
@@ -2696,7 +2692,7 @@ public class Actor_Unit
 
         if (TacticalUtilities.Units.Contains(Unit.BoundUnit) && !Unit.BoundUnit.Unit.IsDead)
             return false;
-        if (Unit.SpendMana(spell.ManaCost) == false) return false;
+        if (Unit.SpendMana(spell.ManaCost) == false && spell.IsFree != true) return false;
 
         State.GameManager.SoundManager.PlaySpellCast(SpellList.Summon, this);
 

@@ -898,7 +898,7 @@ static class SpellList
             Name = "Evocation",
             Id = "evocation",
             SpellType = SpellTypes.Evocation,
-            Description = "Draw all nearby Unit's Focus onto a target, inspiring it. Grants the target equivalent Overload stacks and half as much MP.",
+            Description = "Draw all nearby Unit's Focus onto a target, inspiring it. Grants the target equivalent SpellForce stacks and half as much MP.",
             AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Ally },
             Range = new Range(1),
             Tier = 0,
@@ -908,16 +908,18 @@ static class SpellList
             OnExecute = (a, t) =>
             {
                 a.CastSpell(Evocation, a);
+                int stacks = 0;
                 foreach (var ally in TacticalUtilities.UnitsWithinTiles(t.Position, 1).Where(s => s.Unit.GetStatusEffect(StatusEffectType.Focus) != null))
                 {
                     for (int i = 0; i < ally.Unit.GetStatusEffect(StatusEffectType.Focus).Duration; i++)
                     {
                         t.Unit.AddSpellForce();
+                        stacks++;
                     }
                     ally.Unit.StatusEffects.Remove(ally.Unit.GetStatusEffect(StatusEffectType.Focus));
                     TacticalGraphicalEffects.CreateGenericMagic(ally.Position, t.Position, t);
                 }
-                t.Movement += 1;
+                t.Movement += stacks/2;
                 TacticalGraphicalEffects.CreateGenericMagic(a.Position, t.Position, t, TacticalGraphicalEffects.SpellEffectIcon.PurplePlus);
             }
         };
@@ -947,7 +949,7 @@ static class SpellList
             Name = "Unstable Mana",
             Id = "unstable-mana",
             SpellType = SpellTypes.UnstableMana,
-            Description = "Deals damage increased unit's current mana, then uses it all. The target explodes, dealing half of their current mana as damage around them.",
+            Description = "Deals damage increased by unit's current mana, then uses it all. The target explodes, dealing half of their current mana as damage around them.",
             AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy },
             Range = new Range(6),
             Tier = 0,
@@ -972,7 +974,7 @@ static class SpellList
         ManaExpolsion = new DamageSpell()
         {
             Name = "Mana Expolsion",
-            Id = "Mana Expolsion",
+            Id = "mana-expolsion",
             SpellType = SpellTypes.ManaExpolsion,
             Description = "(Second half of Unstable Mana Spell)",
             AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy },
@@ -981,6 +983,7 @@ static class SpellList
             AreaOfEffect = 1,
             Damage = (a, t) => t.Unit.Mana / 2,
             Resistable = true,
+            ResistanceMult = 0.2f,
             OnExecute = (a, t) =>
             {
             }
