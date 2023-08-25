@@ -1561,12 +1561,8 @@ public class Actor_Unit
         if (DefendSpellCheck(spell, attacker, out float chance))
         {
             damage = (int)(damage * attacker.Unit.TraitBoosts.Outgoing.MagicDamage * Unit.TraitBoosts.Incoming.MagicDamage);
-            if (spell.DamageType == DamageTypes.Fire)
-                damage = (int)Mathf.Round(damage * Unit.TraitBoosts.FireDamageTaken);
-            if (spell.DamageType == DamageTypes.Poison && Unit.HasTrait(Traits.PoisonSpit))
-                damage = 0;
             State.GameManager.TacticalMode.TacticalStats.RegisterHit(spell, Mathf.Min(damage, Unit.Health), attacker.Unit.Side);
-            Damage(damage, true);
+            Damage(damage, true, damageType: spell.DamageType);
             State.GameManager.TacticalMode.Log.RegisterSpellHit(attacker.Unit, Unit, spell.SpellType, damage, chance);
             if (attacker.Unit.FixedSide == TacticalUtilities.GetMindControlSide(Unit))
             {
@@ -2160,7 +2156,19 @@ public class Actor_Unit
 
     public int CalculateDamageWithResistance(int damage, DamageTypes damageType)
     {
-        return 0;
+        switch (damageType)
+        {
+            case DamageTypes.Fire:
+                damage = (int)Mathf.Round(damage * Unit.TraitBoosts.FireDamageTaken);
+                break;
+            case DamageTypes.Poison:
+                if (Unit.HasTrait(Traits.PoisonSpit))
+                    damage = 0;
+                break;
+            default:
+                break;
+        }
+        return damage;
     }
 
     public bool Damage(int damage, bool spellDamage = false, bool canKill = true, DamageTypes damageType = DamageTypes.Generic)

@@ -1418,4 +1418,19 @@ public class ContentSettings : MonoBehaviour
         SpecialMercsCanConvert.interactable = KuroTenkoEnabled.isOn && (int)Config.UBConversion <= 1;
         NoScatForDeadTransfers.interactable = KuroTenkoEnabled.isOn;
     }
+
+    public void DayNightCycleChanged()
+    {
+        //Scarab was here
+        DayNightCosmetic.interactable = DayNightEnabled.isOn;
+        DayNightSchedule.interactable = DayNightEnabled.isOn;
+        DayNightRandom.interactable = DayNightEnabled.isOn;
+        NightMonsters.interactable = DayNightEnabled.isOn;
+        NightMoveMonsters.interactable = DayNightEnabled.isOn;
+        NightRounds.interactable = DayNightEnabled.isOn && DayNightSchedule.isOn;
+        BaseNightChance.interactable = DayNightEnabled.isOn && DayNightRandom.isOn;
+        NightChanceIncrease.interactable = DayNightEnabled.isOn && DayNightRandom.isOn;
+        DefualtTacticalSightRange.interactable = DayNightEnabled.isOn;
+        NightStrategicSightReduction.interactable = DayNightEnabled.isOn;
+    }
 }
