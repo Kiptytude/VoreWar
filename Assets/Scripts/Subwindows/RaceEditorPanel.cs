@@ -306,10 +306,11 @@ public class RaceEditorPanel : MonoBehaviour
                 item.FavoredStat = (Stat)FavoredStat.value;
                 item.FavoredStatSet = true;
 
-                var value = (SpellTypes)InnateSpellDropdown.value;
+                int spellIndex = InnateSpellDropdown.value;
+                var value = (SpellTypes)Enum.GetValues(typeof(SpellTypes)).GetValue(spellIndex);
 
-                if (value > SpellTypes.Resurrection)
-                    value = value - SpellTypes.Resurrection + SpellTypes.AlraunePuff - 1;
+                //if (value > SpellTypes.Resurrection)
+                //    value = value - SpellTypes.Resurrection + SpellTypes.AlraunePuff - 1;
 
                 item.InnateSpell = value;
                 if(Enum.TryParse(SpawnRaceDropdown.options[SpawnRaceDropdown.value].text, out Race spawnRace))
@@ -509,9 +510,9 @@ public class RaceEditorPanel : MonoBehaviour
             FavoredStat.value = (int)State.RaceSettings.GetFavoredStat(race);
             FavoredStat.RefreshShownValue();
 
-            var spell = State.RaceSettings.GetInnateSpell(race);
-            if (spell > SpellTypes.Resurrection)
-                spell = spell - SpellTypes.AlraunePuff + SpellTypes.Resurrection + 1;
+            var spell = Array.IndexOf(Enum.GetValues(typeof(SpellTypes)), State.RaceSettings.GetInnateSpell(race));
+            //if (spell > SpellTypes.Resurrection)
+            //    spell = spell - SpellTypes.AlraunePuff + SpellTypes.Resurrection + 1;
 
 
             InnateSpellDropdown.value = (int)spell;

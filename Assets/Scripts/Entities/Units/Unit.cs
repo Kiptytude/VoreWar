@@ -2422,7 +2422,7 @@ internal void SetGenderRandomizeName(Race race, Gender gender)
         }
         if (Items.Length <= i)
         {
-            UnityEngine.Debug.LogWarning("Tried to Assign item to a non-existant slot!");
+            UnityEngine.Debug.LogWarning("Tried to assign item to a non-existent slot!");
             return;
         }
         if (item is SpellBook && HasTrait(Traits.BookEater) && !fromUnitEditor)

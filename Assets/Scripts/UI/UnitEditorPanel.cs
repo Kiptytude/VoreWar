@@ -249,9 +249,10 @@ public class UnitEditorPanel : CustomizerPanel
     {
         for (int i = 0; i < SpellDropdown.Length; i++)
         {
-            SpellTypes spell = (SpellTypes)SpellDropdown[i].value;
-            if (spell > SpellTypes.Resurrection)
-                spell = spell - SpellTypes.Resurrection + SpellTypes.AlraunePuff - 1;
+            int spellIndex = SpellDropdown[i].value;
+            SpellTypes spell = (SpellTypes)Enum.GetValues(typeof(SpellTypes)).GetValue(spellIndex);
+            //if (spell > SpellTypes.Resurrection)
+            //    spell = spell - SpellTypes.Resurrection + SpellTypes.AlraunePuff - 1;
             if (spell != SpellTypes.None)
             {
                 if (UnitEditor.Unit.InnateSpells.Count > i)
@@ -310,6 +311,7 @@ public class UnitEditorPanel : CustomizerPanel
             UnitEditor.Unit.ReloadTraits();
             UnitEditor.Unit.InitializeTraits();
             UnitEditor.RefreshActor();
+            PopulateItems();
             TraitList.text = UnitEditor.Unit.ListTraits();
         }
     }
@@ -354,9 +356,9 @@ public class UnitEditorPanel : CustomizerPanel
                 UnitEditor.Unit.InnateSpells = new List<SpellTypes>();
             if (UnitEditor.Unit.InnateSpells.Count > i)
             {
-                var value = UnitEditor.Unit.InnateSpells[i];
-                if (value > SpellTypes.Resurrection)
-                    value = value - SpellTypes.AlraunePuff + SpellTypes.Resurrection + 1;
+                var value = Array.IndexOf(Enum.GetValues(typeof(SpellTypes)), UnitEditor.Unit.InnateSpells[i]);
+                //if (value > SpellTypes.Resurrection)
+                //    value = value - SpellTypes.AlraunePuff + SpellTypes.Resurrection + 1;
                 SpellDropdown[i].value = (int)value;
             }
             else
