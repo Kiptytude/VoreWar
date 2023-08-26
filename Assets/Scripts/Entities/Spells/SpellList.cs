@@ -891,6 +891,31 @@ static class SpellList
         };
         SpellDict[SpellTypes.ViralInfection] = ViralInfection;
 
+        AmplifyMagic = new Spell()
+        {
+            Name = "Amplify Magic",
+            Id = "amplify-magic",
+            SpellType = SpellTypes.AmplifyMagic,
+            Description = "Grant nearby units stacks of Focus, scaling with will.",
+            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Ally },
+            Range = new Range(1),
+            Tier = 0,
+            AreaOfEffect = 1,
+            Resistable = false,
+            IsFree = true,
+            OnExecute = (a, t) =>
+            {
+                a.CastSpell(AmplifyMagic, t);
+                int amt = a.Unit.GetStat(Stat.Will) / 25;
+                foreach (var ally in TacticalUtilities.UnitsWithinTiles(t.Position, 1).Where(s => s.Unit.IsDead == false && s.Unit.Side == a.Unit.Side))
+                {
+                    ally.Unit.AddFocus(((amt > 1) ? amt : 1));
+                    TacticalGraphicalEffects.CreateGenericMagic(a.Position, ally.Position, ally, TacticalGraphicalEffects.SpellEffectIcon.Buff);
+                }
+            }
+        };
+        SpellDict[SpellTypes.AmplifyMagic] = AmplifyMagic;
+
         DivinitysEmbrace = new StatusSpell()
         {
             Name = "Divinity's Embrace",
