@@ -14,5 +14,6 @@ public class Accessory : Item
         Description = description;
         ChangedStat = changedStat;
         StatBonus = statBonus;
+        LockedItem = LockedItem;
     }
 }

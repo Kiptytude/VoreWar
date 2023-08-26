@@ -363,6 +363,8 @@ static class LogUtilities
                 return GetRandomStringFrom("formerly apex predator", "delicious dragon", "ex-predator"); ////new 
             case Race.FeralLions:
                 return GetRandomStringFrom("roaring", "once-vicious", "formerly-fearsome");
+            case Race.Aabayx:
+                return GetRandomStringFrom("strange-headed", "humbled viroid", "awkward-shaped");
             default:
                 return "tasty";
         }
@@ -559,6 +561,8 @@ static class LogUtilities
                 return GetRandomStringFrom("demi-frog", "amphibian", "frog"); ////new, many thanks to Flame_Valxsarion             
             case Race.FeralLions:
                 return GetRandomStringFrom("feline", GetGenderString(unit, "lioness", "lion", "lion"), "leonine", "kitty");
+            case Race.Aabayx:
+                return GetRandomStringFrom("viroid", "virosapien", "dice-like", "math-obsessed"); ////new, and probably wrong
             default:
                 return "creature";
         }
@@ -771,6 +775,14 @@ static class LogUtilities
             else if (weapon.Name == "Axe") return "Pickax";
             else if (weapon.Name == "Simple Bow") return "Dart";
             else if (weapon.Name == "Compound Bow") return "Dart";
+            else if (weapon.Name == "Claw") return "Fist";
+        }
+        else if (unit.Race == Race.Aabayx)
+        {
+            if (weapon.Name == "Mace") return "Longscalpel";
+            else if (weapon.Name == "Axe") return "Personsmasher";
+            else if (weapon.Name == "Simple Bow") return "Razorflinger";
+            else if (weapon.Name == "Compound Bow") return "Arrowbisector";
             else if (weapon.Name == "Claw") return "Fist";
         }
         else if (weapon.Name == "Claw") return "Claws";

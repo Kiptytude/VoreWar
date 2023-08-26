@@ -27,14 +27,16 @@
     //Raze,
     Diminishment = 18,
     GateMaw = 19,
+    ViralInfection = 20,
+    DivinitysEmbrace = 21,
 
-    AmplifyMagic = 22,
-    Evocation = 23,
-    ManaFlux = 24,
-    UnstableMana = 25,
-    Resurrection = 26,
+    Resurrection = 22,
 
-
+    AmplifyMagic = 23,
+    Evocation = 24,
+    ManaFlux = 25,
+    UnstableMana = 26,
+    Resurrection = 27,
 
     AlraunePuff = 70,
     Web = 71,

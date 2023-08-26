@@ -412,6 +412,8 @@ public class TacticalMessageLog
                 return $"<b>{action.Unit.Name}</b>'s glue bomb affected <b>{action.Target.Name}</b>.";
             case SpellTypes.Petrify:
                 return $"<b>{action.Unit.Name}</b> petrified <b>{action.Target.Name}</b>.";
+            case SpellTypes.DivinitysEmbrace:
+                return $"<b>{action.Unit.Name}</b> buffed <b>{action.Target.Name}</b> with the {spell.Name} spell.";
             default:
                 return $"<b>{action.Unit.Name}</b> hit <b>{action.Target.Name}</b> with the {spell.Name} spell, dealing <color=red>{action.Damage}</color> damage.";
         }

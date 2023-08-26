@@ -56,5 +56,9 @@
     Focus = 26,
     // <summary>Mind is increased by 1 + 10% and spell mana cost by 10% per stack.</summary>
     SpellForce = 27,
+    /// <summary>Unit has been infected by a virus</summary>
+    Virus = 28,
+    /// <summary>Unit has been embraced by the heavens, providing damage mitigation for a few turns</summary>
+    DivineShield = 29,
 }
 
