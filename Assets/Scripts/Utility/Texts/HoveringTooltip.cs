@@ -619,7 +619,7 @@ public class HoveringTooltip : MonoBehaviour
             case Traits.SpellBlade:
                 return "Unit's weapon damage also scales with mind. (Half as effectively as weapons main stat)";
             case Traits.ArcaneMagistrate:
-                return "Unit gains access to 4 powerful spells.";
+                return "Unit gains 1 focus when it hits a spell, unit gains 4 more if the spell kills the target.";
         }  
         return "<b>This trait needs a tooltip!</b>";
     }

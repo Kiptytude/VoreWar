@@ -348,7 +348,7 @@ public enum Traits
 	AccuteDodge = 175,
     /// <summary>Unit's attacks also have Mind Stat Scaling.</summary>
     SpellBlade = 176,
-    /// <summary>Unit gains access to 4 powerful spells.</summary>
+    /// <summary>Unit gains 1 focus when landing a spell, gains 4 if the spell kills the target.</summary>
     ArcaneMagistrate = 177,
     /// <summary>Damage over time effect recieved from being devoured by an Aabayx</summary>
     ViralDigestion = 178,

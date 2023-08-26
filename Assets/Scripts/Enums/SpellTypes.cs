@@ -32,6 +32,12 @@
 
     Resurrection = 22,
 
+    AmplifyMagic = 23,
+    Evocation = 24,
+    ManaFlux = 25,
+    UnstableMana = 26,
+    Resurrection = 27,
+
     AlraunePuff = 70,
     Web = 71,
     GlueBomb = 72,
@@ -41,10 +47,6 @@
     Bind = 76,
     Whispers = 77,
     //Corrupt = 78,
-    AmplifyMagic = 79,
-    Evocation = 80,
-    ManaFlux = 81,
-    UnstableMana = 82,
 
     ViperDamage = 110,
     ForceFeed = 111,
