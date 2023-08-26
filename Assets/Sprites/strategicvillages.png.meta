@@ -106,6 +106,9 @@ TextureImporter:
     21300202: strategicvillages_92
     21300204: strategicvillages_93
     21300206: strategicvillages_94
+    21300208: strategicvillages_95
+    21300210: strategicvillages_96
+    21300212: strategicvillages_97
   externalObjects: {}
   serializedVersion: 9
   mipmaps:
@@ -192,7 +195,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 320
+        y: 352
         width: 32
         height: 32
       alignment: 0
@@ -202,7 +205,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 571e5e43ea3d83a40a591ad2a70e5828
+      spriteID: 0e297348e9c5e1a4497085bb48adbb90
       vertices: []
       indices: 
       edges: []
@@ -212,7 +215,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 32
-        y: 320
+        y: 352
         width: 32
         height: 32
       alignment: 0
@@ -222,7 +225,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a34aa3a30554dce48beca207adb73cf6
+      spriteID: 31d4cc2a859805540945d52cc80c45b9
       vertices: []
       indices: 
       edges: []
@@ -232,7 +235,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 64
-        y: 320
+        y: 352
         width: 32
         height: 32
       alignment: 0
@@ -242,7 +245,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6005f1fd479644c40a6b4f16ebc9a23b
+      spriteID: e319ce9292219c34ca665f0ca5fc4aa0
       vertices: []
       indices: 
       edges: []
@@ -252,7 +255,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 96
-        y: 320
+        y: 352
         width: 32
         height: 32
       alignment: 0
@@ -262,7 +265,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 65d377ce3b2124248bf943b599d760ee
+      spriteID: ff02528579b033e4a8cd34a542840272
       vertices: []
       indices: 
       edges: []
@@ -272,7 +275,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 128
-        y: 320
+        y: 352
         width: 32
         height: 32
       alignment: 0
@@ -282,7 +285,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 92568f3aea448d54a9dd8216e2cd0a80
+      spriteID: 43561c25ed7681f47b6777e0724ee942
       vertices: []
       indices: 
       edges: []
@@ -292,7 +295,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 160
-        y: 320
+        y: 352
         width: 32
         height: 32
       alignment: 0
@@ -302,7 +305,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ca85264759fd0704bae8c5f66ceb758a
+      spriteID: 231785d9cbda86b429bd67c747465de0
       vertices: []
       indices: 
       edges: []
@@ -312,7 +315,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 192
-        y: 320
+        y: 352
         width: 32
         height: 32
       alignment: 0
@@ -322,7 +325,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5b7837c46edcdfb40b609ac978918e2c
+      spriteID: 3e80be1c84b142642922b821b91ebdfb
       vertices: []
       indices: 
       edges: []
@@ -332,7 +335,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 224
-        y: 320
+        y: 352
         width: 32
         height: 32
       alignment: 0
@@ -342,7 +345,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 24aeff2db2e5517408b70d6d91012fdd
+      spriteID: 3e48306666336d740a5cbd839793a8ea
       vertices: []
       indices: 
       edges: []
@@ -352,6 +355,26 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 256
+        y: 352
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7ae670bcd0b7a4b4e92532df95e55239
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: strategicvillages_9
+      rect:
+        serializedVersion: 2
+        x: 0
         y: 320
         width: 32
         height: 32
@@ -362,27 +385,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: cf3b7d918901220479e6019d9f15f1a4
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: strategicvillages_9
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 288
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 7e2ffd63c9c29ad4fb171377e538719a
+      spriteID: a7e501aa0c54866409fcaf7ff272d7bc
       vertices: []
       indices: 
       edges: []
@@ -392,7 +395,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 32
-        y: 288
+        y: 320
         width: 32
         height: 32
       alignment: 0
@@ -402,7 +405,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: afee47e9add01ed418e132b81073b3f4
+      spriteID: 763ae5c80cded954cbbbad1dcab3d068
       vertices: []
       indices: 
       edges: []
@@ -412,7 +415,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 64
-        y: 288
+        y: 320
         width: 32
         height: 32
       alignment: 0
@@ -422,7 +425,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b1104c81b39d1ba4696e9b42a2e27c1b
+      spriteID: 2cdc6b89351154e4da5d9059a514ebba
       vertices: []
       indices: 
       edges: []
@@ -432,7 +435,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 96
-        y: 288
+        y: 320
         width: 32
         height: 32
       alignment: 0
@@ -442,7 +445,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7b9ab1f100479a74ba5cf64c9401bc7d
+      spriteID: f46d9bfb83d89d24f9c8bd7f4a76dbaa
       vertices: []
       indices: 
       edges: []
@@ -452,7 +455,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 128
-        y: 288
+        y: 320
         width: 32
         height: 32
       alignment: 0
@@ -462,7 +465,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1a9edada3a49fad48bbec2934ded9998
+      spriteID: 0efac48048f557b40bf832be409d85d1
       vertices: []
       indices: 
       edges: []
@@ -472,7 +475,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 160
-        y: 288
+        y: 320
         width: 32
         height: 32
       alignment: 0
@@ -482,7 +485,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4c34932b6090355499eb4147e4ce077b
+      spriteID: 7876c453a13ac734ba8fdc345a811fda
       vertices: []
       indices: 
       edges: []
@@ -492,7 +495,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 192
-        y: 288
+        y: 320
         width: 32
         height: 32
       alignment: 0
@@ -502,7 +505,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 25478af2d6a85a442b6943acaf20a54d
+      spriteID: ae70fc70fb59baa499500c43d22c0fe6
       vertices: []
       indices: 
       edges: []
@@ -512,7 +515,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 224
-        y: 288
+        y: 320
         width: 32
         height: 32
       alignment: 0
@@ -522,7 +525,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 60f9c3e5127e23f4089c1241f6134e78
+      spriteID: 4bf3abde1386bb34da46fae2b26e4d4e
       vertices: []
       indices: 
       edges: []
@@ -532,6 +535,26 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 256
+        y: 320
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 03713e8492af40b4d920d39e418eecf5
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: strategicvillages_18
+      rect:
+        serializedVersion: 2
+        x: 0
         y: 288
         width: 32
         height: 32
@@ -542,27 +565,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 095469f4a03091a4eb6fec52c187e7d2
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: strategicvillages_18
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 256
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 3391fa829ba7e8a4480fda0a3472c032
+      spriteID: a80a3297fdfc2ec4db6556362328d75f
       vertices: []
       indices: 
       edges: []
@@ -572,7 +575,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 32
-        y: 256
+        y: 288
         width: 32
         height: 32
       alignment: 0
@@ -582,7 +585,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f5299e496f3a2414d9cfe69fdd66846e
+      spriteID: 3c5f9e64a4a9489489708f621aabe254
       vertices: []
       indices: 
       edges: []
@@ -592,7 +595,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 64
-        y: 256
+        y: 288
         width: 32
         height: 32
       alignment: 0
@@ -602,7 +605,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1b768ad7668dcfe4c976c328471d925e
+      spriteID: eaa6016da4237af4ab9e0d958087f017
       vertices: []
       indices: 
       edges: []
@@ -612,7 +615,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 96
-        y: 256
+        y: 288
         width: 32
         height: 32
       alignment: 0
@@ -622,7 +625,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 24a8a1141beebb84fa0012e5c9151911
+      spriteID: 4377aa76d338e60439b6cb196116763a
       vertices: []
       indices: 
       edges: []
@@ -632,7 +635,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 128
-        y: 256
+        y: 288
         width: 32
         height: 32
       alignment: 0
@@ -642,7 +645,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: bd7c36598cd65d6428338831ddc4161a
+      spriteID: c5d9609f3d486bb428d449c40300af9c
       vertices: []
       indices: 
       edges: []
@@ -652,7 +655,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 160
-        y: 256
+        y: 288
         width: 32
         height: 32
       alignment: 0
@@ -662,7 +665,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c0581c13898eb2d4fbb66a759783e57c
+      spriteID: ed225f9a596c5014a805507298a78969
       vertices: []
       indices: 
       edges: []
@@ -672,7 +675,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 192
-        y: 256
+        y: 288
         width: 32
         height: 32
       alignment: 0
@@ -682,7 +685,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8d545f8a16bdfc048b54b095461bc560
+      spriteID: 8bb7322e68b7c0a4e8d64328d1a1288b
       vertices: []
       indices: 
       edges: []
@@ -692,7 +695,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 224
-        y: 256
+        y: 288
         width: 32
         height: 32
       alignment: 0
@@ -702,7 +705,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 137ae54ab6a8edd478c0fefcd07547f4
+      spriteID: 3bfc95edbe3d863428d8e0effac1b898
       vertices: []
       indices: 
       edges: []
@@ -712,6 +715,26 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 256
+        y: 288
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 88560f758730c7e459dbb932c05f4bfa
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: strategicvillages_27
+      rect:
+        serializedVersion: 2
+        x: 0
         y: 256
         width: 32
         height: 32
@@ -722,27 +745,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d1b43d61816e06440bca50f329f7d2fd
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: strategicvillages_27
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 224
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 7eeb90556cb5bc2439586ab0616d5323
+      spriteID: d7753c3d7119afb4e8314ec086b11d14
       vertices: []
       indices: 
       edges: []
@@ -752,7 +755,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 32
-        y: 224
+        y: 256
         width: 32
         height: 32
       alignment: 0
@@ -762,7 +765,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 240b4e067cd55fc46ba1319d49f452e3
+      spriteID: 0576e81df5c0c6843a5aa25c841a11bc
       vertices: []
       indices: 
       edges: []
@@ -772,7 +775,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 64
-        y: 224
+        y: 256
         width: 32
         height: 32
       alignment: 0
@@ -782,7 +785,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 65bc57d09d54bf541a5da5032393ac39
+      spriteID: 397d135ae6c47af42beb9eb4ec2f77df
       vertices: []
       indices: 
       edges: []
@@ -792,7 +795,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 96
-        y: 224
+        y: 256
         width: 32
         height: 32
       alignment: 0
@@ -802,7 +805,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 78c0164fb4875c74fa0405d736c2dee5
+      spriteID: 5b4aee72f5db8eb4495db71c932e0257
       vertices: []
       indices: 
       edges: []
@@ -812,7 +815,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 128
-        y: 224
+        y: 256
         width: 32
         height: 32
       alignment: 0
@@ -822,7 +825,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 24948740e3c49c44983f766906a1a13b
+      spriteID: 02a7230cba2cb6948a7f4150c5b74f85
       vertices: []
       indices: 
       edges: []
@@ -832,7 +835,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 160
-        y: 224
+        y: 256
         width: 32
         height: 32
       alignment: 0
@@ -842,7 +845,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b712c3f6fb1bbac4590b5c116a2385f7
+      spriteID: b2e6460a8d46cf64d89e82ec6a5137e0
       vertices: []
       indices: 
       edges: []
@@ -852,7 +855,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 192
-        y: 224
+        y: 256
         width: 32
         height: 32
       alignment: 0
@@ -862,7 +865,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fc51eb11680b0c548b69ff590acd2d45
+      spriteID: 211efbc9105ba194e84d01fb123372d8
       vertices: []
       indices: 
       edges: []
@@ -872,7 +875,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 224
-        y: 224
+        y: 256
         width: 32
         height: 32
       alignment: 0
@@ -882,7 +885,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 60f2df8393b3c6346bb5f2463be5b3ea
+      spriteID: 45646d575badc4144bee70ba7b2b9885
       vertices: []
       indices: 
       edges: []
@@ -892,6 +895,26 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 256
+        y: 256
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0b2fab8840f3b1948bac7999a6a83b70
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: strategicvillages_36
+      rect:
+        serializedVersion: 2
+        x: 0
         y: 224
         width: 32
         height: 32
@@ -902,27 +925,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d018df88ceb37cb488c2bae61886eb58
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: strategicvillages_36
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 192
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 83af259e1f626c14b80d0caee48b1aeb
+      spriteID: f357b5272a198f7448fd1daaaf774489
       vertices: []
       indices: 
       edges: []
@@ -932,7 +935,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 32
-        y: 192
+        y: 224
         width: 32
         height: 32
       alignment: 0
@@ -942,7 +945,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 59ea7666e4e74f149bd486ec1431cfe4
+      spriteID: 9c469feb2b1efdb47b7756aa66c5957c
       vertices: []
       indices: 
       edges: []
@@ -952,7 +955,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 64
-        y: 192
+        y: 224
         width: 32
         height: 32
       alignment: 0
@@ -962,7 +965,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9946aadf1b8bcfd408eba291165e8557
+      spriteID: 770dc17232325894ab09aac8e418d756
       vertices: []
       indices: 
       edges: []
@@ -972,7 +975,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 96
-        y: 192
+        y: 224
         width: 32
         height: 32
       alignment: 0
@@ -982,7 +985,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 73c1024520338ae4c9b913b17962b23d
+      spriteID: d0b93b59892dd1b42a122e5c5be6dab8
       vertices: []
       indices: 
       edges: []
@@ -992,7 +995,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 128
-        y: 192
+        y: 224
         width: 32
         height: 32
       alignment: 0
@@ -1002,7 +1005,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8d2f9f6c6e78e15428f4649dd73835f1
+      spriteID: 6d1cacb85f722bd4fab17ca3c1a95be3
       vertices: []
       indices: 
       edges: []
@@ -1012,7 +1015,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 160
-        y: 192
+        y: 224
         width: 32
         height: 32
       alignment: 0
@@ -1022,7 +1025,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c92322c7d3d87c140982e29ea7f7e36c
+      spriteID: 42132474a6c37434d8d59a8582259fd9
       vertices: []
       indices: 
       edges: []
@@ -1032,7 +1035,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 192
-        y: 192
+        y: 224
         width: 32
         height: 32
       alignment: 0
@@ -1042,7 +1045,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1f49ac1ae23dbda4096a7d3ac7208fe6
+      spriteID: d10f51ba24aaede41930f1fecd8de965
       vertices: []
       indices: 
       edges: []
@@ -1052,7 +1055,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 224
-        y: 192
+        y: 224
         width: 32
         height: 32
       alignment: 0
@@ -1062,7 +1065,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 90c6e3f753100794c923e62a370fd1d8
+      spriteID: a206d67c234db60459fae69499627de4
       vertices: []
       indices: 
       edges: []
@@ -1072,6 +1075,26 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 256
+        y: 224
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a42733a56aa448b4cb9068904764187f
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: strategicvillages_45
+      rect:
+        serializedVersion: 2
+        x: 0
         y: 192
         width: 32
         height: 32
@@ -1082,27 +1105,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 93591dc4401a1c243b5538aa37cd5a40
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: strategicvillages_45
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 160
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 688c669fe79589d48a723df823ea628e
+      spriteID: cdcb0f4fe28d659409ae6ea3142dcda5
       vertices: []
       indices: 
       edges: []
@@ -1112,7 +1115,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 32
-        y: 160
+        y: 192
         width: 32
         height: 32
       alignment: 0
@@ -1122,7 +1125,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9866cb81e8d71d044a2b28abeb7bca38
+      spriteID: 730df6bed7d2b234495f26d2282ae4ec
       vertices: []
       indices: 
       edges: []
@@ -1132,7 +1135,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 64
-        y: 160
+        y: 192
         width: 32
         height: 32
       alignment: 0
@@ -1142,7 +1145,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 98561b90113690c449fd9e38dabafbc9
+      spriteID: ccc76a98fde4c4043bb6162edc884330
       vertices: []
       indices: 
       edges: []
@@ -1152,7 +1155,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 96
-        y: 160
+        y: 192
         width: 32
         height: 32
       alignment: 0
@@ -1162,7 +1165,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 808ef5d1d978e8444bd9d964b750fb6b
+      spriteID: a32f9f410f67ae74591070d29e57f766
       vertices: []
       indices: 
       edges: []
@@ -1172,7 +1175,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 128
-        y: 160
+        y: 192
         width: 32
         height: 32
       alignment: 0
@@ -1182,7 +1185,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c8f572208dfac4f4ebe9a4b4bf7cf435
+      spriteID: 75a4d2a741c67b84e9a279df397c0b76
       vertices: []
       indices: 
       edges: []
@@ -1192,7 +1195,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 160
-        y: 160
+        y: 192
         width: 32
         height: 32
       alignment: 0
@@ -1202,7 +1205,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6982c433f3d0c0843825334e6caca330
+      spriteID: c5454403dd945be4d8cff2d640ca1557
       vertices: []
       indices: 
       edges: []
@@ -1212,7 +1215,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 192
-        y: 160
+        y: 192
         width: 32
         height: 32
       alignment: 0
@@ -1222,7 +1225,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fb856d5bc972b814b8108a9858ba6d4b
+      spriteID: 4450f50acae006a488ddf784580849b5
       vertices: []
       indices: 
       edges: []
@@ -1232,7 +1235,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 224
-        y: 160
+        y: 192
         width: 32
         height: 32
       alignment: 0
@@ -1242,7 +1245,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: df4e47b26d7e5664aba8afed449b5db0
+      spriteID: 7253f353fea0b7d4bac62db8fd0df17c
       vertices: []
       indices: 
       edges: []
@@ -1252,6 +1255,26 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 256
+        y: 192
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e49a7e105357d43448c8127aff82535d
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: strategicvillages_54
+      rect:
+        serializedVersion: 2
+        x: 0
         y: 160
         width: 32
         height: 32
@@ -1262,27 +1285,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 05f457249f9249047bc712cc3eeebfbe
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: strategicvillages_54
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 128
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 651207269b5748245b7049fa7e9f620f
+      spriteID: c8de0b14810522f49bfd5d246048793c
       vertices: []
       indices: 
       edges: []
@@ -1292,7 +1295,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 32
-        y: 128
+        y: 160
         width: 32
         height: 32
       alignment: 0
@@ -1302,7 +1305,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6eb3f27524755bd4282b27dd367712c7
+      spriteID: 6b9263a32fc9ad249a43f4f66883abad
       vertices: []
       indices: 
       edges: []
@@ -1312,7 +1315,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 64
-        y: 128
+        y: 160
         width: 32
         height: 32
       alignment: 0
@@ -1322,7 +1325,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f461b514e515f9a4d9b71a960b58f805
+      spriteID: de4526fc0a29f294f924b32b823fda28
       vertices: []
       indices: 
       edges: []
@@ -1332,7 +1335,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 96
-        y: 128
+        y: 160
         width: 32
         height: 32
       alignment: 0
@@ -1342,7 +1345,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 68cdcd013bf35d14485bc2f5973c32d8
+      spriteID: 5f337806b56506645b91e16d73d3bfea
       vertices: []
       indices: 
       edges: []
@@ -1352,7 +1355,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 128
-        y: 128
+        y: 160
         width: 32
         height: 32
       alignment: 0
@@ -1362,7 +1365,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4442aaba580daaa4b9864d81b5c6b1bb
+      spriteID: 16bbac918acfce447b25c26083f2e2dc
       vertices: []
       indices: 
       edges: []
@@ -1372,7 +1375,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 160
-        y: 128
+        y: 160
         width: 32
         height: 32
       alignment: 0
@@ -1382,7 +1385,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5b7de3cb4603ae0468752d82150a3480
+      spriteID: 8ba7513e0ee3fb143a4fcba6e1688eff
       vertices: []
       indices: 
       edges: []
@@ -1392,7 +1395,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 192
-        y: 128
+        y: 160
         width: 32
         height: 32
       alignment: 0
@@ -1402,7 +1405,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b01f55342a8949f4cba31eb30b0c871a
+      spriteID: 6ecffbe4b7ea4d74c8525aee3c979e9d
       vertices: []
       indices: 
       edges: []
@@ -1412,7 +1415,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 224
-        y: 128
+        y: 160
         width: 32
         height: 32
       alignment: 0
@@ -1422,7 +1425,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d36eef84bcf47c342820dd0d9d33bd41
+      spriteID: dc949c491ae0b2a40839a7ea3bf853b3
       vertices: []
       indices: 
       edges: []
@@ -1432,6 +1435,26 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 256
+        y: 160
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a5a069a05b6d90549b741ca7b0b10610
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: strategicvillages_63
+      rect:
+        serializedVersion: 2
+        x: 0
         y: 128
         width: 32
         height: 32
@@ -1442,27 +1465,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 45d05bb7ea0733749837de88a0202d5d
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: strategicvillages_63
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 96
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: ee2b94a535a2ad64bb0deebe2249edb0
+      spriteID: 3a463fb831c54ce48aca6067c9d670c2
       vertices: []
       indices: 
       edges: []
@@ -1472,7 +1475,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 32
-        y: 96
+        y: 128
         width: 32
         height: 32
       alignment: 0
@@ -1482,7 +1485,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b8cbb897e0c6a5a4e878e2d813b9a424
+      spriteID: e2d1f87dc211d354ba68429c0bd0a3c0
       vertices: []
       indices: 
       edges: []
@@ -1492,7 +1495,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 64
-        y: 96
+        y: 128
         width: 32
         height: 32
       alignment: 0
@@ -1502,7 +1505,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 19539d6c7ba76844ab321b50a43d1010
+      spriteID: a4063f8663932e54b8ef659e3449775a
       vertices: []
       indices: 
       edges: []
@@ -1512,7 +1515,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 96
-        y: 96
+        y: 128
         width: 32
         height: 32
       alignment: 0
@@ -1522,7 +1525,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 03531251be520914dba76eca1acee063
+      spriteID: 55d6d1e35243ef6418c1e7dc74135a0e
       vertices: []
       indices: 
       edges: []
@@ -1532,7 +1535,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 128
-        y: 96
+        y: 128
         width: 32
         height: 32
       alignment: 0
@@ -1542,7 +1545,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9ed4396c324c86f4b90159757d96b4ec
+      spriteID: 0b56b4b94d6a7de458d229ef975ec035
       vertices: []
       indices: 
       edges: []
@@ -1552,7 +1555,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 160
-        y: 96
+        y: 128
         width: 32
         height: 32
       alignment: 0
@@ -1562,7 +1565,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 277638ea4b20a3d45b1e8d410e3ec0ab
+      spriteID: 41c7e2044fd6a9f46a436da852f4f0ea
       vertices: []
       indices: 
       edges: []
@@ -1572,7 +1575,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 192
-        y: 96
+        y: 128
         width: 32
         height: 32
       alignment: 0
@@ -1582,7 +1585,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d84aaa0c6df4b3c44a5988c99505f7c9
+      spriteID: 8a32ea36c842b124f884bc9a2e5626a3
       vertices: []
       indices: 
       edges: []
@@ -1592,7 +1595,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 224
-        y: 96
+        y: 128
         width: 32
         height: 32
       alignment: 0
@@ -1602,7 +1605,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a63ea835068f35d47a5aedf0b5708c16
+      spriteID: bbbc117949be6744789c5bdf11f7f9af
       vertices: []
       indices: 
       edges: []
@@ -1612,6 +1615,26 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 256
+        y: 128
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a18f69072cb94dd4caad4a5d986aad76
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: strategicvillages_72
+      rect:
+        serializedVersion: 2
+        x: 0
         y: 96
         width: 32
         height: 32
@@ -1622,27 +1645,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 51a2b7e111078cb428e148595fc36b3e
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: strategicvillages_72
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 64
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: d3860d51d2cb47544a6c27ed1c676ed9
+      spriteID: d411280f35a881d47ab5aef6777d0bed
       vertices: []
       indices: 
       edges: []
@@ -1652,7 +1655,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 32
-        y: 64
+        y: 96
         width: 32
         height: 32
       alignment: 0
@@ -1662,7 +1665,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 20eae25815767fa4f82f9852d7b3c120
+      spriteID: 2d7224d4e17c3aa4f9a3c2b7926a065c
       vertices: []
       indices: 
       edges: []
@@ -1672,7 +1675,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 64
-        y: 64
+        y: 96
         width: 32
         height: 32
       alignment: 0
@@ -1682,7 +1685,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 55cf900345abea848b91671dc7c7dc8c
+      spriteID: f2a69ae6f0e9061408e45ed6c6fb5398
       vertices: []
       indices: 
       edges: []
@@ -1692,7 +1695,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 96
-        y: 64
+        y: 96
         width: 32
         height: 32
       alignment: 0
@@ -1702,7 +1705,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e8e3fe2349f7a1c4d90b30197d4a5cf9
+      spriteID: da8c210432ba693459ea6d0d62c63e89
       vertices: []
       indices: 
       edges: []
@@ -1712,7 +1715,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 128
-        y: 64
+        y: 96
         width: 32
         height: 32
       alignment: 0
@@ -1722,7 +1725,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 652f2de0927507746ab2544f57ca756d
+      spriteID: ed023bf0b46171442ab3e9c65ffc00f0
       vertices: []
       indices: 
       edges: []
@@ -1732,6 +1735,86 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 160
+        y: 96
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 035fce0cda77346428e3fb685fb56dc7
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: strategicvillages_78
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 96
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 74c56824af6bd7945aa7bc7247072803
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: strategicvillages_79
+      rect:
+        serializedVersion: 2
+        x: 224
+        y: 96
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d0f12dc6380c5e545962262070fb01c7
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: strategicvillages_80
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 96
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5082e8de37749e244ab0790a84fcd5f3
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: strategicvillages_81
+      rect:
+        serializedVersion: 2
+        x: 0
         y: 64
         width: 32
         height: 32
@@ -1742,13 +1825,113 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f955a7a194b57e44ba6abf8a4c3a116c
+      spriteID: 7791234ff61e5b344ba3650a31757f8c
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: strategicvillages_78
+      name: strategicvillages_82
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 64
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bfbb5c1040e00ab42a3dcbab1c7e8c8a
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: strategicvillages_83
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 64
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8b40b1474e1bd9a47b32e33d42991dd2
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: strategicvillages_84
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 64
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e6e1e6976e88d63449da0e5be92c094d
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: strategicvillages_85
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 64
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7b46cf3b87a6f304bb5521d626bca31d
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: strategicvillages_86
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 64
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a0c9aadec64553b4587e19aec11e085c
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: strategicvillages_87
       rect:
         serializedVersion: 2
         x: 192
@@ -1762,13 +1945,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3b27cc0bc91dbeb478753a2a36e4e3a8
+      spriteID: d68bd1ba3affef1448c689af412bf7f2
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: strategicvillages_79
+      name: strategicvillages_88
       rect:
         serializedVersion: 2
         x: 224
@@ -1782,13 +1965,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5875f5968b8c46245ab0a38a28335d7b
+      spriteID: 4d4dc53f0f349d9489869d7c243e8488
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: strategicvillages_80
+      name: strategicvillages_89
       rect:
         serializedVersion: 2
         x: 256
@@ -1802,13 +1985,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a4055e07b1e300c44a3852234aaff520
+      spriteID: 7a3cee1233a7d36489af1b208820f3c7
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: strategicvillages_81
+      name: strategicvillages_90
       rect:
         serializedVersion: 2
         x: 0
@@ -1822,13 +2005,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0dd325ce05341924b92720c2d0423d46
+      spriteID: db190296e7684084d802337a86096308
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: strategicvillages_82
+      name: strategicvillages_91
       rect:
         serializedVersion: 2
         x: 32
@@ -1842,13 +2025,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9decf65f5f9c7eb468b17f70f12ebf82
+      spriteID: b6793f1fcc69b204891e9b69b6f229e0
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: strategicvillages_83
+      name: strategicvillages_92
       rect:
         serializedVersion: 2
         x: 64
@@ -1862,13 +2045,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0e201bc0b280230418b584623005bada
+      spriteID: 85b5d9e4dcf98b54b99e00ab1bbbb7da
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: strategicvillages_84
+      name: strategicvillages_93
       rect:
         serializedVersion: 2
         x: 96
@@ -1882,13 +2065,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 71d59a4642603884e9f40a6eb16c334e
+      spriteID: 4c1f544b9d01217438111ddd65784e56
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: strategicvillages_85
+      name: strategicvillages_94
       rect:
         serializedVersion: 2
         x: 128
@@ -1902,13 +2085,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6b97f836167fa934b946c264510b8ac8
+      spriteID: 661712ea7de16344ea4fdcc060d99c7e
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: strategicvillages_86
+      name: strategicvillages_95
       rect:
         serializedVersion: 2
         x: 160
@@ -1922,13 +2105,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f874fa2b1faaa084e8c20bdd71f25f6e
+      spriteID: 98d7208922bb881448814b5cf8eab6db
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: strategicvillages_87
+      name: strategicvillages_96
       rect:
         serializedVersion: 2
         x: 192
@@ -1942,13 +2125,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b3f0395a7037224439fa780094e7357b
+      spriteID: 8b24a47e49f5edb4882eeb056d3a8172
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: strategicvillages_88
+      name: strategicvillages_97
       rect:
         serializedVersion: 2
         x: 224
@@ -1962,127 +2145,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a1e780d9533fa464a9601c1eece2b839
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: strategicvillages_89
-      rect:
-        serializedVersion: 2
-        x: 256
-        y: 32
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: d29fcb387a6bc734483ade72b8aa1095
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: strategicvillages_90
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 0
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 4506b7015820d9b46b9c24d5450a1e47
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: strategicvillages_91
-      rect:
-        serializedVersion: 2
-        x: 32
-        y: 0
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: e3bddbcc95357ee4ba7e1f20b1318db2
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: strategicvillages_92
-      rect:
-        serializedVersion: 2
-        x: 64
-        y: 0
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 862778c5d136ebb48be198721402701a
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: strategicvillages_93
-      rect:
-        serializedVersion: 2
-        x: 96
-        y: 0
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 8fbc21e848558df40a0e3e48795ae31a
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: strategicvillages_94
-      rect:
-        serializedVersion: 2
-        x: 128
-        y: 0
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 2254a47433004b447b0904a66c03ad97
+      spriteID: 461db41186901b64eb977053e5fbc499
       vertices: []
       indices: 
       edges: []

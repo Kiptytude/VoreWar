@@ -3,4 +3,5 @@
     Generic,
     Fire,
     Poison,
+    Virus
 }
