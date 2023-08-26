@@ -963,6 +963,10 @@ public class Actor_Unit
             {
                 damageScalar *= 1 - target.Unit.GetStatusEffect(StatusEffectType.Shielded).Strength;
             }
+            if (target.Unit.GetStatusEffect(StatusEffectType.DivineShield) != null)
+            {
+                damageScalar *= 1 - target.Unit.GetStatusEffect(StatusEffectType.DivineShield).Strength;
+            }
             if (Unit.HasTrait(Traits.SenseWeakness))
             {
                 damageScalar *= 1.4f - (target.Unit.HealthPct * .4f) + (0.1f * target.Unit.GetNegativeStatusEffects());
@@ -996,6 +1000,10 @@ public class Actor_Unit
             if (target.Unit.GetStatusEffect(StatusEffectType.Shielded) != null)
             {
                 damageScalar *= 1 - target.Unit.GetStatusEffect(StatusEffectType.Shielded).Strength;
+            }
+            if (target.Unit.GetStatusEffect(StatusEffectType.DivineShield) != null)
+            {
+                damageScalar *= 1 - target.Unit.GetStatusEffect(StatusEffectType.DivineShield).Strength;
             }
             if (Unit.HasTrait(Traits.ForcefulBlow))
                 TacticalUtilities.CheckKnockBack(this, target, ref damageScalar);

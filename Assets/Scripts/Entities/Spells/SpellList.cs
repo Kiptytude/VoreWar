@@ -79,6 +79,8 @@ static class SpellList
 
     static internal readonly DamageSpell ViperPoisonDamage;
     static internal readonly StatusSpell ViperPoisonStatus;
+    static internal readonly StatusSpell ViralInfection;
+    static internal readonly StatusSpell DivinitysEmbrace;
 
     static internal Dictionary<SpellTypes, Spell> SpellDict;
 
@@ -868,30 +870,48 @@ static class SpellList
         };
         SpellDict[SpellTypes.Whispers] = Whispers;
 
-        AmplifyMagic = new Spell()
+        ViralInfection = new StatusSpell()
         {
-            Name = "Amplify Magic",
-            Id = "amplify-magic",
-            SpellType = SpellTypes.AmplifyMagic,
-            Description = "Grant nearby units stacks of Focus, scaling with will.",
-            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Ally },
-            Range = new Range(1),
-            Tier = 0,
-            AreaOfEffect = 1,
+            Name = "ViralInfection",
+            Id = "viralinfection",
+            SpellType = SpellTypes.ViralInfection,
+            Description = "Applies virus to enemy, dealing damage over time.",
+            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Ally, AbilityTargets.Enemy, AbilityTargets.Self},
+            Range = new Range(8),
+            Duration = (a, t) => 4 + a.Unit.GetStat(Stat.Mind) / 5,
+            Effect = (a, t) => 1 + a.Unit.GetStat(Stat.Mind) / 10,
+            Type = StatusEffectType.Virus,
+            Tier = 2,
             Resistable = false,
-            IsFree = true,
             OnExecute = (a, t) =>
             {
-                a.CastSpell(AmplifyMagic, t);
-                int amt = a.Unit.GetStat(Stat.Will) / 25;
-                foreach (var ally in TacticalUtilities.UnitsWithinTiles(t.Position, 1).Where(s => s.Unit.IsDead == false && s.Unit.Side == a.Unit.Side))
-                {
-                    ally.Unit.AddFocus(((amt > 1) ? amt : 1));
-                    TacticalGraphicalEffects.CreateGenericMagic(a.Position, ally.Position, ally, TacticalGraphicalEffects.SpellEffectIcon.Buff);
-                }
-            }
+                if (a.CastStatusSpell(ViralInfection, t))
+                    TacticalGraphicalEffects.CreateGenericMagic(a.Position, t.Position, t, TacticalGraphicalEffects.SpellEffectIcon.Poison);
+            },
         };
-        SpellDict[SpellTypes.AmplifyMagic] = AmplifyMagic;
+        SpellDict[SpellTypes.ViralInfection] = ViralInfection;
+
+        DivinitysEmbrace = new StatusSpell()
+        {
+            Name = "Divinity's Embrace",
+            Id = "divinitysembrace",
+            SpellType = SpellTypes.DivinitysEmbrace,
+            Description = "Shower an ally in divine light, providing instant healing as well as damage mitigation for a few turns.",
+            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Ally },
+            Range = new Range(4),
+            Duration = (a, t) => 2 + a.Unit.GetStat(Stat.Mind) / 10,
+            Effect = (a, t) => .25f,
+            Type = StatusEffectType.DivineShield,
+            Tier = 3,
+            Resistable = false,
+            OnExecute = (a, t) =>
+            {
+                a.CastStatusSpell(DivinitysEmbrace, t);
+                TacticalGraphicalEffects.CreateGenericMagic(a.Position, t.Position, t, TacticalGraphicalEffects.SpellEffectIcon.Buff);
+                t.Damage(-5 - a.Unit.GetStat(Stat.Mind));
+            },
+        };
+        SpellDict[SpellTypes.DivinitysEmbrace] = DivinitysEmbrace;
 
         Evocation = new Spell()
         {
@@ -986,6 +1006,7 @@ static class SpellList
             }
         };
         SpellDict[SpellTypes.ManaExpolsion] = ManaExpolsion;
+        
     }
 }
 

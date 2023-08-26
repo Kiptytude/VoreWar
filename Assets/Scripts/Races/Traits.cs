@@ -307,6 +307,8 @@ static class TraitList
 		[Traits.NightEye] = new Booster("Increases night time vision range by +1 in Tactical battles and by +1 in stratigic if half of the units in an army have this trait.", (s) => { s.SightRangeBoost += 1;}),
         [Traits.KeenEye] = new Booster("Unit has the chance to deal increase damage when attacking.", (s) => { s.Outgoing.CritRateShift += 0.1f; }),
         [Traits.AccuteDodge] = new Booster("Unit has the chance to minimise recieved damage when being attacked. (Excludes spells and vore damage).", (s) => { s.Outgoing.GrazeRateShift += 0.1f; }),
+        [Traits.ViralDigestion] = new ViralDigestion(),
+        [Traits.AwkwardShape] = new Booster("This unit has a very strange body type, making them harder to swallow and providing less sustenance as prey.", (s) => { s.Incoming.VoreOddsMult *= 0.75f; s.Outgoing.Nutrition *= 0.25f; }),
     };
 
 }
@@ -806,4 +808,17 @@ internal class ForcedMetamorphosis : VoreTraitBooster, INoAutoEscape
         return true;
     }
 }
+internal class ViralDigestion : VoreTrait
+{
+    public ViralDigestion()
+    {
+        Description = "This unit has powerful viruses within them, which cause any prey to take additional damage for a few turns even after escaping.";
+    }
 
+    public override bool IsPredTrait => true;
+    public override bool OnRemove(Prey preyUnit, Actor_Unit predUnit, PreyLocation location)
+    {
+        preyUnit.Unit.ApplyStatusEffect(StatusEffectType.Virus, 3, 3);
+        return true;
+    }
+}

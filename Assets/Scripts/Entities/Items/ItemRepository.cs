@@ -54,6 +54,8 @@ public enum SpecialItems
     AbakWeapon,
     AurilikaWeapon,
     SalixWeapon,
+    ErinWeapon,
+    ErinWings,
 }
 
 
@@ -172,6 +174,8 @@ public class ItemRepository
             new Weapon(name:"Abakhanskya's Bite", description:"Bite Attack", cost:4, graphic:0, damage:8, range:1),
             new Weapon(name:"Aurilika's Gohei", description:"A sacred talisman", cost:4, graphic:0, damage:4, range:1, accuracyModifier: 5f, lockedItem:true),
             new Weapon(name:"Salix's Staff", description:"A weighty magic staff", cost:4, graphic:0, damage:6, range:1, lockedItem:true),
+            new Weapon(name:"Nyangel Claws", description:"Near-useless cat scratch!", cost:4, graphic:0, damage:8, range:1),
+            new Accessory(name:"Nyangel Wings", description:"The softest, most delicious looking pair of wings you ever did see!\n+5 Willpower", cost:6, changedStat:(int)Stat.Will, statBonus:5 ),
         };
 
 

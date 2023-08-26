@@ -218,6 +218,8 @@ public class SpriteDictionary : MonoBehaviour
     public Sprite[] HumansVoreSprites;
 
     public Sprite[] YoukoTails;
+    public Sprite[] Aabayx;
+    public Sprite[] AabayxFacePaint;
 
     [Header("Unique Mercenaries")]
     public Sprite[] Selicia;

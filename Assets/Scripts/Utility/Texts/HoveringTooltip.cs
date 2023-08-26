@@ -288,6 +288,10 @@ public class HoveringTooltip : MonoBehaviour
                         return $"Unit has its mind increased by {effect.Duration} + {effect.Duration * 10}%, but its mana costs are increased by {effect.Duration * 10}%.";
                     case StatusEffectType.Staggering:
                         return $"Unit has lost balance, increasing damage taken by 20% and halving MP recovery. 1 stack removed per hit.\nCurrent Stacks: {effect.Duration}";
+                    case StatusEffectType.Virus:
+                        return $"(Spell) Unit is taking damage over time\nTurns Remaining: {effect.Duration}";
+                    case StatusEffectType.DivineShield:
+                        return $"(Spell) Unit was embraced by a divine being, providing damage mitigation\nTurns Remaining: {effect.Duration}";
                 }
             }
         }

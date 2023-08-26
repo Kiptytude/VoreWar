@@ -814,6 +814,12 @@ public class Unit
             FixedGear = true;
             Items[0] = State.World.ItemRepository.GetSpecialItem(SpecialItems.SalixWeapon);
         }
+        else if (race == Race.Erin)
+        {
+            FixedGear = true;
+            Items[0] = State.World.ItemRepository.GetSpecialItem(SpecialItems.ErinWeapon);
+            Items[1] = State.World.ItemRepository.GetSpecialItem(SpecialItems.ErinWings);
+        }
         else
         {
             FixedGear = false;
@@ -2554,7 +2560,7 @@ internal void SetGenderRandomizeName(Race race, Gender gender)
         if (HasEffect(StatusEffectType.Hypnotized)) ret++;
         if (HasEffect(StatusEffectType.Sleeping)) ret++;
         if (HasEffect(StatusEffectType.Staggering)) ret++;
-
+        if (HasEffect(StatusEffectType.Virus)) ret++;
 
         bool HasEffect(StatusEffectType type)
         {
@@ -2731,6 +2737,9 @@ internal void SetGenderRandomizeName(Race race, Gender gender)
         effect = GetStatusEffect(StatusEffectType.Poisoned);
         if (effect != null)
             NonFatalDamage((int)effect.Strength, "poison");
+        effect = GetStatusEffect(StatusEffectType.Virus);
+        if (effect != null)
+            NonFatalDamage((int)effect.Strength, "virus");
         foreach (var eff in StatusEffects.ToList())
         {
             if (eff.Type == StatusEffectType.BladeDance || eff.Type == StatusEffectType.Tenacious || eff.Type == StatusEffectType.Focus)

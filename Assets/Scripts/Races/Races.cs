@@ -34,6 +34,7 @@
     static internal Demisharks Demisharks = new Demisharks();
     static internal Deer Deer = new Deer();
     static internal Youko Youko = new Youko();
+    static internal Aabayx Aabayx = new Aabayx();
 
     static internal Tigers Tigers = new Tigers();
     static internal Goblins Goblins = new Goblins();
@@ -314,6 +315,8 @@
                 return Whisp;
             case Race.Salix:
                 return Salix;
+            case Race.Aabayx:
+                return Aabayx;
         }
         UnityEngine.Debug.LogWarning("Couldn't find race, substituting the Blank Slate");
         return BlankSlate;

@@ -481,6 +481,10 @@ public class UnitCustomizer
                 buttons[(int)ButtonTypes.HairStyle].Label.text = "Mane Style";
                 buttons[(int)ButtonTypes.HairColor].Label.text = "Mane Color";
                 break;
+            case Race.Aabayx:
+                buttons[(int)ButtonTypes.BodyAccessoryColor].Label.text = "Head Color";
+                buttons[(int)ButtonTypes.ClothingExtraType1].Label.text = "Face Paint";
+                break;
         }
     }
 
