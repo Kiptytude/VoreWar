@@ -36,7 +36,6 @@
     Evocation = 24,
     ManaFlux = 25,
     UnstableMana = 26,
-    Resurrection = 27,
 
     AlraunePuff = 70,
     Web = 71,
