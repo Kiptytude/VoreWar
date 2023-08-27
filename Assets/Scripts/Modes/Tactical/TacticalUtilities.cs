@@ -62,7 +62,7 @@ static class TacticalUtilities
                         friendlyVillage = villageList[0];
                     else
                         friendlyVillage = villageList[State.Rand.Next(villageList.Count())];
-                    var loc = StrategyPathfinder.GetPath(null, armies[0], friendlyVillage.Position, 3, false, 999);
+                    var loc = StrategyPathfinder.GetArmyPath(null, armies[0], friendlyVillage.Position, 3, false, 999);
                     int turns = 9999;
                     int flightTurns = 9999;
                     Vec2i destination = null;

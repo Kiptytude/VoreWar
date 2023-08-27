@@ -603,7 +603,7 @@ class StrategicArmyCommander
     {
         if (targetPosition != null)
         {
-            path = StrategyPathfinder.GetPath(empire, army, targetPosition, army.RemainingMP, army.movementMode == Army.MovementMode.Flight, maxDistance);
+            path = StrategyPathfinder.GetArmyPath(empire, army, targetPosition, army.RemainingMP, army.movementMode == Army.MovementMode.Flight, maxDistance);
             return;
         }
         army.RemainingMP = 0;
