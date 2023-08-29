@@ -132,7 +132,7 @@ namespace LegacyAI
             //move towards it
             if (p != null)
             {
-                path = StrategyPathfinder.GetPath(Empire, army, p, army.RemainingMP, army.movementMode == Army.MovementMode.Flight);
+                path = StrategyPathfinder.GetArmyPath(Empire, army, p, army.RemainingMP, army.movementMode == Army.MovementMode.Flight);
                 if (path == null)
                     army.RemainingMP = 0;
 
@@ -171,7 +171,7 @@ namespace LegacyAI
             //move towards it
             if (p != null)
             {
-                path = StrategyPathfinder.GetPath(Empire, army, p, army.RemainingMP, army.movementMode == Army.MovementMode.Flight);
+                path = StrategyPathfinder.GetArmyPath(Empire, army, p, army.RemainingMP, army.movementMode == Army.MovementMode.Flight);
 
                 if (path == null)
                     army.RemainingMP = 0;
@@ -209,7 +209,7 @@ namespace LegacyAI
                 }
                 else
                 {
-                    path = StrategyPathfinder.GetPath(Empire, army, village.Position, army.RemainingMP, army.movementMode == Army.MovementMode.Flight);
+                    path = StrategyPathfinder.GetArmyPath(Empire, army, village.Position, army.RemainingMP, army.movementMode == Army.MovementMode.Flight);
                     return false;
                 }
             }

@@ -403,7 +403,7 @@ class MonsterStrategicAI : IStrategicAI
     {
         if (targetPosition != null)
         {
-            path = StrategyPathfinder.GetPath(empire, army, targetPosition, army.RemainingMP, army.movementMode == Army.MovementMode.Flight);
+            path = StrategyPathfinder.GetArmyPath(empire, army, targetPosition, army.RemainingMP, army.movementMode == Army.MovementMode.Flight);
             return;
         }
         army.RemainingMP = 0;

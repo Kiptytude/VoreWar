@@ -374,17 +374,21 @@ public static class StrategyPathfinder
 
     internal static bool CanEnter(Vec2 pos, Army army)
     {
+        List<StrategicTileType> impassables = new List<StrategicTileType>() 
+        { StrategicTileType.mountain, StrategicTileType.snowMountain, StrategicTileType.water, StrategicTileType.lava, StrategicTileType.ocean, StrategicTileType.brokenCliffs };
         if (State.World.Doodads != null && State.World.Doodads[pos.x, pos.y] >= StrategicDoodadType.bridgeVertical && State.World.Doodads[pos.x, pos.y] <= StrategicDoodadType.virtualBridgeIntersection)
             return true;
         if (Grid[pos.x, pos.y].FriendlyOccupied)
             return false;
-        if (army.impassables.Contains(Grid[pos.x, pos.y].TileType)) 
+        if (army == null && impassables.Contains(Grid[pos.x, pos.y].TileType))
+            return false; 
+        if (army != null && army.impassables.Contains(Grid[pos.x, pos.y].TileType)) 
             return false;
         return true;
     }
 
 
-    internal static List<PathNode> GetPath(Empire empire, Army army, Vec2i destination, int startingMP, bool flight, int maxDistance = 999)
+    internal static List<PathNode> GetArmyPath(Empire empire, Army army, Vec2i destination, int startingMP, bool flight, int maxDistance = 999)
     {
         var origin = army.Position;
         //Quick sanity check to make sure that tile is actually passable
@@ -395,6 +399,35 @@ public static class StrategyPathfinder
         NormalOccupancy(empire);
 
         var otherPath = FindPath(new Vec2(origin.x, origin.y), new Vec2(destination.x, destination.y), army, Config.ArmyMP, maxDistance);
+
+        if (otherPath == null)
+            return null;
+
+        List<PathNode> path = new List<PathNode>();
+        for (int i = 0; i < otherPath.Count(); i++)
+        {
+            path.Add(new PathNode(otherPath[i].x, otherPath[i].y));
+        }
+
+        if (path.Count <= 1)
+        {
+            return null;
+        }
+
+        path.RemoveAt(0);
+
+        return path;
+    }
+
+    internal static List<PathNode> GetPath(Vec2i origin, Vec2i destination, int startingMP, bool flight, int maxDistance = 999)
+    {
+        //Quick sanity check to make sure that tile is actually passable
+        if (TileCheck(null, destination) == false)
+            return null;
+        flyingPath = flight;
+        InitializeGrid();
+
+        var otherPath = FindPath(new Vec2(origin.x, origin.y), new Vec2(destination.x, destination.y), null, Config.ArmyMP, maxDistance);
 
         if (otherPath == null)
             return null;
