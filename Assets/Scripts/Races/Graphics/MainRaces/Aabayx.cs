@@ -80,6 +80,12 @@ class Aabayx : DefaultRaceData
         };
     }
 
+    internal override void RandomCustom(Unit unit)
+    {
+        base.RandomCustom(unit);
+        unit.TailType = State.Rand.Next(TailTypes);
+    }
+
     internal override void SetBaseOffsets(Actor_Unit actor)
     {
         AddOffset(Dick, 0, 3 * .625f);
