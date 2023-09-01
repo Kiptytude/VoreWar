@@ -1300,29 +1300,40 @@ public class PredatorComponent
         bool freshKill = false;
         if (unit.HasTrait(Traits.Extraction) && !TacticalUtilities.IsPreyEndoTargetForUnit(preyUnit, unit))
         {
-            var possibleTraits = preyUnit.Unit.GetTraits.Where(s => unit.GetTraits.Contains(s) == false && State.AssimilateList.CanGet(s)).ToArray();
-
-            if(possibleTraits.Any())
-            {
-                var trait = possibleTraits[State.Rand.Next(possibleTraits.Length)];
-                unit.AddPermanentTrait(trait);
-                //process vore traits appropriately
-                if (TraitList.GetTrait(trait) is IVoreCallback callback)
-                {
-                    if (callback.IsPredTrait == true)
-                        callback.OnSwallow(preyUnit, actor, location);
-                    else
-                        callback.OnRemove(preyUnit, actor, location);
-                }
-                preyUnit.Unit.RemoveTrait(trait);
-            } else
             if (preyUnit.Unit.GetTraits.Any())
             {
                 var trait = preyUnit.Unit.GetTraits[State.Rand.Next(preyUnit.Unit.GetTraits.Count)];
+                var possibleTraits = preyUnit.Unit.GetTraits.Where(s => unit.GetTraits.Contains(s) == false && State.AssimilateList.CanGet(s)).ToArray();
+                if (possibleTraits.Any())
+                {
+                    trait = possibleTraits[State.Rand.Next(possibleTraits.Length)];
+                    if (unit.HasTrait(Traits.SynchronizedEvolution))
+                    {
+                        RaceSettingsItem item = State.RaceSettings.Get(unit.Race);
+                        item.RaceTraits.Add(trait);
+                        UpdateRaceTraits();
+                    }
+                    else
+                    {
+                        unit.AddPermanentTrait(trait);
+                        //process vore traits appropriately
+                        if (TraitList.GetTrait(trait) is IVoreCallback callback)
+                        {
+                            if (callback.IsPredTrait == true)
+                                callback.OnSwallow(preyUnit, actor, location);
+                            else
+                                callback.OnRemove(preyUnit, actor, location);
+                        }
+                        UpdateUnitTraits();
+                    }
+                }
+                else
+                {
+                    unit.GiveRawExp(5);
+                    actor.UnitSprite.DisplayDamage(5, false, true);
+                }
                 preyUnit.Unit.RemoveTrait(trait);
-                unit.GiveRawExp(5);
-                actor.UnitSprite.DisplayDamage(5, false, true);
-            }
+            }            
         }
         if (unit.HasTrait(Traits.Annihilation) && !TacticalUtilities.IsPreyEndoTargetForUnit(preyUnit, unit))
         {
@@ -1726,7 +1737,6 @@ public class PredatorComponent
         if (unit.HasTrait(Traits.Extraction))
         {
             var possibleTraits = preyUnit.Unit.GetTraits.Where(s => unit.GetTraits.Contains(s) == false && State.AssimilateList.CanGet(s)).ToArray();
-
             foreach (Traits trait in possibleTraits)
             {
                 unit.AddPermanentTrait(trait);
@@ -1762,7 +1772,7 @@ public class PredatorComponent
                 {
                     RaceSettingsItem item = State.RaceSettings.Get(unit.Race);
                     item.RaceTraits.Add(possibleTraits[State.Rand.Next(possibleTraits.Length)]);
-                    raceUpdated = true;
+                    UpdateRaceTraits();
                 }
                 else
                 {
@@ -1783,7 +1793,7 @@ public class PredatorComponent
                     {
                         RaceSettingsItem item = State.RaceSettings.Get(unit.Race);
                         item.RaceTraits.Add(possibleTraits[State.Rand.Next(possibleTraits.Length)]);
-                        raceUpdated = true;
+                        UpdateRaceTraits();
                     }
                     else
                     {
@@ -1803,7 +1813,7 @@ public class PredatorComponent
                     {
                         RaceSettingsItem item = State.RaceSettings.Get(unit.Race);
                         item.RaceTraits.Add(possibleTraits[State.Rand.Next(possibleTraits.Length)]);
-                        raceUpdated = true;
+                        UpdateRaceTraits();
                     }
                     else
                     {
@@ -1823,44 +1833,47 @@ public class PredatorComponent
                 updated = true;
             }
         }
-        if (updated)
+        if (updated) UpdateUnitTraits();
+    }
+
+    public void UpdateUnitTraits()
+    {
+        unit.ReloadTraits();
+        unit.InitializeTraits();
+    }
+
+    public void UpdateRaceTraits()
+    {
+        if (State.World.Villages != null)
         {
-            unit.ReloadTraits();
-            unit.InitializeTraits();
+            var units = StrategicUtilities.GetAllUnits();
+            foreach (Unit unit in units)
+            {
+                unit.ReloadTraits();
+            }
         }
-        if (raceUpdated)
+        else
         {
-            if (State.World.Villages != null)
+            foreach (Actor_Unit actor in TacticalUtilities.Units)
             {
-                var units = StrategicUtilities.GetAllUnits();
-                foreach (Unit unit in units)
-                {
-                    unit.ReloadTraits();
-                }
+                actor.Unit.ReloadTraits();
+                actor.Unit.InitializeTraits();
+                actor.Unit.UpdateSpells();
             }
-            else
+        }
+        if (State.World.AllActiveEmpires != null)
+        {
+            foreach (Empire emp in State.World.AllActiveEmpires)
             {
-                foreach (Actor_Unit actor in TacticalUtilities.Units)
+                if (emp.Side > 300)
+                    continue;
+                var raceFlags = State.RaceSettings.GetRaceTraits(emp.ReplacedRace);
+                if (raceFlags != null)
                 {
-                    actor.Unit.ReloadTraits();
-                    actor.Unit.InitializeTraits();
-                    actor.Unit.UpdateSpells();
-                }
-            }
-            if (State.World.AllActiveEmpires != null)
-            {
-                foreach (Empire emp in State.World.AllActiveEmpires)
-                {
-                    if (emp.Side > 300)
-                        continue;
-                    var raceFlags = State.RaceSettings.GetRaceTraits(emp.ReplacedRace);
-                    if (raceFlags != null)
-                    {
-                        if (raceFlags.Contains(Traits.Prey))
-                            emp.CanVore = false;
-                        else
-                            emp.CanVore = true;
-                    }
+                    if (raceFlags.Contains(Traits.Prey))
+                        emp.CanVore = false;
+                    else
+                        emp.CanVore = true;
                 }
             }
         }
