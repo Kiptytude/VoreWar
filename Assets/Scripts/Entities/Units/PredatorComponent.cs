@@ -1762,12 +1762,14 @@ public class PredatorComponent
                     updated = true;
             }
         }
-        if (unit.HasTrait(Traits.InfiniteAssimilation))
+        if (unit.HasTrait(Traits.InfiniteAssimilation) || unit.HasTrait(Traits.Assimilate))
         {
             var possibleTraits = preyUnit.Unit.GetTraits.Where(s => unit.GetTraits.Contains(s) == false && State.AssimilateList.CanGet(s)).ToArray();
 
             if (possibleTraits.Any())
             {
+                if (unit.BaseTraitsCount >= 5 && unit.HasTrait(Traits.Assimilate))
+                    unit.RemoveTrait(Traits.Assimilate);
                 if (unit.HasTrait(Traits.SynchronizedEvolution))
                 {
                     RaceSettingsItem item = State.RaceSettings.Get(unit.Race);
@@ -1778,48 +1780,6 @@ public class PredatorComponent
                 {
                     unit.AddPermanentTrait(possibleTraits[State.Rand.Next(possibleTraits.Length)]);
                     updated = true;
-                }
-            }
-        }
-        else if (unit.HasTrait(Traits.Assimilate))
-        {
-            if (unit.BaseTraitsCount < 5)
-            {
-                var possibleTraits = preyUnit.Unit.GetTraits.Where(s => unit.GetTraits.Contains(s) == false && State.AssimilateList.CanGet(s)).ToArray();
-
-                if (possibleTraits.Any())
-                {
-                    if (unit.HasTrait(Traits.SynchronizedEvolution))
-                    {
-                        RaceSettingsItem item = State.RaceSettings.Get(unit.Race);
-                        item.RaceTraits.Add(possibleTraits[State.Rand.Next(possibleTraits.Length)]);
-                        UpdateRaceTraits();
-                    }
-                    else
-                    {
-                        unit.AddPermanentTrait(possibleTraits[State.Rand.Next(possibleTraits.Length)]);
-                        updated = true;
-                    }
-                }
-            }
-            else if (unit.BaseTraitsCount == 5)
-            {
-                var possibleTraits = preyUnit.Unit.GetTraits.Where(s => unit.GetTraits.Contains(s) == false && State.AssimilateList.CanGet(s)).ToArray();
-
-                if (possibleTraits.Any())
-                {
-                    unit.RemoveTrait(Traits.Assimilate);
-                    if (unit.HasTrait(Traits.SynchronizedEvolution))
-                    {
-                        RaceSettingsItem item = State.RaceSettings.Get(unit.Race);
-                        item.RaceTraits.Add(possibleTraits[State.Rand.Next(possibleTraits.Length)]);
-                        UpdateRaceTraits();
-                    }
-                    else
-                    {
-                        unit.AddPermanentTrait(possibleTraits[State.Rand.Next(possibleTraits.Length)]);
-                        updated = true;
-                    }
                 }
             }
         }
