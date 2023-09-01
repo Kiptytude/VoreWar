@@ -31,7 +31,7 @@ public class UnitInfoPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         if (Unit == null)
             return;
         TextMeshProUGUI HoverBox;
-        if (Input.mousePosition.y > InfoText.transform.parent.position.y)
+        if (Input.mousePosition.y > InfoText.transform.parent.position.y && BasicInfo)
             HoverBox = BasicInfo;
         else
             HoverBox = InfoText;
