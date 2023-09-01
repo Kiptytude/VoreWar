@@ -62,7 +62,6 @@ class FogSystemTactical
                 if (unit.Unit.GetApparentSide() != defenderSide && ((attackersturn == true && State.GameManager.TacticalMode.IsPlayerTurn) || !AIAttacker))
                 {
                     ClearWithinSTilesOf(unit.Position, unitSightRange);
-                    unit.InSight = true;
                 }
             }
 
