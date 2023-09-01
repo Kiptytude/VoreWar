@@ -610,10 +610,6 @@ public class TacticalMode : SceneBase
             }
         }
 
-        if (State.World.IsNight)    
-        {
-            UpdateFog();
-        }
     }
 
     private void InitRetreatConditions(ITacticalAI AI, List<Actor_Unit> fighters, Empire empire, bool nonPlayer)
@@ -3560,10 +3556,7 @@ Turns: {currentTurn}
     {
         AllSurrenderedCheck();
         Log.RegisterNewTurn(attackersTurn ? AttackerName : DefenderName, currentTurn);
-        if (State.World.IsNight)
-        {
-            UpdateFog();
-        }
+
         for (int i = 0; i < units.Count; i++)
         {
             if (units[i].Unit.IsDead == false && units[i].Unit.Side != activeSide)
