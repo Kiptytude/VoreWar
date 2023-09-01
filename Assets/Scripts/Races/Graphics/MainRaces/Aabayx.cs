@@ -234,8 +234,6 @@ class Aabayx : DefaultRaceData
     {
         if (actor.Unit.HasWeapon && actor.Surrendered == false)
         {
-            if (actor.GetWeaponSprite() == 7)
-                return null;
             return State.GameManager.SpriteDictionary.Aabayx[88 + actor.GetWeaponSprite()];
         }
         else
