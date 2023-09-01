@@ -30,12 +30,12 @@
     ViralInfection = 20,
     DivinitysEmbrace = 21,
 
-    Resurrection = 22,
-
     AmplifyMagic = 23,
     Evocation = 24,
     ManaFlux = 25,
     UnstableMana = 26,
+
+    Resurrection = 27,
 
     AlraunePuff = 70,
     Web = 71,
