@@ -361,7 +361,7 @@ public class ContentSettings : MonoBehaviour
         };
         MercToggles = new List<ToggleObject>();
         MonsterSpawners = new List<MonsterSpawnerPanel>();
-        foreach (Race race in ((Race[])Enum.GetValues(typeof(Race))).OrderBy((s) => s.ToString()))
+        foreach (Race race in ((Race[])Enum.GetValues(typeof(Race))).Where(s => (int)s >= 0).OrderBy((s) => s.ToString()))
         {
             var obj = new ToggleObject(CreateMercToggle(race), $"Merc {race}", true);
             MercToggles.Add(obj);
@@ -1313,7 +1313,7 @@ public class ContentSettings : MonoBehaviour
         }
         if (MercSortMethod.value == 0)
         {
-            foreach (Race race in ((Race[])Enum.GetValues(typeof(Race))).OrderBy((s) => s.ToString()))
+            foreach (Race race in ((Race[])Enum.GetValues(typeof(Race))).Where(s => (int)s >= 0).OrderBy((s) => s.ToString()))
             {
                 var obj = new ToggleObject(CreateMercToggle(race), $"Merc {race}", true);
                 MercToggles.Add(obj);

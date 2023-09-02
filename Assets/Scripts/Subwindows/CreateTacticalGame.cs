@@ -45,7 +45,7 @@ public class CreateTacticalGame : MonoBehaviour
         //    Attacker.Race.options.Add(new Dropdown.OptionData(race.ToString()));
         //    Defender.Race.options.Add(new Dropdown.OptionData(race.ToString()));
         //}
-        foreach (Race race in (((Race[])Enum.GetValues(typeof(Race))).Where(s => (int)s >= 0)).OrderBy((s) => s.ToString()))
+        foreach (Race race in ((Race[])Enum.GetValues(typeof(Race))).Where(s => (int)s >= 0).OrderBy((s) => s.ToString()))
         {
             Attacker.Race.options.Add(new Dropdown.OptionData(race.ToString()));
             Defender.Race.options.Add(new Dropdown.OptionData(race.ToString()));
