@@ -168,29 +168,38 @@ public class HoveringTooltip : MonoBehaviour
         {
             return "";
         }
+        string STRDef = $"Affects melee accuracy and damage, also has a lesser impact on health, has minor effects on vore defense and vore escape\n{StatData(Stat.Strength)}";
+        string DEXDef = $"Affects ranged accuracy and damage, has minor effect on vore escape\n{StatData(Stat.Dexterity)}";
+        string VORDef = $"Affects vore odds, also has a minor effect on keeping prey down, also affects digestion damage to a minor degree\n{StatData(Stat.Voracity)}";
+        string AGIDef = $"Affects melee and ranged evasion and movement speed\n{StatData(Stat.Agility)}\nMovement: {actor?.MaxMovement() ?? Mathf.Max(3 + ((int)Mathf.Pow(unit.GetStat(Stat.Agility) / 4, .8f)), 1)} tiles";
+        string WLLDef = $"Affects vore defense, escape rate, mana capacity, and magic defense\n{StatData(Stat.Will)}";
+        string MNDDef = $"Affects spell damage, success odds, and duration with a minor amount of mana capacity\n{StatData(Stat.Mind)}";
+        string ENDDef = $"Affects total health, also reduces damage from acid, has a minor role in escape chance.\n{StatData(Stat.Endurance)}";
+        string STMDef = $"Affects stomach capacity and digestion rate.  Also helps keep prey from escaping.\n{StatData(Stat.Stomach)}\n" +
+                     (State.World?.ItemRepository == null ? $"" : $"{((!unit.Predator || actor?.PredatorComponent == null) ? "" : $"Capacity: {Math.Round(actor.PredatorComponent.GetBulkOfPrey(), 2)} / {Math.Round(State.RaceSettings.GetStomachSize(unit.Race) * (unit.GetStat(Stat.Stomach) / 12f * unit.TraitBoosts.CapacityMult), 1)}")}");
+        string LDRDef = $"Provides a stat boost for all friendly units\nStat value: {unit.GetStatBase(Stat.Leadership)}";
         if (Enum.TryParse(words[2], out Stat stat) && unit != null)
         {
             switch (stat)
             {
                 case Stat.Strength:
-                    return $"Affects melee accuracy and damage, also has a lesser impact on health, has minor effects on vore defense and vore escape\n{StatData(Stat.Strength)}";
+                    return STRDef;
                 case Stat.Dexterity:
-                    return $"Affects ranged accuracy and damage, has minor effect on vore escape\n{StatData(Stat.Dexterity)}";
+                    return DEXDef;
                 case Stat.Voracity:
-                    return $"Affects vore odds, also has a minor effect on keeping prey down, also affects digestion damage to a minor degree\n{StatData(Stat.Voracity)}";
+                    return VORDef;
                 case Stat.Agility:
-                    return $"Affects melee and ranged evasion and movement speed\n{StatData(Stat.Agility)}\nMovement: {actor?.MaxMovement() ?? Mathf.Max(3 + ((int)Mathf.Pow(unit.GetStat(Stat.Agility) / 4, .8f)), 1)} tiles";
+                    return AGIDef;
                 case Stat.Will:
-                    return $"Affects vore defense, escape rate, mana capacity, and magic defense\n{StatData(Stat.Will)}";
+                    return WLLDef;
                 case Stat.Mind:
-                    return $"Affects spell damage, success odds, and duration with a minor amount of mana capacity\n{StatData(Stat.Mind)}";
+                    return MNDDef;
                 case Stat.Endurance:
-                    return $"Affects total health, also reduces damage from acid, has a minor role in escape chance.\n{StatData(Stat.Endurance)}";
+                    return ENDDef;
                 case Stat.Stomach:
-                    return ($"Affects stomach capacity and digestion rate.  Also helps keep prey from escaping.\n{StatData(Stat.Stomach)}\n" +
-                     (State.World?.ItemRepository == null ? $"" :  $"{((!unit.Predator || actor?.PredatorComponent == null) ?  "" : ($"Used Capacity: {Math.Round(actor.PredatorComponent.GetBulkOfPrey(), 2)}\n"))}Max Capacity: {Math.Round(State.RaceSettings.GetStomachSize(unit.Race) * (unit.GetStat(Stat.Stomach) / 12f * unit.TraitBoosts.CapacityMult), 1)}"));
+                    return STMDef;
                 case Stat.Leadership:
-                    return $"Provides a stat boost for all friendly units\nStat value: {unit.GetStatBase(Stat.Leadership)}";
+                    return LDRDef;
             }
         }
         if (Enum.TryParse(words[2], out Race race))
@@ -339,12 +348,30 @@ public class HoveringTooltip : MonoBehaviour
         switch (words[2])
         {
             case "surrendered":
-                return "This unit has surrendered, all units have a 100% chance to eat it, and it only costs 2 mp to eat it.";
+                return "This unit has surrendered, all units have a 100% chance to eat it, and it only costs 2 AP to eat it.";
 
             case "Imprinted":
                 return $"This unit is imprinted in the village of {unit.SavedVillage.Name}, at level {unit.SavedCopy?.Level ?? 0} with {Math.Round(unit.SavedCopy?.Experience ?? 0)} exp.  " +
                     $"Unit will automatically resurrect there at that power, assuming the village is controlled by friendlies when the unit dies";
 
+            case "STR":
+                return STRDef;
+            case "DEX":
+                return DEXDef;
+            case "MND":
+                return MNDDef;
+            case "WLL":
+                return WLLDef;
+            case "END":
+                return ENDDef;
+            case "AGI":
+                return AGIDef;
+            case "VOR":
+                return VORDef;
+            case "STM":
+                return STMDef;
+            case "LDR":
+                return LDRDef;
 
             default:
                 return "";
