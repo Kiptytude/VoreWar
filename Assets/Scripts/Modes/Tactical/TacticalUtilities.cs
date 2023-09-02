@@ -673,9 +673,9 @@ static class TacticalUtilities
     static internal List<Actor_Unit> UnitsWithinTiles(Vec2 target, int tiles)
     {
         List<Actor_Unit> unitList = new List<Actor_Unit>();
-
         foreach (Actor_Unit actor in Units)
         {
+            
             if (actor.Visible && actor.Targetable)
             {
                 if (actor.Position.GetNumberOfMovesDistance(target) <= tiles)
