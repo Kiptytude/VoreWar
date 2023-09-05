@@ -1633,7 +1633,7 @@ public class PredatorComponent
 
                 float cap = TotalCapacity();
                 escapeMult = 1.4f + 2 * ((Fullness / cap) - 1);
-                actor.Damage((int)(FreeCap()*-1)/2);
+                if (Config.OverfeedingDamage) actor.Damage((int)(FreeCap() * -1) / 2);
             }
             if (State.Rand.NextDouble() < preyUnit.EscapeRate * escapeMult && preyUnit.Actor.Surrendered == false)
             {

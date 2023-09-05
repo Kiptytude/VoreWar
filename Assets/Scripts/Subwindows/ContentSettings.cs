@@ -245,6 +245,7 @@ public class ContentSettings : MonoBehaviour
     public Slider MaxArmies;
 
     public Toggle StatBoostsAffectMaxHP;
+    public Toggle OverfeedingDamage;
 
 
 
@@ -357,6 +358,7 @@ public class ContentSettings : MonoBehaviour
             new ToggleObject(StatCrit, "StatCrit", false),
             new ToggleObject(StatGraze, "StatGraze", false),
             new ToggleObject(StatBoostsAffectMaxHP, "StatBoostsAffectMaxHP", false),
+            new ToggleObject(OverfeedingDamage, "OverfeedingDamage", false),
 
         };
         MercToggles = new List<ToggleObject>();

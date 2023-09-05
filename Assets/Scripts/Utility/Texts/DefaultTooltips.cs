@@ -652,6 +652,8 @@ Does not retroactively affect already created units.";
                 return @"Enables the Goodra monster packs";
             case 258:
                 return "Normally only base endurance and strength influence HP. With this, size and other boosts (green/red numbers) will be used as well.";
+            case 259:
+                return "When enabled, preds that are over capacity will take damage every time they digest prey.";
             case 260:
                 return @"If enabled, condoms of varying colors will be used for Cock Vore disposal.
                 Otherwise the standard cumstain will be used.
