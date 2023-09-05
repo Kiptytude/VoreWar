@@ -27,104 +27,38 @@ public class HoveringTooltip : MonoBehaviour
     public void UpdateInformationTraitsOnly(string[] words)
     {
         string description = GetTraitDescription(words);
-        if (description == "")
-        {
-            gameObject.SetActive(false);
-            return;
-        }
-        rect.sizeDelta = new Vector2(500, 200);
-        gameObject.SetActive(true);
-        remainingFrames = 3;
-        text.text = description;
-        float xAdjust = 10;
-        float exceeded = Input.mousePosition.x + (rect.rect.width * Screen.width / 1920) - Screen.width;
-        if (exceeded > 0)
-            xAdjust = -exceeded;
-        transform.position = Input.mousePosition + new Vector3(xAdjust, 0, 0);
+        InfoUpdate(description);
     }
 
     public void UpdateInformationSpellsOnly(string[] words)
     {
         string description = GetSpellDescription(words);
-        if (description == "")
-        {
-            gameObject.SetActive(false);
-            return;
-        }
-        rect.sizeDelta = new Vector2(500, 200);
-        gameObject.SetActive(true);
-        remainingFrames = 3;
-        text.text = description;
-        float xAdjust = 10;
-        float exceeded = Input.mousePosition.x + (rect.rect.width * Screen.width / 1920) - Screen.width;
-        if (exceeded > 0)
-            xAdjust = -exceeded;
-        transform.position = Input.mousePosition + new Vector3(xAdjust, 0, 0);
+        InfoUpdate(description);
     }
 
     public void UpdateInformationAIOnly(string[] words)
     {
         string description = GetAIDescription(words);
-        if (description == "")
-        {
-            gameObject.SetActive(false);
-            return;
-        }
-        rect.sizeDelta = new Vector2(500, 200);
-        gameObject.SetActive(true);
-        remainingFrames = 3;
-        text.text = description;
-        float xAdjust = 10;
-        float exceeded = Input.mousePosition.x + (rect.rect.width * Screen.width / 1920) - Screen.width;
-        if (exceeded > 0)
-            xAdjust = -exceeded;
-        transform.position = Input.mousePosition + new Vector3(xAdjust, 0, 0);
+        InfoUpdate(description);
     }
 
     public void UpdateInformation(string[] words, Unit unit, Actor_Unit actor)
     {
         string description = GetDescription(words, unit, actor);
-        if (description == "")
-        {
-            gameObject.SetActive(false);
-            return;
-        }
-        rect.sizeDelta = new Vector2(500, 200);
-        gameObject.SetActive(true);
-        remainingFrames = 3;
-        text.text = description;
-        float xAdjust = 10;
-        float exceeded = Input.mousePosition.x + (rect.rect.width * Screen.width / 1920) - Screen.width;
-        if (exceeded > 0)
-            xAdjust = -exceeded;
-        transform.position = Input.mousePosition + new Vector3(xAdjust, 0, 0);
+        InfoUpdate(description);
     }
 
     public void UpdateInformation(Slider slider)
     {
         rect.sizeDelta = new Vector2(350, 80);
         string description = $"Slider Value: {Math.Round(slider.value, 3)}\nRight Click to type in the number.";
-        gameObject.SetActive(true);
-        remainingFrames = 3;
-        text.text = description;
-        float xAdjust = 10;
-        float exceeded = Input.mousePosition.x + 640 - Screen.width;
-        if (exceeded > 0)
-            xAdjust = -exceeded;
-        transform.position = Input.mousePosition + new Vector3(xAdjust, 0, 0);
+        InfoUpdate(description);
     }
 
     public void HoveringValidName()
     {
         string description = "Click to show the information for this consumed unit";
-        gameObject.SetActive(true);
-        remainingFrames = 3;
-        text.text = description;
-        float xAdjust = 10;
-        float exceeded = Input.mousePosition.x + (rect.rect.width * Screen.width / 1920) - Screen.width;
-        if (exceeded > 0)
-            xAdjust = -exceeded;
-        transform.position = Input.mousePosition + new Vector3(xAdjust, 0, 0);
+        InfoUpdate(description);
     }
 
     string GetTraitDescription(string[] words)
@@ -673,14 +607,18 @@ public class HoveringTooltip : MonoBehaviour
     {
 
         string description = DefaultTooltips.Tooltip(value);
+        InfoUpdate(description, true);
+    }
+
+    internal void InfoUpdate(string description, bool linger = false)
+    {
         if (description == "")
         {
             gameObject.SetActive(false);
             return;
         }
-        rect.sizeDelta = new Vector2(500, 200);
         gameObject.SetActive(true);
-        remainingFrames = 999;
+        remainingFrames = linger ? 999 : 3;
         text.text = description;
         float xAdjust = 10;
         float exceeded = Input.mousePosition.x + (rect.rect.width * Screen.width / 1920) - Screen.width;
