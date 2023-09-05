@@ -356,7 +356,7 @@ public class HoveringTooltip : MonoBehaviour
             case Traits.Flight:
                 return "Unit can pass through obstacles and other units in tactical mode.\nMust end turn on solid ground\nIf you try to take an action or end your turn in an invalid place, it will automatically undo your movement";
             case Traits.Pounce:
-                return "Unit spends a minimum of 2 mp to jump next to a target that is within 2-4 tiles (if there is space) and melee attack or vore it";
+                return "Unit spends a minimum of 2 AP to jump next to a target that is within 2-4 tiles (if there is space) and melee attack or vore it";
             case Traits.Biter:
                 return "A failed vore attack will result in an attack attempt with a weak melee weapon";
             case Traits.Pathfinder:
@@ -410,7 +410,7 @@ public class HoveringTooltip : MonoBehaviour
             case Traits.FearsomeAppetite:
                 return "Consuming a victim frightens nearby allies of the prey, temporarily reducing their stats";
             case Traits.Endosoma:
-                return "Can vore friendly units, friendly units that are vored take no digestion damage \nThey do not try to escape, but can be regurgitated or are freed at the end of battle\nHas 100% chance to eat allies, and only costs 2 mp, like eating surrendered units.  May cause battles to not automatically end if used with TheGreatEscape";
+                return "Can vore friendly units, friendly units that are vored take no digestion damage \nThey do not try to escape, but can be regurgitated or are freed at the end of battle\nHas 100% chance to eat allies, and only costs 2 AP, like eating surrendered units.  May cause battles to not automatically end if used with TheGreatEscape";
             case Traits.TailStrike:
                 return "An attack that does less damage, but attacks the tile and the 2 tiles adjacent to it that are within reach";
             case Traits.HealingBelly:

@@ -2464,7 +2464,7 @@ Turns: {currentTurn}
 
         if (actor.Movement <= 0)
         {
-            if (silent == false) State.GameManager.CreateMessageBox("Unit needs at least 1 mp to flee");
+            if (silent == false) State.GameManager.CreateMessageBox("Unit needs at least 1 AP to flee");
             return;
         }
 

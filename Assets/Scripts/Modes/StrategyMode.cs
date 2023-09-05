@@ -344,7 +344,7 @@ public class StrategyMode : SceneBase
 
             if (right.RemainingMP < 1 && right.Side == left.Side)
             {
-                State.GameManager.CreateMessageBox("Recieving Army needs to have at least 1 MP to exchange units  (0 Mp for Allied armies)");
+                State.GameManager.CreateMessageBox("Recieving Army needs to have at least 1 MP to exchange units (0 MP for Allied armies)");
                 return;
             }
         }

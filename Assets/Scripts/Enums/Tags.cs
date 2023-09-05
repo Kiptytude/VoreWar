@@ -3,7 +3,7 @@
 /// </summary>
 public enum Traits
 {
-    /// <summary>Unit gains +1 melee attack and +1 ranged attack, reducing the MP used by a melee or ranged attack.</summary>
+    /// <summary>Unit gains +1 melee attack and +1 ranged attack, reducing the AP used by a melee or ranged attack.</summary>
     DoubleAttack = 0,
     /// <summary>Unit requires 30% less experience to level up.</summary>
     Clever = 1,
@@ -39,7 +39,7 @@ public enum Traits
     FastDigestion = 21,
     /// <summary>Halves unit's digestion rate.</summary>
     SlowDigestion = 22,
-    /// <summary>Unit gains 20% redution to damage taken and is 33% harder to vore after ending turn with more than 0 MP.</summary>
+    /// <summary>Unit gains 20% redution to damage taken and is 33% harder to vore after ending turn with more than 0 AP.</summary>
     DefensiveStance = 23,
     /// <summary>Adjacent units' dodge chances are reduced by 20%.</summary>
     Intimidating = 24,
@@ -67,15 +67,15 @@ public enum Traits
     SlowBreeder = 35,
     /// <summary>Breeding rate increased by 75%.</summary>
     ProlificBreeder = 36,
-    /// <summary>Unit can fly through other units otherwise impassable tiles and only consumes 1 MP per tile.</summary>
+    /// <summary>Unit can fly through other units otherwise impassable tiles and only consumes 1 AP per tile.</summary>
     Flight = 37,
     /// <summary>Allows unit to pounce to attack or vore nearby units.</summary>
     Pounce = 38,
-    /// <summary>Unit has 50% chance to slime target for 1 turn when attacking, halving their MP.</summary>
+    /// <summary>Unit has 50% chance to slime target for 1 turn when attacking, halving their AP.</summary>
     BoggingSlime = 39,
     /// <summary>Unit takes 25% reduced range damage and 20% reduced melee damage, but is 15% easier to vore.</summary>
     GelatinousBody = 40,
-    /// <summary>Unit gains +1 melee attack, reducing the MP used by a melee attack.</summary>
+    /// <summary>Unit gains +1 melee attack, reducing the AP used by a melee attack.</summary>
     Maul = 41,
     /// <summary>When unit fails a vore attack, unit instead bites target, dealing damage equivalent to that of the basic melee weapon.</summary>
     Biter = 42,
@@ -105,7 +105,7 @@ public enum Traits
     KeenReflexes = 54,
     /// <summary>Tree tiles are treated as valid movement tiles for unit.</summary>
     NimbleClimber = 55,
-    /// <summary>Unit gains +1 vore attack, reducing the MP used by a vore attack.</summary>
+    /// <summary>Unit gains +1 vore attack, reducing the AP used by a vore attack.</summary>
     StrongGullet = 56,
     /// <summary>Unit deals trple melee damage and is forced to use <b>Claws</b> weapon, which has 2 base damage.</summary>
     Feral = 57,
@@ -193,9 +193,9 @@ public enum Traits
     PleasurableTouch = 97,
     /// <summary>Doubles unit's max capacity.</summary>
     StretchyInsides = 98,
-    /// <summary>Unit gains +1 ranged attack, reducing the MP used by a ranged attack.</summary>
+    /// <summary>Unit gains +1 ranged attack, reducing the AP used by a ranged attack.</summary>
     QuickShooter = 99,
-    /// <summary>Unit gains +1 spell attack, reducing the MP used by a spell attack.</summary>
+    /// <summary>Unit gains +1 spell attack, reducing the AP used by a spell attack.</summary>
     FastCaster = 100,
     /// <summary>Unit deals 20% less damage with ranged attacks.</summary>
     RangedIneptitude = 101,

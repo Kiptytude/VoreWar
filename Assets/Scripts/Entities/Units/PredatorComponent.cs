@@ -2515,7 +2515,7 @@ public class PredatorComponent
                     int oldMP = actor.Movement;
                     actor.Attack(target, false, true, canKill: false);
                     actor.Movement = oldMP;
-                    bit = true; //Used because killed units are considered to be surrendered, so this prevents a bite that kills a unit being counted as 2 mp
+                    bit = true; //Used because killed units are considered to be surrendered, so this prevents a bite that kills a unit being counted as 2 AP
                 }
                 else
                 {
