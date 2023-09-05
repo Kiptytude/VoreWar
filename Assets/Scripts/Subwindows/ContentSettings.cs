@@ -1419,6 +1419,7 @@ public class ContentSettings : MonoBehaviour
             CumGestation.isOn = false;
         SpecialMercsCanConvert.interactable = KuroTenkoEnabled.isOn && (int)Config.UBConversion <= 1;
         NoScatForDeadTransfers.interactable = KuroTenkoEnabled.isOn;
+        AlwaysRandomizeConverted.interactable = KuroTenkoEnabled.isOn;
     }
 
     public void DayNightCycleChanged()
