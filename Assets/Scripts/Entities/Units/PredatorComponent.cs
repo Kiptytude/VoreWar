@@ -2058,6 +2058,9 @@ public class PredatorComponent
             fullness += preyUnit.Actor.Bulk();
             if (location == PreyLocation.breasts)
             {
+                // This condition is for kangaroo pouch vore, when proper pouch sprites are implemented, remove it
+                if (actor.Unit.Race == Race.Kangaroos)
+                    stomachFullness += preyUnit.Actor.Bulk();
                 breastFullness += preyUnit.Actor.Bulk();
             }
             else if (location == PreyLocation.balls)
