@@ -1324,7 +1324,7 @@ public class ContentSettings : MonoBehaviour
         }
         if (MercSortMethod.value == 1)
         {
-            foreach (Race race in ((Race[])Enum.GetValues(typeof(Race))).Where(s => s < Race.Succubi).OrderBy((s) => s.ToString()))
+            foreach (Race race in ((Race[])Enum.GetValues(typeof(Race))).Where(s => s < Race.Succubi && s >= 0).OrderBy((s) => s.ToString()))
             {
                 var obj = new ToggleObject(CreateMercToggle(race), $"Merc {race}", true);
                 MercToggles.Add(obj);
@@ -1351,7 +1351,7 @@ public class ContentSettings : MonoBehaviour
         }
         if (MercSortMethod.value == 2)
         {
-            foreach (Race race in (Race[])Enum.GetValues(typeof(Race)))
+            foreach (Race race in ((Race[])Enum.GetValues(typeof(Race))).Where(s => (int)s >= 0))
             {
                 var obj = new ToggleObject(CreateMercToggle(race), $"Merc {race}", true);
                 MercToggles.Add(obj);

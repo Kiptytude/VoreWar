@@ -184,7 +184,7 @@ public class CreateTacticalGame : MonoBehaviour
         float time = Time.realtimeSinceStartup;
         List<Race> participants = new List<Race>();
         batching = true;
-        foreach (Race race in (Race[])Enum.GetValues(typeof(Race)))
+        foreach (Race race in ((Race[])Enum.GetValues(typeof(Race))).Where(s => (int)s >= 0))
         {
             if (AllRaces.isOn == false && race == Race.Succubi)
                 break;
@@ -248,7 +248,7 @@ public class CreateTacticalGame : MonoBehaviour
         float time = Time.realtimeSinceStartup;
         List<Race> participants = new List<Race>();
 
-        foreach (Race race in (Race[])Enum.GetValues(typeof(Race)))
+        foreach (Race race in ((Race[])Enum.GetValues(typeof(Race))).Where(s => (int)s >= 0))
         {
             if (AllRaces.isOn == false && race == Race.Succubi)
                 break;
