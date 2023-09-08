@@ -17,6 +17,7 @@ class Aabayx : DefaultRaceData
         MouthTypes = 0;
         TailTypes = 16;
         SpecialAccessoryCount = 0;
+        clothingColors = 0;
         AccessoryColors = ColorPaletteMap.GetPaletteCount(ColorPaletteMap.SwapType.AabayxSkin); // Head color
         SkinColors = ColorPaletteMap.GetPaletteCount(ColorPaletteMap.SwapType.AabayxSkin);
 
@@ -48,7 +49,7 @@ class Aabayx : DefaultRaceData
         BreastShadow = null;
         Dick = new SpriteExtraInfo(11, DickSprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.AabayxSkin, s.Unit.SkinColor));
         Balls = new SpriteExtraInfo(10, BallsSprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.AabayxSkin, s.Unit.SkinColor));
-
+        
         AllowedMainClothingTypes = new List<MainClothing>()
         {
             new AabayxTop1(),
@@ -78,6 +79,15 @@ class Aabayx : DefaultRaceData
             new AabayxFacePaint6(),
             new AabayxFacePaint7(),
         };
+        AllowedClothingHatTypes = new List<ClothingAccessory>();
+    }
+
+    internal override int BreastSizes => 1;
+
+    internal override void RandomCustom(Unit unit)
+    {
+        base.RandomCustom(unit);
+        unit.TailType = State.Rand.Next(TailTypes);
     }
 
     internal override void SetBaseOffsets(Actor_Unit actor)
@@ -224,8 +234,6 @@ class Aabayx : DefaultRaceData
     {
         if (actor.Unit.HasWeapon && actor.Surrendered == false)
         {
-            if (actor.GetWeaponSprite() == 7)
-                return null;
             return State.GameManager.SpriteDictionary.Aabayx[88 + actor.GetWeaponSprite()];
         }
         else

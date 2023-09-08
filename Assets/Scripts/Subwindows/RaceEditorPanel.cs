@@ -101,7 +101,7 @@ public class RaceEditorPanel : MonoBehaviour
     {
         if (RaceDropdown.options?.Any() == false)
         {
-            foreach (Race race in (((Race[])Enum.GetValues(typeof(Race))).Where(s => (int)s >= 0)).OrderBy((s) => s.ToString()))
+            foreach (Race race in ((Race[])Enum.GetValues(typeof(Race))).Where(s => (int)s >= 0).OrderBy((s) => s.ToString()))
             {
                 RaceDropdown.options.Add(new TMP_Dropdown.OptionData(race.ToString()));
             }
@@ -142,7 +142,7 @@ public class RaceEditorPanel : MonoBehaviour
 
         if (SpawnRaceDropdown.options?.Any() == false)
         {
-            foreach (Race race in ((Race[])Enum.GetValues(typeof(Race))).OrderBy((s) => s.ToString()))
+            foreach (Race race in ((Race[])Enum.GetValues(typeof(Race))).Where(s => (int)s >= 0).OrderBy((s) => s.ToString()))
             {
                 SpawnRaceDropdown.options.Add(new TMP_Dropdown.OptionData(race.ToString()));
             }
@@ -151,7 +151,7 @@ public class RaceEditorPanel : MonoBehaviour
 
         if (ConversionRaceDropdown.options?.Any() == false)
         {
-            foreach (Race race in ((Race[])Enum.GetValues(typeof(Race))).OrderBy((s) => s.ToString()))
+            foreach (Race race in ((Race[])Enum.GetValues(typeof(Race))).Where(s => (int)s >= 0).OrderBy((s) => s.ToString()))
             {
                 ConversionRaceDropdown.options.Add(new TMP_Dropdown.OptionData(race.ToString()));
             }
@@ -160,7 +160,7 @@ public class RaceEditorPanel : MonoBehaviour
 
         if (LeaderRaceDropdown.options?.Any() == false)
         {
-            foreach (Race race in ((Race[])Enum.GetValues(typeof(Race))).OrderBy((s) => s.ToString()))
+            foreach (Race race in ((Race[])Enum.GetValues(typeof(Race))).Where(s => (int)s >= 0).OrderBy((s) => s.ToString()))
             {
                 LeaderRaceDropdown.options.Add(new TMP_Dropdown.OptionData(race.ToString()));
             }

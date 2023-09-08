@@ -10,7 +10,7 @@ using UnityEngine;
 public static class State
 {
     static int saveErrors = 0;
-    public const string Version = "42";
+    public const string Version = "42A";
     public static World World;
     public static Rand Rand = new Rand();
     public static NameGenerator NameGen;
@@ -796,6 +796,32 @@ public static class State
                         }
                     }
 
+                }
+            }
+
+            if (version <= 42)
+            {
+                if (World.AllActiveEmpires != null)
+                {
+                    foreach (var unit in StrategicUtilities.GetAllUnits())
+                    {
+                        if (unit.Race != Race.Cats)
+                        {
+                            unit.SpawnRace = RaceSettings.Get(unit.Race).SpawnRace;
+                            unit.ConversionRace = RaceSettings.Get(unit.Race).ConversionRace;
+                        }
+                    }
+                }
+                if (World.TacticalData != null)
+                {
+                    foreach (var unit in World.TacticalData.units)
+                    {
+                        if (unit.Unit.Race != Race.Cats)
+                        {
+                            unit.Unit.SpawnRace = RaceSettings.Get(unit.Unit.Race).SpawnRace;
+                            unit.Unit.ConversionRace = RaceSettings.Get(unit.Unit.Race).ConversionRace;
+                        }
+                    }
                 }
             }
 

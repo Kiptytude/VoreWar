@@ -45,7 +45,7 @@ public class CreateTacticalGame : MonoBehaviour
         //    Attacker.Race.options.Add(new Dropdown.OptionData(race.ToString()));
         //    Defender.Race.options.Add(new Dropdown.OptionData(race.ToString()));
         //}
-        foreach (Race race in ((Race[])Enum.GetValues(typeof(Race))).OrderBy((s) => s.ToString()))
+        foreach (Race race in ((Race[])Enum.GetValues(typeof(Race))).Where(s => (int)s >= 0).OrderBy((s) => s.ToString()))
         {
             Attacker.Race.options.Add(new Dropdown.OptionData(race.ToString()));
             Defender.Race.options.Add(new Dropdown.OptionData(race.ToString()));
@@ -184,7 +184,7 @@ public class CreateTacticalGame : MonoBehaviour
         float time = Time.realtimeSinceStartup;
         List<Race> participants = new List<Race>();
         batching = true;
-        foreach (Race race in (Race[])Enum.GetValues(typeof(Race)))
+        foreach (Race race in ((Race[])Enum.GetValues(typeof(Race))).Where(s => (int)s >= 0))
         {
             if (AllRaces.isOn == false && race == Race.Succubi)
                 break;
@@ -248,7 +248,7 @@ public class CreateTacticalGame : MonoBehaviour
         float time = Time.realtimeSinceStartup;
         List<Race> participants = new List<Race>();
 
-        foreach (Race race in (Race[])Enum.GetValues(typeof(Race)))
+        foreach (Race race in ((Race[])Enum.GetValues(typeof(Race))).Where(s => (int)s >= 0))
         {
             if (AllRaces.isOn == false && race == Race.Succubi)
                 break;
@@ -570,7 +570,7 @@ public class CreateTacticalGame : MonoBehaviour
     Race GetRandomRace()
     {
         if (AllRandomRaces == null)
-            AllRandomRaces = (Race[])Enum.GetValues(typeof(Race));
+            AllRandomRaces = ((Race[])Enum.GetValues(typeof(Race))).Where(s => (int)s >= 0).ToArray();
         for (int i = 0; i < 4; i++)
         {
             Race race = AllRandomRaces[State.Rand.Next(AllRandomRaces.Length)];

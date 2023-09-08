@@ -1287,7 +1287,7 @@ public class Village
         {
             TurnRefreshed = State.World.Turn;
             AvailableRaces = new List<Race>();
-            foreach (Race race in (Race[])Enum.GetValues(typeof(Race)))
+            foreach (Race race in ((Race[])Enum.GetValues(typeof(Race))).Where(s => (int)s >= 0))
             {
                 if (race < Race.Selicia && Config.World.GetValue($"Merc {race}"))
                     AvailableRaces.Add(race);

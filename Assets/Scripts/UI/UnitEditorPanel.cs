@@ -42,7 +42,7 @@ public class UnitEditorPanel : CustomizerPanel
     {
         raceDict = new Dictionary<Race, int>();
         int val = 0;
-        foreach (Race race in ((Race[])Enum.GetValues(typeof(Race))).OrderBy((s) => s.ToString()))
+        foreach (Race race in ((Race[])Enum.GetValues(typeof(Race))).Where(s => (int)s >= 0).OrderBy((s) => s.ToString()))
         {
             raceDict[race] = val;
             val++;

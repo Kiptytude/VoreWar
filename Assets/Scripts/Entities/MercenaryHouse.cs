@@ -32,7 +32,7 @@ public class MercenaryHouse
         int highestExp = 0;
         if (State.World.Turn == 1)
             highestExp = 4;
-        foreach (Race race in (Race[])System.Enum.GetValues(typeof(Race)))
+        foreach (Race race in ((Race[])System.Enum.GetValues(typeof(Race))).Where(s => (int)s >= 0))
         {
             raceQuantities[race] = 0;
         }
@@ -43,7 +43,7 @@ public class MercenaryHouse
             else
                 raceQuantities[unit.Race] = 1;
         }
-        foreach (Race race in (Race[])System.Enum.GetValues(typeof(Race)))
+        foreach (Race race in ((Race[])System.Enum.GetValues(typeof(Race))).Where(s => (int)s >= 0))
         {
             if (race < Race.Selicia)
                 continue;
@@ -65,7 +65,7 @@ public class MercenaryHouse
         {
             TurnRefreshed = State.World.Turn;
             AvailableRaces = new List<Race>();
-            foreach (Race race in (Race[])System.Enum.GetValues(typeof(Race)))
+            foreach (Race race in ((Race[])System.Enum.GetValues(typeof(Race))).Where(s => (int)s >= 0))
             {
                 if (race < Race.Selicia && Config.World.GetValue($"Merc {race}"))
                     AvailableRaces.Add(race);

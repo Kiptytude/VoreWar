@@ -2498,8 +2498,8 @@ internal void SetGenderRandomizeName(Race race, Gender gender)
             foreach (SpellTypes type in racePar.InnateSpells)
             {
                 var thisType = type;
-                if (thisType > SpellTypes.Resurrection)
-                    thisType = thisType - SpellTypes.Resurrection + SpellTypes.AlraunePuff - 1;
+                //if (thisType > SpellTypes.Resurrection)
+                //    thisType = thisType - SpellTypes.Resurrection + SpellTypes.AlraunePuff - 1;
                 if (SpellList.SpellDict.TryGetValue(thisType, out Spell spell))
                 {
                     UseableSpells.Add(spell);

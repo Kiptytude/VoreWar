@@ -634,7 +634,7 @@ Note, that units with the SeductiveTouch cheat trait will be able to rub enemies
                 return @"Breast size modifier for herm units, if in the center, all types have an equal chance, but sliding it prevents one level per tick and changes the average size
 Does not retroactively affect already created units.";
             case 251:
-                return "How many tiles armies and villages can see if fog of war is enabled.  The game uses a simple system where line of sight isn't blocked by obstacles. ";
+                return "How many tiles armies and villages can see if fog of war is enabled.  The game uses a simple system where line of sight isn't blocked by obstacles.\n Also affects night time sight range";
             case 252:
                 return "Every amount of growth gained is multiplied by this percentage (requires Growth trait)";
             case 253:
@@ -652,6 +652,8 @@ Does not retroactively affect already created units.";
                 return @"Enables the Goodra monster packs";
             case 258:
                 return "Normally only base endurance and strength influence HP. With this, size and other boosts (green/red numbers) will be used as well.";
+            case 259:
+                return "When enabled, preds that are over capacity will take damage every time they digest prey.";
             case 260:
                 return @"If enabled, condoms of varying colors will be used for Cock Vore disposal.
                 Otherwise the standard cumstain will be used.
@@ -691,7 +693,7 @@ Does not retroactively affect already created units.";
             case 277:
                 return "Range of a unit's vision at night in a tactical setting. Things like traits can also increase this.";
             case 278:
-                return " The amount your sight is decreased at night in strategic mode.\nThis value is subtracted from the 'Fog Distace Slider'.\n If this is higher than 'Fog Distace Slider' you won't be able to see at all";
+                return "The amount your sight is decreased at night in strategic mode if Fog of War is also on.\nThis value is subtracted from the 'Fog Distace Slider'.\n If this is higher than 'Fog Distace Slider' you won't be able to see at all";
             case 279:
                 return "The tactical turn where every unit is revealed.";
             default:

@@ -27,104 +27,38 @@ public class HoveringTooltip : MonoBehaviour
     public void UpdateInformationTraitsOnly(string[] words)
     {
         string description = GetTraitDescription(words);
-        if (description == "")
-        {
-            gameObject.SetActive(false);
-            return;
-        }
-        rect.sizeDelta = new Vector2(500, 200);
-        gameObject.SetActive(true);
-        remainingFrames = 3;
-        text.text = description;
-        float xAdjust = 10;
-        float exceeded = Input.mousePosition.x + (rect.rect.width * Screen.width / 1920) - Screen.width;
-        if (exceeded > 0)
-            xAdjust = -exceeded;
-        transform.position = Input.mousePosition + new Vector3(xAdjust, 0, 0);
+        InfoUpdate(description);
     }
 
     public void UpdateInformationSpellsOnly(string[] words)
     {
         string description = GetSpellDescription(words);
-        if (description == "")
-        {
-            gameObject.SetActive(false);
-            return;
-        }
-        rect.sizeDelta = new Vector2(500, 200);
-        gameObject.SetActive(true);
-        remainingFrames = 3;
-        text.text = description;
-        float xAdjust = 10;
-        float exceeded = Input.mousePosition.x + (rect.rect.width * Screen.width / 1920) - Screen.width;
-        if (exceeded > 0)
-            xAdjust = -exceeded;
-        transform.position = Input.mousePosition + new Vector3(xAdjust, 0, 0);
+        InfoUpdate(description);
     }
 
     public void UpdateInformationAIOnly(string[] words)
     {
         string description = GetAIDescription(words);
-        if (description == "")
-        {
-            gameObject.SetActive(false);
-            return;
-        }
-        rect.sizeDelta = new Vector2(500, 200);
-        gameObject.SetActive(true);
-        remainingFrames = 3;
-        text.text = description;
-        float xAdjust = 10;
-        float exceeded = Input.mousePosition.x + (rect.rect.width * Screen.width / 1920) - Screen.width;
-        if (exceeded > 0)
-            xAdjust = -exceeded;
-        transform.position = Input.mousePosition + new Vector3(xAdjust, 0, 0);
+        InfoUpdate(description);
     }
 
     public void UpdateInformation(string[] words, Unit unit, Actor_Unit actor)
     {
         string description = GetDescription(words, unit, actor);
-        if (description == "")
-        {
-            gameObject.SetActive(false);
-            return;
-        }
-        rect.sizeDelta = new Vector2(500, 200);
-        gameObject.SetActive(true);
-        remainingFrames = 3;
-        text.text = description;
-        float xAdjust = 10;
-        float exceeded = Input.mousePosition.x + (rect.rect.width * Screen.width / 1920) - Screen.width;
-        if (exceeded > 0)
-            xAdjust = -exceeded;
-        transform.position = Input.mousePosition + new Vector3(xAdjust, 0, 0);
+        InfoUpdate(description);
     }
 
     public void UpdateInformation(Slider slider)
     {
         rect.sizeDelta = new Vector2(350, 80);
         string description = $"Slider Value: {Math.Round(slider.value, 3)}\nRight Click to type in the number.";
-        gameObject.SetActive(true);
-        remainingFrames = 3;
-        text.text = description;
-        float xAdjust = 10;
-        float exceeded = Input.mousePosition.x + 640 - Screen.width;
-        if (exceeded > 0)
-            xAdjust = -exceeded;
-        transform.position = Input.mousePosition + new Vector3(xAdjust, 0, 0);
+        InfoUpdate(description);
     }
 
     public void HoveringValidName()
     {
         string description = "Click to show the information for this consumed unit";
-        gameObject.SetActive(true);
-        remainingFrames = 3;
-        text.text = description;
-        float xAdjust = 10;
-        float exceeded = Input.mousePosition.x + (rect.rect.width * Screen.width / 1920) - Screen.width;
-        if (exceeded > 0)
-            xAdjust = -exceeded;
-        transform.position = Input.mousePosition + new Vector3(xAdjust, 0, 0);
+        InfoUpdate(description);
     }
 
     string GetTraitDescription(string[] words)
@@ -168,29 +102,38 @@ public class HoveringTooltip : MonoBehaviour
         {
             return "";
         }
+        string STRDef = $"Affects melee accuracy and damage, also has a lesser impact on health, has minor effects on vore defense and vore escape\n{StatData(Stat.Strength)}";
+        string DEXDef = $"Affects ranged accuracy and damage, has minor effect on vore escape\n{StatData(Stat.Dexterity)}";
+        string VORDef = $"Affects vore odds, also has a minor effect on keeping prey down, also affects digestion damage to a minor degree\n{StatData(Stat.Voracity)}";
+        string AGIDef = $"Affects melee and ranged evasion and movement speed\n{StatData(Stat.Agility)}\nMovement: {actor?.MaxMovement() ?? Mathf.Max(3 + ((int)Mathf.Pow(unit.GetStat(Stat.Agility) / 4, .8f)), 1)} tiles";
+        string WLLDef = $"Affects vore defense, escape rate, mana capacity, and magic defense\n{StatData(Stat.Will)}";
+        string MNDDef = $"Affects spell damage, success odds, and duration with a minor amount of mana capacity\n{StatData(Stat.Mind)}";
+        string ENDDef = $"Affects total health, also reduces damage from acid, has a minor role in escape chance.\n{StatData(Stat.Endurance)}";
+        string STMDef = $"Affects stomach capacity and digestion rate.  Also helps keep prey from escaping.\n{StatData(Stat.Stomach)}\n" +
+                     (State.World?.ItemRepository == null ? $"" : $"{((!unit.Predator || actor?.PredatorComponent == null) ? "" : $"Capacity: {Math.Round(actor.PredatorComponent.GetBulkOfPrey(), 2)} / {Math.Round(State.RaceSettings.GetStomachSize(unit.Race) * (unit.GetStat(Stat.Stomach) / 12f * unit.TraitBoosts.CapacityMult), 1)}")}");
+        string LDRDef = $"Provides a stat boost for all friendly units\nStat value: {unit.GetStatBase(Stat.Leadership)}";
         if (Enum.TryParse(words[2], out Stat stat) && unit != null)
         {
             switch (stat)
             {
                 case Stat.Strength:
-                    return $"Affects melee accuracy and damage, also has a lesser impact on health, has minor effects on vore defense and vore escape\n{StatData(Stat.Strength)}";
+                    return STRDef;
                 case Stat.Dexterity:
-                    return $"Affects ranged accuracy and damage, has minor effect on vore escape\n{StatData(Stat.Dexterity)}";
+                    return DEXDef;
                 case Stat.Voracity:
-                    return $"Affects vore odds, also has a minor effect on keeping prey down, also affects digestion damage to a minor degree\n{StatData(Stat.Voracity)}";
+                    return VORDef;
                 case Stat.Agility:
-                    return $"Affects melee and ranged evasion and movement speed\n{StatData(Stat.Agility)}\nMovement: {actor?.MaxMovement() ?? Mathf.Max(3 + ((int)Mathf.Pow(unit.GetStat(Stat.Agility) / 4, .8f)), 1)} tiles";
+                    return AGIDef;
                 case Stat.Will:
-                    return $"Affects vore defense, escape rate, mana capacity, and magic defense\n{StatData(Stat.Will)}";
+                    return WLLDef;
                 case Stat.Mind:
-                    return $"Affects spell damage, success odds, and duration with a minor amount of mana capacity\n{StatData(Stat.Mind)}";
+                    return MNDDef;
                 case Stat.Endurance:
-                    return $"Affects total health, also reduces damage from acid, has a minor role in escape chance.\n{StatData(Stat.Endurance)}";
+                    return ENDDef;
                 case Stat.Stomach:
-                    return ($"Affects stomach capacity and digestion rate.  Also helps keep prey from escaping.\n{StatData(Stat.Stomach)}\n" +
-                     (State.World?.ItemRepository == null ? $"" :  $"{((!unit.Predator || actor?.PredatorComponent == null) ?  "" : ($"Used Capacity: {Math.Round(actor.PredatorComponent.GetBulkOfPrey(), 2)}\n"))}Max Capacity: {Math.Round(State.RaceSettings.GetStomachSize(unit.Race) * (unit.GetStat(Stat.Stomach) / 12f * unit.TraitBoosts.CapacityMult), 1)}"));
+                    return STMDef;
                 case Stat.Leadership:
-                    return $"Provides a stat boost for all friendly units\nStat value: {unit.GetStatBase(Stat.Leadership)}";
+                    return LDRDef;
             }
         }
         if (Enum.TryParse(words[2], out Race race))
@@ -339,12 +282,30 @@ public class HoveringTooltip : MonoBehaviour
         switch (words[2])
         {
             case "surrendered":
-                return "This unit has surrendered, all units have a 100% chance to eat it, and it only costs 2 mp to eat it.";
+                return "This unit has surrendered, all units have a 100% chance to eat it, and it only costs 2 AP to eat it.";
 
             case "Imprinted":
                 return $"This unit is imprinted in the village of {unit.SavedVillage.Name}, at level {unit.SavedCopy?.Level ?? 0} with {Math.Round(unit.SavedCopy?.Experience ?? 0)} exp.  " +
                     $"Unit will automatically resurrect there at that power, assuming the village is controlled by friendlies when the unit dies";
 
+            case "STR":
+                return STRDef;
+            case "DEX":
+                return DEXDef;
+            case "MND":
+                return MNDDef;
+            case "WLL":
+                return WLLDef;
+            case "END":
+                return ENDDef;
+            case "AGI":
+                return AGIDef;
+            case "VOR":
+                return VORDef;
+            case "STM":
+                return STMDef;
+            case "LDR":
+                return LDRDef;
 
             default:
                 return "";
@@ -395,7 +356,7 @@ public class HoveringTooltip : MonoBehaviour
             case Traits.Flight:
                 return "Unit can pass through obstacles and other units in tactical mode.\nMust end turn on solid ground\nIf you try to take an action or end your turn in an invalid place, it will automatically undo your movement";
             case Traits.Pounce:
-                return "Unit spends a minimum of 2 mp to jump next to a target that is within 2-4 tiles (if there is space) and melee attack or vore it";
+                return "Unit spends a minimum of 2 AP to jump next to a target that is within 2-4 tiles (if there is space) and melee attack or vore it";
             case Traits.Biter:
                 return "A failed vore attack will result in an attack attempt with a weak melee weapon";
             case Traits.Pathfinder:
@@ -449,7 +410,7 @@ public class HoveringTooltip : MonoBehaviour
             case Traits.FearsomeAppetite:
                 return "Consuming a victim frightens nearby allies of the prey, temporarily reducing their stats";
             case Traits.Endosoma:
-                return "Can vore friendly units, friendly units that are vored take no digestion damage \nThey do not try to escape, but can be regurgitated or are freed at the end of battle\nHas 100% chance to eat allies, and only costs 2 mp, like eating surrendered units.  May cause battles to not automatically end if used with TheGreatEscape";
+                return "Can vore friendly units, friendly units that are vored take no digestion damage \nThey do not try to escape, but can be regurgitated or are freed at the end of battle\nHas 100% chance to eat allies, and only costs 2 AP, like eating surrendered units.  May cause battles to not automatically end if used with TheGreatEscape";
             case Traits.TailStrike:
                 return "An attack that does less damage, but attacks the tile and the 2 tiles adjacent to it that are within reach";
             case Traits.HealingBelly:
@@ -646,14 +607,18 @@ public class HoveringTooltip : MonoBehaviour
     {
 
         string description = DefaultTooltips.Tooltip(value);
+        InfoUpdate(description, true);
+    }
+
+    internal void InfoUpdate(string description, bool linger = false)
+    {
         if (description == "")
         {
             gameObject.SetActive(false);
             return;
         }
-        rect.sizeDelta = new Vector2(500, 200);
         gameObject.SetActive(true);
-        remainingFrames = 999;
+        remainingFrames = linger ? 999 : 3;
         text.text = description;
         float xAdjust = 10;
         float exceeded = Input.mousePosition.x + (rect.rect.width * Screen.width / 1920) - Screen.width;

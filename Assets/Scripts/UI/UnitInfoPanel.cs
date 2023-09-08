@@ -31,10 +31,40 @@ public class UnitInfoPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         if (Unit == null)
             return;
         TextMeshProUGUI HoverBox;
-        if (Input.mousePosition.y > InfoText.transform.parent.position.y)
+
+        if (Input.mousePosition.y > InfoText.transform.parent.position.y && BasicInfo)
             HoverBox = BasicInfo;
         else
             HoverBox = InfoText;
+
+        if (StatBlock)
+        {
+            // Actually, I changed my mind. I love coding.
+            if (IsMousingOver(StatBlock))
+            {
+                GameObject STRLabel = StatBlock.transform.GetChild(0).GetChild(0).GetChild(0).gameObject;
+                GameObject DEXLabel = StatBlock.transform.GetChild(0).GetChild(1).GetChild(0).gameObject;
+                GameObject MNDLabel = StatBlock.transform.GetChild(1).GetChild(0).GetChild(0).gameObject;
+                GameObject WLLLabel = StatBlock.transform.GetChild(1).GetChild(1).GetChild(0).gameObject;
+                GameObject ENDLabel = StatBlock.transform.GetChild(2).GetChild(0).GetChild(0).gameObject;
+                GameObject AGILabel = StatBlock.transform.GetChild(2).GetChild(1).GetChild(0).gameObject;
+                GameObject VORLabel = StatBlock.transform.GetChild(3).GetChild(0).GetChild(0).gameObject;
+                GameObject STMLabel = StatBlock.transform.GetChild(3).GetChild(1).GetChild(0).gameObject;
+                GameObject LDRLabel = StatBlock.transform.GetChild(4).GetChild(0).GetChild(0).gameObject;
+                GameObject E1Label = StatBlock.transform.GetChild(5).GetChild(0).GetChild(0).gameObject;
+                GameObject E2Label = StatBlock.transform.GetChild(5).GetChild(1).GetChild(0).gameObject;
+                GameObject E3Label = StatBlock.transform.GetChild(5).GetChild(2).GetChild(0).gameObject;
+
+                foreach (var item in new GameObject[] {STRLabel, DEXLabel, MNDLabel, WLLLabel, ENDLabel, AGILabel, VORLabel, STMLabel, LDRLabel, E1Label, E2Label, E3Label})
+                {
+                    if (IsMousingOver(item))
+                        HoverBox = item.GetComponent<TextMeshProUGUI>();
+                }
+            }
+        }
+
+
+
         int wordIndex = TMP_TextUtilities.FindIntersectingWord(HoverBox, Input.mousePosition, null);
         //if (wordIndex <= -1 && BasicInfo)
         //{
@@ -147,6 +177,14 @@ public class UnitInfoPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
                     count++;
             }
         }
+    }
+
+    public bool IsMousingOver(GameObject thing)
+    {
+        Vector3[] v = new Vector3[4];
+        thing.GetComponent<RectTransform>().GetWorldCorners(v);
+        Rect rect = new Rect(v[0].x, v[0].y, v[2].x - v[0].x, v[2].y - v[0].y);
+        return rect.Contains(Input.mousePosition);
     }
 
     public void OnPointerEnter(PointerEventData eventData)

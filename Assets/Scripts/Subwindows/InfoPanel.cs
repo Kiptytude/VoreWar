@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Text;
 using UnityEngine.UI;
+using TMPro;
 
 public class InfoPanel
 {
@@ -534,12 +535,12 @@ public class InfoPanel
             }
             UnityEngine.Transform EquipRow = UnitInfoPanel.StatBlock.transform.GetChild(5);
 
-            EquipRow.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = unit.GetItem(0)?.Name;
-            EquipRow.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = unit.GetItem(1)?.Name;
+            EquipRow.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = unit.GetItem(0)?.Name;
+            EquipRow.transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text = unit.GetItem(1)?.Name;
             if (unit.HasTrait(Traits.Resourceful))
             {
                 EquipRow.transform.GetChild(2).gameObject.SetActive(true);
-                EquipRow.transform.GetChild(2).GetChild(0).GetComponent<Text>().text = unit.GetItem(2)?.Name;
+                EquipRow.transform.GetChild(2).GetChild(0).GetComponent<TextMeshProUGUI>().text = unit.GetItem(2)?.Name;
             }
             else
                 EquipRow.transform.GetChild(2).gameObject.SetActive(false);
