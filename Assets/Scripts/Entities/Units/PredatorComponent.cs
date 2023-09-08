@@ -2203,7 +2203,9 @@ public class PredatorComponent
             return "";
         var loc = prey.Location.ToString();
         if (unit.Race == Race.Terrorbird && prey.Location == PreyLocation.tail)
-            loc = "Crop";
+            loc = "crop";
+        if (unit.Race == Race.Kangaroos && prey.Location == PreyLocation.breasts)
+            loc = "pouch";
         if (prey.Unit.IsDead == false && unit.HasTrait(Traits.DualStomach) && stomach.Contains(prey))
         {
             if (indent > 0) ret += $"L:{indent} ";
