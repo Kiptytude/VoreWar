@@ -2698,6 +2698,8 @@ public class PredatorComponent
         if (Config.KuroTenkoEnabled && (Config.FeedingType == FeedingType.Both || Config.FeedingType == FeedingType.BreastfeedOnly))
         {
             var race = Races.GetRace(actor.Unit.Race);
+            if (actor.Unit.Race == Race.Kangaroos)
+                return false;
             if (race.ExtendedBreastSprites)
             {
                 foreach (Prey preyUnit in leftBreast)
