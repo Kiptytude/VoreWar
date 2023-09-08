@@ -235,7 +235,15 @@ public abstract class TacticalAI : ITacticalAI
             currentTurn = State.GameManager.TacticalMode.currentTurn;
         }
         foreach (Actor_Unit actor in actors)
-        { 
+        {            
+            if (State.World.IsNight)
+            {
+                int unitSightRange = Config.DefualtTacticalSightRange + actor.Unit.TraitBoosts.SightRangeBoost;
+                foreach (var seenUnit in TacticalUtilities.UnitsWithinTiles(actor.Position, unitSightRange).Where(s => TacticalUtilities.TreatAsHostile(actor, s)))
+                {
+                    seenUnit.InSight = true;
+                }
+            }
             if (actor.Targetable == true && actor.Unit.Side == AISide && (foreignTurn ? !TacticalUtilities.IsUnitControlledByPlayer(actor.Unit) : true) && actor.Movement > 0)
             {
                 if (TacticalUtilities.IsUnitControlledByPlayer(actor.Unit) && State.GameManager.TacticalMode.RunningFriendlyAI == false && !State.GameManager.TacticalMode.IgnorePseudo && !State.GameManager.TacticalMode.turboMode)

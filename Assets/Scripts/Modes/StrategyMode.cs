@@ -658,7 +658,6 @@ public class StrategyMode : SceneBase
     {
         if (Config.FogOfWar == false && State.World.IsNight == !Config.DayNightEnabled)
         {
-            Debug.Log("BouncingFogCall");
             if (FogOfWar.gameObject.activeSelf)
             {
                 FogOfWar.ClearAllTiles();
@@ -674,11 +673,9 @@ public class StrategyMode : SceneBase
             FogSystem = new FogSystem(FogOfWar, FogTile);
         if (OnlyAIPlayers)
         {
-            Debug.Log("OnlyAI");
             Config.World.Toggles["FogOfWar"] = false;
             return;
         }
-        Debug.Log("CallingFog");
         FogSystem.UpdateFog(LastHumanEmpire, State.World.Villages, StrategicUtilities.GetAllArmies(), currentVillageTiles, currentClaimableTiles);
     }
 
