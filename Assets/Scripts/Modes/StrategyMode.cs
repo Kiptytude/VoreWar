@@ -1668,6 +1668,10 @@ public class StrategyMode : SceneBase
                 NightChance += Config.NightChanceIncrease;
             }
         }
+        else
+        {
+            State.World.IsNight = false;
+        }
         if (ActingEmpire is MonsterEmpire)
         {
             if (ActingEmpire.Race == Race.Goblins)
