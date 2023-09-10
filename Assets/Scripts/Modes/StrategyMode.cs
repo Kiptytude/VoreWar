@@ -1671,6 +1671,7 @@ public class StrategyMode : SceneBase
         else
         {
             State.World.IsNight = false;
+            NightChance = Config.BaseNightChance
         }
         if (ActingEmpire is MonsterEmpire)
         {
