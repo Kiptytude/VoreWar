@@ -656,7 +656,7 @@ public class StrategyMode : SceneBase
 
     void UpdateFog()
     {
-        if (Config.FogOfWar == false && State.World.IsNight == !Config.DayNightEnabled)
+        if (Config.FogOfWar == false && State.World.IsNight == false)
         {
             if (FogOfWar.gameObject.activeSelf)
             {
@@ -1671,7 +1671,7 @@ public class StrategyMode : SceneBase
         else
         {
             State.World.IsNight = false;
-            NightChance = Config.BaseNightChance
+            NightChance = Config.BaseNightChance;
         }
         if (ActingEmpire is MonsterEmpire)
         {
