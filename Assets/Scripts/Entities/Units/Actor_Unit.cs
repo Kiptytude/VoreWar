@@ -86,7 +86,7 @@ public class Actor_Unit
     [OdinSerialize]
     public bool Hidden;
     [OdinSerialize]
-    public bool InSight;
+    public bool InSight = true;
 	
     [OdinSerialize]
     internal Prey SelfPrey;
