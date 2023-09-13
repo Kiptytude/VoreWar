@@ -50,7 +50,7 @@ public class HoveringTooltip : MonoBehaviour
 
     public void UpdateInformation(Slider slider)
     {
-        rect.sizeDelta = new Vector2(350, 80);
+        //rect.sizeDelta = new Vector2(350, 80);
         string description = $"Slider Value: {Math.Round(slider.value, 3)}\nRight Click to type in the number.";
         InfoUpdate(description);
     }
