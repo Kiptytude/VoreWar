@@ -1987,7 +1987,7 @@ public class PredatorComponent
                     State.GameManager.TacticalMode.CreateMiscDiscard(GetCurrentLocation(), BoneTypes.CumPuddle, preyUnit.Unit.Name);
             }
         }
-        else if (location == PreyLocation.womb || (location == PreyLocation.breasts && unit.Race == Race.Kangaroos) || location == PreyLocation.leftBreast || location == PreyLocation.rightBreast)
+        else if (location == PreyLocation.womb || (location == PreyLocation.breasts && unit.Race != Race.Kangaroos) || location == PreyLocation.leftBreast || location == PreyLocation.rightBreast)
         {
             State.GameManager.SoundManager.PlayAbsorb(location, actor);
             if (Config.Cumstains)
