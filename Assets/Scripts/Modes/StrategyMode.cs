@@ -656,9 +656,8 @@ public class StrategyMode : SceneBase
 
     void UpdateFog()
     {
-        if (Config.FogOfWar == false && State.World.IsNight == !Config.DayNightEnabled)
+        if (Config.FogOfWar == false && State.World.IsNight == false)
         {
-            Debug.Log("BouncingFogCall");
             if (FogOfWar.gameObject.activeSelf)
             {
                 FogOfWar.ClearAllTiles();
@@ -674,11 +673,9 @@ public class StrategyMode : SceneBase
             FogSystem = new FogSystem(FogOfWar, FogTile);
         if (OnlyAIPlayers)
         {
-            Debug.Log("OnlyAI");
             Config.World.Toggles["FogOfWar"] = false;
             return;
         }
-        Debug.Log("CallingFog");
         FogSystem.UpdateFog(LastHumanEmpire, State.World.Villages, StrategicUtilities.GetAllArmies(), currentVillageTiles, currentClaimableTiles);
     }
 
@@ -859,7 +856,7 @@ public class StrategyMode : SceneBase
         }
 
 
-        if (Config.FogOfWar || Config.DayNightEnabled)
+        if (Config.FogOfWar || State.World.IsNight)
             UpdateFog();
         else
             FogOfWar.ClearAllTiles();
@@ -1670,6 +1667,11 @@ public class StrategyMode : SceneBase
                 State.World.IsNight = false;
                 NightChance += Config.NightChanceIncrease;
             }
+        }
+        else
+        {
+            State.World.IsNight = false;
+            NightChance = Config.BaseNightChance;
         }
         if (ActingEmpire is MonsterEmpire)
         {
@@ -2482,7 +2484,7 @@ public class StrategyMode : SceneBase
         }
         else
         {
-            if ((Config.FogOfWar || Config.DayNightEnabled) && FogSystem.FoggedTile[villageAtCursor.Position.x, villageAtCursor.Position.y])
+            if ((Config.FogOfWar || State.World.IsNight) && FogSystem.FoggedTile[villageAtCursor.Position.x, villageAtCursor.Position.y])
                 return;
             StringBuilder sb = new StringBuilder();
             VillageTooltip.gameObject.SetActive(true);
@@ -2524,7 +2526,7 @@ public class StrategyMode : SceneBase
         }
         else
         {
-            if ((Config.FogOfWar || Config.DayNightEnabled) && FogSystem.FoggedTile[armyAtCursor.Position.x, armyAtCursor.Position.y] || (armyAtCursor.Banner != null && !armyAtCursor.Banner.gameObject.activeSelf))
+            if ((Config.FogOfWar || State.World.IsNight) && FogSystem.FoggedTile[armyAtCursor.Position.x, armyAtCursor.Position.y] || (armyAtCursor.Banner != null && !armyAtCursor.Banner.gameObject.activeSelf))
                 return;
             StringBuilder sb = new StringBuilder();
             sb = ArmyToolTip(armyAtCursor);

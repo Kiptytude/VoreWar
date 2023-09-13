@@ -348,7 +348,7 @@ public class ContentSettings : MonoBehaviour
             new ToggleObject(BurpOnDigest, "BurpOnDigest", false),
             new ToggleObject(FartOnAbsorb, "FartOnAbsorb", false),
             new ToggleObject(CanUseStomachRubOnEnemies, "CanUseStomachRubOnEnemies", false),
-            new ToggleObject(DayNightEnabled, "DayNightEnabled", true),
+            new ToggleObject(DayNightEnabled, "DayNightEnabled", false),
             new ToggleObject(DayNightCosmetic, "DayNightCosmetic", false),
             new ToggleObject(DayNightSchedule, "DayNightSchedule", true),
             new ToggleObject(DayNightRandom, "DayNightRandom", true),

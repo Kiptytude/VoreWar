@@ -677,7 +677,7 @@ Does not retroactively affect already created units.";
             case 269:
                 return "If enabled, it will be night every X rounds for X rounds, based on the 'Cycle Length' slider.";
             case 270:
-                return "If enabled, night time will have no effect in tactical mode, aside from the looks.";
+                return "If enabled, night time will have no visual effects, aside from the looks.\nOther things such as traits and other settings still apply";
             case 271:
                 return "Enables the Day/Night cycle system";
             case 272:

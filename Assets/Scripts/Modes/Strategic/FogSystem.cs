@@ -38,14 +38,14 @@ class FogSystem
 
         foreach (Village village in villages)
         {
-            if (village.Empire.IsAlly(playerEmpire) && village.GetTotalPop() > 0)
+            if ((village.Empire.IsAlly(playerEmpire) || (State.World.IsNight && Config.DayNightCosmetic && !Config.FogOfWar)) && village.GetTotalPop() > 0)
             {
                 ClearWithinXTilesOf(village.Position);
             }
         }
         foreach (Army army in armies)
         {
-            if (army.Empire.IsAlly(playerEmpire))
+            if (army.Empire.IsAlly(playerEmpire) || (State.World.IsNight && Config.DayNightCosmetic && !Config.FogOfWar))
             {
                 ClearWithinXTilesOf(army.Position);
             }
