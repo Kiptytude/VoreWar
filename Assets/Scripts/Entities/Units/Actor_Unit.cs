@@ -1058,7 +1058,7 @@ public class Actor_Unit
 
     public Vec2i PounceAt(Actor_Unit target)
     {
-        if (Movement < 2)
+        if (Movement < 2 || (!target.UnitSprite.isActiveAndEnabled && State.World.IsNight))
             return null;
         if (Position.GetNumberOfMovesDistance(target.Position) < 2 || Position.GetNumberOfMovesDistance(target.Position) > 4)
             return null;

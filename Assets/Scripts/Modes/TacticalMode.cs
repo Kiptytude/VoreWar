@@ -3165,7 +3165,7 @@ Turns: {currentTurn}
                     continue;
                 if (ActionMode == 1)
                 {
-                    if (!TacticalUtilities.IsUnitControlledByPlayer(unit.Unit) || (Config.AllowInfighting || (!AIDefender && !AIAttacker)) && unit != SelectedUnit)
+                    if ((!TacticalUtilities.IsUnitControlledByPlayer(unit.Unit) || (Config.AllowInfighting || (!AIDefender && !AIAttacker)) && unit != SelectedUnit) && !(!unit.UnitSprite.isActiveAndEnabled && State.World.IsNight))
                     {
                         MeleeAttack(SelectedUnit, unit);
                         return;
@@ -3174,7 +3174,7 @@ Turns: {currentTurn}
                 }
                 if (ActionMode == 2)
                 {
-                    if (!TacticalUtilities.IsUnitControlledByPlayer(unit.Unit) || (Config.AllowInfighting || (!AIDefender && !AIAttacker)) && unit != SelectedUnit)
+                    if ((!TacticalUtilities.IsUnitControlledByPlayer(unit.Unit) || (Config.AllowInfighting || (!AIDefender && !AIAttacker)) && unit != SelectedUnit) && !(!unit.UnitSprite.isActiveAndEnabled && State.World.IsNight))
                     {
                         RangedAttack(SelectedUnit, unit);
                         return;
