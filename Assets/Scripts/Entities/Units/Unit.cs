@@ -2691,7 +2691,7 @@ internal void SetGenderRandomizeName(Race race, Gender gender)
         {
             foc.Duration -= 3;
             foc.Strength -= 3;
-            if (foc.Duration == 0)
+            if (foc.Duration <= 0)
                 StatusEffects.Remove(foc);
         }
 
