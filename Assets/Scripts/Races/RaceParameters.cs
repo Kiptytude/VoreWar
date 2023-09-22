@@ -99,6 +99,7 @@ static class RaceParameters
     static readonly RaceTraits Goodra;
     static readonly RaceTraits Whisp;
     static readonly RaceTraits Salix;
+    static readonly RaceTraits FeralHorses;
 
     static Unit tempUnit;
 
@@ -314,6 +315,8 @@ static class RaceParameters
                 return Whisp;
             case Race.Salix:
                 return Salix;
+            case Race.FeralHorses:
+                return FeralHorses;
             case (Race)700: //Singled out so that it doesn't make the debug message
                 return Default;
             case (Race)701:
@@ -2267,7 +2270,36 @@ static class RaceParameters
         },
             RaceDescription = "With an appearance reminiscent of a reptilian bat, the Dratopyr are likely a hybrid race. Smaller than most monsters but just as fierce, the Dratopyr specialize in weakening their prey while avoiding attempts to fend them off. Dratopyr are very fast breeders and would thus be a major threat to everyone, were it not for their tendency toward cannibalism.",
         };
+        
+        FeralHorses = new RaceTraits()
+        {
+            BodySize = 20,
+            StomachSize = 16,
+            HasTail = true,
+            FavoredStat = Stat.Agility,
+            AllowedVoreTypes = new List<VoreType> { VoreType.Oral, VoreType.Anal, VoreType.Unbirth, VoreType.CockVore },
+            ExpMultiplier = 1.1f,
+            PowerAdjustment = 1.3f,
+            RaceStats = new RaceStats()
+            {
+                Strength = new RaceStats.StatRange(14, 18),
+                Dexterity = new RaceStats.StatRange(10, 16),
+                Endurance = new RaceStats.StatRange(16, 20),
+                Mind = new RaceStats.StatRange(6, 10),
+                Will = new RaceStats.StatRange(6, 10),
+                Agility = new RaceStats.StatRange(16, 24),
+                Voracity = new RaceStats.StatRange(10, 16),
+                Stomach = new RaceStats.StatRange(10, 16),
+            },
+            RacialTraits = new List<Traits>()
+        {
+            Traits.Charge,
+            Traits.ForcefulBlow,
+            Traits.BornToMove,
 
+        },
+            RaceDescription = "It's a horse!  Go ahead, try to ride one.  I dare you!"
+        };
 
         Selicia = new RaceTraits()
         {

@@ -87,6 +87,7 @@
     FeralLions = 137,
     Goodra = 138,
     Whisp = 139,
+    FeralHorses = 140,
 
     Selicia = 170,
     Vision = 171,

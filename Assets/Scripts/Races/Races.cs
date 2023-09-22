@@ -102,8 +102,8 @@
     static internal Erin Erin = new Erin();
     static internal Salix Salix = new Salix();
     static internal Goodra Goodra = new Goodra();
-
     static internal Whisp Whisp = new Whisp();
+    static internal FeralHorses FeralHorses = new FeralHorses();
     static internal BlankSlate BlankSlate = new BlankSlate();
 
     static internal DefaultRaceData GetRace(Unit unit)
@@ -317,6 +317,8 @@
                 return Salix;
             case Race.Aabayx:
                 return Aabayx;
+            case Race.FeralHorses:
+                return FeralHorses;
         }
         UnityEngine.Debug.LogWarning("Couldn't find race, substituting the Blank Slate");
         return BlankSlate;
