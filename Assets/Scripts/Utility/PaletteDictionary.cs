@@ -62,4 +62,5 @@ public class PaletteDictionary : MonoBehaviour
     public Texture2D FeralLionsMane;
     public Texture2D GoodraSkin;
     public Texture2D AabayxSkin;
+    public Texture2D FeralHorseSkin;
 }

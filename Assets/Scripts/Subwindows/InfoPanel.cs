@@ -314,6 +314,8 @@ public class InfoPanel
                 return "Kobold";
             case Race.Whisp:
                 return "Whisp";
+            case Race.FeralHorses:
+                return "Horse";
             case Race.none:
                 return "None";
         }
@@ -486,6 +488,8 @@ public class InfoPanel
                 return "Dratopyr";
             case Race.FeralLions:
                 return "Lion";
+            case Race.FeralHorses:
+                return "Horse";
             case Race.Whisp:
                 return "Whisp";
         }

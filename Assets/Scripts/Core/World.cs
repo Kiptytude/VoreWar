@@ -6,7 +6,7 @@ using System.Linq;
 
 public class World
 {
-    internal const int MonsterCount = 32;
+    internal const int MonsterCount = 33;
     [OdinSerialize]
     public int Turn = 1;
     [OdinSerialize]
@@ -243,6 +243,7 @@ public class World
         MonsterEmpires[29] = new MonsterEmpire(new Empire.ConstructionArgs((int)Race.Dratopyr, UnityEngine.Color.white, UnityEngine.Color.white, 56, StrategyAIType.Monster, TacticalAIType.Full, 1024, 32, 0));
         MonsterEmpires[30] = new MonsterEmpire(new Empire.ConstructionArgs((int)Race.FeralLions, UnityEngine.Color.white, UnityEngine.Color.white, 57, StrategyAIType.Monster, TacticalAIType.Full, 1337, 32, 0));
         MonsterEmpires[31] = new MonsterEmpire(new Empire.ConstructionArgs((int)Race.Goodra, UnityEngine.Color.white, UnityEngine.Color.white, 58, StrategyAIType.Monster, TacticalAIType.Full, 1025, 32, 0));
+        MonsterEmpires[32] = new MonsterEmpire(new Empire.ConstructionArgs((int)Race.FeralHorses, UnityEngine.Color.white, UnityEngine.Color.white, 59, StrategyAIType.Monster, TacticalAIType.Full, 1026, 32, 0));
 		foreach (var emp in MonsterEmpires)
         {
             SpawnerInfo spawner = Config.SpawnerInfo(emp.Race);
