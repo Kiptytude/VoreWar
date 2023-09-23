@@ -551,22 +551,23 @@ public class Village
                 
                 }
             });
-            GetRecruitables().ForEach(u =>
-            {
-                if (!u.HasTrait(Traits.Infertile))
-                {
-                    if (u.HasTrait(Traits.ProlificBreeder))
-                    {
-                        namedBreeders += 0.75;
-                    }
-                    if (u.HasTrait(Traits.SlowBreeder))
-                    {
-                        namedBreeders -= 0.30;
-                    }
-                }
-                else namedBreeders -= 1;
-            });
         }
+        GetRecruitables().ForEach(u =>
+        {
+            if (!u.HasTrait(Traits.Infertile))
+            {
+                namedBreeders += 1;
+                if (u.HasTrait(Traits.ProlificBreeder))
+                {
+                    namedBreeders += 0.75;
+                }
+                if (u.HasTrait(Traits.SlowBreeder))
+                {
+                    namedBreeders -= 0.30;
+                }
+            }
+        });
+        
 
         if (VillagePopulation.GetTotalPop() == 0 && namedBreeders > 1)
         {
@@ -620,7 +621,7 @@ public class Village
 
             growthPct *= NetBoosts.PopulationGrowthMult;
 
-            double unnamedBreeders = 0;
+            double unnamedContrib = 0;
 
             VillagePopulation.Population.ForEach(pop =>
             {
@@ -632,9 +633,9 @@ public class Village
                     breedingContrib *= .7f;
                 if (traits.Contains(Traits.Infertile))
                     breedingContrib *= 0;
-                unnamedBreeders += (pop.Population-pop.Hireables) * breedingContrib;
+                unnamedContrib += (pop.Population-pop.Hireables) * breedingContrib;
             });
-            double totalBreeders = unnamedBreeders + namedBreeders;
+            double totalBreeders = unnamedContrib + namedBreeders;
             int incr;
             int Population = VillagePopulation.GetTotalPop();
             if (totalBreeders == 0)
