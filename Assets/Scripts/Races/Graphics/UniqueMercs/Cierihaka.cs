@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-class Abakhanskya : BlankSlate
+class Cierihaka : BlankSlate
 {
-    readonly Sprite[] Sprites = State.GameManager.SpriteDictionary.Abakhanskya;
+    readonly Sprite[] Sprites = State.GameManager.SpriteDictionary.Cierihaka;
 
-    public Abakhanskya()
+    public Cierihaka()
     {
         CanBeGender = new List<Gender>() { Gender.Female };
 
@@ -21,7 +21,7 @@ class Abakhanskya : BlankSlate
     internal override void RandomCustom(Unit unit)
     {
         base.RandomCustom(unit);
-        unit.Name = "Abakhanskya";
+        unit.Name = "Cierihaka";
     }
 
     protected override Sprite BodySprite(Actor_Unit actor)

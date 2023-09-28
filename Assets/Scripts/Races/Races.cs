@@ -96,7 +96,7 @@
     static internal Asura Asura = new Asura();
     static internal DRACO DRACO = new DRACO();
     static internal Zoey Zoey = new Zoey();
-    static internal Abakhanskya Abakhanskya = new Abakhanskya();
+    static internal Cierihaka Cierihaka = new Cierihaka();
     static internal Zera Zera = new Zera();
     static internal Auri Aurilika = new Auri();
     static internal Erin Erin = new Erin();
@@ -241,8 +241,8 @@
                 return DRACO;
             case Race.Zoey:
                 return Zoey;
-            case Race.Abakhanskya:
-                return Abakhanskya;
+            case Race.Cierihaka:
+                return Cierihaka;
             case Race.Zera:
                 return Zera;
             case Race.FeralAnts:

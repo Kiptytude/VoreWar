@@ -345,15 +345,15 @@ static class StoredLogTexts
             priority: 9, conditional: s => Cursed(s) && InStomach(s)),
 
             new EventString((i) => $"Grasping her prey gently in her paws, <b>{i.Unit.Name}</b> sends <b>{i.Target.Name}</b> on a supposedly one way trip down to her hungering guts.",
-            actorRace: Race.Abakhanskya, priority: 11),
+            actorRace: Race.Cierihaka, priority: 11),
             new EventString((i) => $"Playfully falling upon her hopelessly outmatched food, <b>{i.Unit.Name}</b> shoves <b>{i.Target.Name}</b> into her jaws leisurely, <b>{i.Target.Name}</b> protesting on {GPPHis(i.Target)} way down, only to be muted by the chorus of <b>{ApostrophizeWithOrWithoutS(i.Unit.Name)}</b> stomach.",
-            actorRace: Race.Abakhanskya, priority: 11),
-            new EventString((i) => $"<b>{i.Unit.Name}</b> bolts forth with stunning speed, flicking up <b>{i.Target.Name}</b> in to the air before expertly catching {GPPHim(i.Target)} in herr jaws, letting gravity do the rest.",
-            actorRace: Race.Abakhanskya, priority: 11),
+            actorRace: Race.Cierihaka, priority: 11),
+            new EventString((i) => $"<b>{i.Unit.Name}</b> bolts forth with stunning speed, flicking up <b>{i.Target.Name}</b> in to the air before expertly catching {GPPHim(i.Target)} in her jaws, letting gravity do the rest.",
+            actorRace: Race.Cierihaka, priority: 11),
             new EventString((i) => $"Giving a mocking laugh, <b>{i.Unit.Name}</b> steps forth, startling <b>{i.Target.Name}</b> before cruelly gobbling {GPPHim(i.Target)} up. After getting {GPPHis(i.Target)} flavour, of course.",
-            actorRace: Race.Abakhanskya, priority: 11),
+            actorRace: Race.Cierihaka, priority: 11),
             new EventString((i) => $"Having the upper hand, <b>{i.Unit.Name}</b> seizes the opportunity and descends upon <b>{i.Target.Name}</b>, who soon is but a rounded bulge in the chunky dragoness's throat, and then belly.",
-            actorRace: Race.Abakhanskya, priority: 11),
+            actorRace: Race.Cierihaka, priority: 11),
 
 
 
@@ -663,17 +663,17 @@ static class StoredLogTexts
             new EventString((i) => $"<b>{i.Target.Name}</b> roars, struggling inside <b>{ApostrophizeWithOrWithoutS(i.Unit.Name)}</b> gut, not willing to submit to the inferior creature. <b>{i.Unit.Name}</b> mockingly repeats the roar, enjoying {GPPHis(i.Unit)} arrogant prey's struggles.",
             actorRace: Race.Cats, targetRace: Race.Panthers, priority: 9),
 
-            new EventString((i) => $"The huge dragoness looses a belch, little air being left for <b>{i.Target.Name}</b> within <b>{ApostrophizeWithOrWithoutS(i.Unit.Name)}</b> belly.",
-            priority: 9, actorRace: Race.Abakhanskya, conditional: InStomach),
+            new EventString((i) => $"The huge steppe dragon looses a belch, little air being left for <b>{i.Target.Name}</b> within <b>{ApostrophizeWithOrWithoutS(i.Unit.Name)}</b> belly.",
+            priority: 9, actorRace: Race.Cierihaka, conditional: InStomach),
             new EventString((i) => $"Teasingly running a paw over her fed gut, <b>{i.Unit.Name}</b> hums as <b>{i.Target.Name}</b> melts away.",
-            priority: 9, actorRace: Race.Abakhanskya, conditional: InStomach),
+            priority: 9, actorRace: Race.Cierihaka, conditional: InStomach),
             new EventString((i) => $"Drooling wildly, <b>{i.Unit.Name}</b> can't wait to devour more like <b>{i.Target.Name}</b>!",
-            priority: 9, actorRace: Race.Abakhanskya, conditional: InStomach),
+            priority: 9, actorRace: Race.Cierihaka, conditional: InStomach),
 
             new EventString((i) => $"<b>{i.Unit.Name}</b> moans in delight, feeling <b>{i.Target.Name}</b> melting away within her {i.preyLocation.ToSyn()}, knowing it won't be long until {GPPHe(i.Target)}'d be but another layer on her frame.",
-            priority: 9, actorRace: Race.Abakhanskya),
+            priority: 9, actorRace: Race.Cierihaka),
             new EventString((i) => $"The digestive fluids closing in, <b>{i.Target.Name}</b> has to accept that {GPPHis(i.Target)} time will come to an end within a greedy <b>{ApostrophizeWithOrWithoutS(i.Unit.Name)}</b> {i.preyLocation.ToSyn()}.",
-            priority: 9, actorRace: Race.Abakhanskya),
+            priority: 9, actorRace: Race.Cierihaka),
 
 
             new EventString((i) => $"<b>{i.Target.Name}</b> is humiliated by being consumed by a first timer.",
@@ -1917,12 +1917,12 @@ static class StoredLogTexts
             new EventString((i) => $"<b>{i.Unit.Name}</b> unceremoniously turns around and thwumps down on the much smaller <b>{i.Target.Name}</b>, making {GPPHim(i.Target)} slip up into {GPPHis(i.Unit)} wet folds.",
             priority: 9, conditional: s => SizeDiff(s , 3)),
             
-            //Abakhanskya 
-            new EventString((i) => $"Feeling lewd, and dominant, <b>{i.Unit.Name}</b> looks over a helpless <b>{i.Target.Name}</b>. It wasn't long until {GPPHeIsAbbr(i.Target)} grappled by the dragoness, and shoved in headfirst through her slit, <b>{i.Unit.Name}</b> cooing softly throughout.", actorRace: Race.Abakhanskya, priority: 10),
-            new EventString((i) => $"<b>{i.Unit.Name}</b>, wishing to play with her food, spins herself about on the spot, grabbing her prey with her tail and sending <b>{i.Target.Name}</b> on a trip to her womb, for {GPPHis(i.Target)} demise.", actorRace: Race.Abakhanskya, priority: 10),
-            new EventString((i) => $"<b>{i.Unit.Name}</b> feels an erotic itch needing to be scratched, and with <b>{i.Target.Name}</b> in front of her, it wasn't long until {GPPHeIsAbbr(i.Target)} used to scratch it. Up and through her slit {GPPHe(i.Target)} went, legs first!", actorRace: Race.Abakhanskya, priority: 10),
-            new EventString((i) => $"After having sensed she had gained the advantage, <b>{i.Unit.Name}</b> seals <b>{i.Target.Name}</b> away lewdly, taking {GPPHim(i.Target)} in head first into her womb, gasping in delight as {GPPHe(i.Target)} passed through her slit.", actorRace: Race.Abakhanskya, priority: 10),
-            new EventString((i) => $"<b>{i.Unit.Name}</b> stands perfectly still for a moment, menacingly overlooking her fearful prey. Quickly feigning an incoming swallow, she instead rotates to show her rump and sits down upon <b>{i.Target.Name}</b>, causing {GPPHim(i.Target)} to pass straight in to her womb.", actorRace: Race.Abakhanskya, priority: 10),
+            //Cierihaka
+            new EventString((i) => $"Feeling lewd, and dominant, <b>{i.Unit.Name}</b> looks over a helpless <b>{i.Target.Name}</b>. It wasn't long until {GPPHeIsAbbr(i.Target)} grappled by the dragoness, and shoved in headfirst through her slit, <b>{i.Unit.Name}</b> cooing softly throughout.", actorRace: Race.Cierihaka, priority: 10),
+            new EventString((i) => $"<b>{i.Unit.Name}</b>, wishing to play with her food, spins herself about on the spot, grabbing her prey with her tail and sending <b>{i.Target.Name}</b> on a trip to her womb, for {GPPHis(i.Target)} demise.", actorRace: Race.Cierihaka, priority: 10),
+            new EventString((i) => $"<b>{i.Unit.Name}</b> feels an erotic itch needing to be scratched, and with <b>{i.Target.Name}</b> in front of her, it wasn't long until {GPPHeIsAbbr(i.Target)} used to scratch it. Up and through her slit {GPPHe(i.Target)} went, legs first!", actorRace: Race.Cierihaka, priority: 10),
+            new EventString((i) => $"After having sensed she had gained the advantage, <b>{i.Unit.Name}</b> seals <b>{i.Target.Name}</b> away lewdly, taking {GPPHim(i.Target)} in head first into her womb, gasping in delight as {GPPHe(i.Target)} passed through her slit.", actorRace: Race.Cierihaka, priority: 10),
+            new EventString((i) => $"<b>{i.Unit.Name}</b> stands perfectly still for a moment, menacingly overlooking her fearful prey. Quickly feigning an incoming swallow, she instead rotates to show her rump and sits down upon <b>{i.Target.Name}</b>, causing {GPPHim(i.Target)} to pass straight in to her womb.", actorRace: Race.Cierihaka, priority: 10),
             
             //Slime Pred
             new EventString((i) => $"<b>{i.Unit.Name}</b> launches {GPPHimself(i.Unit)} at <b>{i.Target.Name}</b>, engulfing {GPPHim(i.Target)} in {GPPHis(i.Unit)} womb!", actorRace: Race.Slimes, priority: 10),

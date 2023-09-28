@@ -512,10 +512,10 @@ public static class State
                         {
                             foreach (Unit unit in army.Units)
                             {
-                                if (unit.Race == Race.Abakhanskya) //Adjustment for the added clothing item
+                                if (unit.Race == Race.Cierihaka) //Adjustment for the added clothing item
                                 {
                                     unit.FixedGear = true;
-                                    unit.Items[0] = State.World.ItemRepository.GetSpecialItem(SpecialItems.AbakWeapon);
+                                    unit.Items[0] = State.World.ItemRepository.GetSpecialItem(SpecialItems.CierihakaWeapon);
                                 }
 
                             }

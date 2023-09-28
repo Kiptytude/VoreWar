@@ -231,7 +231,7 @@ public class SpriteDictionary : MonoBehaviour
     public Sprite[] DRACO;
     public Sprite[] Zoey;
     public Sprite[] ZoeyHoliday;
-    public Sprite[] Abakhanskya;
+    public Sprite[] Cierihaka;
     public Sprite[] Zera240;
     public Sprite[] ZeraBelly;
     public Sprite[] ZeraBalls;

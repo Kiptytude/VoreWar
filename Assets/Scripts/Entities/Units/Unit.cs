@@ -794,10 +794,10 @@ public class Unit
             FixedGear = true;
             Items[0] = State.World.ItemRepository.GetSpecialItem(SpecialItems.ZoeyWeapon);
         }
-        else if (race == Race.Abakhanskya)
+        else if (race == Race.Cierihaka)
         {
             FixedGear = true;
-            Items[0] = State.World.ItemRepository.GetSpecialItem(SpecialItems.AbakWeapon);
+            Items[0] = State.World.ItemRepository.GetSpecialItem(SpecialItems.CierihakaWeapon);
         }
         else if (race == Race.Zera)
         {

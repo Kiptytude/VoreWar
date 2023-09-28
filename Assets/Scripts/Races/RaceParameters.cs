@@ -92,7 +92,7 @@ static class RaceParameters
     static readonly RaceTraits Asura;
     static readonly RaceTraits DRACO;
     static readonly RaceTraits Zoey;
-    static readonly RaceTraits Abakhanskya;
+    static readonly RaceTraits Cierihaka;
     static readonly RaceTraits Zera;
     static readonly RaceTraits Auri;
     static readonly RaceTraits Erin;
@@ -297,8 +297,8 @@ static class RaceParameters
                 return DRACO;
             case Race.Zoey:
                 return Zoey;
-            case Race.Abakhanskya:
-                return Abakhanskya;
+            case Race.Cierihaka:
+                return Cierihaka;
             case Race.Zera:
                 return Zera;
             case Race.Panthers:
@@ -2515,7 +2515,7 @@ static class RaceParameters
             RaceDescription = "An anthropomorphic tiger shark from another world.  Zoey is typically a lazy girl who loves watching movies and being a general couch-potato.  However, upon realizing she'd been isekai'd into the realm, her gluttony left her interested in trying to stomach the local warriors and monsters with some basic martial arts, joining whichever side would pay her first.",
         };
 
-        Abakhanskya = new RaceTraits()
+        Cierihaka = new RaceTraits()
         {
             BodySize = 90,
             StomachSize = 40,
