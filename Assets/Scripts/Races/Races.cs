@@ -104,6 +104,7 @@
     static internal Goodra Goodra = new Goodra();
     static internal Whisp Whisp = new Whisp();
     static internal FeralHorses FeralHorses = new FeralHorses();
+    static internal Abakhanskya Abakhanskya = new Abakhanskya();
     static internal BlankSlate BlankSlate = new BlankSlate();
 
     static internal DefaultRaceData GetRace(Unit unit)
@@ -319,6 +320,8 @@
                 return Aabayx;
             case Race.FeralHorses:
                 return FeralHorses;
+            case Race.Abakhanskya:
+                return Abakhanskya;
         }
         UnityEngine.Debug.LogWarning("Couldn't find race, substituting the Blank Slate");
         return BlankSlate;

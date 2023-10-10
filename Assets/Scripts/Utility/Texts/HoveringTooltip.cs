@@ -179,6 +179,8 @@ public class HoveringTooltip : MonoBehaviour
                     return "An adventurer, recruited not from the village population, but from an inn";
                 case UnitType.Spawn:
                     return "A weaker unit, created under certain conditions";
+                case UnitType.Boss:
+                    return "One of the most fierce beings found throughout the realm.  Are you sure you're prepared?";
             }
         }
 

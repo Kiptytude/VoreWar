@@ -100,6 +100,7 @@ static class RaceParameters
     static readonly RaceTraits Whisp;
     static readonly RaceTraits Salix;
     static readonly RaceTraits FeralHorses;
+    static readonly RaceTraits Abakhanskya;
 
     static Unit tempUnit;
 
@@ -317,6 +318,8 @@ static class RaceParameters
                 return Salix;
             case Race.FeralHorses:
                 return FeralHorses;
+            case Race.Abakhanskya:
+                return Abakhanskya;
             case (Race)700: //Singled out so that it doesn't make the debug message
                 return Default;
             case (Race)701:
@@ -2700,6 +2703,35 @@ static class RaceParameters
             InnateSpells = new List<SpellTypes>()
             { SpellTypes.AmplifyMagic, SpellTypes.Evocation, SpellTypes.ManaFlux, SpellTypes.UnstableMana},
             RaceDescription = "A demi-mouse mage from a different, mana rich dimension. Has had trouble adapting to the absence of mana here, but makes do.",
+        };
+        Abakhanskya = new RaceTraits()
+        {
+            BodySize = 500,
+            StomachSize = 480,
+            HasTail = true,
+            FavoredStat = Stat.Stomach,
+            AllowedVoreTypes = new List<VoreType> { VoreType.Oral, VoreType.Unbirth, VoreType.Anal },
+            ExpMultiplier = 20f,
+            PowerAdjustment = 100f,
+            RaceStats = new RaceStats()
+            {
+                Strength = new RaceStats.StatRange(85, 95),
+                Dexterity = new RaceStats.StatRange(50, 60),
+                Endurance = new RaceStats.StatRange(95, 105),
+                Mind = new RaceStats.StatRange(85, 95),
+                Will = new RaceStats.StatRange(85, 95),
+                Agility = new RaceStats.StatRange(45, 55),
+                Voracity = new RaceStats.StatRange(65, 75),
+                Stomach = new RaceStats.StatRange(65, 75),
+            },
+            RacialTraits = new List<Traits>()
+        {
+                Traits.ForcefulBlow,
+                Traits.StrongGullet,
+                Traits.Pounce,
+                Traits.HeavyPounce,
+        },
+            RaceDescription = "Abakhanskya is an ancient dragoness hailing from another realm.  Despite this fact, she has been here for generations upon generations and has quite the body to show for it, absolutely brimming with the nutrients stolen from countless prey throughout the years.  She is an unstoppable force of predatory nature, it is unwise to face her on fair terms.",
         };
 
     }

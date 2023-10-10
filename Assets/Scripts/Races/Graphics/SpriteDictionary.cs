@@ -243,6 +243,9 @@ public class SpriteDictionary : MonoBehaviour
     public Sprite[] Salix;
     public Sprite[] SalixVore;
     public Sprite[] SalixGen;
+    
+    [Header("Bosses")]
+    public Sprite[] Abakhanskya;
 
     [Header("Monsters")]
     public Sprite[] Vagrants;

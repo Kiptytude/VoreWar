@@ -14,6 +14,7 @@ public enum UnitType
     SpecialMercenary,
     Adventurer,
     Spawn,
+    Boss,
 }
 
 public enum AIClass
@@ -819,6 +820,12 @@ public class Unit
             FixedGear = true;
             Items[0] = State.World.ItemRepository.GetSpecialItem(SpecialItems.ErinWeapon);
             Items[1] = State.World.ItemRepository.GetSpecialItem(SpecialItems.ErinWings);
+        }
+        else if (race == Race.Abakhanskya)
+        {
+            FixedGear = true;
+            Items[0] = State.World.ItemRepository.GetSpecialItem(SpecialItems.AbaWeapon);
+            Items[1] = State.World.ItemRepository.GetSpecialItem(SpecialItems.AbaArmor);
         }
         else
         {
