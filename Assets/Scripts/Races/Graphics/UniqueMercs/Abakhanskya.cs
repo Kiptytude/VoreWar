@@ -27,7 +27,7 @@ class Abakhanskya : BlankSlate
     internal override void RandomCustom(Unit unit)
     {
         base.RandomCustom(unit);
-        unit.Name = "Abakhanskya, Wandering Empress";
+        unit.Name = "Abakhanskya";
     }
 
     protected override Sprite BodySprite(Actor_Unit actor)
