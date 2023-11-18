@@ -323,13 +323,13 @@ public enum Traits
     /// <summary>When this unit is absorbed, it passes on all traits listed below "Donor" to the predator.</summary>
     Donor = 163,
     /// <summary>Gives the ability to change into different races after acquiring them via absorbing, being reborn, reincarnating, or infiltrating.</summary>
-    //Shapeshifter = 164,
+    Shapeshifter = 164,
     /// <summary>When this unit would equip a book, it is instead consumed and the spell becomes innate.</summary>
     BookEater = 165,
     /// <summary>Allows attempting to join an army by being the only attacker. Chance is affected by this unit's Mind stat as well as the highest Will stat among enemies.</summary>
     //SupernaturalPersuasion = 166,
     /// <summary>Like Shapeshifter, only that the forms can be specific people, including their individual traits. These get swapped out only through player input</summary>
-    //Skinwalker = 167,
+    Skinwalker = 167,
     /// <summary>When eaten, Predator is afflicted by Prey's curse, and has a chance to be charmed each round</summary>
     Whispers = 168,
     /// <summary>While digesting, Prey deals damage to predator</summary>
@@ -495,8 +495,8 @@ static class TraitsMethods
             case Traits.Metamorphosis:
             case Traits.Changeling:
             case Traits.GreaterChangeling:
-            //case Traits.Shapeshifter:
-            //case Traits.Skinwalker:
+            case Traits.Shapeshifter:
+            case Traits.Skinwalker:
                 return true;
             default:
                 return false;

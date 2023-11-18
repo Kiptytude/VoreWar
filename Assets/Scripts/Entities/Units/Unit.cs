@@ -41,7 +41,7 @@ public class Unit
     {
         get
         {
-            if(_controller != null)
+            if (_controller != null)
                 if (_controller.Controller != null)
                     return _controller.Controller;
             return _controller;
@@ -112,12 +112,13 @@ public class Unit
 
     public int MaxHealth
     {
-        get // Ah yes, a simple getter function u?u. Keeps health percentage consistent after gaining/losing stats mid battle, doesn't break Thrillseeker, doesn't cause prey orphans, doesn't break on save/load... etc.
+        get // Ah yes, a simple getter function uwu. Keeps health percentage consistent after gaining/losing stats mid battle, doesn't break Thrillseeker, doesn't cause prey orphans, doesn't break on save/load... etc. (But apparently it's still buggy)
         {
             if (Stats == null) return 1;
-            if (!Config.StatBoostsAffectMaxHP) {
+            if (!Config.StatBoostsAffectMaxHP)
+            {
                 _maxHealth = Stats[(int)Stat.Endurance] * 2 + Stats[(int)Stat.Strength];
-                 return _maxHealth;
+                return _maxHealth;
             }
 
             int oldMax = _maxHealth;
@@ -126,7 +127,7 @@ public class Unit
             {
                 int healthChange = (int)Math.Round((_maxHealth - oldMax) * _healthPct);
                 if (healthChange > 0)
-                    Health = Math.Min(_maxHealth,Math.Max(1, Health + healthChange));
+                    Health = Math.Min(_maxHealth, Math.Max(1, Health + healthChange));
             }
             return _maxHealth;
         }
@@ -276,7 +277,8 @@ public class Unit
     public bool FixedGear;
 
     [OdinSerialize]
-    public Unit AttractedTo;
+    public EnumIndexedArray<SingleUnitContext, Unit> RelatedUnits = new EnumIndexedArray<SingleUnitContext, Unit>();
+
 
     [OdinSerialize]
     internal VoreType PreferredVoreType;
@@ -291,9 +293,6 @@ public class Unit
 
     [OdinSerialize]
     public bool EarnedMask = false;
-
-    [OdinSerialize]
-    public Unit KilledBy;
 
     [OdinSerialize]
     public List<Unit> ShifterShapes;
@@ -328,13 +327,11 @@ public class Unit
     [OdinSerialize]
     internal List<SpellTypes> MultiUseSpells = new List<SpellTypes>();  // This is so much more straightforward than adding Special Actions
 
-    [OdinSerialize]
-    internal Unit _hiddenUnit = null;
     public Unit HiddenUnit
     {
         get
         {
-            return (_hiddenUnit == null) ? this : _hiddenUnit;
+            return (RelatedUnits[SingleUnitContext.HiddenUnit] == null) ? this : RelatedUnits[SingleUnitContext.HiddenUnit];
         }
     }
 
@@ -342,7 +339,7 @@ public class Unit
     {
         get
         {
-            return (_hiddenUnit == null) ? Race : _hiddenUnit.Race;
+            return (RelatedUnits[SingleUnitContext.HiddenUnit] == null) ? Race : RelatedUnits[SingleUnitContext.HiddenUnit].Race;
         }
     }
 
@@ -350,7 +347,7 @@ public class Unit
     {
         get
         {
-            return (_hiddenUnit == null) ? Stats : _hiddenUnit.Stats;
+            return (RelatedUnits[SingleUnitContext.HiddenUnit] == null) ? Stats : RelatedUnits[SingleUnitContext.HiddenUnit].Stats;
         }
     }
 
@@ -497,7 +494,7 @@ public class Unit
 
     internal bool SpendMana(int amount)
     {
-        int ModifiedManaCost = amount + (amount * (GetStatusEffect(StatusEffectType.SpellForce) != null ? GetStatusEffect(StatusEffectType.SpellForce).Duration/10 : 0));
+        int ModifiedManaCost = amount + (amount * (GetStatusEffect(StatusEffectType.SpellForce) != null ? GetStatusEffect(StatusEffectType.SpellForce).Duration / 10 : 0));
         if (Mana >= ModifiedManaCost)
         {
             Mana -= ModifiedManaCost;
@@ -571,9 +568,6 @@ public class Unit
 
     internal Unit CurrentLeader;
 
-    [OdinSerialize]
-    public Actor_Unit BoundUnit;
-
 
     /// <summary>
     /// Creates an empty unit for various purposes
@@ -633,6 +627,7 @@ public class Unit
         SetGear(race);
 
         InnateSpells = new List<SpellTypes>();
+        RelatedUnits = new EnumIndexedArray<SingleUnitContext, Unit>();
         ShifterShapes = new List<Unit>();
 
         if (race == Race.Dragon)
@@ -663,17 +658,13 @@ public class Unit
         _conversionRace = Race.none;
 
         ReincarnateCheck();
-        //if (HasTrait(Traits.Shapeshifter) || HasTrait(Traits.Skinwalker))
-        //{
-        //    AcquireShape(this, true);
-        //}
         SetForcedPermanentTraits();
     }
 
     private void SetForcedPermanentTraits()
     {
         if (HasTrait(Traits.InfiniteAssimilation))
-        {           
+        {
             RemoveTrait(Traits.InfiniteAssimilation);
             AddPermanentTrait(Traits.InfiniteAssimilation);
         }
@@ -687,16 +678,16 @@ public class Unit
             RemoveTrait(Traits.InfiniteTransmigration);
             AddPermanentTrait(Traits.InfiniteTransmigration);
         }
-        //if (HasTrait(Traits.Shapeshifter))
-        //{
-        //    RemoveTrait(Traits.Shapeshifter);
-        //    AddPermanentTrait(Traits.Shapeshifter);
-        //}
-        //if (HasTrait(Traits.Skinwalker))
-        //{
-        //    RemoveTrait(Traits.Skinwalker);
-        //    AddPermanentTrait(Traits.Skinwalker);
-        //}
+        if (HasTrait(Traits.Shapeshifter))
+        {
+            RemoveTrait(Traits.Shapeshifter);
+            AddPermanentTrait(Traits.Shapeshifter);
+        }
+        if (HasTrait(Traits.Skinwalker))
+        {
+            RemoveTrait(Traits.Skinwalker);
+            AddPermanentTrait(Traits.Skinwalker);
+        }
         if (HasTrait(Traits.Extraction))
         {
             RemoveTrait(Traits.Extraction);
@@ -869,10 +860,10 @@ public class Unit
         {
             if (Items[i] != null && Items[i] is SpellBook)
             {
-                if(((SpellBook)Items[i]).Tier == 4)
-                        tiers.Remove(3);
+                if (((SpellBook)Items[i]).Tier == 4)
+                    tiers.Remove(3);
                 else
-                tiers.Remove(((SpellBook)Items[i]).Tier);
+                    tiers.Remove(((SpellBook)Items[i]).Tier);
             }
         }
 
@@ -964,9 +955,9 @@ public class Unit
         this.AdvancedMeleeWeaponType = appearance.AdvancedMeleeWeaponType;
         this.BasicRangedWeaponType = appearance.BasicRangedWeaponType;
         this.AdvancedRangedWeaponType = appearance.AdvancedRangedWeaponType;
-}
+    }
 
-internal void SetGenderRandomizeName(Race race, Gender gender)
+    internal void SetGenderRandomizeName(Race race, Gender gender)
     {
         var raceData = Races.GetRace(this);
         var isMale = false;
@@ -1224,7 +1215,7 @@ internal void SetGenderRandomizeName(Race race, Gender gender)
 
     public static int GetExperienceRequiredForLevel(int level, float expRequiredMod)
     {
-        if (level >= Config.HardLevelCap)
+        if (level >= Config.HardLevelCap && Config.HardLevelCap > 0)
             return 99999999;
         return (int)(expRequiredMod * level * Config.ExperiencePerLevel + ((level >= Config.SoftLevelCap ? 8 : 0) + (level * Config.AdditionalExperiencePerLevel * (level - 1) / 2)) *
             (level >= Config.SoftLevelCap ? (int)Math.Pow(2, level + 1 - Config.SoftLevelCap) : 1));
@@ -1252,7 +1243,7 @@ internal void SetGenderRandomizeName(Race race, Gender gender)
     {
         get
         {
-             _healthPct = (float) Health / MaxHealth;
+            _healthPct = (float)Health / MaxHealth;
             return _healthPct;
         }
     }
@@ -1366,7 +1357,7 @@ internal void SetGenderRandomizeName(Race race, Gender gender)
         if (stat == Stat.Mind && GetStatusEffect(StatusEffectType.SpellForce) != null)
         {
             int stacks = GetStatusEffect(StatusEffectType.SpellForce).Duration;
-            bonus += stacks + (GetStatBase(Stat.Mind) * (stacks/10));
+            bonus += stacks + (GetStatBase(Stat.Mind) * (stacks / 10));
         }
 
         bonus -= GetStatBase(stat) * (GetStatusEffect(StatusEffectType.Shaken)?.Strength ?? 0);
@@ -1787,7 +1778,7 @@ internal void SetGenderRandomizeName(Race race, Gender gender)
             SharedTraits = new List<Traits>();
         if (!SharedTraits.Contains(trait) && !HasTrait(trait))
             SharedTraits.Add(trait);
-            AddTrait(trait);
+        AddTrait(trait);
 
     }
 
@@ -1808,7 +1799,7 @@ internal void SetGenderRandomizeName(Race race, Gender gender)
             SharedTraits = new List<Traits>();
         if (SharedTraits.Contains(trait) && HasTrait(trait))
             SharedTraits.Remove(trait);
-            RemoveTrait(trait);
+        RemoveTrait(trait);
     }
 
     public bool HasPersistentSharedTrait(Traits trait)
@@ -1913,13 +1904,11 @@ internal void SetGenderRandomizeName(Race race, Gender gender)
         if (HiddenUnit.Predator == false && !HasTrait(Traits.Prey))
             Tags.Add(Traits.Prey);
         SetMaxItems();
-        //if (HasTrait(Traits.Shapeshifter) || HasTrait(Traits.Skinwalker))
-        //{
-        //    if (ShifterShapes == null)
-        //        ShifterShapes = new List<Unit>();
-        //    if (!ShifterShapes.Contains(this))
-        //        AcquireShape(this, true);
-        //}
+        if (HasTrait(Traits.Shapeshifter) || HasTrait(Traits.Skinwalker))
+        {
+            if (ShifterShapes == null)
+                ShifterShapes = new List<Unit>();
+        }
     }
 
     public void ChangeRace(Race race)
@@ -1930,7 +1919,7 @@ internal void SetGenderRandomizeName(Race race, Gender gender)
 
     public void HideRace(Race race, Unit appearance = null)
     {
-        _hiddenUnit = Clone();
+        RelatedUnits[SingleUnitContext.HiddenUnit] = Clone();
         Race = race;
         fixedPredator = false;
         if (appearance != null)
@@ -1948,42 +1937,43 @@ internal void SetGenderRandomizeName(Race race, Gender gender)
         Race = HiddenUnit.Race;
         fixedPredator = false;
         CopyAppearance(HiddenUnit);
-        _hiddenUnit = null;
+        RelatedUnits[SingleUnitContext.HiddenUnit] = null;
     }
 
     private void RandomizeTraits()
     {
-        while (true) { 
-        var customs = Tags.Where(t => State.RandomizeLists.Any(rl => (Traits)rl.id == t)).ToList();
+        while (true)
+        {
+            var customs = Tags.Where(t => State.RandomizeLists.Any(rl => (Traits)rl.id == t)).ToList();
             customs.AddRange(PermanentTraits.Where(t => State.RandomizeLists.Any(rl => (Traits)rl.id == t)));
             if (!customs.Any())
                 break;
-        customs.ForEach(ct =>
-        {
-            RandomizeList randomizeList = State.RandomizeLists.Single(rl => (Traits)rl.id == ct);
-            var chance = randomizeList.chance;
-            while (chance > 0 && State.Rand.NextDouble() < randomizeList.chance)
+            customs.ForEach(ct =>
             {
-                List<Traits> gainable = randomizeList.RandomTraits.Where(rt => !Tags.Contains(rt) && !PermanentTraits.Contains(rt)).ToList();
-                if (gainable.Count() > 0)
+                RandomizeList randomizeList = State.RandomizeLists.Single(rl => (Traits)rl.id == ct);
+                var chance = randomizeList.chance;
+                while (chance > 0 && State.Rand.NextDouble() < randomizeList.chance)
                 {
-                    var randomPick = gainable[State.Rand.Next(gainable.Count())];
-                    PermanentTraits.Add(randomPick);
-                    RemovedTraits?.Remove(randomPick); // Even if manually removed before, rng-sus' word is law
-                    gainable.Remove(randomPick);
-                    GivePrerequisiteTraits(randomPick);
+                    List<Traits> gainable = randomizeList.RandomTraits.Where(rt => !Tags.Contains(rt) && !PermanentTraits.Contains(rt)).ToList();
+                    if (gainable.Count() > 0)
+                    {
+                        var randomPick = gainable[State.Rand.Next(gainable.Count())];
+                        PermanentTraits.Add(randomPick);
+                        RemovedTraits?.Remove(randomPick); // Even if manually removed before, rng-sus' word is law
+                        gainable.Remove(randomPick);
+                        GivePrerequisiteTraits(randomPick);
+                    }
+                    chance -= 1;
                 }
-                chance -= 1;
-            }
-            if (RemovedTraits == null)
-                RemovedTraits = new List<Traits>();
-            RemovedTraits.Add(ct);
-            foreach (Traits trait in RemovedTraits)
-            {
-                Tags.Remove(trait);
-                PermanentTraits.Remove(trait);
-            }
-        });
+                if (RemovedTraits == null)
+                    RemovedTraits = new List<Traits>();
+                RemovedTraits.Add(ct);
+                foreach (Traits trait in RemovedTraits)
+                {
+                    Tags.Remove(trait);
+                    PermanentTraits.Remove(trait);
+                }
+            });
         }
 
     }
@@ -1995,7 +1985,7 @@ internal void SetGenderRandomizeName(Race race, Gender gender)
         {
             prereq = Traits.Growth;
         }
-        if ( randomPick == Traits.HealingBelly)
+        if (randomPick == Traits.HealingBelly)
         {
             prereq = Traits.Endosoma;
         }
@@ -2431,7 +2421,7 @@ internal void SetGenderRandomizeName(Race race, Gender gender)
             UnityEngine.Debug.LogWarning("Tried to assign item to a non-existent slot!");
             return;
         }
-        if (item is SpellBook && HasTrait(Traits.BookEater) && !fromUnitEditor)
+        if (item is SpellBook && HasTrait(Traits.BookEater) && !fromUnitEditor && !InnateSpells.Contains(((SpellBook)item).ContainedSpell))
         {
             InnateSpells.Add(((SpellBook)item).ContainedSpell);
             return;
@@ -2579,23 +2569,23 @@ internal void SetGenderRandomizeName(Race race, Gender gender)
     public void CreateRaceShape(Race race)
     {
         var shape = new Unit(Side, race, (int)Experience, true, Type, ImmuneToDefections);
-        foreach (Traits trait in ShifterShapes[0].PermanentTraits)
+        foreach (Traits trait in PermanentTraits)
         {
             shape.AddPermanentTrait(trait);
         }
         if (Races.GetRace(shape.Race).CanBeGender.Contains(GetGender()))
         {
-            shape.SetGenderRandomizeName(race,GetGender());
+            shape.SetGenderRandomizeName(race, GetGender());
         }
         shape.Name = Name;
         shape.InnateSpells.AddRange(InnateSpells);
         hiddenFixedSide = false;
-        shape._fixedSide = ShifterShapes[0]._fixedSide;
-        shape.SavedCopy = ShifterShapes[0].SavedCopy;
-        shape.SavedVillage = ShifterShapes[0].SavedVillage;
-        shape.BoundUnit = ShifterShapes[0].BoundUnit;
-        ShifterShapes[0].ShifterShapes.Add(shape);
-        shape.ShifterShapes = ShifterShapes[0].ShifterShapes;
+        shape._fixedSide = _fixedSide;
+        shape.SavedCopy = SavedCopy;
+        shape.SavedVillage = SavedVillage;
+        shape.RelatedUnits[SingleUnitContext.BoundUnit] = RelatedUnits[SingleUnitContext.BoundUnit];
+        shape.ShifterShapes = ShifterShapes;
+        this.ShifterShapes.Add(shape);
     }
 
     internal void AddBladeDance()
@@ -2814,7 +2804,8 @@ internal void SetGenderRandomizeName(Race race, Gender gender)
                     {
                         traitsToAdd.AddRange(RandomizeOne(recursiveRl));
                     }
-                } else
+                }
+                else
                     traitsToAdd.Add(randomPick);
                 gainable.Remove(randomPick);
             }
@@ -2825,26 +2816,25 @@ internal void SetGenderRandomizeName(Race race, Gender gender)
 
     internal void AcquireShape(Unit unit, bool forceDirect = false)
     {
-        //if (ShifterShapes.Any(shape => shape.Race == unit.Race) && !forceDirect) return;
-        //if (HasTrait(Traits.Skinwalker) || forceDirect)
-        //{
-        //    Unit referenceUnit = ShifterShapes.Count > 0 ? ShifterShapes[0] : this;
-        //    Unit shape = unit.Clone();
-        //    shape.Side = Side;
-        //    shape._fixedSide = referenceUnit._fixedSide;
-        //    if (referenceUnit.HasTrait(Traits.Skinwalker))
-        //        shape.AddPermanentTrait(Traits.Skinwalker);
-        //    shape.hiddenFixedSide = referenceUnit.hiddenFixedSide;
-        //    shape.SavedCopy = referenceUnit.SavedCopy;
-        //    shape.SavedVillage = referenceUnit.SavedVillage; 
-        //    shape.BoundUnit = referenceUnit.BoundUnit;
-        //    referenceUnit.ShifterShapes.Add(shape);
-        //    shape.ShifterShapes = ShifterShapes[0].ShifterShapes;
-        //}
-        //else if (HasTrait(Traits.Shapeshifter))
-        //{
-        //    CreateRaceShape(unit.Race);
-        //}
+        if (ShifterShapes.Any(shape => shape.Race == unit.Race) && !forceDirect) return;
+        if (HasTrait(Traits.Skinwalker) || forceDirect)
+        {
+            Unit shape = unit.Clone();
+            shape.Side = Side;
+            shape._fixedSide = _fixedSide;
+            if (HasTrait(Traits.Skinwalker))
+                shape.AddPermanentTrait(Traits.Skinwalker);
+            shape.hiddenFixedSide = hiddenFixedSide;
+            shape.SavedCopy = SavedCopy;
+            shape.SavedVillage = SavedVillage;
+            shape.RelatedUnits[SingleUnitContext.BoundUnit] = RelatedUnits[SingleUnitContext.BoundUnit];
+            shape.ShifterShapes = ShifterShapes;
+            ShifterShapes.Add(shape);
+        }
+        else if (HasTrait(Traits.Shapeshifter))
+        {
+            CreateRaceShape(unit.Race);
+        }
     }
 
     internal List<Traits> GetPermanentTraits()
@@ -2852,23 +2842,25 @@ internal void SetGenderRandomizeName(Race race, Gender gender)
         return PermanentTraits;
     }
 
-    internal void UpdateShapeExpAndItems()
+    internal void UpdateShapeExpAndItems(bool spendLevels = true)
     {
-        //if (!HasTrait(Traits.Skinwalker))
-        //{
-        //    ShifterShapes.ForEach(shape =>
-        //    {
-        //        shape.SetExp(experience);
-        //        StrategicUtilities.SpendLevelUps(shape);
-        //    });
-        //}
+        if (!HasTrait(Traits.Skinwalker))
+        {
+            ShifterShapes.ForEach(shape =>
+            {
+                shape.SetExp(experience);
+                if (spendLevels) 
+                    StrategicUtilities.SpendLevelUps(shape);
+            });
+        }
+         // Items are too much of a can of worms. Shape inventories are just separate for now.
         //ShifterShapes.ForEach(shape =>
         //{
         //    if (!shape.FixedGear)
         //    {
         //        shape.Items.ForEach((slot, index) =>
         //        {
-        //           if( slot == null)
+        //            if (slot == null)
         //            {
         //                slot = GetItem(index);
         //            }
@@ -2876,7 +2868,8 @@ internal void SetGenderRandomizeName(Race race, Gender gender)
         //    }
         //});
     }
-    public void Shrink()
+
+    public void Shrink() // The fuck?
     {
         if (HasTrait(Traits.Titanic) && HasTrait(Traits.Colossal) && HasTrait(Traits.Huge) && HasTrait(Traits.Large))
             RemoveTrait(Traits.Large);

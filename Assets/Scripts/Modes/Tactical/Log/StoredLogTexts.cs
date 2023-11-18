@@ -2124,7 +2124,7 @@ static class StoredLogTexts
             actorRace: Race.Panthers, priority: 9),
             new EventString((i) => $"<b>{i.Unit.Name}</b> grows tired of waiting for {GPPHis(i.Unit)} lazy {i.preyLocation.ToSyn()} to finish <b>{i.Target.Name}</b> off. Deciding to speed the process along, <b>{i.Unit.Name}</b> leans on {GPPHis(i.Unit)} sloshing {i.preyLocation.ToSyn()}, slathering {GPPHis(i.Unit)} meal with juices. A sudden muffled scream followed by stillness ensures the fight to be over.",
             actorRace: Race.Panthers, priority: 9),
-            new EventString((i) => $"/“You’ve been fighting for a long time in there, maybe I’ll get you back to town to sell you off as a sla-/” <b>{i.Unit.Name}</b> says before {GPPHis(i.Unit)} {i.preyLocation.ToSyn()} make{PluralForPart(i.preyLocation)} such thoughts moot by finishing the meal off.",
+            new EventString((i) => $"“You’ve been fighting for a long time in there, maybe I’ll get you back to town to sell you off as a sla-” <b>{i.Unit.Name}</b> says before {GPPHis(i.Unit)} {i.preyLocation.ToSyn()} make{PluralForPart(i.preyLocation)} such thoughts moot by finishing the meal off.",
             actorRace: Race.Panthers, priority: 9),
             new EventString((i) => $"A belch that shortly turns into a gleeful roar signals the end of <b>{i.Target.Name}</b> and the victory of the tribal warrior.",
             actorRace: Race.Panthers, priority: 9, conditional: s=> InStomach(s) && CanBurp(s)),

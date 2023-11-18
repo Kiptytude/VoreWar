@@ -713,6 +713,8 @@ public class InfoPanel
                     }
                 }
             }
+            if (actor == null && unit != null && unit.ShifterShapes != null && unit.ShifterShapes.Count() > 0)
+                sb.AppendLine("<color=#1f67d3>AssumeShape</color>");
             if (Config.CheatUnitEditorEnabled)
                 sb.AppendLine("<color=#AB5200ff>UnitEditor</color>");
         }

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using static UnityEngine.UI.CanvasScaler;
 
 class UnitEditor : UnitCustomizer
@@ -259,76 +260,84 @@ class UnitEditor : UnitCustomizer
             {
                 Unit.SingleUseSpells.Add(((SpellBook)State.World.ItemRepository.GetRandomBook(1, 4)).ContainedSpell);
                 Unit.UpdateSpells();
-            } else
-        if (trait == Traits.PollenProjector && State.World?.ItemRepository != null)
-        {
-            Unit.SingleUseSpells.Add(SpellList.AlraunePuff.SpellType);
-            Unit.UpdateSpells();
-        }
+            }
             else
-        if (trait == Traits.Webber && State.World?.ItemRepository != null)
-        {
-            Unit.SingleUseSpells.Add(SpellList.Web.SpellType);
-            Unit.UpdateSpells();
-        }
+            if (trait == Traits.PollenProjector && State.World?.ItemRepository != null)
+            {
+                Unit.SingleUseSpells.Add(SpellList.AlraunePuff.SpellType);
+                Unit.UpdateSpells();
+            }
             else
-        if (trait == Traits.GlueBomb && State.World?.ItemRepository != null)
-        {
-            Unit.SingleUseSpells.Add(SpellList.GlueBomb.SpellType);
-            Unit.UpdateSpells();
-        }
+            if (trait == Traits.Webber && State.World?.ItemRepository != null)
+            {
+                Unit.SingleUseSpells.Add(SpellList.Web.SpellType);
+                Unit.UpdateSpells();
+            }
             else
-        if (trait == Traits.PoisonSpit && State.World?.ItemRepository != null)
-        {
-            Unit.SingleUseSpells.Add(SpellList.ViperPoisonStatus.SpellType);
-            Unit.UpdateSpells();
-        }
+            if (trait == Traits.GlueBomb && State.World?.ItemRepository != null)
+            {
+                Unit.SingleUseSpells.Add(SpellList.GlueBomb.SpellType);
+                Unit.UpdateSpells();
+            }
             else
-        if (trait == Traits.Petrifier && State.World?.ItemRepository != null)
-        {
-            Unit.SingleUseSpells.Add(SpellList.Petrify.SpellType);
-            Unit.UpdateSpells();
-        }
+            if (trait == Traits.PoisonSpit && State.World?.ItemRepository != null)
+            {
+                Unit.SingleUseSpells.Add(SpellList.ViperPoisonStatus.SpellType);
+                Unit.UpdateSpells();
+            }
             else
-        if (trait == Traits.Charmer && State.World?.ItemRepository != null)
-        {
-            Unit.SingleUseSpells.Add(SpellList.Charm.SpellType);
-            Unit.UpdateSpells();
-        }
+            if (trait == Traits.Petrifier && State.World?.ItemRepository != null)
+            {
+                Unit.SingleUseSpells.Add(SpellList.Petrify.SpellType);
+                Unit.UpdateSpells();
+            }
             else
-        if (trait == Traits.HypnoticGas && State.World?.ItemRepository != null)
-        {
-            Unit.SingleUseSpells.Add(SpellList.HypnoGas.SpellType);
-            Unit.UpdateSpells();
-        }
+            if (trait == Traits.Charmer && State.World?.ItemRepository != null)
+            {
+                Unit.SingleUseSpells.Add(SpellList.Charm.SpellType);
+                Unit.UpdateSpells();
+            }
             else
-        if (trait == Traits.Reanimator && State.World?.ItemRepository != null)
-        {
-            Unit.SingleUseSpells.Add(SpellList.Reanimate.SpellType);
-            Unit.UpdateSpells();
-        }
+            if (trait == Traits.HypnoticGas && State.World?.ItemRepository != null)
+            {
+                Unit.SingleUseSpells.Add(SpellList.HypnoGas.SpellType);
+                Unit.UpdateSpells();
+            }
             else
-        if (trait == Traits.Binder && State.World?.ItemRepository != null)
-        {
-            Unit.SingleUseSpells.Add(SpellList.Bind.SpellType);
-            Unit.UpdateSpells();
-        }
+            if (trait == Traits.Reanimator && State.World?.ItemRepository != null)
+            {
+                Unit.SingleUseSpells.Add(SpellList.Reanimate.SpellType);
+                Unit.UpdateSpells();
+            }
             else
-        // Multi-use section
-        if (trait == Traits.ForceFeeder && State.World?.ItemRepository != null)
-        {
-            Unit.MultiUseSpells.Add(SpellList.ForceFeed.SpellType);
-            Unit.UpdateSpells();
-        }
+            if (trait == Traits.Binder && State.World?.ItemRepository != null)
+            {
+                Unit.SingleUseSpells.Add(SpellList.Bind.SpellType);
+                Unit.UpdateSpells();
+            }
             else
-        if (trait == Traits.Prey)
-        {
-            Unit.Predator = false;
-            actor.PredatorComponent?.FreeAnyAlivePrey();
-        }
+            // Multi-use section
+            if (trait == Traits.ForceFeeder && State.World?.ItemRepository != null)
+            {
+                Unit.MultiUseSpells.Add(SpellList.ForceFeed.SpellType);
+                Unit.UpdateSpells();
+            }
+            //
             else
-        if (trait == Traits.BookWormI || trait == Traits.BookWormII || trait == Traits.BookWormIII)
-            Unit.GiveTraitBooks();
+            if (trait == Traits.Prey)
+            {
+                Unit.Predator = false;
+                actor.PredatorComponent?.FreeAnyAlivePrey();
+            }
+            else
+            if (trait == Traits.BookWormI || trait == Traits.BookWormII || trait == Traits.BookWormIII)
+                Unit.GiveTraitBooks();
+            else
+            if (trait == Traits.Shapeshifter || trait == Traits.Skinwalker)
+            {
+                if (Unit.ShifterShapes == null)
+                    Unit.ShifterShapes = new List<Unit>();
+            }
         actor.Unit.InitializeTraits();
         RefreshStats();
     }

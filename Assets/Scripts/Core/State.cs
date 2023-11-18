@@ -825,6 +825,24 @@ public static class State
                 }
             }
 
+            if (version <= 42 +1)
+            {
+                if (World.AllActiveEmpires != null)
+                {
+                    foreach (var unit in StrategicUtilities.GetAllUnits())
+                    {
+                        unit.RelatedUnits = new EnumIndexedArray<SingleUnitContext, Unit>();
+                    }
+                }
+                if (World.TacticalData != null)
+                {
+                    foreach (var unit in World.TacticalData.units)
+                    {
+                        unit.Unit.RelatedUnits = new EnumIndexedArray<SingleUnitContext, Unit>();
+                    }
+                }
+            }
+
             if (World.TacticalData != null)
             {
                 foreach (var unit in World.TacticalData.units)

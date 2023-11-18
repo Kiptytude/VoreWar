@@ -11,7 +11,7 @@ public class Recruit_Mode : SceneBase
     Unit leader;
     Village village;
     MercenaryHouse mercenaryHouse;
-    Army army;
+    public Army army;
     Empire empire;
     internal UnitCustomizer Customizer;
     Shop shop;
@@ -1729,7 +1729,7 @@ public class Recruit_Mode : SceneBase
                 displayUnits[x] = new Actor_Unit(noLoc, army.Units[x]);
                 displayCreatedUnit[x] = army.Units[x];
                 displayUnits[x].UpdateBestWeapons();
-                army.Units[x].CurrentLeader = leader;
+                army.Units[x].RelatedUnits[SingleUnitContext.CurrentLeader] = leader;
             }
             //else it already exists and is correct, so we do nothing
         }

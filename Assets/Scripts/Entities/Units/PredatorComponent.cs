@@ -1113,10 +1113,10 @@ public class PredatorComponent
                     preyUnit.Unit.hiddenFixedSide = true;
                     preyUnit.Actor.sidesAttackedThisBattle = new List<int>();
                 }
-                //if (preyUnit.Unit.HasTrait(Traits.Shapeshifter) || preyUnit.Unit.HasTrait(Traits.Skinwalker))
-                //{
-                //    preyUnit.Unit.AcquireShape(unit);
-                //}
+                if (preyUnit.Unit.HasTrait(Traits.Shapeshifter) || preyUnit.Unit.HasTrait(Traits.Skinwalker))
+                {
+                    preyUnit.Unit.AcquireShape(unit);
+                }
                 preyUnit.Unit.ReloadTraits();
                 preyUnit.Unit.InitializeTraits();
 
@@ -1388,7 +1388,7 @@ public class PredatorComponent
             }
             if (unit.HasTrait(Traits.DigestionRebirth) && State.Rand.Next(2) == 0 && preyUnit.Unit.CanBeConverted() && (Config.SpecialMercsCanConvert || unit.DetermineConversionRace() < Race.Selicia))
             {
-                //HandleShapeshifterRebirth(preyUnit);
+                HandleShapeshifterRebirth(preyUnit);
                 Race conversionRace = unit.DetermineConversionRace();
                 if(unit.HasTrait(Traits.DigestionRebirth) && !unit.HasSharedTrait(Traits.DigestionRebirth))
                     conversionRace = unit.HiddenUnit.DetermineConversionRace();
@@ -1415,7 +1415,7 @@ public class PredatorComponent
             if (unit.HasTrait(Traits.TasteForBlood))
                 actor.GiveRandomBoost();
             unit.EnemiesKilledThisBattle++;
-            preyUnit.Unit.KilledBy = unit;
+            preyUnit.Unit.RelatedUnits[SingleUnitContext.KilledBy] = unit;
             preyUnit.Unit.Kill();
             for (int i = 0; i < 20; i++)
             {
@@ -1522,7 +1522,7 @@ public class PredatorComponent
                     preyUnit.ChangeSide(unit.Side);
                     if (preyUnit.Unit.Race != conversionRace)
                     {
-                        //HandleShapeshifterRebirth(preyUnit);
+                        HandleShapeshifterRebirth(preyUnit);
                         preyUnit.ChangeRace(conversionRace);
                     }
                     FreeUnit(preyUnit.Actor);
@@ -1592,10 +1592,10 @@ public class PredatorComponent
                 if (!State.GameManager.TacticalMode.turboMode)
                     actor.SetAbsorbtionMode();
                 CheckPredTraitAbsorption(preyUnit);
-                //if (unit.HasTrait(Traits.Shapeshifter) || unit.HasTrait(Traits.Skinwalker))
-                //{
-                //    unit.AcquireShape(preyUnit.Unit);
-                //}
+                if (unit.HasTrait(Traits.Shapeshifter) || unit.HasTrait(Traits.Skinwalker))
+                {
+                    unit.AcquireShape(preyUnit.Unit);
+                }
 
                 if (preyUnit.SubPrey?.Count() > 0) //Catches any dead prey that weren't already properly moved
                 {
@@ -1659,13 +1659,13 @@ public class PredatorComponent
 
     private void HandleShapeshifterRebirth(Prey preyUnit)
     {
-        //if (preyUnit.Unit.HasTrait(Traits.Shapeshifter) || preyUnit.Unit.HasTrait(Traits.Skinwalker)) // preserve the unit as it is and rebirth a copy of it instead
-        //{
-        //    Unit clone = preyUnit.Unit.Clone();
-        //    preyUnit.Unit.ShifterShapes.Add(clone);
-        //    clone.ShifterShapes = preyUnit.Unit.ShifterShapes;
-        //    preyUnit.Unit = clone;
-        //}
+        if (preyUnit.Unit.HasTrait(Traits.Shapeshifter) || preyUnit.Unit.HasTrait(Traits.Skinwalker)) // preserve the unit as it is and rebirth a copy of it instead
+        {
+            Unit clone = preyUnit.Unit.Clone();
+            clone.ShifterShapes = preyUnit.Unit.ShifterShapes;
+            clone.ShifterShapes.Add(preyUnit.Unit);
+            preyUnit.Unit = clone;
+        }
     }
 
     //public List<Actor_Unit> Birth()

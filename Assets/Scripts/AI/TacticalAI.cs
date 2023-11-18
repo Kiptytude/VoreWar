@@ -1337,12 +1337,12 @@ public abstract class TacticalAI : ITacticalAI
         var spell = actor.Unit.UseableSpells.Find(s => s.SpellType == SpellTypes.Bind);
         if (spell == null || actor.Unit.Mana < spell.ManaCost) return;
 
-        if (!actors.Any(a => a.Unit.Type == UnitType.Summon) && actor.Unit.BoundUnit == null)
+        if (!actors.Any(a => a.Unit.Type == UnitType.Summon) && actor.Unit.RelatedUnits[SingleUnitContext.BoundUnit] == null)
         {
             return;
         }
 
-        if (actor.Unit.BoundUnit != null && !actors.Any(a => !a.Unit.IsDead && a.Unit == actor.Unit.BoundUnit.Unit))
+        if (actor.Unit.RelatedUnits[SingleUnitContext.BoundUnit] != null && !actors.Any(a => !a.Unit.IsDead && a.Unit == actor.Unit.RelatedUnits[SingleUnitContext.BoundUnit]))
         {
             for (int i = 0; i < 4; i++)
             {
@@ -1364,7 +1364,7 @@ public abstract class TacticalAI : ITacticalAI
         {
             if (unit.Unit.Type == UnitType.Summon && TacticalUtilities.TreatAsHostile(actor, unit))
             {
-                var prevBinder = actors.Where(a => a.Unit.BoundUnit?.Unit == unit.Unit).FirstOrDefault();
+                var prevBinder = actors.Where(a => a.Unit.RelatedUnits[SingleUnitContext.BoundUnit] == unit.Unit).FirstOrDefault();
 
                 if (unit.Targetable == true && (unit.InSight || !State.World.IsNight) && unit.Surrendered == false && prevBinder?.Unit.GetApparentSide(actor.Unit) != actor.Unit.FixedSide && prevBinder?.Unit.FixedSide != actor.Unit.FixedSide)
                 {
@@ -1380,7 +1380,7 @@ public abstract class TacticalAI : ITacticalAI
             {
                 if (unit.Unit.Type == UnitType.Summon && !TacticalUtilities.TreatAsHostile(actor, unit))
                 {
-                    var prevBinder = actors.Where(a => a.Unit.BoundUnit?.Unit == unit.Unit).FirstOrDefault();
+                    var prevBinder = actors.Where(a => a.Unit.RelatedUnits[SingleUnitContext.BoundUnit] == unit.Unit).FirstOrDefault();
 
                     if (unit.Targetable == true && (unit.InSight || !State.World.IsNight) && unit.Surrendered == false && prevBinder?.Unit.GetApparentSide(actor.Unit) != actor.Unit.FixedSide && prevBinder?.Unit.FixedSide != actor.Unit.FixedSide)
                     {
@@ -1425,12 +1425,12 @@ public abstract class TacticalAI : ITacticalAI
         var spell = actor.Unit.UseableSpells.Find(s => s.SpellType == SpellTypes.Bind);
         if (spell == null || actor.Unit.Mana < spell.ManaCost) return -1;
 
-        if (!actors.Any(a => a.Unit.Type == UnitType.Summon) && actor.Unit.BoundUnit == null)
+        if (!actors.Any(a => a.Unit.Type == UnitType.Summon) && actor.Unit.RelatedUnits[SingleUnitContext.BoundUnit] == null)
         {
             return -1;
         }
 
-        if (actor.Unit.BoundUnit != null && !actors.Any(a => !a.Unit.IsDead && a.Unit == actor.Unit.BoundUnit.Unit))
+        if (actor.Unit.RelatedUnits[SingleUnitContext.BoundUnit] != null && !actors.Any(a => !a.Unit.IsDead && a.Unit == actor.Unit.RelatedUnits[SingleUnitContext.BoundUnit]))
         {
             return 1;
         }
@@ -1439,7 +1439,7 @@ public abstract class TacticalAI : ITacticalAI
         {
             if (unit.Unit.Type == UnitType.Summon && TacticalUtilities.TreatAsHostile(actor, unit))
             {
-                var prevBinder = actors.Where(a => a.Unit.BoundUnit?.Unit == unit.Unit).FirstOrDefault();
+                var prevBinder = actors.Where(a => a.Unit.RelatedUnits[SingleUnitContext.BoundUnit] == unit.Unit).FirstOrDefault();
 
                 if (unit.Targetable == true && (unit.InSight || !State.World.IsNight) && unit.Surrendered == false && prevBinder?.Unit.GetApparentSide(actor.Unit) != actor.Unit.FixedSide && prevBinder?.Unit.FixedSide != actor.Unit.FixedSide)
                 {
@@ -1455,7 +1455,7 @@ public abstract class TacticalAI : ITacticalAI
             {
                 if (unit.Unit.Type == UnitType.Summon && !TacticalUtilities.TreatAsHostile(actor, unit))
                 {
-                    var prevBinder = actors.Where(a => a.Unit.BoundUnit?.Unit == unit.Unit).FirstOrDefault();
+                    var prevBinder = actors.Where(a => a.Unit.RelatedUnits[SingleUnitContext.BoundUnit] == unit.Unit).FirstOrDefault();
 
                     if (unit.Targetable == true && (unit.InSight || !State.World.IsNight) && unit.Surrendered == false && prevBinder?.Unit.GetApparentSide(actor.Unit) != actor.Unit.FixedSide && prevBinder?.Unit.FixedSide != actor.Unit.FixedSide)
                     {

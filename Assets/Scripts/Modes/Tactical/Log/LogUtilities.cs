@@ -193,9 +193,10 @@ static class LogUtilities
 
     internal static Unit AttractedWarrior(Unit unit)
     {
-        if (unit.AttractedTo != null)
+        Unit attractedTo = unit.RelatedUnits[SingleUnitContext.AttractedTo];
+        if (attractedTo != null)
         {
-            var actor = TacticalUtilities.Units.Where(s => s.Unit == unit.AttractedTo && s.Unit.Side == unit.Side && s.Unit != unit && RomanticTarget(unit, s.Unit)).FirstOrDefault(); //If this fails, reassign
+            var actor = TacticalUtilities.Units.Where(s => s.Unit == attractedTo && s.Unit.Side == unit.Side && s.Unit != unit && RomanticTarget(unit, s.Unit)).FirstOrDefault(); //If this fails, reassign
             if (actor != null)
             {
                 if (actor.Visible && actor.Targetable && actor.Unit.IsDead == false)
