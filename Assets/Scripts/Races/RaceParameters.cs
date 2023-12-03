@@ -2687,12 +2687,12 @@ static class RaceParameters
             {
                 Strength = new RaceStats.StatRange(6, 10),
                 Dexterity = new RaceStats.StatRange(10, 15),
-                Endurance = new RaceStats.StatRange(15, 20),
-                Mind = new RaceStats.StatRange(25, 30),
+                Endurance = new RaceStats.StatRange(25, 30),
+                Mind = new RaceStats.StatRange(15, 25),
                 Will = new RaceStats.StatRange(20, 25),
-                Agility = new RaceStats.StatRange(24, 26),
+                Agility = new RaceStats.StatRange(10, 15),
                 Voracity = new RaceStats.StatRange(16, 20),
-                Stomach = new RaceStats.StatRange(11, 16),
+                Stomach = new RaceStats.StatRange(20, 25),
             },
             RacialTraits = new List<Traits>()
             {

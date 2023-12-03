@@ -7,7 +7,6 @@ using UnityEngine;
 
 class Bella : BlankSlate
 {
-    readonly Sprite[] Sprites = State.GameManager.SpriteDictionary.Bella;
     readonly Sprite[] Body1 = State.GameManager.SpriteDictionary.BellaBody1;
     readonly Sprite[] Head1 = State.GameManager.SpriteDictionary.BellaHead1;
     readonly Sprite[] Arm1 = State.GameManager.SpriteDictionary.BellaArm1;
