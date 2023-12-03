@@ -8,6 +8,12 @@ using UnityEngine;
 class Bella : BlankSlate
 {
     readonly Sprite[] Sprites = State.GameManager.SpriteDictionary.Bella;
+    readonly Sprite[] Body1 = State.GameManager.SpriteDictionary.BellaBody1;
+    readonly Sprite[] Head1 = State.GameManager.SpriteDictionary.BellaHead1;
+    readonly Sprite[] Arm1 = State.GameManager.SpriteDictionary.BellaArm1;
+    readonly Sprite[] Body2 = State.GameManager.SpriteDictionary.BellaBody2;
+    readonly Sprite[] Head2 = State.GameManager.SpriteDictionary.BellaHead2;
+    readonly Sprite[] Arm2 = State.GameManager.SpriteDictionary.BellaArm2;
 
     public Bella()
     {
@@ -17,51 +23,40 @@ class Bella : BlankSlate
         EyeTypes = 1;
         GentleAnimation = false;
         BodySizes = 2;
-        /*
-        Body = new SpriteExtraInfo(1, BodySprite, WhiteColored); // Body
-        Belly = new SpriteExtraInfo(2, null, WhiteColored); // Belly
-        BodyAccent = new SpriteExtraInfo(3, BodyAccentSprite, WhiteColored); // Leg
-        Eyes = new SpriteExtraInfo(4, EyesSprite, WhiteColored); // Face
-        Hair = new SpriteExtraInfo(5, HeadSprite, WhiteColored); // Attack Frame
-        */
 
-        Body = new SpriteExtraInfo(2, BodySprite, WhiteColored); // Body
+        Body = new SpriteExtraInfo(2, BodySprite, WhiteColored); // body, vore bellies, boobs
         Head = new SpriteExtraInfo(3, HeadSprite, WhiteColored);
-        Belly = new SpriteExtraInfo(4, null, WhiteColored); // Belly
+        //Belly = new SpriteExtraInfo(4, null, WhiteColored); 
         BodyAccent = new SpriteExtraInfo(1, BodyAccentSprite, WhiteColored); // Arm + staff
-        //Eyes = new SpriteExtraInfo(4, EyesSprite, WhiteColored); // Face
-        //Hair = new SpriteExtraInfo(5, HeadSprite, WhiteColored); // Attack Frame
+
         clothingColors = 0;
     }
 
     protected override Sprite BodySprite(Actor_Unit actor) // Body
     {
 
-        Debug.Log("BodySize: " + actor.Unit.BodySize + " StomachSize:" + actor.GetStomachSize(3,2));
+        //Debug.Log("BodySize: " + actor.Unit.BodySize + " StomachSize:" + actor.GetStomachSize(3,2));
 
         //Sprites , Weight 1
         if (actor.Unit.BodySize == 0)
         {
             if(actor.HasBelly == true)
-                return Sprites[1 + actor.GetStomachSize(3,1)]; // 4 bellies total
+                return Body1[1 + actor.GetStomachSize(2,1)]; // 4 bellies total
 
-            return Sprites[0];  
+            return Body1[0];  
         }
 
         //Sprites , Weight 2
         if (actor.Unit.BodySize == 1)
         {
             if (actor.HasBelly == true)
-                return Sprites[6 + actor.GetStomachSize(1, 1)];
-            return Sprites[5];
+                return Body2[1 + actor.GetStomachSize(2, 1)];
+            return Body2[0];
         }
 
         
         return null;
     }
-
-
-   // protected override Sprite BodyAccentSprite(Actor_Unit actor) => Sprites[9]; // Leg
 
     internal override Sprite BellySprite(Actor_Unit actor, GameObject belly) //Belly and Boob
     {
@@ -70,27 +65,30 @@ class Bella : BlankSlate
 
     protected override Sprite HeadSprite(Actor_Unit actor)
     {
+        //Weight 1
         if (actor.Unit.BodySize == 0)
         {
             if (actor.IsOralVoring == true)
             {
-                if (actor.HasBelly == false)
-                    return Sprites[13];
-                return Sprites[14];
+                if (actor.HasBelly == false) //If vore sucess
+                    return Head1[1];
+                return Head1[2]; // if vore fail
             }
 
-            return Sprites[12];
+            return Head1[0];
         }
 
+        //Weight 2
         if (actor.Unit.BodySize == 1)
         {
-            if (actor.IsOralVoring == true) {
-                if (actor.HasBelly == false)
-                    return Sprites[15];
-                return Sprites[16];
+            if (actor.IsOralVoring == true)
+            {
+                if (actor.HasBelly == false) //If vore sucess
+                    return Head2[1];
+                return Head2[2]; // if vore fail
             }
 
-            return Sprites[15];
+            return Head2[0];
         }
 
         return null;
@@ -98,18 +96,20 @@ class Bella : BlankSlate
 
     protected override Sprite BodyAccentSprite(Actor_Unit actor) //Arm and staff
     {
+        //Weight 1
         if (actor.Unit.BodySize == 0)
         {
             if (actor.IsAttacking == true)
-                return Sprites[9];
-            return Sprites[8];
+                return Arm1[1];
+            return Arm1[0];
         }
 
+        //Weight 2
         if (actor.Unit.BodySize == 1)
         {
             if (actor.IsAttacking == true)
-                return Sprites[11];
-            return Sprites[10];
+                return Arm2[1];
+            return Arm2[0];
         }
 
         return null;

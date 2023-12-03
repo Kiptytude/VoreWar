@@ -2698,7 +2698,6 @@ static class RaceParameters
             {
                 Traits.Tenacious,
                 Traits.Resilient,
-                Traits.DualStomach,
                 Traits.EfficientGuts,
                 Traits.SteadyStomach,
                 Traits.ThrillSeeker,
