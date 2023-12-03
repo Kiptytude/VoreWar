@@ -99,6 +99,7 @@ static class RaceParameters
     static readonly RaceTraits Goodra;
     static readonly RaceTraits Whisp;
     static readonly RaceTraits Salix;
+    static readonly RaceTraits Bella;
 
     static Unit tempUnit;
 
@@ -314,6 +315,8 @@ static class RaceParameters
                 return Whisp;
             case Race.Salix:
                 return Salix;
+            case Race.Bella:
+                return Bella;
             case (Race)700: //Singled out so that it doesn't make the debug message
                 return Default;
             case (Race)701:
@@ -2668,6 +2671,42 @@ static class RaceParameters
             InnateSpells = new List<SpellTypes>()
             { SpellTypes.AmplifyMagic, SpellTypes.Evocation, SpellTypes.ManaFlux, SpellTypes.UnstableMana},
             RaceDescription = "A demi-mouse mage from a different, mana rich dimension. Has had trouble adapting to the absence of mana here, but makes do.",
+        };
+
+
+        Bella = new RaceTraits()
+        {
+            BodySize = 10,
+            StomachSize = 15,
+            HasTail = true,
+            FavoredStat = Stat.Endurance,
+            AllowedVoreTypes = new List<VoreType> { VoreType.Oral, VoreType.Unbirth, VoreType.Anal},
+            ExpMultiplier = 1.2f,
+            PowerAdjustment = 1.2f,
+            RaceStats = new RaceStats()
+            {
+                Strength = new RaceStats.StatRange(6, 10),
+                Dexterity = new RaceStats.StatRange(10, 15),
+                Endurance = new RaceStats.StatRange(15, 20),
+                Mind = new RaceStats.StatRange(25, 30),
+                Will = new RaceStats.StatRange(20, 25),
+                Agility = new RaceStats.StatRange(24, 26),
+                Voracity = new RaceStats.StatRange(16, 20),
+                Stomach = new RaceStats.StatRange(11, 16),
+            },
+            RacialTraits = new List<Traits>()
+            {
+                Traits.Tenacious,
+                Traits.Resilient,
+                Traits.DualStomach,
+                Traits.EfficientGuts,
+                Traits.SteadyStomach,
+                Traits.ThrillSeeker,
+                Traits.Clumsy
+            },
+            InnateSpells = new List<SpellTypes>()
+            { SpellTypes.Mending},
+            RaceDescription = "A shy cowgirl ^o^",
         };
 
     }

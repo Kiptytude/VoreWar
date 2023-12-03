@@ -1292,6 +1292,60 @@ public class PredatorComponent
         return false;
     }
 
+    internal void WeightGain(Prey preyUnit)
+    {
+        if (Location(preyUnit) == PreyLocation.balls)
+        {
+            if (unit.HasDick)
+            {
+                unit.DickSize = Math.Min(unit.DickSize + 1, Races.GetRace(unit).DickSizes - 1);
+                if (Config.RaceSizeLimitsWeightGain && State.RaceSettings.GetOverrideDick(unit.Race))
+                    unit.DickSize = Math.Min(unit.DickSize, State.RaceSettings.Get(unit.Race).MaxDick);
+            }
+        }
+        else if (Location(preyUnit) == PreyLocation.breasts || Location(preyUnit) == PreyLocation.leftBreast || Location(preyUnit) == PreyLocation.rightBreast)
+        {
+            if (unit.HasBreasts)
+            {
+                unit.SetDefaultBreastSize(Math.Min(unit.DefaultBreastSize + 1, Races.GetRace(unit).BreastSizes - 1), unit.BreastSize == unit.DefaultBreastSize);
+                if (Config.RaceSizeLimitsWeightGain && State.RaceSettings.GetOverrideBreasts(unit.Race))
+                    unit.SetDefaultBreastSize(Math.Min(unit.DefaultBreastSize, State.RaceSettings.Get(unit.Race).MaxBoob));
+            }
+        }
+        else
+        {
+            if (Config.AltVoreOralGain && State.Rand.NextDouble() < .4)
+            {
+                if (unit.HasDick)
+                {
+                    unit.DickSize = Math.Min(unit.DickSize + 1, Races.GetRace(unit).DickSizes - 1);
+                    if (Config.RaceSizeLimitsWeightGain && State.RaceSettings.GetOverrideDick(unit.Race))
+                        unit.DickSize = Math.Min(unit.DickSize, State.RaceSettings.Get(unit.Race).MaxDick);
+                }
+            }
+
+            if (Config.AltVoreOralGain && State.Rand.NextDouble() < .4)
+            {
+                if (unit.HasBreasts)
+                {
+                    unit.SetDefaultBreastSize(Math.Min(unit.DefaultBreastSize + 1, Races.GetRace(unit).BreastSizes - 1), unit.BreastSize == unit.DefaultBreastSize);
+                    if (Config.RaceSizeLimitsWeightGain && State.RaceSettings.GetOverrideBreasts(unit.Race))
+                        unit.SetDefaultBreastSize(Math.Min(unit.DefaultBreastSize, State.RaceSettings.Get(unit.Race).MaxBoob));
+                }
+            }
+
+            if (Races.GetRace(unit).WeightGainDisabled == false)
+            {
+                unit.BodySize = Math.Max(Math.Min(unit.BodySize + 1, Races.GetRace(unit).BodySizes - 1), 0);
+                if (Config.RaceSizeLimitsWeightGain && State.RaceSettings.GetOverrideWeight(unit.Race))
+                    unit.BodySize = Math.Min(unit.BodySize, State.RaceSettings.Get(unit.Race).MaxWeight);
+            }
+
+            
+        }
+
+    }
+
     private int DigestOneUnit(Prey preyUnit, int preyDamage)
     {
         List<IVoreCallback> Callbacks = PopulateCallbacks(preyUnit).OrderBy((vt) => vt.ProcessingPriority).ToList();
@@ -1495,6 +1549,17 @@ public class PredatorComponent
                     preyUnit.SubPrey.Remove(aliveSubUnits[i]);
                 }
             }
+
+            //(Ambi) Weight Gain at 80% Absorption
+            if (preyUnit.Unit.IsDeadAndOverkilledBy(preyUnit.Unit.MaxHealth - preyUnit.Unit.MaxHealth/5))
+            {
+                if (Config.WeightGain)
+                {
+                    //Have prey activate WG so multi-prey works as expected
+                    preyUnit.PredWeightGain();
+                }
+            }
+
             if (preyUnit.Unit.IsDeadAndOverkilledBy(preyUnit.Unit.MaxHealth))
             {
                 if (actor.Infected)
@@ -1537,57 +1602,7 @@ public class PredatorComponent
                     TacticalUtilities.Log.RegisterAbsorb(unit, preyUnit.Unit, Location(preyUnit));
                 }
                 unit.GiveScaledExp(8 * preyUnit.Unit.ExpMultiplier, unit.Level - preyUnit.Unit.Level, true);
-                if (Config.WeightGain)
-                {
-                    if (Location(preyUnit) == PreyLocation.balls)
-                    {
-                        if (unit.HasDick)
-                        {
-                            unit.DickSize = Math.Min(unit.DickSize + 1, Races.GetRace(unit).DickSizes - 1);
-                            if (Config.RaceSizeLimitsWeightGain && State.RaceSettings.GetOverrideDick(unit.Race))
-                                unit.DickSize = Math.Min(unit.DickSize, State.RaceSettings.Get(unit.Race).MaxDick);
-                        }
-                    }
-                    else if (Location(preyUnit) == PreyLocation.breasts || Location(preyUnit) == PreyLocation.leftBreast || Location(preyUnit) == PreyLocation.rightBreast)
-                    {
-                        if (unit.HasBreasts)
-                        {
-                            unit.SetDefaultBreastSize(Math.Min(unit.DefaultBreastSize + 1, Races.GetRace(unit).BreastSizes - 1), unit.BreastSize == unit.DefaultBreastSize);
-                            if (Config.RaceSizeLimitsWeightGain && State.RaceSettings.GetOverrideBreasts(unit.Race))
-                                unit.SetDefaultBreastSize(Math.Min(unit.DefaultBreastSize, State.RaceSettings.Get(unit.Race).MaxBoob));
-                        }
-                    }
-                    else
-                    {
-                        if (Config.AltVoreOralGain && State.Rand.NextDouble() < .4)
-                        {
-                            if (unit.HasDick)
-                            {
-                                unit.DickSize = Math.Min(unit.DickSize + 1, Races.GetRace(unit).DickSizes - 1);
-                                if (Config.RaceSizeLimitsWeightGain && State.RaceSettings.GetOverrideDick(unit.Race))
-                                    unit.DickSize = Math.Min(unit.DickSize, State.RaceSettings.Get(unit.Race).MaxDick);
-                            }
-                        }
 
-                        if (Config.AltVoreOralGain && State.Rand.NextDouble() < .4)
-                        {
-                            if (unit.HasBreasts)
-                            {
-                                unit.SetDefaultBreastSize(Math.Min(unit.DefaultBreastSize + 1, Races.GetRace(unit).BreastSizes - 1), unit.BreastSize == unit.DefaultBreastSize);
-                                if (Config.RaceSizeLimitsWeightGain && State.RaceSettings.GetOverrideBreasts(unit.Race))
-                                    unit.SetDefaultBreastSize(Math.Min(unit.DefaultBreastSize, State.RaceSettings.Get(unit.Race).MaxBoob));
-                            }
-                        }
-
-                        if (State.Rand.NextDouble() < .5 && Races.GetRace(unit).WeightGainDisabled == false)
-                        {
-                            unit.BodySize = Math.Max(Math.Min(unit.BodySize + 1, Races.GetRace(unit).BodySizes - 1), 0);
-                            if (Config.RaceSizeLimitsWeightGain && State.RaceSettings.GetOverrideWeight(unit.Race))
-                                unit.BodySize = Math.Min(unit.BodySize, State.RaceSettings.Get(unit.Race).MaxWeight);
-                        }
-
-                    }
-                }
                 AbsorptionEffect(preyUnit, Location(preyUnit));
                 if (!State.GameManager.TacticalMode.turboMode)
                     actor.SetAbsorbtionMode();
