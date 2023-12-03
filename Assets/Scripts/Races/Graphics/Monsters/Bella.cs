@@ -115,4 +115,10 @@ class Bella : BlankSlate
         return null;
     }
 
+
+    internal override void RandomCustom(Unit unit)
+    {
+        base.RandomCustom(unit);
+        unit.Name = "Bella";
+    }
 }
