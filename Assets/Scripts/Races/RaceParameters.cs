@@ -2676,9 +2676,8 @@ static class RaceParameters
 
         Bella = new RaceTraits()
         {
-            BodySize = 10,
+            BodySize = 20,
             StomachSize = 15,
-            HasTail = true,
             FavoredStat = Stat.Endurance,
             AllowedVoreTypes = new List<VoreType> { VoreType.Oral, VoreType.Unbirth, VoreType.Anal},
             ExpMultiplier = 1.2f,
@@ -2688,10 +2687,10 @@ static class RaceParameters
                 Strength = new RaceStats.StatRange(6, 10),
                 Dexterity = new RaceStats.StatRange(10, 15),
                 Endurance = new RaceStats.StatRange(25, 30),
-                Mind = new RaceStats.StatRange(15, 25),
+                Mind = new RaceStats.StatRange(15, 20),
                 Will = new RaceStats.StatRange(20, 25),
                 Agility = new RaceStats.StatRange(10, 15),
-                Voracity = new RaceStats.StatRange(16, 20),
+                Voracity = new RaceStats.StatRange(10, 15),
                 Stomach = new RaceStats.StatRange(20, 25),
             },
             RacialTraits = new List<Traits>()
@@ -2701,11 +2700,10 @@ static class RaceParameters
                 Traits.EfficientGuts,
                 Traits.SteadyStomach,
                 Traits.ThrillSeeker,
-                Traits.Clumsy
             },
             InnateSpells = new List<SpellTypes>()
             { SpellTypes.Mending},
-            RaceDescription = "A shy cowgirl ^o^",
+            RaceDescription = "\"A shy cowgirl ^o^\" - Made by AgentAmbi",
         };
 
     }
