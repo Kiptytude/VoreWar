@@ -1314,7 +1314,7 @@ public class PredatorComponent
         }
         else
         {
-            if (Config.AltVoreOralGain && State.Rand.NextDouble() < .4)
+            if (Config.AltVoreOralGain && State.Rand.NextDouble() < Config.WeightGainFraction)
             {
                 if (unit.HasDick)
                 {
@@ -1324,7 +1324,7 @@ public class PredatorComponent
                 }
             }
 
-            if (Config.AltVoreOralGain && State.Rand.NextDouble() < .4)
+            if (Config.AltVoreOralGain && State.Rand.NextDouble() < Config.WeightGainFraction)
             {
                 if (unit.HasBreasts)
                 {
@@ -1334,7 +1334,7 @@ public class PredatorComponent
                 }
             }
 
-            if (Races.GetRace(unit).WeightGainDisabled == false)
+            if (Races.GetRace(unit).WeightGainDisabled == false && State.Rand.NextDouble() < Config.WeightGainFraction)
             {
                 unit.BodySize = Math.Max(Math.Min(unit.BodySize + 1, Races.GetRace(unit).BodySizes - 1), 0);
                 if (Config.RaceSizeLimitsWeightGain && State.RaceSettings.GetOverrideWeight(unit.Race))
