@@ -66,6 +66,7 @@ public class RandomizerTraitEditor : MonoBehaviour
             rt.name.text = savedCustom.name;
             rt.chance.text = (savedCustom.chance * 100).ToString();
             rt.id = savedCustom.id;
+            rt.level.text = savedCustom.level.ToString();
             var ranTraits = new Dictionary<Traits, bool>();
             foreach (Traits r in State.RandomizeLists.ConvertAll(r => (Traits)r.id))
             {
@@ -103,6 +104,7 @@ public class RandomizerTraitEditor : MonoBehaviour
             var rt = newItemTemplate.GetComponent<RandomizerTrait>();
             rt.name.text = "";
             rt.chance.text = "100";
+            rt.level.text = "0";
             var last = RandomizerTags.LastOrDefault();
             rt.id = last == null ? 1001 : FindNewId();
             var ranTraits = new Dictionary<Traits, bool>();
@@ -169,6 +171,7 @@ public class RandomizerTraitEditor : MonoBehaviour
             newCustom.id = tag.id;
             newCustom.name = tag.name.text;
             newCustom.chance = int.Parse(tag.chance.text) /100f;
+            newCustom.level = tag.level.text.Length < 1 ? 0 : int.Parse(tag.level.text);
             newCustom.RandomTraits = new List<Traits>();
             foreach (var trait in tag.TraitDictionary)
             {
@@ -191,6 +194,7 @@ public class RandomizerTraitEditor : MonoBehaviour
         int res;
         if (randomizerTrait.name.text.Length < 1) return false;
         if (randomizerTrait.chance.text.Length < 1 || !int.TryParse(randomizerTrait.chance.text, out res) || res < 0) return false;
+        if (!int.TryParse(randomizerTrait.level.text, out res) || res < 0) return false;
         if (randomizerTrait.TraitDictionary.Where(i => i.Value).Count() < 1) return false;
         if (RandomizerTags.Where(rt => rt.name.text == randomizerTrait.name.text).Count() > 1) return false;
         return true;

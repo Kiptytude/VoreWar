@@ -9,6 +9,7 @@ public class RandomizeList
     public int id = -1;
     public string name;
     public float chance;
+    public int level;
     [AllowEditing]
     internal List<Traits> RandomTraits;
 
@@ -20,7 +21,7 @@ public class RandomizeList
 
     public override string ToString()
     {
-        string str = id + ", " + name + ", " + chance.ToString("N", new CultureInfo("en-US")) + ", ";
+        string str = id + ", " + name + ", " + chance.ToString("N", new CultureInfo("en-US")) + ", " + level + ", ";
         RandomTraits.ForEach(rt => str += (int)rt + "|");
         str = str.Remove(str.Length - 1);
         return str;

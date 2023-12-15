@@ -10,7 +10,7 @@ using UnityEngine;
 public static class State
 {
     static int saveErrors = 0;
-    public const string Version = "42B";
+    public const string Version = "42C";
     public static World World;
     public static Rand Rand = new Rand();
     public static NameGenerator NameGen;
@@ -119,7 +119,16 @@ public static class State
                         custom.id = int.Parse(strings[0]);
                         custom.name = strings[1];
                         custom.chance = float.Parse(strings[2], new CultureInfo("en-US"));
+                        custom.level = 0;
                         custom.RandomTraits = strings[3].Split('|').ToList().ConvertAll(s => (Traits)int.Parse(s));
+                        RandomizeLists.Add(custom);
+                    } else if (strings.Length == 5)
+                    {
+                        custom.id = int.Parse(strings[0]);
+                        custom.name = strings[1];
+                        custom.chance = float.Parse(strings[2], new CultureInfo("en-US"));
+                        custom.level = int.Parse(strings[3]);
+                        custom.RandomTraits = strings[4].Split('|').ToList().ConvertAll(s => (Traits)int.Parse(s));
                         RandomizeLists.Add(custom);
                     }
                 });

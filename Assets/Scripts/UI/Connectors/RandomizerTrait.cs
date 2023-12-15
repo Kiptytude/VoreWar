@@ -8,6 +8,7 @@ public class RandomizerTrait : MonoBehaviour
     internal int id;
     public InputField name;
     public InputField chance;
+    public InputField level;
     public Button PickTagsBtn;
     public Button CloneBtn;
     public Button RemoveBtn;
