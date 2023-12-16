@@ -2876,6 +2876,8 @@ public class Actor_Unit
             shape.ShifterShapes = Unit.ShifterShapes;
             shape.Side = Unit.Side;
             shape.ShifterShapes.Add(Unit);
+            State.GameManager.TacticalMode.ReplaceUnitInActor(this, shape);
+            
             Unit = shape;
             Unit.hiddenFixedSide = false;
 

@@ -840,19 +840,19 @@ public class Unit
         }
     }
 
-    internal void GiveTraitBooks()
+    internal void GiveTraitBooks(int specificTier = 0)
     {
         if (State.World?.ItemRepository == null) return;
         var tiers = new List<int>();
-        if (HasTrait(Traits.BookWormI))
+        if (specificTier == 1 || ( specificTier == 0 && HasTrait(Traits.BookWormI)))
         {
             tiers.Add(1);
         }
-        if (HasTrait(Traits.BookWormII))
+        if (specificTier == 2 || (specificTier == 0 && HasTrait(Traits.BookWormII)))
         {
             tiers.Add(2);
         }
-        if (HasTrait(Traits.BookWormIII))
+        if (specificTier == 3 || (specificTier == 0 && HasTrait(Traits.BookWormIII)))
         {
             tiers.Add(3);
         }
@@ -1949,7 +1949,7 @@ public class Unit
         RelatedUnits[SingleUnitContext.HiddenUnit] = null;
     }
 
-    private void RandomizeTraits()
+    private void RandomizeTraits(bool isLevelingUp = false)
     {
         while (true)
         {
@@ -1967,10 +1967,21 @@ public class Unit
                         if (gainable.Count() > 0)
                         {
                             var randomPick = gainable[State.Rand.Next(gainable.Count())];
-                            PermanentTraits.Add(randomPick);
                             RemovedTraits?.Remove(randomPick); // Even if manually removed before, rng-sus' word is law
+                            AddPermanentTrait(randomPick);
                             gainable.Remove(randomPick);
                             GivePrerequisiteTraits(randomPick);
+                            if (isLevelingUp) 
+                                { 
+                                    if (randomPick == Traits.BookWormI)
+                                        GiveTraitBooks(1);
+                                    else
+                                    if (randomPick == Traits.BookWormII)
+                                        GiveTraitBooks(2);
+                                    else
+                                    if (randomPick == Traits.BookWormIII)
+                                        GiveTraitBooks(3);
+                                }
                         }
                         chance -= 1;
                     }
@@ -2144,7 +2155,7 @@ public class Unit
         {
             Health += 4;
         }
-        RandomizeTraits();
+        RandomizeTraits(true);
     }
 
     public void LeaderLevelDown()

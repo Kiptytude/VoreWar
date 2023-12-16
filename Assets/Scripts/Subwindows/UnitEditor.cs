@@ -330,8 +330,14 @@ class UnitEditor : UnitCustomizer
                 actor.PredatorComponent?.FreeAnyAlivePrey();
             }
             else
-            if (trait == Traits.BookWormI || trait == Traits.BookWormII || trait == Traits.BookWormIII)
-                Unit.GiveTraitBooks();
+            if (trait == Traits.BookWormI)                
+                Unit.GiveTraitBooks(1);
+            else
+            if (trait == Traits.BookWormII)
+                Unit.GiveTraitBooks(2);
+            else
+            if (trait == Traits.BookWormIII)
+                Unit.GiveTraitBooks(3);
             else
             if (trait == Traits.Shapeshifter || trait == Traits.Skinwalker)
             {

@@ -1525,7 +1525,7 @@ Turns: {currentTurn}
 
     }
 
-    internal Actor_Unit AddUnitToBattle(Unit unit,  Actor_Unit reciepient)
+    internal Actor_Unit AddUnitToBattle(Unit unit, Actor_Unit reciepient)
     {
         Actor_Unit actor = new Actor_Unit(unit, reciepient);
         units.Add(actor);
@@ -1542,6 +1542,22 @@ Turns: {currentTurn}
         else if (actor.Unit.Side == attackerSide)
             AttackerConvert(actor);
         return actor;
+    }
+
+    internal void ReplaceUnitInActor(Actor_Unit targetActor, Unit unit)
+    {
+        if (village?.GetRecruitables().Remove(targetActor.Unit) ?? false)
+        {
+            village?.GetRecruitables().Add(unit);
+        }
+        else if (armies[0].Units.Remove(targetActor.Unit))
+        {
+            armies[0].Units.Add(unit);
+        }
+        else if (armies[1]?.Units.Remove(targetActor.Unit) ?? false)
+        {
+            armies[1].Units.Add(unit);
+        }
     }
 
     internal Actor_Unit AddUnitToBattle(Unit unit, Vec2i position)
