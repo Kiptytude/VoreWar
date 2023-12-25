@@ -10,8 +10,10 @@ public class HedonistTacticalAI : TacticalAI
     {
         foundPath = false;
         didAction = false; // Very important fix: surrounded retreaters sometimes just skipped doing attacks because this was never set to false in or before "fightwithoutmoving"
-
         path = null;
+
+        RunShapeshifting(actor);
+
         if (retreating && actor.Unit.Type != UnitType.Summon && actor.Unit.Type != UnitType.SpecialMercenary && actor.Unit.HasTrait(Traits.Fearless) == false && TacticalUtilities.GetMindControlSide(actor.Unit) == -1 && TacticalUtilities.GetPreferredSide(actor.Unit, AISide, enemySide) == AISide)
         {
             int retreatY;

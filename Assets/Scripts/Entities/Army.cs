@@ -162,11 +162,13 @@ public class Army
             }
             if (unit.HasTrait(Traits.Growth) && unit.BaseScale > 1 && !unit.HasTrait(Traits.PermanentGrowth))
             {
-                float extremum = -(Config.GrowthDecayOffset - Config.GrowthDecayIncreaseRate - 1 / 2 * Config.GrowthDecayIncreaseRate);
-                if (unit.BaseScale > extremum)
-                    unit.BaseScale -= extremum - (extremum * ((1 - Config.GrowthDecayOffset) - Config.GrowthDecayIncreaseRate * (extremum - 1)));     // force the decay function to be monotonous
+                float extremum = 0;
+                if (Config.GrowthDecayIncreaseRate > 0)
+                    extremum = (Config.GrowthDecayIncreaseRate - Config.GrowthDecayOffset + 1f) / (2f * Config.GrowthDecayIncreaseRate);
+                if (unit.BaseScale > extremum && extremum > 0)
+                    unit.BaseScale -= extremum - (extremum * ((1f - Config.GrowthDecayOffset) - Config.GrowthDecayIncreaseRate * (extremum - 1f)));     // force the decay function to be monotonous
                 else
-                    unit.BaseScale = Math.Max(1, unit.BaseScale * ((1 - Config.GrowthDecayOffset) - Config.GrowthDecayIncreaseRate * (unit.BaseScale - 1)));  // default decayIncreaseRate = 0.04f
+                    unit.BaseScale = Math.Max(1, unit.BaseScale * ((1f - Config.GrowthDecayOffset) - Config.GrowthDecayIncreaseRate * (unit.BaseScale - 1f)));  // default decayIncreaseRate = 0.04f
             }
         }
         RefreshMovementMode();
@@ -226,7 +228,7 @@ public class Army
                 noForest++;
             if (unit.HasTrait(Traits.GrassImpedence))
                 noGrass++;
-            if (unit.HasTrait(Traits.Shapeshifter) || unit.HasTrait(Traits.Skinwalker))
+            if (unit.HasShapeshiftingTrait())
             {
                 yesLava++; yesMountain++; yesWater++; flying++;
             }

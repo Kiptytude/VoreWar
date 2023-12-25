@@ -76,7 +76,7 @@ public class Unit
 
     public static List<Traits> secretTags = new List<Traits>() { Traits.Infiltrator, Traits.Corruption, Traits.Parasite, Traits.Metamorphosis,
         Traits.Possession, Traits.Changeling, Traits.Reincarnation, Traits.InfiniteReincarnation, Traits.Transmigration, Traits.InfiniteTransmigration,
-        Traits.Untamable, Traits.GreaterChangeling, Traits.SpiritPossession, Traits.ForcedMetamorphosis};
+        Traits.Untamable, Traits.GreaterChangeling, Traits.SpiritPossession, Traits.ForcedMetamorphosis, Traits.Shapeshifter, Traits.Skinwalker};
 
     [OdinSerialize]
     public Race Race;
@@ -657,38 +657,38 @@ public class Unit
         _spawnRace = Race.none;
         _conversionRace = Race.none;
 
-        ReincarnateCheck();
         SetForcedPermanentTraits();
+        ReincarnateCheck();
     }
 
     private void SetForcedPermanentTraits()
     {
-        if (HasTrait(Traits.InfiniteAssimilation))
+        if (Tags.Contains(Traits.InfiniteAssimilation))
         {
             RemoveTrait(Traits.InfiniteAssimilation);
             AddPermanentTrait(Traits.InfiniteAssimilation);
         }
-        if (HasTrait(Traits.InfiniteReincarnation))
+        if (Tags.Contains(Traits.InfiniteReincarnation))
         {
             RemoveTrait(Traits.InfiniteReincarnation);
             AddPermanentTrait(Traits.InfiniteReincarnation);
         }
-        if (HasTrait(Traits.InfiniteTransmigration))
+        if (Tags.Contains(Traits.InfiniteTransmigration))
         {
             RemoveTrait(Traits.InfiniteTransmigration);
             AddPermanentTrait(Traits.InfiniteTransmigration);
         }
-        if (HasTrait(Traits.Shapeshifter))
+        if (Tags.Contains(Traits.Shapeshifter))
         {
             RemoveTrait(Traits.Shapeshifter);
             AddPermanentTrait(Traits.Shapeshifter);
         }
-        if (HasTrait(Traits.Skinwalker))
+        if (Tags.Contains(Traits.Skinwalker))
         {
             RemoveTrait(Traits.Skinwalker);
             AddPermanentTrait(Traits.Skinwalker);
         }
-        if (HasTrait(Traits.Extraction))
+        if (Tags.Contains(Traits.Extraction))
         {
             RemoveTrait(Traits.Extraction);
             AddPermanentTrait(Traits.Extraction);
@@ -706,19 +706,22 @@ public class Unit
 
     private void Reincarnate(Reincarnator reinc)
     {
-        Unit Unit = reinc.PastLife;
-        Name = Unit.Name;
-        experience = Unit.Experience;
-        foreach (Traits trait in Unit.PermanentTraits)
+        Unit pastLife = reinc.PastLife;
+        Name = pastLife.Name;
+        experience = pastLife.Experience;
+        foreach (Traits trait in pastLife.PermanentTraits)
         {
             AddPermanentTrait(trait);
         }
-        InnateSpells.AddRange(Unit.InnateSpells);
-        ShifterShapes = Unit.ShifterShapes;
-        FixedSide = Unit.FixedSide;
+        InnateSpells.AddRange(pastLife.InnateSpells);
+        ShifterShapes = pastLife.ShifterShapes;
+        if (ShifterShapes == null)
+            ShifterShapes = new List<Unit>();
+        ShifterShapes.Add(pastLife);
+        FixedSide = pastLife.FixedSide;
         hiddenFixedSide = true;
-        SavedCopy = Unit.SavedCopy;
-        SavedVillage = Unit.SavedVillage;
+        SavedCopy = pastLife.SavedCopy;
+        SavedVillage = pastLife.SavedVillage;
         Race race = reinc.Race;
         OnDiscard = () =>
         {
@@ -732,11 +735,11 @@ public class Unit
                     targetRace = activeRaces[State.Rand.Next(activeRaces.Count)];
                 }
             }
-            State.World.Reincarnators?.Add(new Reincarnator(Unit, targetRace, reinc.RaceLocked));
-            Debug.Log(Unit.Name + " is re-reincarnating");
+            State.World.Reincarnators?.Add(new Reincarnator(pastLife, targetRace, reinc.RaceLocked));
+            Debug.Log(pastLife.Name + " is re-reincarnating");
         };
         State.World.Reincarnators?.Remove(reinc);
-        Debug.Log(Unit.Name + " reincarnated as a " + Race);
+        Debug.Log(pastLife.Name + " reincarnated as a " + Race);
         StrategicUtilities.SpendLevelUps(this);
     }
 
@@ -2853,7 +2856,7 @@ public class Unit
             shape.hiddenFixedSide = hiddenFixedSide;
             shape.SavedCopy = SavedCopy;
             shape.SavedVillage = SavedVillage;
-            shape.RelatedUnits[SingleUnitContext.BoundUnit] = RelatedUnits[SingleUnitContext.BoundUnit];
+            shape.RelatedUnits = RelatedUnits;
             shape.ShifterShapes = ShifterShapes;
             ShifterShapes.Add(shape);
         }
@@ -2957,4 +2960,8 @@ public class Unit
             return State.RaceSettings.GetConversionRace(Race);
     }
 
+    internal bool HasShapeshiftingTrait()
+    {
+        return HasTrait(Traits.Shapeshifter) || HasTrait(Traits.Skinwalker);
+    }
 }

@@ -1831,4 +1831,14 @@ public abstract class TacticalAI : ITacticalAI
         return targets.OrderByDescending(t => t.chance).ToList();
     }
 
+    public void RunShapeshifting(Actor_Unit actor)
+    {
+        if (actor.Unit.ShifterShapes == null || actor.Unit.ShifterShapes.Count == 0) return;
+        Unit strongerForm = actor.Unit.ShifterShapes.Where(s => s.GetStatTotal() > actor.Unit.GetStatTotal()).OrderByDescending(u => u.GetStatTotal()).FirstOrDefault();
+        if (strongerForm == null) return;
+        actor.Shapeshift(strongerForm);
+        didAction = true;
+    }
+
+
 }

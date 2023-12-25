@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -165,7 +166,7 @@ public class UnitInfoPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         }
         foreach (Unit shape in selectedUnit.ShifterShapes)
         {
-            GameObject obj = GameObject.Instantiate(UnitPickerUI.HiringUnitPanel, UnitPickerUI.ActorFolder);
+            GameObject obj = GameObject.Instantiate(UnitPickerUI.ShapesPanel, UnitPickerUI.ActorFolder);
             UIUnitSprite sprite = obj.GetComponentInChildren<UIUnitSprite>();
             Actor_Unit actor = new Actor_Unit(new Vec2i(0, 0), shape);
             //Text text = obj.transform.GetChild(3).GetComponent<Text>();
@@ -223,9 +224,9 @@ public class UnitInfoPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
             actor.UpdateBestWeapons();
             sprite.UpdateSprites(actor);
             sprite.Name.text = shape.Name;
-            Button button = obj.GetComponentInChildren<Button>();
-            button.GetComponentInChildren<Text>().text = "Transform";
-            button.onClick.AddListener(() =>
+            Button[] buttons = obj.GetComponentsInChildren<Button>();
+            buttons[0].GetComponentInChildren<Text>().text = "Transform";
+            buttons[0].onClick.AddListener(() =>
             {
                 selectedUnit.ShifterShapes.Remove(shape);
                 
@@ -242,9 +243,13 @@ public class UnitInfoPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
                     State.GameManager.Recruit_Mode.ButtonCallback(10);
                 }
             });
-            button.onClick.AddListener(() => UnitPickerUI.gameObject.SetActive(false));
+            buttons[0].onClick.AddListener(() => UnitPickerUI.gameObject.SetActive(false));
+            buttons[1].GetComponentInChildren<Text>().text = "Discard";
+            buttons[1].onClick.AddListener(() => selectedUnit.ShifterShapes.Remove(shape));
+            buttons[1].onClick.AddListener(() => obj.SetActive(false));
         }
         UnitPickerUI.ActorFolder.GetComponent<RectTransform>().sizeDelta = new Vector2(0, 300 * (1 + (children) / 3));
+        UnitPickerUI.GetComponentsInChildren<Button>().Last().GetComponentInChildren<Text>().text = "Cancel";
         UnitPickerUI.gameObject.SetActive(true);
     }
 

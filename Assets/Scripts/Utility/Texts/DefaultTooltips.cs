@@ -636,14 +636,14 @@ Does not retroactively affect already created units.";
             case 251:
                 return "How many tiles armies and villages can see if fog of war is enabled.  The game uses a simple system where line of sight isn't blocked by obstacles.\n Also affects night time sight range";
             case 252:
-                return "Every amount of growth gained is multiplied by this percentage (requires Growth trait)";
+                return "Every amount of growth gained is multiplied by this value (requires Growth trait)";
             case 253:
-                return "How much percent of its original size a unit can grow using the Growth trait (other means of size increase are unaffected – they stack on top)";
+                return "How many times its original size a unit can grow using the Growth trait (other means of size increase are unaffected – they stack on top)";
             case 254:
-                return "A percentual reduction in the size of growth units that's applied each strategic turn (but they won't lose more than they've grown)";
+                return "A percentual (0.1 = 10%) reduction in the size of growth units that's applied each strategic turn (but they won't lose more than they've grown)";
             case 255:
-                return "Makes more grown units decay at a different pace. This value is how much extra decay 1 factors of growth adds in ‰.\n" +
-                    "For example, default is 40‰ (4%), which would be +2% decay at 1.5x growth, or +4% at 2x growth.";
+                return "Makes more grown units decay at a different pace. This value is how much extra decay 1 factor of growth adds.\n" +
+                    "For example, default is 0.04 (4%), which would be +2% decay at 1.5x growth, or +4% at 2x growth.";
             case 256:
                 return "Modifies how mighty the game thinks the Race is (Affects power calculations).\n" +
                     "A way to make your balance changes known to the AI, or deliberately make it misjudge. " +

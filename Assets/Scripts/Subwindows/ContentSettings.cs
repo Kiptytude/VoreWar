@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -760,10 +761,10 @@ public class ContentSettings : MonoBehaviour
         WeightLossFractionBreasts.value = Config.WeightLossFractionBreasts;
         WeightLossFractionBody.value = Config.WeightLossFractionBody;
         WeightLossFractionDick.value = Config.WeightLossFractionDick;
-        GrowthMod.text = (Config.GrowthMod*100).ToString();
-        GrowthCap.text = (Config.GrowthCap*100).ToString();
-        GrowthDecayOffset.text = (Config.GrowthDecayOffset * 100).ToString();
-        GrowthDecayIncreaseRate.text = (Config.GrowthDecayIncreaseRate*1000).ToString();
+        GrowthMod.text = Config.GrowthMod.ToString(new CultureInfo("en-US"));
+        GrowthCap.text = Config.GrowthCap.ToString(new CultureInfo("en-US"));
+        GrowthDecayOffset.text = Config.GrowthDecayOffset.ToString(new CultureInfo("en-US"));
+        GrowthDecayIncreaseRate.text = Config.GrowthDecayIncreaseRate.ToString(new CultureInfo("en-US"));
         FurryFraction.value = Config.FurryFraction;
         TacticalWaterValue.value = Config.TacticalWaterValue;
         TacticalTerrainFrequency.value = Config.TacticalTerrainFrequency;
@@ -956,20 +957,20 @@ public class ContentSettings : MonoBehaviour
         Config.World.WeightLossFractionBreasts = WeightLossFractionBreasts.value;
         Config.World.WeightLossFractionBody = WeightLossFractionBody.value;
         Config.World.WeightLossFractionDick = WeightLossFractionDick.value;
-        if (int.TryParse(GrowthMod.text, out int gm))
-            Config.World.GrowthMod = gm/100f;
+        if (float.TryParse(GrowthMod.text, NumberStyles.AllowDecimalPoint, new CultureInfo("en-US"), out float gm))
+            Config.World.GrowthMod = gm;
         else
             Config.World.GrowthMod = 1;
-        if (int.TryParse(GrowthCap.text, out int gc))
-            Config.World.GrowthCap = gc/100f;
+        if (float.TryParse(GrowthCap.text, NumberStyles.AllowDecimalPoint, new CultureInfo("en-US"), out float gc))
+            Config.World.GrowthCap = gc;
         else
             Config.World.GrowthCap = 5f;
-        if (int.TryParse(GrowthDecayIncreaseRate.text, out int gir))
-            Config.World.GrowthDecayIncreaseRate = gir/1000f;
+        if (float.TryParse(GrowthDecayIncreaseRate.text, NumberStyles.AllowDecimalPoint, new CultureInfo("en-US"), out float gir))
+            Config.World.GrowthDecayIncreaseRate = gir;
         else
             Config.World.GrowthDecayIncreaseRate = 0.04f;
-        if (int.TryParse(GrowthDecayOffset.text, out int gos))
-            Config.World.GrowthDecayOffset = gos/100f;
+        if (float.TryParse(GrowthDecayOffset.text, NumberStyles.AllowDecimalPoint, new CultureInfo("en-US"), out float gos))
+            Config.World.GrowthDecayOffset = gos;
         else
             Config.World.GrowthDecayOffset = 0f;
         Config.World.TacticalTerrainFrequency = TacticalTerrainFrequency.value;
@@ -1136,20 +1137,20 @@ public class ContentSettings : MonoBehaviour
         PlayerPrefs.SetFloat("WeightLossFractionBreasts", WeightLossFractionBreasts.value);
         PlayerPrefs.SetFloat("WeightLossFractionBody", WeightLossFractionBody.value);
         PlayerPrefs.SetFloat("WeightLossFractionDick", WeightLossFractionDick.value);
-        if (int.TryParse(GrowthDecayIncreaseRate.text, out int gir))
-            PlayerPrefs.SetFloat("GrowthDecayIncreaseRate", gir/1000f);
+        if (float.TryParse(GrowthDecayIncreaseRate.text, NumberStyles.AllowDecimalPoint, new CultureInfo("en-US"), out float gir))
+            PlayerPrefs.SetFloat("GrowthDecayIncreaseRate", gir);
         else
             PlayerPrefs.SetFloat("GrowthDecayIncreaseRate", 0.04f);
-        if (int.TryParse(GrowthDecayOffset.text, out int gos))
-            PlayerPrefs.SetFloat("GrowthDecayOffset", gos/100f);
+        if (float.TryParse(GrowthDecayOffset.text, NumberStyles.AllowDecimalPoint, new CultureInfo("en-US"), out float gos))
+            PlayerPrefs.SetFloat("GrowthDecayOffset", gos);
         else
             PlayerPrefs.SetFloat("GrowthDecayOffset", 0);
-        if (int.TryParse(GrowthMod.text, out int gm))
-            PlayerPrefs.SetFloat("GrowthMod", gm/100f);
+        if (float.TryParse(GrowthMod.text, NumberStyles.AllowDecimalPoint, new CultureInfo("en-US"), out float gm))
+            PlayerPrefs.SetFloat("GrowthMod", gm);
         else
             PlayerPrefs.SetFloat("GrowthMod", 1f);
-        if (int.TryParse(GrowthCap.text, out int gc))
-            PlayerPrefs.SetFloat("GrowthCap", gc/100f);
+        if (float.TryParse(GrowthCap.text, NumberStyles.AllowDecimalPoint, new CultureInfo("en-US"), out float gc))
+            PlayerPrefs.SetFloat("GrowthCap", gc);
         else
             PlayerPrefs.SetFloat("GrowthCap", 5f);
         PlayerPrefs.SetFloat("TacticalWaterValue", TacticalWaterValue.value);

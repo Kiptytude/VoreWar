@@ -1073,7 +1073,7 @@ static class TacticalUtilities
         }
         foreach (Unit unit in selectedUnit.Unit.ShifterShapes)
         {
-            GameObject obj = GameObject.Instantiate(UnitPickerUI.HiringUnitPanel, UnitPickerUI.ActorFolder);
+            GameObject obj = GameObject.Instantiate(UnitPickerUI.ShapesPanel, UnitPickerUI.ActorFolder);
             UIUnitSprite sprite = obj.GetComponentInChildren<UIUnitSprite>();
             Actor_Unit actor = new Actor_Unit(new Vec2i(0, 0), unit);
             //Text text = obj.transform.GetChild(3).GetComponent<Text>();
@@ -1131,12 +1131,16 @@ static class TacticalUtilities
             actor.UpdateBestWeapons();
             sprite.UpdateSprites(actor);
             sprite.Name.text = unit.Name;
-            Button button = obj.GetComponentInChildren<Button>();
-            button.GetComponentInChildren<Text>().text = "Transform";
-            button.onClick.AddListener(() => selectedUnit.Shapeshift(unit));
-            button.onClick.AddListener(() => UnitPickerUI.gameObject.SetActive(false));
+            Button[] buttons = obj.GetComponentsInChildren<Button>();
+            buttons[0].GetComponentInChildren<Text>().text = "Transform";
+            buttons[0].onClick.AddListener(() => selectedUnit.Shapeshift(unit));
+            buttons[0].onClick.AddListener(() => UnitPickerUI.gameObject.SetActive(false));
+            buttons[1].GetComponentInChildren<Text>().text = "Discard";
+            buttons[1].onClick.AddListener(() => selectedUnit.Unit.ShifterShapes.Remove(unit));
+            buttons[1].onClick.AddListener(() => obj.SetActive(false));
         }
         UnitPickerUI.ActorFolder.GetComponent<RectTransform>().sizeDelta = new Vector2(0, 300 * (1 + (children) / 3));
+        UnitPickerUI.GetComponentsInChildren<Button>().Last().GetComponentInChildren<Text>().text = "Cancel";
         UnitPickerUI.gameObject.SetActive(true);
     }
 
