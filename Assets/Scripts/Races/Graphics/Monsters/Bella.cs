@@ -13,6 +13,8 @@ class Bella : BlankSlate
     readonly Sprite[] Body2 = State.GameManager.SpriteDictionary.BellaBody2;
     readonly Sprite[] Head2 = State.GameManager.SpriteDictionary.BellaHead2;
     readonly Sprite[] Arm2 = State.GameManager.SpriteDictionary.BellaArm2;
+    readonly Sprite[] Robe1 = State.GameManager.SpriteDictionary.BellaRobe1;
+    readonly Sprite[] Robe2 = State.GameManager.SpriteDictionary.BellaRobe2;
 
     public Bella()
     {
@@ -22,25 +24,28 @@ class Bella : BlankSlate
         EyeTypes = 1;
         GentleAnimation = false;
         BodySizes = 2;
+        BodyAccentTypes2 = 2;
 
         Body = new SpriteExtraInfo(2, BodySprite, WhiteColored); // body, vore bellies, boobs
-        Head = new SpriteExtraInfo(3, HeadSprite, WhiteColored);
+        Head = new SpriteExtraInfo(4, HeadSprite, WhiteColored);
         //Belly = new SpriteExtraInfo(4, null, WhiteColored); 
         BodyAccent = new SpriteExtraInfo(1, BodyAccentSprite, WhiteColored); // Arm + staff
+        BodyAccent2 = new SpriteExtraInfo(3, BodyAccentSprite2, WhiteColored); // Arm + staff
 
         clothingColors = 0;
     }
 
     protected override Sprite BodySprite(Actor_Unit actor) // Body
     {
+        int stomachSize = actor.GetStomachSize(4, 1);
 
-        //Debug.Log("BodySize: " + actor.Unit.BodySize + " StomachSize:" + actor.GetStomachSize(3,2));
+        //Debug.Log("BodySize: " + actor.Unit.BodySize + " StomachSize:" + stomachSize);
 
         //Sprites , Weight 1
         if (actor.Unit.BodySize == 0)
         {
             if(actor.HasBelly == true)
-                return Body1[1 + actor.GetStomachSize(2,1)]; // 4 bellies total
+                return Body1[1 + stomachSize]; // 4 bellies total
 
             return Body1[0];  
         }
@@ -49,7 +54,7 @@ class Bella : BlankSlate
         if (actor.Unit.BodySize == 1)
         {
             if (actor.HasBelly == true)
-                return Body2[1 + actor.GetStomachSize(2, 1)];
+                return Body2[1 + stomachSize];
             return Body2[0];
         }
 
@@ -64,6 +69,18 @@ class Bella : BlankSlate
 
     protected override Sprite HeadSprite(Actor_Unit actor)
     {
+        if (actor.IsOralVoring == true)
+        {
+            if (actor.HasBelly == false) //If vore sucess
+                return Head1[1];
+            return Head1[2]; // if vore fail
+        }
+
+        return Head1[0];
+
+
+        //no variations in head by weight
+        /*
         //Weight 1
         if (actor.Unit.BodySize == 0)
         {
@@ -89,12 +106,14 @@ class Bella : BlankSlate
 
             return Head2[0];
         }
+        */
 
         return null;
     }
 
     protected override Sprite BodyAccentSprite(Actor_Unit actor) //Arm and staff
     {
+
         //Weight 1
         if (actor.Unit.BodySize == 0)
         {
@@ -114,6 +133,38 @@ class Bella : BlankSlate
         return null;
     }
 
+    protected override Sprite BodyAccentSprite2(Actor_Unit actor) //Robe
+    {
+
+        //Debug.Log(" bodyAccent1 value:" + actor.Unit.BodyAccentType2);
+        //Debug.Log("BodySize: " + actor.Unit.BodySize + " StomachSize:" + stomachSize);
+
+        if(actor.Unit.BodyAccentType2 == 1)
+        {
+            int stomachSize = actor.GetStomachSize(4, 1);
+
+            //Sprites , Weight 1
+            if (actor.Unit.BodySize == 0)
+            {
+                if (actor.HasBelly == true)
+                    return Robe1[1 + stomachSize]; // 4 bellies total
+
+                return Robe1[0];
+            }
+
+            //Sprites , Weight 2
+            if (actor.Unit.BodySize == 1)
+            {
+                if (actor.HasBelly == true)
+                    return Robe2[1 + stomachSize];
+                return Robe2[0];
+            }
+        }
+
+
+        return null;
+    }
+
 
     internal override void RandomCustom(Unit unit)
     {
@@ -121,3 +172,6 @@ class Bella : BlankSlate
         unit.Name = "Bella";
     }
 }
+
+
+

@@ -8,6 +8,8 @@ TextureImporter:
     21300006: BellaBody1_1
     21300008: BellaBody1_2
     21300010: BellaBody1_3
+    21300012: BellaBody1_4
+    21300014: BellaBody1_5
   externalObjects: {}
   serializedVersion: 9
   mipmaps:
@@ -104,7 +106,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 25465b16ca08aae4c8f5125ead4cdf99
+      spriteID: 77cd6f24e2e2cda4f83f88084b43c8db
       vertices: []
       indices: 
       edges: []
@@ -124,7 +126,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2fe1f62378832c648ba31fadb05b67ba
+      spriteID: e7754304abfc3eb46a56930ed3d8907c
       vertices: []
       indices: 
       edges: []
@@ -144,7 +146,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 21131092c33564148ad02b795ad3c689
+      spriteID: 0f34505cf332ea24e86645d28d812ab8
       vertices: []
       indices: 
       edges: []
@@ -164,7 +166,47 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ed2648fa5d3575d4999a7cbd36e38208
+      spriteID: 712c07e0c5e9a144eb129b95e79ea3a0
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BellaBody1_4
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 0
+        width: 160
+        height: 160
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fd65157b79a51d44db854f486edb5430
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BellaBody1_5
+      rect:
+        serializedVersion: 2
+        x: 800
+        y: 0
+        width: 160
+        height: 160
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ee8ef18d34cab474ca6a8cf49acb5c53
       vertices: []
       indices: 
       edges: []

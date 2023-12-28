@@ -249,6 +249,8 @@ public class SpriteDictionary : MonoBehaviour
     public Sprite[] BellaBody2;
     public Sprite[] BellaArm2;
     public Sprite[] BellaHead2;
+    public Sprite[] BellaRobe1;
+    public Sprite[] BellaRobe2;
 
     [Header("Monsters")]
     public Sprite[] Vagrants;
