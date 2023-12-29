@@ -2690,8 +2690,8 @@ static class RaceParameters
                 Mind = new RaceStats.StatRange(15, 20),
                 Will = new RaceStats.StatRange(20, 25),
                 Agility = new RaceStats.StatRange(10, 15),
-                Voracity = new RaceStats.StatRange(10, 15),
-                Stomach = new RaceStats.StatRange(20, 25),
+                Voracity = new RaceStats.StatRange(20, 25),
+                Stomach = new RaceStats.StatRange(15, 20),
             },
             RacialTraits = new List<Traits>()
             {
@@ -2700,9 +2700,13 @@ static class RaceParameters
                 Traits.EfficientGuts,
                 Traits.SteadyStomach,
                 Traits.ThrillSeeker,
+                Traits.ArcaneMagistrate,
+                Traits.ManaRich,
+                Traits.SpellBlade,
+                Traits.Clumsy
             },
             InnateSpells = new List<SpellTypes>()
-            { SpellTypes.Mending},
+            { SpellTypes.Mending, SpellTypes.Fireball},
             RaceDescription = "\"A shy cowgirl ^o^\" - Made by AgentAmbi",
         };
 
