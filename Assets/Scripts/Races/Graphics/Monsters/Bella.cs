@@ -71,7 +71,7 @@ class Bella : BlankSlate
     {
         if (actor.IsOralVoring == true)
         {
-            if (actor.HasBelly == false) //If vore sucess
+            if (actor.HasBelly == true) //If vore sucess
                 return Head1[1];
             return Head1[2]; // if vore fail
         }
