@@ -2496,7 +2496,7 @@ public class PredatorComponent
                     StatusEffect charm = target.Unit.GetStatusEffect(StatusEffectType.Charmed);
                     if (charm != null)
                     {
-                        target.Unit.StatusEffects.Remove(charm);                // betrayal dispels charm
+                        target.Unit.RemoveStatus(charm);                // betrayal dispels charm
                     }
                 }
                 if (!State.GameManager.TacticalMode.turboMode)
@@ -2594,7 +2594,7 @@ public class PredatorComponent
             StatusEffect charm = target.Unit.GetStatusEffect(StatusEffectType.Charmed);
             if (charm != null)
             {
-                target.Unit.StatusEffects.Remove(charm);                // betrayal dispels charm
+                target.Unit.RemoveStatus(charm);                // betrayal dispels charm
             }
         }
         switch (preyLocation)

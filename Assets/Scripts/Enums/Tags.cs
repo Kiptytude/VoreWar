@@ -354,6 +354,10 @@ public enum Traits
     ViralDigestion = 178,
     /// <summary>This unit has a very strange body type, making them harder to swallow and providing less sustenance as prey.</summary>
     AwkwardShape = 179,
+    /// <summary>Allows unit to use <b>Summon</b>, once per battle</summary>
+    Summoner = 180,
+    /// <summary>Allows unit to use <b>Polymorph</b>, once per battle</summary>
+    Polymorph = 181,
 
 
 

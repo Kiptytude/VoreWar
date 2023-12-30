@@ -438,10 +438,10 @@ static class SpellList
                         AvailableRaces.Add(Race.Vagrants);
                     Race summonRace = AvailableRaces[State.Rand.Next(AvailableRaces.Count())];
                     Unit unit = new Unit(a.Unit.Side, summonRace, (int)(a.Unit.Experience * .50f), true, UnitType.Summon);
-                    var actorCharm = a.GetStatusEffect(StatusEffectType.Charmed) ?? a.GetStatusEffect(StatusEffectType.Hypnotized);
+                    var actorCharm = a.Unit.GetStatusEffect(StatusEffectType.Charmed) ?? a.Unit.GetStatusEffect(StatusEffectType.Hypnotized);
                     if (actorCharm != null)
                     {
-                        ApplyStatusEffect(StatusEffectType.Charmed, actorCharm.Strength, actorCharm.Duration);
+                        unit.ApplyStatusEffect(StatusEffectType.Charmed, actorCharm.Strength, actorCharm.Duration);
                     }
 
                     StrategicUtilities.SpendLevelUps(unit);
@@ -472,29 +472,6 @@ static class SpellList
                     TacticalGraphicalEffects.CreateGenericMagic(a.Position, t.Position, t, TacticalGraphicalEffects.SpellEffectIcon.None);
                 }
             },
-            OnStatusApply = (t) =>
-            {
-                var AvailableRaces = new List<Race>();
-                foreach (Race race in (Race[])System.Enum.GetValues(typeof(Race)))
-                {
-                    if (race >= Race.Vagrants && race < Race.Selicia && (Config.World.GetValue($"Merc {race}") || (Config.SpawnerInfoWithoutGeneration(race)?.Enabled ?? false)))
-                        AvailableRaces.Add(race);
-                }
-                AvailableRaces.Remove(t.Unit.Race);
-                if (AvailableRaces.Any() == false)
-                    AvailableRaces.Add(Race.FeralAnts);
-                Race polyRace = AvailableRaces[State.Rand.Next(AvailableRaces.Count())];
-                Unit form = t.Unit.CreateRaceShape(polyRace);
-                StrategicUtilities.SpendLevelUps(form);
-                t.Unit.RelatedUnits[SingleUnitContext.OriginalForm] = t.Unit;
-                t.Shapeshift(form);
-                State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<b>{t.Unit.Name}</b> turned into {LogUtilities.GetAorAN(InfoPanel.RaceSingular(form))} {InfoPanel.RaceSingular(form)}.");
-            },
-            OnStatusExpire = (t) =>
-            {
-                t.Unit.RelatedUnits[SingleUnitContext.OriginalForm].SetExp(t.Unit.Experience);
-                t.Shapeshift(t.Unit.RelatedUnits[SingleUnitContext.OriginalForm]);
-            }
         };
         SpellDict[SpellTypes.Polymorph] = Polymorph;
 
@@ -958,7 +935,7 @@ static class SpellList
                 int amt = a.Unit.GetStat(Stat.Will) / 25;
                 foreach (var ally in TacticalUtilities.UnitsWithinTiles(t.Position, 1).Where(s => s.Unit.IsDead == false && s.Unit.Side == a.Unit.Side))
                 {
-                    ally.AddFocus(((amt > 1) ? amt : 1));
+                    ally.Unit.AddFocus(((amt > 1) ? amt : 1));
                     TacticalGraphicalEffects.CreateGenericMagic(a.Position, ally.Position, ally, TacticalGraphicalEffects.SpellEffectIcon.Buff);
                 }
             }
@@ -1003,14 +980,14 @@ static class SpellList
             {
                 a.CastSpell(Evocation, a);
                 int stacks = 0;
-                foreach (var ally in TacticalUtilities.UnitsWithinTiles(t.Position, 1).Where(s => s.GetStatusEffect(StatusEffectType.Focus) != null))
+                foreach (var ally in TacticalUtilities.UnitsWithinTiles(t.Position, 1).Where(s => s.Unit.GetStatusEffect(StatusEffectType.Focus) != null))
                 {
-                    for (int i = 0; i < ally.GetStatusEffect(StatusEffectType.Focus).Duration; i++)
+                    for (int i = 0; i < ally.Unit.GetStatusEffect(StatusEffectType.Focus).Duration; i++)
                     {
-                        t.AddSpellForce();
+                        t.Unit.AddSpellForce();
                         stacks++;
                     }
-                    ally.StatusEffects.Remove(ally.GetStatusEffect(StatusEffectType.Focus));
+                    ally.Unit.RemoveStatus(ally.Unit.GetStatusEffect(StatusEffectType.Focus));
                     TacticalGraphicalEffects.CreateGenericMagic(ally.Position, t.Position, t);
                 }
                 t.Movement += stacks/2;
@@ -1155,8 +1132,6 @@ class StatusSpell : Spell
     internal Func<Actor_Unit, Actor_Unit, int> Duration;
     internal Func<Actor_Unit, Actor_Unit, float> Effect;
     internal StatusEffectType Type;
-    internal Action<Actor_Unit> OnStatusApply;
-    internal Action<Actor_Unit> OnStatusExpire;
     internal bool Alraune = false;
 }
 
