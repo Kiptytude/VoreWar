@@ -248,7 +248,7 @@ class UnitEditor : UnitCustomizer
 
     internal void ClearStatus()
     {
-        Unit.StatusEffects.Clear();
+        Unit.ClearStatus();
         if (actor != null)
             actor.Surrendered = false;
     }

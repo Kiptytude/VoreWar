@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using UnityEngine;
 using UnityEngine.Experimental.UIElements;
+using static UnityEngine.UI.CanvasScaler;
 
 public struct Range
 {
@@ -52,6 +54,7 @@ static class SpellList
     static internal readonly StatusSpell PreysCurse;
     static internal readonly StatusSpell Enlarge;
     static internal readonly Spell Maw;
+    static internal readonly StatusSpell Polymorph;
     static internal readonly Spell Summon;
 
     static internal readonly StatusSpell Diminishment;
@@ -448,6 +451,29 @@ static class SpellList
             },
         };
         SpellDict[SpellTypes.Summon] = Summon;
+
+        Polymorph = new StatusSpell()
+        {
+            Name = "Polymorph",
+            Id = "polymorph",
+            SpellType = SpellTypes.Polymorph,
+            Description = "Transform target into a random monster for a limited time (Available monsters depend on what monsters are available to hire as mercs, or set to spawn, so that monsters you aren't interested in don't spawn.)",
+            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Ally, AbilityTargets.Enemy },
+            Range = new Range(4),
+            Duration = (a, t) => 2 + a.Unit.GetStat(Stat.Mind) / 10,
+            Type = StatusEffectType.Polymorphed,
+            Effect = (a, t) => 1,
+            Tier = 3,
+            Resistable = true,
+            OnExecute = (a, t) => 
+            {
+                if(a.CastStatusSpell(Polymorph, t))
+                {
+                    TacticalGraphicalEffects.CreateGenericMagic(a.Position, t.Position, t, TacticalGraphicalEffects.SpellEffectIcon.None);
+                }
+            },
+        };
+        SpellDict[SpellTypes.Polymorph] = Polymorph;
 
 
         Reanimate = new Spell()
@@ -961,7 +987,7 @@ static class SpellList
                         t.Unit.AddSpellForce();
                         stacks++;
                     }
-                    ally.Unit.StatusEffects.Remove(ally.Unit.GetStatusEffect(StatusEffectType.Focus));
+                    ally.Unit.RemoveStatus(ally.Unit.GetStatusEffect(StatusEffectType.Focus));
                     TacticalGraphicalEffects.CreateGenericMagic(ally.Position, t.Position, t);
                 }
                 t.Movement += stacks/2;
@@ -1011,7 +1037,7 @@ static class SpellList
                 {
                     a.CastOffensiveSpell(ManaExpolsion, t);
                 }
-                a.Unit.SpendMana(a.Unit.Mana);
+                a.SpendModifiedMana(a.Unit.Mana);
             }
         };
         SpellDict[SpellTypes.UnstableMana] = UnstableMana;
@@ -1034,7 +1060,6 @@ static class SpellList
             }
         };
         SpellDict[SpellTypes.ManaExpolsion] = ManaExpolsion;
-        
     }
 }
 

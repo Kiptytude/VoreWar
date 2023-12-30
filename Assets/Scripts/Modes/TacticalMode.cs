@@ -3805,7 +3805,7 @@ Turns: {currentTurn}
                 actor.Unit.GiveExp(4);
                 if (actor.Unit.TraitBoosts.HealthRegen > 0 && actor.Unit.IsDead == false)
                     actor.Unit.HealPercentage(1);
-                actor.Unit.StatusEffects.Clear();
+                actor.Unit.ClearStatus();
             }
             BattleReviewText.SetActive(false);
             foreach (Actor_Unit actor in units.ToList())

@@ -581,6 +581,10 @@ public class HoveringTooltip : MonoBehaviour
                 return "Unit's weapon damage also scales with mind. (Half as effectively as weapons main stat)";
             case Traits.ArcaneMagistrate:
                 return "Unit gains 1 focus when it hits a spell, unit gains 4 more if the spell kills the target.";
+            case Traits.Summoner:
+                return "Allows the casting of the Summon spell once per battle.";
+            case Traits.Polymorph:
+                return "Allows the casting of the Polymorph spell once per battle.";
         }  
         return "<b>This trait needs a tooltip!</b>";
     }

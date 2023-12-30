@@ -494,10 +494,9 @@ public class Unit
 
     internal bool SpendMana(int amount)
     {
-        int ModifiedManaCost = amount + (amount * (GetStatusEffect(StatusEffectType.SpellForce) != null ? GetStatusEffect(StatusEffectType.SpellForce).Duration / 10 : 0));
-        if (Mana >= ModifiedManaCost)
+        if (Mana >= amount)
         {
-            Mana -= ModifiedManaCost;
+            Mana -= amount;
             return true;
         }
         return false;
@@ -2550,8 +2549,19 @@ public class Unit
     {
         if (type == StatusEffectType.Poisoned && HasTrait(Traits.PoisonSpit))
             return;
-        StatusEffects.Remove(GetStatusEffect(type));                    // if null, nothing happens, otherwise status is effectively overwritten
-        StatusEffects.Add(new StatusEffect(type, strength, duration));
+        RemoveStatus(GetStatusEffect(type));
+        StatusEffect status = new StatusEffect(type, strength, duration);
+        StatusEffects.Add(status);
+        status.OnApply(this);
+    }
+
+    public void RemoveStatus(StatusEffect statusEffect)
+    {
+        if (statusEffect != null)
+        {
+            statusEffect.OnExpire(this);
+            StatusEffects.Remove(statusEffect);
+        }
     }
 
     internal StatusEffect GetStatusEffect(StatusEffectType type)
@@ -2591,7 +2601,7 @@ public class Unit
         return hiddenFixedSide ? Side : FixedSide;
     }
 
-    public void CreateRaceShape(Race race)
+    public Unit CreateRaceShape(Race race)
     {
         var shape = new Unit(Side, race, (int)Experience, true, Type, ImmuneToDefections);
         foreach (Traits trait in PermanentTraits)
@@ -2608,9 +2618,9 @@ public class Unit
         shape._fixedSide = _fixedSide;
         shape.SavedCopy = SavedCopy;
         shape.SavedVillage = SavedVillage;
-        shape.RelatedUnits[SingleUnitContext.BoundUnit] = RelatedUnits[SingleUnitContext.BoundUnit];
+        shape.RelatedUnits= RelatedUnits;
         shape.ShifterShapes = ShifterShapes;
-        this.ShifterShapes.Add(shape);
+        return shape;
     }
 
     internal void AddBladeDance()
@@ -2636,7 +2646,7 @@ public class Unit
             dance.Duration--;
             dance.Strength--;
             if (dance.Duration == 0)
-                StatusEffects.Remove(dance);
+                RemoveStatus(dance);
         }
 
     }
@@ -2664,7 +2674,7 @@ public class Unit
             ten.Duration -= 5;
             ten.Strength -= 5;
             if (ten.Duration <= 0)
-                StatusEffects.Remove(ten);
+                RemoveStatus(ten);
         }
 
     }
@@ -2707,7 +2717,7 @@ public class Unit
             foc.Duration -= 3;
             foc.Strength -= 3;
             if (foc.Duration == 0)
-                StatusEffects.Remove(foc);
+                RemoveStatus(foc);
         }
 
     }
@@ -2735,7 +2745,7 @@ public class Unit
             stag.Duration--;
             stag.Strength--;
             if (stag.Duration == 0)
-                StatusEffects.Remove(stag);
+                RemoveStatus(stag);
         }
     }
 
@@ -2769,44 +2779,11 @@ public class Unit
                 }
             }
             if (eff.Type == StatusEffectType.Staggering || eff.Type == StatusEffectType.SpellForce)
-                StatusEffects.Remove(eff);
+                RemoveStatus(eff);
             eff.Duration -= 1;
             if (eff.Duration <= 0)
             {
-
-                StatusEffects.Remove(eff);
-                if (eff.Type == StatusEffectType.Diminished)
-                {
-                    var still = GetStatusEffect(StatusEffectType.Diminished);
-                    if (still == null)
-                    {
-                        if (actor != null)
-                        {
-                            if (pred != null)
-                            {
-                                State.GameManager.TacticalMode.Log.RegisterDiminishmentExpiration(pred.Unit, this, actor.SelfPrey.Location);
-                            }
-
-                        }
-
-                    }
-                }
-                if (eff.Type == StatusEffectType.WillingPrey)
-                {
-                    var still = GetStatusEffect(StatusEffectType.WillingPrey);
-                    if (still == null)
-                    {
-                        if (actor != null)
-                        {
-                            if (pred != null)
-                            {
-                                State.GameManager.TacticalMode.Log.RegisterCurseExpiration(pred.Unit, this, actor.SelfPrey.Location);
-                            }
-
-                        }
-
-                    }
-                }
+                RemoveStatus(eff);
             }
         }
     }
@@ -2862,7 +2839,7 @@ public class Unit
         }
         else if (HasTrait(Traits.Shapeshifter))
         {
-            CreateRaceShape(unit.Race);
+            this.ShifterShapes.Add(CreateRaceShape(unit.Race));
         }
     }
 
@@ -2963,5 +2940,14 @@ public class Unit
     internal bool HasShapeshiftingTrait()
     {
         return HasTrait(Traits.Shapeshifter) || HasTrait(Traits.Skinwalker);
+    }
+
+    internal void ClearStatus()
+    {
+        StatusEffects.ForEach(se =>
+        {
+            se.OnExpire(this);
+        });
+        StatusEffects.Clear();
     }
 }

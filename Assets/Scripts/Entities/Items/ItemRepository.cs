@@ -110,6 +110,7 @@ public class ItemRepository
             new SpellBook("Maw Book", "Allows the casting of Maw", 90, 3, SpellTypes.Maw),
             new SpellBook("Enlarge Book", "Allows the casting of Enlarge", 90, 3, SpellTypes.Enlarge),
             new SpellBook("Charm Book", "Allows the casting of Charm", 90, 3, SpellTypes.Charm),
+            new SpellBook("Polymorph Book", "Allows the casting of Polymorph", 90, 3, SpellTypes.Polymorph),
             new SpellBook("Summon Book", "Allows the casting of Summon", 90, 3, SpellTypes.Summon),
             //new SpellBook("Raze Book", "Allows the casting of Raze", 150, 4, SpellTypes.Raze),
             new SpellBook("Diminishment Book", "Allows the casting of Diminishment", 150, 4, SpellTypes.Diminishment),

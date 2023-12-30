@@ -5,4 +5,5 @@
     KilledBy = 2,
     BoundUnit = 3,
     HiddenUnit = 4,
+    OriginalForm = 5,
 }

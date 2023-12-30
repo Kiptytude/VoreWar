@@ -327,6 +327,16 @@ public class Actor_Unit
         ReloadSpellTraits();
     }
 
+    internal bool SpendModifiedMana(int amount)
+    {
+        int ModifiedManaCost = amount + (amount * (Unit.GetStatusEffect(StatusEffectType.SpellForce) != null ? Unit.GetStatusEffect(StatusEffectType.SpellForce).Duration / 10 : 0));
+        if (Unit.SpendMana(ModifiedManaCost))
+        {
+            return true;
+        }
+        return false;
+    }
+
     public void ReloadSpellTraits()
     {
         Unit.SingleUseSpells = new List<SpellTypes>();
@@ -379,6 +389,16 @@ public class Actor_Unit
         if (Unit.HasTrait(Traits.Binder) && State.World?.ItemRepository != null) //protection for the create strat screen
         {
             Unit.SingleUseSpells.Add(SpellList.Bind.SpellType);
+            Unit.UpdateSpells();
+        }
+        if (Unit.HasTrait(Traits.Summoner) && State.World?.ItemRepository != null) //protection for the create strat screen
+        {
+            Unit.SingleUseSpells.Add(SpellList.Summon.SpellType);
+            Unit.UpdateSpells();
+        }
+        if (Unit.HasTrait(Traits.Polymorph) && State.World?.ItemRepository != null) //protection for the create strat screen
+        {
+            Unit.SingleUseSpells.Add(SpellList.Polymorph.SpellType);
             Unit.UpdateSpells();
         }
         // Multi-use section
@@ -773,6 +793,10 @@ public class Actor_Unit
 
     internal float GetMagicChance(Actor_Unit attacker, Spell currentSpell, float modifier = 0, Stat stat = Stat.Mind)
     {
+        if ((currentSpell?.AcceptibleTargets.Contains(AbilityTargets.Ally) ?? false) && attacker.Unit.GetApparentSide(Unit) == Unit.FixedSide)
+        {
+            return 1;
+        }
         if (TacticalUtilities.SneakAttackCheck(attacker.Unit, Unit)) // sneakAttack
         {
             modifier -= 0.3f;
@@ -1359,7 +1383,7 @@ public class Actor_Unit
                         StatusEffect charm = target.Unit.GetStatusEffect(StatusEffectType.Charmed);
                         if (charm != null)
                         {
-                            target.Unit.StatusEffects.Remove(charm);                // betrayal dispels charm
+                            target.Unit.RemoveStatus(charm);                // betrayal dispels charm
                         }
                     }
                     Unit.GiveScaledExp(2 * target.Unit.ExpMultiplier, Unit.Level - target.Unit.Level);
@@ -1433,7 +1457,7 @@ public class Actor_Unit
                         StatusEffect charm = target.Unit.GetStatusEffect(StatusEffectType.Charmed);
                         if (charm != null)
                         {
-                            target.Unit.StatusEffects.Remove(charm);                // betrayal dispels charm
+                            target.Unit.RemoveStatus(charm);                // betrayal dispels charm
                         }
                     }
                     CreateHitEffects(target);
@@ -1570,7 +1594,7 @@ public class Actor_Unit
                 StatusEffect charm = Unit.GetStatusEffect(StatusEffectType.Charmed);
                 if (charm != null)
                 {
-                    Unit.StatusEffects.Remove(charm);                // betrayal dispels charm
+                    Unit.RemoveStatus(charm);                // betrayal dispels charm
                 }
             }
             if (attacker.Unit.HasTrait(Traits.ArcaneMagistrate))
@@ -2701,7 +2725,7 @@ public class Actor_Unit
 
         if (TacticalUtilities.Units.Any(u => u.Unit == Unit.RelatedUnits[SingleUnitContext.BoundUnit]) && !Unit.RelatedUnits[SingleUnitContext.BoundUnit].IsDead)
             return false;
-        if (Unit.SpendMana(spell.ManaCost) == false && spell.IsFree != true) return false;
+        if (SpendModifiedMana(spell.ManaCost) == false && spell.IsFree != true) return false;
 
         State.GameManager.SoundManager.PlaySpellCast(SpellList.Summon, this);
 
@@ -2876,6 +2900,8 @@ public class Actor_Unit
             shape.ShifterShapes = Unit.ShifterShapes;
             shape.Side = Unit.Side;
             shape.ShifterShapes.Add(Unit);
+            shape.StatusEffects = Unit.StatusEffects;
+            shape.RelatedUnits = Unit.RelatedUnits;
             State.GameManager.TacticalMode.ReplaceUnitInActor(this, shape);
             
             Unit = shape;
