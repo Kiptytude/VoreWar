@@ -897,7 +897,7 @@ public class PredatorComponent
         }
     }
 
-    void AddPrey(Prey preyUnit, PreyLocation location)
+    internal void AddPrey(Prey preyUnit, PreyLocation location)
     {
         OnSwallowCallbacks(preyUnit);
         switch (location)
@@ -935,7 +935,7 @@ public class PredatorComponent
         UpdateAlivePrey();
     }
     
-    void AddPrey(Prey preyUnit)
+    internal void AddPrey(Prey preyUnit)
     {
         OnSwallowCallbacks(preyUnit);
         prey.Add(preyUnit);
@@ -993,7 +993,7 @@ public class PredatorComponent
         }
     }
 
-    private void RemovePrey(Prey preyUnit)
+    internal void RemovePrey(Prey preyUnit)
     {
         OnRemoveCallbacks(preyUnit);
         womb.Remove(preyUnit);
@@ -1503,11 +1503,6 @@ public class PredatorComponent
                     totalHeal = 0;
                     CreateSpawn(actor.InfectedRace, actor.InfectedSide, unit.Experience/2, true);
                 }
-                foreach (IVoreCallback callback in Callbacks)
-                {
-                    if (!callback.OnFinishAbsorption(preyUnit, actor, location))
-                        return 0;
-                }
                 if (preyUnit.Unit.CanBeConverted() &&
                  (Location(preyUnit) == PreyLocation.womb || Config.KuroTenkoConvertsAllTypes) &&
                  ((Config.KuroTenkoEnabled && (Config.UBConversion == UBConversion.Both || Config.UBConversion == UBConversion.RebirthOnly)) || unit.HasTrait(Traits.PredRebirther)) &&
@@ -1587,6 +1582,11 @@ public class PredatorComponent
                         }
 
                     }
+                }
+                foreach (IVoreCallback callback in Callbacks)
+                {
+                    if (!callback.OnFinishAbsorption(preyUnit, actor, location))
+                        return 0;
                 }
                 AbsorptionEffect(preyUnit, Location(preyUnit));
                 if (!State.GameManager.TacticalMode.turboMode)
