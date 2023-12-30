@@ -327,6 +327,16 @@ public class Actor_Unit
         ReloadSpellTraits();
     }
 
+    internal bool SpendModifiedMana(int amount)
+    {
+        int ModifiedManaCost = amount + (amount * (GetStatusEffect(StatusEffectType.SpellForce) != null ? GetStatusEffect(StatusEffectType.SpellForce).Duration / 10 : 0));
+        if (Unit.SpendMana(ModifiedManaCost))
+        {
+            return true;
+        }
+        return false;
+    }
+
     public void ReloadSpellTraits()
     {
         Unit.SingleUseSpells = new List<SpellTypes>();
@@ -773,6 +783,10 @@ public class Actor_Unit
 
     internal float GetMagicChance(Actor_Unit attacker, Spell currentSpell, float modifier = 0, Stat stat = Stat.Mind)
     {
+        if ((currentSpell?.AcceptibleTargets.Contains(AbilityTargets.Ally) ?? false) && attacker.Unit.GetApparentSide(Unit) == Unit.FixedSide)
+        {
+            return 1;
+        }
         if (TacticalUtilities.SneakAttackCheck(attacker.Unit, Unit)) // sneakAttack
         {
             modifier -= 0.3f;
@@ -2701,7 +2715,7 @@ public class Actor_Unit
 
         if (TacticalUtilities.Units.Any(u => u.Unit == Unit.RelatedUnits[SingleUnitContext.BoundUnit]) && !Unit.RelatedUnits[SingleUnitContext.BoundUnit].IsDead)
             return false;
-        if (Unit.SpendMana(spell.ManaCost) == false && spell.IsFree != true) return false;
+        if (SpendModifiedMana(spell.ManaCost) == false && spell.IsFree != true) return false;
 
         State.GameManager.SoundManager.PlaySpellCast(SpellList.Summon, this);
 
