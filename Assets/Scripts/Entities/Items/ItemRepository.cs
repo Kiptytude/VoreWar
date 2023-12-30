@@ -56,6 +56,7 @@ public enum SpecialItems
     SalixWeapon,
     ErinWeapon,
     ErinWings,
+    BellaWeapon,
 }
 
 
@@ -176,6 +177,7 @@ public class ItemRepository
             new Weapon(name:"Salix's Staff", description:"A weighty magic staff", cost:4, graphic:0, damage:6, range:1, lockedItem:true),
             new Weapon(name:"Nyangel Claws", description:"Near-useless cat scratch!", cost:4, graphic:0, damage:8, range:1),
             new Accessory(name:"Nyangel Wings", description:"The softest, most delicious looking pair of wings you ever did see!\n+5 Willpower", cost:6, changedStat:(int)Stat.Will, statBonus:5 ),
+            new Weapon(name:"Bella's Staff", description:"A Shepherd's Staff", cost:4, graphic:0, damage:10, range:1, lockedItem:true, accuracyModifier:.75f),
         };
 
 

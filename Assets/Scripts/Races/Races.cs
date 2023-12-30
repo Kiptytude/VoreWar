@@ -101,6 +101,7 @@
     static internal Auri Aurilika = new Auri();
     static internal Erin Erin = new Erin();
     static internal Salix Salix = new Salix();
+    static internal Bella Bella = new Bella();
     static internal Goodra Goodra = new Goodra();
 
     static internal Whisp Whisp = new Whisp();
@@ -315,6 +316,8 @@
                 return Whisp;
             case Race.Salix:
                 return Salix;
+            case Race.Bella:
+                return Bella;
             case Race.Aabayx:
                 return Aabayx;
         }

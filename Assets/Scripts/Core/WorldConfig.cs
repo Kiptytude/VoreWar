@@ -201,6 +201,7 @@ public class WorldConfig
 
     [OdinSerialize]
     internal float FartFraction = .1f;
+    internal float WeightGainFraction = .1f;
 
     [OdinSerialize, AllowEditing, FloatRange(0, 1), ProperName("Leader death exp loss Percentage"), Description("On death they will lose this % of their total experience")]
     internal float LeaderLossExpPct = 0;

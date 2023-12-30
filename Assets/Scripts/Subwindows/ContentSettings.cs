@@ -158,6 +158,7 @@ public class ContentSettings : MonoBehaviour
     public Slider BurpFraction;
     public Toggle BurpOnDigest;
     public Slider FartFraction;
+    public Slider WeightGainFraction;
     public Toggle FartOnAbsorb;
 
     public Toggle Bones;
@@ -668,6 +669,7 @@ public class ContentSettings : MonoBehaviour
         Config.World.MonsterConquest = (Config.MonsterConquestType)PlayerPrefs.GetInt("MonsterConquest", 0);
         Config.World.BurpFraction = PlayerPrefs.GetFloat("BurpFraction", .1f);
         Config.World.FartFraction = PlayerPrefs.GetFloat("FartFraction", .1f);
+        Config.World.WeightGainFraction = PlayerPrefs.GetFloat("WeightGainFraction", .5f);
         Config.World.ArmyMP = PlayerPrefs.GetInt("ArmyMP", 3);
         Config.World.CustomEventFrequency = PlayerPrefs.GetFloat("CustomEventFrequency", .25f);
         Config.World.MaxArmies = PlayerPrefs.GetInt("MaxArmies", 32);
@@ -797,6 +799,7 @@ public class ContentSettings : MonoBehaviour
         RandomAIEventRate.value = Config.RandomAIEventRate;
         BurpFraction.value = Config.BurpFraction;
         FartFraction.value = Config.FartFraction;
+        WeightGainFraction.value = Config.WeightGainFraction;
         ArmyMP.value = Config.ArmyMP;
         CustomEventFrequency.value = Config.CustomEventFrequency;
         MaxArmies.value = Config.MaxArmies;
@@ -987,6 +990,7 @@ public class ContentSettings : MonoBehaviour
         Config.World.RandomAIEventRate = RandomAIEventRate.value;
         Config.World.BurpFraction = BurpFraction.value;
         Config.World.FartFraction = FartFraction.value;
+        Config.World.WeightGainFraction = WeightGainFraction.value;
         Config.World.ArmyMP = (int)ArmyMP.value;
         Config.World.CustomEventFrequency = CustomEventFrequency.value;
         Config.World.MaxArmies = (int)MaxArmies.value;
@@ -1167,6 +1171,7 @@ public class ContentSettings : MonoBehaviour
         PlayerPrefs.SetInt("RandomAIEventRate", RandomAIEventRate.value);
         PlayerPrefs.SetFloat("BurpFraction", BurpFraction.value);
         PlayerPrefs.SetFloat("FartFraction", FartFraction.value);
+        PlayerPrefs.SetFloat("WeightGainFraction", WeightGainFraction.value);
         PlayerPrefs.SetInt("ArmyMP", (int)ArmyMP.value);
         PlayerPrefs.SetFloat("CustomEventFrequency", CustomEventFrequency.value);
         PlayerPrefs.SetFloat("AutoSurrenderChance", AutoSurrenderChance.value);
