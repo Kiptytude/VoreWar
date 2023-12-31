@@ -1834,6 +1834,7 @@ public abstract class TacticalAI : ITacticalAI
     public void RunShapeshifting(Actor_Unit actor)
     {
         if (actor.Unit.ShifterShapes == null || actor.Unit.ShifterShapes.Count == 0) return;
+        actor.Unit.ShifterShapes.ForEach(s => StrategicUtilities.SpendLevelUps(s));
         Unit strongerForm = actor.Unit.ShifterShapes.Where(s => s.GetStatTotal() > actor.Unit.GetStatTotal()).OrderByDescending(u => u.GetStatTotal()).FirstOrDefault();
         if (strongerForm == null) return;
         actor.Shapeshift(strongerForm);

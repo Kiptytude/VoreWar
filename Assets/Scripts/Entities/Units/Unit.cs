@@ -2625,7 +2625,7 @@ public class Unit
         shape._fixedSide = _fixedSide;
         shape.SavedCopy = SavedCopy;
         shape.SavedVillage = SavedVillage;
-        shape.RelatedUnits= RelatedUnits;
+        shape.RelatedUnits = RelatedUnits;
         shape.ShifterShapes = ShifterShapes;
         return shape;
     }
