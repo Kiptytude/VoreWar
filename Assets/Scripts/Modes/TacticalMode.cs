@@ -1558,6 +1558,10 @@ Turns: {currentTurn}
         {
             armies[1].Units.Add(unit);
         }
+        if (targetActor.SelfPrey?.Predator != null)
+        {
+            targetActor.SelfPrey.Unit = unit;
+        }
     }
 
     internal Actor_Unit AddUnitToBattle(Unit unit, Vec2i position)

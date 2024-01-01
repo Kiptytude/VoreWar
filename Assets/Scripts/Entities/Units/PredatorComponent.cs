@@ -1559,7 +1559,7 @@ public class PredatorComponent
                 }
                 else
                 {
-                    TacticalUtilities.Log.RegisterAbsorb(unit, preyUnit.Unit, Location(preyUnit));
+                    TacticalUtilities.Log.RegisterAbsorb(unit, preyUnit.Actor.Unit, Location(preyUnit));
                 }
                 unit.GiveScaledExp(8 * preyUnit.Unit.ExpMultiplier, unit.Level - preyUnit.Unit.Level, true);
                 if (Config.WeightGain)

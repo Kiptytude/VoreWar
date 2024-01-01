@@ -76,7 +76,7 @@ public class Unit
 
     public static List<Traits> secretTags = new List<Traits>() { Traits.Infiltrator, Traits.Corruption, Traits.Parasite, Traits.Metamorphosis,
         Traits.Possession, Traits.Changeling, Traits.Reincarnation, Traits.InfiniteReincarnation, Traits.Transmigration, Traits.InfiniteTransmigration,
-        Traits.Untamable, Traits.GreaterChangeling, Traits.SpiritPossession, Traits.ForcedMetamorphosis, Traits.Shapeshifter, Traits.Skinwalker};
+        Traits.Untamable, Traits.GreaterChangeling, Traits.SpiritPossession, Traits.ForcedMetamorphosis};
 
     [OdinSerialize]
     public Race Race;
@@ -1378,6 +1378,7 @@ public class Unit
         return Mathf.RoundToInt(bonus);
 
     }
+
     public int GetStat(Stat stat)
     {
         float total = GetStatBase(stat) + GetLeaderBonus() + GetTraitBonus(stat) + GetEffectBonus(stat);
@@ -2611,6 +2612,7 @@ public class Unit
     public Unit CreateRaceShape(Race race)
     {
         var shape = new Unit(Side, race, (int)Experience, true, Type, ImmuneToDefections);
+        shape.StripUnresolvedRandomizerTraits(); // I simply don't want shapeshifting to cheese infinite "multiclass levels"
         foreach (Traits trait in PermanentTraits)
         {
             shape.AddPermanentTrait(trait);
@@ -2628,6 +2630,12 @@ public class Unit
         shape.RelatedUnits = RelatedUnits;
         shape.ShifterShapes = ShifterShapes;
         return shape;
+    }
+
+    private void StripUnresolvedRandomizerTraits()
+    {
+        Tags.RemoveAll(t => (int)t >= 1000);
+        PermanentTraits.RemoveAll(t => (int)t >= 1000);
     }
 
     internal void AddBladeDance()
@@ -2846,7 +2854,10 @@ public class Unit
         }
         else if (HasTrait(Traits.Shapeshifter))
         {
-            this.ShifterShapes.Add(CreateRaceShape(unit.Race));
+            Unit raceShape = CreateRaceShape(unit.Race);
+            raceShape.Items = unit.Items;
+            unit.Items = unit.HasTrait(Traits.Resourceful) ? new Item[3] : new Item[2];  // meant to prevent double-gaining of dropable loot
+            this.ShifterShapes.Add(raceShape);
         }
     }
 

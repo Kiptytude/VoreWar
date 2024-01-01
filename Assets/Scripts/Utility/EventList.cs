@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using OdinSerializer.Utilities;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
@@ -56,6 +57,7 @@ internal class EventList
         for (int i = 0; i < 20; i++)
         {
             int val = State.Rand.Next(30);
+            val = 27;
             if (i < 17 && empire.RecentEvents.Contains(val))
                 continue;
             if (Config.EventsRepeat == false && empire.EventHappened.ContainsKey(val))
@@ -2152,6 +2154,11 @@ internal class EventList
         }
         Empire pseudoEmp = new MonsterEmpire(new Empire.ConstructionArgs(unusedSide, UnityEngine.Color.white, UnityEngine.Color.white, bannerType, StrategyAIType.Monster, TacticalAIType.Full, 2000 + unusedSide, 32, 0));
         Army army = new Army(pseudoEmp, new Vec2i(loc.x, loc.y), unusedSide);
+        units.ForEach(u => 
+        {
+            u.Side = unusedSide;
+            u.FixedSide = unusedSide;
+        });
         army.Units = units.ToList();
         army.Name = armyName;
         pseudoEmp.ReplacedRace = army.Units[0].Race;
