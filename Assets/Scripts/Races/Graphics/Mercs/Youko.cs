@@ -131,8 +131,8 @@ class Youko : Humans, IVoreRestrictions
             DiscardSprite = State.GameManager.SpriteDictionary.Kimono[23];
             blocksBreasts = true;
             coversBreasts = false;
-            femaleOnly = true;
             blocksDick = false;
+            femaleOnly = true;
             clothing1 = new SpriteExtraInfo(12, null, null);//base
             clothing2 = new SpriteExtraInfo(13, null, null);//belt
             clothing3 = new SpriteExtraInfo(15, null, null);//arms
@@ -148,6 +148,7 @@ class Youko : Humans, IVoreRestrictions
             {
                 clothing1.GetSprite = (s) => State.GameManager.SpriteDictionary.Kimono[22];
                 blocksBreasts = false;
+                blocksDick = false;
                 clothing2.GetSprite = null;
                 clothing4.GetSprite = null;
                 clothing5.GetSprite = null;
@@ -198,6 +199,8 @@ class Youko : Humans, IVoreRestrictions
                 if (!(actor.Unit.HasDick) || !(actor.GetBallSize(28, .8f) > 12))
                 {
                     clothing4.GetSprite = (s) => State.GameManager.SpriteDictionary.Kimono[16];
+                    blocksDick = true;
+
                 }
                 else
                 {
