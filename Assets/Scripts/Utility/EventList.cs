@@ -57,7 +57,6 @@ internal class EventList
         for (int i = 0; i < 20; i++)
         {
             int val = State.Rand.Next(30);
-            val = 27;
             if (i < 17 && empire.RecentEvents.Contains(val))
                 continue;
             if (Config.EventsRepeat == false && empire.EventHappened.ContainsKey(val))

@@ -9,5 +9,11 @@ internal class Shape
 {
     public Unit Unit { get; set; }
     public Traits OriginTrait { get; private set; }
+
+    Shape(Unit unit, Traits originTrait)
+    {
+        Unit = unit;
+        OriginTrait = originTrait;
+    }   
 }
 
