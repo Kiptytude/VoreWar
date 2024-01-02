@@ -76,7 +76,7 @@ public class Unit
 
     public static List<Traits> secretTags = new List<Traits>() { Traits.Infiltrator, Traits.Corruption, Traits.Parasite, Traits.Metamorphosis,
         Traits.Possession, Traits.Changeling, Traits.Reincarnation, Traits.InfiniteReincarnation, Traits.Transmigration, Traits.InfiniteTransmigration,
-        Traits.Untamable, Traits.GreaterChangeling, Traits.SpiritPossession, Traits.ForcedMetamorphosis, Traits.Shapeshifter, Traits.Skinwalker};
+        Traits.Untamable, Traits.GreaterChangeling, Traits.SpiritPossession, Traits.ForcedMetamorphosis};
 
     [OdinSerialize]
     public Race Race;
@@ -414,7 +414,7 @@ public class Unit
 
     internal bool CanBeConverted()
     {
-        return Type != UnitType.Summon && Type != UnitType.Leader && Type != UnitType.SpecialMercenary && HasTrait(Traits.Eternal) == false && SavedCopy == null;
+        return Type != UnitType.Summon && Type != UnitType.Leader && Type != UnitType.SpecialMercenary && HasTrait(Traits.Eternal) == false && SavedCopy == null && Level > 0;
     }
 
     internal bool CanUnbirth => Config.Unbirth && HasVagina;
@@ -490,7 +490,7 @@ public class Unit
 
     public bool BestSuitedForRanged() => Stats[(int)Stat.Dexterity] * TraitBoosts.VirtualDexMult > Stats[(int)Stat.Strength] * TraitBoosts.VirtualStrMult;
 
-    protected void SetLevel(int level) => this.level = level;
+    public void SetLevel(int level) => this.level = level;
 
     internal bool SpendMana(int amount)
     {
@@ -846,7 +846,7 @@ public class Unit
     {
         if (State.World?.ItemRepository == null) return;
         var tiers = new List<int>();
-        if (specificTier == 1 || ( specificTier == 0 && HasTrait(Traits.BookWormI)))
+        if (specificTier == 1 || (specificTier == 0 && HasTrait(Traits.BookWormI)))
         {
             tiers.Add(1);
         }
@@ -1276,6 +1276,13 @@ public class Unit
 
     public int GetStatBase(Stat stat) => Stats[(int)stat];
     public void SetStatBase(Stat stat, int value) => Stats[(int)stat] = value;
+    public void SetStatBaseAll(int value)
+    {
+        for (int i = 0; i < Stats.Length; i++)
+        {
+            Stats[i] = value;
+        }
+    }
     public int GetLeaderBonus()
     {
         if (CurrentLeader == null)
@@ -1371,6 +1378,7 @@ public class Unit
         return Mathf.RoundToInt(bonus);
 
     }
+
     public int GetStat(Stat stat)
     {
         float total = GetStatBase(stat) + GetLeaderBonus() + GetTraitBonus(stat) + GetEffectBonus(stat);
@@ -2240,7 +2248,7 @@ public class Unit
 
     public void LevelDown()
     {
-        if (level == 1)
+        if (level <= 1)
             return;
         int highestType = 0;
         for (int i = 0; i < Stats.Length; i++)
@@ -2253,7 +2261,7 @@ public class Unit
 
     public void LevelDown(Stat stat)
     {
-        if (level == 1)
+        if (level <= 1)
             return;
         GeneralStatIncrease(-1);
         if (TraitBoosts.OnLevelUpBonusToAllStats > 0)
@@ -2604,6 +2612,7 @@ public class Unit
     public Unit CreateRaceShape(Race race)
     {
         var shape = new Unit(Side, race, (int)Experience, true, Type, ImmuneToDefections);
+        shape.StripUnresolvedRandomizerTraits(); // I simply don't want shapeshifting to cheese infinite "multiclass levels"
         foreach (Traits trait in PermanentTraits)
         {
             shape.AddPermanentTrait(trait);
@@ -2618,9 +2627,15 @@ public class Unit
         shape._fixedSide = _fixedSide;
         shape.SavedCopy = SavedCopy;
         shape.SavedVillage = SavedVillage;
-        shape.RelatedUnits= RelatedUnits;
+        shape.RelatedUnits = RelatedUnits;
         shape.ShifterShapes = ShifterShapes;
         return shape;
+    }
+
+    private void StripUnresolvedRandomizerTraits()
+    {
+        Tags.RemoveAll(t => (int)t >= 1000);
+        PermanentTraits.RemoveAll(t => (int)t >= 1000);
     }
 
     internal void AddBladeDance()
@@ -2839,7 +2854,10 @@ public class Unit
         }
         else if (HasTrait(Traits.Shapeshifter))
         {
-            this.ShifterShapes.Add(CreateRaceShape(unit.Race));
+            Unit raceShape = CreateRaceShape(unit.Race);
+            raceShape.Items = unit.Items;
+            unit.Items = unit.HasTrait(Traits.Resourceful) ? new Item[3] : new Item[2];  // meant to prevent double-gaining of dropable loot
+            this.ShifterShapes.Add(raceShape);
         }
     }
 

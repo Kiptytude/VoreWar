@@ -1732,7 +1732,11 @@ public class Actor_Unit
     //This is the chance to be devoured, so it belongs here and not in PredatorComponent
     public float GetDevourChance(Actor_Unit attacker, bool includeSecondaries = false, int skillBoost = 0, bool force = false)
     {
-        if (attacker?.Unit.Predator == false && !force)
+        if (attacker?.Unit == null)
+        {
+            return 0;
+        }
+        if (attacker.Unit.Predator == false && !force)
         {
             return 0;
         }
@@ -2893,7 +2897,8 @@ public class Actor_Unit
     {
         if (Unit == shape)
             return;
-        TacticalGraphicalEffects.CreateSmokeCloud(Position, Unit.GetScale()/2);
+        if (Visible)
+            TacticalGraphicalEffects.CreateSmokeCloud(Position, Unit.GetScale()/2);
         MiscUtilities.DelayedInvoke(() =>
         {
             float healthPct = Unit.HealthPct;
@@ -2910,7 +2915,6 @@ public class Actor_Unit
             UnitSprite.UpdateSprites(this, true);
             AnimationController = new AnimationController();
             Unit.ShifterShapes.Remove(shape);
-            Unit.ReloadTraits();
             Unit.InitializeTraits();
             Unit.Health = (int)Math.Round(Math.Min(Unit.MaxHealth, Math.Max(Unit.MaxHealth * healthPct, 1)));
         }, 0.4f);

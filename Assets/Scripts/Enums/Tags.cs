@@ -358,7 +358,8 @@ public enum Traits
     Summoner = 180,
     /// <summary>Allows unit to use <b>Polymorph</b>, once per battle</summary>
     Polymorph = 181,
-
+    /// <summary>Unit can only cock vore or unbirth pery if the prey is 1/3 the size of this unit, but Diminishment does not fade while prey is inside this unit's cock or womb.</summary>
+    TightNethers = 182,
 
 
 
@@ -398,9 +399,6 @@ public enum Traits
     /// <summary>Units soul continues to possess pred after death</summary>
     SpiritPossession = 355,
 
-
-    /// <summary>Unit can only cock vore or unbirth pery if the prey is 1/3 the size of this unit, but Diminishment does not fade while prey is inside this unit's cock or womb.</summary>
-    TightNethers,
 
 
     //Everything after this is a cheat trait
