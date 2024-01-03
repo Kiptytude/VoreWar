@@ -544,10 +544,16 @@ public class Unit
     protected List<Traits> PersistentSharedTraits;
 
     /// <summary>
-    /// Traits that are considered to be permanent, i.e. do not disappear during refreshes
+    /// Traits that are considered to be permanent, i.e. do not disappear during refreshes, race changes, reincarnations
     /// </summary>
     [OdinSerialize]
     protected List<Traits> PermanentTraits;
+
+    /// <summary>
+    /// Traits that are considered to be bound to the current incarnation, i.e. do not disappear during refreshes, but do on race change
+    /// </summary>
+    [OdinSerialize]
+    protected List<Traits> FormBoundTraits;
 
     /// <summary>
     /// Traits that are explicitly removed, done so that they aren't added back in at some point by version changes or the like.
@@ -595,6 +601,7 @@ public class Unit
         experience = startingXP;
         level = 1;
         Tags = new List<Traits>();
+        FormBoundTraits = new List<Traits>();
         PermanentTraits = new List<Traits>();
         RemovedTraits = new List<Traits>();
         Type = type;
@@ -1264,15 +1271,15 @@ public class Unit
     {
         get
         {
-            if (PermanentTraits == null)
+            if (FormBoundTraits == null)
                 return Tags.ToList();
-            if (SharedTraits == null)
-                return Tags.Concat(PermanentTraits).ToList();
-            return Tags.Concat(PermanentTraits).ToList().Concat(SharedTraits).ToList();
+            if (PermanentTraits == null)
+                return Tags.Concat(FormBoundTraits).ToList();
+            return Tags.Concat(FormBoundTraits).Concat(PermanentTraits).ToList();
         }
     }
 
-    internal int BaseTraitsCount => Tags.Count + PermanentTraits.Count;
+    internal int BaseTraitsCount => Tags.Count + FormBoundTraits.Count + PermanentTraits.Count;
 
     public int GetStatBase(Stat stat) => Stats[(int)stat];
     public void SetStatBase(Stat stat, int value) => Stats[(int)stat] = value;
@@ -1480,7 +1487,7 @@ public class Unit
         if (tag == Traits.TheGreatEscape && Race == Race.Erin)
             return true;
         if (Tags != null)
-            return Tags.Contains(tag) || (PermanentTraits?.Contains(tag) ?? false);
+            return Tags.Contains(tag) || (PermanentTraits?.Contains(tag) ?? false) || (FormBoundTraits?.Contains(tag) ?? false);
         return false;
     }
 
@@ -1535,7 +1542,7 @@ public class Unit
 
     internal string ListTraits(bool hideSecret = false)
     {
-        if (Tags.Count == 0 && (PermanentTraits == null || PermanentTraits.Count == 0))
+        if (Tags.Count == 0 && (PermanentTraits == null || PermanentTraits.Count == 0) && (FormBoundTraits == null || FormBoundTraits.Count == 0))
             return "";
         string ret = "";
         for (int i = 0; i < Tags.Count; i++)
@@ -1559,11 +1566,28 @@ public class Unit
                 ret += color ? "<color=#402B8Dff>" + tagString + "</color>" : tagString;
             }
         }
+        if (FormBoundTraits != null && FormBoundTraits.Count > 0)
+        {
+            for (int i = 0; i < FormBoundTraits.Count; i++)
+            {
+                if (Tags.Contains(FormBoundTraits[i]))
+                    continue;
+                if (!(hideSecret && secretTags.Contains(FormBoundTraits[i])))
+                {
+                    if (ret != "")
+                        ret += "\n";
+                    if (State.RandomizeLists.Any(rl => (Traits)rl.id == FormBoundTraits[i]))
+                        ret += State.RandomizeLists.Where(rl => (Traits)rl.id == FormBoundTraits[i]).FirstOrDefault().name;
+                    else
+                        ret += FormBoundTraits[i].ToString();
+                }
+            }
+        }
         if (PermanentTraits != null && PermanentTraits.Count > 0)
         {
             for (int i = 0; i < PermanentTraits.Count; i++)
             {
-                if (Tags.Contains(PermanentTraits[i]))
+                if (Tags.Contains(PermanentTraits[i]) || FormBoundTraits.Contains(PermanentTraits[i]))
                     continue;
                 if (!(hideSecret && secretTags.Contains(PermanentTraits[i])))
                 {
@@ -1625,6 +1649,25 @@ public class Unit
         return true;
     }
 
+    public bool AddFormBoundTrait(Traits traitIdToAdd)
+    {
+        if (FormBoundTraits == null)
+            FormBoundTraits = new List<Traits>();
+
+        if (traitIdToAdd == Traits.Prey)
+        {
+            Predator = false;
+            fixedPredator = true;
+        }
+
+        if (HasTrait(traitIdToAdd))
+            return false;
+
+        FormBoundTraits.Add(traitIdToAdd);
+        RecalculateStatBoosts();
+        return true;
+    }
+
     public void RemoveTrait(Traits traitToRemove)
     {
         if (Tags == null)
@@ -1651,6 +1694,7 @@ public class Unit
         {
             Tags.Remove(traitToRemove);
             PermanentTraits?.Remove(traitToRemove);
+            FormBoundTraits?.Remove(traitToRemove);
             RecalculateStatBoosts();
         }
 
@@ -1710,9 +1754,9 @@ public class Unit
             }
         }
 
-        if (SharedTraits != null)
+        if (FormBoundTraits != null)
         {
-            foreach (var trait in SharedTraits)
+            foreach (var trait in FormBoundTraits)
             {
                 Trait ITrait = TraitList.GetTrait(trait);
                 if (ITrait is IStatBoost boost)
@@ -1933,6 +1977,7 @@ public class Unit
     public void ChangeRace(Race race)
     {
         Race = race;
+        FormBoundTraits = new List<Traits>();
         fixedPredator = false;
     }
 
@@ -1969,47 +2014,50 @@ public class Unit
                 break;
             customs.ForEach(ct =>
             {
-                    RandomizeList randomizeList = State.RandomizeLists.Single(rl => (Traits)rl.id == ct);
-                    var chance = randomizeList.chance;
-                    while (chance > 0 && State.Rand.NextDouble() < randomizeList.chance)
+                RandomizeList randomizeList = State.RandomizeLists.Single(rl => (Traits)rl.id == ct);
+                var chance = randomizeList.chance;
+                while (chance > 0 && State.Rand.NextDouble() < randomizeList.chance)
+                {
+                    List<Traits> gainable = randomizeList.RandomTraits.Where(rt => !HasTrait(rt)).ToList();
+                    if (gainable.Count() > 0)
                     {
-                        List<Traits> gainable = randomizeList.RandomTraits.Where(rt => !Tags.Contains(rt) && !PermanentTraits.Contains(rt)).ToList();
-                        if (gainable.Count() > 0)
-                        {
-                            var randomPick = gainable[State.Rand.Next(gainable.Count())];
-                            RemovedTraits?.Remove(randomPick); // Even if manually removed before, rng-sus' word is law
+                        var randomPick = gainable[State.Rand.Next(gainable.Count())];
+                        RemovedTraits?.Remove(randomPick); // Even if manually removed before, rng-sus' word is law
+                        if (randomizeList.permanent)
                             AddPermanentTrait(randomPick);
-                            gainable.Remove(randomPick);
-                            GivePrerequisiteTraits(randomPick);
-                            if (isLevelingUp) 
-                                { 
-                                    if (randomPick == Traits.BookWormI)
-                                        GiveTraitBooks(1);
-                                    else
-                                    if (randomPick == Traits.BookWormII)
-                                        GiveTraitBooks(2);
-                                    else
-                                    if (randomPick == Traits.BookWormIII)
-                                        GiveTraitBooks(3);
-                                }
-                        }
-                        chance -= 1;
+                        else
+                            AddFormBoundTrait(randomPick);
+                        gainable.Remove(randomPick);
+                        GivePrerequisiteTraits(randomPick, randomizeList.permanent);
+                        if (isLevelingUp) 
+                            { 
+                                if (randomPick == Traits.BookWormI)
+                                    GiveTraitBooks(1);
+                                else
+                                if (randomPick == Traits.BookWormII)
+                                    GiveTraitBooks(2);
+                                else
+                                if (randomPick == Traits.BookWormIII)
+                                    GiveTraitBooks(3);
+                            }
                     }
-                    if (RemovedTraits == null)
-                        RemovedTraits = new List<Traits>();
-                    RemovedTraits.Add(ct);
-                    foreach (Traits trait in RemovedTraits)
-                    {
-                        Tags.Remove(trait);
-                        PermanentTraits.Remove(trait);
-                    }
+                    chance -= 1;
+                }
+                if (RemovedTraits == null)
+                    RemovedTraits = new List<Traits>();
+                RemovedTraits.Add(ct);
+                foreach (Traits trait in RemovedTraits)
+                {
+                    Tags.Remove(trait);
+                    PermanentTraits.Remove(trait);
+                }
                 
             });
         }
 
     }
 
-    private void GivePrerequisiteTraits(Traits randomPick)
+    private void GivePrerequisiteTraits(Traits randomPick, bool permanent)
     {
         Traits prereq = (Traits)(-1);
         if (randomPick > Traits.Growth && randomPick <= Traits.FleetingGrowth)
@@ -2039,7 +2087,11 @@ public class Unit
         }
         if (prereq != (Traits)(-1) && !Tags.Contains(prereq) && !PermanentTraits.Contains(prereq))
         {
-            PermanentTraits.Add(prereq);
+            if (permanent)
+                AddPermanentTrait(prereq);
+            else
+                AddFormBoundTrait(prereq);
+
             RemovedTraits?.Remove(prereq);
         }
     }
@@ -2612,11 +2664,7 @@ public class Unit
     public Unit CreateRaceShape(Race race)
     {
         var shape = new Unit(Side, race, (int)Experience, true, Type, ImmuneToDefections);
-        shape.StripUnresolvedRandomizerTraits(); // I simply don't want shapeshifting to cheese infinite "multiclass levels"
-        foreach (Traits trait in PermanentTraits)
-        {
-            shape.AddPermanentTrait(trait);
-        }
+        shape.PermanentTraits = PermanentTraits;
         if (Races.GetRace(shape.Race).CanBeGender.Contains(GetGender()))
         {
             shape.SetGenderRandomizeName(race, GetGender());
@@ -2630,12 +2678,6 @@ public class Unit
         shape.RelatedUnits = RelatedUnits;
         shape.ShifterShapes = ShifterShapes;
         return shape;
-    }
-
-    private void StripUnresolvedRandomizerTraits()
-    {
-        Tags.RemoveAll(t => (int)t >= 1000);
-        PermanentTraits.RemoveAll(t => (int)t >= 1000);
     }
 
     internal void AddBladeDance()
@@ -2803,36 +2845,51 @@ public class Unit
         }
     }
 
-    internal List<Traits> RandomizeOne(RandomizeList randomizeList)
+    internal List<Traits> RandomizeOne(RandomizeList randomizeList, out List<Traits> traitsToAddNonPerm)
     {
+        traitsToAddNonPerm = new List<Traits>();
         if (randomizeList.level > Level)
             {
+            if (randomizeList.permanent)
+            { 
                 return new List<Traits>() { (Traits)randomizeList.id };
+            } else
+            {
+                traitsToAddNonPerm.Add((Traits)randomizeList.id);
+                return new List<Traits>();
             }
+        }
         var chance = randomizeList.chance;
-        var traitsToAdd = new List<Traits>();
+        var traitsToAddPerm = new List<Traits>();
         List<Traits> gainable = randomizeList.RandomTraits.Where(rt => !Tags.Contains(rt) && !PermanentTraits.Contains(rt)).ToList();
         while (State.Rand.NextDouble() < chance)
         {
             if (gainable.Count() > 0)
             {
                 var randomPick = gainable[State.Rand.Next(gainable.Count())];
-                GivePrerequisiteTraits(randomPick);
+                GivePrerequisiteTraits(randomPick, randomizeList.permanent);
                 if (randomPick >= (Traits)1000)
                 {
                     RandomizeList recursiveRl = State.RandomizeLists.Find(re => (Traits)re.id == randomPick);
                     if (recursiveRl != null)
                     {
-                        traitsToAdd.AddRange(RandomizeOne(recursiveRl));
+                        List<Traits> traitsToAddNP;
+                        traitsToAddPerm.AddRange(RandomizeOne(recursiveRl, out traitsToAddNP));
+                        traitsToAddNonPerm.AddRange(traitsToAddNP);
                     }
                 }
                 else
-                    traitsToAdd.Add(randomPick);
+                {
+                    if (randomizeList.permanent)
+                        traitsToAddPerm.Add(randomPick);
+                    else
+                        traitsToAddNonPerm.Add(randomPick);
+                }
                 gainable.Remove(randomPick);
             }
             chance -= 1;
         }
-        return traitsToAdd;
+        return traitsToAddPerm;
     }
 
     internal void AcquireShape(Unit unit, bool forceDirect = false)

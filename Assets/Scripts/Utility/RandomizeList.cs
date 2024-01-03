@@ -10,20 +10,17 @@ public class RandomizeList
     public string name;
     public float chance;
     public int level;
+    public bool permanent;
     [AllowEditing]
     internal List<Traits> RandomTraits;
 
-
-    internal void Save()
-    {
-       
-    }
-
     public override string ToString()
     {
-        string str = id + ", " + name + ", " + chance.ToString("N", new CultureInfo("en-US")) + ", " + level + ", ";
+        string str = id + ", " + name + ", " + chance.ToString("N", new CultureInfo("en-US")) + ", " + level + ", " + permanent.ToString(new CultureInfo("en-US")) + ", ";
         RandomTraits.ForEach(rt => str += (int)rt + "|");
         str = str.Remove(str.Length - 1);
         return str;
     }
+    // if you look at the decompiled ToString() overloads for boolean, they're kind of funny. They also tell me that we probably DON'T need CultureInfo for booleans, but whaevr
+    // I'ma be safe
 }

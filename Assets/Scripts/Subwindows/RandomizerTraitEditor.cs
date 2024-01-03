@@ -5,6 +5,7 @@ using System.Linq;
 using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class RandomizerTraitEditor : MonoBehaviour
 {
@@ -18,18 +19,12 @@ public class RandomizerTraitEditor : MonoBehaviour
     {
         gameObject.SetActive(true);
 
-        int children = Folder.childCount;
-        for (int i = children - 1; i >= 0; i--)
-        {
-            Destroy(Folder.GetChild(i).gameObject);
-        }
-
         Setup();
     }
 
     private void Setup()
     {
-       RandomizerTags = new List<RandomizerTrait>();
+        RandomizerTags = new List<RandomizerTrait>();
         foreach (var entry in State.RandomizeLists)
         {
             var randomizerTrait = CreateRandomizerTrait(entry);
@@ -67,6 +62,7 @@ public class RandomizerTraitEditor : MonoBehaviour
             rt.chance.text = (savedCustom.chance * 100).ToString();
             rt.id = savedCustom.id;
             rt.level.text = savedCustom.level.ToString();
+            rt.permanent.isOn = savedCustom.permanent;
             var ranTraits = new Dictionary<Traits, bool>();
             foreach (Traits r in State.RandomizeLists.ConvertAll(r => (Traits)r.id))
             {
@@ -105,6 +101,7 @@ public class RandomizerTraitEditor : MonoBehaviour
             rt.name.text = "";
             rt.chance.text = "100";
             rt.level.text = "0";
+            rt.permanent.isOn = true;
             var last = RandomizerTags.LastOrDefault();
             rt.id = last == null ? 1001 : FindNewId();
             var ranTraits = new Dictionary<Traits, bool>();
@@ -172,6 +169,7 @@ public class RandomizerTraitEditor : MonoBehaviour
             newCustom.name = tag.name.text;
             newCustom.chance = int.Parse(tag.chance.text) /100f;
             newCustom.level = tag.level.text.Length < 1 ? 0 : int.Parse(tag.level.text);
+            newCustom.permanent = tag.permanent.isOn;
             newCustom.RandomTraits = new List<Traits>();
             foreach (var trait in tag.TraitDictionary)
             {
