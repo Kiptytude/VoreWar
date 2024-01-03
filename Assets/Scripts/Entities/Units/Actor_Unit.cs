@@ -2916,7 +2916,9 @@ public class Actor_Unit
             AnimationController = new AnimationController();
             Unit.ShifterShapes.Remove(shape);
             Unit.InitializeTraits();
+            ReloadSpellTraits();
             Unit.Health = (int)Math.Round(Math.Min(Unit.MaxHealth, Math.Max(Unit.MaxHealth * healthPct, 1)));
+            PredatorComponent?.UpdateFullness();
         }, 0.4f);
         
     }

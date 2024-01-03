@@ -5,6 +5,7 @@ using System.Linq;
 using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEditor;
 
 public class RandomizerTraitEditor : MonoBehaviour
 {
@@ -67,6 +68,7 @@ public class RandomizerTraitEditor : MonoBehaviour
             rt.chance.text = (savedCustom.chance * 100).ToString();
             rt.id = savedCustom.id;
             rt.level.text = savedCustom.level.ToString();
+            rt.listType = savedCustom.listtype;
             var ranTraits = new Dictionary<Traits, bool>();
             foreach (Traits r in State.RandomizeLists.ConvertAll(r => (Traits)r.id))
             {
@@ -173,6 +175,7 @@ public class RandomizerTraitEditor : MonoBehaviour
             newCustom.chance = int.Parse(tag.chance.text) /100f;
             newCustom.level = tag.level.text.Length < 1 ? 0 : int.Parse(tag.level.text);
             newCustom.RandomTraits = new List<Traits>();
+            newCustom.listtype = tag.listType;
             foreach (var trait in tag.TraitDictionary)
             {
                 if (trait.Value) newCustom.RandomTraits.Add(trait.Key);

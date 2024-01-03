@@ -6,10 +6,12 @@ using UnityEngine.UI;
 public class RandomizerTrait : MonoBehaviour
 {
     internal int id;
+    public TraitListType listType;
     public InputField name;
     public InputField chance;
     public InputField level;
     public Button PickTagsBtn;
+    public Button ExpandBtn;
     public Button CloneBtn;
     public Button RemoveBtn;
 

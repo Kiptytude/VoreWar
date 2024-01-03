@@ -1861,6 +1861,8 @@ public class Unit
     internal void ReloadTraits()
     {
         Tags = new List<Traits>();
+        if (StatBoosts == null)
+            InitializeTraits();
         if (Config.RaceTraitsEnabled)
             Tags.AddRange(State.RaceSettings.GetRaceTraits(HiddenUnit.Race));
         if (HiddenUnit.HasBreasts && HiddenUnit.HasDick == false)
@@ -1959,6 +1961,52 @@ public class Unit
         RelatedUnits[SingleUnitContext.HiddenUnit] = null;
     }
 
+    private void AddRandomizeTrait(Traits randomPick, bool isLevelingUp = false)
+    {
+        RemovedTraits?.Remove(randomPick); // Even if manually removed before, rng-sus' word is law
+        AddPermanentTrait(randomPick);
+        GivePrerequisiteTraits(randomPick);
+        if (isLevelingUp) 
+            { 
+                if (randomPick == Traits.BookWormI)
+                    GiveTraitBooks(1);
+                else
+                if (randomPick == Traits.BookWormII)
+                    GiveTraitBooks(2);
+                else
+                if (randomPick == Traits.BookWormIII)
+                    GiveTraitBooks(3);
+            }
+    }
+
+    private void ProcessRaceClassTrait(RandomizeList randomizeList, bool isLevelingUp = false)
+    {
+        List<Traits> gainable = randomizeList.RandomTraits.Where(rt => !Tags.Contains(rt) && !PermanentTraits.Contains(rt)).ToList();
+
+        var possibilities = new Dictionary<string, Traits>();
+        foreach(Traits trait in gainable)
+        {
+            String traitName;
+            if (State.RandomizeLists.Any(rl => (Traits)rl.id == trait))
+                traitName = State.RandomizeLists.Where(rl => (Traits)rl.id == trait).FirstOrDefault().name;
+            else
+                traitName = trait.ToString();
+            possibilities.Add(traitName, trait);
+        }
+        if (isLevelingUp && (State.GameManager.StrategyMode.IsPlayerTurn && State.GameManager.CurrentScene != State.GameManager.TacticalMode) && possibilities.Count > 1)
+        {
+            var box = State.GameManager.CreateOptionsBox();
+            box.SetData($"Select a " + TraitListTypeMethods.TraitListTypeToStr(randomizeList.listtype) + " trait for " + Name + ".", possibilities.Keys.ElementAtOrDefault(0), () => AddRandomizeTrait(possibilities.Values.ElementAtOrDefault(0),isLevelingUp), possibilities.Keys.ElementAtOrDefault(1), () => AddRandomizeTrait(possibilities.Values.ElementAtOrDefault(1),isLevelingUp), possibilities.Keys.ElementAtOrDefault(2), () => AddRandomizeTrait(possibilities.Values.ElementAtOrDefault(2),isLevelingUp));
+        } else if (isLevelingUp && (gainable.Count > 0))
+        {
+            int item = State.Rand.Next(0,2);
+            AddRandomizeTrait(possibilities.Values.ElementAtOrDefault(0),isLevelingUp);
+        } else 
+        {
+
+        }
+
+    }
     private void RandomizeTraits(bool isLevelingUp = false)
     {
         while (true)
@@ -1970,30 +2018,30 @@ public class Unit
             customs.ForEach(ct =>
             {
                     RandomizeList randomizeList = State.RandomizeLists.Single(rl => (Traits)rl.id == ct);
-                    var chance = randomizeList.chance;
-                    while (chance > 0 && State.Rand.NextDouble() < randomizeList.chance)
+                    if((randomizeList.listtype == TraitListType.RootClass) || (randomizeList.listtype == TraitListType.RootRace))
                     {
-                        List<Traits> gainable = randomizeList.RandomTraits.Where(rt => !Tags.Contains(rt) && !PermanentTraits.Contains(rt)).ToList();
-                        if (gainable.Count() > 0)
+                        foreach(Traits trait in randomizeList.RandomTraits)
                         {
-                            var randomPick = gainable[State.Rand.Next(gainable.Count())];
-                            RemovedTraits?.Remove(randomPick); // Even if manually removed before, rng-sus' word is law
-                            AddPermanentTrait(randomPick);
-                            gainable.Remove(randomPick);
-                            GivePrerequisiteTraits(randomPick);
-                            if (isLevelingUp) 
-                                { 
-                                    if (randomPick == Traits.BookWormI)
-                                        GiveTraitBooks(1);
-                                    else
-                                    if (randomPick == Traits.BookWormII)
-                                        GiveTraitBooks(2);
-                                    else
-                                    if (randomPick == Traits.BookWormIII)
-                                        GiveTraitBooks(3);
-                                }
+                            AddRandomizeTrait(trait,isLevelingUp);
+                        } //Root traits grant all traits in the list
+                    } else if(randomizeList.listtype > TraitListType.Invalid)
+                    {
+                        ProcessRaceClassTrait(randomizeList, isLevelingUp);
+                    } else  
+                    {
+                        var chance = randomizeList.chance;
+                        while (chance > 0 && State.Rand.NextDouble() < randomizeList.chance)
+                        {
+                            List<Traits> gainable = randomizeList.RandomTraits.Where(rt => !Tags.Contains(rt) && !PermanentTraits.Contains(rt)).ToList();
+                            if (gainable.Count() > 0)
+                            {
+                                var randomPick = gainable[State.Rand.Next(gainable.Count())];
+                                AddRandomizeTrait(randomPick,isLevelingUp);
+                                gainable.Remove(randomPick);
+                            }
+                            chance -= 1;
                         }
-                        chance -= 1;
+
                     }
                     if (RemovedTraits == null)
                         RemovedTraits = new List<Traits>();
@@ -2003,7 +2051,6 @@ public class Unit
                         Tags.Remove(trait);
                         PermanentTraits.Remove(trait);
                     }
-                
             });
         }
 
@@ -2809,8 +2856,31 @@ public class Unit
             {
                 return new List<Traits>() { (Traits)randomizeList.id };
             }
+        
         var chance = randomizeList.chance;
         var traitsToAdd = new List<Traits>();
+        if(randomizeList.listtype > TraitListType.Invalid)
+        {
+            return new List<Traits>(){};//Race and Class traits can only be gained on level up
+        }
+        if((randomizeList.listtype == TraitListType.RootClass) || (randomizeList.listtype == TraitListType.RootRace))
+        {
+            foreach(Traits trait in randomizeList.RandomTraits)
+            {
+                if (trait >= (Traits)1000)
+                {
+                    RandomizeList recursiveRl = State.RandomizeLists.Find(re => (Traits)re.id == trait);
+                    if (recursiveRl != null)
+                    {
+                        traitsToAdd.AddRange(RandomizeOne(recursiveRl));
+                    }
+                } else
+                {
+                    traitsToAdd.Add(trait);
+                }
+            } //Root traits grant all traits in the list
+            return traitsToAdd;
+        }
         List<Traits> gainable = randomizeList.RandomTraits.Where(rt => !Tags.Contains(rt) && !PermanentTraits.Contains(rt)).ToList();
         while (State.Rand.NextDouble() < chance)
         {
