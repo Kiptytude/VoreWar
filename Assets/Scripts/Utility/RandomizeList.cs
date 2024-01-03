@@ -50,22 +50,21 @@ public class RandomizeList
     public string name;
     public float chance;
     public int level;
+    public bool permanent;
     [AllowEditing]
     internal List<Traits> RandomTraits;
 
-    internal void Save()
-    {
-       
-    }
-
     public override string ToString()
     {
-        string str = id + ", " +  name + ", " + TraitListTypeMethods.TraitListTypeToStr(listtype) + ", " +chance.ToString("N", new CultureInfo("en-US")) + ", " + level + ", ";
+        string str = id + ", " +  name + ", " + TraitListTypeMethods.TraitListTypeToStr(listtype) + ", " +chance.ToString("N", new CultureInfo("en-US")) + ", " + level + ", " + permanent.ToString(new CultureInfo("en-US")) + ", ";
         RandomTraits.ForEach(rt => str += (int)rt + "|");
         str = str.Remove(str.Length - 1);
         return str;
     }
+    // if you look at the decompiled ToString() overloads for boolean, they're kind of funny. They also tell me that we probably DON'T need CultureInfo for booleans, but whaevr
+    // I'ma be safe
 }
+
 static class RandomizeListUtils
 {
 
@@ -81,7 +80,7 @@ static class RandomizeListUtils
         return 2000 + index;
     }
 
-    static public Traits CreateRandomizeListTrait(String name, TraitListType traitListType,  List<Traits> traits, int level = 1, float chance = 1)
+    static public Traits CreateRandomizeListTrait(String name, TraitListType traitListType,  List<Traits> traits, bool isPermanent, int level = 1,  float chance = 1)
     {
         if(State.RandomizeLists.Where(rt => rt.name == name).Count() > 0)
         {
@@ -98,13 +97,18 @@ static class RandomizeListUtils
         else
             custom.chance = 1;
         custom.level = level;
+        custom.permanent = isPermanent;
         custom.RandomTraits = traits;
         State.RandomizeLists.Add(custom);
         return (Traits)custom.id;
     }
 
-    static public Traits CreateLevelTree(String name, TraitListType traitListType, List<Traits> traits, int traitsPerLvl, int levelIncrement = 1, float chance = 1)
+    static public Traits CreateLevelTree(String name, TraitListType traitListType, List<Traits> traits, int traitsPerLvl, bool isPermanent, int levelIncrement = 1, float chance = 1)
     {
+        if(traitListType == TraitListType.Class)
+            isPermanent = true;//classes are always permanent
+        if(traitListType == TraitListType.False)
+            isPermanent = false;//races are never permanent
         if(State.RandomizeLists.Where(rt => rt.name == name).Count() > 0)
         {
             return (Traits)State.RandomizeLists.Where(rt => rt.name == name).ToList()[0].id;
@@ -117,12 +121,12 @@ static class RandomizeListUtils
         List<Traits> complexTraitsList = new List<Traits>();
         foreach(List<Traits> levelGroup in levelGroups){
             level = level + levelIncrement;
-            complexTraitsList.Add(CreateRandomizeListTrait(name + "Lv" + level.ToString(),traitListType,levelGroup,level));
+            complexTraitsList.Add(CreateRandomizeListTrait(name + "Lv" + level.ToString(),traitListType,levelGroup,isPermanent,level));
         }
         if(traitListType == TraitListType.Class)
             traitListType = TraitListType.RootClass;
         if(traitListType == TraitListType.Race)
             traitListType = TraitListType.RootRace;
-        return CreateRandomizeListTrait(name + "LvTraits",traitListType,complexTraitsList);
+        return CreateRandomizeListTrait(name + "LvTraits",traitListType,complexTraitsList,isPermanent);
     }
 }

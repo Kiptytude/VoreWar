@@ -120,6 +120,7 @@ public static class State
                         custom.name = strings[1];
                         custom.chance = float.Parse(strings[2], new CultureInfo("en-US"));
                         custom.level = 0;
+                        custom.permanent = true;
                         custom.listtype = TraitListType.Random; 
                         custom.RandomTraits = strings[3].Split('|').ToList().ConvertAll(s => (Traits)int.Parse(s));
                     } else if (strings.Length == 5)
@@ -136,6 +137,7 @@ public static class State
                             custom.chance = float.Parse(strings[3], new CultureInfo("en-US"));
                             custom.level = 0;
                         }
+                        custom.permanent = true;
                         custom.RandomTraits = strings[4].Split('|').ToList().ConvertAll(s => (Traits)int.Parse(s));
                     } else if (strings.Length == 6)
                     {
@@ -146,6 +148,17 @@ public static class State
                         custom.level = int.Parse(strings[4]);
                         custom.RandomTraits = strings[5].Split('|').ToList().ConvertAll(s => (Traits)int.Parse(s));
                     }
+                    else if (strings.Length == 6)
+                    {
+                        custom.id = int.Parse(strings[0]);
+                        custom.name = strings[1];
+                        custom.chance = float.Parse(strings[2], new CultureInfo("en-US"));
+                        custom.level = int.Parse(strings[3]);
+                        custom.permanent = bool.Parse(strings[4]);
+                        custom.RandomTraits = strings[5].Split('|').ToList().ConvertAll(s => (Traits)int.Parse(s));
+                        RandomizeLists.Add(custom);
+                    }
+
                     RandomizeLists.Add(custom);
                 });
             }

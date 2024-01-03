@@ -253,9 +253,14 @@ class UnitEditor : UnitCustomizer
             actor.Surrendered = false;
     }
 
-    internal void AddTrait(Traits trait)
+    internal void AddTrait(Traits trait, bool permanent = true)
     {
-        if (actor.Unit.AddPermanentTrait(trait))
+        bool added;
+        if (permanent)
+            added = actor.Unit.AddPermanentTrait(trait);
+        else
+            added = actor.Unit.AddFormBoundTrait(trait);
+        if (added)
             if (trait == Traits.MadScience && State.World?.ItemRepository != null)
             {
                 Unit.SingleUseSpells.Add(((SpellBook)State.World.ItemRepository.GetRandomBook(1, 4)).ContainedSpell);

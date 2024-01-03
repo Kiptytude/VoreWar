@@ -3,6 +3,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class RecruitCheatsPanel : MonoBehaviour
 {
@@ -92,7 +93,8 @@ public class RecruitCheatsPanel : MonoBehaviour
                     unit.AddPermanentTrait((Traits)randomizeList.id);
                 } else
                 {
-                    var resTraits = unit.RandomizeOne(randomizeList);
+                    List<Traits> resTraitsNp;
+                    var resTraits = unit.RandomizeOne(randomizeList, out resTraitsNp);
                     foreach (Traits resTrait in resTraits)
                     {
                         unit.AddPermanentTrait(resTrait);
@@ -102,7 +104,15 @@ public class RecruitCheatsPanel : MonoBehaviour
                         }
                     
                     }
-            
+                    foreach (Traits resTraitNp in resTraitsNp)
+                    {
+                        unit.AddFormBoundTrait(resTraitNp);
+                        if (resTraitNp == Traits.Resourceful || resTraitNp == Traits.BookWormI || resTraitNp == Traits.BookWormII || resTraitNp == Traits.BookWormIII)
+                        {
+                            unit.SetMaxItems();
+                        }
+
+                    }
                 }
         }
         if (Enum.TryParse(TraitPicker.captionText.text, out Traits trait))

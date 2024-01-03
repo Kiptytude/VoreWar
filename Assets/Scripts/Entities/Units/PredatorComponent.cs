@@ -1338,7 +1338,9 @@ public class PredatorComponent
         if (unit.HasTrait(Traits.Annihilation) && !TacticalUtilities.IsPreyEndoTargetForUnit(preyUnit, unit))
         {
             int prevLevelExp = preyUnit.Unit.GetExperienceRequiredForLevel(preyUnit.Unit.Level - 2);
-            if (preyUnit.Unit.Level == 1 && preyUnit.Unit.Race != Race.Erin)
+            if (preyUnit.Unit.Level == 0) 
+                preyDamage = 1;
+            else if (preyUnit.Unit.Level == 1 && preyUnit.Unit.Race != Race.Erin)
             {
                 preyUnit.Unit.SetLevel(0);
                 preyUnit.Unit.SetStatBaseAll(1);
@@ -1354,15 +1356,18 @@ public class PredatorComponent
                 preyUnit.Unit.RemoveTrait(Traits.LuckySurvival);
                 preyUnit.Unit.RemoveTrait(Traits.Reformer);
                 preyUnit.Unit.RemoveTrait(Traits.TheGreatEscape);
+                actor.Unit.GiveRawExp(1);
+                actor.Unit.HealPercentage(0.05f);
             }
             else
             {
                 preyUnit.Unit.LevelDown();
                 preyUnit.Unit.SetExp(preyUnit.Unit.Experience - (preyUnit.Unit.Experience - prevLevelExp));
                 preyDamage = 0;
+                actor.Unit.GiveRawExp(Math.Max(1, (int)(preyUnit.Unit.Experience - prevLevelExp)));
+                actor.Unit.HealPercentage(0.05f);
             }
-            if (preyUnit.Unit.Level == 0) preyDamage = 1;
-            actor.Unit.GiveRawExp(Math.Max(1, (int)(preyUnit.Unit.Experience - prevLevelExp)));
+            
         }
         if (preyUnit.Unit.IsThisCloseToDeath(preyDamage))
         {

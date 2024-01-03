@@ -585,6 +585,8 @@ public class HoveringTooltip : MonoBehaviour
                 return "Allows the casting of the Summon spell once per battle.";
             case Traits.Polymorph:
                 return "Allows the casting of the Polymorph spell once per battle.";
+            case Traits.Annihilation:
+                return "Syphons Levels from prey instead of dealing damage. Upon hitting level 0, the prey dies and cannot be revived.";
         }  
         return "<b>This trait needs a tooltip!</b>";
     }
