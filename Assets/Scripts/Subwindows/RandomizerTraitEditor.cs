@@ -63,6 +63,7 @@ public class RandomizerTraitEditor : MonoBehaviour
             rt.id = savedCustom.id;
             rt.level.text = savedCustom.level.ToString();
             rt.permanent.isOn = savedCustom.permanent;
+            rt.listType = savedCustom.listtype;
             var ranTraits = new Dictionary<Traits, bool>();
             foreach (Traits r in State.RandomizeLists.ConvertAll(r => (Traits)r.id))
             {
@@ -171,6 +172,7 @@ public class RandomizerTraitEditor : MonoBehaviour
             newCustom.level = tag.level.text.Length < 1 ? 0 : int.Parse(tag.level.text);
             newCustom.permanent = tag.permanent.isOn;
             newCustom.RandomTraits = new List<Traits>();
+            newCustom.listtype = tag.listType;
             foreach (var trait in tag.TraitDictionary)
             {
                 if (trait.Value) newCustom.RandomTraits.Add(trait.Key);

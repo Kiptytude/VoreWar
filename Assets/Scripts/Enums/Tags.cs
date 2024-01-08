@@ -383,6 +383,8 @@ public enum Traits
     ForcedMetamorphosis = 207,
     /// <summary>Unit changes Race and side upon digestion</summary>
     MetamorphicConversion = 208,
+    TrueChangeling = 209,
+    /// <summary>Changing will keep preys form upon absorption</summary>
 
 
     //Hidden Cheat Traits

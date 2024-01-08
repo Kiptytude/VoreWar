@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System;
+using System.Linq;
 
 class Youko : Humans, IVoreRestrictions
 {
@@ -15,6 +16,7 @@ class Youko : Humans, IVoreRestrictions
         SecondaryAccessory = new SpriteExtraInfo(1, SecondaryAccessorySprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.Fur, s.Unit.AccessoryColor)); // Tail;
         Beard = null;
         BeardStyles = 0;
+        AllowedMainClothingTypes.Add(new Kimono());
     }
 
     private int GetNumTails(Actor_Unit actor)
@@ -121,4 +123,117 @@ class Youko : Humans, IVoreRestrictions
         }
         return true;
     }
+    
+    class Kimono : MainClothing
+    {
+        public Kimono()
+        {
+            DiscardSprite = State.GameManager.SpriteDictionary.Kimono[23];
+            blocksBreasts = true;
+            coversBreasts = false;
+            blocksDick = false;
+            femaleOnly = true;
+            clothing1 = new SpriteExtraInfo(12, null, null);//base
+            clothing2 = new SpriteExtraInfo(13, null, null);//belt
+            clothing3 = new SpriteExtraInfo(15, null, null);//arms
+            clothing4 = new SpriteExtraInfo(15, null, null);//pants
+            clothing5 = new SpriteExtraInfo(18, null, null);//bust
+            Type = 60030;
+            DiscardUsesPalettes = true;
+        }
+
+        public override void Configure(CompleteSprite sprite, Actor_Unit actor)
+        {
+            if ((Races.Youko.oversize) || (actor.GetStomachSize(31, 0.7f) > 1))
+            {
+                clothing1.GetSprite = (s) => State.GameManager.SpriteDictionary.Kimono[22];
+                blocksBreasts = false;
+                blocksDick = false;
+                clothing2.GetSprite = null;
+                clothing4.GetSprite = null;
+                clothing5.GetSprite = null;
+            }
+            else
+            {
+                if (actor.Unit.HasBreasts)
+                {
+                    if (actor.Unit.BreastSize < 3)
+                    {
+                        clothing1.GetSprite = (s) => State.GameManager.SpriteDictionary.Kimono[19];
+                        clothing2.GetSprite = (s) => State.GameManager.SpriteDictionary.Kimono[18];
+                        clothing5.GetSprite = null;
+                    }
+                    else if (actor.Unit.BreastSize < 5)
+                    {
+                        coversBreasts = true;
+                        blocksBreasts = false;
+                        clothing1.GetSprite = null;
+                        clothing2.GetSprite = (s) => State.GameManager.SpriteDictionary.Kimono[18];
+                        clothing5.GetSprite = (s) => State.GameManager.SpriteDictionary.Kimono[20];
+                    }
+                    else if (actor.Unit.BreastSize < 8)
+                    {
+                        coversBreasts = true;
+                        blocksBreasts = false;
+                        clothing1.GetSprite = null;
+                        clothing2.GetSprite = (s) => State.GameManager.SpriteDictionary.Kimono[18];
+                        clothing5.GetSprite = (s) => State.GameManager.SpriteDictionary.Kimono[21];
+                    }
+                    else
+                    {
+                        clothing1.GetSprite = (s) => State.GameManager.SpriteDictionary.Kimono[22];
+                        blocksBreasts = false;
+                        clothing2.GetSprite = null;
+                        clothing5.GetSprite = null;
+                    }
+                }
+                else
+                {
+                    blocksBreasts = true;
+                    breastSprite = null;
+                    clothing1.GetSprite = (s) => State.GameManager.SpriteDictionary.Kimono[19];
+                    clothing2.GetSprite = (s) => State.GameManager.SpriteDictionary.Kimono[17];
+                    clothing5.GetSprite = null;
+                }
+
+                if (!(actor.Unit.HasDick) || !(actor.GetBallSize(28, .8f) > 12))
+                {
+                    clothing4.GetSprite = (s) => State.GameManager.SpriteDictionary.Kimono[16];
+                    blocksDick = true;
+
+                }
+                else
+                {
+                    clothing4.GetSprite = null;
+                }
+            }
+
+            if (actor.Unit.HasWeapon == false)
+            {
+                if (actor.IsAttacking) clothing3.GetSprite = (s) => State.GameManager.SpriteDictionary.Kimono[3 + 4 * actor.Unit.BodySize];
+                else clothing3.GetSprite = (s) => State.GameManager.SpriteDictionary.Kimono[0 + 4 * actor.Unit.BodySize];
+            }
+            else if (actor.GetWeaponSprite() == 0 || actor.GetWeaponSprite() == 4 || actor.GetWeaponSprite() == 6)
+            {
+                clothing3.GetSprite = (s) => State.GameManager.SpriteDictionary.Kimono[2 + 4 * actor.Unit.BodySize];
+            }
+            else if (actor.GetWeaponSprite() == 1 || actor.GetWeaponSprite() == 3)
+            {
+                clothing3.GetSprite = (s) => State.GameManager.SpriteDictionary.Kimono[3 + 4 * actor.Unit.BodySize];
+            }
+            else
+            {
+                clothing3.GetSprite = (s) => State.GameManager.SpriteDictionary.Kimono[1 + 4 * actor.Unit.BodySize];
+            }
+
+            clothing1.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.Clothing50Spaced, actor.Unit.ClothingColor);
+            clothing2.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.Clothing50Spaced, actor.Unit.ClothingColor);
+            clothing3.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.Clothing50Spaced, actor.Unit.ClothingColor);
+            clothing4.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.Clothing50Spaced, actor.Unit.ClothingColor);
+            clothing5.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.Clothing50Spaced, actor.Unit.ClothingColor);
+
+            base.Configure(sprite, actor);
+        }
+    }
+
 }

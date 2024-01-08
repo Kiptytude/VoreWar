@@ -376,7 +376,8 @@ static class RaceParameters
             RacialTraits = new List<Traits>()
         {
             Traits.ArtfulDodge,
-            Traits.ThrillSeeker
+            Traits.ThrillSeeker,
+            RandomizeListUtils.CreateLevelTree("Fox",TraitListType.Race,new List<Traits>(){Traits.Skinwalker,Traits.GreaterChangeling,Traits.FastCaster,Traits.Clever,},2,false,1),
         },
             LeaderRace = Race.Youko,
             RaceDescription = "Natives of this realm, the Foxes seem unable of taking danger seriously. They dodge attacks at the last second and only seem to grow ever bolder as death approaches them. Entire armies have fallen exhausted as a group of foxes dances among them, ready to be devoured once the time is right.",
@@ -393,10 +394,9 @@ static class RaceParameters
             {
                 Traits.Charmer,
                 Traits.Temptation,
-                Traits.Possession,
-                Traits.ForceFeeder,
-                Traits.ManaDrain,
+                Traits.TrueChangeling,
                 Traits.CreateSpawn,
+                RandomizeListUtils.CreateLevelTree("Youko",TraitListType.Race,new List<Traits>(){Traits.FastCaster,Traits.StretchyInsides,Traits.ManaDrain,Traits.ManaRich,Traits.Extraction,Traits.Assimilate,Traits.FleetingGrowth,Traits.Colossal},2,false,1),
             },
             RaceStats = new RaceStats()
             {

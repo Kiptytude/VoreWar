@@ -32,6 +32,9 @@ class Prey
     [OdinSerialize]
     public List<Traits> SharedTraits;
 
+    [OdinSerialize]
+    public Unit GrantsShape { get; set; }
+
     public PreyLocation Location => Predator?.PredatorComponent.Location(this) ?? PreyLocation.stomach;
 
     public Prey(Actor_Unit actor, Actor_Unit predator, List<Prey> preyList)

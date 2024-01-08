@@ -6,4 +6,6 @@
     BoundUnit = 3,
     HiddenUnit = 4,
     OriginalForm = 5,
+    GrantsShape = 6,
+
 }

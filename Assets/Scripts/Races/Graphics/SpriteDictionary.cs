@@ -116,6 +116,8 @@ public class SpriteDictionary : MonoBehaviour
     public Sprite[] HumenPants;
     public Sprite[] HumenSkirt;
 
+    public Sprite[] Kimono;
+
     public Sprite[] AlrauneChristmas;
 
     public Sprite SantaHat;

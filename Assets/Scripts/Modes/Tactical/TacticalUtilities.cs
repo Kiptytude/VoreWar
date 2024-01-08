@@ -1066,6 +1066,7 @@ static class TacticalUtilities
     internal static void ShapeshifterPanel(Actor_Unit selectedUnit)
     {
         selectedUnit.Unit.UpdateShapeExpAndItems();
+        ShapeUtils.UpdateShapeTree(selectedUnit.Unit);
         int children = UnitPickerUI.ActorFolder.transform.childCount;
         for (int i = children - 1; i >= 0; i--)
         {
@@ -1136,7 +1137,7 @@ static class TacticalUtilities
             buttons[0].onClick.AddListener(() => selectedUnit.Shapeshift(unit));
             buttons[0].onClick.AddListener(() => UnitPickerUI.gameObject.SetActive(false));
             buttons[1].GetComponentInChildren<Text>().text = "Discard";
-            buttons[1].onClick.AddListener(() => selectedUnit.Unit.ShifterShapes.Remove(unit));
+            buttons[1].onClick.AddListener(() => ShapeUtils.RemoveShape(selectedUnit.Unit,unit));
             buttons[1].onClick.AddListener(() => obj.SetActive(false));
         }
         UnitPickerUI.ActorFolder.GetComponent<RectTransform>().sizeDelta = new Vector2(0, 300 * (1 + (children) / 3));

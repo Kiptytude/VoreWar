@@ -10,7 +10,7 @@ class Humans : DefaultRaceData
     readonly Sprite[] Sprites4 = State.GameManager.SpriteDictionary.HumansVoreSprites;
     readonly Sprite[] Sprites5 = State.GameManager.SpriteDictionary.HumansBodySprites4;
 
-    bool oversize = false;
+    public bool oversize = false;
 
     public Humans()
     {
