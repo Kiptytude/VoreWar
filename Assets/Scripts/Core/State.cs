@@ -143,22 +143,29 @@ public static class State
                     {
                         custom.id = int.Parse(strings[0]);
                         custom.name = strings[1];
-                        custom.listtype = TraitListTypeMethods.StrToTraitListType(strings[2]);
-                        custom.chance = float.Parse(strings[3], new CultureInfo("en-US"));
-                        custom.level = int.Parse(strings[4]);
+                        if(TraitListTypeMethods.StrToTraitListType(strings[2]) == TraitListType.Invalid) //keep things backwards compatable
+                        {
+                            custom.listtype = TraitListType.Random;
+                            custom.chance = float.Parse(strings[2], new CultureInfo("en-US"));
+                            custom.level = int.Parse(strings[3]);
+                            custom.permanent = bool.Parse(strings[4]);
+                        } else {
+                            custom.listtype = TraitListTypeMethods.StrToTraitListType(strings[2]);
+                            custom.chance = float.Parse(strings[3], new CultureInfo("en-US"));
+                            custom.level = int.Parse(strings[4]);
+                            custom.permanent = true;
+                        }           
                         custom.RandomTraits = strings[5].Split('|').ToList().ConvertAll(s => (Traits)int.Parse(s));
-                    }
-                    else if (strings.Length == 6)
+                    } else if (strings.Length == 7)
                     {
                         custom.id = int.Parse(strings[0]);
                         custom.name = strings[1];
-                        custom.chance = float.Parse(strings[2], new CultureInfo("en-US"));
-                        custom.level = int.Parse(strings[3]);
-                        custom.permanent = bool.Parse(strings[4]);
-                        custom.RandomTraits = strings[5].Split('|').ToList().ConvertAll(s => (Traits)int.Parse(s));
-                        RandomizeLists.Add(custom);
+                        custom.listtype = TraitListTypeMethods.StrToTraitListType(strings[2]);
+                        custom.chance = float.Parse(strings[3], new CultureInfo("en-US"));
+                        custom.level = int.Parse(strings[4]);
+                        custom.permanent = bool.Parse(strings[5]);
+                        custom.RandomTraits = strings[6].Split('|').ToList().ConvertAll(s => (Traits)int.Parse(s));
                     }
-
                     RandomizeLists.Add(custom);
                 });
             }

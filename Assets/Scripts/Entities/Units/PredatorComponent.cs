@@ -1211,7 +1211,8 @@ public class PredatorComponent
             State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<b>{actor.Unit.Name}</b> has created a {InfoPanel.RaceSingular(spawnUnit)} Spawn <b>{spawnUnit.Name}</b>.");
         Prey preyref = new Prey(spawnActor, actor, spawnActor.PredatorComponent?.prey);
         spawnActor.UnitSprite.UpdateSprites(spawnActor, false);
-        AddPrey(preyref);
+        prey.Add(preyref);
+        
         FreeUnit(preyref.Actor);
         if (!State.GameManager.TacticalMode.turboMode)
             actor.SetBirthMode();
@@ -1230,16 +1231,16 @@ public class PredatorComponent
 
     internal bool CheckChangeRace(Prey preyUnit)
     {
-        if (unit.HiddenRace == unit.Race && template == null)
+        if (unit.RelatedUnits[SingleUnitContext.OriginalForm] == null)
         {
             return true;
         }
-        if (!prey.Contains(template))
+        foreach(Prey currentPrey in prey)
         {
-            template = null;
-            return true;
+            if(unit == currentPrey.GrantsShape)
+                return false;
         }
-        return false;
+        return true;
     }
 
     private Prey SelectPrey(bool isDead, bool random)
@@ -1247,9 +1248,9 @@ public class PredatorComponent
         Prey bestPrey = null;
         List<Prey> preyList;
         if (isDead)
-            preyList = deadPrey;
+            preyList = deadPrey.Where(s => unit.ShifterShapes.Contains(s.GrantsShape)).ToList();
         else
-            preyList = prey;
+            preyList = prey.Where(s => unit.ShifterShapes.Contains(s.GrantsShape)).ToList();
         if (preyList.Count > 0)
         {
             bestPrey = preyList[State.Rand.Next(preyList.Count)];
@@ -1270,7 +1271,7 @@ public class PredatorComponent
         }
         else
         {
-            actor.RevertRace();
+            ShapeUtils.RevertShape(actor);
             return false;
         }
     }
@@ -1279,14 +1280,7 @@ public class PredatorComponent
     {
         if (CheckChangeRace(preyUnit))
         {
-            if (unit.HasTrait(Traits.Changeling) && !preyUnit.Unit.IsDead)
-                return false;
-            actor.ChangeRaceAny(preyUnit.Unit, false, true);
-            template = preyUnit;
-            foreach (Traits trait in preyUnit.Unit.GetTraits)
-            {
-                ShareTrait(trait, preyUnit);
-            }
+            actor.ChangeRaceAny(preyUnit.GrantsShape);
             return true;
         }
         return false;
@@ -3613,6 +3607,10 @@ public class PredatorComponent
         AddPrey(preyref);
         actor.SetPredMode(preyLocation);
         actor.SetVoreSuccessMode();
+        UpdateFullness();
+    }
+    internal void ReplaceUnit(Unit shape){
+        unit = shape;
         UpdateFullness();
     }
 }

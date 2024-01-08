@@ -107,7 +107,7 @@ static class RandomizeListUtils
     {
         if(traitListType == TraitListType.Class)
             isPermanent = true;//classes are always permanent
-        if(traitListType == TraitListType.False)
+        if(traitListType == TraitListType.Race)
             isPermanent = false;//races are never permanent
         if(State.RandomizeLists.Where(rt => rt.name == name).Count() > 0)
         {

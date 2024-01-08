@@ -2773,29 +2773,12 @@ public class Actor_Unit
         }
     }
 
-    public bool ChangeRaceAny(Unit template, bool permanent, bool isPrey)
+    public bool ChangeRaceAny(Unit template)
     {
-        if (Unit.HiddenRace == Unit.Race)
+        if (Unit.ShifterShapes.Contains(template))
         {
-            TacticalGraphicalEffects.CreateSmokeCloud(Position, Unit.GetScale() / 2);
-            Unit.HideRace(template.Race, template);
-            foreach (Traits trait in template.GetTraits)
-            {
-                if ((!Unit.HasTrait(trait) || Unit.HasSharedTrait(trait)) && !TraitsMethods.IsRaceModifying(trait))
-                    if (permanent)
-                        Unit.AddPermanentTrait(trait);
-                    else
-                        ShareTrait(trait, TraitsMethods.LastTrait());
-            }
-            AnimationController = new AnimationController();
-            Unit.ReloadTraits();
-            Unit.InitializeTraits();
-            ReloadSpellTraits();
-            State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"{Unit.Name} shifted form to resemble {template.Name}");
-            Unit.FixedSide = Unit.Side;
-            Unit.Side = template.Side;
-            Unit.hiddenFixedSide = true;
-            PredatorComponent?.UpdateFullness();
+            ShapeUtils.UpdateShapeTree(Unit);
+            Shapeshift (template);
             return true;
         }
         return false;
@@ -2903,22 +2886,37 @@ public class Actor_Unit
         {
             float healthPct = Unit.HealthPct;
             shape.ShifterShapes = Unit.ShifterShapes;
-            shape.Side = Unit.Side;
-            shape.ShifterShapes.Add(Unit);
+            shape.FixedSide = Unit.FixedSide;
+            if (Unit.ShapeData == null)
+            {
+                shape.ShifterShapes.Add(Unit);
+            } else
+            { 
+                if(Unit.ShapeData.SrcUnit == null)
+                    Unit.ShapeData.KeepShape = true;
+                if (Unit.ShapeData.KeepShape)
+                {
+                    shape.ShifterShapes.Add(Unit);
+                }   
+            }
+
             shape.StatusEffects = Unit.StatusEffects;
             shape.RelatedUnits = Unit.RelatedUnits;
+
+            shape.hiddenFixedSide = false;
+            if(shape.Side != shape.FixedSide)
+                shape.hiddenFixedSide = true;
             State.GameManager.TacticalMode.ReplaceUnitInActor(this, shape);
-            
             Unit = shape;
-            Unit.hiddenFixedSide = false;
 
             UnitSprite.UpdateSprites(this, true);
             AnimationController = new AnimationController();
             Unit.ShifterShapes.Remove(shape);
             Unit.InitializeTraits();
+            Unit.ReloadTraits();
             ReloadSpellTraits();
             Unit.Health = (int)Math.Round(Math.Min(Unit.MaxHealth, Math.Max(Unit.MaxHealth * healthPct, 1)));
-            PredatorComponent?.UpdateFullness();
+            PredatorComponent?.ReplaceUnit(Unit);
         }, 0.4f);
         
     }

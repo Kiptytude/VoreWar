@@ -61,6 +61,7 @@
     /// <summary>Unit has been embraced by the heavens, providing damage mitigation for a few turns</summary>
     DivineShield = 29,
     /// <summary>Unit is a random monster for a limited time</summary>
-    Polymorphed = 30
+    Polymorphed = 30,
+
 }
 

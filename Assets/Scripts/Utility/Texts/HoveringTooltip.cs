@@ -559,6 +559,8 @@ public class HoveringTooltip : MonoBehaviour
                 return "While Absorbing a prey, Becomes that prey's Race until absorption";
             case Traits.GreaterChangeling:
                 return "While digesing a prey, Becomes that prey's Race until absorption";
+            case Traits.TrueChangeling:
+                return "Changeling that keeps preys form upon absorption";    
             case Traits.SpiritPossession:
                 return "Units soul continues to possess pred after death";
             case Traits.ForcedMetamorphosis:

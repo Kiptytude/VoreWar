@@ -219,12 +219,13 @@ public class UnitInfoPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         buttons[0].onClick.AddListener(() => Shapeshift(selectedUnit, shape));
         buttons[0].onClick.AddListener(() => obj.SetActive(false));
         buttons[1].GetComponentInChildren<Text>().text = "Discard";
-        buttons[1].onClick.AddListener(() => selectedUnit.ShifterShapes.Remove(shape));
+        buttons[1].onClick.AddListener(() => ShapeUtils.RemoveShape(selectedUnit,shape));
         buttons[1].onClick.AddListener(() => obj.SetActive(false));
     }
 
     internal static void Shapeshift(Unit selectedUnit, Unit shape)
     {
+
         selectedUnit.ShifterShapes.Remove(shape);
         
         shape.ShifterShapes = selectedUnit.ShifterShapes;
@@ -243,6 +244,7 @@ public class UnitInfoPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     internal static void ShapeshifterPanel(Unit selectedUnit)
     {
         selectedUnit.UpdateShapeExpAndItems(false);
+        ShapeUtils.UpdateShapeTree(selectedUnit);
         if (UnitPickerUI == null)
             UnitPickerUI = State.GameManager.Recruit_Mode.HireUI;
         int children = UnitPickerUI.ActorFolder.transform.childCount;

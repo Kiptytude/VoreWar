@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using UnityEngine;
+using System.Linq;
 
 abstract class Trait
 {
@@ -129,6 +132,12 @@ interface INoAutoEscape
     bool CanEscape(Prey preyUnit, Actor_Unit predUnit);
 }
 
+interface ISpawnTrait
+{
+}
+interface IBirthTrait
+{
+}
 abstract class AbstractBooster : Trait
 {
     internal Action<PermanentBoosts> Boost;
@@ -199,6 +208,7 @@ static class TraitList
         [Traits.Metamorphosis] = new Metamorphosis(),
         [Traits.Changeling] = new Changeling(),
         [Traits.GreaterChangeling] = new GreaterChangeling(),
+        [Traits.TrueChangeling] = new TrueChangeling(),
         [Traits.Symbiote] = new Symbiote(),
         [Traits.TraitBorrower] = new TraitBorrower(),
         [Traits.CreateSpawn] = new CreateSpawn(),
@@ -491,7 +501,7 @@ internal class Whispers : VoreTrait, IProvidesSingleSpell
     }
 }
 
-internal class Parasite : VoreTraitBooster
+internal class Parasite : VoreTraitBooster, ISpawnTrait
 {
     public Parasite()
     {
@@ -512,7 +522,7 @@ internal class Parasite : VoreTraitBooster
     }
 }
 
-internal class Metamorphosis : VoreTrait, INoAutoEscape
+internal class Metamorphosis : VoreTrait, INoAutoEscape, ISpawnTrait
 {
     public Metamorphosis()
     {
@@ -611,7 +621,7 @@ internal class Possession : VoreTraitBooster, INoAutoEscape
     }
 }
 
-internal class Changeling : VoreTrait, IProvidesMultiSpell
+internal class Changeling : VoreTrait, IShapeshift
 {
     public Changeling()
     {
@@ -626,22 +636,55 @@ internal class Changeling : VoreTrait, IProvidesMultiSpell
 
     public override bool OnRemove(Prey preyUnit, Actor_Unit predUnit, PreyLocation location)
     {
-        if (preyUnit == predUnit.PredatorComponent.template)
+        if(preyUnit.GrantsShape != null)
         {
-            predUnit.RevertRace();
-            predUnit.PredatorComponent.ChangeRaceAuto(TargetIsDead, false);
-            return false;
+            preyUnit.GrantsShape.ShapeData.KeepShape = false;
+            ShapeUtils.RemoveShape(predUnit.Unit,preyUnit.GrantsShape);
+            if(preyUnit.GrantsShape == predUnit.Unit)
+                predUnit.PredatorComponent.ChangeRaceAuto(TargetIsDead, false);
         }
+        preyUnit.GrantsShape = null;
         return true;
     }
 
     public override bool OnDigestionKill(Prey preyUnit, Actor_Unit predUnit, PreyLocation location)
     {
+        if (preyUnit.GrantsShape == null)
+            preyUnit.GrantsShape = CreateShape(predUnit.Unit,preyUnit.Unit);
+        Debug.Log(preyUnit.GrantsShape);
         predUnit.PredatorComponent.TryChangeRace(preyUnit);
         return true;
     }
 
     public List<SpellTypes> GetMultiSpells(Unit unit) => new List<SpellTypes> { SpellList.AssumeForm.SpellType, SpellList.RevertForm.SpellType };
+
+    public Unit CreateShape(Unit source, Unit Target)
+    {
+        Unit shape = source.Clone();
+        shape.CopyAppearance(Target);
+        shape.Name = Target.Name;
+        shape.Race = Target.Race;
+        shape.ShapeData = new Shape(source,true,true,TraitSharingStrategy.UseUnitFormBound);
+        shape.FixedSide = source.FixedSide;
+        shape.Side = Target.FixedSide;
+        shape.hiddenFixedSide = false;
+        if (shape.GetApparentSide() != source.Side)
+            shape.hiddenFixedSide = true;
+        foreach(Traits tag in source.GetTags())
+            if (tag != Traits.Prey)
+                shape.AddFormBoundTrait(tag);
+        if(Target.GetTraits.Count(t => (TraitList.GetTrait(t) != null) && TraitList.GetTrait(t) is ISpawnTrait) > 0)
+            shape.SpawnRace = Target.SpawnRace;
+        shape.SavedCopy = source.SavedCopy;
+        shape.SavedVillage = source.SavedVillage;
+        shape.RelatedUnits = source.RelatedUnits;
+        shape.ShifterShapes = source.ShifterShapes;
+        shape.InitializeTraits();
+        shape.ReloadTraits();
+        source.ShifterShapes.Add(shape);
+        return shape;
+    }
+
 }
 
 internal class GreaterChangeling : Changeling
@@ -659,7 +702,30 @@ internal class GreaterChangeling : Changeling
 
     public override bool OnSwallow(Prey preyUnit, Actor_Unit predUnit, PreyLocation location)
     {
+        if (preyUnit.GrantsShape == null)
+            preyUnit.GrantsShape = CreateShape(predUnit.Unit,preyUnit.Unit);
+        Debug.Log(preyUnit.GrantsShape);
         return !predUnit.PredatorComponent.TryChangeRace(preyUnit);
+    }
+
+}
+internal class TrueChangeling : GreaterChangeling
+{
+    public TrueChangeling()
+    {
+        Description = "While digesting prey, changes to prey's race";
+    }
+
+    public override bool IsPredTrait => true;
+
+    public override int ProcessingPriority => 50;
+
+    public override bool TargetIsDead => false;
+
+    public override bool OnFinishAbsorption(Prey preyUnit, Actor_Unit predUnit, PreyLocation location)
+    {
+        preyUnit.GrantsShape = null;
+        return true;
     }
 }
 
@@ -731,7 +797,7 @@ internal class TraitBorrower : VoreTrait
         return true;
     }
 }
-internal class CreateSpawn : VoreTrait
+internal class CreateSpawn : VoreTrait, ISpawnTrait
 {
     public CreateSpawn()
     {
@@ -748,7 +814,7 @@ internal class CreateSpawn : VoreTrait
         if (!predUnit.Unit.HasSharedTrait(Traits.CreateSpawn))
             spawnRace = predUnit.Unit.HiddenUnit.DetermineSpawnRace();
         // use source race IF changeling already had this ability before transforming
-        predUnit.PredatorComponent.CreateSpawn(spawnRace, predUnit.Unit.Side, predUnit.Unit.Experience / 2);
+        predUnit.PredatorComponent.CreateSpawn(spawnRace, predUnit.Unit.FixedSide, predUnit.Unit.Experience / 2);
         return true;
     }
 }
