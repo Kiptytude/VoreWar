@@ -823,9 +823,12 @@ public class Unit
         }
         else if (race == Race.Abakhanskya)
         {
+            try {
             FixedGear = true;
             Items[0] = State.World.ItemRepository.GetSpecialItem(SpecialItems.AbaWeapon);
             Items[1] = State.World.ItemRepository.GetSpecialItem(SpecialItems.AbaArmor);
+            }
+            catch {}
         }
         else
         {

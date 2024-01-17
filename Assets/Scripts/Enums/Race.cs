@@ -32,6 +32,7 @@
     Sharks = 27,
     Deer = 28,
     Aabayx = 29,
+    MatronsMinions = 30,
 
     Succubi = 50,
     Tigers = 51,
@@ -101,5 +102,5 @@
     Auri = 179,
     Erin = 180,
     Salix = 181,
-    Abakhanskya = 182,
+    Abakhanskya = 183,
 }

@@ -1,7 +1,5 @@
 ﻿static class Races
 {
-
-
     static internal Cats Cats = new Cats();
     static internal Dogs Dogs = new Dogs();
     static internal Foxes Foxes = new Foxes();
@@ -35,6 +33,8 @@
     static internal Deer Deer = new Deer();
     static internal Youko Youko = new Youko();
     static internal Aabayx Aabayx = new Aabayx();
+    static internal Abakhanskya Abakhanskya = new Abakhanskya();
+    static internal MatronsMinions MatronsMinions = new MatronsMinions();
 
     static internal Tigers Tigers = new Tigers();
     static internal Goblins Goblins = new Goblins();
@@ -104,7 +104,6 @@
     static internal Goodra Goodra = new Goodra();
     static internal Whisp Whisp = new Whisp();
     static internal FeralHorses FeralHorses = new FeralHorses();
-    static internal Abakhanskya Abakhanskya = new Abakhanskya();
     static internal BlankSlate BlankSlate = new BlankSlate();
 
     static internal DefaultRaceData GetRace(Unit unit)
@@ -322,6 +321,8 @@
                 return FeralHorses;
             case Race.Abakhanskya:
                 return Abakhanskya;
+            case Race.MatronsMinions:
+                return MatronsMinions;
         }
         UnityEngine.Debug.LogWarning("Couldn't find race, substituting the Blank Slate");
         return BlankSlate;

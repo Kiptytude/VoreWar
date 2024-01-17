@@ -43,6 +43,7 @@ public class NameGenerator
     List<string> sharkTownNames;
     List<string> deerTownNames;
     List<string> aabayxTownNames;
+    List<string> matronsminionsTownNames;
 
     List<string> compyNames;
     List<string> vagrantNames;
@@ -837,6 +838,19 @@ public class NameGenerator
             "Podoviridae",
             "Autographiviridae",
         };
+        matronsminionsTownNames = new List<string>
+        {
+            "Matron's Rest",
+            "Giant's Pass",
+            "Her Tranquility",
+            "Aged Gate",
+            "Fateland",
+            "Grave of All",
+            "Dragon's Lounge",
+            "Beaten Path",
+            "Lair of the Lady",
+            "Ancestor's Pit",
+        };
 
         Encoding encoding = Encoding.GetEncoding("iso-8859-1");
 
@@ -1230,6 +1244,11 @@ public class NameGenerator
         {
             if (i >= 0 && i < aabayxTownNames.Count)
                 return aabayxTownNames[i];
+        }
+        else if (race == Race.MatronsMinions)
+        {
+            if (i >= 0 && i < matronsminionsTownNames.Count)
+                return matronsminionsTownNames[i];
         }
 
 

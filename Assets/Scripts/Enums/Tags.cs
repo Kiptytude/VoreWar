@@ -354,6 +354,8 @@ public enum Traits
     ViralDigestion = 178,
     /// <summary>This unit has a very strange body type, making them harder to swallow and providing less sustenance as prey.</summary>
     AwkwardShape = 179,
+    /// <summary></summary>
+    Legendary = 180,
 
 
 

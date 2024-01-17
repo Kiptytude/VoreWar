@@ -101,6 +101,7 @@ static class RaceParameters
     static readonly RaceTraits Salix;
     static readonly RaceTraits FeralHorses;
     static readonly RaceTraits Abakhanskya;
+    static readonly RaceTraits MatronsMinions;
 
     static Unit tempUnit;
 
@@ -320,6 +321,8 @@ static class RaceParameters
                 return FeralHorses;
             case Race.Abakhanskya:
                 return Abakhanskya;
+            case Race.MatronsMinions:
+                return MatronsMinions;
             case (Race)700: //Singled out so that it doesn't make the debug message
                 return Default;
             case (Race)701:
@@ -829,6 +832,54 @@ static class RaceParameters
                 Traits.SlowBreeder,
         },
             RaceDescription = "The Aabayx are a species of virosapiens who recently revealed themselves to the world and were quick to commit to the stage of war.  Strangely enough, they are not new arrivals to the realm, but rather have been in extreme isolation in an unknown location and were waiting for the exact right time to resurface and conquer the masses.  That time is now.",
+        };
+
+        Abakhanskya = new RaceTraits()
+        {
+            BodySize = 500,
+            StomachSize = 250,
+            HasTail = true,
+            FavoredStat = Stat.Stomach,
+            AllowedVoreTypes = new List<VoreType> { VoreType.Oral, VoreType.Unbirth, VoreType.Anal },
+            ExpMultiplier = 20f,
+            PowerAdjustment = 100f,
+            RaceStats = new RaceStats()
+            {
+                Strength = new RaceStats.StatRange(60, 70),
+                Dexterity = new RaceStats.StatRange(25, 35),
+                Endurance = new RaceStats.StatRange(70, 90),
+                Mind = new RaceStats.StatRange(60, 70),
+                Will = new RaceStats.StatRange(60, 70),
+                Agility = new RaceStats.StatRange(20, 30),
+                Voracity = new RaceStats.StatRange(40, 50),
+                Stomach = new RaceStats.StatRange(40, 50),
+            },
+            RacialTraits = new List<Traits>()
+        {
+                Traits.Legendary,
+                Traits.ForcefulBlow,
+                Traits.Cruel,
+                Traits.SlowAbsorption,
+                Traits.Ravenous,
+        },
+            RaceDescription = "Abakhanskya is an ancient dragoness hailing from another realm.  Despite this fact, she has been here for generations upon generations and has quite the body to show for it, absolutely brimming with the nutrients stolen from countless prey throughout the years.  She is an unstoppable force of predatory nature, it is unwise to face her on fair terms.",
+        };
+
+        MatronsMinions = new RaceTraits()
+        {
+            BodySize = 9,
+            StomachSize = 12,
+            HasTail = true,
+            FavoredStat = Stat.Agility,
+            RacialTraits = new List<Traits>()
+            {
+                Traits.ProlificBreeder,
+                Traits.EasyToVore,
+                Traits.Replaceable,
+            },
+            LeaderRace = Race.Abakhanskya,
+            RaceDescription = "A tribe of kobolds who are faithfully serving their goddess, Abakhanskya.",
+            RaceAI = RaceAI.ServantRace
         };
 
         Succubi = new RaceTraits()
@@ -2703,35 +2754,6 @@ static class RaceParameters
             InnateSpells = new List<SpellTypes>()
             { SpellTypes.AmplifyMagic, SpellTypes.Evocation, SpellTypes.ManaFlux, SpellTypes.UnstableMana},
             RaceDescription = "A demi-mouse mage from a different, mana rich dimension. Has had trouble adapting to the absence of mana here, but makes do.",
-        };
-        Abakhanskya = new RaceTraits()
-        {
-            BodySize = 500,
-            StomachSize = 480,
-            HasTail = true,
-            FavoredStat = Stat.Stomach,
-            AllowedVoreTypes = new List<VoreType> { VoreType.Oral, VoreType.Unbirth, VoreType.Anal },
-            ExpMultiplier = 20f,
-            PowerAdjustment = 100f,
-            RaceStats = new RaceStats()
-            {
-                Strength = new RaceStats.StatRange(85, 95),
-                Dexterity = new RaceStats.StatRange(50, 60),
-                Endurance = new RaceStats.StatRange(95, 105),
-                Mind = new RaceStats.StatRange(85, 95),
-                Will = new RaceStats.StatRange(85, 95),
-                Agility = new RaceStats.StatRange(45, 55),
-                Voracity = new RaceStats.StatRange(65, 75),
-                Stomach = new RaceStats.StatRange(65, 75),
-            },
-            RacialTraits = new List<Traits>()
-        {
-                Traits.ForcefulBlow,
-                Traits.StrongGullet,
-                Traits.Pounce,
-                Traits.HeavyPounce,
-        },
-            RaceDescription = "Abakhanskya is an ancient dragoness hailing from another realm.  Despite this fact, she has been here for generations upon generations and has quite the body to show for it, absolutely brimming with the nutrients stolen from countless prey throughout the years.  She is an unstoppable force of predatory nature, it is unwise to face her on fair terms.",
         };
 
     }
