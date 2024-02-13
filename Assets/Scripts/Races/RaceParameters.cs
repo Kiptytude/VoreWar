@@ -102,6 +102,7 @@ static class RaceParameters
     static readonly RaceTraits FeralHorses;
     static readonly RaceTraits Abakhanskya;
     static readonly RaceTraits MatronsMinions;
+    static readonly RaceTraits WyvernMatron;
 
     static Unit tempUnit;
 
@@ -323,6 +324,8 @@ static class RaceParameters
                 return Abakhanskya;
             case Race.MatronsMinions:
                 return MatronsMinions;
+            case Race.WyvernMatron:
+                return WyvernMatron;
             case (Race)700: //Singled out so that it doesn't make the debug message
                 return Default;
             case (Race)701:
@@ -1294,6 +1297,32 @@ static class RaceParameters
             },
             RaceDescription = "When young the Wyverns aren't good predators. They do have a healthy appetite though, and follow older Wyverns in hope of getting the better of prey weakened by the adults.",
 
+        };
+
+        WyvernMatron = new RaceTraits()
+        {
+            BodySize = 20,
+            StomachSize = 18,
+            FavoredStat = Stat.Agility,
+            AllowedVoreTypes = new List<VoreType> { VoreType.Oral, VoreType.Unbirth, VoreType.CockVore, VoreType.Anal },
+            ExpMultiplier = 1.6f,
+            PowerAdjustment = 2.1f,
+            RaceStats = new RaceStats()
+            {
+                Strength = new RaceStats.StatRange(9, 21),
+                Dexterity = new RaceStats.StatRange(7, 14),
+                Endurance = new RaceStats.StatRange(15, 22),
+                Mind = new RaceStats.StatRange(14, 28),
+                Will = new RaceStats.StatRange(8, 18),
+                Agility = new RaceStats.StatRange(11, 22),
+                Voracity = new RaceStats.StatRange(12, 18),
+                Stomach = new RaceStats.StatRange(9, 16),
+            },
+            RacialTraits = new List<Traits>()
+        {
+                Traits.Flight,
+        },
+            RaceDescription = "The beings called Wyvern Matrons are rare, larger, hermaphroditic variant of the wyvern. Why exactly some wyverns turn into such is unknown, but the resulting being is an even greater threat than average wyverns are.",
         };
 
         Compy = new RaceTraits()

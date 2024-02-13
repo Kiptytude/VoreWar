@@ -254,6 +254,7 @@ public class SpriteDictionary : MonoBehaviour
     public Sprite[] Serpents;
     public Sprite[] Wyvern;
     public Sprite[] YoungWyvern;
+    public Sprite[] WyvernMatron;
     public Sprite[] Compy;
     public Sprite[] FeralWolf;
     public Sprite[] Shark;

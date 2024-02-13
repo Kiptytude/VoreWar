@@ -53,6 +53,7 @@
     static internal Serpents Serpents = new Serpents();
     static internal Wyvern Wyvern = new Wyvern();
     static internal YoungWyvern YoungWyvern = new YoungWyvern();
+    static internal WyvernMatron WyvernMatron = new WyvernMatron();
     static internal Compy Compy = new Compy();
     static internal FeralWolf FeralWolf = new FeralWolf();
     static internal Sharks Sharks = new Sharks();
@@ -197,6 +198,8 @@
                 return Wyvern;
             case Race.YoungWyvern:
                 return YoungWyvern;
+            case Race.WyvernMatron:
+                return WyvernMatron;
             case Race.Compy:
                 return Compy;
             case Race.FeralWolves:

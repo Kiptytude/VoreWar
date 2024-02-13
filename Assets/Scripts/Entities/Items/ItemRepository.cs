@@ -162,6 +162,7 @@ public class ItemRepository
 			new Weapon(name:"Goodra Slug Antenna", description:"Goodra's Power Whip", cost:4, graphic:0, damage:5, range:1),
             new Weapon(name:"Whisp fire", description:"Whisp's FoxFire", cost:4, graphic:0, damage:5, range:5, omniWeapon: true, magicWeapon: true),
             new Weapon(name:"Horse Hooves", description:"A terribly painful kick to the gut!", cost:4, graphic:0, damage:4, range:1),
+            new Weapon(name:"Wyvern Matron Claws", description:"Claws", cost:4, graphic:0, damage:6, range:1),
         };
 
         specialItems = new List<Item>()

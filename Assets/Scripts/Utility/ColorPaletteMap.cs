@@ -98,6 +98,7 @@ public static class ColorPaletteMap
 	    GoodraSkin,
         AabayxSkin,
         FeralHorseSkin,
+        WyvernMatron,
     }
 
     static Dictionary<SwapType, List<ColorSwapPalette>> Swaps;
@@ -241,6 +242,7 @@ public static class ColorPaletteMap
 	    List<ColorSwapPalette> GoodraSkinSwaps = WireUp(SwapType.GoodraSkin);
         List<ColorSwapPalette> AabayxSkinSwaps = WireUp(SwapType.AabayxSkin);
         List<ColorSwapPalette> FeralHorseSkinSwaps = WireUp(SwapType.FeralHorseSkin);
+        List<ColorSwapPalette> WyvernMatronSwaps = WireUp(SwapType.WyvernMatron);
 
         int[] NormalIndexes = { 81, 153, 198, 229, 255 };
         Texture2D map = State.GameManager.PaletteDictionary.SimpleHair;
@@ -1880,6 +1882,31 @@ public static class ColorPaletteMap
             };
             ColorSwapPalette swap = new ColorSwapPalette(swapDict);
             FeralHorseSkinSwaps.Add(swap);
+        }
+
+        map = State.GameManager.PaletteDictionary.WyvernMatron;
+        for (int pixelY = 0; pixelY < map.height; pixelY++)
+        {
+            Dictionary<int, Color> swapDict = new Dictionary<int, Color>
+            {
+                [26] = map.GetPixel(10, pixelY),
+                [51] = map.GetPixel(9, pixelY),
+                [64] = map.GetPixel(4, pixelY),
+                [77] = map.GetPixel(8, pixelY),
+                [89] = map.GetPixel(14, pixelY),
+                [102] = map.GetPixel(3, pixelY),
+                [126] = map.GetPixel(7, pixelY),
+                [153] = map.GetPixel(2, pixelY),
+                [166] = map.GetPixel(13, pixelY),
+                [179] = map.GetPixel(6, pixelY),
+                [191] = map.GetPixel(5, pixelY),
+                [204] = map.GetPixel(1, pixelY),
+                [217] = map.GetPixel(12, pixelY),
+                [230] = map.GetPixel(0, pixelY),
+                [255] = map.GetPixel(11, pixelY)
+            };
+            ColorSwapPalette swap = new ColorSwapPalette(swapDict);
+            WyvernMatronSwaps.Add(swap);
         }
     }
 

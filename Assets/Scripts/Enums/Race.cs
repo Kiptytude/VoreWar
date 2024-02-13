@@ -89,6 +89,7 @@
     Goodra = 138,
     Whisp = 139,
     FeralHorses = 140,
+    WyvernMatron = 141,
 
     Selicia = 170,
     Vision = 171,
