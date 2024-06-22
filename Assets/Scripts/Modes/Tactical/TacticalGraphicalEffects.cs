@@ -11,6 +11,7 @@ static class TacticalGraphicalEffects
         Poison,
         Buff,
         Debuff,
+        Focus,
         Web,
     }
 
