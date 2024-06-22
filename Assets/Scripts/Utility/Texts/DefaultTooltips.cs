@@ -698,6 +698,10 @@ Does not retroactively affect already created units.";
                 return "The tactical turn where every unit is revealed.";
             case 280:
                 return "Affects how likely a Unit will gain weight during absorption. 1 = 100% chance.";
+            case 310:
+                return "Controls how many movement points scout groups start with every turn";
+            case 311:
+                return "Sets the maximum number of units an army can have to be considered scouts";
             default:
                 return "";
         }
