@@ -222,7 +222,9 @@ static class Config
     internal static int MaxSpellLevelDrop => World.MaxSpellLevelDrop;
 
     internal static int ArmyMP => World.ArmyMP;
+    internal static int ScoutMP => World.ScoutMP;
     internal static int MaxArmies => World.MaxArmies;
+    internal static int ScoutMax => World.ScoutMax;
     internal static bool RaceTraitsEnabled => World.GetValue("RaceTraitsEnabled");
     internal static bool RagsForSlaves => World.GetValue("RagsForSlaves");
     internal static bool VisibleCorpses => World.GetValue("VisibleCorpses");
