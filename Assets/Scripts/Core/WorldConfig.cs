@@ -51,7 +51,11 @@ public class WorldConfig
     [OdinSerialize]
     internal int ArmyMP = 3;
     [OdinSerialize]
+    internal int ScoutMP = 6;
+    [OdinSerialize]
     internal int MaxArmies = 32;
+    [OdinSerialize]
+    internal int ScoutMax = 4;
 
     [OdinSerialize, AllowEditing, ProperName("Gold Mine Income"), IntegerRange(0, 9999), Description("Gold provided by gold mines")]
     internal int GoldMineIncome = 40;
