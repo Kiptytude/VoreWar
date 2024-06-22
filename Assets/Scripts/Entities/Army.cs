@@ -177,6 +177,10 @@ public class Army
         }
 
         RemainingMP = GetMaxMovement();
+        if (Units.Count <= Config.ScoutMax)
+                RemainingMP = Config.ScoutMP;
+        else
+                RemainingMP = Config.ArmyMP;
         DevourThisTurn = false;
         GetTileHealRate();
         ProcessInVillageOnTurn();
