@@ -221,6 +221,16 @@ public class SpriteDictionary : MonoBehaviour
     public Sprite[] Aabayx;
     public Sprite[] AabayxFacePaint;
 
+    public Sprite[] Mice1;
+    public Sprite[] Mice2;
+    public Sprite[] MiceFBottoms;
+    public Sprite[] MiceFTops;
+    public Sprite[] MiceMBottoms;
+    public Sprite[] MiceMTops;
+    public Sprite[] MiceVore1;
+    public Sprite[] MiceVore2;
+    public Sprite[] MiceVore3;
+
     [Header("Unique Mercenaries")]
     public Sprite[] Selicia;
     public Sprite[] Vision;
