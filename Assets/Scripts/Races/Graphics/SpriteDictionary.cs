@@ -200,6 +200,7 @@ public class SpriteDictionary : MonoBehaviour
     public Sprite[] Vargul3;
     public Sprite[] Vargul4;
     public Sprite[] Vargul5;
+    public Sprite[] Hamsters;
 
     public Sprite[] CowsSeliciaBelly;
 
