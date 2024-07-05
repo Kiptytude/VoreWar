@@ -71,8 +71,6 @@ class Hamsters : BlankSlate
 
     protected override Sprite HeadSprite(Actor_Unit actor)
     {
-        if (actor.IsOralVoring)
-            return State.GameManager.SpriteDictionary.Hamsters[4];
         return State.GameManager.SpriteDictionary.Hamsters[3];
     }
 
@@ -83,6 +81,8 @@ class Hamsters : BlankSlate
 
     protected override Sprite MouthSprite(Actor_Unit actor)
     {
+        if (actor.IsOralVoring)
+            return State.GameManager.SpriteDictionary.Hamsters[4];
         return State.GameManager.SpriteDictionary.Hamsters[16 + actor.Unit.MouthType];
     }
 
@@ -244,9 +244,9 @@ class Hamsters : BlankSlate
     {
         public Vest()
         {
-            coversBreasts = false;
+            coversBreasts = true;
             blocksDick = false;
-            clothing1 = new SpriteExtraInfo(17, null, null);
+            clothing1 = new SpriteExtraInfo(14, null, null);
         }
 
         public override void Configure(CompleteSprite sprite, Actor_Unit actor)
