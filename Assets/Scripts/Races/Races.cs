@@ -47,7 +47,7 @@
     static internal Komodos Komodos = new Komodos();
     static internal Cockatrice Cockatrice = new Cockatrice();
     static internal Vargul Vargul = new Vargul();
-
+    static internal Hamsters Hamsters = new Hamsters();
 
     static internal Vagrants Vagrants = new Vagrants();
     static internal Serpents Serpents = new Serpents();
@@ -304,6 +304,8 @@
                 return Terrorbird;
             case Race.Vargul:
                 return Vargul;
+            case Race.Hamsters:
+                return Hamsters;
             case Race.Dratopyr:
                 return Dratopyr;
             case Race.Erin:

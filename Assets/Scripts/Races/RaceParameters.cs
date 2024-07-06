@@ -47,6 +47,7 @@ static class RaceParameters
     static readonly RaceTraits Komodos;
     static readonly RaceTraits Cockatrice;
     static readonly RaceTraits Vargul;
+    static readonly RaceTraits Hamsters;
     static readonly RaceTraits Vagrants;
     static readonly RaceTraits Serpents;
     static readonly RaceTraits Wyvern;
@@ -203,6 +204,8 @@ static class RaceParameters
                 return Cockatrice;
             case Race.Vargul:
                 return Vargul;
+            case Race.Hamsters:
+                return Hamsters;
             case Race.Vagrants:
                 return Vagrants;
             case Race.Serpents:
@@ -1129,6 +1132,33 @@ static class RaceParameters
                 Traits.Berserk,
             },
             RaceDescription = "",
+        };
+
+        Hamsters = new RaceTraits()
+        {
+            BodySize = 10,
+            StomachSize = 18,
+            HasTail = true,
+            FavoredStat = Stat.Strength,
+            RaceStats = new RaceStats()
+            {
+                Strength = new RaceStats.StatRange(18, 26),
+                Dexterity = new RaceStats.StatRange(10, 14),
+                Endurance = new RaceStats.StatRange(17, 23),
+                Mind = new RaceStats.StatRange(8, 16),
+                Will = new RaceStats.StatRange(8, 16),
+                Agility = new RaceStats.StatRange(8, 14),
+                Voracity = new RaceStats.StatRange(8, 12),
+                Stomach = new RaceStats.StatRange(12, 18),
+            },
+            RacialTraits = new List<Traits>()
+        {
+            Traits.StrongMelee,
+            Traits.PackStrength,
+            Traits.Resilient,
+            Traits.Biter,
+        },
+            RaceDescription = "A race renowned for their excellent smithing and startling strength despite their stature. Their settlements have rarely been seen above ground however, they are known to have ginormous kingdoms underground that dwarf most other faction's capitals.",
         };
 
         Vagrants = new RaceTraits()
