@@ -1028,6 +1028,19 @@ public class Actor_Unit
                 damage += (int)(damage * 0.2f);
             }
         }
+        if (Unit.HasTrait(Traits.SwiftStrike))
+        {
+            int stat_diff = Unit.GetStat(Stat.Agility) - target.Unit.GetStat(Stat.Agility);
+            if (stat_diff >= 25)
+            {
+                damage += (int)(damage * 0.25f);
+            }
+            else if (stat_diff > 0)
+            {
+                damage += (int)(damage * (stat_diff/100));
+            }
+        }
+
         if (TacticalUtilities.SneakAttackCheck(Unit, target.Unit)) // sneakAttack
         {
             damage *= 3;
@@ -2146,6 +2159,10 @@ public class Actor_Unit
         {
             Unit.HealPercentage(0.03f * TurnsSinceLastDamage);
         }
+        if (Unit.HasTrait(Traits.Timid) && (Unit.NearbyEnemies > Unit.NearbyFriendlies))
+        {
+            Unit.ApplyStatusEffect(StatusEffectType.Shaken, .2f, 1);
+        }
         ReceivedRub = false;
         TurnsSinceLastDamage++;
     }
@@ -2354,7 +2371,7 @@ public class Actor_Unit
 
         return ratio;
     }
-	
+
     internal bool CastSpell(Spell spell, Actor_Unit target)
     {
         if (Unit.SpendMana(spell.ManaCost) == false && spell.IsFree != true)

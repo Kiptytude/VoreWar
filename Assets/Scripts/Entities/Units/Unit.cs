@@ -522,6 +522,7 @@ public class Unit
 
 
     internal int NearbyFriendlies = 0;
+    internal int NearbyEnemies = 0;
     internal bool Harassed = false;
 
     public bool IsDead => (Health < 1);

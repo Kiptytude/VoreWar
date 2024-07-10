@@ -1253,6 +1253,7 @@ Turns: {currentTurn}
             units[i].Intimidated = false;
             units[i].Unit.Harassed = false;
             units[i].Unit.NearbyFriendlies = 0;
+            units[i].Unit.NearbyEnemies = 0;
         }
 
         for (int i = 0; i < units.Count; i++)
@@ -1276,6 +1277,8 @@ Turns: {currentTurn}
                     {
                         ApplyEnemyTags(units[i], units[j]);
                         ApplyEnemyTags(units[j], units[i]);
+                        units[i].Unit.NearbyEnemies++;
+                        units[j].Unit.NearbyEnemies++;
                     }
                 }
             }

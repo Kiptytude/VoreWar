@@ -350,13 +350,14 @@ public enum Traits
     SpellBlade = 176,
     /// <summary>Unit gains 1 focus when landing a spell, gains 4 if the spell kills the target.</summary>
     ArcaneMagistrate = 177,
-    /// <summary>Damage over time effect recieved from being devoured by an Aabayx</summary>
+    /// <summary>Damage over time effect received from being devoured by an Aabayx</summary>
     ViralDigestion = 178,
     /// <summary>This unit has a very strange body type, making them harder to swallow and providing less sustenance as prey.</summary>
     AwkwardShape = 179,
-
-
-
+    /// <summary>Unit deals up 1% more weapon damage per agility it has over it's target, up to 25%, tripled when using light weapons.  </summary>
+    SwiftStrike = 180,
+    /// <summary>This unit is shaken if the turn ends and there are more enemies than allies are nearby.</summary>
+    Timid = 181,
 
 
     //Hidden Traits
