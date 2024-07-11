@@ -501,6 +501,8 @@ static class LogUtilities
                 return GetRandomStringFrom("'gator", "alligator", "crocodilian", "reptile");
             case Race.Puca:
                 return GetRandomStringFrom("puca", "bunny", "lagomorph", "digger");
+            case Race.Hamsters:
+                return GetRandomStringFrom("hamster", "rodent", "shortstack");
             case Race.Vagrants:
                 return GetRandomStringFrom("vagrant", "jellyfish", "medusa");
             case Race.Serpents:
@@ -675,6 +677,14 @@ static class LogUtilities
             else if (weapon.Name == "Axe") return "Shovel";
             else if (weapon.Name == "Simple Bow") return "Slingshot";
             else if (weapon.Name == "Compound Bow") return "Heavy Slingshot";
+        }
+        else if (unit.Race == Race.Hamsters)
+        {
+            if (weapon.Name == "Mace") return "Warhammer";
+            else if (weapon.Name == "Axe") return "Heavy Warhammer";
+            else if (weapon.Name == "Simple Bow") return "Throwing Axe";
+            else if (weapon.Name == "Compound Bow") return "Throwing Axe";
+            else if (weapon.Name == "Claw") return "Claws";
         }
         else if (unit.Race == Race.Vipers)
         { /*V33B ADDITION*/

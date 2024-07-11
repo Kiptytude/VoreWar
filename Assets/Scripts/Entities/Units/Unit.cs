@@ -821,6 +821,11 @@ public class Unit
             Items[0] = State.World.ItemRepository.GetSpecialItem(SpecialItems.ErinWeapon);
             Items[1] = State.World.ItemRepository.GetSpecialItem(SpecialItems.ErinWings);
         }
+        else if (race == Race.Bella)
+        {
+            FixedGear = true;
+            Items[0] = State.World.ItemRepository.GetSpecialItem(SpecialItems.BellaWeapon);
+        }
         else
         {
             FixedGear = false;

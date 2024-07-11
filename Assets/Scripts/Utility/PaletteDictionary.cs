@@ -27,6 +27,7 @@ public class PaletteDictionary : MonoBehaviour
     public Texture2D AlrauneFoliage;
     public Texture2D DemibatSkin;
     public Texture2D Puca;
+    public Texture2D Hamsters;
     public Texture2D HippoSkin;
     public Texture2D Harvester;
     public Texture2D Bats;

@@ -343,6 +343,7 @@ static class Config
     public static bool Cumstains => World.GetValue("Cumstains");
     public static float BurpFraction => World.BurpFraction;
     public static float FartFraction => World.FartFraction;
+    public static float WeightGainFraction => World.WeightGainFraction;
     internal static bool BurpOnDigest => World.GetValue("BurpOnDigest");
     public static bool FartOnAbsorb => World.GetValue("FartOnAbsorb");
 
