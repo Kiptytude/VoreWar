@@ -354,10 +354,14 @@ public enum Traits
     ViralDigestion = 178,
     /// <summary>This unit has a very strange body type, making them harder to swallow and providing less sustenance as prey.</summary>
     AwkwardShape = 179,
-    /// <summary>Unit deals up 1% more weapon damage per agility it has over it's target, up to 25%, tripled when using light weapons.  </summary>
+    /// <summary>Unit deals up 1% more weapon damage per agility it has over it's target, up to 25%, tripled when using light weapons.</summary>
     SwiftStrike = 180,
-    /// <summary>This unit is shaken if the turn ends and there are more enemies than allies are nearby.</summary>
+    /// <summary>This unit is shaken if the turn ends and there are more enemies than allies are nearby. (This unit counts) </summary>
     Timid = 181,
+    /// <summary>Unit has a chance based on it's missing health to surrender.</summary>
+    Cowardly = 182,
+    /// <summary>Unit has a chance based on it's missing health to change sides.</summary>
+    TurnCoat = 183,
 
 
     //Hidden Traits
