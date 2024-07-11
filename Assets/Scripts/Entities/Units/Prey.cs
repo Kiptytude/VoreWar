@@ -29,8 +29,12 @@ class Prey
     [OdinSerialize]
     public bool ScatDisabled { get; set; }
 
+
+
     [OdinSerialize]
     public List<Traits> SharedTraits;
+
+    public bool HasGivenWeightToPred = false;
 
     public PreyLocation Location => Predator?.PredatorComponent.Location(this) ?? PreyLocation.stomach;
 
@@ -201,6 +205,18 @@ class Prey
             Unit.FixedSide = Predator.Unit.FixedSide;
         Actor.Surrendered = false;
     }
+
+    public void PredWeightGain()
+    {
+        
+        if (!HasGivenWeightToPred)
+        {
+            HasGivenWeightToPred = true;
+            Predator.PredatorComponent.WeightGain(this);
+
+        }
+    }
+
     public List<BoneInfo> GetBoneTypes()
     {
         List<BoneInfo> rtn = new List<BoneInfo>();

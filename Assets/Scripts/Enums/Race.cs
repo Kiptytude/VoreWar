@@ -46,6 +46,7 @@
     Cockatrice = 60,
     Vargul = 61,
     Youko = 62,
+    Hamsters =63,
 
     Vagrants = 100,
     Serpents = 101,
@@ -100,4 +101,5 @@
     Auri = 179,
     Erin = 180,
     Salix = 181,
+    Bella = 182,
 }

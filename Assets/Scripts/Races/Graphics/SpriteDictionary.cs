@@ -200,6 +200,7 @@ public class SpriteDictionary : MonoBehaviour
     public Sprite[] Vargul3;
     public Sprite[] Vargul4;
     public Sprite[] Vargul5;
+    public Sprite[] Hamsters;
 
     public Sprite[] CowsSeliciaBelly;
 
@@ -243,6 +244,14 @@ public class SpriteDictionary : MonoBehaviour
     public Sprite[] Salix;
     public Sprite[] SalixVore;
     public Sprite[] SalixGen;
+    public Sprite[] BellaBody1;
+    public Sprite[] BellaArm1;
+    public Sprite[] BellaHead1;
+    public Sprite[] BellaBody2;
+    public Sprite[] BellaArm2;
+    public Sprite[] BellaHead2;
+    public Sprite[] BellaRobe1;
+    public Sprite[] BellaRobe2;
 
     [Header("Monsters")]
     public Sprite[] Vagrants;
