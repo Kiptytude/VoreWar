@@ -698,6 +698,8 @@ Does not retroactively affect already created units.";
                 return "The tactical turn where every unit is revealed.";
             case 280:
                 return "Affects how likely a Unit will gain weight during absorption. 1 = 100% chance.";
+            case 282:
+                return "Replaces scat with diapers for absorbed units and diaper-related tactical log messages will be displayed.";
             default:
                 return "";
         }

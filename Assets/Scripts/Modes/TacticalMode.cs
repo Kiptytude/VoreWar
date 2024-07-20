@@ -1625,6 +1625,11 @@ Turns: {currentTurn}
             lastDiscard += (1 + scatInfo.bonesInfos.Count); //scatback + scatfront + bones
             miscDiscards.Add(new ScatV2Discard(location, sortOrder, scatInfo));
         }
+        else if (Config.CleanDisposeal == true)
+        {
+            lastDiscard += (1 + scatInfo.bonesInfos.Count); //scatback + scatfront + bones
+            miscDiscards.Add(new DiaperDiscard(location, sortOrder, scatInfo));
+        }
         else
         {
             int spriteNum;
