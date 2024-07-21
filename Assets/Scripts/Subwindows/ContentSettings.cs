@@ -162,7 +162,7 @@ public class ContentSettings : MonoBehaviour
     public Toggle FartOnAbsorb;
 
     public Toggle Bones;
-    public Toggle CleanDisposeal;
+    public Toggle CleanDisposal;
     public Toggle Scat;
     public Toggle ScatV2;
     public Toggle ScatBones;
@@ -302,7 +302,7 @@ public class ContentSettings : MonoBehaviour
             new ToggleObject(AnimatedBellies, "AnimatedBellies", true),
             new ToggleObject(DigestionSkulls, "DigestionSkulls",  true),
             new ToggleObject(Bones, "Bones", true),
-            new ToggleObject(CleanDisposeal, "CleanDisposeal", false),
+            new ToggleObject(CleanDisposal, "CleanDisposal", false),
             new ToggleObject(Scat, "Scat", false),
             new ToggleObject(ScatV2, "ScatV2", false),
             new ToggleObject(ScatBones, "ScatBones", false),
@@ -740,7 +740,7 @@ public class ContentSettings : MonoBehaviour
 
     public void DiaperChanged()
     {
-        if (CleanDisposeal.isOn == true)
+        if (CleanDisposal.isOn == true)
         {
             ScatBones.isOn = false;
             ScatV2.isOn = false;
@@ -760,20 +760,20 @@ public class ContentSettings : MonoBehaviour
         {
             ScatBones.isOn = false;
             ScatV2.isOn = false;
-            CleanDisposeal.isOn = false;
+            CleanDisposal.isOn = false;
             ScatBones.interactable = false;
             ScatV2.interactable = false;
-            CleanDisposeal.interactable = false;
+            CleanDisposal.interactable = false;
             Bones.interactable = true;
         }
         if (ScatV2.isOn == true)
         {
-            CleanDisposeal.isOn = false;
-            CleanDisposeal.interactable = false;
+            CleanDisposal.isOn = false;
+            CleanDisposal.interactable = false;
         }
         else if (Scat.isOn == true)
         {
-            CleanDisposeal.interactable = true;
+            CleanDisposal.interactable = true;
             ScatBones.interactable = true;
             ScatV2.interactable = true;
             Bones.interactable = false;

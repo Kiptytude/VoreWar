@@ -4,24 +4,24 @@ TextureImporter:
   fileIDToRecycleName:
     21300000: Hero Armor_3
     21300002: Hero Armor_6
-    21300004: clean_disposeal_0
-    21300006: clean_disposeal_1
-    21300008: clean_disposeal_2
-    21300010: clean_disposeal_3
-    21300012: clean_disposeal_4
-    21300014: clean_disposeal_5
-    21300016: clean_disposeal_6
-    21300018: clean_disposeal_7
-    21300020: clean_disposeal_8
-    21300022: clean_disposeal_9
-    21300024: clean_disposeal_10
-    21300026: clean_disposeal_11
-    21300028: clean_disposeal_12
-    21300030: clean_disposeal_13
-    21300032: clean_disposeal_14
-    21300034: clean_disposeal_15
-    21300036: clean_disposeal_16
-    21300038: clean_disposeal_17
+    21300004: clean_disposal_0
+    21300006: clean_disposal_1
+    21300008: clean_disposal_2
+    21300010: clean_disposal_3
+    21300012: clean_disposal_4
+    21300014: clean_disposal_5
+    21300016: clean_disposal_6
+    21300018: clean_disposal_7
+    21300020: clean_disposal_8
+    21300022: clean_disposal_9
+    21300024: clean_disposal_10
+    21300026: clean_disposal_11
+    21300028: clean_disposal_12
+    21300030: clean_disposal_13
+    21300032: clean_disposal_14
+    21300034: clean_disposal_15
+    21300036: clean_disposal_16
+    21300038: clean_disposal_17
   externalObjects: {}
   serializedVersion: 9
   mipmaps:
@@ -104,7 +104,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: clean_disposeal_0
+      name: clean_disposal_0
       rect:
         serializedVersion: 2
         x: 0
@@ -112,7 +112,7 @@ TextureImporter:
         width: 75
         height: 75
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -124,7 +124,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: clean_disposeal_1
+      name: clean_disposal_1
       rect:
         serializedVersion: 2
         x: 75
@@ -132,7 +132,7 @@ TextureImporter:
         width: 75
         height: 75
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -144,7 +144,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: clean_disposeal_2
+      name: clean_disposal_2
       rect:
         serializedVersion: 2
         x: 150
@@ -152,7 +152,7 @@ TextureImporter:
         width: 75
         height: 75
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -164,7 +164,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: clean_disposeal_3
+      name: clean_disposal_3
       rect:
         serializedVersion: 2
         x: 0
@@ -172,7 +172,7 @@ TextureImporter:
         width: 75
         height: 75
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -184,7 +184,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: clean_disposeal_4
+      name: clean_disposal_4
       rect:
         serializedVersion: 2
         x: 75
@@ -192,7 +192,7 @@ TextureImporter:
         width: 75
         height: 75
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -204,7 +204,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: clean_disposeal_5
+      name: clean_disposal_5
       rect:
         serializedVersion: 2
         x: 150
@@ -212,7 +212,7 @@ TextureImporter:
         width: 75
         height: 75
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -224,7 +224,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: clean_disposeal_6
+      name: clean_disposal_6
       rect:
         serializedVersion: 2
         x: 0
@@ -232,7 +232,7 @@ TextureImporter:
         width: 75
         height: 75
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -244,7 +244,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: clean_disposeal_7
+      name: clean_disposal_7
       rect:
         serializedVersion: 2
         x: 75
@@ -252,7 +252,7 @@ TextureImporter:
         width: 75
         height: 75
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -264,7 +264,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: clean_disposeal_8
+      name: clean_disposal_8
       rect:
         serializedVersion: 2
         x: 150
@@ -272,7 +272,7 @@ TextureImporter:
         width: 75
         height: 75
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -284,7 +284,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: clean_disposeal_9
+      name: clean_disposal_9
       rect:
         serializedVersion: 2
         x: 0
@@ -292,7 +292,7 @@ TextureImporter:
         width: 75
         height: 75
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -304,7 +304,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: clean_disposeal_10
+      name: clean_disposal_10
       rect:
         serializedVersion: 2
         x: 75
@@ -312,7 +312,7 @@ TextureImporter:
         width: 75
         height: 75
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -324,7 +324,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: clean_disposeal_11
+      name: clean_disposal_11
       rect:
         serializedVersion: 2
         x: 150
@@ -332,7 +332,7 @@ TextureImporter:
         width: 75
         height: 75
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -344,7 +344,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: clean_disposeal_12
+      name: clean_disposal_12
       rect:
         serializedVersion: 2
         x: 0
@@ -352,7 +352,7 @@ TextureImporter:
         width: 75
         height: 75
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -364,7 +364,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: clean_disposeal_13
+      name: clean_disposal_13
       rect:
         serializedVersion: 2
         x: 75
@@ -372,7 +372,7 @@ TextureImporter:
         width: 75
         height: 75
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -384,7 +384,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: clean_disposeal_14
+      name: clean_disposal_14
       rect:
         serializedVersion: 2
         x: 150
@@ -392,7 +392,7 @@ TextureImporter:
         width: 75
         height: 75
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -404,7 +404,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: clean_disposeal_15
+      name: clean_disposal_15
       rect:
         serializedVersion: 2
         x: 0
@@ -412,7 +412,7 @@ TextureImporter:
         width: 75
         height: 75
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -424,7 +424,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: clean_disposeal_16
+      name: clean_disposal_16
       rect:
         serializedVersion: 2
         x: 75
@@ -432,7 +432,7 @@ TextureImporter:
         width: 75
         height: 75
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -444,7 +444,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: clean_disposeal_17
+      name: clean_disposal_17
       rect:
         serializedVersion: 2
         x: 150
@@ -452,7 +452,7 @@ TextureImporter:
         width: 75
         height: 75
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []

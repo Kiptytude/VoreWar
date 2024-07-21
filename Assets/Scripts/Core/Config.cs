@@ -332,7 +332,7 @@ static class Config
     public static bool AnimatedBellies => World.GetValue("AnimatedBellies");
     public static bool DigestionSkulls => World.GetValue("DigestionSkulls");
     public static bool Bones => World.GetValue("Bones");
-    public static bool CleanDisposeal => World.GetValue("CleanDisposeal");
+    public static bool CleanDisposal => World.GetValue("CleanDisposal");
     public static bool Scat => World.GetValue("Scat");
     public static bool ScatV2 => World.GetValue("ScatV2");
     public static bool ScatBones => World.GetValue("ScatBones");

@@ -130,8 +130,8 @@ static class StoredLogTexts
         bool PreyCumgested(EventLog s) => s.Prey.IsDead && InBalls(s);
         bool CanBurp(EventLog s) => Config.BurpFraction > .1f;
         bool Farts(EventLog s) => Config.FartOnAbsorb;
-        bool Scat(EventLog s) => Config.Scat && Config.CleanDisposeal == false && (s.preyLocation == PreyLocation.stomach || s.preyLocation == PreyLocation.stomach2);
-        bool Diaper(EventLog s) => Config.CleanDisposeal && (s.preyLocation == PreyLocation.stomach || s.preyLocation == PreyLocation.stomach2);
+        bool Scat(EventLog s) => Config.Scat && Config.CleanDisposal == false && (s.preyLocation == PreyLocation.stomach || s.preyLocation == PreyLocation.stomach2);
+        bool Diaper(EventLog s) => Config.CleanDisposal && (s.preyLocation == PreyLocation.stomach || s.preyLocation == PreyLocation.stomach2);
         bool Lewd(EventLog s) => Config.LewdDialog;
         bool HardVore(EventLog s) => Config.HardVoreDialog;
         bool HardVoreInStomach(EventLog s) => Config.HardVoreDialog && (s.preyLocation == PreyLocation.stomach || s.preyLocation == PreyLocation.stomach2);

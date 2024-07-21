@@ -314,9 +314,9 @@ public class SpriteDictionary : MonoBehaviour
     public Sprite[] ScatV2SBack;
     public Sprite[] ScatV2SFront;
     public Sprite[] Bones;
-    public Sprite[] CleanDisposealL;
-    public Sprite[] CleanDisposealM;
-    public Sprite[] CleanDisposealS;
+    public Sprite[] CleanDisposalL;
+    public Sprite[] CleanDisposalM;
+    public Sprite[] CleanDisposalS;
     public Sprite[] SpellIcons;
 
 }

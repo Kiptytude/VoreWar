@@ -26,14 +26,14 @@ class DiaperDiscard : MiscDiscard
 
         if (scatInfo.preySize < 9)
         {
-            int rndNum = Random.Range(0, State.GameManager.SpriteDictionary.CleanDisposealS.Length);
-            diaperMain.sprite = State.GameManager.SpriteDictionary.CleanDisposealS[rndNum];
+            int rndNum = Random.Range(0, State.GameManager.SpriteDictionary.CleanDisposalS.Length);
+            diaperMain.sprite = State.GameManager.SpriteDictionary.CleanDisposalS[rndNum];
             diaperMain.transform.localScale = diaperSpriteScalingGloble;
         }
         else if (scatInfo.preySize > 15)
         {
-            int rndNum = Random.Range(0, State.GameManager.SpriteDictionary.CleanDisposealL.Length);
-            diaperMain.sprite = State.GameManager.SpriteDictionary.CleanDisposealL[rndNum];
+            int rndNum = Random.Range(0, State.GameManager.SpriteDictionary.CleanDisposalL.Length);
+            diaperMain.sprite = State.GameManager.SpriteDictionary.CleanDisposalL[rndNum];
             int baseSize = scatInfo.preySize - 16; // min = 0
             float xy = 1f + baseSize / (100.0f + baseSize);
             diaperSpriteScalingGloble = new Vector3(xy, xy);
@@ -41,8 +41,8 @@ class DiaperDiscard : MiscDiscard
         }
         else
         {
-            int rndNum = Random.Range(0, State.GameManager.SpriteDictionary.CleanDisposealM.Length);
-            diaperMain.sprite = State.GameManager.SpriteDictionary.CleanDisposealM[rndNum];
+            int rndNum = Random.Range(0, State.GameManager.SpriteDictionary.CleanDisposalM.Length);
+            diaperMain.sprite = State.GameManager.SpriteDictionary.CleanDisposalM[rndNum];
             diaperMain.transform.localScale = diaperSpriteScalingGloble;
         }
     }
