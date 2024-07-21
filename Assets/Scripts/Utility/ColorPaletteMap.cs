@@ -57,6 +57,8 @@ public static class ColorPaletteMap
         SharkReversed,
         Puca,
         PucaBalls,
+        Hamsters,
+        HamstersBalls,
         HippoSkin,
         ViperSkin,
         KomodosSkin,
@@ -200,6 +202,8 @@ public static class ColorPaletteMap
         List<ColorSwapPalette> DeerLeafSwaps = WireUp(SwapType.DeerLeaf);
         List<ColorSwapPalette> PucaSwaps = WireUp(SwapType.Puca);
         List<ColorSwapPalette> PucaBallSwaps = WireUp(SwapType.PucaBalls);
+        List<ColorSwapPalette> HamstersSwaps = WireUp(SwapType.Hamsters);
+        List<ColorSwapPalette> HamstersBallSwaps = WireUp(SwapType.HamstersBalls);
         List<ColorSwapPalette> HippoSkinSwaps = WireUp(SwapType.HippoSkin);
         List<ColorSwapPalette> ViperSkinSwaps = WireUp(SwapType.ViperSkin);
         List<ColorSwapPalette> KomodosSkinSwaps = WireUp(SwapType.KomodosSkin);
@@ -1260,6 +1264,38 @@ public static class ColorPaletteMap
             };
             swap = new ColorSwapPalette(swapDict);
             PucaBallSwaps.Add(swap);
+        }
+
+        map = State.GameManager.PaletteDictionary.Hamsters;
+        for (int pixelY = 0; pixelY < map.height; pixelY++)
+        {
+            Dictionary<int, Color> swapDict = new Dictionary<int, Color>
+            {
+                [5] = map.GetPixel(7, pixelY),
+                [23] = map.GetPixel(6, pixelY),
+                [70] = map.GetPixel(11, pixelY),
+                [84] = map.GetPixel(5, pixelY),
+                [105] = map.GetPixel(10, pixelY),
+                [140] = map.GetPixel(9, pixelY),
+                [142] = map.GetPixel(4, pixelY),
+                [152] = map.GetPixel(3, pixelY),
+                [191] = map.GetPixel(8, pixelY),
+                [225] = map.GetPixel(2, pixelY),
+                [236] = map.GetPixel(1, pixelY),
+                [244] = map.GetPixel(0, pixelY),
+            };
+            ColorSwapPalette swap = new ColorSwapPalette(swapDict, maxClearRange: 4);
+            HamstersSwaps.Add(swap);
+
+            swapDict = new Dictionary<int, Color>
+            {
+                [NormalIndexes[0]] = map.GetPixel(7, pixelY),
+                [NormalIndexes[1]] = map.GetPixel(6, pixelY),
+                [NormalIndexes[2]] = map.GetPixel(5, pixelY),
+                [NormalIndexes[3]] = map.GetPixel(4, pixelY),
+            };
+            swap = new ColorSwapPalette(swapDict);
+            HamstersBallSwaps.Add(swap);
         }
 
         map = State.GameManager.PaletteDictionary.HippoSkin;

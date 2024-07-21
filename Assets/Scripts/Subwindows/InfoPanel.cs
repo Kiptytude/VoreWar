@@ -206,6 +206,8 @@ public class InfoPanel
                 return "Alligator";
             case Race.Puca:
                 return "Puca";
+            case Race.Hamsters:
+                return "Hamster";
             case Race.Hippos:
                 return "Hippo";
             case Race.Vipers:
@@ -384,6 +386,8 @@ public class InfoPanel
                 return "Alligator";
             case Race.Puca:
                 return "Puca";
+            case Race.Hamsters:
+                return "Hamster";
             case Race.Hippos:
                 return "Hippo";
             case Race.Vipers:

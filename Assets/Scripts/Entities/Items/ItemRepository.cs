@@ -58,6 +58,7 @@ public enum SpecialItems
     ErinWings,
     AbaWeapon,
     AbaArmor,
+    BellaWeapon,
 }
 
 
@@ -182,6 +183,7 @@ public class ItemRepository
             new Accessory(name:"Nyangel Wings", description:"The softest, most delicious looking pair of wings you ever did see!\n+5 Willpower", cost:6, changedStat:(int)Stat.Will, statBonus:5 ),
             new Weapon(name:"Grand Talons", description:"All the better to grasp you with, my dear.", cost:4, graphic:0, damage:12, range:1, lockedItem:true),
             new Accessory(name:"Grand Plating", description:"Abakhanskya is covered from head to toe in highly durable composite armor plating\n+10 Endurance", cost:6, changedStat:(int)Stat.Endurance, statBonus:10 ),
+            new Weapon(name:"Bella's Staff", description:"A Shepherd's Staff", cost:4, graphic:0, damage:10, range:1, lockedItem:true, accuracyModifier:.75f),
         };
 
 

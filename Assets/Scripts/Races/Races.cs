@@ -47,7 +47,7 @@
     static internal Komodos Komodos = new Komodos();
     static internal Cockatrice Cockatrice = new Cockatrice();
     static internal Vargul Vargul = new Vargul();
-
+    static internal Hamsters Hamsters = new Hamsters();
 
     static internal Vagrants Vagrants = new Vagrants();
     static internal Serpents Serpents = new Serpents();
@@ -102,6 +102,7 @@
     static internal Auri Aurilika = new Auri();
     static internal Erin Erin = new Erin();
     static internal Salix Salix = new Salix();
+    static internal Bella Bella = new Bella();
     static internal Goodra Goodra = new Goodra();
     static internal Whisp Whisp = new Whisp();
     static internal FeralHorses FeralHorses = new FeralHorses();
@@ -306,6 +307,8 @@
                 return Terrorbird;
             case Race.Vargul:
                 return Vargul;
+            case Race.Hamsters:
+                return Hamsters;
             case Race.Dratopyr:
                 return Dratopyr;
             case Race.Erin:
@@ -318,6 +321,8 @@
                 return Whisp;
             case Race.Salix:
                 return Salix;
+            case Race.Bella:
+                return Bella;
             case Race.Aabayx:
                 return Aabayx;
             case Race.FeralHorses:

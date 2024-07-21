@@ -696,6 +696,8 @@ Does not retroactively affect already created units.";
                 return "The amount your sight is decreased at night in strategic mode if Fog of War is also on.\nThis value is subtracted from the 'Fog Distace Slider'.\n If this is higher than 'Fog Distace Slider' you won't be able to see at all";
             case 279:
                 return "The tactical turn where every unit is revealed.";
+            case 280:
+                return "Affects how likely a Unit will gain weight during absorption. 1 = 100% chance.";
             default:
                 return "";
         }
