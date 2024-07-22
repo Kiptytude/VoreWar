@@ -219,6 +219,8 @@ public class ContentSettings : MonoBehaviour
     public GameObject MonsterSpawnerPrefab;
 
     public Slider ArmyMP;
+    public Slider ArmyCreationMPMod;
+    public Slider ArmyCreationMPCurve;
 
     public Slider CustomEventFrequency;
 
@@ -671,6 +673,8 @@ public class ContentSettings : MonoBehaviour
         Config.World.FartFraction = PlayerPrefs.GetFloat("FartFraction", .1f);
         Config.World.WeightGainFraction = PlayerPrefs.GetFloat("WeightGainFraction", .5f);
         Config.World.ArmyMP = PlayerPrefs.GetInt("ArmyMP", 3);
+        Config.World.ArmyCreationMPMod = PlayerPrefs.GetFloat("ArmyCreationMPMod", 0);
+        Config.World.ArmyCreationMPCurve = PlayerPrefs.GetFloat("ArmyCreationMPCurve", 1f);
         Config.World.CustomEventFrequency = PlayerPrefs.GetFloat("CustomEventFrequency", .25f);
         Config.World.MaxArmies = PlayerPrefs.GetInt("MaxArmies", 32);
         Config.World.MonsterConquestTurns = PlayerPrefs.GetInt("MonsterConquestTurns", 1);
@@ -801,6 +805,8 @@ public class ContentSettings : MonoBehaviour
         FartFraction.value = Config.FartFraction;
         WeightGainFraction.value = Config.WeightGainFraction;
         ArmyMP.value = Config.ArmyMP;
+        ArmyCreationMPMod.value = Config.ArmyCreationMPMod;
+        ArmyCreationMPCurve.value = Config.ArmyCreationMPCurve;
         CustomEventFrequency.value = Config.CustomEventFrequency;
         MaxArmies.value = Config.MaxArmies;
         MonsterConquestTurns.text = Config.MonsterConquestTurns.ToString();
@@ -992,6 +998,8 @@ public class ContentSettings : MonoBehaviour
         Config.World.FartFraction = FartFraction.value;
         Config.World.WeightGainFraction = WeightGainFraction.value;
         Config.World.ArmyMP = (int)ArmyMP.value;
+        Config.World.ArmyCreationMPMod = ArmyCreationMPMod.value;
+        Config.World.ArmyCreationMPCurve = ArmyCreationMPCurve.value;
         Config.World.CustomEventFrequency = CustomEventFrequency.value;
         Config.World.MaxArmies = (int)MaxArmies.value;
         Config.World.MonsterConquestTurns = int.TryParse(MonsterConquestTurns.text, out int monsterTurns) ? monsterTurns : 0;
@@ -1173,6 +1181,8 @@ public class ContentSettings : MonoBehaviour
         PlayerPrefs.SetFloat("FartFraction", FartFraction.value);
         PlayerPrefs.SetFloat("WeightGainFraction", WeightGainFraction.value);
         PlayerPrefs.SetInt("ArmyMP", (int)ArmyMP.value);
+        PlayerPrefs.SetFloat("ArmyCreationMPMod", ArmyCreationMPMod.value);
+        PlayerPrefs.SetFloat("ArmyCreationMPCurve", ArmyCreationMPCurve.value);
         PlayerPrefs.SetFloat("CustomEventFrequency", CustomEventFrequency.value);
         PlayerPrefs.SetFloat("AutoSurrenderChance", AutoSurrenderChance.value);
         PlayerPrefs.SetFloat("AutoSurrenderDefectChance", AutoSurrenderDefectChance.value);
