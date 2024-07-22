@@ -362,6 +362,12 @@ public enum Traits
     Cowardly = 182,
     /// <summary>Unit has a chance based on it's missing health to change sides.</summary>
     TurnCoat = 183,
+    /// <summary>When hit by a magic spell, gain a single cast of that spell.</summary>
+    MagicSynthesis = 184,
+    /// <summary>Up to 50% of damage taken by unit instead spends mana, this trait loses effectivity with current mana precentage.</summary>
+    ManaBarrier = 185,
+    /// <summary>Unit's BladeDance, Tenacity, and Focus stack loss is reduced by if stacks are below 10% current HP.</summary>
+    Unflinching = 186,
 
 
     //Hidden Traits

@@ -589,6 +589,12 @@ public class HoveringTooltip : MonoBehaviour
                 return "Unit has a chance based on it's missing health to surrender.";
             case Traits.TurnCoat:
                 return "Unit has a chance based on it's missing health to change sides.";
+            case Traits.MagicSynthesis:
+                return "When Unit is hit by a damaging magic spell, it gains a single cast of that spell and restores 75% of it's cost.";
+            case Traits.ManaBarrier:
+                return "Up to 50% of damage taken by unit instead spends mana, this trait loses 1% effectivity for every 1% missing mana precentage.";
+            case Traits.Unflinching:
+                return "Unit's BladeDance, Tenacity, and Focus stack loss is reduced by if stacks are below 10% current HP.";
         }  
         return "<b>This trait needs a tooltip!</b>";
     }

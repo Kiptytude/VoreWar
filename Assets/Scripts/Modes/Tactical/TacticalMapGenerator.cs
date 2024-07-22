@@ -280,7 +280,11 @@ class TacticalMapGenerator
         if (village != null)
         {
             int baseTile;
-            if (terrainType == TerrainType.Desert)
+            if (terrainType == TerrainType.Volcanic)
+            {
+                baseTile = 332;
+            }
+            else if (terrainType == TerrainType.Desert)
                 baseTile = 316;
             else
                 baseTile = 300;

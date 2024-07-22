@@ -2745,10 +2745,9 @@ static class RaceParameters
             RacialTraits = new List<Traits>()
             {
                 Traits.Tenacious,
-                Traits.Resilient,
+                Traits.ManaBarrier,
                 Traits.EfficientGuts,
-                Traits.SteadyStomach,
-                Traits.ThrillSeeker,
+                Traits.Unflinching,               
                 Traits.ArcaneMagistrate,
                 Traits.ManaRich,
                 Traits.SpellBlade,

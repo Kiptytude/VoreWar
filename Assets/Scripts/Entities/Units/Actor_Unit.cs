@@ -1593,6 +1593,12 @@ public class Actor_Unit
             {
                 attacker.Unit.AddFocus((Unit.IsDead ? 5 : 1));
             }
+            if (Unit.HasTrait(Traits.MagicSynthesis))
+            {
+                Unit.SingleUseSpells.Add(spell.SpellType);
+                Unit.RestoreMana((int)(spell.ManaCost * 0.75f));
+                Unit.UpdateSpells();
+            }
             attacker.Unit.GiveScaledExp(1 * Unit.ExpMultiplier, Unit.Level - Unit.Level);
             if (Unit.IsDead)
             {
@@ -1657,6 +1663,12 @@ public class Actor_Unit
                     Unit.ApplyStatusEffect(StatusEffectType.Poisoned, 2 + attacker.Unit.GetStat(Stat.Mind) / 10, 3);
                     Unit.ApplyStatusEffect(StatusEffectType.WillingPrey, 0, 3);
                 }
+            }
+            if (Unit.HasTrait(Traits.MagicSynthesis))
+            {
+                Unit.SingleUseSpells.Add(spell.SpellType);
+                Unit.RestoreMana((int)(spell.ManaCost * 0.75f));
+                Unit.UpdateSpells();
             }
             if (spell.Id == "whispers-spell")
             {
@@ -2192,6 +2204,12 @@ public class Actor_Unit
                 break;
             default:
                 break;
+        }
+        if (Unit.HasTrait(Traits.ManaBarrier) && Unit.ManaPct >= 0.51f)
+        {
+            int reduc_dmg = (int)((Unit.ManaPct - .5f) * damage);
+            if (Unit.SpendMana(reduc_dmg))
+                damage = reduc_dmg;
         }
         return damage;
     }
