@@ -698,7 +698,11 @@ Does not retroactively affect already created units.";
                 return "The tactical turn where every unit is revealed.";
             case 280:
                 return "Affects how likely a Unit will gain weight during absorption. 1 = 100% chance.";
+            case 281:
+                return "A modifier how much MP an army will have on it's creation. 1 = 100% \nValues below 0% will reduce MP; Values above 0% will increase MP. \nA value of 0% disables this option.";
             case 282:
+                return "Modifies how fast an army returns to it's standard MP generation. \nA mod value of -100% with a curve of 50% will cause an army to have 0 MP for it's first turn and half of it's MP on it's next turn.";
+            case 283:
                 return "Replaces scat with diapers for absorbed units and diaper-related tactical log messages will be displayed.";
             default:
                 return "";

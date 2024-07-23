@@ -304,6 +304,8 @@ public class InfoPanel
                 return "Monitor";
             case Race.Deer:
                 return "Deer";
+            case Race.Mice:
+                return "Mouse";
             case Race.Schiwardez:
                 return "Schiwardez";
             case Race.Terrorbird:
@@ -486,6 +488,8 @@ public class InfoPanel
                 return "Monitor";
             case Race.Deer:
                 return "Deer";
+            case Race.Mice:
+                return "Mouse";
             case Race.Schiwardez:
                 return "Schiwardez";
             case Race.Terrorbird:

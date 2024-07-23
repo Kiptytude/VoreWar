@@ -32,7 +32,8 @@
     Sharks = 27,
     Deer = 28,
     Aabayx = 29,
-    MatronsMinions = 30,
+    Mice = 30,
+    MatronsMinions = 31,
 
     Succubi = 50,
     Tigers = 51,

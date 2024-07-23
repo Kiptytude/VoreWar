@@ -33,6 +33,7 @@
     static internal Deer Deer = new Deer();
     static internal Youko Youko = new Youko();
     static internal Aabayx Aabayx = new Aabayx();
+    static internal Mice Mice = new Mice();
     static internal Abakhanskya Abakhanskya = new Abakhanskya();
     static internal MatronsMinions MatronsMinions = new MatronsMinions();
 
@@ -325,6 +326,8 @@
                 return Bella;
             case Race.Aabayx:
                 return Aabayx;
+            case Race.Mice:
+                return Mice;
             case Race.FeralHorses:
                 return FeralHorses;
             case Race.Abakhanskya:

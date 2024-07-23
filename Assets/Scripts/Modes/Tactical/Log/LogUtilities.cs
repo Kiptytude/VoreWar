@@ -365,6 +365,8 @@ static class LogUtilities
                 return GetRandomStringFrom("roaring", "once-vicious", "formerly-fearsome");
             case Race.Aabayx:
                 return GetRandomStringFrom("strange-headed", "humbled viroid", "awkward-shaped");
+            case Race.Mice:
+                return GetRandomStringFrom("squeaking", "timid", "cheese-nibbling","skittish");
             default:
                 return "tasty";
         }
@@ -565,6 +567,8 @@ static class LogUtilities
                 return GetRandomStringFrom("feline", GetGenderString(unit, "lioness", "lion", "lion"), "leonine", "kitty");
             case Race.Aabayx:
                 return GetRandomStringFrom("viroid", "virosapien", "dice-like", "math-obsessed"); ////new, and probably wrong
+            case Race.Mice:
+                return GetRandomStringFrom("mouse", GetGenderString(unit, "doe", "buck", "murid"), "rodent");
             default:
                 return "creature";
         }
@@ -794,6 +798,13 @@ static class LogUtilities
             else if (weapon.Name == "Simple Bow") return "Razorflinger";
             else if (weapon.Name == "Compound Bow") return "Arrowbisector";
             else if (weapon.Name == "Claw") return "Fist";
+        }
+        else if (unit.Race == Race.Mice)
+        {
+            if (weapon.Name == "Mace") return "Shortsword";
+            else if (weapon.Name == "Axe") return "Bardiche";
+            else if (weapon.Name == "Simple Bow") return "Hand Crossbow";
+            else if (weapon.Name == "Compound Bow") return "Greatbow";
         }
         else if (weapon.Name == "Claw") return "Claws";
         return weapon.Name;

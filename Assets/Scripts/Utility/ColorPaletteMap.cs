@@ -99,6 +99,8 @@ public static class ColorPaletteMap
         FeralLionsMane,
 	    GoodraSkin,
         AabayxSkin,
+        MiceSkin,
+        MiceHumanSkin,
         FeralHorseSkin,
         WyvernMatron,
     }
@@ -245,6 +247,9 @@ public static class ColorPaletteMap
         List<ColorSwapPalette> FeralLionsManeSwaps = WireUp(SwapType.FeralLionsMane);
 	    List<ColorSwapPalette> GoodraSkinSwaps = WireUp(SwapType.GoodraSkin);
         List<ColorSwapPalette> AabayxSkinSwaps = WireUp(SwapType.AabayxSkin);
+        List<ColorSwapPalette> MiceSkinSwaps = WireUp(SwapType.MiceSkin);
+        List<ColorSwapPalette> MiceHumanSkinSwaps = WireUp(SwapType.MiceHumanSkin);
+
         List<ColorSwapPalette> FeralHorseSkinSwaps = WireUp(SwapType.FeralHorseSkin);
         List<ColorSwapPalette> WyvernMatronSwaps = WireUp(SwapType.WyvernMatron);
 
@@ -1855,7 +1860,45 @@ public static class ColorPaletteMap
             ColorSwapPalette swap = new ColorSwapPalette(swapDict);
             AabayxSkinSwaps.Add(swap);
         }
-		
+
+        map = State.GameManager.PaletteDictionary.MiceSkin;
+        for (int pixelY = 0; pixelY < map.height; pixelY++)
+        {
+            Dictionary<int, Color> swapDict = new Dictionary<int, Color>
+            {
+                [0] = map.GetPixel(12, pixelY),
+                [32] = map.GetPixel(11, pixelY),
+                [47] = map.GetPixel(10, pixelY),
+                [81] = map.GetPixel(9, pixelY),
+                [96] = map.GetPixel(8, pixelY),
+                [109] = map.GetPixel(7, pixelY),
+                [123] = map.GetPixel(6, pixelY),
+                [138] = map.GetPixel(5, pixelY),
+                [153] = map.GetPixel(4, pixelY),
+                [198] = map.GetPixel(3, pixelY),
+                [214] = map.GetPixel(2, pixelY),
+                [229] = map.GetPixel(1, pixelY),
+                [255] = map.GetPixel(0, pixelY),
+            };
+            ColorSwapPalette swap = new ColorSwapPalette(swapDict);
+            MiceSkinSwaps.Add(swap);
+        }
+
+        map = State.GameManager.PaletteDictionary.MiceHumanSkin;
+        for (int pixelY = 0; pixelY < map.height; pixelY++)
+        {
+            Dictionary<int, Color> swapDict = new Dictionary<int, Color>
+            {
+                [62] = map.GetPixel(4, pixelY),
+                [96] = map.GetPixel(3, pixelY),
+                [109] = map.GetPixel(2, pixelY),
+                [123] = map.GetPixel(1, pixelY),
+                [153] = map.GetPixel(0, pixelY),
+            };
+            ColorSwapPalette swap = new ColorSwapPalette(swapDict);
+            MiceHumanSkinSwaps.Add(swap);
+        }
+
         map = State.GameManager.PaletteDictionary.FeralLionsFur;
         for (int pixelY = 0; pixelY < map.height; pixelY++)
         {
