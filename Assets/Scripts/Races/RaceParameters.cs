@@ -847,7 +847,7 @@ static class RaceParameters
                 Traits.SwiftStrike,
                 Traits.Clever,
         },
-            RaceDescription = "",
+            RaceDescription = "Originaly ordinary lab mice, tucked away in a secret laboratory, the gift of sentience and a heightened sense of intellect was suddenly bestowed upon them. No mouse knows the identity of this mysterious actor or the reason they were given such a boon, but all are greatful for their improved status.",
         };
 
         Succubi = new RaceTraits()
