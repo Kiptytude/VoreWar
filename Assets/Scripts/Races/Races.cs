@@ -35,6 +35,7 @@
     static internal Deer Deer = new Deer();
     static internal Youko Youko = new Youko();
     static internal Aabayx Aabayx = new Aabayx();
+    static internal Mice Mice = new Mice();
 
     static internal Tigers Tigers = new Tigers();
     static internal Goblins Goblins = new Goblins();
@@ -322,6 +323,8 @@
                 return Bella;
             case Race.Aabayx:
                 return Aabayx;
+            case Race.Mice:
+                return Mice;
         }
         UnityEngine.Debug.LogWarning("Couldn't find race, substituting the Blank Slate");
         return BlankSlate;

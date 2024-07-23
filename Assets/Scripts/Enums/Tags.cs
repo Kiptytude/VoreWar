@@ -350,13 +350,24 @@ public enum Traits
     SpellBlade = 176,
     /// <summary>Unit gains 1 focus when landing a spell, gains 4 if the spell kills the target.</summary>
     ArcaneMagistrate = 177,
-    /// <summary>Damage over time effect recieved from being devoured by an Aabayx</summary>
+    /// <summary>Damage over time effect received from being devoured by an Aabayx</summary>
     ViralDigestion = 178,
     /// <summary>This unit has a very strange body type, making them harder to swallow and providing less sustenance as prey.</summary>
     AwkwardShape = 179,
-
-
-
+    /// <summary>Unit deals up 1% more weapon damage per agility it has over it's target, up to 25%, tripled when using light weapons.</summary>
+    SwiftStrike = 180,
+    /// <summary>This unit is shaken if the turn ends and there are more enemies than allies are nearby. (This unit counts) </summary>
+    Timid = 181,
+    /// <summary>Unit has a chance based on it's missing health to surrender.</summary>
+    Cowardly = 182,
+    /// <summary>Unit has a chance based on it's missing health to change sides.</summary>
+    TurnCoat = 183,
+    /// <summary>When hit by a magic spell, gain a single cast of that spell.</summary>
+    MagicSynthesis = 184,
+    /// <summary>Up to 50% of damage taken by unit instead spends mana, this trait loses effectivity with current mana precentage.</summary>
+    ManaBarrier = 185,
+    /// <summary>Unit's BladeDance, Tenacity, and Focus stack loss is reduced by if stacks are below 10% current HP.</summary>
+    Unflinching = 186,
 
 
     //Hidden Traits

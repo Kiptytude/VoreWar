@@ -581,6 +581,20 @@ public class HoveringTooltip : MonoBehaviour
                 return "Unit's weapon damage also scales with mind. (Half as effectively as weapons main stat)";
             case Traits.ArcaneMagistrate:
                 return "Unit gains 1 focus when it hits a spell, unit gains 4 more if the spell kills the target.";
+            case Traits.SwiftStrike:
+                return "Unit deals up 1% more weapon damage per agility it has over it's target, up to 25%, tripled when using light weapons.";
+            case Traits.Timid:
+                return "Unit is shaken if the turn ends and there are more enemies than allies are nearby. (This unit counts as it's own ally)";
+            case Traits.Cowardly:
+                return "Unit has a chance based on it's missing health to surrender.";
+            case Traits.TurnCoat:
+                return "Unit has a chance based on it's missing health to change sides.";
+            case Traits.MagicSynthesis:
+                return "When Unit is hit by a damaging magic spell, it gains a single cast of that spell and restores 75% of it's cost.";
+            case Traits.ManaBarrier:
+                return "Up to 50% of damage taken by unit instead spends mana, this trait loses 1% effectivity for every 1% missing mana precentage.";
+            case Traits.Unflinching:
+                return "Unit's BladeDance, Tenacity, and Focus stack loss is reduced by if stacks are below 10% current HP.";
         }  
         return "<b>This trait needs a tooltip!</b>";
     }

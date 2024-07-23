@@ -19,6 +19,7 @@ abstract class MainClothing
     protected SpriteExtraInfo clothing6;
     protected SpriteExtraInfo clothing7;
     protected SpriteExtraInfo clothing8;
+    protected SpriteExtraInfo clothing9;
     /// <summary>If not null, replaces the character's breast sprite, used for cleavage windows or other such things</summary>
     protected Sprite breastSprite = null;
 
@@ -143,6 +144,10 @@ abstract class MainClothing
         if (clothing8 != null)
         {
             sprite.SetNextClothingSprite(clothing8);
+        }
+        if (clothing9 != null)
+        {
+            sprite.SetNextClothingSprite(clothing9);
         }
 
 

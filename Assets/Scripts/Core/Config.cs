@@ -37,7 +37,7 @@ static class Config
         Disabled
     }
 
-    public const int NumberOfRaces = 30;
+    public const int NumberOfRaces = 31;
 
     public const int NewItemSlots = 2;
 
@@ -222,6 +222,8 @@ static class Config
     internal static int MaxSpellLevelDrop => World.MaxSpellLevelDrop;
 
     internal static int ArmyMP => World.ArmyMP;
+    internal static float ArmyCreationMPMod => World.ArmyCreationMPMod;
+    internal static float ArmyCreationMPCurve => World.ArmyCreationMPCurve;
     internal static int MaxArmies => World.MaxArmies;
     internal static bool RaceTraitsEnabled => World.GetValue("RaceTraitsEnabled");
     internal static bool RagsForSlaves => World.GetValue("RagsForSlaves");

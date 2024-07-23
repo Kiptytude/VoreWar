@@ -522,6 +522,7 @@ public class Unit
 
 
     internal int NearbyFriendlies = 0;
+    internal int NearbyEnemies = 0;
     internal bool Harassed = false;
 
     public bool IsDead => (Health < 1);
@@ -1259,6 +1260,16 @@ internal void SetGenderRandomizeName(Race race, Gender gender)
         {
              _healthPct = (float) Health / MaxHealth;
             return _healthPct;
+        }
+    }
+
+    private float _manaPct = 1f;
+    public float ManaPct
+    {
+        get
+        {
+            _manaPct = (float)Mana / MaxMana;
+            return _manaPct;
         }
     }
 
@@ -2623,8 +2634,11 @@ internal void SetGenderRandomizeName(Race race, Gender gender)
         var dance = GetStatusEffect(StatusEffectType.BladeDance);
         if (dance != null)
         {
-            dance.Duration--;
-            dance.Strength--;
+            if (!(HasTrait(Traits.Unflinching) && Health * .1f > dance.Strength)) 
+            {
+                dance.Duration--;
+                dance.Strength--;
+            }
             if (dance.Duration == 0)
                 StatusEffects.Remove(dance);
         }
@@ -2651,8 +2665,9 @@ internal void SetGenderRandomizeName(Race race, Gender gender)
         var ten = GetStatusEffect(StatusEffectType.Tenacious);
         if (ten != null)
         {
-            ten.Duration -= 5;
-            ten.Strength -= 5;
+            int reduction = 5 - (HasTrait(Traits.Unflinching) && Health * .1f > ten.Strength? 3 : 0);
+            ten.Duration -= reduction;
+            ten.Strength -= reduction;
             if (ten.Duration <= 0)
                 StatusEffects.Remove(ten);
         }
@@ -2694,8 +2709,9 @@ internal void SetGenderRandomizeName(Race race, Gender gender)
         var foc = GetStatusEffect(StatusEffectType.Focus);
         if (foc != null)
         {
-            foc.Duration -= 3;
-            foc.Strength -= 3;
+            int reduction = 3 - (HasTrait(Traits.Unflinching) && Health * .1f > foc.Strength ? 3 : 0);
+            foc.Duration -= reduction;
+            foc.Strength -= reduction;
             if (foc.Duration <= 0)
                 StatusEffects.Remove(foc);
         }

@@ -485,6 +485,13 @@ public class UnitCustomizer
                 buttons[(int)ButtonTypes.BodyAccessoryColor].Label.text = "Head Color";
                 buttons[(int)ButtonTypes.ClothingExtraType1].Label.text = "Face Paint";
                 break;
+            case Race.Mice:
+                buttons[(int)ButtonTypes.BodyAccentTypes1].Label.text = "Face Pattern";
+                buttons[(int)ButtonTypes.BodyAccentTypes2].Label.text = "Chest Pattern";
+                buttons[(int)ButtonTypes.BodyAccentTypes3].Label.text = "Hands/Feet Pattern";
+                buttons[(int)ButtonTypes.BodyAccentTypes4].Label.text = "Left Ear Damage";
+                buttons[(int)ButtonTypes.BodyAccentTypes5].Label.text = "Right Ear Damage";
+                break;
         }
     }
 

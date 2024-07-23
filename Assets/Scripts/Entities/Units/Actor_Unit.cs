@@ -1028,6 +1028,23 @@ public class Actor_Unit
                 damage += (int)(damage * 0.2f);
             }
         }
+        if (Unit.HasTrait(Traits.SwiftStrike))
+        {
+            int current_weapon_class = GetWeaponSprite();
+            if (current_weapon_class == 0 || current_weapon_class == 1 || current_weapon_class == 4 || current_weapon_class == 5)
+                current_weapon_class = 0;
+            int stat_diff = Unit.GetStat(Stat.Agility) - target.Unit.GetStat(Stat.Agility);
+            if (stat_diff >= 25)
+            {
+                float ss_bonus = 0.25f * (current_weapon_class == 0 ? 3 : 1);
+                damage += (int)(damage * ss_bonus);
+            }
+            else if (stat_diff > 0)
+            {
+                damage += (int)(damage * (stat_diff/ (current_weapon_class == 0 ? 33 : 100)));
+            }
+        }
+
         if (TacticalUtilities.SneakAttackCheck(Unit, target.Unit)) // sneakAttack
         {
             damage *= 3;
@@ -1349,7 +1366,7 @@ public class Actor_Unit
                         target.Unit.AddTenacious();
                     if (target.Unit.GetStatusEffect(StatusEffectType.Focus) != null)                  
                         target.Unit.RemoveFocus();
-                    
+
                     TacticalGraphicalEffects.CreateProjectile(this, target);
                     State.GameManager.TacticalMode.TacticalStats.RegisterHit(BestRanged, Mathf.Min(damage, remainingHealth), Unit.Side);
                     TacticalUtilities.Log.RegisterHit(Unit, target.Unit, weapon, damage, chance);
@@ -1576,6 +1593,12 @@ public class Actor_Unit
             {
                 attacker.Unit.AddFocus((Unit.IsDead ? 5 : 1));
             }
+            if (Unit.HasTrait(Traits.MagicSynthesis))
+            {
+                Unit.SingleUseSpells.Add(spell.SpellType);
+                Unit.RestoreMana((int)(spell.ManaCost * 0.75f));
+                Unit.UpdateSpells();
+            }
             attacker.Unit.GiveScaledExp(1 * Unit.ExpMultiplier, Unit.Level - Unit.Level);
             if (Unit.IsDead)
             {
@@ -1640,6 +1663,12 @@ public class Actor_Unit
                     Unit.ApplyStatusEffect(StatusEffectType.Poisoned, 2 + attacker.Unit.GetStat(Stat.Mind) / 10, 3);
                     Unit.ApplyStatusEffect(StatusEffectType.WillingPrey, 0, 3);
                 }
+            }
+            if (Unit.HasTrait(Traits.MagicSynthesis))
+            {
+                Unit.SingleUseSpells.Add(spell.SpellType);
+                Unit.RestoreMana((int)(spell.ManaCost * 0.75f));
+                Unit.UpdateSpells();
             }
             if (spell.Id == "whispers-spell")
             {
@@ -2146,6 +2175,10 @@ public class Actor_Unit
         {
             Unit.HealPercentage(0.03f * TurnsSinceLastDamage);
         }
+        if (Unit.HasTrait(Traits.Timid) && ((Unit.NearbyEnemies - 1) > Unit.NearbyFriendlies))
+        {
+            Unit.ApplyStatusEffect(StatusEffectType.Shaken, .2f, 1);
+        }
         ReceivedRub = false;
         TurnsSinceLastDamage++;
     }
@@ -2172,6 +2205,12 @@ public class Actor_Unit
             default:
                 break;
         }
+        if (Unit.HasTrait(Traits.ManaBarrier) && Unit.ManaPct >= 0.51f)
+        {
+            int reduc_dmg = (int)((Unit.ManaPct - .5f) * damage);
+            if (Unit.SpendMana(reduc_dmg))
+                damage = reduc_dmg;
+        }
         return damage;
     }
 
@@ -2185,10 +2224,24 @@ public class Actor_Unit
             PredatorComponent?.FreeAnyAlivePrey();
             Debug.Log("Attack performed on target that was already dead");
             return false;
-        }
+        }        
         int modifiedDamage = CalculateDamageWithResistance(damage, damageType);
         UnitSprite.DisplayDamage(modifiedDamage, spellDamage);
         SubtractHealth(modifiedDamage);
+        if ((State.Rand.NextDouble() > Unit.HealthPct))
+        {
+            if (Unit.HasTrait(Traits.Cowardly))
+            {
+                Surrendered = true;
+                Movement = 0;
+                State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"{Unit.Name} was a coward and surrendered");
+            }
+            if (Unit.HasTrait(Traits.TurnCoat))
+            {
+                State.GameManager.TacticalMode.SwitchAlignment(this);
+                State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"{Unit.Name} switched sides when they were hit");
+            }
+        }
         if (Unit.HasTrait(Traits.Berserk) && GoneBerserk == false)
         {
             if (Unit.HealthPct < .5f)
@@ -2354,7 +2407,7 @@ public class Actor_Unit
 
         return ratio;
     }
-	
+
     internal bool CastSpell(Spell spell, Actor_Unit target)
     {
         if (Unit.SpendMana(spell.ManaCost) == false && spell.IsFree != true)

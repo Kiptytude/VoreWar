@@ -46,6 +46,12 @@ public class Army
     [OdinSerialize]
     public int RemainingMP { get; set; }
     [OdinSerialize]
+    internal float MPMod = Config.ArmyCreationMPMod;
+    [OdinSerialize]
+    internal float MPCurve = Config.ArmyCreationMPCurve;
+
+
+    [OdinSerialize]
     public int InVillageIndex { get; private set; } = -1;
     [OdinSerialize]
     internal MovementMode movementMode = MovementMode.Standard;
@@ -116,7 +122,7 @@ public class Army
         this.empire = empire;
         Side = side;
         HealRate = 0.02f;
-        RemainingMP = Config.ArmyMP;
+        RemainingMP = Config.ArmyMP + (int)(Config.ArmyMP * MPMod);
         Position = p;
         Units = new List<Unit>();
         JustCreated = true;
@@ -124,8 +130,7 @@ public class Army
         NameArmy(empire);
         if (empire.Side < 30)
             BannerStyle = empire.BannerType;
-
-        if (State.World.Turn == 1 && Config.FirstTurnArmiesIdle)
+        if ((State.World.Turn == 1 && Config.FirstTurnArmiesIdle) || 0 > RemainingMP)
             RemainingMP = 0;
     }
 
@@ -184,7 +189,10 @@ public class Army
 
     public int GetMaxMovement()
     {
-        return Config.ArmyMP;
+        MPMod = Mathf.MoveTowards(MPMod, 0, MPCurve);
+        if (-1f > MPMod)
+            return 0;
+        return Config.ArmyMP + (int)(Config.ArmyMP * MPMod);
     }
 
     public void RefreshMovementMode()
