@@ -43,6 +43,7 @@ public class NameGenerator
     List<string> sharkTownNames;
     List<string> deerTownNames;
     List<string> aabayxTownNames;
+    List<string> miceTownNames;
 
     List<string> compyNames;
     List<string> vagrantNames;
@@ -837,6 +838,27 @@ public class NameGenerator
             "Podoviridae",
             "Autographiviridae",
         };
+        miceTownNames = new List<string>
+        {
+            "Goldhollow",
+            "Nibblewood",
+            "Mousetail Meadow",
+            "Squeakridge",
+            "Cheesemere",
+            "Furrowfield",
+            "Silverwhisker",
+            "Squeakstone",
+            "Wheatenwood",
+            "Thimbleholt",
+            "Mousenook",
+            "Cheddarcliff",
+            "Cottagecreek",
+            "Blueburrow",
+            "Swisswood",
+            "Rustle Warren",
+            "Tanglewood",
+
+        };
 
         Encoding encoding = Encoding.GetEncoding("iso-8859-1");
 
@@ -1230,6 +1252,11 @@ public class NameGenerator
         {
             if (i >= 0 && i < aabayxTownNames.Count)
                 return aabayxTownNames[i];
+        }        
+        else if (race == Race.Mice)
+        {
+            if (i >= 0 && i < miceTownNames.Count)
+                return miceTownNames[i];
         }
 
 
