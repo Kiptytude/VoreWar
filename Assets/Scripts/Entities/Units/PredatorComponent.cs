@@ -1976,7 +1976,7 @@ public class PredatorComponent
             if (Config.Scat && preyUnit.ScatDisabled == false)
             {
                 State.GameManager.SoundManager.PlayAbsorb(location, actor);
-                if (preyUnit.Unit.Race == Race.Slimes)
+                if (preyUnit.Unit.Race == Race.Slimes && Config.CleanDisposal == false)
                 {
                     State.GameManager.TacticalMode.CreateMiscDiscard(GetCurrentLocation(), BoneTypes.SlimePile, preyUnit.Unit.Name, preyUnit.Unit.AccessoryColor);
                 }
