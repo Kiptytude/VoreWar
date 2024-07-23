@@ -162,6 +162,7 @@ public class ContentSettings : MonoBehaviour
     public Toggle FartOnAbsorb;
 
     public Toggle Bones;
+    public Toggle CleanDisposal;
     public Toggle Scat;
     public Toggle ScatV2;
     public Toggle ScatBones;
@@ -301,6 +302,7 @@ public class ContentSettings : MonoBehaviour
             new ToggleObject(AnimatedBellies, "AnimatedBellies", true),
             new ToggleObject(DigestionSkulls, "DigestionSkulls",  true),
             new ToggleObject(Bones, "Bones", true),
+            new ToggleObject(CleanDisposal, "CleanDisposal", false),
             new ToggleObject(Scat, "Scat", false),
             new ToggleObject(ScatV2, "ScatV2", false),
             new ToggleObject(ScatBones, "ScatBones", false),
@@ -736,16 +738,47 @@ public class ContentSettings : MonoBehaviour
         EdibleCorpses.interactable = VisibleCorpses.isOn;
     }
 
+    public void DiaperChanged()
+    {
+        if (CleanDisposal.isOn == true)
+        {
+            ScatBones.isOn = false;
+            ScatV2.isOn = false;
+            ScatBones.interactable = false;
+            ScatV2.interactable = false;
+        }
+        else if (Scat.isOn == true)
+        {
+            ScatBones.interactable = true;
+            ScatV2.interactable = true;
+        }
+    }
+
     public void ScatChanged()
     {
         if (Scat.isOn == false)
         {
             ScatBones.isOn = false;
             ScatV2.isOn = false;
+            CleanDisposal.isOn = false;
+            ScatBones.interactable = false;
+            ScatV2.interactable = false;
+            CleanDisposal.interactable = false;
+            Bones.interactable = true;
         }
-
-        ScatBones.interactable = Scat.isOn;
-        ScatV2.interactable = Scat.isOn;
+        if (ScatV2.isOn == true)
+        {
+            CleanDisposal.isOn = false;
+            CleanDisposal.interactable = false;
+        }
+        else if (Scat.isOn == true)
+        {
+            CleanDisposal.interactable = true;
+            ScatBones.interactable = true;
+            ScatV2.interactable = true;
+            Bones.interactable = false;
+            Bones.isOn = false;
+        }
     }
 
     public void Open()
