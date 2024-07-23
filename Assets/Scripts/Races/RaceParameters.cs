@@ -35,6 +35,7 @@ static class RaceParameters
     static readonly RaceTraits Demisharks;
     static readonly RaceTraits Deer;
     static readonly RaceTraits Aabayx;
+    static readonly RaceTraits Mice;
     static readonly RaceTraits Succubi;
     static readonly RaceTraits Tigers;
     static readonly RaceTraits Goblins;
@@ -184,6 +185,8 @@ static class RaceParameters
                 return Deer;
             case Race.Aabayx:
                 return Aabayx;
+            case Race.Mice:
+                return Mice;
             case Race.Succubi:
                 return Succubi;
             case Race.Tigers:
@@ -829,6 +832,22 @@ static class RaceParameters
                 Traits.SlowBreeder,
         },
             RaceDescription = "The Aabayx are a species of virosapiens who recently revealed themselves to the world and were quick to commit to the stage of war.  Strangely enough, they are not new arrivals to the realm, but rather have been in extreme isolation in an unknown location and were waiting for the exact right time to resurface and conquer the masses.  That time is now.",
+        };
+
+        Mice = new RaceTraits()
+        {
+            BodySize = 8,
+            StomachSize = 12,
+            HasTail = true,
+            FavoredStat = Stat.Agility,
+            RacialTraits = new List<Traits>()
+        {
+                Traits.ProlificBreeder,
+                Traits.Timid,
+                Traits.SwiftStrike,
+                Traits.Clever,
+        },
+            RaceDescription = "Originally ordinary lab mice, tucked away in a secret laboratory, the gift of sentience and a heightened sense of intellect was suddenly bestowed upon them. No mouse knows the identity of this mysterious actor or the reason they were given such a boon, but all are grateful for their improved status.",
         };
 
         Succubi = new RaceTraits()
@@ -2726,10 +2745,9 @@ static class RaceParameters
             RacialTraits = new List<Traits>()
             {
                 Traits.Tenacious,
-                Traits.Resilient,
+                Traits.ManaBarrier,
                 Traits.EfficientGuts,
-                Traits.SteadyStomach,
-                Traits.ThrillSeeker,
+                Traits.Unflinching,               
                 Traits.ArcaneMagistrate,
                 Traits.ManaRich,
                 Traits.SpellBlade,

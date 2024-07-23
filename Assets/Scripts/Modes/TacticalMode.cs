@@ -1253,6 +1253,7 @@ Turns: {currentTurn}
             units[i].Intimidated = false;
             units[i].Unit.Harassed = false;
             units[i].Unit.NearbyFriendlies = 0;
+            units[i].Unit.NearbyEnemies = 0;
         }
 
         for (int i = 0; i < units.Count; i++)
@@ -1276,6 +1277,8 @@ Turns: {currentTurn}
                     {
                         ApplyEnemyTags(units[i], units[j]);
                         ApplyEnemyTags(units[j], units[i]);
+                        units[i].Unit.NearbyEnemies++;
+                        units[j].Unit.NearbyEnemies++;
                     }
                 }
             }
@@ -1339,7 +1342,12 @@ Turns: {currentTurn}
                                 FrontTilemap.SetTile(new Vector3Int(i, j, 0), TileDictionary.TileTypes[startIndex + 3]);
                             else
                                 FrontTilemap.SetTile(new Vector3Int(i, j, 0), TileDictionary.TileTypes[startIndex + State.Rand.Next(2)]);
-                            Tilemap.SetTile(new Vector3Int(i, j, 0), TileDictionary.GrassEnviroment[0]);
+                            if (tiles[i, j+1] >= (TacticalTileType)500 && (tiles[i, j + 1] < (TacticalTileType)2000 || tiles[i, j + 1] >= (TacticalTileType)2300))
+                                Tilemap.SetTile(new Vector3Int(i, j, 0), TileDictionary.VolcanicTileTypes[1]);
+                            else if ((tiles[i, j+1] >= (TacticalTileType)200))
+                                Tilemap.SetTile(new Vector3Int(i, j, 0), TileDictionary.DesertTileTypes[1]);
+                            else
+                                Tilemap.SetTile(new Vector3Int(i, j, 0), TileDictionary.GrassEnviroment[0]);
                         }
                         else
                         {
@@ -3170,7 +3178,7 @@ Turns: {currentTurn}
                     continue;
                 if (ActionMode == 1)
                 {
-                    if (!TacticalUtilities.IsUnitControlledByPlayer(unit.Unit) || (Config.AllowInfighting || (!AIDefender && !AIAttacker)) && unit != SelectedUnit)
+                    if ((!TacticalUtilities.IsUnitControlledByPlayer(unit.Unit) || (Config.AllowInfighting || (!AIDefender && !AIAttacker)) && unit != SelectedUnit) && !(!unit.UnitSprite.isActiveAndEnabled && State.World.IsNight))
                     {
                         MeleeAttack(SelectedUnit, unit);
                         return;
@@ -3179,7 +3187,7 @@ Turns: {currentTurn}
                 }
                 if (ActionMode == 2)
                 {
-                    if (!TacticalUtilities.IsUnitControlledByPlayer(unit.Unit) || (Config.AllowInfighting || (!AIDefender && !AIAttacker)) && unit != SelectedUnit)
+                    if ((!TacticalUtilities.IsUnitControlledByPlayer(unit.Unit) || (Config.AllowInfighting || (!AIDefender && !AIAttacker)) && unit != SelectedUnit) && !(!unit.UnitSprite.isActiveAndEnabled && State.World.IsNight))
                     {
                         RangedAttack(SelectedUnit, unit);
                         return;

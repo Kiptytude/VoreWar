@@ -32,6 +32,7 @@
     Sharks = 27,
     Deer = 28,
     Aabayx = 29,
+    Mice = 30,
 
     Succubi = 50,
     Tigers = 51,

@@ -540,7 +540,7 @@ class Salix : DefaultRaceData
         {
             coversBreasts = false;
             blocksDick = false;
-            clothing1 = new SpriteExtraInfo(1, null, WhiteColored);
+            clothing1 = new SpriteExtraInfo(3, null, WhiteColored);
             Type = 9764;
         }
         public override void Configure(CompleteSprite sprite, Actor_Unit actor)

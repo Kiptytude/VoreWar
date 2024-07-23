@@ -87,7 +87,7 @@ class MonsterStrategicAI : IStrategicAI
         //if (empire.Gold < 10000) empire.AddGold(8000);
         for (int j = 0; j < spawner.SpawnAttempts; j++)
         {
-            if (spawner.MaxArmies == 0 || (Config.NightMonsters && !State.World.IsNight))
+            if (spawner.MaxArmies == 0 || (Config.NightMonsters && !State.World.IsNight && Config.DayNightEnabled))
                 break;
             if (empire.Armies.Count() < (int)Math.Max(spawner.MaxArmies * Config.OverallMonsterCapModifier, 1) && State.Rand.NextDouble() < spawner.spawnRate * Config.OverallMonsterSpawnRateModifier)
             {
@@ -347,7 +347,7 @@ class MonsterStrategicAI : IStrategicAI
                 return;
             }
         }
-        if(Config.NightMoveMonsters && !State.World.IsNight) //DayNight Modification (zero's out monster AP when NOT night)
+        if(Config.NightMoveMonsters && !State.World.IsNight && Config.DayNightEnabled) //DayNight Modification (zero's out monster AP when NOT night)
         {
             army.RemainingMP = 0;
             return;
