@@ -509,8 +509,7 @@ public class MapEditor : SceneBase
         {
             foreach (Army army in empire.Armies)
             {
-
-                if (army.Side < 30)
+                if (army.Side < 31)
                 {
                     if (army.BannerStyle > (int)BannerTypes.VoreWar && CustomBannerTest.Sprites[army.BannerStyle - 23] != null)
                     {
@@ -525,7 +524,7 @@ public class MapEditor : SceneBase
 
                 }
                 else
-                {
+                {                    
                     int tileType = empire.BannerType;
                     if (army.Units.Contains(empire.Leader)) tileType += 4;
                     army.Sprite = Instantiate(SpriteCategories[1], new Vector3(army.Position.x, army.Position.y), new Quaternion(), ArmyFolder).GetComponent<SpriteRenderer>();

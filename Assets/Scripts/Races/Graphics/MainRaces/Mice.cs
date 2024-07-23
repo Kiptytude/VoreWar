@@ -390,7 +390,7 @@ class Mice : DefaultRaceData
     }
     protected override Sprite MouthSprite(Actor_Unit actor)
     {
-        if (actor.IsEating || actor.IsAttacking)
+        if (actor.IsEating)
             return null;
         else
             return State.GameManager.SpriteDictionary.HumansBodySprites3[108 + actor.Unit.MouthType];
