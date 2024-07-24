@@ -518,6 +518,67 @@ class MaleVillager : MainClothing
     }
 }
 
+class MalePlate : MainClothing
+{
+    public MalePlate()
+    {
+        DiscardSprite = null;
+        Type = 211;
+        blocksBreasts = true;
+        OccupiesAllSlots = true;
+        HidesFluff = true;
+        maleOnly = true;
+        FixedColor = true;
+        clothing1 = new SpriteExtraInfo(10, null, null);
+        clothing2 = new SpriteExtraInfo(10, null, WhiteColored);
+    }
+
+    public override void Configure(CompleteSprite sprite, Actor_Unit actor)
+    {
+        int attackFactor = actor.IsAttacking ? 0 : 4;
+        clothing1.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.ClothingStrict, actor.Unit.ClothingColor);
+        clothing1.GetSprite = (s) => State.GameManager.SpriteDictionary.MalePlate[Mathf.Min(actor.GetBodyWeight(), 3) + attackFactor];
+        if (actor.Unit.DickSize >= 2)
+            clothing2.GetSprite = (s) => State.GameManager.SpriteDictionary.MalePlate[8];
+        else
+            clothing2.GetSprite = null;
+        base.Configure(sprite, actor);
+    }
+}
+
+class FemalePlate : MainClothing
+{
+    public FemalePlate()
+    {
+        DiscardSprite = null;
+        Type = 212;
+        blocksBreasts = true;
+        femaleOnly = true;
+        OccupiesAllSlots = true;
+        HidesFluff = true;
+        FixedColor = true;
+        clothing1 = new SpriteExtraInfo(10, null, null);
+        clothing2 = new SpriteExtraInfo(10, null, null);
+        clothing3 = new SpriteExtraInfo(10, null, null);
+        clothing4 = new SpriteExtraInfo(17, null, null);
+    }
+
+    public override void Configure(CompleteSprite sprite, Actor_Unit actor)
+    {
+        clothing1.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.ClothingStrict, actor.Unit.ClothingColor);
+        clothing2.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.ClothingStrict, actor.Unit.ClothingColor);
+        clothing3.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.ClothingStrict, actor.Unit.ClothingColor);
+        clothing4.GetPalette = (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.ClothingStrict, actor.Unit.ClothingColor);
+        clothing1.GetSprite = (s) => State.GameManager.SpriteDictionary.FemalePlate[actor.IsAttacking ? 1 : 0];
+        clothing2.GetSprite = (s) => State.GameManager.SpriteDictionary.FemalePlate[2];
+        clothing3.GetSprite = (s) => State.GameManager.SpriteDictionary.FemalePlate[3 + actor.GetBodyWeight()];
+        if (actor.Unit.HasBreasts)
+            clothing4.GetSprite = (s) => State.GameManager.SpriteDictionary.FemalePlate[8 + actor.Unit.BreastSize];
+        else
+            clothing4.GetSprite = null;
+        base.Configure(sprite, actor);
+    }
+}
 static class ClothingTypes
 {
     internal static BikiniTop BikiniTop = new BikiniTop();
@@ -531,6 +592,8 @@ static class ClothingTypes
     internal static BlackTop BlackTop = new BlackTop();
     internal static FemaleVillager FemaleVillager = new FemaleVillager();
     internal static MaleVillager MaleVillager = new MaleVillager();
+    internal static MalePlate MalePlate = new MalePlate();
+    internal static FemalePlate FemalePlate = new FemalePlate();
 
     internal static List<MainClothing> All = new List<MainClothing>()
     {
@@ -545,6 +608,8 @@ static class ClothingTypes
         BlackTop,
         FemaleVillager,
         MaleVillager,
+        FemalePlate,
+        MalePlate,
     };
 }
 
