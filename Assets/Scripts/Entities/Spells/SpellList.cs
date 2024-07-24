@@ -35,6 +35,7 @@ static class SpellList
     static internal readonly DamageSpell Fireball;
     static internal readonly DamageSpell PowerBolt;
     static internal readonly DamageSpell LightningBolt;
+    static internal readonly StatusSpell Meditate;
     static internal readonly StatusSpell Shield;
     static internal readonly StatusSpell Mending;
     static internal readonly StatusSpell Speed;
@@ -153,6 +154,26 @@ static class SpellList
             },
         };
         SpellDict[SpellTypes.LightningBolt] = LightningBolt;
+
+        Meditate = new StatusSpell()
+        {
+            Name = "Meditate",
+            Id = "meditate",
+            SpellType = SpellTypes.Meditate,
+            Description = "Focus to recover 10 Mana",
+            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Self },
+            Range = new Range(1),
+            Tier = -1,
+            Resistable = false,
+            OnExecute = (a, t) =>
+            {
+                a.CastStatusSpell(Meditate, t);
+                t.Unit.RestoreMana(10);
+                State.GameManager.SoundManager.PlaySpellHit(Meditate, a.Position);
+                TacticalGraphicalEffects.CreateGenericMagic(a.Position, t.Position, t, TacticalGraphicalEffects.SpellEffectIcon.Focus);
+            },
+        };
+        SpellDict[SpellTypes.Meditate] = Meditate;
 
         Shield = new StatusSpell()
         {

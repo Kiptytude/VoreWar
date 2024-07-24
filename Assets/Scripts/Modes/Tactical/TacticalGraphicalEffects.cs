@@ -12,6 +12,7 @@ static class TacticalGraphicalEffects
         Buff,
         Debuff,
         Web,
+        Focus,
     }
 
     internal static void CreateProjectile(Actor_Unit actor, Actor_Unit target)
