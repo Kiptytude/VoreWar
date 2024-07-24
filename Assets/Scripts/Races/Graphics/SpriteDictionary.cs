@@ -40,6 +40,8 @@ public class SpriteDictionary : MonoBehaviour
     public Sprite[] BlackTop;
     public Sprite[] FemaleVillager;
     public Sprite[] MaleVillager;
+    public Sprite[] MalePlate;
+    public Sprite[] FemalePlate;
 
 
     public Sprite[] LizardPeasant;
