@@ -11,8 +11,8 @@ static class TacticalGraphicalEffects
         Poison,
         Buff,
         Debuff,
+        Managen,
         Web,
-        Focus,
     }
 
     internal static void CreateProjectile(Actor_Unit actor, Actor_Unit target)

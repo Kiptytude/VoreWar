@@ -94,7 +94,7 @@ public class ItemRepository
             new Accessory(name:"Shoes", description:"+2 agility, +1 movement tile", cost:6, changedStat:(int)Stat.Agility, statBonus:2),
 
 
-            new SpellBook("Meditate Book", "Allows the focusing of Mana mid-battle", 40, 0, SpellTypes.Meditate),
+            new SpellBook("Meditate Book", "Allows the focusing of Mana mid-battle", 40, 1, SpellTypes.Meditate),
             new SpellBook("Fireball Book", "Allows the casting of Fireball", 30, 1, SpellTypes.Fireball),
             new SpellBook("Power Bolt Book", "Allows the casting of Power Bolt", 30, 1, SpellTypes.PowerBolt),
             new SpellBook("Lightning Bolt Book", "Allows the casting of Lightning Bolt", 30, 1, SpellTypes.LightningBolt),

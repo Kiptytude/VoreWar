@@ -170,7 +170,7 @@ static class SpellList
                 a.Unit.RestoreMana(10);
                 t.Movement = 0;
                 State.GameManager.SoundManager.PlaySpellHit(Meditate, a.Position);
-                TacticalGraphicalEffects.CreateGenericMagic(a.Position, t.Position, t, TacticalGraphicalEffects.SpellEffectIcon.Focus);
+                TacticalGraphicalEffects.CreateGenericMagic(a.Position, t.Position, t, TacticalGraphicalEffects.SpellEffectIcon.Managen);
             },
         };
         SpellDict[SpellTypes.Meditate] = Meditate;
