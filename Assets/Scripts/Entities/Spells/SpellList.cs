@@ -167,8 +167,8 @@ static class SpellList
             Resistable = false,
             OnExecute = (a, t) =>
             {
-                a.CastStatusSpell(Meditate, t);
-                t.Unit.RestoreMana(10);
+                a.Unit.RestoreMana(10);
+                t.Movement = 0;
                 State.GameManager.SoundManager.PlaySpellHit(Meditate, a.Position);
                 TacticalGraphicalEffects.CreateGenericMagic(a.Position, t.Position, t, TacticalGraphicalEffects.SpellEffectIcon.Focus);
             },
