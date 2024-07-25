@@ -169,6 +169,7 @@ static class SpellList
             {
                 a.CastSpell(Meditate, t);
                 t.Unit.RestoreMana(10);
+                t.Unit.AddFocus(1);
                 TacticalGraphicalEffects.CreateGenericMagic(a.Position, t.Position, t, TacticalGraphicalEffects.SpellEffectIcon.Managen);
             },
         };
