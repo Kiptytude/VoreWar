@@ -16,11 +16,12 @@ class WyvernMatron : BlankSlate
         SkinColors = ColorPaletteMap.GetPaletteCount(ColorPaletteMap.SwapType.WyvernMatron);
         EyeColors = ColorMap.EyeColorCount;
         GentleAnimation = true;
+
         WeightGainDisabled = true;
         CanBeGender = new List<Gender>() { Gender.Hermaphrodite };
 
         Body = new SpriteExtraInfo(3, BodySprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.WyvernMatron, s.Unit.SkinColor)); // Body
-        Eyes = new SpriteExtraInfo(4, EyesSprite, (s) => ColorMap.GetEyeColor(s.Unit.EyeColor)); // Eyes
+        Eyes = new SpriteExtraInfo(5, EyesSprite, (s) => ColorMap.GetEyeColor(s.Unit.EyeColor)); // Eyes
         BodyAccent = new SpriteExtraInfo(0, BodyAccentSprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.WyvernMatron, s.Unit.SkinColor)); // Tail
         BodyAccent2 = new SpriteExtraInfo(1, BodyAccentSprite2, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.WyvernMatron, s.Unit.SkinColor)); // Wing Left
         BodyAccent3 = new SpriteExtraInfo(1, BodyAccentSprite3, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.WyvernMatron, s.Unit.SkinColor)); // Wing Right
@@ -29,12 +30,11 @@ class WyvernMatron : BlankSlate
         BodyAccent4 = new SpriteExtraInfo(7, BodyAccentSprite4, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.WyvernMatron, s.Unit.SkinColor)); // Sheath
         BodyAccent5 = new SpriteExtraInfo(4, BodyAccentSprite5, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.WyvernMatron, s.Unit.SkinColor)); // Legs
         Dick = new SpriteExtraInfo(8, DickSprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.WyvernMatron, s.Unit.SkinColor)); // Dick, CV
-        Hair = new SpriteExtraInfo(5, HairSprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.WyvernMatron, s.Unit.SkinColor)); // Hair
-        Belly = new SpriteExtraInfo(9, HairSprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.WyvernMatron, s.Unit.SkinColor)); // Belly
+        Hair = new SpriteExtraInfo(4, HairSprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.WyvernMatron, s.Unit.SkinColor)); // Hair
+        Belly = new SpriteExtraInfo(10, null, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.WyvernMatron, s.Unit.SkinColor)); // Belly
 
         EyeTypes = 2; // Eye types
     }
-
 
     internal override void SetBaseOffsets(Actor_Unit actor)
     {

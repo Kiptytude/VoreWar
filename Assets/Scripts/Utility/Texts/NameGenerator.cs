@@ -50,7 +50,6 @@ public class NameGenerator
     List<string> vagrantNames;
     List<string> serpentNames;
     List<string> wyvernNames;
-    List<string> youngWyvernNames;
     List<string> gryphonNames;
     List<string> feralLionNames;
     
@@ -273,13 +272,6 @@ public class NameGenerator
             "Deathtalon",
             "Sharpbeak",
             "Spineback",
-        };
-        youngWyvernNames = new List<string>
-        {
-            "Smallwing",
-            "Greedytalon",
-            "Widebeak",
-            "Lazyback",
         };
         gryphonNames = new List<string>
         {
@@ -1050,9 +1042,6 @@ public class NameGenerator
         {
             case Race.Wyvern:
                 list = wyvernNames;
-                break;
-            case Race.YoungWyvern:
-                list = youngWyvernNames;
                 break;
             case Race.Vagrants:
                 list = vagrantNames;

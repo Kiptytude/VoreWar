@@ -220,8 +220,8 @@ public class InfoPanel
                 return "Serpent";
             case Race.Wyvern:
                 return "Wyvern";
-            case Race.YoungWyvern:
-                return "Young Wyvern";
+            case Race.WyvernMatron:
+                return "Wyvern Matron";
             case Race.Compy:
                 return "Compy";
             case Race.FeralWolves:
@@ -402,8 +402,8 @@ public class InfoPanel
                 return "Serpent";
             case Race.Wyvern:
                 return "Wyvern";
-            case Race.YoungWyvern:
-                return "Young Wyvern";
+            case Race.WyvernMatron:
+                return "Wyvern Matron";
             case Race.Compy:
                 return "Compy";
             case Race.FeralWolves:

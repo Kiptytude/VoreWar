@@ -52,7 +52,6 @@ static class RaceParameters
     static readonly RaceTraits Vagrants;
     static readonly RaceTraits Serpents;
     static readonly RaceTraits Wyvern;
-    static readonly RaceTraits YoungWyvern;
     static readonly RaceTraits Compy;
     static readonly RaceTraits Sharks;
     static readonly RaceTraits FeralWolves;
@@ -219,8 +218,6 @@ static class RaceParameters
                 return Serpents;
             case Race.Wyvern:
                 return Wyvern;
-            case Race.YoungWyvern:
-                return YoungWyvern;
             case Race.Compy:
                 return Compy;
             case Race.FeralSharks:
@@ -1324,36 +1321,9 @@ static class RaceParameters
 
         };
 
-        YoungWyvern = new RaceTraits()
-        {
-            BodySize = 6,
-            StomachSize = 20,
-            HasTail = true,
-            FavoredStat = Stat.Stomach,
-            AllowedVoreTypes = new List<VoreType> { VoreType.Oral },
-            ExpMultiplier = 1.25f,
-            RaceStats = new RaceStats()
-            {
-                Strength = new RaceStats.StatRange(4, 8),
-                Dexterity = new RaceStats.StatRange(6, 14),
-                Endurance = new RaceStats.StatRange(8, 16),
-                Mind = new RaceStats.StatRange(6, 14),
-                Will = new RaceStats.StatRange(4, 12),
-                Agility = new RaceStats.StatRange(10, 22),
-                Voracity = new RaceStats.StatRange(12, 20),
-                Stomach = new RaceStats.StatRange(8, 14),
-            },
-            RacialTraits = new List<Traits>()
-            {
-
-            },
-            RaceDescription = "When young the Wyverns aren't good predators. They do have a healthy appetite though, and follow older Wyverns in hope of getting the better of prey weakened by the adults.",
-
-        };
-
         WyvernMatron = new RaceTraits()
         {
-            BodySize = 20,
+            BodySize = 22,
             StomachSize = 18,
             FavoredStat = Stat.Agility,
             AllowedVoreTypes = new List<VoreType> { VoreType.Oral, VoreType.Unbirth, VoreType.CockVore, VoreType.Anal },
@@ -1374,7 +1344,7 @@ static class RaceParameters
         {
                 Traits.Flight,
         },
-            RaceDescription = "The beings called Wyvern Matrons are rare, larger, hermaphroditic variant of the wyvern. Why exactly some wyverns turn into such is unknown, but the resulting being is an even greater threat than average wyverns are.",
+            RaceDescription = "The beings called Wyvern Matrons are a rare, larger, hermaphroditic variant of the wyvern. Why exactly some wyverns turn into such is unknown, but the resulting being is an even greater threat than average wyverns are.",
         };
 
         Compy = new RaceTraits()

@@ -48,12 +48,12 @@
     Cockatrice = 60,
     Vargul = 61,
     Youko = 62,
-    Hamsters =63,
+    Hamsters = 63,
 
     Vagrants = 100,
     Serpents = 101,
     Wyvern = 102,
-    YoungWyvern = 103,
+    WyvernMatron = 103,
     Compy = 104,
     FeralSharks = 105,
     FeralWolves = 106,
@@ -91,7 +91,6 @@
     Goodra = 138,
     Whisp = 139,
     FeralHorses = 140,
-    WyvernMatron = 141,
 
     Selicia = 170,
     Vision = 171,

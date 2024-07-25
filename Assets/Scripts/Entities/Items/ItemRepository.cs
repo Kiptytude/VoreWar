@@ -125,7 +125,6 @@ public class ItemRepository
             new Weapon(name:"Vagrant Stinger", description:"Jellyfish stinger", cost:4, graphic:0, damage:3, range:1),
             new Weapon(name:"Serpent Fangs", description:"Fangs", cost:4, graphic:0, damage:3, range:1),
             new Weapon(name:"Wyvern Claws", description:"Claws", cost:4, graphic:0, damage:5, range:1),
-            new Weapon(name:"Young Wyvern Claws", description:"Claws", cost:4, graphic:0, damage:4, range:1),
             new Weapon(name:"Puny Claws", description:"Puny Claws", cost:4, graphic:0, damage:2, range:1),
             new Weapon(name:"Shark Jaws", description:"Shark Jaws", cost:4, graphic:0, damage:4, range:1),
             new Weapon(name:"Wolf Claws", description:"Wolf Claws", cost:4, graphic:0, damage:4, range:1),
