@@ -160,16 +160,15 @@ static class SpellList
             Name = "Meditate",
             Id = "meditate",
             SpellType = SpellTypes.Meditate,
-            Description = "Focus to recover 10 Mana",
+            Description = "Unit recovers 10 Mana and gains a stack of focus",
             AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Self },
             Range = new Range(1),
             Tier = -1,
             Resistable = false,
             OnExecute = (a, t) =>
             {
-                a.Unit.RestoreMana(10);
-                t.Movement = 0;
-                State.GameManager.SoundManager.PlaySpellHit(Meditate, a.Position);
+                a.CastSpell(Meditate, t);
+                t.Unit.RestoreMana(10);
                 TacticalGraphicalEffects.CreateGenericMagic(a.Position, t.Position, t, TacticalGraphicalEffects.SpellEffectIcon.Managen);
             },
         };
