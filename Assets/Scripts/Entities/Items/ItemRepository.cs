@@ -15,10 +15,10 @@ public enum ItemType
     Gloves,
     Shoes,
 
+    Meditate,
     FireBall,
     PowerBolt,
     LightningBolt,
-    Meditate,
     Shield,
     Mending,
     Speed,
