@@ -105,6 +105,7 @@ static class RaceParameters
     static readonly RaceTraits Abakhanskya;
     static readonly RaceTraits MatronsMinions;
     static readonly RaceTraits WyvernMatron;
+    static readonly RaceTraits Singularity;
 
     static Unit tempUnit;
 
@@ -332,6 +333,8 @@ static class RaceParameters
                 return MatronsMinions;
             case Race.WyvernMatron:
                 return WyvernMatron;
+            case Race.Singularity:
+                return Singularity;
             case (Race)700: //Singled out so that it doesn't make the debug message
                 return Default;
             case (Race)701:
@@ -2841,6 +2844,35 @@ static class RaceParameters
             InnateSpells = new List<SpellTypes>()
             { SpellTypes.Mending, SpellTypes.Fireball},
             RaceDescription = "\"A shy cowgirl ^o^\" - Made by AgentAmbi",
+        };
+
+        Singularity = new RaceTraits()
+        {
+            BodySize = 20,
+            StomachSize = 30,
+            FavoredStat = Stat.Voracity,
+            AllowedVoreTypes = new List<VoreType> { VoreType.Oral, VoreType.Unbirth, VoreType.BreastVore, VoreType.Anal },
+            ExpMultiplier = 2f,
+            PowerAdjustment = 4f,
+            RaceStats = new RaceStats()
+            {
+                Strength = new RaceStats.StatRange(10, 15),
+                Dexterity = new RaceStats.StatRange(14, 21),
+                Endurance = new RaceStats.StatRange(12, 19),
+                Mind = new RaceStats.StatRange(10, 16),
+                Will = new RaceStats.StatRange(16, 21),
+                Agility = new RaceStats.StatRange(7, 11),
+                Voracity = new RaceStats.StatRange(12, 18),
+                Stomach = new RaceStats.StatRange(16, 21),
+            },
+            RacialTraits = new List<Traits>()
+        {
+                Traits.DualStomach,
+                Traits.Ravenous,
+                Traits.AwkwardShape,
+                Traits.StrongGullet,
+        },
+            RaceDescription = "A ravenous species seemingly mirrored from the deer, this herbivore enjoys showing just how quickly she can gobble a warrior down.",
         };
 
     }

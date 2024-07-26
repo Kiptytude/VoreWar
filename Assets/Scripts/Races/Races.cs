@@ -106,6 +106,7 @@
     static internal Goodra Goodra = new Goodra();
     static internal Whisp Whisp = new Whisp();
     static internal FeralHorses FeralHorses = new FeralHorses();
+    static internal Singularity Singularity = new Singularity();
     static internal BlankSlate BlankSlate = new BlankSlate();
 
     static internal DefaultRaceData GetRace(Unit unit)
@@ -331,6 +332,8 @@
                 return Abakhanskya;
             case Race.MatronsMinions:
                 return MatronsMinions;
+            case Race.Singularity:
+                return Singularity;
         }
         UnityEngine.Debug.LogWarning("Couldn't find race, substituting the Blank Slate");
         return BlankSlate;

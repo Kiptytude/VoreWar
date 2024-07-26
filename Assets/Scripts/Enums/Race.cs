@@ -106,4 +106,5 @@
     Salix = 181,
     Bella = 182,
     Abakhanskya = 183,
+    Singularity = 184,
 }

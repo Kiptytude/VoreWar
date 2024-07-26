@@ -59,6 +59,8 @@ public enum SpecialItems
     AbaWeapon,
     AbaArmor,
     BellaWeapon,
+    SingularityWeapon,
+    SingularityArmor,
 }
 
 
@@ -183,6 +185,8 @@ public class ItemRepository
             new Weapon(name:"Grand Talons", description:"All the better to grasp you with, my dear.", cost:4, graphic:0, damage:12, range:1, lockedItem:true),
             new Accessory(name:"Grand Plating", description:"Abakhanskya is covered from head to toe in highly durable composite armor plating\n+10 Endurance", cost:6, changedStat:(int)Stat.Endurance, statBonus:10 ),
             new Weapon(name:"Bella's Staff", description:"A Shepherd's Staff", cost:4, graphic:0, damage:10, range:1, lockedItem:true, accuracyModifier:.75f),
+            new Weapon(name:"Voidshift Antlers", description:"With power over dark energy, Singularity can shape the void matter of her antlers in order to attack.", cost:4, graphic:0, damage:8, range:2, lockedItem:true),
+            new Accessory(name:"Comfy Sweater", description:"Singularity's favorite sweater.", cost:6, changedStat:(int)Stat.Endurance, statBonus:10 ),
         };
 
 

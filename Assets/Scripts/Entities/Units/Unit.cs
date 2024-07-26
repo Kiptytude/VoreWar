@@ -836,6 +836,15 @@ public class Unit
             FixedGear = true;
             Items[0] = State.World.ItemRepository.GetSpecialItem(SpecialItems.BellaWeapon);
         }
+        else if (race == Race.Singularity)
+        {
+            try {
+            FixedGear = true;
+            Items[0] = State.World.ItemRepository.GetSpecialItem(SpecialItems.SingularityWeapon);
+            Items[1] = State.World.ItemRepository.GetSpecialItem(SpecialItems.SingularityArmor);
+            }
+            catch {}
+        }
         else
         {
             FixedGear = false;

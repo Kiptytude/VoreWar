@@ -322,6 +322,8 @@ public class InfoPanel
                 return "Horse";
             case Race.Abakhanskya:
                 return "Khatunlao";
+            case Race.Singularity:
+                return "Faun";
             case Race.none:
                 return "None";
         }
@@ -504,6 +506,8 @@ public class InfoPanel
                 return "Whisp";
             case Race.Abakhanskya:
                 return "Khatunlao";
+            case Race.Singularity:
+                return "Faun";
         }
         return empire.ReplacedRace.ToString();
     }
