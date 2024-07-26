@@ -129,11 +129,11 @@ abstract class DefaultRaceData
         ClothingTypes.StrapTop,
         ClothingTypes.Leotard,
         ClothingTypes.BlackTop,
+        ClothingTypes.MalePlate,
+        ClothingTypes.FemalePlate,
         ClothingTypes.Rags,
         ClothingTypes.FemaleVillager,
         ClothingTypes.MaleVillager,
-        ClothingTypes.MalePlate,
-        ClothingTypes.FemalePlate,
     };
     /// <summary>The total number of waist clothing types plus one additional number for the blank clothing slot</summary>
     internal int WaistClothingTypesCount => AllowedWaistTypes.Count() + 1;
