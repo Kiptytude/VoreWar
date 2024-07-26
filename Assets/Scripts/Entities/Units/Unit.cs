@@ -845,6 +845,15 @@ public class Unit
             }
             catch {}
         }
+        else if (race == Race.Feit)
+        {
+            try {
+            FixedGear = true;
+            Items[0] = State.World.ItemRepository.GetSpecialItem(SpecialItems.FeitWeapon);
+            Items[1] = State.World.ItemRepository.GetSpecialItem(SpecialItems.FeitArmor);
+            }
+            catch {}
+        }
         else
         {
             FixedGear = false;

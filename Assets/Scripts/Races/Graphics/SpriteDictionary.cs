@@ -263,6 +263,7 @@ public class SpriteDictionary : MonoBehaviour
     public Sprite[] BellaRobe1;
     public Sprite[] BellaRobe2;
     public Sprite[] Singularity;
+    public Sprite[] Feit;
     
     [Header("Bosses")]
     public Sprite[] Abakhanskya;

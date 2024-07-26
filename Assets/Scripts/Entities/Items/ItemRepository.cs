@@ -61,6 +61,8 @@ public enum SpecialItems
     BellaWeapon,
     SingularityWeapon,
     SingularityArmor,
+    FeitWeapon,
+    FeitArmor,
 }
 
 
@@ -187,6 +189,8 @@ public class ItemRepository
             new Weapon(name:"Bella's Staff", description:"A Shepherd's Staff", cost:4, graphic:0, damage:10, range:1, lockedItem:true, accuracyModifier:.75f),
             new Weapon(name:"Voidshift Antlers", description:"With power over dark energy, Singularity can shape the void matter of her antlers in order to attack.", cost:4, graphic:0, damage:8, range:2, lockedItem:true),
             new Accessory(name:"Comfy Sweater", description:"Singularity's favorite sweater.", cost:6, changedStat:(int)Stat.Endurance, statBonus:10 ),
+            new Weapon(name:"Feit's Claws", description:"The deadly claws upon Feit's forelimbs synergize well with the wing-like feathers, allowing her to effectively glide and pin down her enemies.", cost:4, graphic:0, damage:8, range:1),
+            new Accessory(name:"Feit's Talons", description:"A Draco-Raptors talons are quite powerful, enabling these predators to quickly pounce upon distant prey.", cost:6, changedStat:(int)Stat.Endurance, statBonus:10 ),
         };
 
 

@@ -107,6 +107,7 @@
     static internal Whisp Whisp = new Whisp();
     static internal FeralHorses FeralHorses = new FeralHorses();
     static internal Singularity Singularity = new Singularity();
+    static internal Feit Feit = new Feit();
     static internal BlankSlate BlankSlate = new BlankSlate();
 
     static internal DefaultRaceData GetRace(Unit unit)
@@ -334,6 +335,8 @@
                 return MatronsMinions;
             case Race.Singularity:
                 return Singularity;
+            case Race.Feit:
+                return Feit;
         }
         UnityEngine.Debug.LogWarning("Couldn't find race, substituting the Blank Slate");
         return BlankSlate;

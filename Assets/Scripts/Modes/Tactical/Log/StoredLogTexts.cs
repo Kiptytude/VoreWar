@@ -1026,7 +1026,7 @@ static class StoredLogTexts
             priority: 8),
             new EventString((i) => $"<b>{i.Unit.Name}</b> moans as <b>{i.Target.Name}</b> inadvertently massages {GPPHim(i.Unit)} with {GPPHis(i.Target)} struggles.",
             priority: 8),
-            new EventString((i) => $"<b>{i.Unit.Name}</b> tells <b>{i.Target.Name}</b> to be thankful as {GPPHis(i.Unit)} {i.preyLocation.ToSyn()} {IsAre(i.Unit)} far more gentle than {GPPHis(i.Unit)} friends, then remarks that <b>{AttractedWarrior(i.Unit).Name}'s</b> {PreyLocStrings.ToSyn(PreyLocation.stomach)} are particularly ruthless.",
+            new EventString((i) => $"<b>{i.Unit.Name}</b> tells <b>{i.Target.Name}</b> to be thankful as {GPPHis(i.Unit)} {i.preyLocation.ToSyn()} {IsAre(i.Unit)} far more gentle than {GPPHis(i.Unit)} friends.",
             priority: 8),
             new EventString((i) => $"<b>{i.Target.Name}</b> kicks at the walls of the {i.preyLocation.ToSyn()} confining {GPPHim(i.Target)}, sending ripples of pleasure across <b>{ApostrophizeWithOrWithoutS(i.Unit.Name)}</b> body.",
             priority: 8),

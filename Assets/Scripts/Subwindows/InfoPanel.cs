@@ -324,6 +324,8 @@ public class InfoPanel
                 return "Khatunlao";
             case Race.Singularity:
                 return "Faun";
+            case Race.Feit:
+                return "Draconic Raptor";
             case Race.none:
                 return "None";
         }
@@ -508,6 +510,8 @@ public class InfoPanel
                 return "Khatunlao";
             case Race.Singularity:
                 return "Faun";
+            case Race.Feit:
+                return "Draconic Raptor";
         }
         return empire.ReplacedRace.ToString();
     }

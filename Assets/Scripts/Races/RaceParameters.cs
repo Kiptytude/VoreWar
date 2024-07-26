@@ -106,6 +106,7 @@ static class RaceParameters
     static readonly RaceTraits MatronsMinions;
     static readonly RaceTraits WyvernMatron;
     static readonly RaceTraits Singularity;
+    static readonly RaceTraits Feit;
 
     static Unit tempUnit;
 
@@ -335,6 +336,8 @@ static class RaceParameters
                 return WyvernMatron;
             case Race.Singularity:
                 return Singularity;
+            case Race.Feit:
+                return Feit;
             case (Race)700: //Singled out so that it doesn't make the debug message
                 return Default;
             case (Race)701:
@@ -2873,6 +2876,36 @@ static class RaceParameters
                 Traits.StrongGullet,
         },
             RaceDescription = "A ravenous species seemingly mirrored from the deer, this herbivore enjoys showing just how quickly she can gobble a warrior down.",
+        };
+
+        Feit = new RaceTraits()
+        {
+            BodySize = 18,
+            StomachSize = 24,
+            FavoredStat = Stat.Agility,
+            AllowedVoreTypes = new List<VoreType> { VoreType.Oral },
+            ExpMultiplier = 2f,
+            PowerAdjustment = 4f,
+            RaceStats = new RaceStats()
+            {
+                Strength = new RaceStats.StatRange(15, 22),
+                Dexterity = new RaceStats.StatRange(12, 18),
+                Endurance = new RaceStats.StatRange(18, 23),
+                Mind = new RaceStats.StatRange(8, 12),
+                Will = new RaceStats.StatRange(19, 24),
+                Agility = new RaceStats.StatRange(18, 24),
+                Voracity = new RaceStats.StatRange(18, 22),
+                Stomach = new RaceStats.StatRange(16, 21),
+            },
+            RacialTraits = new List<Traits>()
+        {
+                Traits.StrongGullet,
+                Traits.Pounce,
+                Traits.KeenReflexes,
+                Traits.Growth,
+                Traits.Tasty,
+        },
+            RaceDescription = "A strange, almost draconic looking raptor. She seems to grow larger and stronger with each victim consumed. Despite having wings, they seem to only allow her to leap great distances instead of fly.",
         };
 
     }
