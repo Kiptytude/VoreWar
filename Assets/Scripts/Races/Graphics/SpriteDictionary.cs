@@ -316,6 +316,7 @@ public class SpriteDictionary : MonoBehaviour
     public Sprite[] Goodra;
     public Sprite[] Whisp;
     public Sprite[] FeralHorses;
+    public Sprite[] FeralFox;
 
 
     public Sprite[] Cake;

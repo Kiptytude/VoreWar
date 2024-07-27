@@ -107,6 +107,7 @@ static class RaceParameters
     static readonly RaceTraits WyvernMatron;
     static readonly RaceTraits Singularity;
     static readonly RaceTraits Feit;
+    static readonly RaceTraits FeralFox;
 
     static Unit tempUnit;
 
@@ -338,6 +339,8 @@ static class RaceParameters
                 return Singularity;
             case Race.Feit:
                 return Feit;
+            case Race.FeralFox:
+                return FeralFox;
             case (Race)700: //Singled out so that it doesn't make the debug message
                 return Default;
             case (Race)701:
@@ -1421,14 +1424,14 @@ static class RaceParameters
             PowerAdjustment = 1.75f,
             RaceStats = new RaceStats()
             {
-                Strength = new RaceStats.StatRange(10, 22),
-                Dexterity = new RaceStats.StatRange(4, 8),
-                Endurance = new RaceStats.StatRange(12, 22),
+                Strength = new RaceStats.StatRange(14, 22),
+                Dexterity = new RaceStats.StatRange(9, 13),
+                Endurance = new RaceStats.StatRange(17, 26),
                 Mind = new RaceStats.StatRange(6, 12),
-                Will = new RaceStats.StatRange(6, 12),
-                Agility = new RaceStats.StatRange(8, 16),
-                Voracity = new RaceStats.StatRange(8, 16),
-                Stomach = new RaceStats.StatRange(6, 14),
+                Will = new RaceStats.StatRange(12, 18),
+                Agility = new RaceStats.StatRange(9, 18),
+                Voracity = new RaceStats.StatRange(19, 27),
+                Stomach = new RaceStats.StatRange(21, 29),
             },
             RacialTraits = new List<Traits>()
         {
@@ -2410,6 +2413,32 @@ static class RaceParameters
 
         },
             RaceDescription = "It's a horse!  Go ahead, try to ride one.  I dare you!"
+        };
+
+        FeralFox = new RaceTraits()
+        {
+            BodySize = 16,
+            StomachSize = 24,
+            FavoredStat = Stat.Voracity,
+            AllowedVoreTypes = new List<VoreType> { VoreType.Oral, VoreType.Unbirth, VoreType.CockVore, VoreType.Anal },
+            ExpMultiplier = 1.6f,
+            PowerAdjustment = 1.3f,
+            RaceStats = new RaceStats()
+            {
+                Strength = new RaceStats.StatRange(11, 15),
+                Dexterity = new RaceStats.StatRange(9, 13),
+                Endurance = new RaceStats.StatRange(17, 23),
+                Mind = new RaceStats.StatRange(7, 11),
+                Will = new RaceStats.StatRange(12, 18),
+                Agility = new RaceStats.StatRange(13, 19),
+                Voracity = new RaceStats.StatRange(19, 27),
+                Stomach = new RaceStats.StatRange(21, 29),
+            },
+            RacialTraits = new List<Traits>()
+        {
+            Traits.Resilient,
+        },
+            RaceDescription = "Abnormally large foxes with a voracious appetite."
         };
 
         Selicia = new RaceTraits()

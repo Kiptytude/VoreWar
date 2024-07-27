@@ -326,6 +326,8 @@ public class InfoPanel
                 return "Faun";
             case Race.Feit:
                 return "Draconic Raptor";
+            case Race.FeralFox:
+                return "Fox";
             case Race.none:
                 return "None";
         }
@@ -512,6 +514,8 @@ public class InfoPanel
                 return "Faun";
             case Race.Feit:
                 return "Draconic Raptor";
+            case Race.FeralFox:
+                return "Fox";
         }
         return empire.ReplacedRace.ToString();
     }
