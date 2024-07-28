@@ -56,6 +56,10 @@ public class WorldConfig
     internal float ArmyCreationMPMod = 0;
     [OdinSerialize]
     internal float ArmyCreationMPCurve = 1f;
+    [OdinSerialize]
+    internal int ScoutMP = 6;
+    [OdinSerialize]
+    internal int ScoutMax = 4;
 
     [OdinSerialize, AllowEditing, ProperName("Gold Mine Income"), IntegerRange(0, 9999), Description("Gold provided by gold mines")]
     internal int GoldMineIncome = 40;

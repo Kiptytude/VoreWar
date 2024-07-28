@@ -189,10 +189,20 @@ public class Army
 
     public int GetMaxMovement()
     {
-        MPMod = Mathf.MoveTowards(MPMod, 0, MPCurve);
-        if (-1f > MPMod)
-            return 0;
-        return Config.ArmyMP + (int)(Config.ArmyMP * MPMod);
+        if (Units.Count <= Config.ScoutMax)
+        {
+            MPMod = Mathf.MoveTowards(MPMod, 0, MPCurve);
+            if (-1f > MPMod)
+                return 0;
+            return Config.ScoutMP + (int)(Config.ScoutMP * MPMod);
+        }
+        else
+        {
+            MPMod = Mathf.MoveTowards(MPMod, 0, MPCurve);
+           if (-1f > MPMod)
+                return 0;
+            return Config.ArmyMP + (int)(Config.ArmyMP * MPMod);
+        }
     }
 
     public void RefreshMovementMode()

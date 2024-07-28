@@ -220,6 +220,8 @@ public class ContentSettings : MonoBehaviour
     public GameObject MonsterSpawnerPrefab;
 
     public Slider ArmyMP;
+    public Slider ScoutMP;
+    public Slider ScoutMax;
     public Slider ArmyCreationMPMod;
     public Slider ArmyCreationMPCurve;
 
@@ -675,6 +677,8 @@ public class ContentSettings : MonoBehaviour
         Config.World.FartFraction = PlayerPrefs.GetFloat("FartFraction", .1f);
         Config.World.WeightGainFraction = PlayerPrefs.GetFloat("WeightGainFraction", .5f);
         Config.World.ArmyMP = PlayerPrefs.GetInt("ArmyMP", 3);
+        Config.World.ScoutMP = PlayerPrefs.GetInt("ScoutMP", 6);
+        Config.World.ScoutMax = PlayerPrefs.GetInt("ScoutMax", 4);
         Config.World.ArmyCreationMPMod = PlayerPrefs.GetFloat("ArmyCreationMPMod", 0);
         Config.World.ArmyCreationMPCurve = PlayerPrefs.GetFloat("ArmyCreationMPCurve", 1f);
         Config.World.CustomEventFrequency = PlayerPrefs.GetFloat("CustomEventFrequency", .25f);
@@ -838,6 +842,8 @@ public class ContentSettings : MonoBehaviour
         FartFraction.value = Config.FartFraction;
         WeightGainFraction.value = Config.WeightGainFraction;
         ArmyMP.value = Config.ArmyMP;
+        ScoutMP.value = Config.ScoutMP;
+        ScoutMax.value = Config.ScoutMax;
         ArmyCreationMPMod.value = Config.ArmyCreationMPMod;
         ArmyCreationMPCurve.value = Config.ArmyCreationMPCurve;
         CustomEventFrequency.value = Config.CustomEventFrequency;
@@ -1031,6 +1037,8 @@ public class ContentSettings : MonoBehaviour
         Config.World.FartFraction = FartFraction.value;
         Config.World.WeightGainFraction = WeightGainFraction.value;
         Config.World.ArmyMP = (int)ArmyMP.value;
+        Config.World.ScoutMP = (int)ScoutMP.value;
+        Config.World.ScoutMax = (int)ScoutMax.value;
         Config.World.ArmyCreationMPMod = ArmyCreationMPMod.value;
         Config.World.ArmyCreationMPCurve = ArmyCreationMPCurve.value;
         Config.World.CustomEventFrequency = CustomEventFrequency.value;
@@ -1214,6 +1222,8 @@ public class ContentSettings : MonoBehaviour
         PlayerPrefs.SetFloat("FartFraction", FartFraction.value);
         PlayerPrefs.SetFloat("WeightGainFraction", WeightGainFraction.value);
         PlayerPrefs.SetInt("ArmyMP", (int)ArmyMP.value);
+        PlayerPrefs.SetInt("ScoutMP", (int)ScoutMP.value);
+        PlayerPrefs.SetInt("ScoutMax", (int)ScoutMax.value);
         PlayerPrefs.SetFloat("ArmyCreationMPMod", ArmyCreationMPMod.value);
         PlayerPrefs.SetFloat("ArmyCreationMPCurve", ArmyCreationMPCurve.value);
         PlayerPrefs.SetFloat("CustomEventFrequency", CustomEventFrequency.value);
@@ -1342,6 +1352,8 @@ public class ContentSettings : MonoBehaviour
     public void RefreshSliderText()
     {
         ArmyMP.GetComponentInChildren<Text>().text = $"Army MP : {ArmyMP.value}";
+        ScoutMP.GetComponentInChildren<Text>().text = $"Scout MP : {ScoutMP.value}";
+        ScoutMax.GetComponentInChildren<Text>().text = $"Scout Size : {ScoutMax.value}";
         CustomEventFrequency.GetComponentInChildren<Text>().text = $"Custom % : {Math.Round(100 * CustomEventFrequency.value, 1)}";
         MaxArmies.GetComponentInChildren<Text>().text = $"MaxArmies : {MaxArmies.value}";
         WeightLossFractionBreasts.GetComponentInChildren<Text>().text = $"Breasts: {Math.Round(100 * WeightLossFractionBreasts.value, 1)}% chance per turn";
