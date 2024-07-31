@@ -168,6 +168,7 @@ public class ItemRepository
             new Weapon(name:"Whisp fire", description:"Whisp's FoxFire", cost:4, graphic:0, damage:5, range:5, omniWeapon: true, magicWeapon: true),
             new Weapon(name:"Horse Hooves", description:"A terribly painful kick to the gut!", cost:4, graphic:0, damage:4, range:1),
             new Weapon(name:"Fox Claws", description:"While smaller than say a wolf,\n these claws are equally as painful.", cost:4, graphic:0, damage:4, range:1),
+            new Weapon(name:"Bladed Appendage", description:"The Terminids' armored exoskeleton is both sturdy and sharp enough to pierce through most contemporary armor.  And when four or five of them strike you at once.... ", cost:4, graphic:0, damage:4, range:1),
         };
 
         specialItems = new List<Item>()

@@ -511,6 +511,9 @@ public class ContentSettings : MonoBehaviour
             case Race.FeralFox:
                 tooltip.value = 286;
                 break;
+            case Race.Terminid:
+                tooltip.value = 287;
+                break;
         }
         return spawner;
     }

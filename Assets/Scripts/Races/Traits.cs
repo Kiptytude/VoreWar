@@ -310,6 +310,7 @@ static class TraitList
         [Traits.ViralDigestion] = new ViralDigestion(),
         [Traits.AwkwardShape] = new Booster("This unit has a very strange body type, making them harder to swallow and providing less sustenance as prey.", (s) => { s.Incoming.VoreOddsMult *= 0.75f; s.Outgoing.Nutrition *= 0.25f; }),
         [Traits.Legendary] = new Booster("<b>This unit is a legendary predator renowned throughout the realm, possessing a wide array of skills learned from generations upon generations of experiences.</b> \n<b>StrongGullet:</b> May attempt <b>2</b> vore attacks per turn, each using half of max AP. \n<b>BornToMove:</b> Total prey does not affect unit's movement speed. \n<b>IronGut:</b> It is much harder for prey to escape this unit's innards once devoured. \n<b>MagicResistance:</b> This unit is harder to hit with magic. \n<b>GreatlyTempered:</b>Recieves less damage from ranged attacks, but full damage from melee attacks.", (s) => { s.VoreAttacks += 1; s.SpeedLossFromWeightMultiplier = 0; s.DodgeLossFromWeightMultiplier = 0.2f; s.Outgoing.ChanceToEscape *= 0.5f; s.Incoming.MagicShift += 0.2f; s.Incoming.RangedDamage *= .7f; }),
+        [Traits.FireVulnerable] = new Booster("Unit takes extra damage from all sources of fire. (150%)", (s) => s.FireDamageTaken *= 1.5f),
     };
 
 }

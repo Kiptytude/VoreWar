@@ -92,6 +92,7 @@
     Whisp = 139,
     FeralHorses = 140,
     FeralFox = 141,
+    Terminid = 142,
 
     Selicia = 170,
     Vision = 171,

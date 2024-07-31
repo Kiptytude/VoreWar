@@ -109,6 +109,7 @@
     static internal Singularity Singularity = new Singularity();
     static internal Feit Feit = new Feit();
     static internal FeralFox FeralFox = new FeralFox();
+    static internal Terminid Terminid = new Terminid();
     static internal BlankSlate BlankSlate = new BlankSlate();
 
     static internal DefaultRaceData GetRace(Unit unit)
@@ -340,6 +341,8 @@
                 return Feit;
             case Race.FeralFox:
                 return FeralFox;
+            case Race.Terminid:
+                return Terminid;
         }
         UnityEngine.Debug.LogWarning("Couldn't find race, substituting the Blank Slate");
         return BlankSlate;

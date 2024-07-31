@@ -537,6 +537,9 @@ public class StrategyMode : SceneBase
                             case StrategicDoodadType.SpawnerFeralFox:
                                 Spawners.Add(new MonsterSpawnerLocation(new Vec2i(i, j), Race.FeralFox));
                                 break;
+                            case StrategicDoodadType.SpawnerTerminid:
+                                Spawners.Add(new MonsterSpawnerLocation(new Vec2i(i, j), Race.Terminid));
+                                break;
                         }
                     }
                 }

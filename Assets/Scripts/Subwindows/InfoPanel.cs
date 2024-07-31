@@ -328,6 +328,8 @@ public class InfoPanel
                 return "Draconic Raptor";
             case Race.FeralFox:
                 return "Fox";
+            case Race.Terminid:
+                return "Terminid";
             case Race.none:
                 return "None";
         }
@@ -516,6 +518,8 @@ public class InfoPanel
                 return "Draconic Raptor";
             case Race.FeralFox:
                 return "Fox";
+            case Race.Terminid:
+                return "Terminid";
         }
         return empire.ReplacedRace.ToString();
     }

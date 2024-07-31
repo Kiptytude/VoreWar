@@ -370,6 +370,9 @@ public enum Traits
     Unflinching = 186,
     /// <summary></summary>
     Legendary = 187,
+    /// <summary>Unit takes extra damage from all sources of fire. (150%)</summary>
+    FireVulnerable = 188,
+
 
 
     //Hidden Traits

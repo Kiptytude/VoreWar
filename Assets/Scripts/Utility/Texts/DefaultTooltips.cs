@@ -710,6 +710,8 @@ Does not retroactively affect already created units.";
                 return "Enables wandering herds of Wild Horses";
             case 286:
                 return "Enables wandering skulks of Feral Foxes";
+            case 287: 
+                return "Enables wandering swards of the freedom-hating Terminids";
             default:
                 return "";
         }

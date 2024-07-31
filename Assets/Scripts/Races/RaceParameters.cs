@@ -108,6 +108,7 @@ static class RaceParameters
     static readonly RaceTraits Singularity;
     static readonly RaceTraits Feit;
     static readonly RaceTraits FeralFox;
+    static readonly RaceTraits Terminid;
 
     static Unit tempUnit;
 
@@ -341,6 +342,8 @@ static class RaceParameters
                 return Feit;
             case Race.FeralFox:
                 return FeralFox;
+            case Race.Terminid:
+                return Terminid;
             case (Race)700: //Singled out so that it doesn't make the debug message
                 return Default;
             case (Race)701:
@@ -2439,6 +2442,35 @@ static class RaceParameters
             Traits.Resilient,
         },
             RaceDescription = "Abnormally large foxes with a voracious appetite."
+        };
+
+        Terminid = new RaceTraits()
+        {
+            BodySize = 16,
+            StomachSize = 24,
+            FavoredStat = Stat.Voracity,
+            AllowedVoreTypes = new List<VoreType> { VoreType.Oral },
+            ExpMultiplier = 1.6f,
+            PowerAdjustment = 1.3f,
+            RaceStats = new RaceStats()
+            {
+                Strength = new RaceStats.StatRange(11, 15),
+                Dexterity = new RaceStats.StatRange(9, 13),
+                Endurance = new RaceStats.StatRange(17, 23),
+                Mind = new RaceStats.StatRange(7, 11),
+                Will = new RaceStats.StatRange(12, 18),
+                Agility = new RaceStats.StatRange(13, 19),
+                Voracity = new RaceStats.StatRange(19, 27),
+                Stomach = new RaceStats.StatRange(21, 29),
+            },
+            RacialTraits = new List<Traits>()
+        {
+            Traits.Disgusting,
+            Traits.Resilient,
+            Traits.Pounce,
+            Traits.FireVulnerable,
+        },
+            RaceDescription = "A vicious and territorial race of voracious insects prized for their ability to produce an element known as E-710, though some say it's just oil.  They are very dangerous, especially so in larger numbers and will often attempt to swarm their prey.  No known portal signified their arrival in the realm so how they ended up here is anybody's guess, though a few conspiracy rumors claim they were brought here by someone else.  There is a curious phenomenon surrounding these insects: When struck by them in combat, there is a high likelyhood that the wounded will shout \"No pain, no freedom!\""
         };
 
         Selicia = new RaceTraits()
