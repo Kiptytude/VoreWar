@@ -109,6 +109,7 @@ static class RaceParameters
     static readonly RaceTraits Feit;
     static readonly RaceTraits FeralFox;
     static readonly RaceTraits Terminid;
+    static readonly RaceTraits FeralOrcas;
 
     static Unit tempUnit;
 
@@ -344,6 +345,8 @@ static class RaceParameters
                 return FeralFox;
             case Race.Terminid:
                 return Terminid;
+            case Race.FeralOrcas:
+                return FeralOrcas;
             case (Race)700: //Singled out so that it doesn't make the debug message
                 return Default;
             case (Race)701:
@@ -2471,6 +2474,34 @@ static class RaceParameters
             Traits.FireVulnerable,
         },
             RaceDescription = "A vicious and territorial race of voracious insects prized for their ability to produce an element known as E-710, though some say it's just oil.  They are very dangerous, especially so in larger numbers and will often attempt to swarm their prey.  No known portal signified their arrival in the realm so how they ended up here is anybody's guess, though a few conspiracy rumors claim they were brought here by someone else.  There is a curious phenomenon surrounding these insects: When struck by them in combat, there is a high likelyhood that the wounded will shout \"No pain, no freedom!\""
+        };
+
+        FeralOrcas = new RaceTraits()
+        {
+            BodySize = 12,
+            StomachSize = 16,
+            FavoredStat = Stat.Strength,
+            AllowedVoreTypes = new List<VoreType> { VoreType.Oral },
+            ExpMultiplier = 1.6f,
+            PowerAdjustment = 2.1f,
+            RaceStats = new RaceStats()
+            {
+                Strength = new RaceStats.StatRange(9, 27),
+                Dexterity = new RaceStats.StatRange(7, 12),
+                Endurance = new RaceStats.StatRange(17, 29),
+                Mind = new RaceStats.StatRange(14, 28),
+                Will = new RaceStats.StatRange(15, 21),
+                Agility = new RaceStats.StatRange(13, 23),
+                Voracity = new RaceStats.StatRange(16, 22),
+                Stomach = new RaceStats.StatRange(19, 27),
+            },
+            RacialTraits = new List<Traits>()
+        {
+                Traits.Flight,
+                Traits.Resilient,
+                Traits.Ravenous,
+        },
+            RaceDescription = "Orcas that have mutated to fly and breathe air on their homewrold. They've also developed a ravenous appetite.  The Skysharks followed the Scylla to this world, and the Orcas followed the Skyharks.",
         };
 
         Selicia = new RaceTraits()

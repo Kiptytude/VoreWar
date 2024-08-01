@@ -227,7 +227,7 @@ public class InfoPanel
             case Race.FeralWolves:
                 return "Feral Wolf";
             case Race.FeralSharks:
-                return "Shark";
+                return "Sky Shark";
             case Race.DarkSwallower:
                 return "Dark Swallower";
             case Race.Cake:
@@ -330,6 +330,8 @@ public class InfoPanel
                 return "Fox";
             case Race.Terminid:
                 return "Terminid";
+            case Race.FeralOrcas:
+                return "Feral Orca";
             case Race.none:
                 return "None";
         }
@@ -520,6 +522,8 @@ public class InfoPanel
                 return "Fox";
             case Race.Terminid:
                 return "Terminid";
+            case Race.FeralOrcas:
+                return "Feral Orca";
         }
         return empire.ReplacedRace.ToString();
     }

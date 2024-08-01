@@ -497,6 +497,9 @@ public class UnitCustomizer
                 buttons[(int)ButtonTypes.BodyAccentTypes4].Label.text = "Left Ear Damage";
                 buttons[(int)ButtonTypes.BodyAccentTypes5].Label.text = "Right Ear Damage";
                 break;
+            case Race.FeralOrcas:
+                buttons[(int)ButtonTypes.BodyAccentTypes1].Label.text = "Dorsal Fin";
+                break;
         }
     }
 

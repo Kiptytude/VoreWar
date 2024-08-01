@@ -514,6 +514,9 @@ public class ContentSettings : MonoBehaviour
             case Race.Terminid:
                 tooltip.value = 287;
                 break;
+            case Race.FeralOrcas:
+                tooltip.value = 288;
+                break;
         }
         return spawner;
     }

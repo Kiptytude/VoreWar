@@ -168,7 +168,8 @@ public class ItemRepository
             new Weapon(name:"Whisp fire", description:"Whisp's FoxFire", cost:4, graphic:0, damage:5, range:5, omniWeapon: true, magicWeapon: true),
             new Weapon(name:"Horse Hooves", description:"A terribly painful kick to the gut!", cost:4, graphic:0, damage:4, range:1),
             new Weapon(name:"Fox Claws", description:"While smaller than say a wolf,\n these claws are equally as painful.", cost:4, graphic:0, damage:4, range:1),
-            new Weapon(name:"Bladed Appendage", description:"The Terminids' armored exoskeleton is both sturdy and sharp enough to pierce through most contemporary armor.  And when four or five of them strike you at once.... ", cost:4, graphic:0, damage:4, range:1),
+            new Weapon(name:"Bladed Appendage", description:"The Terminids' armored exoskeleton is both sturdy and sharp enough to pierce through most contemporary armor.  And when four or five of them strike you at once.... ^v><^ ", cost:4, graphic:0, damage:4, range:1),
+            new Weapon(name:"Orca Jaws", description:"The fearsome jaws of a killer whale", cost:4, graphic:0, damage:5, range:1),
         };
 
         specialItems = new List<Item>()
@@ -189,10 +190,10 @@ public class ItemRepository
             new Weapon(name:"Grand Talons", description:"All the better to grasp you with, my dear.", cost:4, graphic:0, damage:12, range:1, lockedItem:true),
             new Accessory(name:"Grand Plating", description:"Abakhanskya is covered from head to toe in highly durable composite armor plating\n+10 Endurance", cost:6, changedStat:(int)Stat.Endurance, statBonus:10 ),
             new Weapon(name:"Bella's Staff", description:"A Shepherd's Staff", cost:4, graphic:0, damage:10, range:1, lockedItem:true, accuracyModifier:.75f),
-            new Weapon(name:"Voidshift Antlers", description:"With power over dark energy, Singularity can shape the void matter of her antlers in order to attack.", cost:4, graphic:0, damage:8, range:2, lockedItem:true),
+            new Weapon(name:"Voidshift Antlers", description:"With power over dark energy, Singularity can shape the void matter of her antlers to any shape in order to attack.", cost:4, graphic:0, damage:8, range:2, lockedItem:true),
             new Accessory(name:"Comfy Sweater", description:"Singularity's favorite sweater.", cost:6, changedStat:(int)Stat.Endurance, statBonus:10 ),
             new Weapon(name:"Feit's Claws", description:"The deadly claws upon Feit's forelimbs synergize well with the wing-like feathers, allowing her to effectively glide and pin down her enemies.", cost:4, graphic:0, damage:8, range:1),
-            new Accessory(name:"Feit's Talons", description:"A Draco-Raptors talons are quite powerful, enabling these predators to quickly pounce upon distant prey.", cost:6, changedStat:(int)Stat.Endurance, statBonus:10 ),
+            new Accessory(name:"Feit's Talons", description:"A Draco-Raptor's talons are quite powerful, enabling these predators to quickly pounce upon distant prey.", cost:6, changedStat:(int)Stat.Endurance, statBonus:10 ),
         };
 
 

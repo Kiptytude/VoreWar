@@ -492,13 +492,16 @@ public class MapEditor : SceneBase
                 Tooltip.text = $"Place a monster spawn location for Goodra, they have to spawn within 2 tiles of a spawner if at least one exists";
                 break;
             case StrategicDoodadType.SpawnerFeralHorses:
-                Tooltip.text = $"Place a monster spawn location for FeralHorses, they have to spawn within 2 tiles of a spawner if at least one exists";
+                Tooltip.text = $"Place a monster spawn location for Feral Horses, they have to spawn within 2 tiles of a spawner if at least one exists";
                 break;
             case StrategicDoodadType.SpawnerFeralFox:
                 Tooltip.text = $"Place a monster spawn location for Feral Foxes, they have to spawn within 2 tiles of a spawner if at least one exists";
                 break;
             case StrategicDoodadType.SpawnerTerminid:
                 Tooltip.text = $"Place a monster spawn location for the Terminids, they have to spawn within 2 tiles of a spawner if at least one exists";
+                break;
+            case StrategicDoodadType.SpawnerFeralOrcas:
+                Tooltip.text = $"Place a monster spawn location for Feral Orcas, they have to spawn within 2 tiles of a spawner if at least one exists";
                 break;
             default:
                 Tooltip.text = $"Place {type} tile\n";

@@ -569,6 +569,10 @@ static class LogUtilities
                 return GetRandomStringFrom("viroid", "virosapien", "dice-like", "math-obsessed"); ////new, and probably wrong
             case Race.Mice:
                 return GetRandomStringFrom("mouse", GetGenderString(unit, "doe", "buck", "murid"), "rodent");
+            case Race.FeralOrcas:
+                return GetRandomStringFrom("killer whale", "whale", "orca", "oversized dolphin", "cetacean", "apex dolphin");
+            case Race.Feit:
+                return GetRandomStringFrom("raptor", "dino", "draco-raptor", "draconic raptor");
             default:
                 return "creature";
         }

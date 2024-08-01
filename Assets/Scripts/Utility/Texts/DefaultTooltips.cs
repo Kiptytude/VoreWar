@@ -712,6 +712,8 @@ Does not retroactively affect already created units.";
                 return "Enables wandering skulks of Feral Foxes";
             case 287: 
                 return "Enables wandering swards of the freedom-hating Terminids";
+            case 288: 
+                return "Enables wandering pods of Feral Orcas";
             default:
                 return "";
         }

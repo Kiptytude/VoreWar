@@ -110,6 +110,7 @@
     static internal Feit Feit = new Feit();
     static internal FeralFox FeralFox = new FeralFox();
     static internal Terminid Terminid = new Terminid();
+    static internal FeralOrcas FeralOrcas = new FeralOrcas();
     static internal BlankSlate BlankSlate = new BlankSlate();
 
     static internal DefaultRaceData GetRace(Unit unit)
@@ -343,6 +344,8 @@
                 return FeralFox;
             case Race.Terminid:
                 return Terminid;
+            case Race.FeralOrcas:
+                return FeralOrcas;
         }
         UnityEngine.Debug.LogWarning("Couldn't find race, substituting the Blank Slate");
         return BlankSlate;

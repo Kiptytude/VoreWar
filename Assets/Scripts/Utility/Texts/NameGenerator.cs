@@ -52,6 +52,7 @@ public class NameGenerator
     List<string> wyvernNames;
     List<string> gryphonNames;
     List<string> feralLionNames;
+    List<string> feralOrcasNames;
     
 	List<string> goodraNames;
 	

@@ -93,6 +93,7 @@
     FeralHorses = 140,
     FeralFox = 141,
     Terminid = 142,
+    FeralOrcas = 143,
 
     Selicia = 170,
     Vision = 171,
