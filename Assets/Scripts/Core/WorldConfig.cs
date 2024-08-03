@@ -57,7 +57,7 @@ public class WorldConfig
     [OdinSerialize]
     internal float ArmyCreationMPCurve = 1f;
     [OdinSerialize]
-    internal int ScoutMP = 6;
+    internal int ScoutMP = 3;
     [OdinSerialize]
     internal int ScoutMax = 4;
 
