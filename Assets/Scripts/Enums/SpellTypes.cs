@@ -37,6 +37,8 @@
     ManaFlux = 25,
     UnstableMana = 26,
 
+    Conduit = 27,
+
     AlraunePuff = 70,
     Web = 71,
     GlueBomb = 72,

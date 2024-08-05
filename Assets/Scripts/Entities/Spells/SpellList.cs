@@ -30,6 +30,13 @@ public enum AbilityTargets
     Tile,
 }
 
+public enum AreaOfEffectType
+{
+    Full,
+    FixedPattern,
+    RotatablePattern,
+}
+
 static class SpellList
 {
     static internal readonly DamageSpell Fireball;
@@ -65,6 +72,8 @@ static class SpellList
     static internal readonly DamageSpell ManaFlux;
     static internal readonly DamageSpell UnstableMana;
     static internal readonly DamageSpell ManaExpolsion;
+
+    static internal readonly DamageSpell Conduit;
 
     static internal readonly StatusSpell AlraunePuff;
     static internal readonly StatusSpell Web;
@@ -1034,7 +1043,28 @@ static class SpellList
             }
         };
         SpellDict[SpellTypes.ManaExpolsion] = ManaExpolsion;
-        
+
+        Conduit = new DamageSpell()
+        {
+            Name = "Conduit",
+            Id = "conduit",
+            SpellType = SpellTypes.Conduit,
+            Description = "Deals damage around a target, but not to it. Scales with both Unit's mind and Target's",
+            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy, AbilityTargets.Ally},
+            Range = new Range(6),
+            Tier = 1,
+            AOEType = AreaOfEffectType.FixedPattern,
+            Pattern = new int[9] { 0, 0, 0, 0, 1, 0, 1, 1, 1 },
+            Damage = (a, t) => (a.Unit.GetStat(Stat.Mind) / 10) + (t.Unit.GetStat(Stat.Mind) / 10),
+            Resistable = true,
+            OnExecute = (a, t) =>
+            {
+                a.CastOffensiveSpell(Conduit, t);
+                TacticalGraphicalEffects.CreateGenericMagic(a.Position, t.Position, t);
+            }
+        };
+        SpellDict[SpellTypes.Conduit] = Conduit;
+
     }
 }
 
@@ -1050,6 +1080,25 @@ public class Spell
     internal int Tier;
     /// <summary>The number of tiles away a target is affected (i.e. 1 = 9 total tiles)</summary>
     internal int AreaOfEffect;
+    /// <summary> The type of AOE the spell will use, tells the code which functions to implement so it runs faster:
+    /// Full - The normal AOE type
+    /// FixedPattern - Will cause AreaOfEffect to be ignored and will use Pattern instead
+    /// RotatablePattern - Same as above, but will apply the rotation to the patetrn based on target's position
+    /// </summary>
+    internal AreaOfEffectType AOEType = AreaOfEffectType.Full;
+    /// <summary>The vector representing the spell's pattern
+    /// The game reads tiles from top left to bottom right so
+    /// [0,0,0,0,1,0,1,1,1] OR
+    /// [0,0,0,
+    ///  0,1,0,
+    ///  1,1,1]
+    ///  will have of shape
+    ///  O O 0
+    ///  O X 0
+    ///  1 1 1
+    ///  Length MUST be a odd perfect square (9, 25, 49, 81, ...) As the spell is centered on the target
+    /// </summary>
+    internal int[] Pattern;
     internal Action<Actor_Unit, Vec2i> OnExecuteTile;
     internal bool Resistable;
     internal float ResistanceMult = 1;

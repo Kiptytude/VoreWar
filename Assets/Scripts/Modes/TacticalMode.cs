@@ -5,6 +5,7 @@ using System.Linq;
 using TacticalDecorations;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Networking.Types;
 using UnityEngine.Tilemaps;
 
 public class TacticalMode : SceneBase
@@ -2127,7 +2128,25 @@ Turns: {currentTurn}
 
     }
 
+    void UpdateCustomeGrid(Vec2i mouseLocation, int[] targettiles, int range)
+    {
+        MovementGrid.ClearAllTiles();
 
+        int radius = CurrentSpell.AreaOfEffect;
+        bool outOfRange = mouseLocation.GetNumberOfMovesDistance(SelectedUnit.Position) > CurrentSpell.Range.Max;
+
+        foreach (Vec2 tile_pos in TacticalUtilities.TilesOnPattern(mouseLocation, targettiles, (int)((Math.Sqrt(targettiles.Length) / 2) - 0.5)))
+        {
+            if (mouseLocation.GetNumberOfMovesDistance(new Vec2i(mouseLocation.x, mouseLocation.y)) <= range)
+            {
+                if (outOfRange)
+                    MovementGrid.SetTile(new Vector3Int(tile_pos.x, tile_pos.y, 0), MovementGridTileTypes[0]);
+                else
+                    MovementGrid.SetTile(new Vector3Int(tile_pos.x, tile_pos.y, 0), MovementGridTileTypes[1]);
+            }
+        }
+        
+    }
 
     void UpdateAttackGrid(Vec2i source)
     {
@@ -2912,11 +2931,14 @@ Turns: {currentTurn}
 
         if (ActionMode == 6)
         {
-            if (CurrentSpell?.AreaOfEffect > 0)
+            if (CurrentSpell?.AOEType == AreaOfEffectType.FixedPattern)
+                UpdateCustomeGrid(mouseLocation, CurrentSpell?.Pattern, SelectedUnit.Position.GetNumberOfMovesDistance(mouseLocation.x, mouseLocation.y));
+            else if (CurrentSpell?.AreaOfEffect > 0)
                 UpdateAreaOfEffectGrid(mouseLocation);
+
             if (CurrentSpell is DamageSpell spell)
             {
-                if (spell.AreaOfEffect == 0)
+                if (spell.AreaOfEffect == 0 && spell.AOEType == AreaOfEffectType.Full)
                 {
                     for (int i = 0; i < units.Count; i++)
                     {
@@ -2936,6 +2958,22 @@ Turns: {currentTurn}
                             }
                         }
                     }
+                }
+                else if (spell.AOEType == AreaOfEffectType.FixedPattern)
+                {
+                    foreach (var splashTarget in TacticalUtilities.UnitsWithinPattern(mouseLocation, spell.Pattern))
+                    {
+                        int spellDamage = spell.Damage(SelectedUnit, splashTarget);
+                        if (TacticalUtilities.SneakAttackCheck(SelectedUnit.Unit, splashTarget.Unit)) // sneakAttack
+                        {
+                            spellDamage *= 3;
+                        }
+                        splashTarget.UnitSprite.ShowDamagedHealthBar(splashTarget, spellDamage);
+                    }
+                }
+                else if (spell.AOEType == AreaOfEffectType.RotatablePattern)
+                {
+
                 }
                 else if (mouseLocation != null)
                 {
