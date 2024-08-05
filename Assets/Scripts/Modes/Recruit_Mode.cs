@@ -292,6 +292,10 @@ public class Recruit_Mode : SceneBase
             }
             UpdateActorList();
             GenText();
+            if (army.Units.Count > Config.ScoutMax && army.RemainingMP > Config.ArmyMP)
+            {
+                army.RemainingMP = Config.ArmyMP;
+            }
         }
         else
         {
