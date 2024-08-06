@@ -28,18 +28,19 @@ public static class PreyLocStrings
     static readonly List<string> ballsVerbPastTense = new List<string>() { "cummed", "released", "ejaculated", "jizzed", "nutted", "splurted", "spurted", "spooged" };
     static readonly List<string> stomachVerbPastTense = new List<string>() { "puked", "spat", "spewed", "disgorged", "upchucked", "vomited", "vommed up", "gagged out" };
 
-    static readonly List<string> oralVoreVerbPresentTense = new List<string>() { "eats", "devours", "swallows", "gulps", "wolfs", "horks", "chomps", "slurps", "munches" };
+    static readonly List<string> oralVoreVerbPresentTense = new List<string>() { "eats", "devours", "swallows", "gobbles", "gulps", "wolfs", "horks", "chomps", "slurps", "munches" };
     static readonly List<string> oralVoreVerbPresentContinuousTense = new List<string>() { "eating", "devouring", "swallowing", "gobbling", "gulping", "wolfing", "horking", "downing", "chomping", "slurping", "munching" };
     static readonly List<string> oralVoreVerbPastTense = new List<string>() { "eaten", "ate", "devoured", "swallowed", "gobbled", "gulped", "downed", "chomped", "slurped", "munching" };
 
     static readonly List<string> DigestVerb = new List<string> () { "digest", "churn", "gurgle", "melt", "mulch", "dissolve", "liquify" };
     static readonly List<string> DigestsVerb = new List<string> () { "digests", "churns", "gurgles", "melts", "mulches", "dissolves", "liquifies" };
+    static readonly List<string> DigestedVerb = new List<string> () { "digested", "churned", "gurgled", "melted", "mulched", "dissolved", "liquified" };
     static readonly List<string> DigestingVerb = new List<string> () { "digesting", "churning", "gurgling", "melting", "mulching", "dissolving", "liquifying" };
 
     static readonly List<string> BellyStuffedAdj = new List<string> () { "sloshing", "sloshy", "gurgling", "gurgly", "churning", "groaning", "growling", "rumbling", "rumbly", "hungry", "sweltering", "gluttonous", "caustic", "quaking", "quivering", "quavering", "shifting", "trembling", "wobbling", "wiggling", "wriggling", "squirming", "stuffed", "full", "bloated", "bulging", "thrashing", "bubbling", "pulsating", "curvaceous", "prey-filled", "prey-stuffed", "prey-packed", "meat-filled", "meat-stuffed", "meat-packed", "swollen", "lumpy", "hefty", "overworked", "overpacked", "overstuffed", "encumbered" };
     static readonly List<string> AcidicDeadly = new List<string> () { "digestive", "groaning", "gurgling", "churning", "melty", "gastric", "acidic", "caustic", "corrosive", "erosive", "abrasive", "dissolving", "deadly", "predatory", "flesh-melting", "life-ending", "fatal", "powerful" };
-    static readonly List<string> Scat = new List<string> () { "poop", "shit", "scat", "crap", "manure", "turds", "slop", "dung", "waste", "guano", "fertilizer", "logs" };
-    static readonly List<string> ScatAdj = new List<string> () { "fresh", "nasty", "creamy", "warm", "greasy", "foul", "gross", "thick and brown", "fragrant", "steamy", "steaming", "heavy", "slimy", "freshly churned", "messy", "disgusting", "filthy", "stinky", "odorous", "fetid", "rank", "rancid", "vile", "putrid", "skunky", "feculent" };
+    static readonly List<string> Scat = new List<string> () { "poop", "shit", "scat", "crap", "manure", "turds", "slop", "dung", "waste", "guano", "fertilizer", "logs", "leavings" };
+    static readonly List<string> ScatAdj = new List<string> () { "fresh", "nasty", "creamy", "warm", "greasy", "foul", "gross", "thick", "fragrant", "steamy", "steaming", "heavy", "slimy", "freshly churned", "messy", "disgusting", "filthy", "stinky", "odorous", "fetid", "rank", "rancid", "vile", "putrid", "skunky", "feculent" };
     static readonly List<string> PussyAdj = new List<string>() { "messy", "moist", "slick", "sloppy", "wet", "slimy", "dripping", "sopping", "drooling", "creamy", "warm", "hot", "humid", "sultry", "sweltering", "snug", "horny", "lecherous", "lustful", "steamy", "eager", "greedy", "hungry", "meat-hungry", "needy", "blushing", "tasty-looking", "delicious", "slippery", "quivering", "tangy" };
     static readonly List<string> CockAdj = new List<string>() { "hard", "rock-hard", "hefty", "throbbing", "warm", "stiff", "erect", "beefy", "plump", "girthy", "tasty-looking", "delicious", "veiny", "prodigious", "great big", "aroused", "needy", "eager", "demanding", "swollen", "engorged", "lustful", "sensitive", "horny", "erect" };
     static readonly List<string> SpoogeAdj = new List<string>() { "fresh", "freshly-made", "hot", "warm", "sticky", "creamy", "syrupy", "slimy", "gooey", "messy", "sloppy", "lewd" };
@@ -206,6 +207,8 @@ public static class PreyLocStrings
     { return genRandom(DigestVerb); }
     public static string DigestsVerbSyn()
     { return genRandom(DigestsVerb); }
+    public static string DigestedVerbSyn()
+    { return genRandom(DigestedVerb); }
     public static string DigestingVerbSyn()
     { return genRandom(DigestingVerb); }
 

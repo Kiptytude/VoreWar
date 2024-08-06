@@ -418,7 +418,7 @@ public class Unit
 
     internal bool CanBeConverted()
     {
-        return Type != UnitType.Summon && Type != UnitType.Leader && Type != UnitType.SpecialMercenary && HasTrait(Traits.Eternal) == false && SavedCopy == null;
+        return Type != UnitType.Summon && Type != UnitType.Leader && Type != UnitType.SpecialMercenary && HasTrait(Traits.Eternal) == false && SavedCopy == null && Level > 0;
     }
 
     internal bool CanUnbirth => Config.Unbirth && HasVagina;
@@ -494,7 +494,7 @@ public class Unit
 
     public bool BestSuitedForRanged() => Stats[(int)Stat.Dexterity] * TraitBoosts.VirtualDexMult > Stats[(int)Stat.Strength] * TraitBoosts.VirtualStrMult;
 
-    protected void SetLevel(int level) => this.level = level;
+    public void SetLevel(int level) => this.level = level;
 
     internal bool SpendMana(int amount)
     {
@@ -1327,6 +1327,13 @@ internal void SetGenderRandomizeName(Race race, Gender gender)
 
     public int GetStatBase(Stat stat) => Stats[(int)stat];
     public void SetStatBase(Stat stat, int value) => Stats[(int)stat] = value;
+    public void SetStatBaseAll(int value)
+    {
+        for (int i = 0; i < Stats.Length; i++)
+        {
+            Stats[i] = value;
+        }
+    }
     public int GetLeaderBonus()
     {
         if (CurrentLeader == null)
@@ -2270,7 +2277,7 @@ internal void SetGenderRandomizeName(Race race, Gender gender)
 
     public void LevelDown()
     {
-        if (level == 1)
+        if (level <= 1)
             return;
         int highestType = 0;
         for (int i = 0; i < Stats.Length; i++)
@@ -2283,7 +2290,7 @@ internal void SetGenderRandomizeName(Race race, Gender gender)
 
     public void LevelDown(Stat stat)
     {
-        if (level == 1)
+        if (level <= 1)
             return;
         GeneralStatIncrease(-1);
         if (TraitBoosts.OnLevelUpBonusToAllStats > 0)

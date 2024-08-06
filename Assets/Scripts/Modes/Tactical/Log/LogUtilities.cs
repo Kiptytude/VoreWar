@@ -572,7 +572,7 @@ static class LogUtilities
             case Race.FeralOrcas:
                 return GetRandomStringFrom("killer whale", "whale", "orca", "oversized dolphin", "cetacean", "apex dolphin");
             case Race.Feit:
-                return GetRandomStringFrom("raptor", "dino", "draco-raptor", "draconic raptor");
+                return GetRandomStringFrom("raptor", "dino", "draco-raptor", "draconic raptor", "raptoress", "she-raptor");
             default:
                 return "creature";
         }

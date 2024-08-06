@@ -166,7 +166,6 @@ public class ContentSettings : MonoBehaviour
     public Toggle Scat;
     public Toggle ScatV2;
     public Toggle ScatBones;
-    public Toggle CondomsForCV;
     public Toggle ClothingDiscards;
 
     public Toggle ErectionsFromVore;
@@ -189,6 +188,7 @@ public class ContentSettings : MonoBehaviour
     public Toggle Defections;
 
     public Toggle Cumstains;
+    public Toggle CondomsForCV;
 
     public Toggle MonstersCanReform;
 

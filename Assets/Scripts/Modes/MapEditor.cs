@@ -521,7 +521,7 @@ public class MapEditor : SceneBase
         {
             foreach (Army army in empire.Armies)
             {
-                if (army.Side < 31)
+                if (army.Side < 32)
                 {
                     if (army.BannerStyle > (int)BannerTypes.VoreWar && CustomBannerTest.Sprites[army.BannerStyle - 23] != null)
                     {

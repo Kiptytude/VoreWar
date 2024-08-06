@@ -35,7 +35,7 @@ public enum Traits
     PackTactics = 14,
     /// <summary>Doubles unit's escape rate.</summary>
     EscapeArtist = 20,
-    /// <summary>Doubles unit's digestion rate.</summary>
+    /// <summary>Increases unit's digestion rate by 50%.</summary>
     FastDigestion = 21,
     /// <summary>Halves unit's digestion rate.</summary>
     SlowDigestion = 22,
@@ -497,7 +497,17 @@ public enum Traits
     /// <summary>Unit's absorption growth decays 2x as fast.</summary>
     FleetingGrowth = 274,
     /// <summary>Doubles healing provided when absorbing unit and increases growth provided by 50%.</summary>
-    ProteinRich = 275
+    ProteinRich = 275,
+    /// <summary>Quarters unit's digestion rate.</summary>
+    SlowerDigestion = 276,
+    /// <summary>Quarters prey absorption rate.</summary>
+    SlowerAbsorption = 277,
+    /// <summary>Unit digests and absorbs prey a quarter of normal speed.</summary>
+    SlowerMetabolism = 278,
+    /// <summary>Doubles unit's digestion rate.</summary>
+    FasterDigestion = 279,
+    /// <summary>Doubles unit's absorption rate.</summary>
+    FasterAbsorption = 280
 
 }
 
