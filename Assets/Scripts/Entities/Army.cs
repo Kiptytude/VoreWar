@@ -49,6 +49,11 @@ public class Army
     internal float MPMod = Config.ArmyCreationMPMod;
     [OdinSerialize]
     internal float MPCurve = Config.ArmyCreationMPCurve;
+    [OdinSerialize]
+    internal float SCooldown;
+    [OdinSerialize]
+    internal float SCooldownOffset;
+
 
 
     [OdinSerialize]
@@ -185,14 +190,35 @@ public class Army
         DevourThisTurn = false;
         GetTileHealRate();
         ProcessInVillageOnTurn();
+        SCooldown = 0;
     }
 
     public int GetMaxMovement()
     {
-        MPMod = Mathf.MoveTowards(MPMod, 0, MPCurve);
-        if (-1f > MPMod)
-            return 0;
-        return Config.ArmyMP + (int)(Config.ArmyMP * MPMod);
+        if (Units.Count <= Config.ScoutMax)
+        {
+            SCooldownOffset = ((Config.ArmyMP + Config.ScoutMP) + (int)(Config.ArmyMP * MPMod) - (int)SCooldown);
+            MPMod = Mathf.MoveTowards(MPMod, 0, MPCurve);
+            if (-1f > MPMod)
+                return 0;
+            else if (Config.ArmyMP < (int)SCooldown)
+            {
+                if ((int)SCooldownOffset > 0f)
+                    return ((int)SCooldownOffset);
+                else
+                    return 0;
+            }
+            return (Config.ArmyMP + Config.ScoutMP) + (int)(Config.ArmyMP * MPMod);
+        }
+        else
+        {
+            MPMod = Mathf.MoveTowards(MPMod, 0, MPCurve);
+           if (-1f > MPMod)
+                return 0;
+           if (SCooldown > (Config.ArmyMP + (int)(Config.ArmyMP * MPMod)))
+                return 0;
+            return Config.ArmyMP + (int)(Config.ArmyMP * MPMod) - (int)SCooldown;
+        }
     }
 
     public void RefreshMovementMode()
@@ -495,9 +521,13 @@ public class Army
                 else if (Sprite != null)
                     State.GameManager.StrategyMode.Translator?.SetTranslator(Sprite.transform, Position, pos, Config.StrategicAIMoveDelay, State.GameManager.StrategyMode.IsPlayerTurn);
                 if (State.GameManager.StrategyMode.IsPlayerTurn)
-                    State.GameManager.StrategyMode.UndoMoves.Add(new StrategicMoveUndo(this, RemainingMP, new Vec2i(Position.x, Position.y)));
+                    State.GameManager.StrategyMode.UndoMoves.Add(new StrategicMoveUndo(this, RemainingMP, (int)SCooldown, new Vec2i(Position.x, Position.y)));
                 Position = pos;
                 StrategicUtilities.TryClaim(pos, empire);
+                if (Units.Count <= Config.ScoutMax)
+                {
+                    SCooldown += 2f;
+                }
                 RemainingMP -= 2;
                 return false;
             }
@@ -518,7 +548,11 @@ public class Army
         if (act == TileAction.OneMP && RemainingMP > 0)
         {
             if (State.GameManager.StrategyMode.IsPlayerTurn)
-                State.GameManager.StrategyMode.UndoMoves.Add(new StrategicMoveUndo(this, RemainingMP, new Vec2i(Position.x, Position.y)));
+                State.GameManager.StrategyMode.UndoMoves.Add(new StrategicMoveUndo(this, RemainingMP, (int)SCooldown, new Vec2i(Position.x, Position.y)));
+                if (Units.Count <= Config.ScoutMax)
+                {
+                    SCooldown += 1f;
+                }
             RemainingMP -= 1;
             if (Banner != null && Banner.gameObject.activeSelf)
                 State.GameManager.StrategyMode.Translator?.SetTranslator(Banner.transform, Position, pos, Config.StrategicAIMoveDelay, State.GameManager.StrategyMode.IsPlayerTurn);
