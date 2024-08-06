@@ -1163,6 +1163,12 @@ public class PredatorComponent
         return sizeDiff * preyBoosts * predBoosts;
     }
 
+    int ApplySettingsToDamage(int incoming_damage)
+    {
+        int outgoing_damage = incoming_damage;
+        outgoing_damage = (int)(Config.DigestionSpeedMult * outgoing_damage);
+        return outgoing_damage;
+    }
     int CalculateDigestionDamage(Prey preyUnit)
     {
         if (preyUnit.TurnsDigested < preyUnit.Unit.TraitBoosts.DigestionImmunityTurns || preyUnit.Unit.HasTrait(Traits.TheGreatEscape))

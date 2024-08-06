@@ -353,6 +353,31 @@ static class Config
     public static bool StatBoostsAffectMaxHP => World.GetValue("StatBoostsAffectMaxHP");
     public static bool OverfeedingDamage => World.GetValue("OverfeedingDamage");
 
+    public static float DigestionSpeedMult => World.DigestionSpeedMult;
+    public static float AbsorbSpeedMult => World.AbsorbSpeedMult;
+    public static float DigestionDmgVarMin => World.DigestionDmgVarMin;
+    public static float DigestionDmgVarMax => World.DigestionDmgVarMax;
+    public static float BellyRubEffMult => World.BellyRubEffMult;
+    public static int BellyRubsPerTurn => World.BellyRubsPerTurn;
+    public static float DigestionRamp => World.DigestionRamp;   
+    public static int DigestionRampTurn => World.DigestionRampTurn;
+    public static float DigestionRampLoss => World.DigestionRampLoss;
+    public static int DigestionRampCap => World.DigestionRampCap;
+    public static float AbsorbRamp => World.AbsorbRamp;
+    public static int AbsorbRampTurn => World.AbsorbRampTurn;
+    public static float AbsorbRampLoss => World.AbsorbRampLoss;
+    public static int AbsorbRampCap => World.AbsorbRampCap;
+    public static float DigestionCap => World.DigestionCap;
+    public static float DigestionFlatDmg => World.DigestionFlatDmg;
+    public static int DigestionGraceTurns => World.DigestionGraceTurns;
+    internal static bool DigestionDamageDivision => World.GetValue("DigestionDamageDivision");
+    internal static bool AbsorbRateDivision => World.GetValue("AbsorbRateDivision");
+    public static float SurrenderedPredEscapeMult => World.SurrenderedPredEscapeMult;
+    public static float SurrenderedPredAutoRegur => World.SurrenderedPredAutoRegur;
+
+
+
+
     internal static bool WinterActive()
     {
         if (World.WinterStuff == SeasonalType.AlwaysOn)

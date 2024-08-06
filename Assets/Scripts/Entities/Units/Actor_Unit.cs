@@ -59,8 +59,9 @@ public class Actor_Unit
     public bool Visible;
     [OdinSerialize]
     public bool Targetable;
+    public bool ReceivedRub => (RubCount >= Config.BellyRubsPerTurn);
     [OdinSerialize]
-    public bool ReceivedRub;
+    public int RubCount;
 
     [OdinSerialize]
     public bool Surrendered;
@@ -131,6 +132,9 @@ public class Actor_Unit
 
     [OdinSerialize]
     internal int TurnsSinceLastParalysis = 9999;
+
+    [OdinSerialize]
+    internal float TurnsFull = 0;
 
     [OdinSerialize]
     internal int spriteLayerOffset = 0;
@@ -1854,7 +1858,7 @@ public class Actor_Unit
             return false;
         if ((target.Unit.GetApparentSide() != Unit.GetApparentSide() && target.Unit.GetApparentSide() != Unit.FixedSide) && !(Unit.HasTrait(Traits.SeductiveTouch) || Config.CanUseStomachRubOnEnemies || TacticalUtilities.GetMindControlSide(Unit) != -1))
             return false;
-        target.ReceivedRub = true;
+        target.RubCount++;
         int index = Random.Range(0, possible.Count - 1);
         type = possible[index];
         switch (type)
@@ -2179,7 +2183,18 @@ public class Actor_Unit
         {
             Unit.ApplyStatusEffect(StatusEffectType.Shaken, .2f, 1);
         }
-        ReceivedRub = false;
+        if (Unit.Predator && TurnsFull > 0)
+        {
+            TurnsFull -= Config.DigestionRampLoss;
+            if (TurnsFull < 0)
+            {
+                TurnsFull = 0;
+            }
+            
+        }
+        else
+            TurnsFull++; 
+        RubCount = 0;
         TurnsSinceLastDamage++;
     }
 

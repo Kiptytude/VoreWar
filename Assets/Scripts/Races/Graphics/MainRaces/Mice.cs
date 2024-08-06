@@ -358,7 +358,7 @@ class Mice : DefaultRaceData
 
     protected override Sprite BodyAccentSprite6(Actor_Unit actor) // thighs Pattern
     {
-        if (actor.Unit.BodyAccentType2 != 2)
+        if (actor.Unit.BodyAccentType2 != 2 || !actor.Unit.Furry)
         {
             return null;
         }

@@ -251,6 +251,27 @@ public class ContentSettings : MonoBehaviour
     public Toggle StatBoostsAffectMaxHP;
     public Toggle OverfeedingDamage;
 
+    public Slider DigestionSpeedMult;
+    public Slider AbsorbSpeedMult;
+    public Slider DigestionDmgVarMin;
+    public Slider DigestionDmgVarMax;
+    public Slider BellyRubEffMult;
+    public Slider BellyRubsPerTurn;
+    public Slider DigestionRamp;
+    public InputField DigestionRampTurn;
+    public InputField DigestionRampCap;
+    public Slider DigestionRampLoss;
+    public Slider AbsorbRamp;
+    public InputField AbsorbRampTurn;
+    public InputField AbsorbRampCap;
+    public Slider AbsorbRampLoss;
+    public Slider DigestionCap;
+    public Slider DigestionFlatDmg;
+    public Slider DigestionGraceTurns;
+    public Toggle DigestionDamageDivision;
+    public Toggle AbsorbRateDivision;
+    public Slider SurrenderedPredEscapeMult;
+    public Slider SurrenderedPredAutoRegur;
 
 
     List<ToggleObject> MercToggles;
@@ -364,6 +385,8 @@ public class ContentSettings : MonoBehaviour
             new ToggleObject(StatGraze, "StatGraze", false),
             new ToggleObject(StatBoostsAffectMaxHP, "StatBoostsAffectMaxHP", false),
             new ToggleObject(OverfeedingDamage, "OverfeedingDamage", false),
+            new ToggleObject(DigestionDamageDivision, "DigestionDamageDivision", false),
+            new ToggleObject(AbsorbRateDivision, "AbsorbRateDivision", false),
 
         };
         MercToggles = new List<ToggleObject>();
@@ -674,6 +697,25 @@ public class ContentSettings : MonoBehaviour
         Config.World.BurpFraction = PlayerPrefs.GetFloat("BurpFraction", .1f);
         Config.World.FartFraction = PlayerPrefs.GetFloat("FartFraction", .1f);
         Config.World.WeightGainFraction = PlayerPrefs.GetFloat("WeightGainFraction", .5f);
+        Config.World.DigestionSpeedMult = PlayerPrefs.GetFloat("DigestionSpeedMult", 1);
+        Config.World.AbsorbSpeedMult = PlayerPrefs.GetFloat("AbsorbSpeedMult", 1);
+        Config.World.DigestionDmgVarMin = PlayerPrefs.GetFloat("DigestionDmgVarMin", 0);
+        Config.World.DigestionDmgVarMax = PlayerPrefs.GetFloat("DigestionDmgVarMxa", 0);
+        Config.World.BellyRubEffMult = PlayerPrefs.GetFloat("BellyRubEffMult", 1);
+        Config.World.BellyRubsPerTurn = PlayerPrefs.GetInt("BellyRubsPerTurn", 1);
+        Config.World.DigestionRamp = PlayerPrefs.GetFloat("DigestionRamp", 0);
+        Config.World.DigestionRampTurn = PlayerPrefs.GetInt("DigestionRampTurn", 1);
+        Config.World.DigestionRampCap = PlayerPrefs.GetInt("DigestionRampCap", -1);
+        Config.World.DigestionRampLoss = PlayerPrefs.GetFloat("DigestionRampLoss", 1);
+        Config.World.AbsorbRamp = PlayerPrefs.GetFloat("AbsorbRamp", 0);
+        Config.World.AbsorbRampTurn = PlayerPrefs.GetInt("AbsorbRampTurn", 1);
+        Config.World.AbsorbRampCap = PlayerPrefs.GetInt("AbsorbRampCap", -1);
+        Config.World.AbsorbRampLoss = PlayerPrefs.GetFloat("AbsorbRampLoss", 1);
+        Config.World.DigestionCap = PlayerPrefs.GetFloat("DigestionCap", 0);
+        Config.World.DigestionFlatDmg = PlayerPrefs.GetFloat("DigestionFlatDmg", 0);
+        Config.World.DigestionGraceTurns = PlayerPrefs.GetInt("DigestionGraceTurns", 0);
+        Config.World.SurrenderedPredEscapeMult = PlayerPrefs.GetFloat("SurrenderedPredEscapeMult", 1);
+        Config.World.SurrenderedPredAutoRegur = PlayerPrefs.GetFloat("SurrenderedPredAutoRegur", 0);
         Config.World.ArmyMP = PlayerPrefs.GetInt("ArmyMP", 3);
         Config.World.ArmyCreationMPMod = PlayerPrefs.GetFloat("ArmyCreationMPMod", 0);
         Config.World.ArmyCreationMPCurve = PlayerPrefs.GetFloat("ArmyCreationMPCurve", 1f);
@@ -837,6 +879,25 @@ public class ContentSettings : MonoBehaviour
         BurpFraction.value = Config.BurpFraction;
         FartFraction.value = Config.FartFraction;
         WeightGainFraction.value = Config.WeightGainFraction;
+        DigestionSpeedMult.value = Config.DigestionSpeedMult;
+        AbsorbSpeedMult.value = Config.AbsorbSpeedMult;
+        DigestionDmgVarMin.value = Config.DigestionDmgVarMin;
+        DigestionDmgVarMax.value = Config.DigestionDmgVarMax;
+        DigestionRamp.value = Config.DigestionRamp;
+        BellyRubEffMult.value = Config.BellyRubEffMult;
+        BellyRubsPerTurn.value = Config.BellyRubsPerTurn;
+        DigestionRampTurn.text = Config.DigestionRampTurn.ToString();
+        DigestionRampCap.text = Config.DigestionRampCap.ToString();
+        DigestionRampLoss.value = Config.DigestionRampLoss;
+        AbsorbRamp.value = Config.AbsorbRamp;
+        AbsorbRampTurn.text = Config.AbsorbRampTurn.ToString();
+        AbsorbRampCap.text = Config.AbsorbRampCap.ToString();
+        AbsorbRampLoss.value = Config.AbsorbRampLoss;
+        DigestionCap.value = Config.DigestionCap;
+        DigestionFlatDmg.value = Config.DigestionFlatDmg;
+        DigestionGraceTurns.value = Config.DigestionGraceTurns;
+        SurrenderedPredEscapeMult.value = Config.SurrenderedPredEscapeMult;
+        SurrenderedPredAutoRegur.value = Config.SurrenderedPredAutoRegur;
         ArmyMP.value = Config.ArmyMP;
         ArmyCreationMPMod.value = Config.ArmyCreationMPMod;
         ArmyCreationMPCurve.value = Config.ArmyCreationMPCurve;
@@ -1030,6 +1091,25 @@ public class ContentSettings : MonoBehaviour
         Config.World.BurpFraction = BurpFraction.value;
         Config.World.FartFraction = FartFraction.value;
         Config.World.WeightGainFraction = WeightGainFraction.value;
+        Config.World.DigestionSpeedMult = DigestionSpeedMult.value;
+        Config.World.AbsorbSpeedMult = AbsorbSpeedMult.value;
+        Config.World.DigestionDmgVarMin = DigestionDmgVarMin.value;
+        Config.World.DigestionDmgVarMax = DigestionDmgVarMax.value;
+        Config.World.BellyRubEffMult = BellyRubEffMult.value;
+        Config.World.BellyRubsPerTurn = (int)BellyRubsPerTurn.value;
+        Config.World.DigestionRamp = DigestionRamp.value;
+        Config.World.DigestionRampTurn = int.TryParse(DigestionRampTurn.text, out int DigRampTurn) ? DigRampTurn : 1;
+        Config.World.DigestionRampCap = int.TryParse(DigestionRampCap.text, out int DigRampCap) ? DigRampCap : -1;
+        Config.World.DigestionRampLoss = DigestionRampLoss.value;
+        Config.World.AbsorbRamp = AbsorbRamp.value;
+        Config.World.AbsorbRampTurn = int.TryParse(AbsorbRampTurn.text, out int AbsRampTurn) ? AbsRampTurn : 1;
+        Config.World.AbsorbRampCap = int.TryParse(AbsorbRampCap.text, out int AbsRampCap) ? AbsRampCap : 1;
+        Config.World.AbsorbRampLoss = AbsorbRampLoss.value;
+        Config.World.DigestionCap = DigestionCap.value;
+        Config.World.DigestionFlatDmg = DigestionFlatDmg.value;
+        Config.World.DigestionGraceTurns = (int)DigestionGraceTurns.value;
+        Config.World.SurrenderedPredEscapeMult = SurrenderedPredEscapeMult.value;
+        Config.World.SurrenderedPredAutoRegur = SurrenderedPredAutoRegur.value;
         Config.World.ArmyMP = (int)ArmyMP.value;
         Config.World.ArmyCreationMPMod = ArmyCreationMPMod.value;
         Config.World.ArmyCreationMPCurve = ArmyCreationMPCurve.value;
@@ -1213,6 +1293,25 @@ public class ContentSettings : MonoBehaviour
         PlayerPrefs.SetFloat("BurpFraction", BurpFraction.value);
         PlayerPrefs.SetFloat("FartFraction", FartFraction.value);
         PlayerPrefs.SetFloat("WeightGainFraction", WeightGainFraction.value);
+        PlayerPrefs.SetFloat("DigestionSpeedMult", DigestionSpeedMult.value);
+        PlayerPrefs.SetFloat("AbsorbSpeedMult", AbsorbSpeedMult.value);
+        PlayerPrefs.SetFloat("DigestionDmgVarMin", DigestionDmgVarMin.value);
+        PlayerPrefs.SetFloat("DigestionDmgVarMax", DigestionDmgVarMax.value);
+        PlayerPrefs.SetFloat("BellyRubEffMult", BellyRubEffMult.value);
+        PlayerPrefs.SetInt("BellyRubEffMult", (int)BellyRubsPerTurn.value);
+        PlayerPrefs.SetFloat("DigestionRamp", DigestionRamp.value);
+        PlayerPrefs.SetInt("DigestionRampTurn", int.TryParse(DigestionRampTurn.text, out int DigRampTurns) ? DigRampTurns : 0);
+        PlayerPrefs.SetInt("DigestionRampCap", int.TryParse(DigestionRampCap.text, out int DigRampCap) ? DigRampCap : 0);
+        PlayerPrefs.SetFloat("DigestionRampLoss", DigestionRampLoss.value);
+        PlayerPrefs.SetFloat("AbsorbRamp", AbsorbRamp.value);
+        PlayerPrefs.SetInt("AbsorbRampTurn", int.TryParse(AbsorbRampTurn.text, out int AbsRampTurns) ? AbsRampTurns : 0);
+        PlayerPrefs.SetInt("AbsorbRampCap ", int.TryParse(AbsorbRampCap.text, out int AbsRampCap) ? AbsRampCap : 0);
+        PlayerPrefs.SetFloat("AbsorbRampLoss", AbsorbRampLoss.value);
+        PlayerPrefs.SetFloat("DigestionCap", DigestionCap.value);
+        PlayerPrefs.SetFloat("DigestionFlatDmg", DigestionFlatDmg.value);
+        PlayerPrefs.SetInt("DigestionGraceTurns", (int)DigestionGraceTurns.value);
+        PlayerPrefs.SetFloat("SurrenderedPredEscapeMult", SurrenderedPredEscapeMult.value);
+        PlayerPrefs.SetFloat("SurrenderedPredAutoRegur", SurrenderedPredAutoRegur.value);
         PlayerPrefs.SetInt("ArmyMP", (int)ArmyMP.value);
         PlayerPrefs.SetFloat("ArmyCreationMPMod", ArmyCreationMPMod.value);
         PlayerPrefs.SetFloat("ArmyCreationMPCurve", ArmyCreationMPCurve.value);
