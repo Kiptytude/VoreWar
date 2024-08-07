@@ -1163,10 +1163,26 @@ public class PredatorComponent
         return sizeDiff * preyBoosts * predBoosts;
     }
 
-    int ApplySettingsToDamage(int incoming_damage)
+    int ApplySettingsToDamage(int incoming_damage, Prey preyUnit)
     {
-        int outgoing_damage = incoming_damage;
-        outgoing_damage = (int)(Config.DigestionSpeedMult * outgoing_damage);
+        if (Config.DigestionFlatDmg >= 1)
+            return (int)(preyUnit.Unit.MaxHealth * Config.DigestionFlatDmg);
+
+        float outgoing_damage_mod = Config.DigestionSpeedMult;
+        outgoing_damage_mod += Config.DigestionRamp * (actor.RampStacks >= Config.DigestionRampCap ? Config.DigestionRampCap : (float)Math.Floor(actor.RampStacks));
+        if (actor.BeingRubbed)
+            outgoing_damage_mod *= Config.BellyRubEffMult;
+        int outgoing_damage = (int)(incoming_damage * outgoing_damage_mod);
+
+        if (Config.DigestionDamageDivision)
+        {
+            outgoing_damage /= PreyInLocation(preyUnit.Location, true);
+        }
+
+        if (outgoing_damage >= (int)(preyUnit.Unit.MaxHealth * Config.DigestionCap) && Config.DigestionCap > 0)
+        {
+            outgoing_damage = (int)(preyUnit.Unit.MaxHealth * Config.DigestionCap);
+        }
         return outgoing_damage;
     }
     int CalculateDigestionDamage(Prey preyUnit)
@@ -1184,6 +1200,7 @@ public class PredatorComponent
         predScore *= unit.TraitBoosts.Outgoing.DigestionRate;
         preyScore /= preyUnit.Unit.TraitBoosts.Incoming.DigestionRate;
         int damage = (int)Math.Round(predScore / preyScore);
+        damage = ApplySettingsToDamage(damage, preyUnit);
         if (damage < 1)
             damage = 1;
 
@@ -1532,14 +1549,21 @@ public class PredatorComponent
 
             if (speedFactor > 4f && speedFactor < 1000)
                 speedFactor = 4f;
+            speedFactor *= Config.AbsorbSpeedMult;
+            speedFactor *= Config.AbsorbBoostDeadOnly && AlivePrey >= 0 ? 1 : Config.AbsorbRamp * (actor.RampStacks >= Config.DigestionRampCap ? Config.DigestionRampCap : (float)Math.Floor(actor.RampStacks));
+
+            if (Config.AbsorbRateDivision)
+                speedFactor /= PreyInLocation(preyUnit.Location, false);
+
             int healthReduction = (int)Math.Max(Math.Round(preyUnit.Unit.MaxHealth * speedFactor / 15), 1);
             if (healthReduction >= preyUnit.Unit.MaxHealth + preyUnit.Unit.Health)
                 healthReduction = preyUnit.Unit.MaxHealth + preyUnit.Unit.Health + 1;
             preyUnit.Actor.SubtractHealth(healthReduction);
             totalHeal += Math.Max((int)(healthReduction / 2 * preyUnit.Unit.TraitBoosts.Outgoing.Nutrition * unit.TraitBoosts.Incoming.Nutrition), 1);
+            totalHeal = (int)(totalHeal * Config.AbsorbResourceMod);
             var baseManaGain = healthReduction * (preyUnit.Unit.TraitBoosts.Outgoing.ManaAbsorbHundreths + unit.TraitBoosts.Incoming.ManaAbsorbHundreths);
             var totalManaGain = baseManaGain / 100 + (State.Rand.Next(100) < (baseManaGain % 100) ? 1 : 0);
-            unit.RestoreMana(totalManaGain);
+            unit.RestoreMana((int)(totalManaGain * Config.AbsorbResourceMod));
             foreach (IVoreCallback callback in Callbacks)
             {
                 if (!callback.OnAbsorption(preyUnit, actor, location))

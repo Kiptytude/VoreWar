@@ -2221,6 +2221,10 @@ Turns: {currentTurn}
                         else if (SelectedUnit.Surrendered == false)
                         {
                             SelectedUnit.Surrendered = true;
+                            if (State.Rand.NextDouble() <= Config.SurrenderedPredAutoRegur)
+                            {
+                                SelectedUnit.PredatorComponent?.FreeAnyAlivePrey();
+                            }
                             SelectedUnit.SurrenderedThisTurn = true;
                             RebuildInfo();
                         }

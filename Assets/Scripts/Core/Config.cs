@@ -357,8 +357,6 @@ static class Config
 
     public static float DigestionSpeedMult => World.DigestionSpeedMult;
     public static float AbsorbSpeedMult => World.AbsorbSpeedMult;
-    public static float DigestionDmgVarMin => World.DigestionDmgVarMin;
-    public static float DigestionDmgVarMax => World.DigestionDmgVarMax;
     public static float BellyRubEffMult => World.BellyRubEffMult;
     public static int BellyRubsPerTurn => World.BellyRubsPerTurn;
     public static float DigestionRamp => World.DigestionRamp;   
@@ -366,9 +364,8 @@ static class Config
     public static float DigestionRampLoss => World.DigestionRampLoss;
     public static int DigestionRampCap => World.DigestionRampCap;
     public static float AbsorbRamp => World.AbsorbRamp;
-    public static int AbsorbRampTurn => World.AbsorbRampTurn;
-    public static float AbsorbRampLoss => World.AbsorbRampLoss;
-    public static int AbsorbRampCap => World.AbsorbRampCap;
+    public static float AbsorbResourceMod => World.AbsorbResourceMod;
+    public static bool AbsorbBoostDeadOnly => World.GetValue("AbsorbBoostDeadOnly");
     public static float DigestionCap => World.DigestionCap;
     public static float DigestionFlatDmg => World.DigestionFlatDmg;
     public static int DigestionGraceTurns => World.DigestionGraceTurns;

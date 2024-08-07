@@ -234,10 +234,6 @@ public class WorldConfig
     [OdinSerialize]
     internal float AbsorbSpeedMult = 1f;
     [OdinSerialize]
-    internal float DigestionDmgVarMin = 1f;
-    [OdinSerialize]
-    internal float DigestionDmgVarMax = 1f;
-    [OdinSerialize]
     internal float BellyRubEffMult = 1f;
     [OdinSerialize]
     internal int BellyRubsPerTurn = 1;
@@ -251,12 +247,8 @@ public class WorldConfig
     internal float DigestionRampLoss = 1;
     [OdinSerialize]
     internal float AbsorbRamp = .1f;
-    [OdinSerialize, AllowEditing, ProperName("Absorbtion Ramp Turn"), Description("Absorbtion speed will change by the above every X turns")]
-    internal int AbsorbRampTurn = 1;
-    [OdinSerialize, AllowEditing, ProperName("Absorbtion Ramp Cap"), Description("The above will only stack up to X times, negative numbers mean disabled")]
-    internal int AbsorbRampCap = 1;
     [OdinSerialize]
-    internal float AbsorbRampLoss = 1;
+    internal float AbsorbResourceMod = 1;
     [OdinSerialize]
     internal float DigestionFlatDmg = -.01f;
     [OdinSerialize]
@@ -394,6 +386,7 @@ public class WorldConfig
             ["StatGraze"] = false,
             ["DigestionDamageDivision"] = false,
             ["AbsorbRateDivision"] = false,
+            ["AbsorbBoostDeadOnly"] = false,
         };
 
         foreach (Race race in ((Race[])Enum.GetValues(typeof(Race))).Where(s => (int)s >= 0))

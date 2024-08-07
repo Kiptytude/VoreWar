@@ -255,8 +255,6 @@ public class ContentSettings : MonoBehaviour
 
     public Slider DigestionSpeedMult;
     public Slider AbsorbSpeedMult;
-    public Slider DigestionDmgVarMin;
-    public Slider DigestionDmgVarMax;
     public Slider BellyRubEffMult;
     public Slider BellyRubsPerTurn;
     public Slider DigestionRamp;
@@ -264,9 +262,8 @@ public class ContentSettings : MonoBehaviour
     public InputField DigestionRampCap;
     public Slider DigestionRampLoss;
     public Slider AbsorbRamp;
-    public InputField AbsorbRampTurn;
-    public InputField AbsorbRampCap;
-    public Slider AbsorbRampLoss;
+    public Slider AbsorbResourceMod;
+    public Toggle AbsorbBoostDeadOnly;
     public Slider DigestionCap;
     public Slider DigestionFlatDmg;
     public Slider DigestionGraceTurns;
@@ -389,6 +386,8 @@ public class ContentSettings : MonoBehaviour
             new ToggleObject(OverfeedingDamage, "OverfeedingDamage", false),
             new ToggleObject(DigestionDamageDivision, "DigestionDamageDivision", false),
             new ToggleObject(AbsorbRateDivision, "AbsorbRateDivision", false),
+            new ToggleObject(AbsorbRampLoss, "AbsorbRampLoss", false),
+            new ToggleObject(AbsorbBoostDeadOnly, "AbsorbBoostDeadOnly", false),
 
         };
         MercToggles = new List<ToggleObject>();
@@ -701,8 +700,7 @@ public class ContentSettings : MonoBehaviour
         Config.World.WeightGainFraction = PlayerPrefs.GetFloat("WeightGainFraction", .5f);
         Config.World.DigestionSpeedMult = PlayerPrefs.GetFloat("DigestionSpeedMult", 1);
         Config.World.AbsorbSpeedMult = PlayerPrefs.GetFloat("AbsorbSpeedMult", 1);
-        Config.World.DigestionDmgVarMin = PlayerPrefs.GetFloat("DigestionDmgVarMin", 0);
-        Config.World.DigestionDmgVarMax = PlayerPrefs.GetFloat("DigestionDmgVarMxa", 0);
+        Config.World.AbsorbResourceMod = PlayerPrefs.GetFloat("AbsorbResourceMod", 1);
         Config.World.BellyRubEffMult = PlayerPrefs.GetFloat("BellyRubEffMult", 1);
         Config.World.BellyRubsPerTurn = PlayerPrefs.GetInt("BellyRubsPerTurn", 1);
         Config.World.DigestionRamp = PlayerPrefs.GetFloat("DigestionRamp", 0);
@@ -710,9 +708,6 @@ public class ContentSettings : MonoBehaviour
         Config.World.DigestionRampCap = PlayerPrefs.GetInt("DigestionRampCap", -1);
         Config.World.DigestionRampLoss = PlayerPrefs.GetFloat("DigestionRampLoss", 1);
         Config.World.AbsorbRamp = PlayerPrefs.GetFloat("AbsorbRamp", 0);
-        Config.World.AbsorbRampTurn = PlayerPrefs.GetInt("AbsorbRampTurn", 1);
-        Config.World.AbsorbRampCap = PlayerPrefs.GetInt("AbsorbRampCap", -1);
-        Config.World.AbsorbRampLoss = PlayerPrefs.GetFloat("AbsorbRampLoss", 1);
         Config.World.DigestionCap = PlayerPrefs.GetFloat("DigestionCap", 0);
         Config.World.DigestionFlatDmg = PlayerPrefs.GetFloat("DigestionFlatDmg", 0);
         Config.World.DigestionGraceTurns = PlayerPrefs.GetInt("DigestionGraceTurns", 0);
@@ -885,8 +880,6 @@ public class ContentSettings : MonoBehaviour
         WeightGainFraction.value = Config.WeightGainFraction;
         DigestionSpeedMult.value = Config.DigestionSpeedMult;
         AbsorbSpeedMult.value = Config.AbsorbSpeedMult;
-        DigestionDmgVarMin.value = Config.DigestionDmgVarMin;
-        DigestionDmgVarMax.value = Config.DigestionDmgVarMax;
         DigestionRamp.value = Config.DigestionRamp;
         BellyRubEffMult.value = Config.BellyRubEffMult;
         BellyRubsPerTurn.value = Config.BellyRubsPerTurn;
@@ -894,9 +887,7 @@ public class ContentSettings : MonoBehaviour
         DigestionRampCap.text = Config.DigestionRampCap.ToString();
         DigestionRampLoss.value = Config.DigestionRampLoss;
         AbsorbRamp.value = Config.AbsorbRamp;
-        AbsorbRampTurn.text = Config.AbsorbRampTurn.ToString();
-        AbsorbRampCap.text = Config.AbsorbRampCap.ToString();
-        AbsorbRampLoss.value = Config.AbsorbRampLoss;
+        AbsorbResourceMod.value = Config.AbsorbResourceMod;
         DigestionCap.value = Config.DigestionCap;
         DigestionFlatDmg.value = Config.DigestionFlatDmg;
         DigestionGraceTurns.value = Config.DigestionGraceTurns;
@@ -1099,8 +1090,6 @@ public class ContentSettings : MonoBehaviour
         Config.World.WeightGainFraction = WeightGainFraction.value;
         Config.World.DigestionSpeedMult = DigestionSpeedMult.value;
         Config.World.AbsorbSpeedMult = AbsorbSpeedMult.value;
-        Config.World.DigestionDmgVarMin = DigestionDmgVarMin.value;
-        Config.World.DigestionDmgVarMax = DigestionDmgVarMax.value;
         Config.World.BellyRubEffMult = BellyRubEffMult.value;
         Config.World.BellyRubsPerTurn = (int)BellyRubsPerTurn.value;
         Config.World.DigestionRamp = DigestionRamp.value;
@@ -1108,9 +1097,7 @@ public class ContentSettings : MonoBehaviour
         Config.World.DigestionRampCap = int.TryParse(DigestionRampCap.text, out int DigRampCap) ? DigRampCap : -1;
         Config.World.DigestionRampLoss = DigestionRampLoss.value;
         Config.World.AbsorbRamp = AbsorbRamp.value;
-        Config.World.AbsorbRampTurn = int.TryParse(AbsorbRampTurn.text, out int AbsRampTurn) ? AbsRampTurn : 1;
-        Config.World.AbsorbRampCap = int.TryParse(AbsorbRampCap.text, out int AbsRampCap) ? AbsRampCap : 1;
-        Config.World.AbsorbRampLoss = AbsorbRampLoss.value;
+        Config.World.AbsorbResourceMod = AbsorbResourceMod.value;
         Config.World.DigestionCap = DigestionCap.value;
         Config.World.DigestionFlatDmg = DigestionFlatDmg.value;
         Config.World.DigestionGraceTurns = (int)DigestionGraceTurns.value;
@@ -1303,8 +1290,6 @@ public class ContentSettings : MonoBehaviour
         PlayerPrefs.SetFloat("WeightGainFraction", WeightGainFraction.value);
         PlayerPrefs.SetFloat("DigestionSpeedMult", DigestionSpeedMult.value);
         PlayerPrefs.SetFloat("AbsorbSpeedMult", AbsorbSpeedMult.value);
-        PlayerPrefs.SetFloat("DigestionDmgVarMin", DigestionDmgVarMin.value);
-        PlayerPrefs.SetFloat("DigestionDmgVarMax", DigestionDmgVarMax.value);
         PlayerPrefs.SetFloat("BellyRubEffMult", BellyRubEffMult.value);
         PlayerPrefs.SetInt("BellyRubEffMult", (int)BellyRubsPerTurn.value);
         PlayerPrefs.SetFloat("DigestionRamp", DigestionRamp.value);
@@ -1312,9 +1297,7 @@ public class ContentSettings : MonoBehaviour
         PlayerPrefs.SetInt("DigestionRampCap", int.TryParse(DigestionRampCap.text, out int DigRampCap) ? DigRampCap : 0);
         PlayerPrefs.SetFloat("DigestionRampLoss", DigestionRampLoss.value);
         PlayerPrefs.SetFloat("AbsorbRamp", AbsorbRamp.value);
-        PlayerPrefs.SetInt("AbsorbRampTurn", int.TryParse(AbsorbRampTurn.text, out int AbsRampTurns) ? AbsRampTurns : 0);
-        PlayerPrefs.SetInt("AbsorbRampCap ", int.TryParse(AbsorbRampCap.text, out int AbsRampCap) ? AbsRampCap : 0);
-        PlayerPrefs.SetFloat("AbsorbRampLoss", AbsorbRampLoss.value);
+        PlayerPrefs.SetFloat("AbsorbResourceMod", AbsorbResourceMod.value);
         PlayerPrefs.SetFloat("DigestionCap", DigestionCap.value);
         PlayerPrefs.SetFloat("DigestionFlatDmg", DigestionFlatDmg.value);
         PlayerPrefs.SetInt("DigestionGraceTurns", (int)DigestionGraceTurns.value);
