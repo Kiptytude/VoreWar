@@ -746,15 +746,15 @@ Does not retroactively affect already created units.";
                 return "Prey within a surrendered predator will have their escape chanced multiplied by this amount. A value of 1 disables this setting.";
             case 304:
                 return "When a full predetor surrenders, it has this chance to release it's prey.";
-            case 284:
+            case 305:
                 return "Enables wandering hauntings of Wisps";
-            case 285:
+            case 306:
                 return "Enables wandering herds of Wild Horses";
-            case 286:
+            case 307:
                 return "Enables wandering skulks of Feral Foxes";
-            case 287: 
-                return "Enables wandering swards of the freedom-hating Terminids";
-            case 288: 
+            case 308: 
+                return "Enables wandering swarms of the freedom-hating Terminids";
+            case 309: 
                 return "Enables wandering pods of Feral Orcas";
             default:
                 return "";
