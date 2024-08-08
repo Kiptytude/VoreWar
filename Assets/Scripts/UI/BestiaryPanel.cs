@@ -6,6 +6,7 @@ public class BestiaryPanel : MonoBehaviour
     public GameObject Compy;
     public GameObject Shark;
     public GameObject Harvester;
+    public GameObject Abakhanskya;
 
 
     void ClearAll()
@@ -14,6 +15,7 @@ public class BestiaryPanel : MonoBehaviour
         Compy.SetActive(false);
         Shark.SetActive(false);
         Harvester.SetActive(false);
+        Abakhanskya.SetActive(false);
     }
 
     public void ShowForeward()
@@ -39,5 +41,10 @@ public class BestiaryPanel : MonoBehaviour
     {
         ClearAll();
         Shark.SetActive(true);
+    }
+    public void ShowAbakhanskya()
+    {
+        ClearAll();
+        Abakhanskya.SetActive(true);
     }
 }

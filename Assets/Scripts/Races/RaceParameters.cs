@@ -876,8 +876,8 @@ static class RaceParameters
 
         Abakhanskya = new RaceTraits()
         {
-            BodySize = 500,
-            StomachSize = 250,
+            BodySize = 200,
+            StomachSize = 200,
             HasTail = true,
             FavoredStat = Stat.Stomach,
             AllowedVoreTypes = new List<VoreType> { VoreType.Oral, VoreType.Unbirth, VoreType.Anal },
@@ -885,12 +885,12 @@ static class RaceParameters
             PowerAdjustment = 100f,
             RaceStats = new RaceStats()
             {
-                Strength = new RaceStats.StatRange(60, 70),
+                Strength = new RaceStats.StatRange(40, 50),
                 Dexterity = new RaceStats.StatRange(25, 35),
-                Endurance = new RaceStats.StatRange(70, 90),
-                Mind = new RaceStats.StatRange(60, 70),
-                Will = new RaceStats.StatRange(60, 70),
-                Agility = new RaceStats.StatRange(20, 30),
+                Endurance = new RaceStats.StatRange(50, 70),
+                Mind = new RaceStats.StatRange(40, 50),
+                Will = new RaceStats.StatRange(40, 50),
+                Agility = new RaceStats.StatRange(15, 20),
                 Voracity = new RaceStats.StatRange(40, 50),
                 Stomach = new RaceStats.StatRange(40, 50),
             },
@@ -902,7 +902,7 @@ static class RaceParameters
                 Traits.SlowAbsorption,
                 Traits.Ravenous,
         },
-            RaceDescription = "Abakhanskya is an ancient dragoness hailing from another realm.  Despite this fact, she has been here for generations upon generations and has quite the body to show for it, absolutely brimming with the nutrients stolen from countless prey throughout the years.  She is an unstoppable force of predatory nature, it is unwise to face her on fair terms.",
+            RaceDescription = "Abakhanskya is an ancient dragoness hailing from another realm.  Despite this fact, she has been here for generations upon generations and has quite the body to show for it, absolutely brimming with the nutrients stolen from countless prey throughout the years.  \n<b>She is an unstoppable force of predatory nature, it is unwise to face her on fair terms.</b>",
         };
 
         MatronsMinions = new RaceTraits()
@@ -2478,7 +2478,7 @@ static class RaceParameters
 
         FeralOrcas = new RaceTraits()
         {
-            BodySize = 12,
+            BodySize = 20,
             StomachSize = 16,
             FavoredStat = Stat.Strength,
             AllowedVoreTypes = new List<VoreType> { VoreType.Oral },

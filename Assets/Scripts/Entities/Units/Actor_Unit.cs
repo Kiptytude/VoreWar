@@ -448,7 +448,7 @@ public class Actor_Unit
                 Mode = DisplayMode.AnalVore;
                 break;
         }
-        animationUpdateTime = 1.5F;
+        animationUpdateTime = 3F;
     }
 
     public void SetBurpMode()

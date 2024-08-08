@@ -516,7 +516,7 @@ static class LogUtilities
             case Race.Compy:
                 return GetRandomStringFrom("compy", "compsognathus", "dinosaur", "tiny dino");
             case Race.FeralSharks:
-                return GetRandomStringFrom("skyshark", "shark", "great fish");
+                return GetRandomStringFrom("skyshark", "shark", "air shark", "flying shark");
             case Race.FeralWolves:
                 return GetRandomStringFrom("feral", GetGenderString(unit, "wolfess", "wolf", "wolf"), "canine"); ////I changed "wolfen" to "wolfess"
             case Race.Cake:
@@ -573,6 +573,8 @@ static class LogUtilities
                 return GetRandomStringFrom("killer whale", "whale", "orca", "oversized dolphin", "cetacean", "apex dolphin");
             case Race.Feit:
                 return GetRandomStringFrom("raptor", "dino", "draco-raptor", "draconic raptor", "raptoress", "she-raptor");
+            case Race.Zoey:
+                return GetRandomStringFrom("tiger shark", "anthro shark", "demi-shark");
             default:
                 return "creature";
         }
