@@ -229,8 +229,36 @@ public class WorldConfig
     [OdinSerialize]
     internal int AnalWeight = 1;
 
-
-
+    [OdinSerialize]
+    internal float DigestionSpeedMult = 1f;
+    [OdinSerialize]
+    internal float AbsorbSpeedMult = 1f;
+    [OdinSerialize]
+    internal float BellyRubEffMult = 1f;
+    [OdinSerialize]
+    internal int BellyRubsPerTurn = 1;
+    [OdinSerialize]
+    internal float DigestionRamp = .1f;
+    [OdinSerialize, AllowEditing, ProperName("Digestion Ramp Turn"), Description("Digestin damage change by the above  every X turns")]
+    internal int DigestionRampTurn = 1;
+    [OdinSerialize, AllowEditing, ProperName("Digestion Ramp Cap"), Description("The above will only stack up to X times, negative numbers mean disabled")]
+    internal int DigestionRampCap = 1;
+    [OdinSerialize]
+    internal float DigestionRampLoss = 1;
+    [OdinSerialize]
+    internal float AbsorbRamp = .1f;
+    [OdinSerialize]
+    internal float AbsorbResourceMod = 1;
+    [OdinSerialize]
+    internal float DigestionFlatDmg = -.01f;
+    [OdinSerialize]
+    internal float DigestionCap = 0;
+    [OdinSerialize]
+    internal int DigestionGraceTurns = 0;
+    [OdinSerialize]
+    internal float SurrenderedPredEscapeMult = 1;
+    [OdinSerialize]
+    internal float SurrenderedPredAutoRegur = 0;
     internal bool GetValue(string name)
     {
         if (Toggles == null)
@@ -356,6 +384,10 @@ public class WorldConfig
             ["CombatComplicationsEnabled"] = false,
             ["StatCrit"] = false,
             ["StatGraze"] = false,
+            ["DigestionDamageDivision"] = false,
+            ["AbsorbRateDivision"] = false,
+            ["AbsorbLoss"] = false,
+            ["AbsorbBoostDeadOnly"] = false,
         };
 
         foreach (Race race in ((Race[])Enum.GetValues(typeof(Race))).Where(s => (int)s >= 0))

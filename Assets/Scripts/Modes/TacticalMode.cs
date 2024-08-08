@@ -2221,6 +2221,10 @@ Turns: {currentTurn}
                         else if (SelectedUnit.Surrendered == false)
                         {
                             SelectedUnit.Surrendered = true;
+                            if (State.Rand.NextDouble() <= Config.SurrenderedPredAutoRegur)
+                            {
+                                SelectedUnit.PredatorComponent?.FreeAnyAlivePrey();
+                            }
                             SelectedUnit.SurrenderedThisTurn = true;
                             RebuildInfo();
                         }
@@ -3584,7 +3588,7 @@ Turns: {currentTurn}
                         CheckAlignment(child, units[i]);
                     }
                 }*/
-                units[i].ReceivedRub = false; // Hedonists now get just as much benefit out of mind-control effects
+                units[i].RubCount = 0; // Hedonists now get just as much benefit out of mind-control effects
                 units[i].DigestCheck(); //Done first so that freed units are checked properly below
 
             }
