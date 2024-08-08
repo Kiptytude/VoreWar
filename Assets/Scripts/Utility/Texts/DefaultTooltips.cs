@@ -717,7 +717,7 @@ Does not retroactively affect already created units.";
             case 289:
                 return "The amount of belly rubs a single unit can recieve in a single turn. \nKeep in mind that belly rub does NOT take a full turn. \nSet to -1 to allow for unlimited.";
             case 290:
-                return "Adjusts how much digestion damage is changed each time a ramp turn is reached and a unit is full. This modifier stacks. A value of 0 disables this and it's associated settings.";
+                return "Adjusts how much digestion damage is increased each time a ramp turn is reached and a unit is full. This modifier stacks. A value of 0 disables this and it's associated settings.";
             case 291:
                 return "The percent from the above setting will be added for every X turn a pred is full of any living prey.";
             case 292:
@@ -731,11 +731,11 @@ Does not retroactively affect already created units.";
             case 296:
                 return "If on, stacks will begin to fall once ther is no more alive prey.";
             case 297:
-                return "The above setting will only stack this amount of times before stopping. A negative value disables this.";
+                return "If on, stacks will be applied to absorbtion if there no more alive prey.";
             case 298:
-                return "Digestion will never do more than this amount of a unit's Max HP in one instance. 0 disables this setting.";
-            case 309:
-                return "Digestion damage will always deal this amount of a unit's Max HP. Does not respect the damage cap if it is set.";
+                return "Digestion will never do more than this amount of a unit's Max HP in one instance. A value of 0 disables this setting.";
+            case 299:
+                return "Digestion damage will always deal this amount of a unit's Max HP. Due to rounding, this setting may do more or less than specified. \nDoes not respect the damage cap if it is set. A value of 0 disables this setting.";
             case 300:
                 return "Damage will be delayed this many turns after a unit is consumed. Stacks with traits that grant immunity turns.";
             case 301:
@@ -743,7 +743,7 @@ Does not retroactively affect already created units.";
             case 302:
                 return "Absorbtion rate will be divided by the amount of prey being absrbed in the same location.";
             case 303:
-                return "Prey within a surrendered predator will have their escape chanced multiplied by this amount.";
+                return "Prey within a surrendered predator will have their escape chanced multiplied by this amount. A value of 1 disables this setting.";
             case 304:
                 return "When a full predetor surrenders, it has this chance to release it's prey.";
             default:

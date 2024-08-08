@@ -1165,11 +1165,11 @@ public class PredatorComponent
 
     int ApplySettingsToDamage(int incoming_damage, Prey preyUnit)
     {
-        if (Config.DigestionFlatDmg >= 1)
+        if (Config.DigestionFlatDmg >= 0.01f)
             return (int)(preyUnit.Unit.MaxHealth * Config.DigestionFlatDmg);
 
         float outgoing_damage_mod = Config.DigestionSpeedMult;
-        outgoing_damage_mod += Config.DigestionRamp * (actor.RampStacks >= Config.DigestionRampCap ? Config.DigestionRampCap : (float)Math.Floor(actor.RampStacks));
+        outgoing_damage_mod += Config.DigestionRamp * (actor.RampStacks >= Config.DigestionRampCap && Config.DigestionRampCap > 0 ? Config.DigestionRampCap : (float)Math.Floor(actor.RampStacks));
         if (actor.BeingRubbed)
             outgoing_damage_mod *= Config.BellyRubEffMult;
         int outgoing_damage = (int)(incoming_damage * outgoing_damage_mod);
@@ -1179,7 +1179,7 @@ public class PredatorComponent
             outgoing_damage /= PreyInLocation(preyUnit.Location, true);
         }
 
-        if (outgoing_damage >= (int)(preyUnit.Unit.MaxHealth * Config.DigestionCap) && Config.DigestionCap > 0)
+        if (outgoing_damage > (int)(preyUnit.Unit.MaxHealth * Config.DigestionCap) && Config.DigestionCap > 0)
         {
             outgoing_damage = (int)(preyUnit.Unit.MaxHealth * Config.DigestionCap);
         }
@@ -1549,8 +1549,7 @@ public class PredatorComponent
 
             if (speedFactor > 4f && speedFactor < 1000)
                 speedFactor = 4f;
-            speedFactor *= Config.AbsorbSpeedMult;
-            speedFactor *= Config.AbsorbBoostDeadOnly && AlivePrey >= 0 ? 1 : Config.AbsorbRamp * (actor.RampStacks >= Config.DigestionRampCap ? Config.DigestionRampCap : (float)Math.Floor(actor.RampStacks));
+            speedFactor *= Config.AbsorbSpeedMult + (Config.AbsorbBoostDeadOnly && AlivePrey >= 0 ? 1 : Config.AbsorbRamp * (actor.RampStacks >= Config.DigestionRampCap && Config.DigestionRampCap > 0 ? Config.DigestionRampCap : (float)Math.Floor(actor.RampStacks)));
 
             if (Config.AbsorbRateDivision)
                 speedFactor /= PreyInLocation(preyUnit.Location, false);

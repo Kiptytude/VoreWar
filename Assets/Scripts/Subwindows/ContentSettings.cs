@@ -201,6 +201,7 @@ public class ContentSettings : MonoBehaviour
     public GameObject AppearancePanel;
     public GameObject VoreMiscPanel;
     public GameObject VoreMisc2Panel;
+    public GameObject VoreMisc3Panel;
 
     public Button GameplayButton;
     public Button RacesButton;
@@ -208,6 +209,7 @@ public class ContentSettings : MonoBehaviour
     public Button AppearanceButton;
     public Button VoreMiscButton;
     public Button VoreMisc2Button;
+    public Button VoreMisc3Button;
 
     List<ToggleObject> Toggles;
 
@@ -263,6 +265,7 @@ public class ContentSettings : MonoBehaviour
     public Slider DigestionRampLoss;
     public Slider AbsorbRamp;
     public Slider AbsorbResourceMod;
+    public Toggle AbsorbLoss;
     public Toggle AbsorbBoostDeadOnly;
     public Slider DigestionCap;
     public Slider DigestionFlatDmg;
@@ -386,7 +389,7 @@ public class ContentSettings : MonoBehaviour
             new ToggleObject(OverfeedingDamage, "OverfeedingDamage", false),
             new ToggleObject(DigestionDamageDivision, "DigestionDamageDivision", false),
             new ToggleObject(AbsorbRateDivision, "AbsorbRateDivision", false),
-            new ToggleObject(AbsorbRampLoss, "AbsorbRampLoss", false),
+            new ToggleObject(AbsorbLoss, "AbsorbLoss", false),
             new ToggleObject(AbsorbBoostDeadOnly, "AbsorbBoostDeadOnly", false),
 
         };
@@ -562,12 +565,14 @@ public class ContentSettings : MonoBehaviour
         AppearancePanel.SetActive(false);
         VoreMiscPanel.SetActive(false);
         VoreMisc2Panel.SetActive(false);
+        VoreMisc3Panel.SetActive(false);
         GameplayButton.interactable = false;
         RacesButton.interactable = true;
         GenderButton.interactable = true;
         AppearanceButton.interactable = true;
         VoreMiscButton.interactable = true;
         VoreMisc2Button.interactable = true;
+        VoreMisc3Button.interactable = true;
     }
 
     public void ActivateRaces()
@@ -578,12 +583,14 @@ public class ContentSettings : MonoBehaviour
         AppearancePanel.SetActive(false);
         VoreMiscPanel.SetActive(false);
         VoreMisc2Panel.SetActive(false);
+        VoreMisc3Panel.SetActive(false);
         GameplayButton.interactable = true;
         RacesButton.interactable = false;
         GenderButton.interactable = true;
         AppearanceButton.interactable = true;
         VoreMiscButton.interactable = true;
         VoreMisc2Button.interactable = true;
+        VoreMisc3Button.interactable = true;
         MonsterSpawnerFolder.position = new Vector3();
     }
     public void ActivateGender()
@@ -594,6 +601,7 @@ public class ContentSettings : MonoBehaviour
         AppearancePanel.SetActive(false);
         VoreMiscPanel.SetActive(false);
         VoreMisc2Panel.SetActive(false);
+        VoreMisc3Panel.SetActive(false);
         GameplayButton.interactable = true;
         RacesButton.interactable = true;
         GenderButton.interactable = false;
@@ -609,12 +617,14 @@ public class ContentSettings : MonoBehaviour
         AppearancePanel.SetActive(true);
         VoreMiscPanel.SetActive(false);
         VoreMisc2Panel.SetActive(false);
+        VoreMisc3Panel.SetActive(false);
         GameplayButton.interactable = true;
         RacesButton.interactable = true;
         GenderButton.interactable = true;
         AppearanceButton.interactable = false;
         VoreMiscButton.interactable = true;
         VoreMisc2Button.interactable = true;
+        VoreMisc3Button.interactable = true;
     }
 
     public void ActivateVoreMisc()
@@ -625,12 +635,14 @@ public class ContentSettings : MonoBehaviour
         AppearancePanel.SetActive(false);
         VoreMiscPanel.SetActive(true);
         VoreMisc2Panel.SetActive(false);
+        VoreMisc3Panel.SetActive(false);
         GameplayButton.interactable = true;
         RacesButton.interactable = true;
         GenderButton.interactable = true;
         AppearanceButton.interactable = true;
         VoreMiscButton.interactable = false;
         VoreMisc2Button.interactable = true;
+        VoreMisc3Button.interactable = true;
     }
 
     public void ActivateVoreMisc2()
@@ -641,12 +653,31 @@ public class ContentSettings : MonoBehaviour
         AppearancePanel.SetActive(false);
         VoreMiscPanel.SetActive(false);
         VoreMisc2Panel.SetActive(true);
+        VoreMisc3Panel.SetActive(false);
         GameplayButton.interactable = true;
         RacesButton.interactable = true;
         GenderButton.interactable = true;
         AppearanceButton.interactable = true;
         VoreMiscButton.interactable = true;
         VoreMisc2Button.interactable = false;
+        VoreMisc3Button.interactable = true;
+    }
+    public void ActivateVoreMisc3()
+    {
+        GameplayPanel.SetActive(false);
+        RacesPanel.SetActive(false);
+        GenderPanel.SetActive(false);
+        AppearancePanel.SetActive(false);
+        VoreMiscPanel.SetActive(false);
+        VoreMisc2Panel.SetActive(false);
+        VoreMisc3Panel.SetActive(true);
+        GameplayButton.interactable = true;
+        RacesButton.interactable = true;
+        GenderButton.interactable = true;
+        AppearanceButton.interactable = true;
+        VoreMiscButton.interactable = true;
+        VoreMisc2Button.interactable = true;
+        VoreMisc3Button.interactable = false;
     }
 
     public void ConfirmRefresh()
@@ -1578,4 +1609,5 @@ public class ContentSettings : MonoBehaviour
         DefualtTacticalSightRange.interactable = DayNightEnabled.isOn;
         NightStrategicSightReduction.interactable = DayNightEnabled.isOn;
     }
+
 }

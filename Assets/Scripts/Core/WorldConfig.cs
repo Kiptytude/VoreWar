@@ -386,6 +386,7 @@ public class WorldConfig
             ["StatGraze"] = false,
             ["DigestionDamageDivision"] = false,
             ["AbsorbRateDivision"] = false,
+            ["AbsorbLoss"] = false,
             ["AbsorbBoostDeadOnly"] = false,
         };
 

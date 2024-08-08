@@ -138,8 +138,6 @@ public class Actor_Unit
 
     [OdinSerialize]
     internal float RampStacks = 0;
-    [OdinSerialize]
-    internal float AbsRampStacks = 0;
 
     [OdinSerialize]
     internal int spriteLayerOffset = 0;
@@ -2190,7 +2188,7 @@ public class Actor_Unit
         {
             Unit.ApplyStatusEffect(StatusEffectType.Shaken, .2f, 1);
         }
-        if ((Config.AbsorbBoostDeadOnly ? PredatorComponent?.AlivePrey <= 0 : PredatorComponent.Fullness <= 0) && RampStacks > 0)
+        if ((Config.AbsorbLoss ? PredatorComponent?.AlivePrey <= 0 : PredatorComponent.Fullness <= 0))
         {
             RampStacks -= Config.DigestionRampLoss;
             if (RampStacks < 0)
@@ -2201,7 +2199,7 @@ public class Actor_Unit
         }
         else
             RampStacks += (Config.DigestionRampLoss >= 0 ? 1 : -1) / Config.DigestionRampTurn;
-
+        Debug.Log(RampStacks);
         RubCount = 0;
         TurnsSinceLastDamage++;
     }

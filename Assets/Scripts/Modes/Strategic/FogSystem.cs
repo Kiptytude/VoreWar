@@ -26,7 +26,10 @@ class FogSystem
         if (playerEmpire == null)
             return;
         if (State.World.IsNight == true && !Config.DayNightEnabled && !Config.FogOfWar)
+        {
+            State.World.IsNight = false;
             return;
+        }
         if (FoggedTile.GetUpperBound(0) + 1 != Config.StrategicWorldSizeX || FoggedTile.GetUpperBound(1) + 1 != Config.StrategicWorldSizeY)
             FoggedTile = new bool[Config.StrategicWorldSizeX, Config.StrategicWorldSizeY];
         //StrategicTileType[,] tiles = State.World.Tiles;

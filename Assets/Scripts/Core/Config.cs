@@ -365,6 +365,7 @@ static class Config
     public static int DigestionRampCap => World.DigestionRampCap;
     public static float AbsorbRamp => World.AbsorbRamp;
     public static float AbsorbResourceMod => World.AbsorbResourceMod;
+    public static bool AbsorbLoss => World.GetValue("AbsorbLoss");
     public static bool AbsorbBoostDeadOnly => World.GetValue("AbsorbBoostDeadOnly");
     public static float DigestionCap => World.DigestionCap;
     public static float DigestionFlatDmg => World.DigestionFlatDmg;
