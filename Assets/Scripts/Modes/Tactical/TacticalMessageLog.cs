@@ -288,7 +288,7 @@ public class TacticalMessageLog
             case MessageLogEvent.PartialEscape:
                 return $"<b>{action.Target.Name}</b> escaped from <b>{action.Unit.Name}</b>'s second stomach, only to find {GPPHimself(action.Target)} back in the first stomach.{odds}";
             case MessageLogEvent.Freed:
-                return $"<b>{action.Target.Name}</b> was freed because <b>{action.Unit.Name}</b> died.";
+                return (action.Unit.IsDead ? $"<b>{action.Target.Name}</b> was freed because <b>{action.Unit.Name}</b> died." : $"<b>{action.Target.Name}</b> was freed because <b>{action.Unit.Name}</b> surrendered.");
             //$"<b>{action.Target.Name}</b> sees insides of {action.preyLocation.ToSyn()} around him melting, only to find {GPPHimself(action.Target)} <b>{action.Unit.Name}</b>'s {action.preyLocation.ToSyn()}{odds}"
             case MessageLogEvent.Regurgitated:
                 return $"<b>{action.Unit.Name}</b> hears {GPPHis(action.Unit)} comrade's plea for help and regurgitates <b>{action.Target.Name}</b>.";

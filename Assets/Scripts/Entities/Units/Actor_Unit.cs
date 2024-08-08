@@ -59,8 +59,12 @@ public class Actor_Unit
     public bool Visible;
     [OdinSerialize]
     public bool Targetable;
+    public bool ReceivedRub => (RubCount >= Config.BellyRubsPerTurn && Config.BellyRubsPerTurn >= 0);
     [OdinSerialize]
-    public bool ReceivedRub;
+    public int RubCount;
+
+    public bool BeingRubbed;
+
 
     [OdinSerialize]
     public bool Surrendered;
@@ -131,6 +135,9 @@ public class Actor_Unit
 
     [OdinSerialize]
     internal int TurnsSinceLastParalysis = 9999;
+
+    [OdinSerialize]
+    internal float RampStacks = 0;
 
     [OdinSerialize]
     internal int spriteLayerOffset = 0;
@@ -1854,7 +1861,8 @@ public class Actor_Unit
             return false;
         if ((target.Unit.GetApparentSide() != Unit.GetApparentSide() && target.Unit.GetApparentSide() != Unit.FixedSide) && !(Unit.HasTrait(Traits.SeductiveTouch) || Config.CanUseStomachRubOnEnemies || TacticalUtilities.GetMindControlSide(Unit) != -1))
             return false;
-        target.ReceivedRub = true;
+        target.RubCount++;
+        target.BeingRubbed = true;
         int index = Random.Range(0, possible.Count - 1);
         type = possible[index];
         switch (type)
@@ -1892,6 +1900,7 @@ public class Actor_Unit
         target.DigestCheck();
         if (Unit.HasTrait(Traits.PleasurableTouch))
             target.DigestCheck();
+        target.BeingRubbed = false;
         int thirdMovement = MaxMovement() / 3;
         if (Movement > thirdMovement)
             Movement -= thirdMovement;
@@ -2179,7 +2188,19 @@ public class Actor_Unit
         {
             Unit.ApplyStatusEffect(StatusEffectType.Shaken, .2f, 1);
         }
-        ReceivedRub = false;
+        if ((Config.AbsorbLoss ? PredatorComponent?.AlivePrey <= 0 : PredatorComponent.Fullness <= 0))
+        {
+            RampStacks -= Config.DigestionRampLoss;
+            if (RampStacks < 0)
+            {
+                RampStacks = 0;
+            }
+
+        }
+        else
+            RampStacks += (Config.DigestionRampLoss >= 0 ? 1 : -1) / Config.DigestionRampTurn;
+        Debug.Log(RampStacks);
+        RubCount = 0;
         TurnsSinceLastDamage++;
     }
 
@@ -2234,6 +2255,10 @@ public class Actor_Unit
             {
                 Surrendered = true;
                 Movement = 0;
+                if (State.Rand.NextDouble() <= Config.SurrenderedPredAutoRegur)
+                {
+                    PredatorComponent?.FreeAnyAlivePrey();
+                }
                 State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"{Unit.Name} was a coward and surrendered");
             }
             if (Unit.HasTrait(Traits.TurnCoat))
@@ -2263,6 +2288,10 @@ public class Actor_Unit
                     AIAvoidEat = 2;
                     State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"{Unit.Name} switched sides when they surrendered");
                 }
+            }
+            if (State.Rand.NextDouble() <= Config.SurrenderedPredAutoRegur)
+            {
+                PredatorComponent?.FreeAnyAlivePrey();
             }
         }
 

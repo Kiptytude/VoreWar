@@ -705,6 +705,48 @@ Does not retroactively affect already created units.";
             case 283:
                 return "Replaces scat with diapers for absorbed units and diaper-related tactical log messages will be displayed.";
             case 284:
+                return "Controls how many bonus movement points scout sized armies start with every turn. When scouts use their bonus MP they will have decreased MP by the amount uesd the following turn";
+            case 285:
+                return "Determines the maximum amount of units allowed to be in a scout army(Set to 0 to disable feature).";
+            case 286:
+                return "A multiplier for all digestion damage. \nA value of 1 means no change.";
+            case 287:
+                return "A multiplier for speed of absorbtion. \nA value of 1 means no change.";
+            case 288:
+                return "Damage caused by a belly rub will be modified by this amount. 1 means no change.";
+            case 289:
+                return "The amount of belly rubs a single unit can recieve in a single turn. \nKeep in mind that belly rub does NOT take a full turn. \nSet to -1 to allow for unlimited.";
+            case 290:
+                return "Adjusts how much digestion damage is increased each time a ramp turn is reached and a unit is full. This modifier stacks. A value of 0 disables this and it's associated settings.";
+            case 291:
+                return "The percent from the above setting will be added for every X turn a pred is full of any living prey.";
+            case 292:
+                return "The above setting will only stack this amount of times before stopping. A negative value disables this.";
+            case 293:
+                return "How many ramp stacks are lost per turn a pred is NOT full of any living prey. A value of 0.5 means 1 stack lost every other turn \nA negative value will add stacks every turn a unit is empty and cause stacks to be removed while a unit is full instead, allowing for units to start with high damage, then lose it.";
+            case 294:
+                return "Adjusts how much Absorbtion speed is changed each time a ramp turn is reached and a unit is full. This modifier stacks. A value of 0 disables this and it's associated settings.";
+            case 295:
+                return "Modifies how much health and mana is gained from absorbtion.";          
+            case 296:
+                return "If on, stacks will begin to fall once ther is no more alive prey.";
+            case 297:
+                return "If on, stacks will be applied to absorbtion if there no more alive prey.";
+            case 298:
+                return "Digestion will never do more than this amount of a unit's Max HP in one instance. A value of 0 disables this setting.";
+            case 299:
+                return "Digestion damage will always deal this amount of a unit's Max HP. Due to rounding, this setting may do more or less than specified. \nDoes not respect the damage cap if it is set. A value of 0 disables this setting.";
+            case 300:
+                return "Damage will be delayed this many turns after a unit is consumed. Stacks with traits that grant immunity turns.";
+            case 301:
+                return "Damage taken by a unit will be divided by the amount of living prey in the same location.";
+            case 302:
+                return "Absorbtion rate will be divided by the amount of prey being absrbed in the same location.";
+            case 303:
+                return "Prey within a surrendered predator will have their escape chanced multiplied by this amount. A value of 1 disables this setting.";
+            case 304:
+                return "When a full predetor surrenders, it has this chance to release it's prey.";
+            case 284:
                 return "Enables wandering hauntings of Wisps";
             case 285:
                 return "Enables wandering herds of Wild Horses";

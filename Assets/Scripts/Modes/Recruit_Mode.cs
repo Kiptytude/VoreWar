@@ -292,6 +292,10 @@ public class Recruit_Mode : SceneBase
             }
             UpdateActorList();
             GenText();
+            if (army.Units.Count > Config.ScoutMax && army.RemainingMP > Config.ArmyMP)
+            {
+                army.RemainingMP = Config.ArmyMP;
+            }
         }
         else
         {
@@ -299,6 +303,10 @@ public class Recruit_Mode : SceneBase
             {
                 UpdateActorList();
                 GenText();
+                if (army.Units.Count > Config.ScoutMax && army.RemainingMP > Config.ArmyMP)
+                {
+                    army.RemainingMP = Config.ArmyMP;
+                }
             }
         }
         Select(army.Units.Count - 1);
@@ -715,6 +723,10 @@ public class Recruit_Mode : SceneBase
 
         UpdateActorList();
         GenText();
+        if (army.Units.Count > Config.ScoutMax && army.RemainingMP > Config.ArmyMP)
+        {
+            army.RemainingMP = Config.ArmyMP;
+        }
     }
 
     void BuildRename()
@@ -1343,6 +1355,10 @@ public class Recruit_Mode : SceneBase
                 Destroy(obj);
                 UpdateActorList();
                 UpdateMercenaryScreenText();
+                if (army.Units.Count > Config.ScoutMax && army.RemainingMP > Config.ArmyMP)
+                {
+                    army.RemainingMP = Config.ArmyMP;
+                }
 
             }
         }
@@ -1355,6 +1371,10 @@ public class Recruit_Mode : SceneBase
             Destroy(obj);
             UpdateActorList();
             UpdateMercenaryScreenText();
+            if (army.Units.Count > Config.ScoutMax && army.RemainingMP > Config.ArmyMP)
+            {
+                army.RemainingMP = Config.ArmyMP;
+            }
         }
 
     }
@@ -1562,6 +1582,10 @@ public class Recruit_Mode : SceneBase
             }
             UpdateActorList();
             GenText();
+            if (army.Units.Count > Config.ScoutMax && army.RemainingMP > Config.ArmyMP)
+            {
+                army.RemainingMP = Config.ArmyMP;
+            }
         }
         else
         {
@@ -1770,6 +1794,10 @@ public class Recruit_Mode : SceneBase
         if (village != null)
             GenText();
         UpdateActorList();
+        if (army.Units.Count > Config.ScoutMax && army.RemainingMP > Config.ArmyMP)
+        {
+            army.RemainingMP = Config.ArmyMP;
+        }
     }
 
     /// <summary>
@@ -1849,6 +1877,10 @@ public class Recruit_Mode : SceneBase
             }
             UpdateActorList();
             GenText();
+            if (army.Units.Count > Config.ScoutMax && army.RemainingMP > Config.ArmyMP)
+            {
+                army.RemainingMP = Config.ArmyMP;
+            }
         }
         else
         {
@@ -1865,6 +1897,10 @@ public class Recruit_Mode : SceneBase
                 }
                 UpdateActorList();
                 GenText();
+                if (army.Units.Count > Config.ScoutMax && army.RemainingMP > Config.ArmyMP)
+                {
+                    army.RemainingMP = Config.ArmyMP;
+                }
             }
         }
 

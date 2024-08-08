@@ -51,7 +51,7 @@ class PermanentBoosts
     internal float ManaMultiplier = 1.0f;
     internal int VoreMinimumOdds = 0;
     internal int TurnCanFlee = 8;
-    internal int DigestionImmunityTurns = 0;
+    internal int DigestionImmunityTurns = Config.DigestionGraceTurns;
     internal int HealthRegen = 0;
     internal int OnLevelUpBonusToAllStats = 0;
     internal int OnLevelUpBonusToGiveToTwoRandomStats = 0;
