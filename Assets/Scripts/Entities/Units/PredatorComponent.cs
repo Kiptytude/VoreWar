@@ -1176,7 +1176,8 @@ public class PredatorComponent
 
         if (Config.DigestionDamageDivision)
         {
-            outgoing_damage /= PreyInLocation(preyUnit.Location, true);
+            int prey_in_loc = PreyInLocation(preyUnit.Location, true);
+            outgoing_damage /= prey_in_loc > 0 ? prey_in_loc : 1;
         }
 
         if (outgoing_damage > (int)(preyUnit.Unit.MaxHealth * Config.DigestionCap) && Config.DigestionCap > 0)
@@ -1552,7 +1553,11 @@ public class PredatorComponent
             speedFactor *= Config.AbsorbSpeedMult + (Config.AbsorbBoostDeadOnly && AlivePrey >= 0 ? 1 : Config.AbsorbRamp * (actor.RampStacks >= Config.DigestionRampCap && Config.DigestionRampCap > 0 ? Config.DigestionRampCap : (float)Math.Floor(actor.RampStacks)));
 
             if (Config.AbsorbRateDivision)
-                speedFactor /= PreyInLocation(preyUnit.Location, false);
+            {
+                int prey_in_loc = PreyInLocation(preyUnit.Location, false);
+                speedFactor /= prey_in_loc > 0 ? prey_in_loc : 1;
+
+            }
 
             int healthReduction = (int)Math.Max(Math.Round(preyUnit.Unit.MaxHealth * speedFactor / 15), 1);
             if (healthReduction >= preyUnit.Unit.MaxHealth + preyUnit.Unit.Health)
