@@ -746,6 +746,8 @@ Does not retroactively affect already created units.";
                 return "Prey within a surrendered predator will have their escape chanced multiplied by this amount. A value of 1 disables this setting.";
             case 304:
                 return "When a full predetor surrenders, it has this chance to release it's prey.";
+            case 305:
+                return "If on, resource gained from absorbing will instead scale with ramp stacks.";
             default:
                 return "";
         }

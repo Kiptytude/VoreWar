@@ -1564,10 +1564,10 @@ public class PredatorComponent
                 healthReduction = preyUnit.Unit.MaxHealth + preyUnit.Unit.Health + 1;
             preyUnit.Actor.SubtractHealth(healthReduction);
             totalHeal += Math.Max((int)(healthReduction / 2 * preyUnit.Unit.TraitBoosts.Outgoing.Nutrition * unit.TraitBoosts.Incoming.Nutrition), 1);
-            totalHeal = (int)(totalHeal * Config.AbsorbResourceMod);
+            totalHeal = (int)(totalHeal * Config.AbsorbResourceMod * (Config.AbsorbResourceModBoost ? (actor.RampStacks >= Config.DigestionRampCap && Config.DigestionRampCap > 0 ? Config.DigestionRampCap : (float)Math.Floor(actor.RampStacks)) : 1));
             var baseManaGain = healthReduction * (preyUnit.Unit.TraitBoosts.Outgoing.ManaAbsorbHundreths + unit.TraitBoosts.Incoming.ManaAbsorbHundreths);
             var totalManaGain = baseManaGain / 100 + (State.Rand.Next(100) < (baseManaGain % 100) ? 1 : 0);
-            unit.RestoreMana((int)(totalManaGain * Config.AbsorbResourceMod));
+            unit.RestoreMana((int)(totalManaGain * Config.AbsorbResourceMod * (Config.AbsorbResourceModBoost ? (actor.RampStacks >= Config.DigestionRampCap && Config.DigestionRampCap > 0 ? Config.DigestionRampCap : (float)Math.Floor(actor.RampStacks)) : 1)));
             foreach (IVoreCallback callback in Callbacks)
             {
                 if (!callback.OnAbsorption(preyUnit, actor, location))

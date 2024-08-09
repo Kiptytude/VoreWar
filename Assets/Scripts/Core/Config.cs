@@ -372,6 +372,7 @@ static class Config
     public static int DigestionGraceTurns => World.DigestionGraceTurns;
     internal static bool DigestionDamageDivision => World.GetValue("DigestionDamageDivision");
     internal static bool AbsorbRateDivision => World.GetValue("AbsorbRateDivision");
+    internal static bool AbsorbResourceModBoost => World.GetValue("AbsorbResourceModBoost");
     public static float SurrenderedPredEscapeMult => World.SurrenderedPredEscapeMult;
     public static float SurrenderedPredAutoRegur => World.SurrenderedPredAutoRegur;
 
