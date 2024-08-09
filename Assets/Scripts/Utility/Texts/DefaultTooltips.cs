@@ -756,6 +756,8 @@ Does not retroactively affect already created units.";
                 return "Enables wandering swarms of the freedom-hating Terminids";
             case 309: 
                 return "Enables wandering pods of Feral Orcas";
+            case 310:
+                return "If on, resource gained from absorbing will instead scale with ramp stacks.";
             default:
                 return "";
         }
