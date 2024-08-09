@@ -689,13 +689,13 @@ static class TacticalUtilities
 
     static internal Actor_Unit FindUnitToResurrect(Actor_Unit caster)
     {
-        Actor_Unit actor = Units.Where(s => s.Unit.Side == caster.Unit.Side && s.Unit.IsDead && s.Unit.Type != UnitType.Summon).OrderByDescending(s => s.Unit.Experience).FirstOrDefault();
+        Actor_Unit actor = Units.Where(s => s.Unit.Side == caster.Unit.Side && s.Unit.IsDead && s.Unit.Type != UnitType.Summon && s.Unit.Level > 0).OrderByDescending(s => s.Unit.Experience).FirstOrDefault();
         return actor;
     }
 
     static internal Actor_Unit FindUnitToReanimate(Actor_Unit caster)
     {
-        Actor_Unit actor = Units.Where(s => s.Unit.IsDead).OrderByDescending(s => s.Unit.Experience).FirstOrDefault();
+        Actor_Unit actor = Units.Where(s => s.Unit.IsDead && s.Unit.Level > 0).OrderByDescending(s => s.Unit.Experience).FirstOrDefault();
         return actor;
     }
 
@@ -707,7 +707,7 @@ static class TacticalUtilities
         {
             UnityEngine.Object.Destroy(UnitPickerUI.ActorFolder.transform.GetChild(i).gameObject);
         }
-        Actor_Unit[] list = Units.Where(s => s.Unit.Side == side && s.Unit.IsDead && s.Unit.Type != UnitType.Summon).OrderByDescending(s => s.Unit.Experience).ToArray();
+        Actor_Unit[] list = Units.Where(s => s.Unit.Side == side && s.Unit.IsDead && s.Unit.Type != UnitType.Summon && s.Unit.Level > 0).OrderByDescending(s => s.Unit.Experience).ToArray();
         foreach (Actor_Unit actor in list)
         {
             GameObject obj = UnityEngine.Object.Instantiate(UnitPickerUI.HiringUnitPanel, UnitPickerUI.ActorFolder);
@@ -738,7 +738,7 @@ static class TacticalUtilities
         {
             UnityEngine.Object.Destroy(UnitPickerUI.ActorFolder.transform.GetChild(i).gameObject);
         }
-        Actor_Unit[] list = Units.Where(s => s.Unit.IsDead).OrderByDescending(s => s.Unit.Experience).ToArray();
+        Actor_Unit[] list = Units.Where(s => s.Unit.IsDead && s.Unit.Level > 0).OrderByDescending(s => s.Unit.Experience).ToArray();
         foreach (Actor_Unit actor in list)
         {
             GameObject obj = UnityEngine.Object.Instantiate(UnitPickerUI.HiringUnitPanel, UnitPickerUI.ActorFolder);

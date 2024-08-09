@@ -44,14 +44,15 @@ public class NameGenerator
     List<string> deerTownNames;
     List<string> aabayxTownNames;
     List<string> miceTownNames;
+    List<string> matronsminionsTownNames;
 
     List<string> compyNames;
     List<string> vagrantNames;
     List<string> serpentNames;
     List<string> wyvernNames;
-    List<string> youngWyvernNames;
     List<string> gryphonNames;
     List<string> feralLionNames;
+    List<string> feralOrcasNames;
     
 	List<string> goodraNames;
 	
@@ -272,13 +273,6 @@ public class NameGenerator
             "Deathtalon",
             "Sharpbeak",
             "Spineback",
-        };
-        youngWyvernNames = new List<string>
-        {
-            "Smallwing",
-            "Greedytalon",
-            "Widebeak",
-            "Lazyback",
         };
         gryphonNames = new List<string>
         {
@@ -859,6 +853,19 @@ public class NameGenerator
             "Tanglewood",
 
         };
+        matronsminionsTownNames = new List<string>
+        {
+            "Matron's Rest",
+            "Giant's Pass",
+            "Her Tranquility",
+            "Aged Gate",
+            "Fateland",
+            "Grave of All",
+            "Dragon's Lounge",
+            "Beaten Path",
+            "Lair of the Lady",
+            "Ancestor's Pit",
+        };
 
         Encoding encoding = Encoding.GetEncoding("iso-8859-1");
 
@@ -1036,9 +1043,6 @@ public class NameGenerator
         {
             case Race.Wyvern:
                 list = wyvernNames;
-                break;
-            case Race.YoungWyvern:
-                list = youngWyvernNames;
                 break;
             case Race.Vagrants:
                 list = vagrantNames;
@@ -1257,6 +1261,11 @@ public class NameGenerator
         {
             if (i >= 0 && i < miceTownNames.Count)
                 return miceTownNames[i];
+        }
+        else if (race == Race.MatronsMinions)
+        {
+            if (i >= 0 && i < matronsminionsTownNames.Count)
+                return matronsminionsTownNames[i];
         }
 
 

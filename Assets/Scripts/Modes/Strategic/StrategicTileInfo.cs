@@ -66,6 +66,10 @@ public enum StrategicDoodadType
     SpawnerDratopyr = 1029,
     SpawnerFeralLions = 1030,
 	SpawnerGoodra = 1031,
+    SpawnerFeralHorses = 1032,
+    SpawnerFeralFox = 1033,
+    SpawnerTerminid = 1034,
+    SpawnerFeralOrcas = 1035,
 }
 
 public enum MovementType

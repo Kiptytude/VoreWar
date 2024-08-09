@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 0d11951e3bf8f2344b517516ca77752d
+guid: c995017a55f4b3a41af67293e6b445c4
 TextureImporter:
   fileIDToRecycleName:
     21300000: Hero Armor_0
@@ -10,8 +10,8 @@ TextureImporter:
     21300010: Hero Armor_5
     21300012: Hero Armor_6
     21300014: Hero Armor_7
-    21300016: YoungWyvernBig_0
-    21300018: YoungWyvernBig_1
+    21300016: Abakhanskya Grand Catch_0
+    2186277476908879412: ImportLogs
   externalObjects: {}
   serializedVersion: 9
   mipmaps:
@@ -30,7 +30,7 @@ TextureImporter:
     externalNormalMap: 0
     heightScale: 0.25
     normalMapFilter: 0
-  isReadable: 0
+  isReadable: 1
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   grayScaleToAlpha: 0
@@ -50,12 +50,12 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 320
+  spritePixelsToUnits: 160
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 0
   alphaUsage: 1
@@ -90,37 +90,39 @@ TextureImporter:
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: YoungWyvernBig_0
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 320
-        width: 500
-        height: 320
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: d4f6bb47103987b449c79d8fd0594efb
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: YoungWyvernBig_1
+      name: Abakhanskya Grand Catch_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 500
-        height: 320
+        width: 1500
+        height: 923
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,7 +130,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d4396c5433b037a4e9171b986f9aab47
+      spriteID: 731725358b5a11a4ebd460fe59a48093
       vertices: []
       indices: 
       edges: []

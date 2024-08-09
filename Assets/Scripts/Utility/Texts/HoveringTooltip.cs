@@ -179,6 +179,8 @@ public class HoveringTooltip : MonoBehaviour
                     return "An adventurer, recruited not from the village population, but from an inn";
                 case UnitType.Spawn:
                     return "A weaker unit, created under certain conditions";
+                case UnitType.Boss:
+                    return "One of the most fierce beings found throughout the realm.  Are you sure you're prepared?";
             }
         }
 
@@ -595,6 +597,8 @@ public class HoveringTooltip : MonoBehaviour
                 return "Up to 50% of damage taken by unit instead spends mana, this trait loses 1% effectivity for every 1% missing mana percentage.";
             case Traits.Unflinching:
                 return "Unit's BladeDance, Tenacity, and Focus stack loss is reduced by if stacks are below 10% current HP.";
+            case Traits.Annihilation:
+                return "Every time digestion progresses, this unit digests one level from each prey inside them, gaining its experience value. If a unit hits level 0 this way, it dies if it was stil alive and cannot be revived.\n(Cheat Trait)";
         }  
         return "<b>This trait needs a tooltip!</b>";
     }

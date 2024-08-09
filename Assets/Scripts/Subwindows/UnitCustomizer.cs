@@ -481,6 +481,11 @@ public class UnitCustomizer
                 buttons[(int)ButtonTypes.HairStyle].Label.text = "Mane Style";
                 buttons[(int)ButtonTypes.HairColor].Label.text = "Mane Color";
                 break;
+            case Race.FeralHorses:
+                buttons[(int)ButtonTypes.Skintone].Label.text = "Fur Color";
+                buttons[(int)ButtonTypes.HairStyle].Label.text = "Mane Style";
+                buttons[(int)ButtonTypes.HairColor].Label.text = "Mane Color";
+                break;
             case Race.Aabayx:
                 buttons[(int)ButtonTypes.BodyAccessoryColor].Label.text = "Head Color";
                 buttons[(int)ButtonTypes.ClothingExtraType1].Label.text = "Face Paint";
@@ -491,6 +496,9 @@ public class UnitCustomizer
                 buttons[(int)ButtonTypes.BodyAccentTypes3].Label.text = "Hands/Feet Pattern";
                 buttons[(int)ButtonTypes.BodyAccentTypes4].Label.text = "Left Ear Damage";
                 buttons[(int)ButtonTypes.BodyAccentTypes5].Label.text = "Right Ear Damage";
+                break;
+            case Race.FeralOrcas:
+                buttons[(int)ButtonTypes.BodyAccentTypes1].Label.text = "Dorsal Fin";
                 break;
         }
     }

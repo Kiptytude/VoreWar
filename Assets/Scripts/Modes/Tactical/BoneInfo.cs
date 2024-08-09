@@ -50,7 +50,6 @@ class BoneInfo
                 rtn = new Vector3(1f, 1f);
                 break;
             case BoneTypes.Wyvern:
-            case BoneTypes.YoungWyvern:
             case BoneTypes.Compy:
             case BoneTypes.Shark:
             case BoneTypes.DarkSwallower:
@@ -105,9 +104,6 @@ class BoneInfo
             case BoneTypes.Alligator:
             case BoneTypes.Wyvern:
                 rtn = new Vector3(0, 0);
-                break;
-            case BoneTypes.YoungWyvern:
-                rtn = new Vector3(0, 0.015f);
                 break;
             case BoneTypes.Compy:
                 rtn = new Vector3(0, 0.03f);

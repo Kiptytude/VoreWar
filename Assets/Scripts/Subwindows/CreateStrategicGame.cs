@@ -657,7 +657,7 @@ public class CreateStrategicGame : MonoBehaviour
         }
         catch
         {
-            State.GameManager.CreateMessageBox("At least one of the textboxes is blank, and needs to be filled in");
+            State.GameManager.CreateMessageBox("At least one of the textboxes is blank, and needs to be filled in \n *Could possibly be a maximum race issue.*  \n*Check Config.cs NumberOfRaces and make sure it's value is correct.*");
             return;
         }
 
