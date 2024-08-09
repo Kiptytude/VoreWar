@@ -133,12 +133,10 @@ class MonsterStrategicAI : IStrategicAI
 
                 if (empire.ReplacedRace == Race.Wyvern)
                 {
-                    for (int i = 0; i < count; i++)
+                    army.Units.Add(new Leader(empire.Side, Race.WyvernMatron, RandXp(baseXp * 2)));
+                    for (int i = 1; i < count; i++)
                     {
-                        if (spawner.AddOnRace && State.Rand.Next(4) == 0)
-                            army.Units.Add(new Unit(empire.Side, Race.YoungWyvern, RandXp(baseXp), true));
-                        else
-                            army.Units.Add(new Unit(empire.Side, Race.Wyvern, RandXp(baseXp), true));
+                        army.Units.Add(new Unit(empire.Side, Race.Wyvern, RandXp(baseXp), true));
                     }
                 }
                 else if (empire.ReplacedRace == Race.FeralSharks)

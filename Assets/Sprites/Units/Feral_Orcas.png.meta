@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: e60f9253c8f5ae34884e40f477f1caa9
+guid: aef6eec5cf39f0949a0f846a78e017cd
 TextureImporter:
   fileIDToRecycleName:
     21300000: Hero Armor_0
@@ -10,46 +10,49 @@ TextureImporter:
     21300010: Hero Armor_5
     21300012: Hero Armor_6
     21300014: Hero Armor_7
-    21300016: Hero Armor_0
-    21300018: Hero Armor_1
-    21300020: Hero Armor_2
-    21300022: Hero Armor_3
-    21300024: Hero Armor_4
-    21300026: Hero Armor_5
-    21300028: Hero Armor_6
-    21300030: Hero Armor_7
-    21300032: YoungWyvern_0
-    21300034: YoungWyvern_1
-    21300036: YoungWyvern_2
-    21300038: YoungWyvern_3
-    21300040: YoungWyvern_4
-    21300042: YoungWyvern_5
-    21300044: YoungWyvern_6
-    21300046: YoungWyvern_7
-    21300048: YoungWyvern_8
-    21300050: YoungWyvern_9
-    21300052: YoungWyvern_10
-    21300054: YoungWyvern_11
-    21300056: YoungWyvern_12
-    21300058: YoungWyvern_13
-    21300060: YoungWyvern_14
-    21300062: YoungWyvern_15
-    21300064: YoungWyvern_16
-    21300066: YoungWyvern_17
-    21300068: YoungWyvern_18
-    21300070: YoungWyvern_19
-    21300072: YoungWyvern_20
-    21300074: YoungWyvern_21
-    21300076: YoungWyvern_22
-    21300078: YoungWyvern_23
-    21300080: YoungWyvern_24
-    21300082: YoungWyvern_25
-    21300084: YoungWyvern_26
-    21300086: YoungWyvern_27
-    21300088: YoungWyvern_28
-    21300090: YoungWyvern_29
+    21300016: Feral_Orcas_0
+    21300018: Feral_Orcas_1
+    21300020: Feral_Orcas_2
+    21300022: Feral_Orcas_3
+    21300024: Feral_Orcas_4
+    21300026: Feral_Orcas_5
+    21300028: Feral_Orcas_6
+    21300030: Feral_Orcas_7
+    21300032: Feral_Orcas_8
+    21300034: Feral_Orcas_9
+    21300036: Feral_Orcas_10
+    21300038: Feral_Orcas_11
+    21300040: Feral_Orcas_12
+    21300042: Feral_Orcas_13
+    21300044: Feral_Orcas_14
+    21300046: Feral_Orcas_15
+    21300048: Feral_Orcas_16
+    21300050: Feral_Orcas_17
+    21300052: Feral_Orcas_18
+    21300054: Feral_Orcas_19
+    21300056: Feral_Orcas_20
+    21300058: Feral_Orcas_21
+    21300060: Feral_Orcas_22
+    21300062: Feral_Orcas_23
+    21300064: Feral_Orcas_24
+    21300066: Feral_Orcas_25
+    21300068: Feral_Orcas_26
+    21300070: Feral_Orcas_27
+    21300072: Feral_Orcas_28
+    21300074: Feral_Orcas_29
+    21300076: Feral_Orcas_30
+    21300078: Feral_Orcas_31
+    21300080: Feral_Orcas_32
+    21300082: Feral_Orcas_33
+    21300084: Feral_Orcas_34
+    21300086: Feral_Orcas_35
+    21300088: Feral_Orcas_36
+    21300090: Feral_Orcas_37
+    21300092: Feral_Orcas_38
+    21300094: Feral_Orcas_39
+    21300096: Feral_Orcas_40
   externalObjects: {}
-  serializedVersion: 7
+  serializedVersion: 9
   mipmaps:
     mipMapMode: 0
     enableMipMap: 1
@@ -91,7 +94,7 @@ TextureImporter:
   spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 320
+  spritePixelsToUnits: 160
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 0
   alphaUsage: 1
@@ -106,7 +109,7 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 2
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 2048
+    maxTextureSize: 4096
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 0
@@ -117,7 +120,29 @@ TextureImporter:
     androidETC2FallbackOverride: 0
   - serializedVersion: 2
     buildTarget: Standalone
-    maxTextureSize: 2048
+    maxTextureSize: 4096
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Android
+    maxTextureSize: 4096
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: WebGL
+    maxTextureSize: 4096
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 0
@@ -130,13 +155,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: YoungWyvern_0
+      name: Feral_Orcas_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 1600
-        width: 320
-        height: 320
+        y: 1500
+        width: 300
+        height: 300
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -144,19 +169,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 10a11ee2f597cba4bb1acfe26ca81529
+      spriteID: 4673c696622e374468f63e49e301b2d0
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: YoungWyvern_1
+      name: Feral_Orcas_1
       rect:
         serializedVersion: 2
-        x: 320
-        y: 1600
-        width: 320
-        height: 320
+        x: 300
+        y: 1500
+        width: 300
+        height: 300
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -164,19 +189,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 024fbd3e57acaff45aacdabec2c26ac9
+      spriteID: 49af5876f2e5e1b419ca63684f920b55
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: YoungWyvern_2
+      name: Feral_Orcas_2
       rect:
         serializedVersion: 2
-        x: 640
-        y: 1600
-        width: 320
-        height: 320
+        x: 600
+        y: 1500
+        width: 300
+        height: 300
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -184,19 +209,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c7240df7fee1e694ba41683b6fbca9e4
+      spriteID: feee08d32a337ff4ca43b22f8bf5d591
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: YoungWyvern_3
+      name: Feral_Orcas_3
       rect:
         serializedVersion: 2
-        x: 960
-        y: 1600
-        width: 320
-        height: 320
+        x: 900
+        y: 1500
+        width: 300
+        height: 300
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -204,19 +229,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: dd1c9ee14729a664eab72548064b62e2
+      spriteID: e476929a0da8eeb44bf2a260979c3484
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: YoungWyvern_4
+      name: Feral_Orcas_4
       rect:
         serializedVersion: 2
-        x: 1280
-        y: 1600
-        width: 320
-        height: 320
+        x: 1200
+        y: 1500
+        width: 300
+        height: 300
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -224,19 +249,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: da6bee03230113b45b46b89dfab0d996
+      spriteID: 5fb7a61ad4f364e4cbe51c18383fbbca
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: YoungWyvern_5
+      name: Feral_Orcas_5
       rect:
         serializedVersion: 2
-        x: 0
-        y: 1280
-        width: 320
-        height: 320
+        x: 1500
+        y: 1500
+        width: 300
+        height: 300
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -244,19 +269,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c447a34a6e8534a41a686d30750ec713
+      spriteID: bc200392f522fcf4fba25dfcc9ad3e12
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: YoungWyvern_6
+      name: Feral_Orcas_6
       rect:
         serializedVersion: 2
-        x: 320
-        y: 1280
-        width: 320
-        height: 320
+        x: 1800
+        y: 1500
+        width: 300
+        height: 300
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -264,79 +289,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c6e78258f120c534c992da55adc2e53d
+      spriteID: 5e40dd45599120c4b90a9024dc4f846e
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: YoungWyvern_7
-      rect:
-        serializedVersion: 2
-        x: 640
-        y: 1280
-        width: 320
-        height: 320
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 3374b6a00adb97447a1a7f7bc2129aeb
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: YoungWyvern_8
-      rect:
-        serializedVersion: 2
-        x: 960
-        y: 1280
-        width: 320
-        height: 320
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: b6abf3b887e068143866f315210b63e2
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: YoungWyvern_9
-      rect:
-        serializedVersion: 2
-        x: 1280
-        y: 1280
-        width: 320
-        height: 320
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 38c542087cae58142bab818a13337eed
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: YoungWyvern_10
+      name: Feral_Orcas_7
       rect:
         serializedVersion: 2
         x: 0
-        y: 960
-        width: 320
-        height: 320
+        y: 1200
+        width: 300
+        height: 300
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -344,19 +309,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b793cc547739a374085ee1c4919294bf
+      spriteID: 25b1ee514793b6141bf699cfb39a5d66
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: YoungWyvern_11
+      name: Feral_Orcas_8
       rect:
         serializedVersion: 2
-        x: 320
-        y: 960
-        width: 320
-        height: 320
+        x: 300
+        y: 1200
+        width: 300
+        height: 300
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -364,19 +329,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 876042986385097479b3cf4962c309e3
+      spriteID: d12775c102c0eb84c851e40d1ca100b7
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: YoungWyvern_12
+      name: Feral_Orcas_9
       rect:
         serializedVersion: 2
-        x: 640
-        y: 960
-        width: 320
-        height: 320
+        x: 600
+        y: 1200
+        width: 300
+        height: 300
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -384,19 +349,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8606e8278d4e45d408066769ba195ac7
+      spriteID: 1cfa7d12ad59b00449031755958b0000
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: YoungWyvern_13
+      name: Feral_Orcas_10
       rect:
         serializedVersion: 2
-        x: 960
-        y: 960
-        width: 320
-        height: 320
+        x: 900
+        y: 1200
+        width: 300
+        height: 300
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -404,19 +369,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: bc408ed42a0e7a345915a0b4843debdf
+      spriteID: cebc150b14140f94aaa6a2fbf2958316
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: YoungWyvern_14
+      name: Feral_Orcas_11
       rect:
         serializedVersion: 2
-        x: 1280
-        y: 960
-        width: 320
-        height: 320
+        x: 1200
+        y: 1200
+        width: 300
+        height: 300
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -424,19 +389,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 826e4cfa71cd5264cae43f76bae75c51
+      spriteID: 68b591f5156eac343b0eadebdcdc9cea
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: YoungWyvern_15
+      name: Feral_Orcas_12
       rect:
         serializedVersion: 2
-        x: 0
-        y: 640
-        width: 320
-        height: 320
+        x: 1500
+        y: 1200
+        width: 300
+        height: 300
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -444,19 +409,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: adc0e31853f33934585e3373c05c6578
+      spriteID: 49394475105ebc24190c59f2e7ab8f21
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: YoungWyvern_16
+      name: Feral_Orcas_13
       rect:
         serializedVersion: 2
-        x: 320
-        y: 640
-        width: 320
-        height: 320
+        x: 1800
+        y: 1200
+        width: 300
+        height: 300
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -464,79 +429,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d7fd061d53f3ccc41b19164747e93e0b
+      spriteID: 5ca080de5969f134c83ff32073a32d6f
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: YoungWyvern_17
-      rect:
-        serializedVersion: 2
-        x: 640
-        y: 640
-        width: 320
-        height: 320
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 9986685c511611f429fcbe90eeac6a83
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: YoungWyvern_18
-      rect:
-        serializedVersion: 2
-        x: 960
-        y: 640
-        width: 320
-        height: 320
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 4b3774b0fc61a6f4f87a2fc743c3468a
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: YoungWyvern_19
-      rect:
-        serializedVersion: 2
-        x: 1280
-        y: 640
-        width: 320
-        height: 320
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 0334fc26294f4af4892ab14220671960
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: YoungWyvern_20
+      name: Feral_Orcas_14
       rect:
         serializedVersion: 2
         x: 0
-        y: 320
-        width: 320
-        height: 320
+        y: 900
+        width: 300
+        height: 300
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -544,19 +449,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: cea064d0653f3bd45a6d3568ad0e90b7
+      spriteID: 69a15df8f654b614cba4f2b1b3610c92
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: YoungWyvern_21
+      name: Feral_Orcas_15
       rect:
         serializedVersion: 2
-        x: 320
-        y: 320
-        width: 320
-        height: 320
+        x: 300
+        y: 900
+        width: 300
+        height: 300
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -564,19 +469,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 742179e9aa20de44bbf7265c0e29307e
+      spriteID: fca3c94050c18ff428d5e4e0e6021b80
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: YoungWyvern_22
+      name: Feral_Orcas_16
       rect:
         serializedVersion: 2
-        x: 640
-        y: 320
-        width: 320
-        height: 320
+        x: 600
+        y: 900
+        width: 300
+        height: 300
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -584,19 +489,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 76b27ffcc0818ee439153b9e8e8b9f35
+      spriteID: f01da55c637376c4caecbd0b09b59956
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: YoungWyvern_23
+      name: Feral_Orcas_17
       rect:
         serializedVersion: 2
-        x: 960
-        y: 320
-        width: 320
-        height: 320
+        x: 900
+        y: 900
+        width: 300
+        height: 300
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -604,19 +509,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 623899d3b5dccff4bb64077b114e8815
+      spriteID: 4779e3954db7a194e84947e1f6c4997f
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: YoungWyvern_24
+      name: Feral_Orcas_18
       rect:
         serializedVersion: 2
-        x: 1280
-        y: 320
-        width: 320
-        height: 320
+        x: 1200
+        y: 900
+        width: 300
+        height: 300
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -624,19 +529,339 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3b8bd3f8889b8564182138cbded5b147
+      spriteID: 63fc81116dfe64341892e4bb81055af4
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: YoungWyvern_25
+      name: Feral_Orcas_19
+      rect:
+        serializedVersion: 2
+        x: 1500
+        y: 900
+        width: 300
+        height: 300
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ab31115976e46404495566f39037bfb6
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Feral_Orcas_20
+      rect:
+        serializedVersion: 2
+        x: 1800
+        y: 900
+        width: 300
+        height: 300
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 99f7cbca091064349931b15464100c6b
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Feral_Orcas_21
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 600
+        width: 300
+        height: 300
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5ce6730a429ff1743b6ca6d839693e98
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Feral_Orcas_22
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 600
+        width: 300
+        height: 300
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9380c18b97e24024895f3c5c2a5a605c
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Feral_Orcas_23
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 600
+        width: 300
+        height: 300
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 737be7d284b48dc4ca11aa0dbc32518f
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Feral_Orcas_24
+      rect:
+        serializedVersion: 2
+        x: 900
+        y: 600
+        width: 300
+        height: 300
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fd46eed660c06f541b08c527582f17d0
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Feral_Orcas_25
+      rect:
+        serializedVersion: 2
+        x: 1200
+        y: 600
+        width: 300
+        height: 300
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fabe21027dc936c429e331233b4b4f01
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Feral_Orcas_26
+      rect:
+        serializedVersion: 2
+        x: 1500
+        y: 600
+        width: 300
+        height: 300
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d024fbfe2d4f8d94bb18d094b2d5700f
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Feral_Orcas_27
+      rect:
+        serializedVersion: 2
+        x: 1800
+        y: 600
+        width: 300
+        height: 300
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3a8acf606b1d0134ab58f6da7a2d8428
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Feral_Orcas_28
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 300
+        width: 300
+        height: 300
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 964ea1404a79b104cbdb00bd0459dc18
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Feral_Orcas_29
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 300
+        width: 300
+        height: 300
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f9477a2fe54764a48821101af17fb70b
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Feral_Orcas_30
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 300
+        width: 300
+        height: 300
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 69d6a8b541bfd7343a5e0c48d572409c
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Feral_Orcas_31
+      rect:
+        serializedVersion: 2
+        x: 900
+        y: 300
+        width: 300
+        height: 300
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b1569663f53fbf041a59afe6cfe4c47a
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Feral_Orcas_32
+      rect:
+        serializedVersion: 2
+        x: 1200
+        y: 300
+        width: 300
+        height: 300
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c8b6c54c03bb27f419da782af869c160
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Feral_Orcas_33
+      rect:
+        serializedVersion: 2
+        x: 1500
+        y: 300
+        width: 300
+        height: 300
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2d246b95afe9c574aa3313522d9e522a
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Feral_Orcas_34
+      rect:
+        serializedVersion: 2
+        x: 1800
+        y: 300
+        width: 300
+        height: 300
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ecff88b03ad46974c8b08c147226c309
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Feral_Orcas_35
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 320
-        height: 320
+        width: 300
+        height: 300
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -644,19 +869,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f962fb915d82e494d8440094a84b958e
+      spriteID: 75fb40a8e854a9d49824e0aad4202c20
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: YoungWyvern_26
+      name: Feral_Orcas_36
       rect:
         serializedVersion: 2
-        x: 320
+        x: 300
         y: 0
-        width: 320
-        height: 320
+        width: 300
+        height: 300
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -664,19 +889,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: dc0f69cdecf0f964598147ab48508fc4
+      spriteID: bcdd58741dd3b0040b5d6af9c649aee5
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: YoungWyvern_27
+      name: Feral_Orcas_37
       rect:
         serializedVersion: 2
-        x: 640
+        x: 600
         y: 0
-        width: 320
-        height: 320
+        width: 300
+        height: 300
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -684,19 +909,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 40e5e0ff3b09f454a858210fd2155fe5
+      spriteID: 173c60dd14cb6ec49bb400ae5235e06e
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: YoungWyvern_28
+      name: Feral_Orcas_38
       rect:
         serializedVersion: 2
-        x: 960
+        x: 900
         y: 0
-        width: 320
-        height: 320
+        width: 300
+        height: 300
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -704,19 +929,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d8946cff80e29464b8d130dcde1f3344
+      spriteID: 8e59fab4c5c3a4d4c97f22ecb888a027
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: YoungWyvern_29
+      name: Feral_Orcas_39
       rect:
         serializedVersion: 2
-        x: 1280
+        x: 1200
         y: 0
-        width: 320
-        height: 320
+        width: 300
+        height: 300
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -724,7 +949,27 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4b28ee2600e6e364fae9557999b9324e
+      spriteID: d51782ce98fa105439180eae607a695c
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Feral_Orcas_40
+      rect:
+        serializedVersion: 2
+        x: 1500
+        y: 0
+        width: 300
+        height: 300
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fa0232cbe1bcf0543b2316183c3bca6a
       vertices: []
       indices: 
       edges: []

@@ -52,7 +52,6 @@ static class RaceParameters
     static readonly RaceTraits Vagrants;
     static readonly RaceTraits Serpents;
     static readonly RaceTraits Wyvern;
-    static readonly RaceTraits YoungWyvern;
     static readonly RaceTraits Compy;
     static readonly RaceTraits Sharks;
     static readonly RaceTraits FeralWolves;
@@ -94,7 +93,7 @@ static class RaceParameters
     static readonly RaceTraits Asura;
     static readonly RaceTraits DRACO;
     static readonly RaceTraits Zoey;
-    static readonly RaceTraits Abakhanskya;
+    static readonly RaceTraits Cierihaka;
     static readonly RaceTraits Zera;
     static readonly RaceTraits Auri;
     static readonly RaceTraits Erin;
@@ -102,6 +101,15 @@ static class RaceParameters
     static readonly RaceTraits Whisp;
     static readonly RaceTraits Salix;
     static readonly RaceTraits Bella;
+    static readonly RaceTraits FeralHorses;
+    static readonly RaceTraits Abakhanskya;
+    static readonly RaceTraits MatronsMinions;
+    static readonly RaceTraits WyvernMatron;
+    static readonly RaceTraits Singularity;
+    static readonly RaceTraits Feit;
+    static readonly RaceTraits FeralFox;
+    static readonly RaceTraits Terminid;
+    static readonly RaceTraits FeralOrcas;
 
     static Unit tempUnit;
 
@@ -215,8 +223,6 @@ static class RaceParameters
                 return Serpents;
             case Race.Wyvern:
                 return Wyvern;
-            case Race.YoungWyvern:
-                return YoungWyvern;
             case Race.Compy:
                 return Compy;
             case Race.FeralSharks:
@@ -303,8 +309,8 @@ static class RaceParameters
                 return DRACO;
             case Race.Zoey:
                 return Zoey;
-            case Race.Abakhanskya:
-                return Abakhanskya;
+            case Race.Cierihaka:
+                return Cierihaka;
             case Race.Zera:
                 return Zera;
             case Race.Panthers:
@@ -323,6 +329,24 @@ static class RaceParameters
                 return Salix;
             case Race.Bella:
                 return Bella;
+            case Race.FeralHorses:
+                return FeralHorses;
+            case Race.Abakhanskya:
+                return Abakhanskya;
+            case Race.MatronsMinions:
+                return MatronsMinions;
+            case Race.WyvernMatron:
+                return WyvernMatron;
+            case Race.Singularity:
+                return Singularity;
+            case Race.Feit:
+                return Feit;
+            case Race.FeralFox:
+                return FeralFox;
+            case Race.Terminid:
+                return Terminid;
+            case Race.FeralOrcas:
+                return FeralOrcas;
             case (Race)700: //Singled out so that it doesn't make the debug message
                 return Default;
             case (Race)701:
@@ -850,6 +874,54 @@ static class RaceParameters
             RaceDescription = "Originally ordinary lab mice, tucked away in a secret laboratory, the gift of sentience and a heightened sense of intellect was suddenly bestowed upon them. No mouse knows the identity of this mysterious actor or the reason they were given such a boon, but all are grateful for their improved status.",
         };
 
+        Abakhanskya = new RaceTraits()
+        {
+            BodySize = 200,
+            StomachSize = 200,
+            HasTail = true,
+            FavoredStat = Stat.Stomach,
+            AllowedVoreTypes = new List<VoreType> { VoreType.Oral, VoreType.Unbirth, VoreType.Anal },
+            ExpMultiplier = 20f,
+            PowerAdjustment = 100f,
+            RaceStats = new RaceStats()
+            {
+                Strength = new RaceStats.StatRange(40, 50),
+                Dexterity = new RaceStats.StatRange(25, 35),
+                Endurance = new RaceStats.StatRange(50, 70),
+                Mind = new RaceStats.StatRange(40, 50),
+                Will = new RaceStats.StatRange(40, 50),
+                Agility = new RaceStats.StatRange(15, 20),
+                Voracity = new RaceStats.StatRange(40, 50),
+                Stomach = new RaceStats.StatRange(40, 50),
+            },
+            RacialTraits = new List<Traits>()
+        {
+                Traits.Legendary,
+                Traits.ForcefulBlow,
+                Traits.Cruel,
+                Traits.SlowAbsorption,
+                Traits.Ravenous,
+        },
+            RaceDescription = "Abakhanskya is an ancient dragoness hailing from another realm.  Despite this fact, she has been here for generations upon generations and has quite the body to show for it, absolutely brimming with the nutrients stolen from countless prey throughout the years.  \n<b>She is an unstoppable force of predatory nature, it is unwise to face her on fair terms.</b>",
+        };
+
+        MatronsMinions = new RaceTraits()
+        {
+            BodySize = 9,
+            StomachSize = 12,
+            HasTail = true,
+            FavoredStat = Stat.Agility,
+            RacialTraits = new List<Traits>()
+            {
+                Traits.ProlificBreeder,
+                Traits.EasyToVore,
+                Traits.Replaceable,
+            },
+            LeaderRace = Race.Abakhanskya,
+            RaceDescription = "A tribe of kobolds who are faithfully serving their goddess, Abakhanskya.",
+            RaceAI = RaceAI.ServantRace
+        };
+
         Succubi = new RaceTraits()
         {
             BodySize = 10,
@@ -1264,31 +1336,30 @@ static class RaceParameters
 
         };
 
-        YoungWyvern = new RaceTraits()
+        WyvernMatron = new RaceTraits()
         {
-            BodySize = 6,
-            StomachSize = 20,
-            HasTail = true,
-            FavoredStat = Stat.Stomach,
-            AllowedVoreTypes = new List<VoreType> { VoreType.Oral },
-            ExpMultiplier = 1.25f,
+            BodySize = 22,
+            StomachSize = 18,
+            FavoredStat = Stat.Agility,
+            AllowedVoreTypes = new List<VoreType> { VoreType.Oral, VoreType.Unbirth, VoreType.CockVore, VoreType.Anal },
+            ExpMultiplier = 1.6f,
+            PowerAdjustment = 2.1f,
             RaceStats = new RaceStats()
             {
-                Strength = new RaceStats.StatRange(4, 8),
-                Dexterity = new RaceStats.StatRange(6, 14),
-                Endurance = new RaceStats.StatRange(8, 16),
-                Mind = new RaceStats.StatRange(6, 14),
-                Will = new RaceStats.StatRange(4, 12),
-                Agility = new RaceStats.StatRange(10, 22),
-                Voracity = new RaceStats.StatRange(12, 20),
-                Stomach = new RaceStats.StatRange(8, 14),
+                Strength = new RaceStats.StatRange(9, 21),
+                Dexterity = new RaceStats.StatRange(7, 14),
+                Endurance = new RaceStats.StatRange(15, 22),
+                Mind = new RaceStats.StatRange(14, 28),
+                Will = new RaceStats.StatRange(8, 18),
+                Agility = new RaceStats.StatRange(11, 22),
+                Voracity = new RaceStats.StatRange(12, 18),
+                Stomach = new RaceStats.StatRange(9, 16),
             },
             RacialTraits = new List<Traits>()
-            {
-
-            },
-            RaceDescription = "When young the Wyverns aren't good predators. They do have a healthy appetite though, and follow older Wyverns in hope of getting the better of prey weakened by the adults.",
-
+        {
+                Traits.Flight,
+        },
+            RaceDescription = "The beings called Wyvern Matrons are a rare, larger, hermaphroditic variant of the wyvern. Why exactly some wyverns turn into such is unknown, but the resulting being is an even greater threat than average wyverns are.",
         };
 
         Compy = new RaceTraits()
@@ -1359,14 +1430,14 @@ static class RaceParameters
             PowerAdjustment = 1.75f,
             RaceStats = new RaceStats()
             {
-                Strength = new RaceStats.StatRange(10, 22),
-                Dexterity = new RaceStats.StatRange(4, 8),
-                Endurance = new RaceStats.StatRange(12, 22),
+                Strength = new RaceStats.StatRange(14, 22),
+                Dexterity = new RaceStats.StatRange(9, 13),
+                Endurance = new RaceStats.StatRange(17, 26),
                 Mind = new RaceStats.StatRange(6, 12),
-                Will = new RaceStats.StatRange(6, 12),
-                Agility = new RaceStats.StatRange(8, 16),
-                Voracity = new RaceStats.StatRange(8, 16),
-                Stomach = new RaceStats.StatRange(6, 14),
+                Will = new RaceStats.StatRange(12, 18),
+                Agility = new RaceStats.StatRange(9, 18),
+                Voracity = new RaceStats.StatRange(19, 27),
+                Stomach = new RaceStats.StatRange(21, 29),
             },
             RacialTraits = new List<Traits>()
         {
@@ -2319,7 +2390,119 @@ static class RaceParameters
         },
             RaceDescription = "With an appearance reminiscent of a reptilian bat, the Dratopyr are likely a hybrid race. Smaller than most monsters but just as fierce, the Dratopyr specialize in weakening their prey while avoiding attempts to fend them off. Dratopyr are very fast breeders and would thus be a major threat to everyone, were it not for their tendency toward cannibalism.",
         };
+        
+        FeralHorses = new RaceTraits()
+        {
+            BodySize = 20,
+            StomachSize = 16,
+            HasTail = true,
+            FavoredStat = Stat.Agility,
+            AllowedVoreTypes = new List<VoreType> { VoreType.Oral, VoreType.Anal, VoreType.Unbirth, VoreType.CockVore },
+            ExpMultiplier = 1.1f,
+            PowerAdjustment = 1.3f,
+            RaceStats = new RaceStats()
+            {
+                Strength = new RaceStats.StatRange(14, 18),
+                Dexterity = new RaceStats.StatRange(10, 16),
+                Endurance = new RaceStats.StatRange(16, 20),
+                Mind = new RaceStats.StatRange(6, 10),
+                Will = new RaceStats.StatRange(6, 10),
+                Agility = new RaceStats.StatRange(16, 24),
+                Voracity = new RaceStats.StatRange(10, 16),
+                Stomach = new RaceStats.StatRange(10, 16),
+            },
+            RacialTraits = new List<Traits>()
+        {
+            Traits.Charge,
+            Traits.ForcefulBlow,
+            Traits.BornToMove,
 
+        },
+            RaceDescription = "It's a horse!  Go ahead, try to ride one.  I dare you!"
+        };
+
+        FeralFox = new RaceTraits()
+        {
+            BodySize = 16,
+            StomachSize = 24,
+            FavoredStat = Stat.Voracity,
+            AllowedVoreTypes = new List<VoreType> { VoreType.Oral, VoreType.Unbirth, VoreType.CockVore, VoreType.Anal },
+            ExpMultiplier = 1.6f,
+            PowerAdjustment = 1.3f,
+            RaceStats = new RaceStats()
+            {
+                Strength = new RaceStats.StatRange(11, 15),
+                Dexterity = new RaceStats.StatRange(9, 13),
+                Endurance = new RaceStats.StatRange(17, 23),
+                Mind = new RaceStats.StatRange(7, 11),
+                Will = new RaceStats.StatRange(12, 18),
+                Agility = new RaceStats.StatRange(13, 19),
+                Voracity = new RaceStats.StatRange(19, 27),
+                Stomach = new RaceStats.StatRange(21, 29),
+            },
+            RacialTraits = new List<Traits>()
+        {
+            Traits.Resilient,
+        },
+            RaceDescription = "Abnormally large foxes with a voracious appetite."
+        };
+
+        Terminid = new RaceTraits()
+        {
+            BodySize = 16,
+            StomachSize = 24,
+            FavoredStat = Stat.Voracity,
+            AllowedVoreTypes = new List<VoreType> { VoreType.Oral },
+            ExpMultiplier = 1.6f,
+            PowerAdjustment = 1.3f,
+            RaceStats = new RaceStats()
+            {
+                Strength = new RaceStats.StatRange(11, 15),
+                Dexterity = new RaceStats.StatRange(9, 13),
+                Endurance = new RaceStats.StatRange(17, 23),
+                Mind = new RaceStats.StatRange(7, 11),
+                Will = new RaceStats.StatRange(12, 18),
+                Agility = new RaceStats.StatRange(13, 19),
+                Voracity = new RaceStats.StatRange(19, 27),
+                Stomach = new RaceStats.StatRange(21, 29),
+            },
+            RacialTraits = new List<Traits>()
+        {
+            Traits.Disgusting,
+            Traits.Resilient,
+            Traits.Pounce,
+            Traits.FireVulnerable,
+        },
+            RaceDescription = "A vicious and territorial race of voracious insects prized for their ability to produce an element known as E-710, though some say it's just oil.  They are very dangerous, especially so in larger numbers and will often attempt to swarm their prey.  No known portal signified their arrival in the realm so how they ended up here is anybody's guess, though a few conspiracy rumors claim they were brought here by someone else.  There is a curious phenomenon surrounding these insects: When struck by them in combat, there is a high likelyhood that the wounded will shout \"No pain, no freedom!\""
+        };
+
+        FeralOrcas = new RaceTraits()
+        {
+            BodySize = 30,
+            StomachSize = 30,
+            FavoredStat = Stat.Strength,
+            AllowedVoreTypes = new List<VoreType> { VoreType.Oral },
+            ExpMultiplier = 1.6f,
+            PowerAdjustment = 2.1f,
+            RaceStats = new RaceStats()
+            {
+                Strength = new RaceStats.StatRange(9, 27),
+                Dexterity = new RaceStats.StatRange(7, 12),
+                Endurance = new RaceStats.StatRange(17, 29),
+                Mind = new RaceStats.StatRange(14, 28),
+                Will = new RaceStats.StatRange(15, 21),
+                Agility = new RaceStats.StatRange(13, 23),
+                Voracity = new RaceStats.StatRange(16, 22),
+                Stomach = new RaceStats.StatRange(19, 27),
+            },
+            RacialTraits = new List<Traits>()
+        {
+                Traits.Flight,
+                Traits.Resilient,
+                Traits.Ravenous,
+        },
+            RaceDescription = "Orcas that have mutated to fly and breathe air on their homewrold. They've also developed a ravenous appetite.  The Skysharks followed the Scylla to this world, and the Orcas followed the Skyharks.",
+        };
 
         Selicia = new RaceTraits()
         {
@@ -2535,7 +2718,7 @@ static class RaceParameters
             RaceDescription = "An anthropomorphic tiger shark from another world.  Zoey is typically a lazy girl who loves watching movies and being a general couch-potato.  However, upon realizing she'd been isekai'd into the realm, her gluttony left her interested in trying to stomach the local warriors and monsters with some basic martial arts, joining whichever side would pay her first.",
         };
 
-        Abakhanskya = new RaceTraits()
+        Cierihaka = new RaceTraits()
         {
             BodySize = 90,
             StomachSize = 40,
@@ -2756,6 +2939,65 @@ static class RaceParameters
             InnateSpells = new List<SpellTypes>()
             { SpellTypes.Mending, SpellTypes.Fireball},
             RaceDescription = "\"A shy cowgirl ^o^\" - Made by AgentAmbi",
+        };
+
+        Singularity = new RaceTraits()
+        {
+            BodySize = 20,
+            StomachSize = 30,
+            FavoredStat = Stat.Voracity,
+            AllowedVoreTypes = new List<VoreType> { VoreType.Oral, VoreType.Unbirth, VoreType.BreastVore, VoreType.Anal },
+            ExpMultiplier = 2f,
+            PowerAdjustment = 4f,
+            RaceStats = new RaceStats()
+            {
+                Strength = new RaceStats.StatRange(10, 15),
+                Dexterity = new RaceStats.StatRange(14, 21),
+                Endurance = new RaceStats.StatRange(12, 19),
+                Mind = new RaceStats.StatRange(10, 16),
+                Will = new RaceStats.StatRange(16, 21),
+                Agility = new RaceStats.StatRange(7, 11),
+                Voracity = new RaceStats.StatRange(12, 18),
+                Stomach = new RaceStats.StatRange(16, 21),
+            },
+            RacialTraits = new List<Traits>()
+        {
+                Traits.DualStomach,
+                Traits.Ravenous,
+                Traits.AwkwardShape,
+                Traits.StrongGullet,
+        },
+            RaceDescription = "A ravenous species seemingly mirrored from the deer, this herbivore enjoys showing just how quickly she can gobble a warrior down.",
+        };
+
+        Feit = new RaceTraits()
+        {
+            BodySize = 18,
+            StomachSize = 24,
+            FavoredStat = Stat.Agility,
+            AllowedVoreTypes = new List<VoreType> { VoreType.Oral },
+            ExpMultiplier = 2f,
+            PowerAdjustment = 4f,
+            RaceStats = new RaceStats()
+            {
+                Strength = new RaceStats.StatRange(15, 22),
+                Dexterity = new RaceStats.StatRange(12, 18),
+                Endurance = new RaceStats.StatRange(18, 23),
+                Mind = new RaceStats.StatRange(8, 12),
+                Will = new RaceStats.StatRange(19, 24),
+                Agility = new RaceStats.StatRange(18, 24),
+                Voracity = new RaceStats.StatRange(18, 22),
+                Stomach = new RaceStats.StatRange(16, 21),
+            },
+            RacialTraits = new List<Traits>()
+        {
+                Traits.StrongGullet,
+                Traits.Pounce,
+                Traits.KeenReflexes,
+                Traits.Growth,
+                Traits.Tasty,
+        },
+            RaceDescription = "A strange, almost draconic looking raptor. She seems to grow larger and stronger with each victim consumed. Despite having wings, they seem to only allow her to leap great distances instead of fly.",
         };
 
     }

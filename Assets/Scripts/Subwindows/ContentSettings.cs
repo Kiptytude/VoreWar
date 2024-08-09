@@ -166,7 +166,6 @@ public class ContentSettings : MonoBehaviour
     public Toggle Scat;
     public Toggle ScatV2;
     public Toggle ScatBones;
-    public Toggle CondomsForCV;
     public Toggle ClothingDiscards;
 
     public Toggle ErectionsFromVore;
@@ -189,6 +188,7 @@ public class ContentSettings : MonoBehaviour
     public Toggle Defections;
 
     public Toggle Cumstains;
+    public Toggle CondomsForCV;
 
     public Toggle MonstersCanReform;
 
@@ -407,7 +407,7 @@ public class ContentSettings : MonoBehaviour
 
         foreach (Race race in (Race[])Enum.GetValues(typeof(Race)))
         { //Done separately to keep their initial order for now
-            if (race >= Race.Vagrants && race < Race.Selicia && race != Race.YoungWyvern && race != Race.DarkSwallower && race != Race.Collectors && race != Race.CoralSlugs
+            if (race >= Race.Vagrants && race < Race.Selicia && race != Race.WyvernMatron && race != Race.DarkSwallower && race != Race.Collectors && race != Race.CoralSlugs
                 && race != Race.SpitterSlugs && race != Race.SpringSlugs && race != Race.Raptor && race != Race.WarriorAnts)
             {
                 var spawner = CreateMonsterPanel(race);
@@ -530,6 +530,21 @@ public class ContentSettings : MonoBehaviour
                 break;
             case Race.Goodra:
                 tooltip.value = 257;
+                break;
+            case Race.Whisp:
+                tooltip.value = 305;
+                break;
+            case Race.FeralHorses:
+                tooltip.value = 306;
+                break;
+            case Race.FeralFox:
+                tooltip.value = 307;
+                break;
+            case Race.Terminid:
+                tooltip.value = 308;
+                break;
+            case Race.FeralOrcas:
+                tooltip.value = 309;
                 break;
         }
         return spawner;

@@ -1,7 +1,5 @@
 ﻿static class Races
 {
-
-
     static internal Cats Cats = new Cats();
     static internal Dogs Dogs = new Dogs();
     static internal Foxes Foxes = new Foxes();
@@ -36,6 +34,8 @@
     static internal Youko Youko = new Youko();
     static internal Aabayx Aabayx = new Aabayx();
     static internal Mice Mice = new Mice();
+    static internal Abakhanskya Abakhanskya = new Abakhanskya();
+    static internal MatronsMinions MatronsMinions = new MatronsMinions();
 
     static internal Tigers Tigers = new Tigers();
     static internal Goblins Goblins = new Goblins();
@@ -53,7 +53,7 @@
     static internal Vagrants Vagrants = new Vagrants();
     static internal Serpents Serpents = new Serpents();
     static internal Wyvern Wyvern = new Wyvern();
-    static internal YoungWyvern YoungWyvern = new YoungWyvern();
+    static internal WyvernMatron WyvernMatron = new WyvernMatron();
     static internal Compy Compy = new Compy();
     static internal FeralWolf FeralWolf = new FeralWolf();
     static internal Sharks Sharks = new Sharks();
@@ -97,15 +97,20 @@
     static internal Asura Asura = new Asura();
     static internal DRACO DRACO = new DRACO();
     static internal Zoey Zoey = new Zoey();
-    static internal Abakhanskya Abakhanskya = new Abakhanskya();
+    static internal Cierihaka Cierihaka = new Cierihaka();
     static internal Zera Zera = new Zera();
     static internal Auri Aurilika = new Auri();
     static internal Erin Erin = new Erin();
     static internal Salix Salix = new Salix();
     static internal Bella Bella = new Bella();
     static internal Goodra Goodra = new Goodra();
-
     static internal Whisp Whisp = new Whisp();
+    static internal FeralHorses FeralHorses = new FeralHorses();
+    static internal Singularity Singularity = new Singularity();
+    static internal Feit Feit = new Feit();
+    static internal FeralFox FeralFox = new FeralFox();
+    static internal Terminid Terminid = new Terminid();
+    static internal FeralOrcas FeralOrcas = new FeralOrcas();
     static internal BlankSlate BlankSlate = new BlankSlate();
 
     static internal DefaultRaceData GetRace(Unit unit)
@@ -197,8 +202,8 @@
                 return Serpents;
             case Race.Wyvern:
                 return Wyvern;
-            case Race.YoungWyvern:
-                return YoungWyvern;
+            case Race.WyvernMatron:
+                return WyvernMatron;
             case Race.Compy:
                 return Compy;
             case Race.FeralWolves:
@@ -243,8 +248,8 @@
                 return DRACO;
             case Race.Zoey:
                 return Zoey;
-            case Race.Abakhanskya:
-                return Abakhanskya;
+            case Race.Cierihaka:
+                return Cierihaka;
             case Race.Zera:
                 return Zera;
             case Race.FeralAnts:
@@ -325,6 +330,22 @@
                 return Aabayx;
             case Race.Mice:
                 return Mice;
+            case Race.FeralHorses:
+                return FeralHorses;
+            case Race.Abakhanskya:
+                return Abakhanskya;
+            case Race.MatronsMinions:
+                return MatronsMinions;
+            case Race.Singularity:
+                return Singularity;
+            case Race.Feit:
+                return Feit;
+            case Race.FeralFox:
+                return FeralFox;
+            case Race.Terminid:
+                return Terminid;
+            case Race.FeralOrcas:
+                return FeralOrcas;
         }
         UnityEngine.Debug.LogWarning("Couldn't find race, substituting the Blank Slate");
         return BlankSlate;

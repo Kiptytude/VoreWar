@@ -220,14 +220,14 @@ public class InfoPanel
                 return "Serpent";
             case Race.Wyvern:
                 return "Wyvern";
-            case Race.YoungWyvern:
-                return "Young Wyvern";
+            case Race.WyvernMatron:
+                return "Wyvern Matron";
             case Race.Compy:
                 return "Compy";
             case Race.FeralWolves:
                 return "Feral Wolf";
             case Race.FeralSharks:
-                return "Shark";
+                return "Sky Shark";
             case Race.DarkSwallower:
                 return "Dark Swallower";
             case Race.Cake:
@@ -318,6 +318,20 @@ public class InfoPanel
                 return "Kobold";
             case Race.Whisp:
                 return "Whisp";
+            case Race.FeralHorses:
+                return "Horse";
+            case Race.Abakhanskya:
+                return "Khatunlao";
+            case Race.Singularity:
+                return "Faun";
+            case Race.Feit:
+                return "Draconic Raptor";
+            case Race.FeralFox:
+                return "Fox";
+            case Race.Terminid:
+                return "Terminid";
+            case Race.FeralOrcas:
+                return "Feral Orca";
             case Race.none:
                 return "None";
         }
@@ -398,8 +412,8 @@ public class InfoPanel
                 return "Serpent";
             case Race.Wyvern:
                 return "Wyvern";
-            case Race.YoungWyvern:
-                return "Young Wyvern";
+            case Race.WyvernMatron:
+                return "Wyvern Matron";
             case Race.Compy:
                 return "Compy";
             case Race.FeralWolves:
@@ -494,8 +508,22 @@ public class InfoPanel
                 return "Dratopyr";
             case Race.FeralLions:
                 return "Lion";
+            case Race.FeralHorses:
+                return "Horse";
             case Race.Whisp:
                 return "Whisp";
+            case Race.Abakhanskya:
+                return "Khatunlao";
+            case Race.Singularity:
+                return "Faun";
+            case Race.Feit:
+                return "Draconic Raptor";
+            case Race.FeralFox:
+                return "Fox";
+            case Race.Terminid:
+                return "Terminid";
+            case Race.FeralOrcas:
+                return "Feral Orca";
         }
         return empire.ReplacedRace.ToString();
     }

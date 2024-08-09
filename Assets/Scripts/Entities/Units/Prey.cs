@@ -235,8 +235,8 @@ class Prey
             case Race.Wyvern:
                 rtn.Add(new BoneInfo(BoneTypes.Wyvern, Unit.Name));
                 break;
-            case Race.YoungWyvern:
-                rtn.Add(new BoneInfo(BoneTypes.YoungWyvern, Unit.Name));
+            case Race.WyvernMatron:
+                rtn.Add(new BoneInfo(BoneTypes.Wyvern, Unit.Name));
                 break;
             case Race.Compy:
                 rtn.Add(new BoneInfo(BoneTypes.Compy, Unit.Name));

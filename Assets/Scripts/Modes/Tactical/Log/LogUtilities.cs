@@ -347,8 +347,8 @@ static class LogUtilities
                 return GetRandomStringFrom("limbless", "noodly", "slithery");
             case Race.Wyvern:
                 return GetRandomStringFrom("winged", "horned", "wiry");
-            case Race.YoungWyvern:
-                return GetRandomStringFrom("plumb", "soft scaled", "stretchy");
+            case Race.WyvernMatron:
+                return GetRandomStringFrom("winged", "horned", "wiry");
             case Race.Compy:
                 return GetRandomStringFrom("tiny", "chirping", "overambitious");
             case Race.FeralSharks:
@@ -429,8 +429,8 @@ static class LogUtilities
                 return GetRandomStringFrom("scaly", "long bodied", "slithering");
             case Race.Wyvern:
                 return GetRandomStringFrom("mighty", "spined", "great-winged");
-            case Race.YoungWyvern:
-                return GetRandomStringFrom("grinning", "expansive", "rubbery");
+            case Race.WyvernMatron:
+                return GetRandomStringFrom("mighty", "spined", "great-winged");
             case Race.Compy:
                 return GetRandomStringFrom("energetic", "tanuki shaming", "ambitious");
             case Race.FeralSharks:
@@ -511,12 +511,12 @@ static class LogUtilities
                 return GetRandomStringFrom("serpent", "snake", "slitherer");
             case Race.Wyvern:
                 return GetRandomStringFrom("wyvern", "lesser draconic being", "drake");
-            case Race.YoungWyvern:
-                return GetRandomStringFrom("young wyvern", "wyverling", "small wyvern");
+            case Race.WyvernMatron:
+                return GetRandomStringFrom("wyvern", "lesser draconic being", "drake");
             case Race.Compy:
                 return GetRandomStringFrom("compy", "compsognathus", "dinosaur", "tiny dino");
             case Race.FeralSharks:
-                return GetRandomStringFrom("skyshark", "shark", "great fish");
+                return GetRandomStringFrom("skyshark", "shark", "air shark", "flying shark");
             case Race.FeralWolves:
                 return GetRandomStringFrom("feral", GetGenderString(unit, "wolfess", "wolf", "wolf"), "canine"); ////I changed "wolfen" to "wolfess"
             case Race.Cake:
@@ -569,6 +569,12 @@ static class LogUtilities
                 return GetRandomStringFrom("viroid", "virosapien", "dice-like", "math-obsessed"); ////new, and probably wrong
             case Race.Mice:
                 return GetRandomStringFrom("mouse", GetGenderString(unit, "doe", "buck", "murid"), "rodent");
+            case Race.FeralOrcas:
+                return GetRandomStringFrom("killer whale", "whale", "orca", "oversized dolphin", "cetacean", "apex dolphin");
+            case Race.Feit:
+                return GetRandomStringFrom("raptor", "dino", "draco-raptor", "draconic raptor", "raptoress", "she-raptor");
+            case Race.Zoey:
+                return GetRandomStringFrom("tiger shark", "anthro shark", "demi-shark");
             default:
                 return "creature";
         }
@@ -584,7 +590,7 @@ static class LogUtilities
     {
         if (unit.Race == Race.Vagrants) return "Stinger";
         else if (unit.Race == Race.Wyvern) return "Claws";
-        else if (unit.Race == Race.YoungWyvern) return "Beak";
+        else if (unit.Race == Race.WyvernMatron) return "Fierce Claws";
         else if (unit.Race == Race.Serpents) return "Tail Blade";
         else if (unit.Race == Race.FeralSharks) return "Jaws";
         else if (unit.Race == Race.FeralWolves) return "Fangs";

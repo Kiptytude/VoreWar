@@ -52,12 +52,18 @@ public enum SpecialItems
     DRACOWeapon,
     ZoeyWeapon,
     ZeraWeapon,
-    AbakWeapon,
+    CierihakaWeapon,
     AurilikaWeapon,
     SalixWeapon,
     ErinWeapon,
     ErinWings,
+    AbaWeapon,
+    AbaArmor,
     BellaWeapon,
+    SingularityWeapon,
+    SingularityArmor,
+    FeitWeapon,
+    FeitArmor,
 }
 
 
@@ -125,10 +131,10 @@ public class ItemRepository
             new Weapon(name:"Vagrant Stinger", description:"Jellyfish stinger", cost:4, graphic:0, damage:3, range:1),
             new Weapon(name:"Serpent Fangs", description:"Fangs", cost:4, graphic:0, damage:3, range:1),
             new Weapon(name:"Wyvern Claws", description:"Claws", cost:4, graphic:0, damage:5, range:1),
-            new Weapon(name:"Young Wyvern Claws", description:"Claws", cost:4, graphic:0, damage:4, range:1),
+            new Weapon(name:"Wyvern Matron Claws", description:"Claws", cost:4, graphic:0, damage:6, range:1),
             new Weapon(name:"Puny Claws", description:"Puny Claws", cost:4, graphic:0, damage:2, range:1),
             new Weapon(name:"Shark Jaws", description:"Shark Jaws", cost:4, graphic:0, damage:4, range:1),
-            new Weapon(name:"Wolf Claws", description:"Wolf Claws", cost:4, graphic:0, damage:4, range:1),
+            new Weapon(name:"Wolf Claws", description:"Fearsome claws upon massive paws", cost:4, graphic:0, damage:5, range:1),
             new Weapon(name:"Dark Swallower Jaws", description:"Dark Swallower Jaws", cost:4, graphic:0, damage:2, range:1),
             new Weapon(name:"Pointy Teeth", description:"Cake Jaws", cost:4, graphic:0, damage:6, range:1),
             new Weapon(name:"Harvester Scythes", description:"Scythes", cost:4, graphic:0, damage:6, range:1),
@@ -162,6 +168,10 @@ public class ItemRepository
             new Weapon(name:"Lion Fangs", description:"Serrated and pointy (Feline) Canines", cost:4, graphic:0, damage:6, range:1),
 			new Weapon(name:"Goodra Slug Antenna", description:"Goodra's Power Whip", cost:4, graphic:0, damage:5, range:1),
             new Weapon(name:"Whisp fire", description:"Whisp's FoxFire", cost:4, graphic:0, damage:5, range:5, omniWeapon: true, magicWeapon: true),
+            new Weapon(name:"Horse Hooves", description:"A terribly painful kick to the gut!", cost:4, graphic:0, damage:4, range:1),
+            new Weapon(name:"Fox Claws", description:"While smaller than say a wolf,\n these claws are equally as painful.", cost:4, graphic:0, damage:4, range:1),
+            new Weapon(name:"Bladed Appendage", description:"The Terminids' armored exoskeleton is both sturdy and sharp enough to pierce through most contemporary armor.  And when four or five of them strike you at once.... ^v><^ ", cost:4, graphic:0, damage:4, range:1),
+            new Weapon(name:"Orca Jaws", description:"The fearsome jaws of a killer whale", cost:4, graphic:0, damage:5, range:1),
         };
 
         specialItems = new List<Item>()
@@ -174,12 +184,18 @@ public class ItemRepository
             new Weapon(name:"DRACO's Bite", description:"Bite Attack", cost:4, graphic:0, damage:8, range:1),
             new Weapon(name:"Zoey's Limbs", description:"Fist / Tail Attack", cost:4, graphic:0, damage:6, range:1),
             new Weapon(name:"Zera's Claws", description:"Claw Attack", cost:4, graphic:0, damage:8, range:1),
-            new Weapon(name:"Abakhanskya's Bite", description:"Bite Attack", cost:4, graphic:0, damage:8, range:1),
+            new Weapon(name:"Cierihaka's Bite", description:"Bite Attack", cost:4, graphic:0, damage:8, range:1),
             new Weapon(name:"Aurilika's Gohei", description:"A sacred talisman", cost:4, graphic:0, damage:4, range:1, accuracyModifier: 5f, lockedItem:true),
             new Weapon(name:"Salix's Staff", description:"A weighty magic staff", cost:4, graphic:0, damage:6, range:1, lockedItem:true),
             new Weapon(name:"Nyangel Claws", description:"Near-useless cat scratch!", cost:4, graphic:0, damage:8, range:1),
             new Accessory(name:"Nyangel Wings", description:"The softest, most delicious looking pair of wings you ever did see!\n+5 Willpower", cost:6, changedStat:(int)Stat.Will, statBonus:5 ),
+            new Weapon(name:"Grand Talons", description:"All the better to grasp you with, my dear.", cost:4, graphic:0, damage:12, range:1, lockedItem:true),
+            new Accessory(name:"Grand Plating", description:"Abakhanskya is covered from head to toe in highly durable composite armor plating\n+10 Endurance", cost:6, changedStat:(int)Stat.Endurance, statBonus:10 ),
             new Weapon(name:"Bella's Staff", description:"A Shepherd's Staff", cost:4, graphic:0, damage:10, range:1, lockedItem:true, accuracyModifier:.75f),
+            new Weapon(name:"Voidshift Antlers", description:"With power over dark energy, Singularity can shape the void matter of her antlers to any shape in order to attack.", cost:4, graphic:0, damage:8, range:2, lockedItem:true),
+            new Accessory(name:"Comfy Sweater", description:"Singularity's favorite sweater.", cost:6, changedStat:(int)Stat.Endurance, statBonus:10 ),
+            new Weapon(name:"Feit's Claws", description:"The deadly claws upon Feit's forelimbs synergize well with the wing-like feathers, allowing her to effectively glide and pin down her enemies.", cost:4, graphic:0, damage:8, range:1),
+            new Accessory(name:"Feit's Talons", description:"A Draco-Raptor's talons are quite powerful, enabling these predators to quickly pounce upon distant prey.", cost:6, changedStat:(int)Stat.Endurance, statBonus:10 ),
         };
 
 

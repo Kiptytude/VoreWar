@@ -133,7 +133,7 @@ public class Army
         JustCreated = true;
 
         NameArmy(empire);
-        if (empire.Side < 30)
+        if (empire.Side < 32)
             BannerStyle = empire.BannerType;
         if ((State.World.Turn == 1 && Config.FirstTurnArmiesIdle) || 0 > RemainingMP)
             RemainingMP = 0;

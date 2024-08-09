@@ -29,11 +29,47 @@ TextureImporter:
     21300048: Abakhanskya_16
     21300050: Abakhanskya_17
     21300052: Abakhanskya_18
+    21300054: Abakhanskya_19
+    21300056: Abakhanskya_20
+    21300058: Abakhanskya_21
+    21300060: Abakhanskya_22
+    21300062: Abakhanskya_23
+    21300064: Abakhanskya_24
+    21300066: Abakhanskya_25
+    21300068: Abakhanskya_26
+    21300070: Abakhanskya_27
+    21300072: Abakhanskya_28
+    21300074: Abakhanskya_29
+    21300076: Abakhanskya_30
+    21300078: Abakhanskya_31
+    21300080: Abakhanskya_32
+    21300082: Abakhanskya_33
+    21300084: Abakhanskya_34
+    21300086: Abakhanskya_35
+    21300088: Abakhanskya_36
+    21300090: Abakhanskya_37
+    21300092: Abakhanskya_38
+    21300094: Abakhanskya_39
+    21300096: Abakhanskya_40
+    21300098: Abakhanskya_41
+    21300100: Abakhanskya_42
+    21300102: Abakhanskya_43
+    21300104: Abakhanskya_44
+    21300106: Abakhanskya_45
+    21300108: Abakhanskya_46
+    21300110: Abakhanskya_47
+    21300112: Abakhanskya_48
+    21300114: Abakhanskya_49
+    21300116: Abakhanskya_50
+    21300118: Abakhanskya_51
+    21300120: Abakhanskya_52
+    21300122: Abakhanskya_53
+    2186277476908879412: ImportLogs
   externalObjects: {}
   serializedVersion: 9
   mipmaps:
     mipMapMode: 0
-    enableMipMap: 0
+    enableMipMap: 1
     sRGBTexture: 1
     linearTexture: 0
     fadeOut: 0
@@ -72,7 +108,7 @@ TextureImporter:
   spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 250
+  spritePixelsToUnits: 160
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 0
   alphaUsage: 1
@@ -87,7 +123,7 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 2
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 2048
+    maxTextureSize: 8192
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 0
@@ -98,7 +134,29 @@ TextureImporter:
     androidETC2FallbackOverride: 0
   - serializedVersion: 2
     buildTarget: Standalone
-    maxTextureSize: 2048
+    maxTextureSize: 8192
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Android
+    maxTextureSize: 8192
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: WebGL
+    maxTextureSize: 8192
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 0
@@ -115,9 +173,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 1200
-        width: 400
-        height: 300
+        y: 4304
+        width: 860
+        height: 538
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -125,7 +183,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4c22bfb5f7b010e4e99163ec0ada4217
+      spriteID: a89f29c2c9ce5fc42a2fffaceee811c0
       vertices: []
       indices: 
       edges: []
@@ -134,10 +192,10 @@ TextureImporter:
       name: Abakhanskya_1
       rect:
         serializedVersion: 2
-        x: 400
-        y: 1200
-        width: 400
-        height: 300
+        x: 860
+        y: 4304
+        width: 860
+        height: 538
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -145,7 +203,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9ec6b4d62821c3d429e8739e895fcccf
+      spriteID: 4e0982e1bc00b714da3f89b3b87845e9
       vertices: []
       indices: 
       edges: []
@@ -154,10 +212,10 @@ TextureImporter:
       name: Abakhanskya_2
       rect:
         serializedVersion: 2
-        x: 800
-        y: 1200
-        width: 400
-        height: 300
+        x: 1720
+        y: 4304
+        width: 860
+        height: 538
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -165,7 +223,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: de44454acc5fd7443ade5aa8f14871e2
+      spriteID: 1b459055fd8c1384189e1aea149fd354
       vertices: []
       indices: 
       edges: []
@@ -174,10 +232,10 @@ TextureImporter:
       name: Abakhanskya_3
       rect:
         serializedVersion: 2
-        x: 1200
-        y: 1200
-        width: 400
-        height: 300
+        x: 2580
+        y: 4304
+        width: 860
+        height: 538
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -185,7 +243,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 14202616e7aca6a49860e8b9744bf005
+      spriteID: 885161c566c870946afb86b25da3b41c
       vertices: []
       indices: 
       edges: []
@@ -194,10 +252,10 @@ TextureImporter:
       name: Abakhanskya_4
       rect:
         serializedVersion: 2
-        x: 0
-        y: 900
-        width: 400
-        height: 300
+        x: 3440
+        y: 4304
+        width: 860
+        height: 538
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -205,7 +263,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5b8d15dd0b01fe34589c6cad14ff0417
+      spriteID: da2e8124288c73b4fa17df859540d157
       vertices: []
       indices: 
       edges: []
@@ -214,10 +272,10 @@ TextureImporter:
       name: Abakhanskya_5
       rect:
         serializedVersion: 2
-        x: 400
-        y: 900
-        width: 400
-        height: 300
+        x: 4300
+        y: 4304
+        width: 860
+        height: 538
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -225,7 +283,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 596ee919ee96fa2479bfeb2ac75bbd32
+      spriteID: a4b085b9f5b94dc43a9a6fba896e9950
       vertices: []
       indices: 
       edges: []
@@ -234,10 +292,10 @@ TextureImporter:
       name: Abakhanskya_6
       rect:
         serializedVersion: 2
-        x: 800
-        y: 900
-        width: 400
-        height: 300
+        x: 0
+        y: 3766
+        width: 860
+        height: 538
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -245,7 +303,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 12210a2cd874dcc41998bb8bc9cf4fa9
+      spriteID: de446c36ec811a04eb9df6865ec8899b
       vertices: []
       indices: 
       edges: []
@@ -254,10 +312,10 @@ TextureImporter:
       name: Abakhanskya_7
       rect:
         serializedVersion: 2
-        x: 1200
-        y: 900
-        width: 400
-        height: 300
+        x: 860
+        y: 3766
+        width: 860
+        height: 538
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -265,7 +323,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: cfcb472a523f1ba4798c83173c904eb7
+      spriteID: 1a90570327cca8a4fb651544570de01f
       vertices: []
       indices: 
       edges: []
@@ -274,10 +332,10 @@ TextureImporter:
       name: Abakhanskya_8
       rect:
         serializedVersion: 2
-        x: 0
-        y: 600
-        width: 400
-        height: 300
+        x: 1720
+        y: 3766
+        width: 860
+        height: 538
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -285,7 +343,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f8dfceead897a5f4eb32e9963e69a493
+      spriteID: f8853097592bd8a429be7095a80a7f07
       vertices: []
       indices: 
       edges: []
@@ -294,10 +352,10 @@ TextureImporter:
       name: Abakhanskya_9
       rect:
         serializedVersion: 2
-        x: 400
-        y: 600
-        width: 400
-        height: 300
+        x: 2580
+        y: 3766
+        width: 860
+        height: 538
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -305,7 +363,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 74696ba3145e75c49bddf96482ebc4fd
+      spriteID: a7434165a3b374b4d8433c2368aef687
       vertices: []
       indices: 
       edges: []
@@ -314,10 +372,10 @@ TextureImporter:
       name: Abakhanskya_10
       rect:
         serializedVersion: 2
-        x: 800
-        y: 600
-        width: 400
-        height: 300
+        x: 3440
+        y: 3766
+        width: 860
+        height: 538
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -325,7 +383,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: baf771cfd255ba14aa64b73fa311999b
+      spriteID: 370355b4c65d3044fbe097b75a823921
       vertices: []
       indices: 
       edges: []
@@ -334,10 +392,10 @@ TextureImporter:
       name: Abakhanskya_11
       rect:
         serializedVersion: 2
-        x: 1200
-        y: 600
-        width: 400
-        height: 300
+        x: 4300
+        y: 3766
+        width: 860
+        height: 538
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -345,7 +403,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 445df031c44039244aa533a30981b110
+      spriteID: d3904b780b4ce4a4c88cbc5390cfd693
       vertices: []
       indices: 
       edges: []
@@ -355,9 +413,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 300
-        width: 400
-        height: 300
+        y: 3228
+        width: 860
+        height: 538
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -365,7 +423,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a3a6fa85b06ab764183cab739d53b85b
+      spriteID: ecffbdf7e4a460c4db5de1ee8d52f4de
       vertices: []
       indices: 
       edges: []
@@ -374,10 +432,10 @@ TextureImporter:
       name: Abakhanskya_13
       rect:
         serializedVersion: 2
-        x: 400
-        y: 300
-        width: 400
-        height: 300
+        x: 860
+        y: 3228
+        width: 860
+        height: 538
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -385,7 +443,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e5075fa337b13af418275f29e98e26dc
+      spriteID: ffaa3c78494068f44b1503d621e0de4c
       vertices: []
       indices: 
       edges: []
@@ -394,10 +452,10 @@ TextureImporter:
       name: Abakhanskya_14
       rect:
         serializedVersion: 2
-        x: 800
-        y: 300
-        width: 400
-        height: 300
+        x: 1720
+        y: 3228
+        width: 860
+        height: 538
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -405,7 +463,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 98ed1a6c6d3583b45a9da3dde05a79c0
+      spriteID: fd913ced650f8c94f84d81632ea41dac
       vertices: []
       indices: 
       edges: []
@@ -414,10 +472,10 @@ TextureImporter:
       name: Abakhanskya_15
       rect:
         serializedVersion: 2
-        x: 1200
-        y: 300
-        width: 400
-        height: 300
+        x: 2580
+        y: 3228
+        width: 860
+        height: 538
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -425,7 +483,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c291ac61340ff4a4d9e3141573bb23f5
+      spriteID: c51c805218b8e8c4c8d721145a035629
       vertices: []
       indices: 
       edges: []
@@ -434,10 +492,10 @@ TextureImporter:
       name: Abakhanskya_16
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 400
-        height: 300
+        x: 3440
+        y: 3228
+        width: 860
+        height: 538
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -445,7 +503,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 40cce446e984d8a49a4d0f0c977fdbb6
+      spriteID: 270b5d91bfe22ed45a5d8b203fedfdc6
       vertices: []
       indices: 
       edges: []
@@ -454,10 +512,10 @@ TextureImporter:
       name: Abakhanskya_17
       rect:
         serializedVersion: 2
-        x: 400
-        y: 0
-        width: 400
-        height: 300
+        x: 4300
+        y: 3228
+        width: 860
+        height: 538
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -465,7 +523,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b1f08d753a4924041b22f13bf280ca66
+      spriteID: c0f96082b5d05a4438649a231d7ad85c
       vertices: []
       indices: 
       edges: []
@@ -474,10 +532,10 @@ TextureImporter:
       name: Abakhanskya_18
       rect:
         serializedVersion: 2
-        x: 800
-        y: 0
-        width: 400
-        height: 300
+        x: 0
+        y: 2690
+        width: 860
+        height: 538
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -485,7 +543,707 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 74f60a69027f69f47b68058edf27052b
+      spriteID: d9ba6739ffb352e4bbef1d268fb5bb7b
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Abakhanskya_19
+      rect:
+        serializedVersion: 2
+        x: 860
+        y: 2690
+        width: 860
+        height: 538
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 531d888c01f957449b47e248909436de
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Abakhanskya_20
+      rect:
+        serializedVersion: 2
+        x: 1720
+        y: 2690
+        width: 860
+        height: 538
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cfad384a366f4674da87fbd0824baecb
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Abakhanskya_21
+      rect:
+        serializedVersion: 2
+        x: 2580
+        y: 2690
+        width: 860
+        height: 538
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8dc57d8ad76181d4a8b473a08a282de2
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Abakhanskya_22
+      rect:
+        serializedVersion: 2
+        x: 3440
+        y: 2690
+        width: 860
+        height: 538
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2bd561a8710022f46a41abc594c5c03a
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Abakhanskya_23
+      rect:
+        serializedVersion: 2
+        x: 4300
+        y: 2690
+        width: 860
+        height: 538
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2272f00aab376b4418b99abe3dab2091
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Abakhanskya_24
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 2152
+        width: 860
+        height: 538
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6154269ffa89b9e42a10994268bebd56
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Abakhanskya_25
+      rect:
+        serializedVersion: 2
+        x: 860
+        y: 2152
+        width: 860
+        height: 538
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 51b7d2df3ac6e834f94d97a863a57fe5
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Abakhanskya_26
+      rect:
+        serializedVersion: 2
+        x: 1720
+        y: 2152
+        width: 860
+        height: 538
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e9159fcfb6f0ddf4589277559c9f58cf
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Abakhanskya_27
+      rect:
+        serializedVersion: 2
+        x: 2580
+        y: 2152
+        width: 860
+        height: 538
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7dcb289e254e337488310cb4aaa02eb7
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Abakhanskya_28
+      rect:
+        serializedVersion: 2
+        x: 3440
+        y: 2152
+        width: 860
+        height: 538
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9963e7a463c63ec46b841fee81606625
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Abakhanskya_29
+      rect:
+        serializedVersion: 2
+        x: 4300
+        y: 2152
+        width: 860
+        height: 538
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e35e331f70312f7448e47ac78496d704
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Abakhanskya_30
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1614
+        width: 860
+        height: 538
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: eacf840797b351b479fb9b387f482a55
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Abakhanskya_31
+      rect:
+        serializedVersion: 2
+        x: 860
+        y: 1614
+        width: 860
+        height: 538
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b1f8f6f4f3c274d42968eaf0b7b270fc
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Abakhanskya_32
+      rect:
+        serializedVersion: 2
+        x: 1720
+        y: 1614
+        width: 860
+        height: 538
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: edbf3e18520a72841903eea6234b0962
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Abakhanskya_33
+      rect:
+        serializedVersion: 2
+        x: 2580
+        y: 1614
+        width: 860
+        height: 538
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d70ea20fc758aaa41879bc4895eff734
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Abakhanskya_34
+      rect:
+        serializedVersion: 2
+        x: 3440
+        y: 1614
+        width: 860
+        height: 538
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 90ba575c51583e84dbd662b547965337
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Abakhanskya_35
+      rect:
+        serializedVersion: 2
+        x: 4300
+        y: 1614
+        width: 860
+        height: 538
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d00f8cf27c96c3c499e5034d7a8cba65
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Abakhanskya_36
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1076
+        width: 860
+        height: 538
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9fd0d45a13daf664eb4edcb34e358b42
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Abakhanskya_37
+      rect:
+        serializedVersion: 2
+        x: 860
+        y: 1076
+        width: 860
+        height: 538
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e595c60381c2ef54796c27133bcbf9db
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Abakhanskya_38
+      rect:
+        serializedVersion: 2
+        x: 1720
+        y: 1076
+        width: 860
+        height: 538
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c18ccb45862edd5479e0c5e46942b569
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Abakhanskya_39
+      rect:
+        serializedVersion: 2
+        x: 2580
+        y: 1076
+        width: 860
+        height: 538
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 57ec4f97ebb81ad4ab6f295c542c0e79
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Abakhanskya_40
+      rect:
+        serializedVersion: 2
+        x: 3440
+        y: 1076
+        width: 860
+        height: 538
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7a9a2855d60f2ff459be2e215578853c
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Abakhanskya_41
+      rect:
+        serializedVersion: 2
+        x: 4300
+        y: 1076
+        width: 860
+        height: 538
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 283ec59da1e7e1443a28e087ec9b0e8c
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Abakhanskya_42
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 538
+        width: 860
+        height: 538
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6db66127bb3001e4591110c36e25f21c
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Abakhanskya_43
+      rect:
+        serializedVersion: 2
+        x: 860
+        y: 538
+        width: 860
+        height: 538
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 28fa9c89c88422e4da0669adc41265c4
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Abakhanskya_44
+      rect:
+        serializedVersion: 2
+        x: 1720
+        y: 538
+        width: 860
+        height: 538
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5fb43a1ed8b1ec845a46b4e7ef65aa21
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Abakhanskya_45
+      rect:
+        serializedVersion: 2
+        x: 2580
+        y: 538
+        width: 860
+        height: 538
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8880b271826b1cc4bb883fac04915a3a
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Abakhanskya_46
+      rect:
+        serializedVersion: 2
+        x: 3440
+        y: 538
+        width: 860
+        height: 538
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 98734cb22799be143a2765738be36069
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Abakhanskya_47
+      rect:
+        serializedVersion: 2
+        x: 4300
+        y: 538
+        width: 860
+        height: 538
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8f1077fa0b776264a93261e9fae733d7
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Abakhanskya_48
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 860
+        height: 538
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 40bd122ac9274714f8141202fe6c150b
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Abakhanskya_49
+      rect:
+        serializedVersion: 2
+        x: 860
+        y: 0
+        width: 860
+        height: 538
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 89ecd2fe4135f8141beda343ab65d04e
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Abakhanskya_50
+      rect:
+        serializedVersion: 2
+        x: 1720
+        y: 0
+        width: 860
+        height: 538
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4786858eab2f2bf49aaffcaf73bd1880
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Abakhanskya_51
+      rect:
+        serializedVersion: 2
+        x: 2580
+        y: 0
+        width: 860
+        height: 538
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f46b8968a5596f648bb1e1f7f9e278da
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Abakhanskya_52
+      rect:
+        serializedVersion: 2
+        x: 3440
+        y: 0
+        width: 860
+        height: 538
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ab684641d94db5e4bb9195a6a62d5d54
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Abakhanskya_53
+      rect:
+        serializedVersion: 2
+        x: 4300
+        y: 0
+        width: 860
+        height: 538
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 560f88a3104dbe14b8049eef8fc23625
       vertices: []
       indices: 
       edges: []

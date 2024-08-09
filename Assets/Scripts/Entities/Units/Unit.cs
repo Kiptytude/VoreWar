@@ -14,6 +14,7 @@ public enum UnitType
     SpecialMercenary,
     Adventurer,
     Spawn,
+    Boss,
 }
 
 public enum AIClass
@@ -417,7 +418,7 @@ public class Unit
 
     internal bool CanBeConverted()
     {
-        return Type != UnitType.Summon && Type != UnitType.Leader && Type != UnitType.SpecialMercenary && HasTrait(Traits.Eternal) == false && SavedCopy == null;
+        return Type != UnitType.Summon && Type != UnitType.Leader && Type != UnitType.SpecialMercenary && HasTrait(Traits.Eternal) == false && SavedCopy == null && Level > 0;
     }
 
     internal bool CanUnbirth => Config.Unbirth && HasVagina;
@@ -493,7 +494,7 @@ public class Unit
 
     public bool BestSuitedForRanged() => Stats[(int)Stat.Dexterity] * TraitBoosts.VirtualDexMult > Stats[(int)Stat.Strength] * TraitBoosts.VirtualStrMult;
 
-    protected void SetLevel(int level) => this.level = level;
+    public void SetLevel(int level) => this.level = level;
 
     internal bool SpendMana(int amount)
     {
@@ -795,10 +796,10 @@ public class Unit
             FixedGear = true;
             Items[0] = State.World.ItemRepository.GetSpecialItem(SpecialItems.ZoeyWeapon);
         }
-        else if (race == Race.Abakhanskya)
+        else if (race == Race.Cierihaka)
         {
             FixedGear = true;
-            Items[0] = State.World.ItemRepository.GetSpecialItem(SpecialItems.AbakWeapon);
+            Items[0] = State.World.ItemRepository.GetSpecialItem(SpecialItems.CierihakaWeapon);
         }
         else if (race == Race.Zera)
         {
@@ -821,10 +822,37 @@ public class Unit
             Items[0] = State.World.ItemRepository.GetSpecialItem(SpecialItems.ErinWeapon);
             Items[1] = State.World.ItemRepository.GetSpecialItem(SpecialItems.ErinWings);
         }
+        else if (race == Race.Abakhanskya)
+        {
+            try {
+            FixedGear = true;
+            Items[0] = State.World.ItemRepository.GetSpecialItem(SpecialItems.AbaWeapon);
+            Items[1] = State.World.ItemRepository.GetSpecialItem(SpecialItems.AbaArmor);
+            }
+            catch {}
+        }
         else if (race == Race.Bella)
         {
             FixedGear = true;
             Items[0] = State.World.ItemRepository.GetSpecialItem(SpecialItems.BellaWeapon);
+        }
+        else if (race == Race.Singularity)
+        {
+            try {
+            FixedGear = true;
+            Items[0] = State.World.ItemRepository.GetSpecialItem(SpecialItems.SingularityWeapon);
+            Items[1] = State.World.ItemRepository.GetSpecialItem(SpecialItems.SingularityArmor);
+            }
+            catch {}
+        }
+        else if (race == Race.Feit)
+        {
+            try {
+            FixedGear = true;
+            Items[0] = State.World.ItemRepository.GetSpecialItem(SpecialItems.FeitWeapon);
+            Items[1] = State.World.ItemRepository.GetSpecialItem(SpecialItems.FeitArmor);
+            }
+            catch {}
         }
         else
         {
@@ -1299,6 +1327,13 @@ internal void SetGenderRandomizeName(Race race, Gender gender)
 
     public int GetStatBase(Stat stat) => Stats[(int)stat];
     public void SetStatBase(Stat stat, int value) => Stats[(int)stat] = value;
+    public void SetStatBaseAll(int value)
+    {
+        for (int i = 0; i < Stats.Length; i++)
+        {
+            Stats[i] = value;
+        }
+    }
     public int GetLeaderBonus()
     {
         if (CurrentLeader == null)
@@ -2242,7 +2277,7 @@ internal void SetGenderRandomizeName(Race race, Gender gender)
 
     public void LevelDown()
     {
-        if (level == 1)
+        if (level <= 1)
             return;
         int highestType = 0;
         for (int i = 0; i < Stats.Length; i++)
@@ -2255,7 +2290,7 @@ internal void SetGenderRandomizeName(Race race, Gender gender)
 
     public void LevelDown(Stat stat)
     {
-        if (level == 1)
+        if (level <= 1)
             return;
         GeneralStatIncrease(-1);
         if (TraitBoosts.OnLevelUpBonusToAllStats > 0)

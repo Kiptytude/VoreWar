@@ -356,6 +356,7 @@ public class WorldConfig
             ["AnimatedBellies"] = true,
             ["DigestionSkulls"] = true,
             ["Bones"] = true,
+            ["CleanDisposal"] = false,
             ["Scat"] = false,
             ["ScatBones"] = false,
             ["CondomsForCV"] = false,

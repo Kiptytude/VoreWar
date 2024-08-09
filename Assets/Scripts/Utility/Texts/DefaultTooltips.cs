@@ -231,7 +231,7 @@ Note that scat overrides this as they both compete for the same slot and ground 
             case 88:
                 return @"Enables the Serpent monster packs";
             case 89:
-                return @"Enables the Wyvern monster packs (consisting of adult wyvern and young wyvern)";
+                return @"Enables the Wyvern monster packs (consisting of adult wyvern and wyvern Matrons)";
             case 90:
                 return @"Enables the Compy monster packs (a small cockvore predator)";
             case 91:
@@ -297,7 +297,7 @@ Fortify takes repopulation to an extreme and garrisons the village as well -- tu
                 return @"How many attempts the monster will make to spawn each turn
 Each one uses the given odds, but the rest will be skipped if the monster reaches its maximum army count";
             case 115:
-                return "If enabled, young wyvern will spawn with the adults";
+                return "If enabled, powerful wyvern matrons will spawn alongside their lesser brethren";
             case 116:
                 return "If enabled, dark swallowers will spawn with the sharks";
             case 117:
@@ -747,6 +747,16 @@ Does not retroactively affect already created units.";
             case 304:
                 return "When a full predetor surrenders, it has this chance to release it's prey.";
             case 305:
+                return "Enables wandering hauntings of Wisps";
+            case 306:
+                return "Enables wandering herds of Wild Horses";
+            case 307:
+                return "Enables wandering skulks of Feral Foxes";
+            case 308: 
+                return "Enables wandering swarms of the freedom-hating Terminids";
+            case 309: 
+                return "Enables wandering pods of Feral Orcas";
+            case 310:
                 return "If on, resource gained from absorbing will instead scale with ramp stacks.";
             default:
                 return "";
