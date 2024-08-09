@@ -2478,8 +2478,8 @@ static class RaceParameters
 
         FeralOrcas = new RaceTraits()
         {
-            BodySize = 20,
-            StomachSize = 16,
+            BodySize = 30,
+            StomachSize = 30,
             FavoredStat = Stat.Strength,
             AllowedVoreTypes = new List<VoreType> { VoreType.Oral },
             ExpMultiplier = 1.6f,
