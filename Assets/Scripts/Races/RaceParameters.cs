@@ -2498,8 +2498,10 @@ static class RaceParameters
             RacialTraits = new List<Traits>()
         {
                 Traits.Flight,
-                Traits.Resilient,
-                Traits.Ravenous,
+                Traits.WaterWalker,
+                Traits.PackTactics,
+                Traits.StrongGullet,
+                Traits.BornToMove,
         },
             RaceDescription = "Orcas that have mutated to fly and breathe air on their homewrold. They've also developed a ravenous appetite.  The Skysharks followed the Scylla to this world, and the Orcas followed the Skyharks.",
         };
@@ -2972,8 +2974,8 @@ static class RaceParameters
 
         Feit = new RaceTraits()
         {
-            BodySize = 18,
-            StomachSize = 24,
+            BodySize = 20,
+            StomachSize = 25,
             FavoredStat = Stat.Agility,
             AllowedVoreTypes = new List<VoreType> { VoreType.Oral },
             ExpMultiplier = 2f,
