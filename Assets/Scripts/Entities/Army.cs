@@ -206,7 +206,7 @@ public class Army
                 if ((int)SCooldownOffset > 0f)
                     return ((int)SCooldownOffset);
                 else
-                    return 0;
+                    return 1;
             }
             return (Config.ArmyMP + Config.ScoutMP) + (int)(Config.ArmyMP * MPMod);
         }
@@ -216,7 +216,7 @@ public class Army
            if (-1f > MPMod)
                 return 0;
            if (SCooldown > (Config.ArmyMP + (int)(Config.ArmyMP * MPMod)))
-                return 0;
+                return 1;
             return Config.ArmyMP + (int)(Config.ArmyMP * MPMod) - (int)SCooldown;
         }
     }

@@ -705,7 +705,7 @@ Does not retroactively affect already created units.";
             case 283:
                 return "Replaces scat with diapers for absorbed units and diaper-related tactical log messages will be displayed.";
             case 284:
-                return "Controls how many bonus movement points scout sized armies start with every turn. When scouts use their bonus MP they will have decreased MP by the amount uesd the following turn";
+                return "Controls how many bonus movement points scout sized armies start with every turn. When scouts use their bonus MP they will have decreased MP by the amount uesd the following turn down to a minimum of 1 MP";
             case 285:
                 return "Determines the maximum amount of units allowed to be in a scout army(Set to 0 to disable feature).";
             case 286:
