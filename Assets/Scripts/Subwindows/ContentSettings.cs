@@ -267,7 +267,7 @@ public class ContentSettings : MonoBehaviour
     public Slider AbsorbResourceMod;
     public Toggle AbsorbLoss;
     public Toggle AbsorbBoostDeadOnly;
-    public Toggle AbsorbResourceModBoost;
+    public TMP_Dropdown AbsorbResourceModBoost;
     public Slider DigestionCap;
     public Slider DigestionFlatDmg;
     public Slider DigestionGraceTurns;
@@ -392,7 +392,6 @@ public class ContentSettings : MonoBehaviour
             new ToggleObject(AbsorbRateDivision, "AbsorbRateDivision", false),
             new ToggleObject(AbsorbLoss, "AbsorbLoss", false),
             new ToggleObject(AbsorbBoostDeadOnly, "AbsorbBoostDeadOnly", false),
-            new ToggleObject(AbsorbResourceModBoost, "AbsorbResourceModBoost", false),
 
         };
         MercToggles = new List<ToggleObject>();
@@ -755,6 +754,7 @@ public class ContentSettings : MonoBehaviour
         Config.World.DigestionRampTurn = PlayerPrefs.GetInt("DigestionRampTurn", 1);
         Config.World.DigestionRampCap = PlayerPrefs.GetInt("DigestionRampCap", -1);
         Config.World.DigestionRampLoss = PlayerPrefs.GetFloat("DigestionRampLoss", 1);
+        Config.World.AbsorbResourceModBoost = PlayerPrefs.GetInt("AbsorbResourceModBoost", 0);
         Config.World.AbsorbRamp = PlayerPrefs.GetFloat("AbsorbRamp", 0);
         Config.World.DigestionCap = PlayerPrefs.GetFloat("DigestionCap", 0);
         Config.World.DigestionFlatDmg = PlayerPrefs.GetFloat("DigestionFlatDmg", 0);
@@ -941,6 +941,7 @@ public class ContentSettings : MonoBehaviour
         DigestionGraceTurns.value = Config.DigestionGraceTurns;
         SurrenderedPredEscapeMult.value = Config.SurrenderedPredEscapeMult;
         SurrenderedPredAutoRegur.value = Config.SurrenderedPredAutoRegur;
+        AbsorbResourceModBoost.value = Config.AbsorbResourceModBoost;
         ArmyMP.value = Config.ArmyMP;
         ScoutMP.value = Config.ScoutMP;
         ScoutMax.value = Config.ScoutMax;
@@ -1151,6 +1152,7 @@ public class ContentSettings : MonoBehaviour
         Config.World.DigestionGraceTurns = (int)DigestionGraceTurns.value;
         Config.World.SurrenderedPredEscapeMult = SurrenderedPredEscapeMult.value;
         Config.World.SurrenderedPredAutoRegur = SurrenderedPredAutoRegur.value;
+        Config.World.AbsorbResourceModBoost = AbsorbResourceModBoost.value;
         Config.World.ArmyMP = (int)ArmyMP.value;
         Config.World.ScoutMP = (int)ScoutMP.value;
         Config.World.ScoutMax = (int)ScoutMax.value;
@@ -1351,6 +1353,7 @@ public class ContentSettings : MonoBehaviour
         PlayerPrefs.SetInt("DigestionGraceTurns", (int)DigestionGraceTurns.value);
         PlayerPrefs.SetFloat("SurrenderedPredEscapeMult", SurrenderedPredEscapeMult.value);
         PlayerPrefs.SetFloat("SurrenderedPredAutoRegur", SurrenderedPredAutoRegur.value);
+        PlayerPrefs.SetInt("AbsorbResourceModBoost", AbsorbResourceModBoost.value);
         PlayerPrefs.SetInt("ArmyMP", (int)ArmyMP.value);
         PlayerPrefs.SetInt("ScoutMP", (int)ScoutMP.value);
         PlayerPrefs.SetInt("ScoutMax", (int)ScoutMax.value);
