@@ -729,7 +729,7 @@ Does not retroactively affect already created units.";
             case 295:
                 return "Modifies how much health and mana is gained from absorbtion.";          
             case 296:
-                return "If on, stacks will begin to fall once ther is no more alive prey.";
+                return "If on, stacks will begin to fall (or begin to rise again) once there is no more alive prey.";
             case 297:
                 return "If on, stacks will be applied to absorbtion if there no more alive prey.";
             case 298:
@@ -757,7 +757,7 @@ Does not retroactively affect already created units.";
             case 309: 
                 return "Enables wandering pods of Feral Orcas";
             case 310:
-                return "Decides if and how the resource gain percentage is linked to ramp stacks, can be used with settings that change stacks durring absorbtion. \nMultiplicative: Multiplies resource gain by the bonus, bottom out at zero when a unit reaches zero stacks \nAdditive: Adds bonus onto the resourse gain, will bottom out at the normal value when stacks are zero.";
+                return "Decides if and how the resource gain percentage setting is linked to ramp stacks. Can be used with settings that change stacks during absorbtion. \nMultiplicative: Multiplies resource gain by the bonus, will bottom out at zero health/mana per turn when a unit reaches zero stacks \nAdditive: Adds bonus onto the resourse gain, will bottom out at the normal value when stacks are zero.";
             default:
                 return "";
         }
