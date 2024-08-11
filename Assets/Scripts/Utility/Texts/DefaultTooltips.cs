@@ -757,7 +757,7 @@ Does not retroactively affect already created units.";
             case 309: 
                 return "Enables wandering pods of Feral Orcas";
             case 310:
-                return "If on, resource gained from absorbing will instead scale with ramp stacks.";
+                return "Decides if and how the resource gain percentage is linked to ramp stacks, can be used with settings that change stacks durring absorbtion. \nMultiplicative: Multiplies resource gain by the bonus, bottom out at zero when a unit reaches zero stacks \nAdditive: Adds bonus onto the resourse gain, will bottom out at the normal value when stacks are zero.";
             default:
                 return "";
         }
