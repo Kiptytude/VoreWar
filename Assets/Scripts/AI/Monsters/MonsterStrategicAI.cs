@@ -345,6 +345,8 @@ class MonsterStrategicAI : IStrategicAI
                 return;
             }
         }
+        if(Config.MonsterMPBonus == false && army.RemainingMP > Config.ArmyMP)
+            army.RemainingMP = Config.ArmyMP;
         if(Config.NightMoveMonsters && !State.World.IsNight && Config.DayNightEnabled) //DayNight Modification (zero's out monster AP when NOT night)
         {
             army.RemainingMP = 0;
