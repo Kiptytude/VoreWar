@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 
 class MonsterStrategicAI : IStrategicAI
@@ -297,10 +298,18 @@ class MonsterStrategicAI : IStrategicAI
 
         SpawnerInfo spawner = Config.SpawnerInfo(empire.Race);
         Config.MonsterConquestType spawnerType;
+        Config.DayNightMovemntType timedMovementType;
         if (spawner != null)
+        {
             spawnerType = spawner.GetConquestType();
+            timedMovementType = spawner.GetDNMoveType();
+        }
         else
+        {
             spawnerType = Config.MonsterConquest;
+            timedMovementType = Config.NightMoveMonsters ? Config.DayNightMovemntType.Night : Config.DayNightMovemntType.Off;
+
+        }
 
         if (army.InVillageIndex != -1)
         {
@@ -345,9 +354,15 @@ class MonsterStrategicAI : IStrategicAI
                 return;
             }
         }
-        if(Config.MonsterMPBonus == false && army.RemainingMP > Config.ArmyMP)
+        Debug.Log(timedMovementType);
+        if ((spawner.MonsterScoutMP) && army.RemainingMP > Config.ArmyMP)
             army.RemainingMP = Config.ArmyMP;
-        if(Config.NightMoveMonsters && !State.World.IsNight && Config.DayNightEnabled) //DayNight Modification (zero's out monster AP when NOT night)
+        if(timedMovementType == Config.DayNightMovemntType.Night && !State.World.IsNight && Config.DayNightEnabled) //DayNight Modification (zero's out monster AP based on their settings)
+        {
+            army.RemainingMP = 0;
+            return;
+        }
+        if (timedMovementType == Config.DayNightMovemntType.Day && State.World.IsNight && Config.DayNightEnabled)
         {
             army.RemainingMP = 0;
             return;

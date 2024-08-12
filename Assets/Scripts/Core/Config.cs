@@ -29,6 +29,12 @@ static class Config
         CompleteDevourAndMoveOn,
         CompleteDevourAndRepopulateFortify,
     }
+    public enum DayNightMovemntType
+    {
+        Off,
+        Day,
+        Night,
+    }
 
     public enum SeasonalType
     {
@@ -308,10 +314,11 @@ static class Config
     internal static float NightChanceIncrease => World.NightChanceIncrease;
     internal static bool NightMonsters => World.GetValue("NightMonsters");
     internal static bool NightMoveMonsters => World.GetValue("NightMoveMonsters");
-    internal static bool MonsterMPBonus => World.GetValue("MonsterMPBonus");
     internal static int DefualtTacticalSightRange => World.DefualtTacticalSightRange;
     internal static int NightStrategicSightReduction => World.NightStrategicSightReduction;
     internal static int RevealTurn => World.RevealTurn;
+    internal static DayNightMovemntType DayNightMonsterMovemnt => World.DayNightMonsterMovemnt;
+
 
     internal static bool CombatComplicationsEnabled => World.GetValue("CombatComplicationsEnabled");
     internal static bool StatCrit => World.GetValue("StatCrit");

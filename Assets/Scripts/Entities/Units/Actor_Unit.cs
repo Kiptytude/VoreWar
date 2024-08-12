@@ -2199,7 +2199,7 @@ public class Actor_Unit
         }
         else
             RampStacks += (Config.DigestionRampLoss >= 0 ? 1 : -1) / Config.DigestionRampTurn;
-        Debug.Log(RampStacks);
+
         RubCount = 0;
         TurnsSinceLastDamage++;
     }
@@ -2230,7 +2230,7 @@ public class Actor_Unit
         {
             int reduc_dmg = (int)((Unit.ManaPct - .5f) * damage);
             if (Unit.SpendMana(reduc_dmg))
-                damage = reduc_dmg;
+                damage -= reduc_dmg;
         }
         return damage;
     }

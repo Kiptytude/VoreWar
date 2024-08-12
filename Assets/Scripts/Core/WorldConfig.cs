@@ -186,6 +186,8 @@ public class WorldConfig
     internal int NightStrategicSightReduction = 1;
     [OdinSerialize, AllowEditing, ProperName("Reveal Turn"), Description("The tactical turn where every unit is revealed.")]
     internal int RevealTurn = 50;
+    [OdinSerialize]
+    internal Config.DayNightMovemntType DayNightMonsterMovemnt = Config.DayNightMovemntType.Off;
 
     // CombatComplications configuration
     // Critical strikes
@@ -293,7 +295,7 @@ public class WorldConfig
             return value;
         }
 
-        var obj = new SpawnerInfo(false, 4, .15f, 40, 900 + (int)race, 1, true, 6f, 8, 12, 40);
+        var obj = new SpawnerInfo(false, 4, .15f, 40, 900 + (int)race, 1, true, 6f, 8, 12, 40, false);
         SpawnerInfo[race] = obj;
         return obj;
     }
@@ -317,7 +319,7 @@ public class WorldConfig
         {
             if (race >= Race.Vagrants && race < Race.Selicia)
             {
-                SpawnerInfo[race] = new SpawnerInfo(false, 4, .15f, 40, 900 + (int)race, 1, true, 6f, 8, 12, 40);
+                SpawnerInfo[race] = new SpawnerInfo(false, 4, .15f, 40, 900 + (int)race, 1, true, 6f, 8, 12, 40, false);
             }
         }
     }
@@ -384,7 +386,6 @@ public class WorldConfig
             ["DayNightRandom"] = true,
             ["NightMonsters"] = false,
             ["NightMoveMonsters"] = false,
-            ["MonsterMPBonus"] = false,
             ["CombatComplicationsEnabled"] = false,
             ["StatCrit"] = false,
             ["StatGraze"] = false,

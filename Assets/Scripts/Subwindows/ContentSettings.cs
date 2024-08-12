@@ -79,13 +79,13 @@ public class ContentSettings : MonoBehaviour
     public Toggle DayNightRandom;
     public Toggle NightMonsters;
     public Toggle NightMoveMonsters;
-    public Toggle MonsterMPBonus;
     public Slider NightRounds;
     public Slider BaseNightChance;
     public Slider NightChanceIncrease;
     public Slider DefualtTacticalSightRange;
     public Slider NightStrategicSightReduction;
     public InputField RevealTurn;
+    public Dropdown DayNightMonsterMovemnt;
 
 
     public Toggle CombatComplicationsEnabled;
@@ -227,6 +227,7 @@ public class ContentSettings : MonoBehaviour
     public Slider ScoutMax;
     public Slider ArmyCreationMPMod;
     public Slider ArmyCreationMPCurve;
+    public Toggle MonsterScoutMP;
 
     public Slider CustomEventFrequency;
 
@@ -384,7 +385,6 @@ public class ContentSettings : MonoBehaviour
             new ToggleObject(DayNightRandom, "DayNightRandom", true),
             new ToggleObject(NightMonsters, "NightMonsters", false),
             new ToggleObject(NightMoveMonsters, "NightMoveMonsters", false),
-            new ToggleObject(MonsterMPBonus, "MonsterMPBonus", false),
             new ToggleObject(CombatComplicationsEnabled, "CombatComplicationsEnabled", false),
             new ToggleObject(StatCrit, "StatCrit", false),
             new ToggleObject(StatGraze, "StatGraze", false),
@@ -809,12 +809,18 @@ public class ContentSettings : MonoBehaviour
                 PlayerPrefs.GetFloat($"{spawner.race} Confidence", 6f),
                 PlayerPrefs.GetInt($"{spawner.race} Min Army Size", 8),
                 PlayerPrefs.GetInt($"{spawner.race} Max Army Size", 12),
-                PlayerPrefs.GetInt($"{spawner.race} Turn Order", 40)
+                PlayerPrefs.GetInt($"{spawner.race} Turn Order", 40),
+                PlayerPrefs.GetInt($"{spawner.race} Monster Scout MP", 0) == 1
                 );
             var type = PlayerPrefs.GetInt($"{spawner.race} Conquest Type", 0);
             if (type != 0)
             {
                 Config.World.SpawnerInfo[spawner.race].SetSpawnerType((Config.MonsterConquestType)(type - 2));
+            }
+            var dn_type = PlayerPrefs.GetInt($"{spawner.race} D/N Move Type", 0);
+            if (type != 0)
+            {
+                Config.World.SpawnerInfo[spawner.race].SetSpawnerCycleMoveType((Config.DayNightMovemntType)(dn_type));
             }
         }
 
@@ -999,6 +1005,7 @@ public class ContentSettings : MonoBehaviour
             spawner.SpawnAttempts.text = info.SpawnAttempts.ToString();
             spawner.TurnOrder.text = info.TurnOrder.ToString();
             spawner.AddonRace.isOn = info.AddOnRace;
+            spawner.MonsterScoutMP.isOn = info.MonsterScoutMP;
             if (info.UsingCustomType)
             {
                 spawner.ConquestType.value = (int)info.ConquestType + 2;
@@ -1008,6 +1015,17 @@ public class ContentSettings : MonoBehaviour
             {
                 spawner.ConquestType.value = 0;
                 spawner.ConquestType.RefreshShownValue();
+            }
+
+            if (info.DNRestrictOn)
+            {
+                spawner.DayNightMonsterMovemnt.value = (int)info.DayNightMovemntType;
+                spawner.DayNightMonsterMovemnt.RefreshShownValue();
+            }
+            else
+            {
+                spawner.DayNightMonsterMovemnt.value = 0;
+                spawner.DayNightMonsterMovemnt.RefreshShownValue();
             }
         }
 
@@ -1218,6 +1236,7 @@ public class ContentSettings : MonoBehaviour
             info.Enabled = spawner.SpawnEnabled.isOn;
             info.spawnRate = spawner.SpawnRate.value;
             info.AddOnRace = spawner.AddonRace.isOn;
+            info.MonsterScoutMP = spawner.MonsterScoutMP.isOn;
             if (int.TryParse(spawner.ScalingRate.text, out int scaling))
                 info.scalingFactor = scaling;
             else
@@ -1263,6 +1282,10 @@ public class ContentSettings : MonoBehaviour
 
             if (spawner.ConquestType.value > 0)
                 info.SetSpawnerType((Config.MonsterConquestType)(spawner.ConquestType.value - 2));
+            else
+                info.UsingCustomType = false;
+            if (spawner.DayNightMonsterMovemnt.value > 0)
+                info.SetSpawnerCycleMoveType((Config.DayNightMovemntType)(spawner.DayNightMonsterMovemnt.value));
             else
                 info.UsingCustomType = false;
         }
@@ -1448,6 +1471,8 @@ public class ContentSettings : MonoBehaviour
                 PlayerPrefs.SetInt($"{spawner.race} Attempts", 1);
 
             PlayerPrefs.SetInt($"{spawner.race} Conquest Type", spawner.ConquestType.value);
+
+            PlayerPrefs.SetInt($"{spawner.race} D/N Move Type", spawner.DayNightMonsterMovemnt.value);
 
             if (State.World?.AllActiveEmpires != null)
             {
