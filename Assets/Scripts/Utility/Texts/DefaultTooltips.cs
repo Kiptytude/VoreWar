@@ -758,6 +758,8 @@ Does not retroactively affect already created units.";
                 return "Enables wandering pods of Feral Orcas";
             case 310:
                 return "Decides if and how the resource gain percentage setting is linked to ramp stacks. Can be used with settings that change stacks during absorbtion. \nMultiplicative: Multiplies resource gain by the bonus, will bottom out at zero health/mana per turn when a unit reaches zero stacks \nAdditive: Adds bonus onto the resourse gain, will bottom out at the normal value when stacks are zero.";
+            case 311:
+                return "If on, monster armies are able to receive the scout MP bonus.";
             default:
                 return "";
         }

@@ -79,6 +79,7 @@ public class ContentSettings : MonoBehaviour
     public Toggle DayNightRandom;
     public Toggle NightMonsters;
     public Toggle NightMoveMonsters;
+    public Toggle MonsterMPBonus;
     public Slider NightRounds;
     public Slider BaseNightChance;
     public Slider NightChanceIncrease;
@@ -383,6 +384,7 @@ public class ContentSettings : MonoBehaviour
             new ToggleObject(DayNightRandom, "DayNightRandom", true),
             new ToggleObject(NightMonsters, "NightMonsters", false),
             new ToggleObject(NightMoveMonsters, "NightMoveMonsters", false),
+            new ToggleObject(MonsterMPBonus, "MonsterMPBonus", false),
             new ToggleObject(CombatComplicationsEnabled, "CombatComplicationsEnabled", false),
             new ToggleObject(StatCrit, "StatCrit", false),
             new ToggleObject(StatGraze, "StatGraze", false),
@@ -762,7 +764,7 @@ public class ContentSettings : MonoBehaviour
         Config.World.SurrenderedPredEscapeMult = PlayerPrefs.GetFloat("SurrenderedPredEscapeMult", 1);
         Config.World.SurrenderedPredAutoRegur = PlayerPrefs.GetFloat("SurrenderedPredAutoRegur", 0);
         Config.World.ArmyMP = PlayerPrefs.GetInt("ArmyMP", 3);
-        Config.World.ScoutMP = PlayerPrefs.GetInt("ScoutMP", 6);
+        Config.World.ScoutMP = PlayerPrefs.GetInt("ScoutMP", 3);
         Config.World.ScoutMax = PlayerPrefs.GetInt("ScoutMax", 4);
         Config.World.ArmyCreationMPMod = PlayerPrefs.GetFloat("ArmyCreationMPMod", 0);
         Config.World.ArmyCreationMPCurve = PlayerPrefs.GetFloat("ArmyCreationMPCurve", 1f);
