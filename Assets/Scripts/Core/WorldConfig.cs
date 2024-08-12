@@ -252,6 +252,8 @@ public class WorldConfig
     [OdinSerialize]
     internal float DigestionFlatDmg = -.01f;
     [OdinSerialize]
+    internal int AbsorbResourceModBoost = 0;
+    [OdinSerialize]
     internal float DigestionCap = 0;
     [OdinSerialize]
     internal int DigestionGraceTurns = 0;
@@ -389,7 +391,6 @@ public class WorldConfig
             ["AbsorbRateDivision"] = false,
             ["AbsorbLoss"] = false,
             ["AbsorbBoostDeadOnly"] = false,
-            ["AbsorbResourceModBoost"] = false,
         };
 
         foreach (Race race in ((Race[])Enum.GetValues(typeof(Race))).Where(s => (int)s >= 0))

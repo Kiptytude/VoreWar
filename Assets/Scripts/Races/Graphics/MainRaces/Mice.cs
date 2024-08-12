@@ -1055,8 +1055,8 @@ protected override Sprite EyesSprite(Actor_Unit actor)
             blocksDick = true;
             OccupiesAllSlots = true;
             clothing1 = new SpriteExtraInfo(18, null, WhiteColored); //shirt
-            clothing2 = new SpriteExtraInfo(5, null, WhiteColored); //pants top
-            clothing3 = new SpriteExtraInfo(5, null, WhiteColored); //pants bottom
+            clothing2 = new SpriteExtraInfo(6, null, WhiteColored); //pants top
+            clothing3 = new SpriteExtraInfo(6, null, WhiteColored); //pants bottom
             clothing4 = new SpriteExtraInfo(7, null, WhiteColored); //shoes
             clothing6 = new SpriteExtraInfo(17, null, WhiteColored); //right arm
             Type = 1579;
@@ -1150,9 +1150,9 @@ protected override Sprite EyesSprite(Actor_Unit actor)
             OccupiesAllSlots = true;
             clothing1 = new SpriteExtraInfo(18, null, WhiteColored);//shirt
             clothing2 = new SpriteExtraInfo(19, null, null);        //cloak color
-            clothing3 = new SpriteExtraInfo(5, null, WhiteColored); //pants upper
-            clothing4 = new SpriteExtraInfo(5, null, WhiteColored); //pants lower
-            clothing5 = new SpriteExtraInfo(6, null, WhiteColored); //shoes
+            clothing3 = new SpriteExtraInfo(6, null, WhiteColored); //pants upper
+            clothing4 = new SpriteExtraInfo(6, null, WhiteColored); //pants lower
+            clothing5 = new SpriteExtraInfo(7, null, WhiteColored); //shoes
             clothing6 = new SpriteExtraInfo(17, null, WhiteColored); //right arm
             clothing7 = new SpriteExtraInfo(19, null, WhiteColored); //cloak brown
             Type = 1579;
@@ -1247,9 +1247,9 @@ protected override Sprite EyesSprite(Actor_Unit actor)
             coversBreasts = false;
             blocksDick = true;
             OccupiesAllSlots = true;
-            clothing2 = new SpriteExtraInfo(5, null, WhiteColored); //bodysuit top
-            clothing3 = new SpriteExtraInfo(5, null, WhiteColored); //bodysuit bottom
-            clothing4 = new SpriteExtraInfo(6, null, WhiteColored); //shoes
+            clothing2 = new SpriteExtraInfo(6, null, WhiteColored); //bodysuit top
+            clothing3 = new SpriteExtraInfo(6, null, WhiteColored); //bodysuit bottom
+            clothing4 = new SpriteExtraInfo(7, null, WhiteColored); //shoes
             clothing6 = new SpriteExtraInfo(18, null, WhiteColored); //right arm 2
             Type = 1579;
             DiscardUsesPalettes = true;
@@ -1338,12 +1338,13 @@ protected override Sprite EyesSprite(Actor_Unit actor)
             blocksDick = true;
             OccupiesAllSlots = true;
             clothing1 = new SpriteExtraInfo(18, null, null); //shirt
-            clothing2 = new SpriteExtraInfo(5, null, WhiteColored); //pants top
-            clothing3 = new SpriteExtraInfo(5, null, WhiteColored); //pants bottom
+            clothing2 = new SpriteExtraInfo(6, null, WhiteColored); //pants top
+            clothing3 = new SpriteExtraInfo(6, null, WhiteColored); //pants bottom
             clothing4 = new SpriteExtraInfo(7, null, WhiteColored); //shoes
             clothing6 = new SpriteExtraInfo(17, null, null); //right arm
             clothing7 = new SpriteExtraInfo(17, null, WhiteColored); //right arm armor
             clothing8 = new SpriteExtraInfo(17, null, WhiteColored); //armor
+            clothing9 = new SpriteExtraInfo(7, null, WhiteColored); //armor bottom
             Type = 1579;
             DiscardUsesPalettes = true;
         }
@@ -1396,7 +1397,7 @@ protected override Sprite EyesSprite(Actor_Unit actor)
                 clothing3.GetSprite = (s) => State.GameManager.SpriteDictionary.MiceMBottoms[4 + (actor.Unit.BodySize)];
                 clothing4.GetSprite = (s) => State.GameManager.SpriteDictionary.MiceMBottoms[10];
             }
-
+            clothing9.GetSprite = (s) => State.GameManager.SpriteDictionary.MiceMBottoms[35 + (actor.Unit.BodySize)];
             switch (actor.GetWeaponSprite())
             {
                 case 0:
@@ -1450,12 +1451,12 @@ protected override Sprite EyesSprite(Actor_Unit actor)
             coversBreasts = false;
             blocksDick = true;
             OccupiesAllSlots = true;
-            clothing1 = new SpriteExtraInfo(18, null, WhiteColored); //belly changed
+            clothing1 = new SpriteExtraInfo(16, null, WhiteColored); //belly changed
             clothing2 = new SpriteExtraInfo(19, null, WhiteColored); //breast changed
-            clothing3 = new SpriteExtraInfo(6, null, WhiteColored); //right arm
-            clothing4 = new SpriteExtraInfo(5, null, WhiteColored); //pants upper
-            clothing5 = new SpriteExtraInfo(5, null, WhiteColored); //pants lower
-            clothing6 = new SpriteExtraInfo(6, null, WhiteColored); //shoes
+            clothing3 = new SpriteExtraInfo(7, null, WhiteColored); //right arm
+            clothing4 = new SpriteExtraInfo(6, null, WhiteColored); //pants upper
+            clothing5 = new SpriteExtraInfo(6, null, WhiteColored); //pants lower
+            clothing6 = new SpriteExtraInfo(7, null, WhiteColored); //shoes
             clothing7 = new SpriteExtraInfo(15, null, null); //alt breast 1
             clothing8 = new SpriteExtraInfo(15, null, null); //alt breast 2
             clothing9 = new SpriteExtraInfo(7, null, WhiteColored); //right hand
@@ -1465,7 +1466,7 @@ protected override Sprite EyesSprite(Actor_Unit actor)
 
         public override void Configure(CompleteSprite sprite, Actor_Unit actor)
         {
-
+            clothing2.layer = 19;
             if (actor.HasBelly)
             {
                 if (actor.GetStomachSize(31, 0.7f) > 4)
@@ -1499,6 +1500,7 @@ protected override Sprite EyesSprite(Actor_Unit actor)
                 blocksBreasts = false;
                 clothing7.GetSprite = null;
                 clothing8.GetSprite = null;
+                clothing2.layer = 12;
             }
             else if (actor.Unit.HasBreasts)
             {
@@ -1653,9 +1655,9 @@ protected override Sprite EyesSprite(Actor_Unit actor)
             coversBreasts = false;
             blocksDick = true;
             OccupiesAllSlots = true;
-            clothing1 = new SpriteExtraInfo(18, null, WhiteColored); //belly changed
+            clothing1 = new SpriteExtraInfo(15, null, WhiteColored); //belly changed
             clothing2 = new SpriteExtraInfo(19, null, WhiteColored); //breast changed
-            clothing3 = new SpriteExtraInfo(17, null, WhiteColored); //right arm
+            clothing3 = new SpriteExtraInfo(16, null, WhiteColored); //right arm
             clothing4 = new SpriteExtraInfo(6, null, WhiteColored); //shoes
             Type = 1579;
             DiscardUsesPalettes = false;
@@ -1690,14 +1692,8 @@ protected override Sprite EyesSprite(Actor_Unit actor)
             else
             {
                 clothing1.GetSprite = (s) => State.GameManager.SpriteDictionary.MiceFBottoms[18 + (actor.Unit.BodySize * 4)];
-            }
-            if (Races.Mice.oversize)
-            {
-                clothing2.GetSprite = null;
-                clothing3.GetSprite = null;
-                blocksBreasts = false;
-            }
-            else if (actor.Unit.HasBreasts)
+            }          
+            if (actor.Unit.HasBreasts)
             {
                 blocksBreasts = true;
                 clothing2.GetSprite = (s) => State.GameManager.SpriteDictionary.MiceFTops[24 + (actor.Unit.BreastSize > 2 ? actor.Unit.BreastSize - 1 : 0)];
@@ -1762,7 +1758,12 @@ protected override Sprite EyesSprite(Actor_Unit actor)
                     clothing3.GetSprite = (s) => State.GameManager.SpriteDictionary.MiceFTops[31]; // arm down
                     break;
             }
-
+            if (Races.Mice.oversize)
+            {
+                clothing2.GetSprite = null;
+                clothing3.GetSprite = null;
+                blocksBreasts = false;
+            }
             base.Configure(sprite, actor);
         }
     }
@@ -1777,7 +1778,7 @@ protected override Sprite EyesSprite(Actor_Unit actor)
             blocksDick = true;
             OccupiesAllSlots = true;
             clothing1 = new SpriteExtraInfo(19, null, WhiteColored); //breast changed
-            clothing2 = new SpriteExtraInfo(18, null, WhiteColored); //arms
+            clothing2 = new SpriteExtraInfo(10, null, WhiteColored); //arms
             clothing3 = new SpriteExtraInfo(5, null, WhiteColored); //pants
             clothing4 = new SpriteExtraInfo(6, null, WhiteColored); //shoes
             clothing5 = new SpriteExtraInfo(15, null, null); //alt breast 1
@@ -1956,11 +1957,11 @@ protected override Sprite EyesSprite(Actor_Unit actor)
             blocksDick = true;
             OccupiesAllSlots = true;
             clothing1 = new SpriteExtraInfo(19, null, WhiteColored); //breast changed
-            clothing2 = new SpriteExtraInfo(16, null, WhiteColored); //belly changed
+            clothing2 = new SpriteExtraInfo(15, null, WhiteColored); //belly changed
             clothing3 = new SpriteExtraInfo(10, null, WhiteColored); //arms
             clothing4 = new SpriteExtraInfo(13, null, WhiteColored); //pants
-            clothing5 = new SpriteExtraInfo(17, null, null); //alt breast 1
-            clothing6 = new SpriteExtraInfo(17, null, null); //alt breast 2
+            clothing5 = new SpriteExtraInfo(16, null, null); //alt breast 1
+            clothing6 = new SpriteExtraInfo(16, null, null); //alt breast 2
             clothing7 = new SpriteExtraInfo(6, null, WhiteColored); //underarmor top
             clothing8 = new SpriteExtraInfo(6, null, WhiteColored); //underarmor bottom
             clothing9 = new SpriteExtraInfo(6, null, WhiteColored); //shoes
@@ -2153,23 +2154,24 @@ protected override Sprite EyesSprite(Actor_Unit actor)
             coversBreasts = false;
             blocksDick = true;
             OccupiesAllSlots = true;
-            clothing1 = new SpriteExtraInfo(20, null, WhiteColored); //breast changed
-            clothing2 = new SpriteExtraInfo(19, null, WhiteColored); //belly changed
+            clothing1 = new SpriteExtraInfo(19, null, WhiteColored); //breast changed
+            clothing2 = new SpriteExtraInfo(16, null, WhiteColored); //belly changed
             clothing3 = new SpriteExtraInfo(10, null, WhiteColored); //arms
             clothing4 = new SpriteExtraInfo(6, null, WhiteColored); //shoes
-            clothing5 = new SpriteExtraInfo(17, null, null); //alt breast 1
-            clothing6 = new SpriteExtraInfo(17, null, null); //alt breast 2
-            clothing7 = new SpriteExtraInfo(18, null, null); //breast changed 2
-            clothing8 = new SpriteExtraInfo(18, null, null); //skirt
+            clothing5 = new SpriteExtraInfo(16, null, null); //alt breast 1
+            clothing6 = new SpriteExtraInfo(16, null, null); //alt breast 2
+            clothing7 = new SpriteExtraInfo(17, null, null); //breast changed 2
+            clothing8 = new SpriteExtraInfo(13, null, null); //skirt
             Type = 1579;
             DiscardUsesPalettes = false;
         }
 
         public override void Configure(CompleteSprite sprite, Actor_Unit actor)
         {
+            clothing7.layer = 17;
             if (actor.HasBelly)
             {
-                clothing2.GetSprite = (s) => State.GameManager.SpriteDictionary.MiceFBottoms[76 + Math.Min(actor.GetStomachSize(31, 0.7f), 83)];
+                clothing2.GetSprite = (s) => State.GameManager.SpriteDictionary.MiceFBottoms[72 + Math.Min(actor.GetStomachSize(31, 0.7f), 11)];
             }
             else
             {
@@ -2180,6 +2182,7 @@ protected override Sprite EyesSprite(Actor_Unit actor)
                 clothing1.GetSprite = (s) => State.GameManager.SpriteDictionary.MiceFTops[92];
                 clothing7.GetSprite = null;
                 blocksBreasts = false;
+                clothing7.layer = 15;
             }
             else if (actor.Unit.HasBreasts)
             {
