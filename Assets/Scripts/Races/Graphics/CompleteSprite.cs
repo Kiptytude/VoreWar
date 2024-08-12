@@ -22,6 +22,7 @@ public enum SpriteType
     BodyAccessory,
     SecondaryAccessory,
     Belly,
+    SecondaryBelly,
     Weapon,
     BackWeapon,
     BodySize,
@@ -98,6 +99,8 @@ class CompleteSprite
         if (sprites[typeInt] != null)
             return sprites[typeInt];
         if (spriteType == SpriteType.Belly && animatedType != null)
+            sprites[typeInt] = new SpriteContainer(animatedType, folder, spriteType.ToString(), 0, 0, null);
+            else if (spriteType == SpriteType.SecondaryBelly && animatedType != null)
             sprites[typeInt] = new SpriteContainer(animatedType, folder, spriteType.ToString(), 0, 0, null);
         else if (spriteType == SpriteType.Balls && animatedType != null)
             sprites[typeInt] = new SpriteContainer(animatedType, folder, spriteType.ToString(), 0, 0, null);
@@ -377,6 +380,7 @@ class CompleteSprite
         UpdatePosition(SpriteType.Beard, race.Beard);
         UpdatePosition(SpriteType.SecondaryAccessory, race.SecondaryAccessory);
         UpdatePosition(SpriteType.Belly, belly);
+        UpdatePosition(SpriteType.SecondaryBelly, race.SecondaryBelly);
         UpdatePosition(SpriteType.Eyes, race.Eyes);
         UpdatePosition(SpriteType.Weapon, race.Weapon);
         UpdatePosition(SpriteType.BackWeapon, race.BackWeapon);

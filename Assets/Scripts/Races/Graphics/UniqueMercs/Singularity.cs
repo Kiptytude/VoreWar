@@ -20,10 +20,10 @@ class Singularity : BlankSlate
 		Belly = new SpriteExtraInfo(1, null, WhiteColored); // Taur Belly.
 		BodyAccent = new SpriteExtraInfo(2, BodyAccentSprite, WhiteColored); // Back Arms.
 		BodyAccent2 = new SpriteExtraInfo(3, BodyAccentSprite2, WhiteColored); // Front Body.
-		BodyAccent3 = new SpriteExtraInfo(4, BodyAccentSprite3, WhiteColored); // Human Belly.
+		SecondaryBelly = new SpriteExtraInfo(4, SecondaryBellySprite, WhiteColored); // Human Belly.
 		BodyAccent4 = new SpriteExtraInfo(5, BodyAccentSprite4, WhiteColored); // Front Arms.
-		BodyAccent5 = new SpriteExtraInfo(6, BodyAccentSprite5, WhiteColored); // Right Breast.
-		BodyAccent6 = new SpriteExtraInfo(7, BodyAccentSprite6, WhiteColored); // Left Breast.
+		Breasts = new SpriteExtraInfo(6, BreastsSprite, WhiteColored); // Right Breast.
+		SecondaryBreasts = new SpriteExtraInfo(7, SecondaryBreastsSprite, WhiteColored); // Left Breast.
 		Head = new SpriteExtraInfo(3, HeadSprite, WhiteColored); // Head.
 	}
 
@@ -96,7 +96,7 @@ class Singularity : BlankSlate
 		}		
     }
 	
-	protected override Sprite BodyAccentSprite3(Actor_Unit actor) // Human Belly
+	protected override Sprite SecondaryBellySprite(Actor_Unit actor) // Human Belly
     {
 		if (actor.GetExclusiveStomachSize(24) < 1) return null;
 		if (actor.GetLeftBreastSize(26) > 9 || actor.GetRightBreastSize(26) > 9 || actor.GetStomach2Size(39) + actor.GetWombSize(39) > 14 || actor.GetExclusiveStomachSize(24) > 9)
@@ -130,7 +130,7 @@ class Singularity : BlankSlate
 		}
     }
 
-	protected override Sprite BodyAccentSprite5(Actor_Unit actor) // Right Breast
+	protected override Sprite BreastsSprite(Actor_Unit actor) // Right Breast
     {
 		if (actor.GetLeftBreastSize(26) > 9 || actor.GetRightBreastSize(26) > 9 || actor.GetStomach2Size(39) + actor.GetWombSize(39) > 14 || actor.GetExclusiveStomachSize(24) > 9)
 		{
@@ -150,7 +150,7 @@ class Singularity : BlankSlate
 		}
     }
 	
-	protected override Sprite BodyAccentSprite6(Actor_Unit actor) // Left Breast
+	protected override Sprite SecondaryBreastsSprite(Actor_Unit actor) // Left Breast
     {
 		
 		if (actor.GetLeftBreastSize(26) > 9 || actor.GetRightBreastSize(26) > 9 || actor.GetStomach2Size(39) + actor.GetWombSize(39) > 14 || actor.GetExclusiveStomachSize(24) > 9)
