@@ -17,13 +17,13 @@ class Singularity : BlankSlate
         GentleAnimation = true;
 
         Body = new SpriteExtraInfo(0, BodySprite, WhiteColored); // Back Body.
-		Belly = new SpriteExtraInfo(1, null, WhiteColored); // Taur Belly.
+		SecondaryBelly = new SpriteExtraInfo(1, SecondaryBellySprite, WhiteColored); // Taur Belly.
 		BodyAccent = new SpriteExtraInfo(2, BodyAccentSprite, WhiteColored); // Back Arms.
 		BodyAccent2 = new SpriteExtraInfo(3, BodyAccentSprite2, WhiteColored); // Front Body.
-		SecondaryBelly = new SpriteExtraInfo(4, SecondaryBellySprite, WhiteColored); // Human Belly.
+		Belly = new SpriteExtraInfo(4, null, WhiteColored); // Human Belly.
 		BodyAccent4 = new SpriteExtraInfo(5, BodyAccentSprite4, WhiteColored); // Front Arms.
-		Breasts = new SpriteExtraInfo(6, BreastsSprite, WhiteColored); // Right Breast.
-		SecondaryBreasts = new SpriteExtraInfo(7, SecondaryBreastsSprite, WhiteColored); // Left Breast.
+		SecondaryBreasts = new SpriteExtraInfo(6, SecondaryBreastsSprite, WhiteColored); // Right Breast.
+		Breasts = new SpriteExtraInfo(7, BreastsSprite, WhiteColored); // Left Breast.
 		Head = new SpriteExtraInfo(3, HeadSprite, WhiteColored); // Head.
 	}
 
@@ -37,7 +37,7 @@ class Singularity : BlankSlate
     {  
 		if (actor.GetLeftBreastSize(26) > 9 || actor.GetRightBreastSize(26) > 9 || actor.GetStomach2Size(39) + actor.GetWombSize(39) > 14 || actor.GetExclusiveStomachSize(24) > 9)
 		{
-			AddOffset(Belly, 0, -78 * .5f);	
+			AddOffset(SecondaryBelly, 0, -78 * .5f);	
 		}
 	}
 
@@ -47,26 +47,27 @@ class Singularity : BlankSlate
         return State.GameManager.SpriteDictionary.Singularity1[3];
     }
 	
-	internal override Sprite BellySprite(Actor_Unit actor, GameObject belly) // Taur Belly
+	protected override Sprite SecondaryBellySprite(Actor_Unit actor) // Taur Belly
     {		
 		if (actor.GetStomach2Size(39) + actor.GetWombSize(39) < 1) return null;
 		if (actor.GetLeftBreastSize(26) > 9 || actor.GetRightBreastSize(26) > 9 || actor.GetStomach2Size(39) + actor.GetWombSize(39) > 14 || actor.GetExclusiveStomachSize(24) > 9)
 		{
 			int TBS = actor.GetStomach2Size(39) + actor.GetWombSize(39);
 			if (TBS >= 38 && actor.PredatorComponent.IsUnitOfSpecificationInPrey(Race.Selicia, true, PreyLocation.stomach2, PreyLocation.womb)) return State.GameManager.SpriteDictionary.Singularity2[78]; 
-			if (TBS >= 36 && actor.PredatorComponent.IsUnitOfSpecificationInPrey(Race.Selicia, false, PreyLocation.stomach2, PreyLocation.womb)) return State.GameManager.SpriteDictionary.Singularity2[77];
-			if (TBS >= 34 && actor.PredatorComponent.IsUnitOfSpecificationInPrey(Race.Selicia, false, PreyLocation.stomach2, PreyLocation.womb)) return State.GameManager.SpriteDictionary.Singularity2[76];
-			if (TBS >= 32 && actor.PredatorComponent.IsUnitOfSpecificationInPrey(Race.Selicia, false, PreyLocation.stomach2, PreyLocation.womb)) return State.GameManager.SpriteDictionary.Singularity2[75];
-			if (TBS >= 30 && actor.PredatorComponent.IsUnitOfSpecificationInPrey(Race.Selicia, false, PreyLocation.stomach2, PreyLocation.womb)) return State.GameManager.SpriteDictionary.Singularity2[74];
-			if (TBS >= 28 && actor.PredatorComponent.IsUnitOfSpecificationInPrey(Race.Selicia, false, PreyLocation.stomach2, PreyLocation.womb)) return State.GameManager.SpriteDictionary.Singularity2[73];
-			if (TBS >= 26 && actor.PredatorComponent.IsUnitOfSpecificationInPrey(Race.Selicia, false, PreyLocation.stomach2, PreyLocation.womb)) return State.GameManager.SpriteDictionary.Singularity2[72];
+			if (TBS >= 37 && actor.PredatorComponent.IsUnitOfSpecificationInPrey(Race.Selicia, false, PreyLocation.stomach2, PreyLocation.womb)) return State.GameManager.SpriteDictionary.Singularity2[77];
+			if (TBS >= 35 && actor.PredatorComponent.IsUnitOfSpecificationInPrey(Race.Selicia, false, PreyLocation.stomach2, PreyLocation.womb)) return State.GameManager.SpriteDictionary.Singularity2[76];
+			if (TBS >= 33 && actor.PredatorComponent.IsUnitOfSpecificationInPrey(Race.Selicia, false, PreyLocation.stomach2, PreyLocation.womb)) return State.GameManager.SpriteDictionary.Singularity2[75];
+			if (TBS >= 31 && actor.PredatorComponent.IsUnitOfSpecificationInPrey(Race.Selicia, false, PreyLocation.stomach2, PreyLocation.womb)) return State.GameManager.SpriteDictionary.Singularity2[74];
+			if (TBS >= 29 && actor.PredatorComponent.IsUnitOfSpecificationInPrey(Race.Selicia, false, PreyLocation.stomach2, PreyLocation.womb)) return State.GameManager.SpriteDictionary.Singularity2[73];
+			if (TBS >= 27 && actor.PredatorComponent.IsUnitOfSpecificationInPrey(Race.Selicia, false, PreyLocation.stomach2, PreyLocation.womb)) return State.GameManager.SpriteDictionary.Singularity2[72];
+			if (TBS >= 26 && actor.PredatorComponent.IsUnitOfSpecificationInPrey(Race.Selicia, false, PreyLocation.stomach2, PreyLocation.womb)) return State.GameManager.SpriteDictionary.Singularity2[71];
 			if (TBS > 25) TBS = 25;
 			return State.GameManager.SpriteDictionary.Singularity2[46 + TBS];
 		}
 		else
 		{
 			int TBS = actor.GetStomach2Size(39) + actor.GetWombSize(39);
-			return State.GameManager.SpriteDictionary.Singularity2[31 + TBS];
+			return State.GameManager.SpriteDictionary.Singularity2[32 + TBS];
 		}
     }
 
@@ -93,24 +94,27 @@ class Singularity : BlankSlate
 		else
 		{
 			return State.GameManager.SpriteDictionary.Singularity1[0];
-		}		
+		}
     }
 	
-	protected override Sprite SecondaryBellySprite(Actor_Unit actor) // Human Belly
+	internal override Sprite BellySprite(Actor_Unit actor, GameObject belly) // Human Belly
     {
 		if (actor.GetExclusiveStomachSize(24) < 1) return null;
+		//Facing Camera
 		if (actor.GetLeftBreastSize(26) > 9 || actor.GetRightBreastSize(26) > 9 || actor.GetStomach2Size(39) + actor.GetWombSize(39) > 14 || actor.GetExclusiveStomachSize(24) > 9)
 		{
 			int UBS = actor.GetExclusiveStomachSize(24);
 			if (UBS >= 23 && actor.PredatorComponent.IsUnitOfSpecificationInPrey(Race.Selicia, true, PreyLocation.stomach)) return State.GameManager.SpriteDictionary.Singularity2[31]; 
 			if (UBS >= 21 && actor.PredatorComponent.IsUnitOfSpecificationInPrey(Race.Selicia, false, PreyLocation.stomach)) return State.GameManager.SpriteDictionary.Singularity2[30];
+			if (UBS >= 20 && actor.PredatorComponent.IsUnitOfSpecificationInPrey(Race.Selicia, false, PreyLocation.stomach)) return State.GameManager.SpriteDictionary.Singularity2[29];
 			if (UBS > 20) UBS = 20;
-			return State.GameManager.SpriteDictionary.Singularity2[0 + UBS];
+			return State.GameManager.SpriteDictionary.Singularity2[10 + UBS];
 		}
+		//45 Degree
 		else
 		{
-			int UBS = actor.GetRightBreastSize(26);
-			return State.GameManager.SpriteDictionary.Singularity1[29 + UBS];
+			int UBS = actor.GetExclusiveStomachSize(24);
+			return State.GameManager.SpriteDictionary.Singularity2[0 + UBS];
 		}
     }
 	
@@ -130,7 +134,7 @@ class Singularity : BlankSlate
 		}
     }
 
-	protected override Sprite BreastsSprite(Actor_Unit actor) // Right Breast
+	protected override Sprite SecondaryBreastsSprite(Actor_Unit actor) // Right Breast
     {
 		if (actor.GetLeftBreastSize(26) > 9 || actor.GetRightBreastSize(26) > 9 || actor.GetStomach2Size(39) + actor.GetWombSize(39) > 14 || actor.GetExclusiveStomachSize(24) > 9)
 		{
@@ -150,7 +154,7 @@ class Singularity : BlankSlate
 		}
     }
 	
-	protected override Sprite SecondaryBreastsSprite(Actor_Unit actor) // Left Breast
+	protected override Sprite BreastsSprite(Actor_Unit actor) // Left Breast
     {
 		
 		if (actor.GetLeftBreastSize(26) > 9 || actor.GetRightBreastSize(26) > 9 || actor.GetStomach2Size(39) + actor.GetWombSize(39) > 14 || actor.GetExclusiveStomachSize(24) > 9)
