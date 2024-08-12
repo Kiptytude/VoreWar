@@ -384,6 +384,7 @@ public class WorldConfig
             ["DayNightRandom"] = true,
             ["NightMonsters"] = false,
             ["NightMoveMonsters"] = false,
+            ["MonsterMPBonus"] = false,
             ["CombatComplicationsEnabled"] = false,
             ["StatCrit"] = false,
             ["StatGraze"] = false,
