@@ -22,6 +22,7 @@ public enum SpriteType
     BodyAccessory,
     SecondaryAccessory,
     Belly,
+    SecondaryBelly,
     Weapon,
     BackWeapon,
     BodySize,
@@ -98,6 +99,8 @@ class CompleteSprite
         if (sprites[typeInt] != null)
             return sprites[typeInt];
         if (spriteType == SpriteType.Belly && animatedType != null)
+            sprites[typeInt] = new SpriteContainer(animatedType, folder, spriteType.ToString(), 0, 0, null);
+            else if (spriteType == SpriteType.SecondaryBelly && animatedType != null)
             sprites[typeInt] = new SpriteContainer(animatedType, folder, spriteType.ToString(), 0, 0, null);
         else if (spriteType == SpriteType.Balls && animatedType != null)
             sprites[typeInt] = new SpriteContainer(animatedType, folder, spriteType.ToString(), 0, 0, null);
@@ -299,6 +302,7 @@ class CompleteSprite
         if (actor.Unit.Race == Race.Imps && sprites[(int)SpriteType.BodyAccent6] != null)
             sprites[(int)SpriteType.BodyAccent6].GameObject.transform.SetParent(sprites[(int)SpriteType.Belly].GameObject.transform.parent, false);
         SetSprite(SpriteType.Belly, belly);
+        SetSprite(SpriteType.SecondaryBelly, race.SecondaryBelly);
         SetSprite(SpriteType.Eyes, race.Eyes);
         SetSprite(SpriteType.Weapon, race.Weapon);
         SetSprite(SpriteType.BackWeapon, race.BackWeapon);
@@ -377,6 +381,7 @@ class CompleteSprite
         UpdatePosition(SpriteType.Beard, race.Beard);
         UpdatePosition(SpriteType.SecondaryAccessory, race.SecondaryAccessory);
         UpdatePosition(SpriteType.Belly, belly);
+        UpdatePosition(SpriteType.SecondaryBelly, race.SecondaryBelly);
         UpdatePosition(SpriteType.Eyes, race.Eyes);
         UpdatePosition(SpriteType.Weapon, race.Weapon);
         UpdatePosition(SpriteType.BackWeapon, race.BackWeapon);
