@@ -646,7 +646,7 @@ public class StrategyMode : SceneBase
                 brandNewEmp.Armies.Add(newArmy);
                 State.World.AllActiveEmpires.Add(brandNewEmp);
                 State.World.RefreshTurnOrder();
-                Config.World.SpawnerInfo[(Race)finalSide.Key] = new SpawnerInfo(true, 1, 0, 0.4f, brandNewEmp.Team, 0, false, 9999, 1, monsterEmp.MaxArmySize, brandNewEmp.TurnOrder);
+                Config.World.SpawnerInfo[(Race)finalSide.Key] = new SpawnerInfo(true, 1, 0, 0.4f, brandNewEmp.Team, 0, false, 9999, 1, monsterEmp.MaxArmySize, brandNewEmp.TurnOrder, false);
             }
             else
             {

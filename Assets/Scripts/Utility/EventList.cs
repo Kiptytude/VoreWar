@@ -2157,7 +2157,7 @@ internal class EventList
         pseudoEmp.ReplacedRace = army.Units[0].Race;
         pseudoEmp.Armies.Add(army);
         pseudoEmp.TurnOrder = 1337;
-        Config.World.SpawnerInfo[(Race)unusedSide] = new SpawnerInfo(true, 1, 0, 0.4f, pseudoEmp.Team, 0, false, 9999, 2, pseudoEmp.MaxArmySize, pseudoEmp.TurnOrder);
+        Config.World.SpawnerInfo[(Race)unusedSide] = new SpawnerInfo(true, 1, 0, 0.4f, pseudoEmp.Team, 0, false, 9999, 2, pseudoEmp.MaxArmySize, pseudoEmp.TurnOrder, false);
         State.World.AllActiveEmpires.Add(pseudoEmp);
         State.World.RefreshTurnOrder();
         return pseudoEmp;

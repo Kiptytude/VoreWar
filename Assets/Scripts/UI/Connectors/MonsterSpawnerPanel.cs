@@ -15,6 +15,8 @@ public class MonsterSpawnerPanel : MonoBehaviour
     public InputField MaxArmySize;
     public InputField TurnOrder;
     public Toggle AddonRace;
+    public Toggle MonsterScoutMP;
     public Dropdown ConquestType;
+    public Dropdown DayNightMonsterMovemnt;
 }
 
