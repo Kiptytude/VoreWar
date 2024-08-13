@@ -169,6 +169,7 @@ static class Config
     internal static FeedingType FeedingType => World.FeedingType;
     internal static FourthWallBreakType FourthWallBreakType => World.FourthWallBreakType;
     internal static UBConversion UBConversion => World.UBConversion;
+    internal static GoddessMercy GoddessMercy => World.GoddessMercy;
     internal static SucklingPermission SucklingPermission => World.SucklingPermission;
 
     internal static int StartingPopulation => World.StartingPopulation;
