@@ -958,6 +958,11 @@ public class Actor_Unit
             {
                 damageScalar *= 1.25f;
             }
+            if (Unit.HasTrait(Traits.WeaponChanneler) && Unit.Mana >= 6)
+            {
+                Unit.SpendMana(6);
+                damageScalar *= 1.15f;
+            }
             if (target.Unit.GetStatusEffect(StatusEffectType.Shielded) != null)
             {
                 damageScalar *= 1 - target.Unit.GetStatusEffect(StatusEffectType.Shielded).Strength;
@@ -995,6 +1000,11 @@ public class Actor_Unit
             if (Unit.GetStatusEffect(StatusEffectType.Valor) != null)
             {
                 damageScalar *= 1.25f;
+            }
+            if (Unit.HasTrait(Traits.WeaponChanneler) && Unit.Mana >= 6)
+            {
+                Unit.SpendMana(6);
+                damageScalar *= 1.15f;
             }
             if (target.Unit.GetStatusEffect(StatusEffectType.Shielded) != null)
             {
@@ -2173,7 +2183,7 @@ public class Actor_Unit
             if (Unit.GetStatusEffect(StatusEffectType.Sleeping) != null)
                 Unit.RestoreMana(Unit.MaxMana / 2);
             
-        }
+        Unit.RestoreMana(Unit.TraitBoosts.ManaRegen);
         UnitSprite.UpdateHealthBar(this);
         TurnsSinceLastParalysis++;
         if (Targetable && Visible && Surrendered == false && Fled == false)

@@ -372,6 +372,12 @@ public enum Traits
     Legendary = 187,
     /// <summary>Unit takes extra damage from all sources of fire. (150%)</summary>
     FireVulnerable = 188,
+    /// <summary>Unit's stats are boosted by 220% But needs Twice as much EXP to level</summary>
+    Elite = 189,
+    /// <summary>Unit generates 3 mana per turn</summary>
+    ManaDynamo = 190,
+    /// <summary>Unit deals extra melee or ranged damage at the cost of each attack consumeing 6 mana. No bonus is received if mana is under 6</summary>
+    WeaponChanneler = 191,
 
 
 
