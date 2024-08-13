@@ -599,6 +599,8 @@ public class HoveringTooltip : MonoBehaviour
                 return "Unit's BladeDance, Tenacity, and Focus stack loss is reduced by if stacks are below 10% current HP.";
             case Traits.Annihilation:
                 return "Every time digestion progresses, this unit digests one level from each prey inside them, gaining its experience value. If a unit hits level 0 this way, it dies if it was stil alive and cannot be revived.\n(Cheat Trait)";
+            case Traits.WeaponChanneler:
+                return "Unit deals extra melee or ranged damage at the cost of each attack consuming 6 mana. No bonus is received if mana is under.";
         }  
         return "<b>This trait needs a tooltip!</b>";
     }

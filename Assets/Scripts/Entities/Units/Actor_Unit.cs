@@ -958,6 +958,10 @@ public class Actor_Unit
             {
                 damageScalar *= 1.25f;
             }
+            if (Unit.HasTrait(Traits.WeaponChanneler) && Unit.Mana >= 6)
+            {
+                damageScalar *= 1.2f;
+            }
             if (target.Unit.GetStatusEffect(StatusEffectType.Shielded) != null)
             {
                 damageScalar *= 1 - target.Unit.GetStatusEffect(StatusEffectType.Shielded).Strength;
@@ -995,6 +999,10 @@ public class Actor_Unit
             if (Unit.GetStatusEffect(StatusEffectType.Valor) != null)
             {
                 damageScalar *= 1.25f;
+            }
+            if (Unit.HasTrait(Traits.WeaponChanneler) && Unit.Mana >= 6)
+            {
+                damageScalar *= 1.2f;
             }
             if (target.Unit.GetStatusEffect(StatusEffectType.Shielded) != null)
             {
@@ -1367,6 +1375,8 @@ public class Actor_Unit
                     {
                         trait.ApplyStatusEffect(this, target, true, damage);
                     }
+                    if (Unit.HasTrait(Traits.WeaponChanneler) && Unit.Mana >= 6)
+                        Unit.SpendMana(6);
                     if (Unit.HasTrait(Traits.Tenacious))
                         Unit.RemoveTenacious();
                     if (target.Unit.HasTrait(Traits.Tenacious))
@@ -1434,6 +1444,8 @@ public class Actor_Unit
                     {
                         trait.ApplyStatusEffect(this, target, false, damage);
                     }
+                    if (Unit.HasTrait(Traits.WeaponChanneler) && Unit.Mana >= 6)
+                        Unit.SpendMana(6);
                     if (Unit.HasTrait(Traits.BladeDance))
                         Unit.AddBladeDance();
                     if (target.Unit.HasTrait(Traits.BladeDance))
@@ -2172,8 +2184,8 @@ public class Actor_Unit
                     Unit.ApplyStatusEffect(StatusEffectType.Sleeping, 1, 2);
             if (Unit.GetStatusEffect(StatusEffectType.Sleeping) != null)
                 Unit.RestoreMana(Unit.MaxMana / 2);
-            
         }
+        Unit.RestoreMana(Unit.TraitBoosts.ManaRegen);
         UnitSprite.UpdateHealthBar(this);
         TurnsSinceLastParalysis++;
         if (Targetable && Visible && Surrendered == false && Fled == false)
