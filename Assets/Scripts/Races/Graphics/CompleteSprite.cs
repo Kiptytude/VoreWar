@@ -302,6 +302,7 @@ class CompleteSprite
         if (actor.Unit.Race == Race.Imps && sprites[(int)SpriteType.BodyAccent6] != null)
             sprites[(int)SpriteType.BodyAccent6].GameObject.transform.SetParent(sprites[(int)SpriteType.Belly].GameObject.transform.parent, false);
         SetSprite(SpriteType.Belly, belly);
+        SetSprite(SpriteType.SecondaryBelly, race.SecondaryBelly);
         SetSprite(SpriteType.Eyes, race.Eyes);
         SetSprite(SpriteType.Weapon, race.Weapon);
         SetSprite(SpriteType.BackWeapon, race.BackWeapon);
