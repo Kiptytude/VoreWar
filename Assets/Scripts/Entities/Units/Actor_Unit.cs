@@ -2287,7 +2287,22 @@ public class Actor_Unit
                     State.GameManager.TacticalMode.SwitchAlignment(this);
                     AIAvoidEat = 2;
                     State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"{Unit.Name} switched sides when they surrendered");
+                    if ((Config.GoddessMercy == GoddessMercy.Both) || (Config.GoddessMercy == GoddessMercy.DefectorOnly))
+                    {
+                        Unit.Health = Unit.MaxHealth;
+                        State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"A light shines from above on {Unit.Name}");
+                    }
                 }
+                else if ((Config.GoddessMercy == GoddessMercy.Both) || (Config.GoddessMercy == GoddessMercy.LoyalOnly))
+                {
+                    Unit.Health = Unit.MaxHealth;
+                    State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"A light shines from above on {Unit.Name} for their loyalty");
+                }
+            }
+            else if ((Config.GoddessMercy == GoddessMercy.Both) || (Config.GoddessMercy == GoddessMercy.LoyalOnly))
+            {
+                Unit.Health = Unit.MaxHealth;
+                State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"A light shines from above on {Unit.Name} for their loyalty");
             }
             if (State.Rand.NextDouble() <= Config.SurrenderedPredAutoRegur)
             {

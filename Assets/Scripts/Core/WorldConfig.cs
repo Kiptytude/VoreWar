@@ -148,6 +148,8 @@ public class WorldConfig
     [OdinSerialize]
     internal UBConversion UBConversion = 0;
     [OdinSerialize]
+    internal GoddessMercy GoddessMercy = 0;
+    [OdinSerialize]
     internal SucklingPermission SucklingPermission = 0;
 
     [OdinSerialize]

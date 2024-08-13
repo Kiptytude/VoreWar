@@ -129,6 +129,7 @@ public class ContentSettings : MonoBehaviour
     public TMP_Dropdown FeedingType;
     public TMP_Dropdown FourthWallBreakType;
     public TMP_Dropdown UBConversion;
+    public TMP_Dropdown GoddessMercy;
     public TMP_Dropdown SucklingPermission;
     public TMP_Dropdown WinterStuff;
 
@@ -779,6 +780,7 @@ public class ContentSettings : MonoBehaviour
         Config.World.FeedingType = (FeedingType)PlayerPrefs.GetInt("FeedingType", 0);
         Config.World.FourthWallBreakType = (FourthWallBreakType)PlayerPrefs.GetInt("FourthWallBreakType", 0);
         Config.World.UBConversion = (UBConversion)PlayerPrefs.GetInt("UBConversion", 0);
+        Config.World.GoddessMercy = (GoddessMercy)PlayerPrefs.GetInt("GoddessMercy", 0);
         Config.World.SucklingPermission = (SucklingPermission)PlayerPrefs.GetInt("SucklingPermission", 0);
         Config.World.EscapeRate = PlayerPrefs.GetInt("EscapeRate", 0);
         Config.World.RandomEventRate = PlayerPrefs.GetInt("RandomEventRate", 0);
@@ -959,6 +961,7 @@ public class ContentSettings : MonoBehaviour
         FeedingType.value = (int)Config.FeedingType;
         FourthWallBreakType.value = (int)Config.FourthWallBreakType;
         UBConversion.value = (int)Config.UBConversion;
+        GoddessMercy.value = (int)Config.GoddessMercy;
         SucklingPermission.value = (int)Config.SucklingPermission;
         WinterStuff.value = (int)Config.World.WinterStuff;
         DiplomacyScale.value = (int)Config.DiplomacyScale;
@@ -975,6 +978,7 @@ public class ContentSettings : MonoBehaviour
         FeedingType.RefreshShownValue();
         FourthWallBreakType.RefreshShownValue();
         UBConversion.RefreshShownValue();
+        GoddessMercy.RefreshShownValue();
         SucklingPermission.RefreshShownValue();
         DiplomacyScale.RefreshShownValue();
         MaxSpellLevelDrop.RefreshShownValue();
@@ -1169,6 +1173,7 @@ public class ContentSettings : MonoBehaviour
         Config.World.FourthWallBreakType = (FourthWallBreakType)FourthWallBreakType.value;
         Config.World.FeedingType = (FeedingType)FeedingType.value;
         Config.World.UBConversion = (UBConversion)UBConversion.value;
+        Config.World.GoddessMercy = (GoddessMercy)GoddessMercy.value;
         Config.World.SucklingPermission = (SucklingPermission)SucklingPermission.value;
         Config.World.WinterStuff = (Config.SeasonalType)WinterStuff.value;
         Config.World.DiplomacyScale = (DiplomacyScale)DiplomacyScale.value;
@@ -1372,6 +1377,7 @@ public class ContentSettings : MonoBehaviour
         PlayerPrefs.SetInt("FeedingType", FeedingType.value);
         PlayerPrefs.SetInt("FourthWallBreakType", FourthWallBreakType.value);
         PlayerPrefs.SetInt("UBConversion", UBConversion.value);
+        PlayerPrefs.SetInt("GoddessMercy", GoddessMercy.value);
         PlayerPrefs.SetInt("SucklingPermission", SucklingPermission.value);
         PlayerPrefs.SetInt("DiplomacyScale", DiplomacyScale.value);
         PlayerPrefs.SetInt("MaxSpellLevelDrop", MaxSpellLevelDrop.value + 1);
@@ -1469,6 +1475,18 @@ public class ContentSettings : MonoBehaviour
     {
         DiplomacyScale.interactable = Diplomacy.isOn;
         LockedAIRelations.interactable = Diplomacy.isOn;
+    }
+
+    public void SurrenderChanged()
+    {
+        if (AutoSurrender.isOn == true)
+        {
+            GoddessMercy.interactable = true;
+        }
+        else if (AutoSurrender.isOn == false)
+        {
+            GoddessMercy.interactable = false;
+        }
     }
 
     public void Exit()
