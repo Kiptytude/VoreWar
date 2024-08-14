@@ -10,7 +10,7 @@ using UnityEngine;
 public static class State
 {
     static int saveErrors = 0;
-    public const string Version = "43C";
+    public const string Version = "43D";
     public static World World;
     public static Rand Rand = new Rand();
     public static NameGenerator NameGen;
