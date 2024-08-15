@@ -1,5 +1,6 @@
 using System;
 using UnityEngine.UI;
+using UnityEngine;
 
 public class UnitCustomizer
 {
@@ -977,12 +978,33 @@ public class UnitCustomizer
                 CustomizerUI.Reflexive.text = "themself";
                 CustomizerUI.Quantification.value = 1;
             }
+            CheckClothes(Unit);
             RefreshPronouns(Unit);
             Unit.ReloadTraits();
             Unit.InitializeTraits();
             RefreshView();
         }
 
+    }
+    internal void CheckClothes(Unit unit)
+    {
+        if (RaceData.AllowedMainClothingTypes.Count > 0)
+        {
+            MainClothing current_cloth = RaceData.AllowedMainClothingTypes[unit.ClothingType > 0 ? unit.ClothingType - 1 : 0];
+            if (!current_cloth.CanWear(Unit) && current_cloth.ExposeSwapValue() >= 0)
+            {
+                unit.ClothingType = current_cloth.ExposeSwapValue();
+            }
+        }
+
+        if (RaceData.AllowedWaistTypes.Count > 0)
+        {
+            MainClothing current_cloth = RaceData.AllowedWaistTypes[unit.ClothingType2 > 0 ? unit.ClothingType2 - 1 : 0];
+            if (!current_cloth.CanWear(Unit) && current_cloth.ExposeSwapValue() >= 0)
+            {
+                unit.ClothingType2 = current_cloth.ExposeSwapValue();
+            }
+        }
     }
 
     internal void ChangePronouns()

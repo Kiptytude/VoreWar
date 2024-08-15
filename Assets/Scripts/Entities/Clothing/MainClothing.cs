@@ -48,6 +48,9 @@ abstract class MainClothing
     /// <summary>Palette to use if colorsBelly is on</summary>
     protected ColorSwapPalette bellyPalette = null;
 
+    /// <summary>Clothing will be swapped to this if the actor no longer meets the 'Only' requirements. Value is the index of the clothing you want to change in clothing list + 1. 0 usually means naked, -1 means disabled. </summary>
+    protected int SwapedClothing = -1;
+
 
 
 
@@ -86,7 +89,10 @@ abstract class MainClothing
 
         return true;
     }
-
+    public int ExposeSwapValue()
+    {
+        return SwapedClothing;
+    }
     /// <summary>
     /// Customizes the clothing for a character -- if it doesn't need to run every frame it should be in the clothing constructor
     /// </summary>
