@@ -8,7 +8,7 @@ public static class PreyLocStrings
     static readonly List<string> ballsSyn = new List<string>() { "balls", "scrotum", "testicles", "nuts", "orbs", "nutsack", "jizzmakers", "daddybags" };
     static readonly List<string> ballsSynSing = new List<string>() { "scrotum", "nutsack", "sack", "ballsack" };
     static readonly List<string> ballsSynPlural = new List<string>() { "balls", "testicles", "nuts", "orbs", "testis", "jizzmakers", "daddybags" };
-    static readonly List<string> stomachSyn = new List<string>() { "gut", "stomach", "belly", "tummy", "tum", "middle", "midsection", "chamber", "abdomen" };
+    static readonly List<string> stomachSyn = new List<string>() { "gut", "gut", "stomach", "stomach", "belly", "belly", "tummy", "tummy", "tum", "middle", "midsection", "chamber", "abdomen" };
     static readonly List<string> analSyn = new List<string>() { "butt", "ass", "bottom", "backside", "bum", "rear", "rump", "booty", "tush", "moon", "derriere", "cheeks", "hindquarters" };
     static readonly List<string> cockSyn = new List<string>() { "penis", "tool", "manhood", "rod", "wang", "dick", "cock", "phallus", "member", "shaft", "pecker", "schlong", "erection" };
 
