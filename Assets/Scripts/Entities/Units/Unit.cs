@@ -2573,7 +2573,11 @@ internal void SetGenderRandomizeName(Race race, Gender gender)
                 continue;
             if (item is SpellBook book)
             {
-                if (SpellList.SpellDict.TryGetValue(book.ContainedSpell, out Spell spell))
+                if (HasTrait(Traits.Feral))
+                {
+                    continue;
+                }
+                else if (SpellList.SpellDict.TryGetValue(book.ContainedSpell, out Spell spell))
                 {
                     UseableSpells.Add(spell);
                 }
