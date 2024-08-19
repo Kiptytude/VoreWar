@@ -18,7 +18,6 @@
     Kangaroo,
     Alligator,
     Wyvern,
-    YoungWyvern,
     Compy,
     Shark,
     DarkSwallower,

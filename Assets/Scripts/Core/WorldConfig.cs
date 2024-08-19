@@ -148,6 +148,8 @@ public class WorldConfig
     [OdinSerialize]
     internal UBConversion UBConversion = 0;
     [OdinSerialize]
+    internal GoddessMercy GoddessMercy = 0;
+    [OdinSerialize]
     internal SucklingPermission SucklingPermission = 0;
 
     [OdinSerialize]
@@ -186,6 +188,8 @@ public class WorldConfig
     internal int NightStrategicSightReduction = 1;
     [OdinSerialize, AllowEditing, ProperName("Reveal Turn"), Description("The tactical turn where every unit is revealed.")]
     internal int RevealTurn = 50;
+    [OdinSerialize]
+    internal Config.DayNightMovemntType DayNightMonsterMovemnt = Config.DayNightMovemntType.Off;
 
     // CombatComplications configuration
     // Critical strikes
@@ -229,8 +233,38 @@ public class WorldConfig
     [OdinSerialize]
     internal int AnalWeight = 1;
 
-
-
+    [OdinSerialize]
+    internal float DigestionSpeedMult = 1f;
+    [OdinSerialize]
+    internal float AbsorbSpeedMult = 1f;
+    [OdinSerialize]
+    internal float BellyRubEffMult = 1f;
+    [OdinSerialize]
+    internal int BellyRubsPerTurn = 1;
+    [OdinSerialize]
+    internal float DigestionRamp = .1f;
+    [OdinSerialize, AllowEditing, ProperName("Digestion Ramp Turn"), Description("Digestin damage change by the above  every X turns")]
+    internal int DigestionRampTurn = 1;
+    [OdinSerialize, AllowEditing, ProperName("Digestion Ramp Cap"), Description("The above will only stack up to X times, negative numbers mean disabled")]
+    internal int DigestionRampCap = 1;
+    [OdinSerialize]
+    internal float DigestionRampLoss = 1;
+    [OdinSerialize]
+    internal float AbsorbRamp = .1f;
+    [OdinSerialize]
+    internal float AbsorbResourceMod = 1;
+    [OdinSerialize]
+    internal float DigestionFlatDmg = -.01f;
+    [OdinSerialize]
+    internal int AbsorbResourceModBoost = 0;
+    [OdinSerialize]
+    internal float DigestionCap = 0;
+    [OdinSerialize]
+    internal int DigestionGraceTurns = 0;
+    [OdinSerialize]
+    internal float SurrenderedPredEscapeMult = 1;
+    [OdinSerialize]
+    internal float SurrenderedPredAutoRegur = 0;
     internal bool GetValue(string name)
     {
         if (Toggles == null)
@@ -263,7 +297,7 @@ public class WorldConfig
             return value;
         }
 
-        var obj = new SpawnerInfo(false, 4, .15f, 40, 900 + (int)race, 1, true, 6f, 8, 12, 40);
+        var obj = new SpawnerInfo(false, 4, .15f, 40, 900 + (int)race, 1, true, 6f, 8, 12, 40, false);
         SpawnerInfo[race] = obj;
         return obj;
     }
@@ -287,7 +321,7 @@ public class WorldConfig
         {
             if (race >= Race.Vagrants && race < Race.Selicia)
             {
-                SpawnerInfo[race] = new SpawnerInfo(false, 4, .15f, 40, 900 + (int)race, 1, true, 6f, 8, 12, 40);
+                SpawnerInfo[race] = new SpawnerInfo(false, 4, .15f, 40, 900 + (int)race, 1, true, 6f, 8, 12, 40, false);
             }
         }
     }
@@ -328,6 +362,7 @@ public class WorldConfig
             ["AnimatedBellies"] = true,
             ["DigestionSkulls"] = true,
             ["Bones"] = true,
+            ["CleanDisposal"] = false,
             ["Scat"] = false,
             ["ScatBones"] = false,
             ["CondomsForCV"] = false,
@@ -356,6 +391,10 @@ public class WorldConfig
             ["CombatComplicationsEnabled"] = false,
             ["StatCrit"] = false,
             ["StatGraze"] = false,
+            ["DigestionDamageDivision"] = false,
+            ["AbsorbRateDivision"] = false,
+            ["AbsorbLoss"] = false,
+            ["AbsorbBoostDeadOnly"] = false,
         };
 
         foreach (Race race in ((Race[])Enum.GetValues(typeof(Race))).Where(s => (int)s >= 0))

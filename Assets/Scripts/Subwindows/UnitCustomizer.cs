@@ -1,5 +1,6 @@
 using System;
 using UnityEngine.UI;
+using UnityEngine;
 
 public class UnitCustomizer
 {
@@ -481,6 +482,11 @@ public class UnitCustomizer
                 buttons[(int)ButtonTypes.HairStyle].Label.text = "Mane Style";
                 buttons[(int)ButtonTypes.HairColor].Label.text = "Mane Color";
                 break;
+            case Race.FeralHorses:
+                buttons[(int)ButtonTypes.Skintone].Label.text = "Fur Color";
+                buttons[(int)ButtonTypes.HairStyle].Label.text = "Mane Style";
+                buttons[(int)ButtonTypes.HairColor].Label.text = "Mane Color";
+                break;
             case Race.Aabayx:
                 buttons[(int)ButtonTypes.BodyAccessoryColor].Label.text = "Head Color";
                 buttons[(int)ButtonTypes.ClothingExtraType1].Label.text = "Face Paint";
@@ -491,6 +497,9 @@ public class UnitCustomizer
                 buttons[(int)ButtonTypes.BodyAccentTypes3].Label.text = "Hands/Feet Pattern";
                 buttons[(int)ButtonTypes.BodyAccentTypes4].Label.text = "Left Ear Damage";
                 buttons[(int)ButtonTypes.BodyAccentTypes5].Label.text = "Right Ear Damage";
+                break;
+            case Race.FeralOrcas:
+                buttons[(int)ButtonTypes.BodyAccentTypes1].Label.text = "Dorsal Fin";
                 break;
         }
     }
@@ -969,12 +978,33 @@ public class UnitCustomizer
                 CustomizerUI.Reflexive.text = "themself";
                 CustomizerUI.Quantification.value = 1;
             }
+            CheckClothes(Unit);
             RefreshPronouns(Unit);
             Unit.ReloadTraits();
             Unit.InitializeTraits();
             RefreshView();
         }
 
+    }
+    internal void CheckClothes(Unit unit)
+    {
+        if (RaceData.AllowedMainClothingTypes.Count > 0)
+        {
+            MainClothing current_cloth = RaceData.AllowedMainClothingTypes[unit.ClothingType > 0 ? unit.ClothingType - 1 : 0];
+            if (!current_cloth.CanWear(Unit) && current_cloth.ExposeSwapValue() >= 0)
+            {
+                unit.ClothingType = current_cloth.ExposeSwapValue();
+            }
+        }
+
+        if (RaceData.AllowedWaistTypes.Count > 0)
+        {
+            MainClothing current_cloth = RaceData.AllowedWaistTypes[unit.ClothingType2 > 0 ? unit.ClothingType2 - 1 : 0];
+            if (!current_cloth.CanWear(Unit) && current_cloth.ExposeSwapValue() >= 0)
+            {
+                unit.ClothingType2 = current_cloth.ExposeSwapValue();
+            }
+        }
     }
 
     internal void ChangePronouns()

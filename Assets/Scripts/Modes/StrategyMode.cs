@@ -378,7 +378,7 @@ public class StrategyMode : SceneBase
                 {
                     armiesToReassign.Add(army);
                 }
-                if (army.Side < 31)
+                if (army.Side < 32)
                 {
                     if (army.BannerStyle > (int)BannerTypes.VoreWar && CustomBannerTest.Sprites[army.BannerStyle - 23] != null)
                     {
@@ -531,6 +531,18 @@ public class StrategyMode : SceneBase
                             case StrategicDoodadType.SpawnerGoodra:
                                 Spawners.Add(new MonsterSpawnerLocation(new Vec2i(i, j), Race.Goodra));
                                 break;
+                            case StrategicDoodadType.SpawnerFeralHorses:
+                                Spawners.Add(new MonsterSpawnerLocation(new Vec2i(i, j), Race.FeralHorses));
+                                break;
+                            case StrategicDoodadType.SpawnerFeralFox:
+                                Spawners.Add(new MonsterSpawnerLocation(new Vec2i(i, j), Race.FeralFox));
+                                break;
+                            case StrategicDoodadType.SpawnerTerminid:
+                                Spawners.Add(new MonsterSpawnerLocation(new Vec2i(i, j), Race.Terminid));
+                                break;
+                            case StrategicDoodadType.SpawnerFeralOrcas:
+                                Spawners.Add(new MonsterSpawnerLocation(new Vec2i(i, j), Race.FeralOrcas));
+                                break;
                         }
                     }
                 }
@@ -634,7 +646,7 @@ public class StrategyMode : SceneBase
                 brandNewEmp.Armies.Add(newArmy);
                 State.World.AllActiveEmpires.Add(brandNewEmp);
                 State.World.RefreshTurnOrder();
-                Config.World.SpawnerInfo[(Race)finalSide.Key] = new SpawnerInfo(true, 1, 0, 0.4f, brandNewEmp.Team, 0, false, 9999, 1, monsterEmp.MaxArmySize, brandNewEmp.TurnOrder);
+                Config.World.SpawnerInfo[(Race)finalSide.Key] = new SpawnerInfo(true, 1, 0, 0.4f, brandNewEmp.Team, 0, false, 9999, 1, monsterEmp.MaxArmySize, brandNewEmp.TurnOrder, false);
             }
             else
             {

@@ -6,7 +6,7 @@ using System.Linq;
 
 public class World
 {
-    internal const int MonsterCount = 32;
+    internal const int MonsterCount = 36;
     [OdinSerialize]
     public int Turn = 1;
     [OdinSerialize]
@@ -243,7 +243,11 @@ public class World
         MonsterEmpires[29] = new MonsterEmpire(new Empire.ConstructionArgs((int)Race.Dratopyr, UnityEngine.Color.white, UnityEngine.Color.white, 56, StrategyAIType.Monster, TacticalAIType.Full, 1024, 32, 0));
         MonsterEmpires[30] = new MonsterEmpire(new Empire.ConstructionArgs((int)Race.FeralLions, UnityEngine.Color.white, UnityEngine.Color.white, 57, StrategyAIType.Monster, TacticalAIType.Full, 1337, 32, 0));
         MonsterEmpires[31] = new MonsterEmpire(new Empire.ConstructionArgs((int)Race.Goodra, UnityEngine.Color.white, UnityEngine.Color.white, 58, StrategyAIType.Monster, TacticalAIType.Full, 1025, 32, 0));
-		foreach (var emp in MonsterEmpires)
+        MonsterEmpires[32] = new MonsterEmpire(new Empire.ConstructionArgs((int)Race.FeralHorses, UnityEngine.Color.white, UnityEngine.Color.white, 59, StrategyAIType.Monster, TacticalAIType.Full, 1026, 32, 0));
+		MonsterEmpires[33] = new MonsterEmpire(new Empire.ConstructionArgs((int)Race.FeralFox, UnityEngine.Color.white, UnityEngine.Color.white, 60, StrategyAIType.Monster, TacticalAIType.Full, 1027, 32, 0));
+        MonsterEmpires[34] = new MonsterEmpire(new Empire.ConstructionArgs((int)Race.Terminid, UnityEngine.Color.white, UnityEngine.Color.white, 61, StrategyAIType.Monster, TacticalAIType.Full, 1028, 32, 0));
+        MonsterEmpires[35] = new MonsterEmpire(new Empire.ConstructionArgs((int)Race.FeralOrcas, UnityEngine.Color.white, UnityEngine.Color.white, 62, StrategyAIType.Monster, TacticalAIType.Full, 1029, 32, 0));
+        foreach (var emp in MonsterEmpires)
         {
             SpawnerInfo spawner = Config.SpawnerInfo(emp.Race);
             if (spawner == null)

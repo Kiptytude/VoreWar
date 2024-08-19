@@ -35,7 +35,7 @@ public enum Traits
     PackTactics = 14,
     /// <summary>Doubles unit's escape rate.</summary>
     EscapeArtist = 20,
-    /// <summary>Doubles unit's digestion rate.</summary>
+    /// <summary>Increases unit's digestion rate by 50%.</summary>
     FastDigestion = 21,
     /// <summary>Halves unit's digestion rate.</summary>
     SlowDigestion = 22,
@@ -368,6 +368,17 @@ public enum Traits
     ManaBarrier = 185,
     /// <summary>Unit's BladeDance, Tenacity, and Focus stack loss is reduced by if stacks are below 10% current HP.</summary>
     Unflinching = 186,
+    /// <summary></summary>
+    Legendary = 187,
+    /// <summary>Unit takes extra damage from all sources of fire. (150%)</summary>
+    FireVulnerable = 188,
+    /// <summary>Unit's stats are boosted by 220% But needs twice as much EXP to level</summary>
+    Elite = 189,
+    /// <summary>Unit generates 3 mana per turn</summary>
+    ManaDynamo = 190,
+    /// <summary>Unit deals extra melee or ranged damage at the cost of each attack consuming 6 mana. No bonus is received if mana is under 6</summary>
+    WeaponChanneler = 191,
+
 
 
     //Hidden Traits
@@ -492,7 +503,17 @@ public enum Traits
     /// <summary>Unit's absorption growth decays 2x as fast.</summary>
     FleetingGrowth = 274,
     /// <summary>Doubles healing provided when absorbing unit and increases growth provided by 50%.</summary>
-    ProteinRich = 275
+    ProteinRich = 275,
+    /// <summary>Quarters unit's digestion rate.</summary>
+    SlowerDigestion = 276,
+    /// <summary>Quarters prey absorption rate.</summary>
+    SlowerAbsorption = 277,
+    /// <summary>Unit digests and absorbs prey a quarter of normal speed.</summary>
+    SlowerMetabolism = 278,
+    /// <summary>Doubles unit's digestion rate.</summary>
+    FasterDigestion = 279,
+    /// <summary>Doubles unit's absorption rate.</summary>
+    FasterAbsorption = 280
 
 }
 

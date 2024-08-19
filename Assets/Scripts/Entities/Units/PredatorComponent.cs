@@ -1163,6 +1163,29 @@ public class PredatorComponent
         return sizeDiff * preyBoosts * predBoosts;
     }
 
+    int ApplySettingsToDamage(int incoming_damage, Prey preyUnit)
+    {
+        if (Config.DigestionFlatDmg >= 0.01f)
+            return (int)(preyUnit.Unit.MaxHealth * Config.DigestionFlatDmg);
+
+        float outgoing_damage_mod = Config.DigestionSpeedMult;
+        outgoing_damage_mod += Config.DigestionRamp * (actor.RampStacks >= Config.DigestionRampCap && Config.DigestionRampCap > 0 ? Config.DigestionRampCap : (float)Math.Floor(actor.RampStacks));
+        if (actor.BeingRubbed)
+            outgoing_damage_mod *= Config.BellyRubEffMult;
+        int outgoing_damage = (int)(incoming_damage * outgoing_damage_mod);
+
+        if (Config.DigestionDamageDivision)
+        {
+            int prey_in_loc = PreyInLocation(preyUnit.Location, true);
+            outgoing_damage /= prey_in_loc > 0 ? prey_in_loc : 1;
+        }
+
+        if (outgoing_damage > (int)(preyUnit.Unit.MaxHealth * Config.DigestionCap) && Config.DigestionCap > 0)
+        {
+            outgoing_damage = (int)(preyUnit.Unit.MaxHealth * Config.DigestionCap);
+        }
+        return outgoing_damage;
+    }
     int CalculateDigestionDamage(Prey preyUnit)
     {
         if (preyUnit.TurnsDigested < preyUnit.Unit.TraitBoosts.DigestionImmunityTurns || preyUnit.Unit.HasTrait(Traits.TheGreatEscape))
@@ -1178,6 +1201,7 @@ public class PredatorComponent
         predScore *= unit.TraitBoosts.Outgoing.DigestionRate;
         preyScore /= preyUnit.Unit.TraitBoosts.Incoming.DigestionRate;
         int damage = (int)Math.Round(predScore / preyScore);
+        damage = ApplySettingsToDamage(damage, preyUnit);
         if (damage < 1)
             damage = 1;
 
@@ -1391,7 +1415,32 @@ public class PredatorComponent
         }
         if (unit.HasTrait(Traits.Annihilation) && !TacticalUtilities.IsPreyEndoTargetForUnit(preyUnit, unit))
         {
-           
+            int prevLevelExp = preyUnit.Unit.GetExperienceRequiredForLevel(preyUnit.Unit.Level - 2);
+            if (preyUnit.Unit.Level == 1 && preyUnit.Unit.Race != Race.Erin)
+            {
+                preyUnit.Unit.SetLevel(0);
+                preyUnit.Unit.SetStatBaseAll(1);
+                preyUnit.Unit.SetExp(0);
+                preyUnit.Unit.Health = 0;
+                preyUnit.Unit.SavedCopy = null;
+                preyUnit.Unit.SavedVillage = null;
+                preyUnit.Unit.RemoveTrait(Traits.Reincarnation);
+                preyUnit.Unit.RemoveTrait(Traits.InfiniteReincarnation);
+                preyUnit.Unit.RemoveTrait(Traits.Transmigration);
+                preyUnit.Unit.RemoveTrait(Traits.InfiniteTransmigration);
+                preyUnit.Unit.RemoveTrait(Traits.Eternal);
+                preyUnit.Unit.RemoveTrait(Traits.LuckySurvival);
+                preyUnit.Unit.RemoveTrait(Traits.Reformer);
+                preyUnit.Unit.RemoveTrait(Traits.TheGreatEscape);
+            }
+            else
+            {
+                preyUnit.Unit.LevelDown();
+                preyUnit.Unit.SetExp(preyUnit.Unit.Experience - (preyUnit.Unit.Experience - prevLevelExp));
+                preyDamage = 0;
+            }
+            if (preyUnit.Unit.Level == 0) preyDamage = 1;
+            actor.Unit.GiveRawExp(Math.Max(1, (int)(preyUnit.Unit.Experience - prevLevelExp)));
         }
         if (preyUnit.Unit.IsThisCloseToDeath(preyDamage))
         {
@@ -1526,14 +1575,39 @@ public class PredatorComponent
 
             if (speedFactor > 4f && speedFactor < 1000)
                 speedFactor = 4f;
+            speedFactor *= Config.AbsorbSpeedMult + (Config.AbsorbBoostDeadOnly && AlivePrey >= 1 ? 0 : Config.AbsorbRamp * (actor.RampStacks >= Config.DigestionRampCap && Config.DigestionRampCap > 0 ? Config.DigestionRampCap : (float)Math.Floor(actor.RampStacks)));
+
+            if (Config.AbsorbRateDivision)
+            {
+                int prey_in_loc = PreyInLocation(preyUnit.Location, false);
+                speedFactor /= prey_in_loc > 0 ? prey_in_loc : 1;
+
+            }
+
             int healthReduction = (int)Math.Max(Math.Round(preyUnit.Unit.MaxHealth * speedFactor / 15), 1);
             if (healthReduction >= preyUnit.Unit.MaxHealth + preyUnit.Unit.Health)
                 healthReduction = preyUnit.Unit.MaxHealth + preyUnit.Unit.Health + 1;
             preyUnit.Actor.SubtractHealth(healthReduction);
+            
             totalHeal += Math.Max((int)(healthReduction / 2 * preyUnit.Unit.TraitBoosts.Outgoing.Nutrition * unit.TraitBoosts.Incoming.Nutrition), 1);
             var baseManaGain = healthReduction * (preyUnit.Unit.TraitBoosts.Outgoing.ManaAbsorbHundreths + unit.TraitBoosts.Incoming.ManaAbsorbHundreths);
             var totalManaGain = baseManaGain / 100 + (State.Rand.Next(100) < (baseManaGain % 100) ? 1 : 0);
-            unit.RestoreMana(totalManaGain);
+            float resource_boost = (actor.RampStacks >= Config.DigestionRampCap && Config.DigestionRampCap > 0 ? Config.DigestionRampCap : (float)Math.Floor(actor.RampStacks));
+            if (Config.AbsorbResourceModBoost == 1)
+            {
+                totalHeal = (int)(totalHeal * (Config.AbsorbResourceMod * resource_boost));
+                unit.RestoreMana((int)(totalManaGain * (Config.AbsorbResourceMod * resource_boost)));
+            }
+            else if (Config.AbsorbResourceModBoost == 2)
+            {
+                totalHeal = (int)(totalHeal * (Config.AbsorbResourceMod + resource_boost));
+                unit.RestoreMana((int)(totalManaGain * (Config.AbsorbResourceMod + resource_boost)));
+            }
+            else
+            {
+                totalHeal = (int)(totalHeal * Config.AbsorbResourceMod);
+                unit.RestoreMana((int)(totalManaGain * Config.AbsorbResourceMod));
+            }
             foreach (IVoreCallback callback in Callbacks)
             {
                 if (!callback.OnAbsorption(preyUnit, actor, location))
@@ -1602,7 +1676,6 @@ public class PredatorComponent
                     TacticalUtilities.Log.RegisterAbsorb(unit, preyUnit.Unit, Location(preyUnit));
                 }
                 unit.GiveScaledExp(8 * preyUnit.Unit.ExpMultiplier, unit.Level - preyUnit.Unit.Level, true);
-
                 AbsorptionEffect(preyUnit, Location(preyUnit));
                 if (!State.GameManager.TacticalMode.turboMode)
                     actor.SetAbsorbtionMode();

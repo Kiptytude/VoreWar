@@ -10,7 +10,7 @@ using UnityEngine;
 public static class State
 {
     static int saveErrors = 0;
-    public const string Version = "42B";
+    public const string Version = "43C";
     public static World World;
     public static Rand Rand = new Rand();
     public static NameGenerator NameGen;
@@ -85,6 +85,10 @@ public static class State
                 File.Copy($"{Application.streamingAssetsPath}{Path.DirectorySeparatorChar}femaleAabayx.txt", $"{StorageDirectory}femaleAabayx.txt");
             if (File.Exists($"{StorageDirectory}maleAabayx.txt") == false)
                 File.Copy($"{Application.streamingAssetsPath}{Path.DirectorySeparatorChar}maleAabayx.txt", $"{StorageDirectory}maleAabayx.txt");
+            if (File.Exists($"{StorageDirectory}maleFeralOrcas.txt") == false)
+                File.Copy($"{Application.streamingAssetsPath}{Path.DirectorySeparatorChar}maleFeralOrcas.txt", $"{StorageDirectory}maleFeralOrcas.txt");
+            if (File.Exists($"{StorageDirectory}femaleFeralOrcas.txt") == false)
+                File.Copy($"{Application.streamingAssetsPath}{Path.DirectorySeparatorChar}femaleFeralOrcas.txt", $"{StorageDirectory}femaleFeralOrcas.txt");
         }
         catch
         {
@@ -512,10 +516,10 @@ public static class State
                         {
                             foreach (Unit unit in army.Units)
                             {
-                                if (unit.Race == Race.Abakhanskya) //Adjustment for the added clothing item
+                                if (unit.Race == Race.Cierihaka) //Adjustment for the added clothing item
                                 {
                                     unit.FixedGear = true;
-                                    unit.Items[0] = State.World.ItemRepository.GetSpecialItem(SpecialItems.AbakWeapon);
+                                    unit.Items[0] = State.World.ItemRepository.GetSpecialItem(SpecialItems.CierihakaWeapon);
                                 }
 
                             }

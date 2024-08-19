@@ -85,6 +85,7 @@ public class ContentSettings : MonoBehaviour
     public Slider DefualtTacticalSightRange;
     public Slider NightStrategicSightReduction;
     public InputField RevealTurn;
+    public Dropdown DayNightMonsterMovemnt;
 
 
     public Toggle CombatComplicationsEnabled;
@@ -128,6 +129,7 @@ public class ContentSettings : MonoBehaviour
     public TMP_Dropdown FeedingType;
     public TMP_Dropdown FourthWallBreakType;
     public TMP_Dropdown UBConversion;
+    public TMP_Dropdown GoddessMercy;
     public TMP_Dropdown SucklingPermission;
     public TMP_Dropdown WinterStuff;
 
@@ -166,7 +168,6 @@ public class ContentSettings : MonoBehaviour
     public Toggle Scat;
     public Toggle ScatV2;
     public Toggle ScatBones;
-    public Toggle CondomsForCV;
     public Toggle ClothingDiscards;
 
     public Toggle ErectionsFromVore;
@@ -189,6 +190,7 @@ public class ContentSettings : MonoBehaviour
     public Toggle Defections;
 
     public Toggle Cumstains;
+    public Toggle CondomsForCV;
 
     public Toggle MonstersCanReform;
 
@@ -201,6 +203,7 @@ public class ContentSettings : MonoBehaviour
     public GameObject AppearancePanel;
     public GameObject VoreMiscPanel;
     public GameObject VoreMisc2Panel;
+    public GameObject VoreMisc3Panel;
 
     public Button GameplayButton;
     public Button RacesButton;
@@ -208,6 +211,7 @@ public class ContentSettings : MonoBehaviour
     public Button AppearanceButton;
     public Button VoreMiscButton;
     public Button VoreMisc2Button;
+    public Button VoreMisc3Button;
 
     List<ToggleObject> Toggles;
 
@@ -224,6 +228,7 @@ public class ContentSettings : MonoBehaviour
     public Slider ScoutMax;
     public Slider ArmyCreationMPMod;
     public Slider ArmyCreationMPCurve;
+    public Toggle MonsterScoutMP;
 
     public Slider CustomEventFrequency;
 
@@ -253,6 +258,26 @@ public class ContentSettings : MonoBehaviour
     public Toggle StatBoostsAffectMaxHP;
     public Toggle OverfeedingDamage;
 
+    public Slider DigestionSpeedMult;
+    public Slider AbsorbSpeedMult;
+    public Slider BellyRubEffMult;
+    public Slider BellyRubsPerTurn;
+    public Slider DigestionRamp;
+    public Slider DigestionRampTurn;
+    public Slider DigestionRampCap;
+    public Slider DigestionRampLoss;
+    public Slider AbsorbRamp;
+    public Slider AbsorbResourceMod;
+    public Toggle AbsorbLoss;
+    public Toggle AbsorbBoostDeadOnly;
+    public TMP_Dropdown AbsorbResourceModBoost;
+    public Slider DigestionCap;
+    public Slider DigestionFlatDmg;
+    public Slider DigestionGraceTurns;
+    public Toggle DigestionDamageDivision;
+    public Toggle AbsorbRateDivision;
+    public Slider SurrenderedPredEscapeMult;
+    public Slider SurrenderedPredAutoRegur;
 
 
     List<ToggleObject> MercToggles;
@@ -366,6 +391,10 @@ public class ContentSettings : MonoBehaviour
             new ToggleObject(StatGraze, "StatGraze", false),
             new ToggleObject(StatBoostsAffectMaxHP, "StatBoostsAffectMaxHP", false),
             new ToggleObject(OverfeedingDamage, "OverfeedingDamage", false),
+            new ToggleObject(DigestionDamageDivision, "DigestionDamageDivision", false),
+            new ToggleObject(AbsorbRateDivision, "AbsorbRateDivision", false),
+            new ToggleObject(AbsorbLoss, "AbsorbLoss", false),
+            new ToggleObject(AbsorbBoostDeadOnly, "AbsorbBoostDeadOnly", false),
 
         };
         MercToggles = new List<ToggleObject>();
@@ -380,7 +409,7 @@ public class ContentSettings : MonoBehaviour
 
         foreach (Race race in (Race[])Enum.GetValues(typeof(Race)))
         { //Done separately to keep their initial order for now
-            if (race >= Race.Vagrants && race < Race.Selicia && race != Race.YoungWyvern && race != Race.DarkSwallower && race != Race.Collectors && race != Race.CoralSlugs
+            if (race >= Race.Vagrants && race < Race.Selicia && race != Race.WyvernMatron && race != Race.DarkSwallower && race != Race.Collectors && race != Race.CoralSlugs
                 && race != Race.SpitterSlugs && race != Race.SpringSlugs && race != Race.Raptor && race != Race.WarriorAnts)
             {
                 var spawner = CreateMonsterPanel(race);
@@ -504,6 +533,21 @@ public class ContentSettings : MonoBehaviour
             case Race.Goodra:
                 tooltip.value = 257;
                 break;
+            case Race.Whisp:
+                tooltip.value = 305;
+                break;
+            case Race.FeralHorses:
+                tooltip.value = 306;
+                break;
+            case Race.FeralFox:
+                tooltip.value = 307;
+                break;
+            case Race.Terminid:
+                tooltip.value = 308;
+                break;
+            case Race.FeralOrcas:
+                tooltip.value = 309;
+                break;
         }
         return spawner;
     }
@@ -540,12 +584,14 @@ public class ContentSettings : MonoBehaviour
         AppearancePanel.SetActive(false);
         VoreMiscPanel.SetActive(false);
         VoreMisc2Panel.SetActive(false);
+        VoreMisc3Panel.SetActive(false);
         GameplayButton.interactable = false;
         RacesButton.interactable = true;
         GenderButton.interactable = true;
         AppearanceButton.interactable = true;
         VoreMiscButton.interactable = true;
         VoreMisc2Button.interactable = true;
+        VoreMisc3Button.interactable = true;
     }
 
     public void ActivateRaces()
@@ -556,12 +602,14 @@ public class ContentSettings : MonoBehaviour
         AppearancePanel.SetActive(false);
         VoreMiscPanel.SetActive(false);
         VoreMisc2Panel.SetActive(false);
+        VoreMisc3Panel.SetActive(false);
         GameplayButton.interactable = true;
         RacesButton.interactable = false;
         GenderButton.interactable = true;
         AppearanceButton.interactable = true;
         VoreMiscButton.interactable = true;
         VoreMisc2Button.interactable = true;
+        VoreMisc3Button.interactable = true;
         MonsterSpawnerFolder.position = new Vector3();
     }
     public void ActivateGender()
@@ -572,6 +620,7 @@ public class ContentSettings : MonoBehaviour
         AppearancePanel.SetActive(false);
         VoreMiscPanel.SetActive(false);
         VoreMisc2Panel.SetActive(false);
+        VoreMisc3Panel.SetActive(false);
         GameplayButton.interactable = true;
         RacesButton.interactable = true;
         GenderButton.interactable = false;
@@ -587,12 +636,14 @@ public class ContentSettings : MonoBehaviour
         AppearancePanel.SetActive(true);
         VoreMiscPanel.SetActive(false);
         VoreMisc2Panel.SetActive(false);
+        VoreMisc3Panel.SetActive(false);
         GameplayButton.interactable = true;
         RacesButton.interactable = true;
         GenderButton.interactable = true;
         AppearanceButton.interactable = false;
         VoreMiscButton.interactable = true;
         VoreMisc2Button.interactable = true;
+        VoreMisc3Button.interactable = true;
     }
 
     public void ActivateVoreMisc()
@@ -603,12 +654,14 @@ public class ContentSettings : MonoBehaviour
         AppearancePanel.SetActive(false);
         VoreMiscPanel.SetActive(true);
         VoreMisc2Panel.SetActive(false);
+        VoreMisc3Panel.SetActive(false);
         GameplayButton.interactable = true;
         RacesButton.interactable = true;
         GenderButton.interactable = true;
         AppearanceButton.interactable = true;
         VoreMiscButton.interactable = false;
         VoreMisc2Button.interactable = true;
+        VoreMisc3Button.interactable = true;
     }
 
     public void ActivateVoreMisc2()
@@ -619,12 +672,31 @@ public class ContentSettings : MonoBehaviour
         AppearancePanel.SetActive(false);
         VoreMiscPanel.SetActive(false);
         VoreMisc2Panel.SetActive(true);
+        VoreMisc3Panel.SetActive(false);
         GameplayButton.interactable = true;
         RacesButton.interactable = true;
         GenderButton.interactable = true;
         AppearanceButton.interactable = true;
         VoreMiscButton.interactable = true;
         VoreMisc2Button.interactable = false;
+        VoreMisc3Button.interactable = true;
+    }
+    public void ActivateVoreMisc3()
+    {
+        GameplayPanel.SetActive(false);
+        RacesPanel.SetActive(false);
+        GenderPanel.SetActive(false);
+        AppearancePanel.SetActive(false);
+        VoreMiscPanel.SetActive(false);
+        VoreMisc2Panel.SetActive(false);
+        VoreMisc3Panel.SetActive(true);
+        GameplayButton.interactable = true;
+        RacesButton.interactable = true;
+        GenderButton.interactable = true;
+        AppearanceButton.interactable = true;
+        VoreMiscButton.interactable = true;
+        VoreMisc2Button.interactable = true;
+        VoreMisc3Button.interactable = false;
     }
 
     public void ConfirmRefresh()
@@ -676,8 +748,24 @@ public class ContentSettings : MonoBehaviour
         Config.World.BurpFraction = PlayerPrefs.GetFloat("BurpFraction", .1f);
         Config.World.FartFraction = PlayerPrefs.GetFloat("FartFraction", .1f);
         Config.World.WeightGainFraction = PlayerPrefs.GetFloat("WeightGainFraction", .5f);
+        Config.World.DigestionSpeedMult = PlayerPrefs.GetFloat("DigestionSpeedMult", 1);
+        Config.World.AbsorbSpeedMult = PlayerPrefs.GetFloat("AbsorbSpeedMult", 1);
+        Config.World.AbsorbResourceMod = PlayerPrefs.GetFloat("AbsorbResourceMod", 1);
+        Config.World.BellyRubEffMult = PlayerPrefs.GetFloat("BellyRubEffMult", 1);
+        Config.World.BellyRubsPerTurn = PlayerPrefs.GetInt("BellyRubsPerTurn", 1);
+        Config.World.DigestionRamp = PlayerPrefs.GetFloat("DigestionRamp", 0);
+        Config.World.DigestionRampTurn = PlayerPrefs.GetInt("DigestionRampTurn", 1);
+        Config.World.DigestionRampCap = PlayerPrefs.GetInt("DigestionRampCap", -1);
+        Config.World.DigestionRampLoss = PlayerPrefs.GetFloat("DigestionRampLoss", 1);
+        Config.World.AbsorbResourceModBoost = PlayerPrefs.GetInt("AbsorbResourceModBoost", 0);
+        Config.World.AbsorbRamp = PlayerPrefs.GetFloat("AbsorbRamp", 0);
+        Config.World.DigestionCap = PlayerPrefs.GetFloat("DigestionCap", 0);
+        Config.World.DigestionFlatDmg = PlayerPrefs.GetFloat("DigestionFlatDmg", 0);
+        Config.World.DigestionGraceTurns = PlayerPrefs.GetInt("DigestionGraceTurns", 0);
+        Config.World.SurrenderedPredEscapeMult = PlayerPrefs.GetFloat("SurrenderedPredEscapeMult", 1);
+        Config.World.SurrenderedPredAutoRegur = PlayerPrefs.GetFloat("SurrenderedPredAutoRegur", 0);
         Config.World.ArmyMP = PlayerPrefs.GetInt("ArmyMP", 3);
-        Config.World.ScoutMP = PlayerPrefs.GetInt("ScoutMP", 6);
+        Config.World.ScoutMP = PlayerPrefs.GetInt("ScoutMP", 3);
         Config.World.ScoutMax = PlayerPrefs.GetInt("ScoutMax", 4);
         Config.World.ArmyCreationMPMod = PlayerPrefs.GetFloat("ArmyCreationMPMod", 0);
         Config.World.ArmyCreationMPCurve = PlayerPrefs.GetFloat("ArmyCreationMPCurve", 1f);
@@ -692,6 +780,7 @@ public class ContentSettings : MonoBehaviour
         Config.World.FeedingType = (FeedingType)PlayerPrefs.GetInt("FeedingType", 0);
         Config.World.FourthWallBreakType = (FourthWallBreakType)PlayerPrefs.GetInt("FourthWallBreakType", 0);
         Config.World.UBConversion = (UBConversion)PlayerPrefs.GetInt("UBConversion", 0);
+        Config.World.GoddessMercy = (GoddessMercy)PlayerPrefs.GetInt("GoddessMercy", 0);
         Config.World.SucklingPermission = (SucklingPermission)PlayerPrefs.GetInt("SucklingPermission", 0);
         Config.World.EscapeRate = PlayerPrefs.GetInt("EscapeRate", 0);
         Config.World.RandomEventRate = PlayerPrefs.GetInt("RandomEventRate", 0);
@@ -722,12 +811,18 @@ public class ContentSettings : MonoBehaviour
                 PlayerPrefs.GetFloat($"{spawner.race} Confidence", 6f),
                 PlayerPrefs.GetInt($"{spawner.race} Min Army Size", 8),
                 PlayerPrefs.GetInt($"{spawner.race} Max Army Size", 12),
-                PlayerPrefs.GetInt($"{spawner.race} Turn Order", 40)
+                PlayerPrefs.GetInt($"{spawner.race} Turn Order", 40),
+                PlayerPrefs.GetInt($"{spawner.race} Monster Scout MP", 0) == 1
                 );
             var type = PlayerPrefs.GetInt($"{spawner.race} Conquest Type", 0);
             if (type != 0)
             {
                 Config.World.SpawnerInfo[spawner.race].SetSpawnerType((Config.MonsterConquestType)(type - 2));
+            }
+            var dn_type = PlayerPrefs.GetInt($"{spawner.race} D/N Move Type", 0);
+            if (type != 0)
+            {
+                Config.World.SpawnerInfo[spawner.race].SetSpawnerCycleMoveType((Config.DayNightMovemntType)(dn_type));
             }
         }
 
@@ -841,6 +936,22 @@ public class ContentSettings : MonoBehaviour
         BurpFraction.value = Config.BurpFraction;
         FartFraction.value = Config.FartFraction;
         WeightGainFraction.value = Config.WeightGainFraction;
+        DigestionSpeedMult.value = Config.DigestionSpeedMult;
+        AbsorbSpeedMult.value = Config.AbsorbSpeedMult;
+        DigestionRamp.value = Config.DigestionRamp;
+        BellyRubEffMult.value = Config.BellyRubEffMult;
+        BellyRubsPerTurn.value = Config.BellyRubsPerTurn;
+        DigestionRampTurn.value = Config.DigestionRampTurn;
+        DigestionRampCap.value = Config.DigestionRampCap;
+        DigestionRampLoss.value = Config.DigestionRampLoss;
+        AbsorbRamp.value = Config.AbsorbRamp;
+        AbsorbResourceMod.value = Config.AbsorbResourceMod;
+        DigestionCap.value = Config.DigestionCap;
+        DigestionFlatDmg.value = Config.DigestionFlatDmg;
+        DigestionGraceTurns.value = Config.DigestionGraceTurns;
+        SurrenderedPredEscapeMult.value = Config.SurrenderedPredEscapeMult;
+        SurrenderedPredAutoRegur.value = Config.SurrenderedPredAutoRegur;
+        AbsorbResourceModBoost.value = Config.AbsorbResourceModBoost;
         ArmyMP.value = Config.ArmyMP;
         ScoutMP.value = Config.ScoutMP;
         ScoutMax.value = Config.ScoutMax;
@@ -856,6 +967,7 @@ public class ContentSettings : MonoBehaviour
         FeedingType.value = (int)Config.FeedingType;
         FourthWallBreakType.value = (int)Config.FourthWallBreakType;
         UBConversion.value = (int)Config.UBConversion;
+        GoddessMercy.value = (int)Config.GoddessMercy;
         SucklingPermission.value = (int)Config.SucklingPermission;
         WinterStuff.value = (int)Config.World.WinterStuff;
         DiplomacyScale.value = (int)Config.DiplomacyScale;
@@ -872,6 +984,7 @@ public class ContentSettings : MonoBehaviour
         FeedingType.RefreshShownValue();
         FourthWallBreakType.RefreshShownValue();
         UBConversion.RefreshShownValue();
+        GoddessMercy.RefreshShownValue();
         SucklingPermission.RefreshShownValue();
         DiplomacyScale.RefreshShownValue();
         MaxSpellLevelDrop.RefreshShownValue();
@@ -896,6 +1009,7 @@ public class ContentSettings : MonoBehaviour
             spawner.SpawnAttempts.text = info.SpawnAttempts.ToString();
             spawner.TurnOrder.text = info.TurnOrder.ToString();
             spawner.AddonRace.isOn = info.AddOnRace;
+            spawner.MonsterScoutMP.isOn = info.MonsterScoutMP;
             if (info.UsingCustomType)
             {
                 spawner.ConquestType.value = (int)info.ConquestType + 2;
@@ -905,6 +1019,17 @@ public class ContentSettings : MonoBehaviour
             {
                 spawner.ConquestType.value = 0;
                 spawner.ConquestType.RefreshShownValue();
+            }
+
+            if (info.DNRestrictOn)
+            {
+                spawner.DayNightMonsterMovemnt.value = (int)info.DayNightMovemntType;
+                spawner.DayNightMonsterMovemnt.RefreshShownValue();
+            }
+            else
+            {
+                spawner.DayNightMonsterMovemnt.value = 0;
+                spawner.DayNightMonsterMovemnt.RefreshShownValue();
             }
         }
 
@@ -1036,6 +1161,22 @@ public class ContentSettings : MonoBehaviour
         Config.World.BurpFraction = BurpFraction.value;
         Config.World.FartFraction = FartFraction.value;
         Config.World.WeightGainFraction = WeightGainFraction.value;
+        Config.World.DigestionSpeedMult = DigestionSpeedMult.value;
+        Config.World.AbsorbSpeedMult = AbsorbSpeedMult.value;
+        Config.World.BellyRubEffMult = BellyRubEffMult.value;
+        Config.World.BellyRubsPerTurn = (int)BellyRubsPerTurn.value;
+        Config.World.DigestionRamp = DigestionRamp.value;
+        Config.World.DigestionRampTurn = (int)DigestionRampTurn.value;
+        Config.World.DigestionRampCap = (int)DigestionRampCap.value;
+        Config.World.DigestionRampLoss = DigestionRampLoss.value;
+        Config.World.AbsorbRamp = AbsorbRamp.value;
+        Config.World.AbsorbResourceMod = AbsorbResourceMod.value;
+        Config.World.DigestionCap = DigestionCap.value;
+        Config.World.DigestionFlatDmg = DigestionFlatDmg.value;
+        Config.World.DigestionGraceTurns = (int)DigestionGraceTurns.value;
+        Config.World.SurrenderedPredEscapeMult = SurrenderedPredEscapeMult.value;
+        Config.World.SurrenderedPredAutoRegur = SurrenderedPredAutoRegur.value;
+        Config.World.AbsorbResourceModBoost = AbsorbResourceModBoost.value;
         Config.World.ArmyMP = (int)ArmyMP.value;
         Config.World.ScoutMP = (int)ScoutMP.value;
         Config.World.ScoutMax = (int)ScoutMax.value;
@@ -1050,6 +1191,7 @@ public class ContentSettings : MonoBehaviour
         Config.World.FourthWallBreakType = (FourthWallBreakType)FourthWallBreakType.value;
         Config.World.FeedingType = (FeedingType)FeedingType.value;
         Config.World.UBConversion = (UBConversion)UBConversion.value;
+        Config.World.GoddessMercy = (GoddessMercy)GoddessMercy.value;
         Config.World.SucklingPermission = (SucklingPermission)SucklingPermission.value;
         Config.World.WinterStuff = (Config.SeasonalType)WinterStuff.value;
         Config.World.DiplomacyScale = (DiplomacyScale)DiplomacyScale.value;
@@ -1099,6 +1241,7 @@ public class ContentSettings : MonoBehaviour
             info.Enabled = spawner.SpawnEnabled.isOn;
             info.spawnRate = spawner.SpawnRate.value;
             info.AddOnRace = spawner.AddonRace.isOn;
+            info.MonsterScoutMP = spawner.MonsterScoutMP.isOn;
             if (int.TryParse(spawner.ScalingRate.text, out int scaling))
                 info.scalingFactor = scaling;
             else
@@ -1144,6 +1287,10 @@ public class ContentSettings : MonoBehaviour
 
             if (spawner.ConquestType.value > 0)
                 info.SetSpawnerType((Config.MonsterConquestType)(spawner.ConquestType.value - 2));
+            else
+                info.UsingCustomType = false;
+            if (spawner.DayNightMonsterMovemnt.value > 0)
+                info.SetSpawnerCycleMoveType((Config.DayNightMovemntType)(spawner.DayNightMonsterMovemnt.value));
             else
                 info.UsingCustomType = false;
         }
@@ -1221,6 +1368,22 @@ public class ContentSettings : MonoBehaviour
         PlayerPrefs.SetFloat("BurpFraction", BurpFraction.value);
         PlayerPrefs.SetFloat("FartFraction", FartFraction.value);
         PlayerPrefs.SetFloat("WeightGainFraction", WeightGainFraction.value);
+        PlayerPrefs.SetFloat("DigestionSpeedMult", DigestionSpeedMult.value);
+        PlayerPrefs.SetFloat("AbsorbSpeedMult", AbsorbSpeedMult.value);
+        PlayerPrefs.SetFloat("BellyRubEffMult", BellyRubEffMult.value);
+        PlayerPrefs.SetInt("BellyRubEffMult", (int)BellyRubsPerTurn.value);
+        PlayerPrefs.SetFloat("DigestionRamp", DigestionRamp.value);
+        PlayerPrefs.SetInt("DigestionRampTurn", (int)DigestionRampTurn.value);
+        PlayerPrefs.SetInt("DigestionRampCap", (int)DigestionRampCap.value);
+        PlayerPrefs.SetFloat("DigestionRampLoss", DigestionRampLoss.value);
+        PlayerPrefs.SetFloat("AbsorbRamp", AbsorbRamp.value);
+        PlayerPrefs.SetFloat("AbsorbResourceMod", AbsorbResourceMod.value);
+        PlayerPrefs.SetFloat("DigestionCap", DigestionCap.value);
+        PlayerPrefs.SetFloat("DigestionFlatDmg", DigestionFlatDmg.value);
+        PlayerPrefs.SetInt("DigestionGraceTurns", (int)DigestionGraceTurns.value);
+        PlayerPrefs.SetFloat("SurrenderedPredEscapeMult", SurrenderedPredEscapeMult.value);
+        PlayerPrefs.SetFloat("SurrenderedPredAutoRegur", SurrenderedPredAutoRegur.value);
+        PlayerPrefs.SetInt("AbsorbResourceModBoost", AbsorbResourceModBoost.value);
         PlayerPrefs.SetInt("ArmyMP", (int)ArmyMP.value);
         PlayerPrefs.SetInt("ScoutMP", (int)ScoutMP.value);
         PlayerPrefs.SetInt("ScoutMax", (int)ScoutMax.value);
@@ -1237,6 +1400,7 @@ public class ContentSettings : MonoBehaviour
         PlayerPrefs.SetInt("FeedingType", FeedingType.value);
         PlayerPrefs.SetInt("FourthWallBreakType", FourthWallBreakType.value);
         PlayerPrefs.SetInt("UBConversion", UBConversion.value);
+        PlayerPrefs.SetInt("GoddessMercy", GoddessMercy.value);
         PlayerPrefs.SetInt("SucklingPermission", SucklingPermission.value);
         PlayerPrefs.SetInt("DiplomacyScale", DiplomacyScale.value);
         PlayerPrefs.SetInt("MaxSpellLevelDrop", MaxSpellLevelDrop.value + 1);
@@ -1314,6 +1478,8 @@ public class ContentSettings : MonoBehaviour
 
             PlayerPrefs.SetInt($"{spawner.race} Conquest Type", spawner.ConquestType.value);
 
+            PlayerPrefs.SetInt($"{spawner.race} D/N Move Type", spawner.DayNightMonsterMovemnt.value);
+
             if (State.World?.AllActiveEmpires != null)
             {
                 var emp = State.World.GetEmpireOfRace(spawner.race);
@@ -1334,6 +1500,18 @@ public class ContentSettings : MonoBehaviour
     {
         DiplomacyScale.interactable = Diplomacy.isOn;
         LockedAIRelations.interactable = Diplomacy.isOn;
+    }
+
+    public void SurrenderChanged()
+    {
+        if (AutoSurrender.isOn == true)
+        {
+            GoddessMercy.interactable = true;
+        }
+        else if (AutoSurrender.isOn == false)
+        {
+            GoddessMercy.interactable = false;
+        }
     }
 
     public void Exit()
@@ -1496,4 +1674,5 @@ public class ContentSettings : MonoBehaviour
         DefualtTacticalSightRange.interactable = DayNightEnabled.isOn;
         NightStrategicSightReduction.interactable = DayNightEnabled.isOn;
     }
+
 }

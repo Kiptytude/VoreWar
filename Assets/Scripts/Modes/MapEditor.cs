@@ -491,6 +491,18 @@ public class MapEditor : SceneBase
 			case StrategicDoodadType.SpawnerGoodra:
                 Tooltip.text = $"Place a monster spawn location for Goodra, they have to spawn within 2 tiles of a spawner if at least one exists";
                 break;
+            case StrategicDoodadType.SpawnerFeralHorses:
+                Tooltip.text = $"Place a monster spawn location for Feral Horses, they have to spawn within 2 tiles of a spawner if at least one exists";
+                break;
+            case StrategicDoodadType.SpawnerFeralFox:
+                Tooltip.text = $"Place a monster spawn location for Feral Foxes, they have to spawn within 2 tiles of a spawner if at least one exists";
+                break;
+            case StrategicDoodadType.SpawnerTerminid:
+                Tooltip.text = $"Place a monster spawn location for the Terminids, they have to spawn within 2 tiles of a spawner if at least one exists";
+                break;
+            case StrategicDoodadType.SpawnerFeralOrcas:
+                Tooltip.text = $"Place a monster spawn location for Feral Orcas, they have to spawn within 2 tiles of a spawner if at least one exists";
+                break;
             default:
                 Tooltip.text = $"Place {type} tile\n";
                 break;
@@ -509,7 +521,7 @@ public class MapEditor : SceneBase
         {
             foreach (Army army in empire.Armies)
             {
-                if (army.Side < 31)
+                if (army.Side < 32)
                 {
                     if (army.BannerStyle > (int)BannerTypes.VoreWar && CustomBannerTest.Sprites[army.BannerStyle - 23] != null)
                     {

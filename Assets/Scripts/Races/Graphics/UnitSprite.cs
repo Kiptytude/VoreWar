@@ -22,6 +22,7 @@ public class UnitSprite : MonoBehaviour
 
     CompleteSprite _CompleteSprite;
     Animator animator;
+    Animator belly2Animator;
     Animator ballsAnimator;
     Animator boobsAnimator;
     Animator SecondBoobsAnimator;
@@ -305,6 +306,17 @@ public class UnitSprite : MonoBehaviour
                     animator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animations/Actors");
                 animator.enabled = true;
             }
+            
+            belly2Animator = CompleteSprite.GetSpriteOfType(SpriteType.SecondaryBelly)?.GameObject.GetComponentInParent<Animator>();
+            if (belly2Animator != null)
+            {
+                var raceData = Races.GetRace(actor.Unit);
+                if (raceData.GentleAnimation)
+                    belly2Animator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animations/ActorsGentle");
+                else
+                    belly2Animator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animations/Actors");
+                belly2Animator.enabled = true;
+            }
 
             ballsAnimator = CompleteSprite.GetSpriteOfType(SpriteType.Balls)?.GameObject.GetComponentInParent<Animator>();
             if (ballsAnimator != null)
@@ -444,6 +456,16 @@ public class UnitSprite : MonoBehaviour
         if (ran == 1) animator.SetTrigger("wriggle");
         if (ran == 2) animator.SetTrigger("wriggle2");
         if (ran == 3) animator.SetTrigger("wriggle3");
+    }
+    public void AnimateSecondBelly(float odds)
+    {
+        if (belly2Animator == null) return;
+        if (Random.value > odds) return;
+        if (!belly2Animator.GetCurrentAnimatorStateInfo(0).IsName("none")) return;
+        int ran = Random.Range(0, 4); // 0 up to 3
+        if (ran == 1) belly2Animator.SetTrigger("wriggle");
+        if (ran == 2) belly2Animator.SetTrigger("wriggle2");
+        if (ran == 3) belly2Animator.SetTrigger("wriggle3");
     }
 
     public void AnimateBoobs(float odds)

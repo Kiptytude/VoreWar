@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using UnityEngine;
 using static UnityEngine.UI.CanvasScaler;
 
 class UnitEditor : UnitCustomizer
@@ -178,6 +179,7 @@ class UnitEditor : UnitCustomizer
                 Unit.Pronouns[4] = "themself";
                 CustomizerUI.Quantification.value = 1;
             }
+            CheckClothes(Unit);
             RefreshPronouns(Unit);
             Unit.ReloadTraits();
             Unit.InitializeTraits();

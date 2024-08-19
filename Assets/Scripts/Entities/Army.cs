@@ -133,7 +133,7 @@ public class Army
         JustCreated = true;
 
         NameArmy(empire);
-        if (empire.Side < 30)
+        if (empire.Side < 32)
             BannerStyle = empire.BannerType;
         if ((State.World.Turn == 1 && Config.FirstTurnArmiesIdle) || 0 > RemainingMP)
             RemainingMP = 0;
@@ -206,7 +206,7 @@ public class Army
                 if ((int)SCooldownOffset > 0f)
                     return ((int)SCooldownOffset);
                 else
-                    return 0;
+                    return 1;
             }
             return (Config.ArmyMP + Config.ScoutMP) + (int)(Config.ArmyMP * MPMod);
         }
@@ -216,7 +216,7 @@ public class Army
            if (-1f > MPMod)
                 return 0;
            if (SCooldown > (Config.ArmyMP + (int)(Config.ArmyMP * MPMod)))
-                return 0;
+                return 1;
             return Config.ArmyMP + (int)(Config.ArmyMP * MPMod) - (int)SCooldown;
         }
     }

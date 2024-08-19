@@ -2240,6 +2240,10 @@ Turns: {currentTurn}
                         else if (SelectedUnit.Surrendered == false)
                         {
                             SelectedUnit.Surrendered = true;
+                            if (State.Rand.NextDouble() <= Config.SurrenderedPredAutoRegur)
+                            {
+                                SelectedUnit.PredatorComponent?.FreeAnyAlivePrey();
+                            }
                             SelectedUnit.SurrenderedThisTurn = true;
                             RebuildInfo();
                         }
@@ -2640,7 +2644,10 @@ Turns: {currentTurn}
                     else
                         unit.UnitSprite.AnimateBelly(unit.PredatorComponent.PreyNearLocation(PreyLocation.stomach, true) * 0.0022f);
                 }
-
+                if (unit.PredatorComponent?.Stomach2ndFullness > 0 && unit.PredatorComponent?.AlivePrey > 0)
+                {
+                    unit.UnitSprite.AnimateSecondBelly(unit.PredatorComponent.PreyNearLocation(PreyLocation.stomach2, true) * 0.0022f);
+                }
                 if (unit.PredatorComponent?.BallsFullness > 0 && unit.PredatorComponent?.AlivePrey > 0)
                 {
                     unit.UnitSprite.AnimateBalls(unit.PredatorComponent.PreyNearLocation(PreyLocation.balls, true) * 0.0022f);
@@ -3622,7 +3629,7 @@ Turns: {currentTurn}
                         CheckAlignment(child, units[i]);
                     }
                 }*/
-                units[i].ReceivedRub = false; // Hedonists now get just as much benefit out of mind-control effects
+                units[i].RubCount = 0; // Hedonists now get just as much benefit out of mind-control effects
                 units[i].DigestCheck(); //Done first so that freed units are checked properly below
 
             }

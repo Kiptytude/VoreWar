@@ -29,6 +29,12 @@ static class Config
         CompleteDevourAndMoveOn,
         CompleteDevourAndRepopulateFortify,
     }
+    public enum DayNightMovemntType
+    {
+        Off,
+        Day,
+        Night,
+    }
 
     public enum SeasonalType
     {
@@ -37,7 +43,7 @@ static class Config
         Disabled
     }
 
-    public const int NumberOfRaces = 31;
+    public const int NumberOfRaces = 32;
 
     public const int NewItemSlots = 2;
 
@@ -163,6 +169,7 @@ static class Config
     internal static FeedingType FeedingType => World.FeedingType;
     internal static FourthWallBreakType FourthWallBreakType => World.FourthWallBreakType;
     internal static UBConversion UBConversion => World.UBConversion;
+    internal static GoddessMercy GoddessMercy => World.GoddessMercy;
     internal static SucklingPermission SucklingPermission => World.SucklingPermission;
 
     internal static int StartingPopulation => World.StartingPopulation;
@@ -311,6 +318,8 @@ static class Config
     internal static int DefualtTacticalSightRange => World.DefualtTacticalSightRange;
     internal static int NightStrategicSightReduction => World.NightStrategicSightReduction;
     internal static int RevealTurn => World.RevealTurn;
+    internal static DayNightMovemntType DayNightMonsterMovemnt => World.DayNightMonsterMovemnt;
+
 
     internal static bool CombatComplicationsEnabled => World.GetValue("CombatComplicationsEnabled");
     internal static bool StatCrit => World.GetValue("StatCrit");
@@ -354,6 +363,30 @@ static class Config
 
     public static bool StatBoostsAffectMaxHP => World.GetValue("StatBoostsAffectMaxHP");
     public static bool OverfeedingDamage => World.GetValue("OverfeedingDamage");
+
+    public static float DigestionSpeedMult => World.DigestionSpeedMult;
+    public static float AbsorbSpeedMult => World.AbsorbSpeedMult;
+    public static float BellyRubEffMult => World.BellyRubEffMult;
+    public static int BellyRubsPerTurn => World.BellyRubsPerTurn;
+    public static float DigestionRamp => World.DigestionRamp;   
+    public static int DigestionRampTurn => World.DigestionRampTurn;
+    public static float DigestionRampLoss => World.DigestionRampLoss;
+    public static int DigestionRampCap => World.DigestionRampCap;
+    public static float AbsorbRamp => World.AbsorbRamp;
+    public static float AbsorbResourceMod => World.AbsorbResourceMod;
+    public static bool AbsorbLoss => World.GetValue("AbsorbLoss");
+    public static bool AbsorbBoostDeadOnly => World.GetValue("AbsorbBoostDeadOnly");
+    public static float DigestionCap => World.DigestionCap;
+    public static float DigestionFlatDmg => World.DigestionFlatDmg;
+    public static int DigestionGraceTurns => World.DigestionGraceTurns;
+    internal static bool DigestionDamageDivision => World.GetValue("DigestionDamageDivision");
+    internal static bool AbsorbRateDivision => World.GetValue("AbsorbRateDivision");
+    internal static int AbsorbResourceModBoost => World.AbsorbResourceModBoost;
+    public static float SurrenderedPredEscapeMult => World.SurrenderedPredEscapeMult;
+    public static float SurrenderedPredAutoRegur => World.SurrenderedPredAutoRegur;
+
+
+
 
     internal static bool WinterActive()
     {
