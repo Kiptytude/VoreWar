@@ -365,7 +365,7 @@ class MonsterStrategicAI : IStrategicAI
             }
         }
         Debug.Log(timedMovementType);
-        if ((spawner.MonsterScoutMP) && army.RemainingMP > Config.ArmyMP)
+        if ((!spawner.MonsterScoutMP) && army.RemainingMP > Config.ArmyMP)
             army.RemainingMP = Config.ArmyMP;
         if(timedMovementType == Config.DayNightMovemntType.Night && !State.World.IsNight && Config.DayNightEnabled) //DayNight Modification (zero's out monster AP based on their settings)
         {
