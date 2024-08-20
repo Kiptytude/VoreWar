@@ -726,7 +726,24 @@ static class TacticalUtilities
         }
         return pruned_unitList;
     }
-
+    static internal List<Actor_Unit> UnitsWithinRotatingPattern(Vec2i location, int[] TargetTiles, int octant)
+    {
+        int target_box = (int)((Math.Sqrt(TargetTiles.Length) / 2) - 0.5);
+        List<Actor_Unit> pruned_unitList = new List<Actor_Unit>();
+        List<Actor_Unit> unitList = UnitsWithinTiles(new Vec2(location.x, location.y), target_box);
+        List<Vec2i> tile_positions = TilesOnPattern(location, TargetTiles, target_box);
+        foreach (Actor_Unit unit in unitList)
+        {
+            foreach (Vec2i target_tile in tile_positions)
+            {
+                if (unit.Position.x == target_tile.x && unit.Position.y == target_tile.y)
+                {
+                    pruned_unitList.Add(unit);
+                }
+            }
+        }
+        return pruned_unitList;
+    }
     static internal Actor_Unit FindUnitToResurrect(Actor_Unit caster)
     {
         Actor_Unit actor = Units.Where(s => s.Unit.Side == caster.Unit.Side && s.Unit.IsDead && s.Unit.Type != UnitType.Summon && s.Unit.Level > 0).OrderByDescending(s => s.Unit.Experience).FirstOrDefault();

@@ -2585,6 +2585,48 @@ public class Actor_Unit
                 }
                 State.GameManager.SoundManager.PlaySpellHit(spell, target.UnitSprite.transform.position);
             }
+            else if (spell.AOEType == AreaOfEffectType.RotatablePattern)
+            {
+                int octant = 0;
+                bool target_above_unit = Position.y > target.Position.y;
+                bool target_even_with_unit = Position.y == target.Position.y;
+                bool target_to_left_of_unit = Position.x >= target.Position.x;
+                if (target.Position.x == Position.x)
+                {
+                    if (target_above_unit)
+                        octant = 1;
+                    else
+                        octant = 6;
+                }  
+                else
+                {
+                    if (target_to_left_of_unit)
+                    {
+                        if (target_even_with_unit)
+                            octant = 3;
+                        else if (target_above_unit)
+                            octant = 0;
+                        else
+                            octant = 5;
+
+                    }
+                    else
+                    {
+                        if (target_even_with_unit)
+                            octant = 4;
+                        else if (target_above_unit)
+                            octant = 2;
+                        else
+                            octant = 7;
+                    }
+                }
+                foreach (var splashTarget in TacticalUtilities.UnitsWithinRotatingPattern(target.Position, spell.Pattern, octant).Where(s => s.Unit.IsDead == false))
+                {
+                    splashTarget.DefendDamageSpell(spell, this, spell.Damage(this, splashTarget));
+                    CheckDead(splashTarget);
+                }
+                State.GameManager.SoundManager.PlaySpellHit(spell, target.UnitSprite.transform.position);
+            }
             else
             {
                 if (target.DefendDamageSpell(spell, this, spell.Damage(this, target)))

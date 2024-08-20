@@ -35,6 +35,7 @@ public enum AreaOfEffectType
     Full,
     FixedPattern,
     RotatablePattern,
+    Cone,
 }
 
 static class SpellList
