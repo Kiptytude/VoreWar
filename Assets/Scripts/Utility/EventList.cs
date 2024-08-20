@@ -1351,14 +1351,14 @@ internal class EventList
                         if (State.Rand.Next(3) != 0)
                         {
                             empire.AddGold(1000);
-                            otherEmpire.AddGold(9000);
+                            otherEmpire.AddGold(1000);
                             RelationsManager.ChangeRelations(empire, otherEmpire, 5);
                             RelationsManager.ChangeRelations(otherEmpire, empire, 5);
                             State.GameManager.CreateMessageBox($"While initially concerned with the aspect of a foreign agent infiltrating their city, {otherEmpire.Name} appreciates the gesture of coming to them with the information damming the corrupt magistrate. It doesn’t take long before torture unveils the location of the hidden funds. While the locals take most of their stolen money back to their treasury, they do give a sizable sum to us as thanks for our contribution in finding the assailant.");
                         }
                         else
                         {
-                            otherEmpire.AddGold(10000);
+                            otherEmpire.AddGold(1200);
                             RelationsManager.ChangeRelations(empire, otherEmpire, -5);
                             RelationsManager.ChangeRelations(otherEmpire, empire, -5);
                             State.GameManager.CreateMessageBox($"After being informed to reveal themselves to the {otherEmpire.Name} authorities communications with our infiltrator go dark. Several days later we receive a package containing the partially digested skull of our agent. It would seem that our neighbors wish us to have no illusions to the fate of spies.");
@@ -1377,8 +1377,8 @@ internal class EventList
                     {
                         if (State.Rand.Next(3) == 0)
                         {
-                            empire.AddGold(10000);
-                            State.GameManager.CreateMessageBox($"In a stroke of luck, our agent was able to enter the magistrate’s home. While they slept our clever agent managed to silently swallow the corrupt official whole. Utilizing tightfitting garb, the infiltrator manages to compress their sloshing belly enough to make them seem heavily pregnant.  \nUpon reaching the city gates, they convince the guards that they are a spurned lover that has been banished from their partner’s estate. The sob story convinces them and they’re allowed to pass. Once far enough away the magistrate is regurgitated, still asleep and only suffering minor acid burns.Their interrogation leads our troops to a small fortune! (10,000 gold) ");
+                            empire.AddGold(1000);
+                            State.GameManager.CreateMessageBox($"In a stroke of luck, our agent was able to enter the magistrate’s home. While they slept our clever agent managed to silently swallow the corrupt official whole. Utilizing tightfitting garb, the infiltrator manages to compress their sloshing belly enough to make them seem heavily pregnant.  \nUpon reaching the city gates, they convince the guards that they are a spurned lover that has been banished from their partner’s estate. The sob story convinces them and they’re allowed to pass. Once far enough away the magistrate is regurgitated, still asleep and only suffering minor acid burns.Their interrogation leads our troops to a small fortune! (1,000 gold) ");
                         }
                         else
                         {
@@ -1407,7 +1407,7 @@ internal class EventList
                         }
                         else
                         {
-                            otherEmpire.AddGold(10000);
+                            otherEmpire.AddGold(1000);
                             RelationsManager.ChangeRelations(empire, otherEmpire, -3);
                             ChangeAllVillageHappiness(otherEmpire, 20);
                             State.GameManager.CreateMessageBox($"Our attempts to intercede have been mistakenly interpreted as an aggressive maneuver to take over the house’s territory. The scions immediately rally under the leadership of their most martial sibling and begin pressuring their state to wage war against us.  \nWhile not what we wanted, the schism seems unlikely now.");
