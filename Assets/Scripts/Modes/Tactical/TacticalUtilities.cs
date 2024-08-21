@@ -707,55 +707,79 @@ static class TacticalUtilities
         }
         return tile_positions;
     }
-
+    static internal int GetBoxSide(Vec2i location, Vec2i target, int ring, int x, int y)
+    {
+        if (target.y - location.y + y == ring * -1)
+        {
+            if (target.x - location.x + x == ring * 2)
+            {
+                return 1;
+            }
+            return 0;
+        }
+        if (target.x - location.x + x == ring * 2)
+        {
+            if (target.y - location.y + y == ring * -1)
+            {
+                return 2;
+            }
+            return 1;
+        }
+        if (target.y - location.y + y == ring * 2)
+        {
+            if (target.x - location.x + x == ring * -1)
+            {
+                return 3;
+            }
+            return 2;
+        }
+        if (target.x - location.x + x == ring * -1)
+        {
+            if (target.y - location.y + y == ring * 2)
+            {
+                return 0;
+            }
+            return 3;
+        }
+        return -1;
+    }
     static internal List<Vec2i> rotateTilePattern(Vec2i location, List<Vec2i> tile_positions, int aoe_size, int octant)
     {
-        List<Vec2i> rotated_list;
-        switch (octant)
+        List<Vec2i> rotated_list = new List<Vec2i>();
+        foreach (Vec2i target_tile in tile_positions)
         {
-            case 0:
-                break;
-            case 1:
-                rotated_list = tile_positions;
-                break;
-            case 2:
-                foreach (Vec2i target_tile in tile_positions)
+            Vec2i new_tile = target_tile;
+            int range = location.GetNumberOfMovesDistance(target_tile);
+            int x = 0;
+            int y = 0;
+            for (int i = 0; i < range * octant; i++)
+            {
+                switch (GetBoxSide(location, target_tile, range, x, y))
                 {
-                    int range = location.GetNumberOfMovesDistance(target_tile);
-                    int x = 0;
-                    int y = 0;
-                    for (int i = 0; i < range; i++)
-                    {
-                        if (target_tile.y - location.y + i >= aoe_size * 2 + 1)
-                        {
-                            y++;
-                        }
-                        else
-                        {
-                            x++;
-                        }
-                    }
-                    if (x < 0 || y < 0 || x > tiles.GetUpperBound(0) || y > tiles.GetUpperBound(1))
-                    {
+                    case 0:
                         
-                    }
+                        x++;
+                        break;
+                    case 1:
+                        y++;
+                        break;
+                    case 2:
+                        x--;
+                        break;
+                    case 3:
+                        y--;
+                        break;
+                    default:
+                        Debug.Log("Error checking box side.");
+                        break;
                 }
-                break;
-            case 3:
-                break;
-            case 4:
-                break;
-            case 5:
-                break;
-            case 6:
-                tile_positions.Reverse();
-                rotated_list = tile_positions;
-                break;
-            case 7: 
-                break;
-            default:
-                rotated_list = tile_positions;
-                break;
+                new_tile.x += x;
+                new_tile.y += y;
+                if (new_tile.x < 0 || new_tile.y < 0 || new_tile.x > tiles.GetUpperBound(0) || new_tile.y > tiles.GetUpperBound(1))
+                {
+                    rotated_list.Add(new_tile);
+                }
+            }            
         }
         return rotated_list;
     }

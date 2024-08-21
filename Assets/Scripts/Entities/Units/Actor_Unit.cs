@@ -2588,9 +2588,9 @@ public class Actor_Unit
             else if (spell.AOEType == AreaOfEffectType.RotatablePattern)
             {
                 /// Octant positions are as follows
-                /// 0 1 2
-                /// 3 X 4
-                /// 5 6 7
+                /// 7 0 1
+                /// 6 X 2
+                /// 5 4 3
                 /// Where X is this unit's position
                 
                 int octant = 0;
@@ -2601,18 +2601,18 @@ public class Actor_Unit
                 if (target.Position.x == Position.x)
                 {
                     if (target_above_unit)
-                        octant = 1;
+                        octant = 0;
                     else
-                        octant = 6;
+                        octant = 4;
                 }  
                 else
                 {
                     if (target_to_left_of_unit)
                     {
                         if (target_even_with_unit)
-                            octant = 3;
+                            octant = 6;
                         else if (target_above_unit)
-                            octant = 0;
+                            octant = 7;
                         else
                             octant = 5;
 
@@ -2620,11 +2620,11 @@ public class Actor_Unit
                     else
                     {
                         if (target_even_with_unit)
-                            octant = 4;
-                        else if (target_above_unit)
                             octant = 2;
+                        else if (target_above_unit)
+                            octant = 1;
                         else
-                            octant = 7;
+                            octant = 3;
                     }
                 }
                 foreach (var splashTarget in TacticalUtilities.UnitsWithinRotatingPattern(target.Position, spell.Pattern, octant).Where(s => s.Unit.IsDead == false))
