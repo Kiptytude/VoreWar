@@ -2587,10 +2587,17 @@ public class Actor_Unit
             }
             else if (spell.AOEType == AreaOfEffectType.RotatablePattern)
             {
+                /// Octant positions are as follows
+                /// 0 1 2
+                /// 3 X 4
+                /// 5 6 7
+                /// Where X is this unit's position
+                
                 int octant = 0;
                 bool target_above_unit = Position.y > target.Position.y;
                 bool target_even_with_unit = Position.y == target.Position.y;
                 bool target_to_left_of_unit = Position.x >= target.Position.x;
+                
                 if (target.Position.x == Position.x)
                 {
                     if (target_above_unit)

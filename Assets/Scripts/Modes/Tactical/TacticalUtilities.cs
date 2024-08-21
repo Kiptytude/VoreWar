@@ -708,6 +708,58 @@ static class TacticalUtilities
         return tile_positions;
     }
 
+    static internal List<Vec2i> rotateTilePattern(Vec2i location, List<Vec2i> tile_positions, int aoe_size, int octant)
+    {
+        List<Vec2i> rotated_list;
+        switch (octant)
+        {
+            case 0:
+                break;
+            case 1:
+                rotated_list = tile_positions;
+                break;
+            case 2:
+                foreach (Vec2i target_tile in tile_positions)
+                {
+                    int range = location.GetNumberOfMovesDistance(target_tile);
+                    int x = 0;
+                    int y = 0;
+                    for (int i = 0; i < range; i++)
+                    {
+                        if (target_tile.y - location.y + i >= aoe_size * 2 + 1)
+                        {
+                            y++;
+                        }
+                        else
+                        {
+                            x++;
+                        }
+                    }
+                    if (x < 0 || y < 0 || x > tiles.GetUpperBound(0) || y > tiles.GetUpperBound(1))
+                    {
+                        
+                    }
+                }
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+            case 5:
+                break;
+            case 6:
+                tile_positions.Reverse();
+                rotated_list = tile_positions;
+                break;
+            case 7: 
+                break;
+            default:
+                rotated_list = tile_positions;
+                break;
+        }
+        return rotated_list;
+    }
+
     static internal List<Actor_Unit> UnitsWithinPattern(Vec2i location, int[] TargetTiles)
     {
         int target_box = (int)((Math.Sqrt(TargetTiles.Length) / 2) - 0.5);
@@ -732,6 +784,7 @@ static class TacticalUtilities
         List<Actor_Unit> pruned_unitList = new List<Actor_Unit>();
         List<Actor_Unit> unitList = UnitsWithinTiles(new Vec2(location.x, location.y), target_box);
         List<Vec2i> tile_positions = TilesOnPattern(location, TargetTiles, target_box);
+        List<Vec2i> true_tile_positions = rotateTilePattern(location, tile_positions, target_box, octant);
         foreach (Actor_Unit unit in unitList)
         {
             foreach (Vec2i target_tile in tile_positions)
@@ -744,6 +797,8 @@ static class TacticalUtilities
         }
         return pruned_unitList;
     }
+
+
     static internal Actor_Unit FindUnitToResurrect(Actor_Unit caster)
     {
         Actor_Unit actor = Units.Where(s => s.Unit.Side == caster.Unit.Side && s.Unit.IsDead && s.Unit.Type != UnitType.Summon && s.Unit.Level > 0).OrderByDescending(s => s.Unit.Experience).FirstOrDefault();
