@@ -1518,9 +1518,16 @@ internal class EventList
                     UI.FirstChoice.GetComponentInChildren<Text>().text = $"Suffer not this beast, slay it and bring justice to the names of those it has already devoured.";
                     UI.FirstChoice.onClick.AddListener(() =>
                     {
+                        var garrison = village.PrepareAndReturnGarrison();
+                        if ((State.Rand.Next(5) >= 1) && (garrison.Count > 0))
+                        {
+                            State.GameManager.CreateMessageBox($"The canid, although great was successfully slain by the city's garrison. A day after the beast's demise we receive a gift of gold from the village as thanks for our intervention.\n\nVillage Happiness +10, Gold +160");
+                            village.Happiness += 10;
+                            empire.AddGold(160);
+                        }
+                        else
                         {
                             State.GameManager.CreateMessageBox($"The sizable canid has devoured the entire garrison with relative ease, snapping up and gulping down each and every soldier, one by one. It's gurgling stomach heard from nearby over the entire night. At sunrise, it pads out of its domicile, fattened up generously by its latest meal, and it heads off for less fattening lands. Whilst there was a grevious loss, at least the beast was driven away.");
-                            var garrison = village.PrepareAndReturnGarrison();
                             foreach (var unit in garrison)
                             {
                                 village.VillagePopulation.RemoveHireable(unit);
@@ -1573,29 +1580,38 @@ internal class EventList
                     {
                         {
                             var garrison = village.PrepareAndReturnGarrison();
-                            foreach (var unit in garrison)
+                            if ((State.Rand.Next(2) == 0) && (garrison.Count > 0))
                             {
-                                village.VillagePopulation.RemoveHireable(unit);
-                                village.SubtractPopulation(1);
+                                State.GameManager.CreateMessageBox($"The garrison successfully baits the creature out of it's den, once out they slowly lure it away from the village into the wilderness. The villagers are relieved to have the predator dealt with. The child, although sad that their \"kitty\" is gone, is happy knowing that it wasn’t harmed and is free to eat all it wants.\n\nVillage Happiness +20, Gold +100");
+                                empire.AddGold(100);
+                                village.Happiness += 20;
                             }
-                            village.SubtractPopulation(village.Maxpop / 6);
-                            village.SetPopulationToAtleastTwo();
-                            empire.AddGold(50);
-                            village.Happiness += 10;
-                            Unit youth = new Unit(empire.Side, empire.ReplacedRace, village.GetStartingXp(), empire.CanVore && !State.RaceSettings.Get(empire.ReplacedRace).RaceTraits.Contains(Traits.Prey));
-                            youth.Items[0] = State.World.ItemRepository.GetItem(ItemType.CompoundBow);
-                            Unit lion = new Unit(empire.Side, Race.FeralLions, 0, true);
-                            lion.AddPermanentTrait(Traits.Large);
-                            lion.AddPermanentTrait(Traits.IronGut);
-                            lion.AddPermanentTrait(Traits.StrongGullet);
-                            youth.AddPermanentTrait(Traits.PleasurableTouch);
-                            lion.Name = "Kitty";
-                            lion.DigestedUnits = State.Rand.Next(village.Maxpop / 6, (int)(village.Maxpop / 4));
-                            lion.GiveExp(lion.DigestedUnits * 10);
-                            State.GameManager.CreateMessageBox($"Dear government,\n\nKitty would like to say thanks for the treat, but I think something about soldier equipment makes {(lion.GetPronoun(2))} gassy, heheh. Anyways, it's been feeling pretty noisy here for Kitty so we'll leave!\nXOXO Kitty and {youth.Name} \n\nOn the bright side, we could recover all the victims' valuables and the remaining citizens are thankful for our efforts.\n\nVillage Happiness +10, Gold +50, Garrison wiped out, Population -{(village.Maxpop / 6)}, The duo is still out there");
-                            var armyName = $"Kitty and {youth.Name}";
-                            Empire kittyEmp = CreateFactionlessArmy(village, 57, new[] { lion, youth }, 10, armyName);
-                            kittyEmp.Name = armyName;
+                            else
+                            {
+                                foreach (var unit in garrison)
+                                {
+                                    village.VillagePopulation.RemoveHireable(unit);
+                                    village.SubtractPopulation(1);
+                                }
+                                village.SubtractPopulation(village.Maxpop / 6);
+                                village.SetPopulationToAtleastTwo();
+                                empire.AddGold(50);
+                                village.Happiness += 10;
+                                Unit youth = new Unit(empire.Side, empire.ReplacedRace, village.GetStartingXp(), empire.CanVore && !State.RaceSettings.Get(empire.ReplacedRace).RaceTraits.Contains(Traits.Prey));
+                                youth.Items[0] = State.World.ItemRepository.GetItem(ItemType.CompoundBow);
+                                Unit lion = new Unit(empire.Side, Race.FeralLions, 0, true);
+                                lion.AddPermanentTrait(Traits.Large);
+                                lion.AddPermanentTrait(Traits.IronGut);
+                                lion.AddPermanentTrait(Traits.StrongGullet);
+                                youth.AddPermanentTrait(Traits.PleasurableTouch);
+                                lion.Name = "Kitty";
+                                lion.DigestedUnits = State.Rand.Next(village.Maxpop / 6, (int)(village.Maxpop / 4));
+                                lion.GiveExp(lion.DigestedUnits * 10);
+                                State.GameManager.CreateMessageBox($"Dear government,\n\nKitty would like to say thanks for the treat, but I think something about soldier equipment makes {(lion.GetPronoun(2))} gassy, heheh. Anyways, it's been feeling pretty noisy here for Kitty so we'll leave!\nXOXO Kitty and {youth.Name} \n\nOn the bright side, we could recover all the victims' valuables and the remaining citizens are thankful for our efforts.\n\nVillage Happiness +10, Gold +50, Garrison wiped out, Population -{(village.Maxpop / 6)}, The duo is still out there");
+                                var armyName = $"Kitty and {youth.Name}";
+                                Empire kittyEmp = CreateFactionlessArmy(village, 57, new[] { lion, youth }, 10, armyName);
+                                kittyEmp.Name = armyName;
+                            }
                         }
 
                     });
@@ -1716,7 +1732,7 @@ internal class EventList
                     UI.ThirdChoice.onClick.AddListener(() =>
                     {
                         Unit unit;
-                        for (int x = 0; x < 2; x++)
+                        for (int x = 0; x < 3; x++)
                         {
                             unit = new Unit(empire.Side, Race.Kobolds, village.GetStartingXp(), true);
                             unit.AddPermanentTrait(Traits.PackVoracity);
