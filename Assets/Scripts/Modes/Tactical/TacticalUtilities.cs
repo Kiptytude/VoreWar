@@ -707,6 +707,47 @@ static class TacticalUtilities
         }
         return tile_positions;
     }
+    static internal int GetRotatingOctant(Vec2i unit, Vec2i target)
+    {
+        /// Octant positions are as follows
+        /// 7 0 1
+        /// 6 X 2
+        /// 5 4 3
+        /// Where X is this unit's position
+        bool target_above_unit = unit.y > target.y;
+        bool target_even_with_unit = unit.y == target.y;
+        bool target_to_left_of_unit = unit.x >= target.x;
+
+        if (target.x == unit.x)
+        {
+            if (target_above_unit)
+                return 0;
+            else
+                return 4;
+        }
+        else
+        {
+            if (target_to_left_of_unit)
+            {
+                if (target_even_with_unit)
+                    return 6;
+                else if (target_above_unit)
+                    return 7;
+                else
+                    return 5;
+
+            }
+            else
+            {
+                if (target_even_with_unit)
+                    return 2;
+                else if (target_above_unit)
+                    return 1;
+                else
+                    return 3;
+            }
+        }
+    }
     static internal int GetBoxSide(Vec2i location, Vec2i target, int ring, int x, int y)
     {
         if (target.y - location.y + y == ring * -1)
@@ -743,43 +784,47 @@ static class TacticalUtilities
         }
         return -1;
     }
-    static internal List<Vec2i> rotateTilePattern(Vec2i location, List<Vec2i> tile_positions, int aoe_size, int octant)
+    static internal List<Vec2i> rotateTilePattern(Vec2i location, int[] TargetTiles, int aoe_size, int octant)
     {
         List<Vec2i> rotated_list = new List<Vec2i>();
+        List<Vec2i> tile_positions = TilesOnPattern(location, TargetTiles, aoe_size);
         foreach (Vec2i target_tile in tile_positions)
         {
             Vec2i new_tile = target_tile;
             int range = location.GetNumberOfMovesDistance(target_tile);
             int x = 0;
             int y = 0;
-            for (int i = 0; i < range * octant; i++)
+            for (int l = 0; l < octant; l++)
             {
-                switch (GetBoxSide(location, target_tile, range, x, y))
+                for (int i = 0; i < range; i++)
                 {
-                    case 0:
-                        
-                        x++;
-                        break;
-                    case 1:
-                        y++;
-                        break;
-                    case 2:
-                        x--;
-                        break;
-                    case 3:
-                        y--;
-                        break;
-                    default:
-                        Debug.Log("Error checking box side.");
-                        break;
+                    switch (GetBoxSide(location, target_tile, range, x, y))
+                    {
+                        case 0:
+
+                            x++;
+                            break;
+                        case 1:
+                            y++;
+                            break;
+                        case 2:
+                            x--;
+                            break;
+                        case 3:
+                            y--;
+                            break;
+                        default:
+                            Debug.Log("Error checking box side:" + x + "," + y + "," + range);
+                            break;
+                    }
+                    new_tile.x += x;
+                    new_tile.y += y;
+                    if (new_tile.x < 0 || new_tile.y < 0 || new_tile.x > tiles.GetUpperBound(0) || new_tile.y > tiles.GetUpperBound(1))
+                    {
+                        rotated_list.Add(new_tile);
+                    }
                 }
-                new_tile.x += x;
-                new_tile.y += y;
-                if (new_tile.x < 0 || new_tile.y < 0 || new_tile.x > tiles.GetUpperBound(0) || new_tile.y > tiles.GetUpperBound(1))
-                {
-                    rotated_list.Add(new_tile);
-                }
-            }            
+            }              
         }
         return rotated_list;
     }
@@ -808,10 +853,10 @@ static class TacticalUtilities
         List<Actor_Unit> pruned_unitList = new List<Actor_Unit>();
         List<Actor_Unit> unitList = UnitsWithinTiles(new Vec2(location.x, location.y), target_box);
         List<Vec2i> tile_positions = TilesOnPattern(location, TargetTiles, target_box);
-        List<Vec2i> true_tile_positions = rotateTilePattern(location, tile_positions, target_box, octant);
+        List<Vec2i> true_tile_positions = rotateTilePattern(location, TargetTiles, target_box, octant);
         foreach (Actor_Unit unit in unitList)
         {
-            foreach (Vec2i target_tile in tile_positions)
+            foreach (Vec2i target_tile in true_tile_positions)
             {
                 if (unit.Position.x == target_tile.x && unit.Position.y == target_tile.y)
                 {

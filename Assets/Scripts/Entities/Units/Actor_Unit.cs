@@ -2586,48 +2586,9 @@ public class Actor_Unit
                 State.GameManager.SoundManager.PlaySpellHit(spell, target.UnitSprite.transform.position);
             }
             else if (spell.AOEType == AreaOfEffectType.RotatablePattern)
-            {
-                /// Octant positions are as follows
-                /// 7 0 1
-                /// 6 X 2
-                /// 5 4 3
-                /// Where X is this unit's position
-                
-                int octant = 0;
-                bool target_above_unit = Position.y > target.Position.y;
-                bool target_even_with_unit = Position.y == target.Position.y;
-                bool target_to_left_of_unit = Position.x >= target.Position.x;
-                
-                if (target.Position.x == Position.x)
-                {
-                    if (target_above_unit)
-                        octant = 0;
-                    else
-                        octant = 4;
-                }  
-                else
-                {
-                    if (target_to_left_of_unit)
-                    {
-                        if (target_even_with_unit)
-                            octant = 6;
-                        else if (target_above_unit)
-                            octant = 7;
-                        else
-                            octant = 5;
-
-                    }
-                    else
-                    {
-                        if (target_even_with_unit)
-                            octant = 2;
-                        else if (target_above_unit)
-                            octant = 1;
-                        else
-                            octant = 3;
-                    }
-                }
-                foreach (var splashTarget in TacticalUtilities.UnitsWithinRotatingPattern(target.Position, spell.Pattern, octant).Where(s => s.Unit.IsDead == false))
+            {                             
+              
+                foreach (var splashTarget in TacticalUtilities.UnitsWithinRotatingPattern(target.Position, spell.Pattern, TacticalUtilities.GetRotatingOctant(Position, target.Position)).Where(s => s.Unit.IsDead == false))
                 {
                     splashTarget.DefendDamageSpell(spell, this, spell.Damage(this, splashTarget));
                     CheckDead(splashTarget);
@@ -2655,6 +2616,17 @@ public class Actor_Unit
         else if (spell.AOEType == AreaOfEffectType.FixedPattern)
         {
             foreach (var splashTarget in TacticalUtilities.UnitsWithinPattern(target.Position, spell.Pattern).Where(s => s.Unit.IsDead == false))
+            {
+                splashTarget.DefendDamageSpell(spell, this, spell.Damage(this, splashTarget));
+                CheckDead(splashTarget);
+            }
+            State.GameManager.SoundManager.PlaySpellHit(spell, target.UnitSprite.transform.position);
+        }
+        else if (spell.AOEType == AreaOfEffectType.RotatablePattern)
+        {
+
+            
+            foreach (var splashTarget in TacticalUtilities.UnitsWithinRotatingPattern(target.Position, spell.Pattern, TacticalUtilities.GetRotatingOctant(Position, target.Position)).Where(s => s.Unit.IsDead == false))
             {
                 splashTarget.DefendDamageSpell(spell, this, spell.Damage(this, splashTarget));
                 CheckDead(splashTarget);

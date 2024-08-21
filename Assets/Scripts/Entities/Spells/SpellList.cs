@@ -1075,7 +1075,7 @@ static class SpellList
             AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy, AbilityTargets.Ally},
             Range = new Range(6),
             Tier = 1,
-            AOEType = AreaOfEffectType.FixedPattern,
+            AOEType = AreaOfEffectType.RotatablePattern,
             Pattern = new int[9] { 0, 0, 0, 0, 1, 0, 1, 1, 1 },
             Damage = (a, t) => (a.Unit.GetStat(Stat.Mind) / 10) + (t.Unit.GetStat(Stat.Mind) / 10),
             Resistable = true,

@@ -2128,7 +2128,7 @@ Turns: {currentTurn}
 
     }
 
-    void UpdateCustomeGrid(Vec2i mouseLocation, int[] targettiles, int range)
+    void UpdateFixedCustomeGrid(Vec2i mouseLocation, int[] targettiles, int range)
     {
         MovementGrid.ClearAllTiles();
 
@@ -2146,6 +2146,26 @@ Turns: {currentTurn}
             }
         }
         
+    }
+
+    void UpdateRotatingCustomeGrid(Vec2i mouseLocation, int[] targettiles, int range)
+    {
+        MovementGrid.ClearAllTiles();
+
+        int radius = CurrentSpell.AreaOfEffect;
+        bool outOfRange = mouseLocation.GetNumberOfMovesDistance(SelectedUnit.Position) > CurrentSpell.Range.Max;
+
+        foreach (Vec2 tile_pos in TacticalUtilities.rotateTilePattern(mouseLocation, targettiles, (int)((Math.Sqrt(targettiles.Length) / 2) - 0.5), TacticalUtilities.GetRotatingOctant(SelectedUnit.Position, mouseLocation)))
+        {
+            if (mouseLocation.GetNumberOfMovesDistance(new Vec2i(mouseLocation.x, mouseLocation.y)) <= range)
+            {
+                if (outOfRange)
+                    MovementGrid.SetTile(new Vector3Int(tile_pos.x, tile_pos.y, 0), MovementGridTileTypes[0]);
+                else
+                    MovementGrid.SetTile(new Vector3Int(tile_pos.x, tile_pos.y, 0), MovementGridTileTypes[1]);
+            }
+        }
+
     }
 
     void UpdateAttackGrid(Vec2i source)
@@ -2939,7 +2959,9 @@ Turns: {currentTurn}
         if (ActionMode == 6)
         {
             if (CurrentSpell?.AOEType == AreaOfEffectType.FixedPattern)
-                UpdateCustomeGrid(mouseLocation, CurrentSpell?.Pattern, SelectedUnit.Position.GetNumberOfMovesDistance(mouseLocation.x, mouseLocation.y));
+                UpdateFixedCustomeGrid(mouseLocation, CurrentSpell?.Pattern, SelectedUnit.Position.GetNumberOfMovesDistance(mouseLocation.x, mouseLocation.y));
+            if (CurrentSpell?.AOEType == AreaOfEffectType.RotatablePattern)
+                UpdateRotatingCustomeGrid(mouseLocation, CurrentSpell?.Pattern, SelectedUnit.Position.GetNumberOfMovesDistance(mouseLocation.x, mouseLocation.y));
             else if (CurrentSpell?.AreaOfEffect > 0)
                 UpdateAreaOfEffectGrid(mouseLocation);
 
