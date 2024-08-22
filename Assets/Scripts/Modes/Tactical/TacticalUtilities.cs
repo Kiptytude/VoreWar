@@ -715,41 +715,44 @@ static class TacticalUtilities
         /// 6 X 2
         /// 5 4 3
         /// Where X is this unit's position
-        bool target_above_unit = unit.y > target.y;
-        bool target_even_with_unit = unit.y == target.y;
-        bool target_to_left_of_unit = unit.x >= target.x;
+        bool target_above_unit = unit.y < target.y;
+        bool target_about_even_with_unit_vert = unit.y == target.y;
+        bool target_about_even_with_unit_horz = unit.x == target.x;
+        bool target_to_right_of_unit = unit.x <= target.x;
 
-        if (target.x == unit.x)
+        if (target_about_even_with_unit_horz)
         {
             if (target_above_unit)
                 return 0;
             else
                 return 4;
         }
+        if (target_about_even_with_unit_vert)
+        {
+            if (target_to_right_of_unit)
+                return 6;
+            else
+                return 2;
+        }
+        if (target_above_unit)
+        {
+            if (target_to_right_of_unit)
+            {
+                return 1;
+            }
+            return 3;
+        }
         else
         {
-            if (target_to_left_of_unit)
+            if (target_to_right_of_unit)
             {
-                if (target_even_with_unit)
-                    return 6;
-                else if (target_above_unit)
-                    return 7;
-                else
-                    return 5;
-
+                return 7;
             }
-            else
-            {
-                if (target_even_with_unit)
-                    return 2;
-                else if (target_above_unit)
-                    return 1;
-                else
-                    return 3;
-            }
+            return 5;
         }
+        
     }
-    public static Vec2i RoundIndexToPoint(int index, int radius)
+    static internal Vec2i RoundIndexToPoint(int index, int radius)
     {
         if (radius == 0)
             return new Vec2i(0, 0);
@@ -782,7 +785,7 @@ static class TacticalUtilities
         return result;
     }
 
-    public static int[,] Rotate45(int[,] array)
+    static internal int[,] Rotate45(int[,] array)
     {
         int dim = array.GetLength(0);
         int[,] result = new int[dim, dim];
@@ -795,7 +798,6 @@ static class TacticalUtilities
             {
                 Vec2i source = RoundIndexToPoint(i, r);
                 Vec2i target = RoundIndexToPoint(i + r, r);
-                Debug.Log(target.x + "," + target.y);
 
                 if (!(center2.x + source.x < 0 || center2.y + source.y < 0 || center2.x + source.x >= array.GetLength(0) || center2.y + source.y >= array.GetLength(1)))
                     result[center.x + target.x, center.y + target.y] = array[center2.x + source.x, center2.y + source.y];
@@ -803,10 +805,98 @@ static class TacticalUtilities
         }
         return result;
     }
+    static internal int[,] Rotate90(int[,] array, bool clockwise)
+    {
+        // printing the matrix on the basis of
+        // observations made on indices.
+        int dim = array.GetLength(0);
+        int[,] result = new int[dim, dim];
+        int outer_cursor = 0;
+        if (clockwise)
+        {
+            for (int j = 0; j < dim; j++)
+            {
+                int inner_cursor = 0;
+                for (int i = dim - 1; i >= 0; i--)
+                {
+                    result[outer_cursor, inner_cursor] = array[i, j];
+                    inner_cursor++;
+                }
+                outer_cursor++;
+            }
+        }
+        else
+        {
+            for (int j = dim - 1; j >= 0; j--)
+            {
+                int inner_cursor = 0;
+                for (int i = 0; i < dim; i++)
+                {
+                    result[outer_cursor, inner_cursor] = array[i, j];
+                    inner_cursor++;
+                }
+                outer_cursor++;
+            }
+        }
+
+        return result;
+    }
+    static internal int[,] Rotate180(int[,] array)
+    {
+        // printing the matrix on the basis of
+        // observations made on indices.
+        int dim = array.GetLength(0);
+        int[,] result = new int[dim, dim];
+        int outer_cursor = 0;
+        for (int i = dim - 1; i  >= 0; i--)
+        {
+            int inner_cursor = 0;
+            for (int j = dim - 1; j >= 0; j--)
+            {
+                result[outer_cursor, inner_cursor] = array[i, j];
+                inner_cursor++;
+            }
+            outer_cursor++;
+        }
+        return result;
+    }
     static internal List<Vec2i> rotateTilePattern(Vec2i location, int[,] TargetTiles, int aoe_size, int octant)
     {
-
-        return TilesOnPattern(location, Rotate45(TargetTiles), aoe_size);
+        int dim = TargetTiles.GetLength(0);
+        int[,] rotated_tiles = TargetTiles;
+        switch (octant)
+        {
+            case 0: // 0 deg
+                break;
+            case 1: // 45 deg
+                rotated_tiles = Rotate45(rotated_tiles);
+                break;
+            case 2: // 90 deg
+                rotated_tiles = Rotate90(rotated_tiles, true);
+                break;
+            case 3: // 135 deg
+                rotated_tiles = Rotate90(rotated_tiles, true);
+                rotated_tiles = Rotate45(rotated_tiles);
+                break;
+            case 4: // 180 deg
+                rotated_tiles = Rotate180(rotated_tiles);
+                break;
+            case 5: // 225 deg
+                rotated_tiles = Rotate180(rotated_tiles);
+                rotated_tiles = Rotate45(rotated_tiles);
+                break;
+            case 6: // 270 deg
+                rotated_tiles = Rotate90(rotated_tiles, false);
+                break;
+            case 7: // 315 deg
+                rotated_tiles = Rotate90(rotated_tiles, false);
+                rotated_tiles = Rotate45(rotated_tiles);
+                break;
+            default:
+                Debug.Log("Incorrect Octant Error");
+                break;
+        }
+        return TilesOnPattern(location, rotated_tiles, aoe_size);
     }
 
     static internal List<Actor_Unit> UnitsWithinPattern(Vec2i location, int[,] TargetTiles)

@@ -1076,7 +1076,7 @@ static class SpellList
             Range = new Range(6),
             Tier = 1,
             AOEType = AreaOfEffectType.RotatablePattern,
-            Pattern = new int[3,3] { { 0, 0, 0 }, { 0, 1, 0 }, { 1, 1, 1 } },
+            Pattern = new int[3,3] { { 1, 1, 1 }, { 0, 1, 0 }, { 0, 0, 0 } },
             Damage = (a, t) => (a.Unit.GetStat(Stat.Mind) / 10) + (t.Unit.GetStat(Stat.Mind) / 10),
             Resistable = true,
             OnExecute = (a, t) =>
