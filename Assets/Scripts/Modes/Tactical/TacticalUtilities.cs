@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Policy;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -687,23 +686,25 @@ static class TacticalUtilities
         return unitList;
     }
 
-    static internal List<Vec2i> TilesOnPattern(Vec2i location, int[] TargetTiles, int rows)
+    static internal List<Vec2i> TilesOnPattern(Vec2i location, int[,] TargetTiles, int rows)
     {
         List<Vec2i> tile_positions = new List<Vec2i>();
-        int matrix_cursor = 0;
+        int outer_matrix_cursor = 0;
         for (int y = location.y + rows; y >= location.y - rows; y--)
         {
+            int inner_matrix_cursor = 0;
             for (int x = location.x + rows; x >= location.x - rows; x--)
             {
                 if (x < 0 || y < 0 || x > tiles.GetUpperBound(0) || y > tiles.GetUpperBound(1))
                 {
-                    matrix_cursor++;
+                    inner_matrix_cursor++;
                     continue;
                 }
-                if (TargetTiles[matrix_cursor] >= 1)
+                if (TargetTiles[outer_matrix_cursor,inner_matrix_cursor] >= 1)
                     tile_positions.Add(new Vec2i(x, y));
-                matrix_cursor++;
+                inner_matrix_cursor++;
             }
+            outer_matrix_cursor++;
         }
         return tile_positions;
     }
@@ -748,43 +749,8 @@ static class TacticalUtilities
             }
         }
     }
-    static internal int GetBoxSide(Vec2i location, Vec2i target, int ring, int x, int y)
-    {
-        if (target.y - location.y + y == ring * -1)
-        {
-            if (target.x - location.x + x == ring * 2)
-            {
-                return 1;
-            }
-            return 0;
-        }
-        if (target.x - location.x + x == ring * 2)
-        {
-            if (target.y - location.y + y == ring * -1)
-            {
-                return 2;
-            }
-            return 1;
-        }
-        if (target.y - location.y + y == ring * 2)
-        {
-            if (target.x - location.x + x == ring * -1)
-            {
-                return 3;
-            }
-            return 2;
-        }
-        if (target.x - location.x + x == ring * -1)
-        {
-            if (target.y - location.y + y == ring * 2)
-            {
-                return 0;
-            }
-            return 3;
-        }
-        return -1;
-    }
-    static internal List<Vec2i> rotateTilePattern(Vec2i location, int[] TargetTiles, int aoe_size, int octant)
+
+    static internal List<Vec2i> rotateTilePattern(Vec2i location, int[,] TargetTiles, int aoe_size, int octant)
     {
         List<Vec2i> rotated_list = new List<Vec2i>();
         List<Vec2i> tile_positions = TilesOnPattern(location, TargetTiles, aoe_size);
@@ -792,44 +758,34 @@ static class TacticalUtilities
         {
             Vec2i new_tile = target_tile;
             int range = location.GetNumberOfMovesDistance(target_tile);
-            int x = 0;
-            int y = 0;
-            for (int l = 0; l < octant; l++)
+            if (range == 0)
             {
-                for (int i = 0; i < range; i++)
-                {
-                    switch (GetBoxSide(location, target_tile, range, x, y))
-                    {
-                        case 0:
-
-                            x++;
-                            break;
-                        case 1:
-                            y++;
-                            break;
-                        case 2:
-                            x--;
-                            break;
-                        case 3:
-                            y--;
-                            break;
-                        default:
-                            Debug.Log("Error checking box side:" + x + "," + y + "," + range);
-                            break;
-                    }
-                    new_tile.x += x;
-                    new_tile.y += y;
-                    if (new_tile.x < 0 || new_tile.y < 0 || new_tile.x > tiles.GetUpperBound(0) || new_tile.y > tiles.GetUpperBound(1))
-                    {
-                        rotated_list.Add(new_tile);
-                    }
-                }
-            }              
+                rotated_list.Add(new_tile);
+                continue;
+            }            
+            for (int i = 0; i < range; i++) 
+            {
+                int x = new_tile.x - location.x;
+                int y = new_tile.y - location.y;
+                int quad = x > 0 && y > 0 ? 1 : x > 0 && y < 0 ? 2 : x < 0 && y < 0 ? 3 : x < 0 && y > 0 ? 4 : 1;
+                /// 1 is top
+                /// 2 is right
+                /// 3 is bottom
+                /// 4 is left
+                int side = y == range ? 1 : x == range ? 2 : y == range * -1 ? 3 : x == range * -1 ? 4 : 1;
+                if (true)
+                    new_tile.x += range;
+            }
+            if (new_tile.x < 0 || new_tile.y < 0 || new_tile.x > tiles.GetUpperBound(0) || new_tile.y > tiles.GetUpperBound(1))
+            {
+                rotated_list.Add(new_tile);
+            }
         }
+        
         return rotated_list;
     }
 
-    static internal List<Actor_Unit> UnitsWithinPattern(Vec2i location, int[] TargetTiles)
+    static internal List<Actor_Unit> UnitsWithinPattern(Vec2i location, int[,] TargetTiles)
     {
         int target_box = (int)((Math.Sqrt(TargetTiles.Length) / 2) - 0.5);
         List<Actor_Unit> pruned_unitList = new List<Actor_Unit>();
@@ -847,7 +803,7 @@ static class TacticalUtilities
         }
         return pruned_unitList;
     }
-    static internal List<Actor_Unit> UnitsWithinRotatingPattern(Vec2i location, int[] TargetTiles, int octant)
+    static internal List<Actor_Unit> UnitsWithinRotatingPattern(Vec2i location, int[,] TargetTiles, int octant)
     {
         int target_box = (int)((Math.Sqrt(TargetTiles.Length) / 2) - 0.5);
         List<Actor_Unit> pruned_unitList = new List<Actor_Unit>();

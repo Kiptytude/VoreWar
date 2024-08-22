@@ -2128,7 +2128,7 @@ Turns: {currentTurn}
 
     }
 
-    void UpdateFixedCustomeGrid(Vec2i mouseLocation, int[] targettiles, int range)
+    void UpdateFixedCustomeGrid(Vec2i mouseLocation, int[,] targettiles, int range)
     {
         MovementGrid.ClearAllTiles();
 
@@ -2148,7 +2148,7 @@ Turns: {currentTurn}
         
     }
 
-    void UpdateRotatingCustomeGrid(Vec2i mouseLocation, int[] targettiles, int range)
+    void UpdateRotatingCustomeGrid(Vec2i mouseLocation, int[,] targettiles, int range)
     {
         MovementGrid.ClearAllTiles();
 
@@ -3002,7 +3002,15 @@ Turns: {currentTurn}
                 }
                 else if (spell.AOEType == AreaOfEffectType.RotatablePattern)
                 {
-
+                    foreach (var splashTarget in TacticalUtilities.UnitsWithinRotatingPattern(mouseLocation, spell.Pattern, TacticalUtilities.GetRotatingOctant(SelectedUnit.Position, mouseLocation)))
+                    {
+                        int spellDamage = spell.Damage(SelectedUnit, splashTarget);
+                        if (TacticalUtilities.SneakAttackCheck(SelectedUnit.Unit, splashTarget.Unit)) // sneakAttack
+                        {
+                            spellDamage *= 3;
+                        }
+                        splashTarget.UnitSprite.ShowDamagedHealthBar(splashTarget, spellDamage);
+                    }
                 }
                 else if (mouseLocation != null)
                 {

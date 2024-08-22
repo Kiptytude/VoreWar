@@ -1075,8 +1075,8 @@ static class SpellList
             AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy, AbilityTargets.Ally},
             Range = new Range(6),
             Tier = 1,
-            AOEType = AreaOfEffectType.RotatablePattern,
-            Pattern = new int[9] { 0, 0, 0, 0, 1, 0, 1, 1, 1 },
+            AOEType = AreaOfEffectType.FixedPattern,
+            Pattern = new int[3,3] { { 0, 1, 0 }, { 0, 1, 0 }, { 1, 1, 1 } },
             Damage = (a, t) => (a.Unit.GetStat(Stat.Mind) / 10) + (t.Unit.GetStat(Stat.Mind) / 10),
             Resistable = true,
             OnExecute = (a, t) =>
@@ -1120,7 +1120,7 @@ public class Spell
     ///  1 1 1
     ///  Length MUST be a odd perfect square (9, 25, 49, 81, ...) As the spell is centered on the target
     /// </summary>
-    internal int[] Pattern;
+    internal int[,] Pattern;
     internal Action<Actor_Unit, Vec2i> OnExecuteTile;
     internal bool Resistable;
     internal float ResistanceMult = 1;
