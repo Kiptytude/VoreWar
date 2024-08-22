@@ -32,8 +32,11 @@ public enum AbilityTargets
 
 public enum AreaOfEffectType
 {
+    /// <summary> Full(default) - used for non AOE and full box AOE spells</summary>
     Full,
+    /// <summary> FixedPattern - Used for patterns that don't move</summary>
     FixedPattern,
+    /// <summary> RotatablePattern - Used for patterns that rotate in relation to target and unit position</summary>
     RotatablePattern,
     Cone,
 }

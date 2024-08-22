@@ -716,8 +716,8 @@ static class TacticalUtilities
         /// 5 4 3
         /// Where X is this unit's position
         bool target_above_unit = unit.y < target.y;
-        bool target_about_even_with_unit_vert = unit.y == target.y;
-        bool target_about_even_with_unit_horz = unit.x == target.x;
+        bool target_about_even_with_unit_vert = Math.Round((float)(unit.y / target.y)) == 1;
+        bool target_about_even_with_unit_horz = Math.Round((float)(unit.x / target.x)) == 1;
         bool target_to_right_of_unit = unit.x <= target.x;
 
         if (target_about_even_with_unit_horz)
