@@ -749,40 +749,64 @@ static class TacticalUtilities
             }
         }
     }
-
-    static internal List<Vec2i> rotateTilePattern(Vec2i location, int[,] TargetTiles, int aoe_size, int octant)
+    public static Vec2i RoundIndexToPoint(int index, int radius)
     {
-        List<Vec2i> rotated_list = new List<Vec2i>();
-        List<Vec2i> tile_positions = TilesOnPattern(location, TargetTiles, aoe_size);
-        foreach (Vec2i target_tile in tile_positions)
+        if (radius == 0)
+            return new Vec2i(0, 0);
+        Vec2i result = new Vec2i(-radius, -radius);
+
+        while (index < 0) index += radius * 8;
+        index = index % (radius * 8);
+
+        int edgeLen = radius * 2;
+
+        if (index < edgeLen)
         {
-            Vec2i new_tile = target_tile;
-            int range = location.GetNumberOfMovesDistance(target_tile);
-            if (range == 0)
+            result.x += index;
+        }
+        else if ((index -= edgeLen) < edgeLen)
+        {
+            result.x = radius;
+            result.y += index;
+        }
+        else if ((index -= edgeLen) < edgeLen)
+        {
+            result.x = radius - index;
+            result.y = radius;
+        }
+        else if ((index -= edgeLen) < edgeLen)
+        {
+            result.y = radius - index;
+        }
+
+        return result;
+    }
+
+    public static int[,] Rotate45(int[,] array)
+    {
+        int dim = array.GetLength(0);
+        int[,] result = new int[dim, dim];
+
+        Vec2i center = new Vec2i((result.GetLength(0) - 1) / 2, (result.GetLength(1) - 1) / 2);
+        Vec2i center2 = new Vec2i((array.GetLength(0) - 1) / 2, (array.GetLength(1) - 1) / 2);
+        for (int r = 0; r <= (dim - 1) / 2; r++)
+        {
+            for (int i = 0; i <= r * 8; i++)
             {
-                rotated_list.Add(new_tile);
-                continue;
-            }            
-            for (int i = 0; i < range; i++) 
-            {
-                int x = new_tile.x - location.x;
-                int y = new_tile.y - location.y;
-                int quad = x > 0 && y > 0 ? 1 : x > 0 && y < 0 ? 2 : x < 0 && y < 0 ? 3 : x < 0 && y > 0 ? 4 : 1;
-                /// 1 is top
-                /// 2 is right
-                /// 3 is bottom
-                /// 4 is left
-                int side = y == range ? 1 : x == range ? 2 : y == range * -1 ? 3 : x == range * -1 ? 4 : 1;
-                if (true)
-                    new_tile.x += range;
-            }
-            if (new_tile.x < 0 || new_tile.y < 0 || new_tile.x > tiles.GetUpperBound(0) || new_tile.y > tiles.GetUpperBound(1))
-            {
-                rotated_list.Add(new_tile);
+                Vec2i source = RoundIndexToPoint(i, r);
+                Vec2i target = RoundIndexToPoint(i + r, r);
+                Debug.Log(target.x + "," + target.y);
+
+                if (!(center2.x + source.x < 0 || center2.y + source.y < 0 || center2.x + source.x >= array.GetLength(0) || center2.y + source.y >= array.GetLength(1)))
+                    result[center.x + target.x, center.y + target.y] = array[center2.x + source.x, center2.y + source.y];
             }
         }
-        
-        return rotated_list;
+        return result;
+    }
+    static internal List<Vec2i> rotateTilePattern(Vec2i location, int[,] TargetTiles, int aoe_size, int octant)
+    {
+
+        return TilesOnPattern(location, Rotate45(TargetTiles), aoe_size);
     }
 
     static internal List<Actor_Unit> UnitsWithinPattern(Vec2i location, int[,] TargetTiles)
