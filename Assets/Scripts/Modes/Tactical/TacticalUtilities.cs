@@ -923,7 +923,6 @@ static class TacticalUtilities
         int target_box = (int)((Math.Sqrt(TargetTiles.Length) / 2) - 0.5);
         List<Actor_Unit> pruned_unitList = new List<Actor_Unit>();
         List<Actor_Unit> unitList = UnitsWithinTiles(new Vec2(location.x, location.y), target_box);
-        List<Vec2i> tile_positions = TilesOnPattern(location, TargetTiles, target_box);
         List<Vec2i> true_tile_positions = rotateTilePattern(location, TargetTiles, target_box, octant);
         foreach (Actor_Unit unit in unitList)
         {
@@ -1165,6 +1164,34 @@ static class TacticalUtilities
                 }
             }
         }
+
+    }
+
+    static internal void CreateEffectWithPattern(Vec2i location, Vec2i unit, TileEffectType type, float strength, int duration, int[,] pattern, AreaOfEffectType aoeType)
+    {
+        List<Vec2i> tile_positions;
+        int target_box = (int)((Math.Sqrt(pattern.Length) / 2) - 0.5);
+        if (aoeType == AreaOfEffectType.RotatablePattern)
+        {
+            tile_positions = rotateTilePattern(location, pattern, target_box, GetRotatingOctant(unit, location));
+        }
+        else
+            tile_positions = TilesOnPattern(location, pattern, target_box);
+        foreach (Vec2i position in tile_positions)
+        {
+            TileEffect effect = new TileEffect(duration, strength, type);
+            State.GameManager.TacticalMode.ActiveEffects[position] = effect;
+            switch (type)
+            {
+                case TileEffectType.Fire:
+                    State.GameManager.TacticalMode.EffectTileMap.SetTile(new Vector3Int(position.x, position.y, 0), State.GameManager.TacticalMode.Pyre);
+                    break;
+                case TileEffectType.IcePatch:
+                    State.GameManager.TacticalMode.EffectTileMap.SetTile(new Vector3Int(position.x, position.y, 0), State.GameManager.TacticalMode.Ice);
+                    break;
+            }
+        }
+        
 
     }
 

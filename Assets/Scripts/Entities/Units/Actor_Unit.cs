@@ -2613,25 +2613,23 @@ public class Actor_Unit
             }
             State.GameManager.SoundManager.PlaySpellHit(spell, targetArea);
         }
-        else if (spell.AOEType == AreaOfEffectType.FixedPattern)
+        else if (targetArea != null && spell.AOEType == AreaOfEffectType.FixedPattern)
         {
-            foreach (var splashTarget in TacticalUtilities.UnitsWithinPattern(target.Position, spell.Pattern).Where(s => s.Unit.IsDead == false))
+            foreach (var splashTarget in TacticalUtilities.UnitsWithinPattern(targetArea, spell.Pattern).Where(s => s.Unit.IsDead == false))
             {
                 splashTarget.DefendDamageSpell(spell, this, spell.Damage(this, splashTarget));
                 CheckDead(splashTarget);
             }
-            State.GameManager.SoundManager.PlaySpellHit(spell, target.UnitSprite.transform.position);
+            State.GameManager.SoundManager.PlaySpellHit(spell, targetArea);
         }
-        else if (spell.AOEType == AreaOfEffectType.RotatablePattern)
+        else if (targetArea != null && (spell.AOEType == AreaOfEffectType.RotatablePattern))
         {
-
-            
-            foreach (var splashTarget in TacticalUtilities.UnitsWithinRotatingPattern(target.Position, spell.Pattern, TacticalUtilities.GetRotatingOctant(Position, target.Position)).Where(s => s.Unit.IsDead == false))
+            foreach (var splashTarget in TacticalUtilities.UnitsWithinRotatingPattern(targetArea, spell.Pattern, TacticalUtilities.GetRotatingOctant(Position, targetArea)).Where(s => s.Unit.IsDead == false))
             {
                 splashTarget.DefendDamageSpell(spell, this, spell.Damage(this, splashTarget));
                 CheckDead(splashTarget);
             }
-            State.GameManager.SoundManager.PlaySpellHit(spell, target.UnitSprite.transform.position);
+            State.GameManager.SoundManager.PlaySpellHit(spell, targetArea);
         }
         if (Unit.TraitBoosts.SpellAttacks > 1)
         {

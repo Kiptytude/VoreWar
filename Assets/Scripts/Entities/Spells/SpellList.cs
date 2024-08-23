@@ -56,6 +56,7 @@ static class SpellList
 
     static internal readonly DamageSpell IceBlast;
     static internal readonly DamageSpell Pyre;
+    static internal readonly DamageSpell Flamberge;
     //static internal readonly Spell Warp;
     //static internal readonly DamageSpell MagicWall;
     static internal readonly StatusSpell Poison;
@@ -1078,8 +1079,8 @@ static class SpellList
             AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy, AbilityTargets.Ally},
             Range = new Range(6),
             Tier = 1,
-            AOEType = AreaOfEffectType.RotatablePattern,
-            Pattern = new int[3,3] { { 1, 1, 1 }, { 0, 1, 0 }, { 0, 0, 0 } },
+            AOEType = AreaOfEffectType.FixedPattern,
+            Pattern = new int[3,3] { { 1, 1, 1 }, { 1, 0, 1 }, { 0, 0, 0 } },
             Damage = (a, t) => (a.Unit.GetStat(Stat.Mind) / 10) + (t.Unit.GetStat(Stat.Mind) / 10),
             Resistable = true,
             OnExecute = (a, t) =>
@@ -1090,6 +1091,34 @@ static class SpellList
         };
         SpellDict[SpellTypes.Conduit] = Conduit;
 
+        Flamberge = new DamageSpell()
+        {
+            Name = "Flamberge",
+            Id = "flamberge",
+            SpellType = SpellTypes.Flamberge,
+            Description = "Deals damage to a target and targets behind, sets ground on fire for a few turns",
+            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy, AbilityTargets.Tile },
+            Range = new Range(6),
+            AOEType = AreaOfEffectType.RotatablePattern,
+            Tier = 4,
+            Pattern = new int[5, 5] { { 1, 1, 1, 1, 1 }, { 0, 1, 1, 1, 0 }, { 0, 0, 1, 0, 0 }, { 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0 } },
+            Resistable = true,
+            DamageType = DamageTypes.Fire,
+            Damage = (a, t) => 10 + a.Unit.GetStat(Stat.Mind) / 7,
+            OnExecute = (a, t) =>
+            {
+                a.CastOffensiveSpell(Flamberge, t);
+                TacticalGraphicalEffects.CreateFireBall(a.Position, t.Position, t);
+                TacticalUtilities.CreateEffectWithPattern(t.Position, a.Position, TileEffectType.Fire, 1 + a.Unit.GetStat(Stat.Mind) / 30, 4, Flamberge.Pattern, Flamberge.AOEType);
+            },
+            OnExecuteTile = (a, l) =>
+            {
+                a.CastOffensiveSpell(Flamberge, null, l);
+                TacticalGraphicalEffects.CreateFireBall(a.Position, l, null);
+                TacticalUtilities.CreateEffectWithPattern(l, a.Position, TileEffectType.Fire, 1 + a.Unit.GetStat(Stat.Mind) / 30, 4, Flamberge.Pattern, Flamberge.AOEType);
+            },
+        };
+        SpellDict[SpellTypes.Flamberge] = Flamberge;
     }
 }
 
@@ -1113,14 +1142,14 @@ public class Spell
     internal AreaOfEffectType AOEType = AreaOfEffectType.Full;
     /// <summary>The vector representing the spell's pattern
     /// The game reads tiles from top left to bottom right so
-    /// [0,0,0,0,1,0,1,1,1] OR
-    /// [0,0,0,
-    ///  0,1,0,
-    ///  1,1,1]
+    /// [[0,0,0],[0,1,0],[1,1,1]] OR
+    /// [[0,0,0]
+    ///  [0,1,0]
+    ///  [1,1,1]]
     ///  will have of shape
-    ///  O O 0
-    ///  O X 0
-    ///  1 1 1
+    ///  O O O
+    ///  O X O
+    ///  X X X
     ///  Length MUST be a odd perfect square (9, 25, 49, 81, ...) As the spell is centered on the target
     /// </summary>
     internal int[,] Pattern;
