@@ -38,8 +38,7 @@
     UnstableMana = 26,
     Meditate = 27,
 
-    Conduit = 29,
-    Flamberge = 30,
+
 
     AlraunePuff = 70,
     Web = 71,
@@ -56,5 +55,7 @@
     AssumeForm = 112,
     RevertForm = 113,
     ManaExpolsion = 114,
+    Conduit = 115,
+    Flamberge = 116,
 }
 
