@@ -38,7 +38,6 @@ public enum AreaOfEffectType
     FixedPattern,
     /// <summary> RotatablePattern - Used for patterns that rotate in relation to target and unit position</summary>
     RotatablePattern,
-    Cone,
 }
 
 static class SpellList
