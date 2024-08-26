@@ -600,7 +600,7 @@ public class HoveringTooltip : MonoBehaviour
             case Traits.Annihilation:
                 return "Every time digestion progresses, this unit digests one level from each prey inside them, gaining its experience value. If a unit hits level 0 this way, it dies if it was stil alive and cannot be revived.\n(Cheat Trait)";
             case Traits.WeaponChanneler:
-                return "Unit deals extra melee or ranged damage at the cost of each attack consuming 6 mana. No bonus is received if mana is under.";
+                return "Unit deals extra melee or ranged damage at the cost of each srtike consuming 6 mana. No bonus is received if mana is under 6.";
         }  
         return "<b>This trait needs a tooltip!</b>";
     }

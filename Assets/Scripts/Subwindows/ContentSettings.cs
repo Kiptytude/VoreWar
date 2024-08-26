@@ -228,7 +228,6 @@ public class ContentSettings : MonoBehaviour
     public Slider ScoutMax;
     public Slider ArmyCreationMPMod;
     public Slider ArmyCreationMPCurve;
-    public Toggle MonsterScoutMP;
 
     public Slider CustomEventFrequency;
 

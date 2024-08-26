@@ -2948,6 +2948,10 @@ public class PredatorComponent
         int actorMaxHeal = actor.Unit.MaxHealth - actor.Unit.Health;
         if (r > v)
         {
+            if (!target.Unit.HasBreasts && target.Unit.HasDick)
+            {
+                (suckle[2]) = (3);
+            }
             switch (suckle[2])
             {
                 case 0:
@@ -2969,6 +2973,10 @@ public class PredatorComponent
         {
             actor.Unit.GiveRawExp(suckle[1]);
             actor.UnitSprite.DisplayDamage(suckle[1], false, true);
+            if (!target.Unit.HasBreasts && target.Unit.HasDick)
+            {
+                (suckle[2]) = (3);
+            }
             switch (suckle[2])
             {
                 case 0:

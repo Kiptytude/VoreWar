@@ -763,7 +763,7 @@ Does not retroactively affect already created units.";
             case 312:
                 return "Changes the time of day when monsters are given AP. \n'Can always move' respects 'Monsters can only move at night' setting preventing movement \n'Can only move when Day' allows for movement durring day despite 'Monsters can only move at night' setting.";
             case 313:
-                return "Controls if when a unit auto-surrenders if they are healed to full health. Can be changed from if only defecting units are healed, only units that remain loyal are healed, or if all auto-surrendered unit are healed.";
+                return "Controls if when a unit auto-surrenders if they are healed to full health. Can be changed from if only defecting units are healed, only units that remain loyal are healed, or if all auto-surrendered units are healed.";
             default:
                 return "";
         }
