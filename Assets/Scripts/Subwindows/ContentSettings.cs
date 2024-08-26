@@ -782,6 +782,7 @@ public class ContentSettings : MonoBehaviour
         Config.World.GoddessMercy = (GoddessMercy)PlayerPrefs.GetInt("GoddessMercy", 0);
         Config.World.SucklingPermission = (SucklingPermission)PlayerPrefs.GetInt("SucklingPermission", 0);
         Config.World.EscapeRate = PlayerPrefs.GetInt("EscapeRate", 0);
+        Config.World.FogDistance = PlayerPrefs.GetInt("FogDistance", 0);
         Config.World.RandomEventRate = PlayerPrefs.GetInt("RandomEventRate", 0);
         Config.World.RandomAIEventRate = PlayerPrefs.GetInt("RandomAIEventRate", 0);
         Config.World.DiplomacyScale = (DiplomacyScale)PlayerPrefs.GetInt("DiplomacyScale", 0);
