@@ -48,6 +48,7 @@ static class StoredLogTexts
         TailRubMessages,
         BallMassageMessages,
         TransferMessages,
+        KissTransferMessages,
         VoreStealMessages,
         BreastFeedMessages,
         CumFeedMessages,
@@ -87,6 +88,8 @@ static class StoredLogTexts
                 return BallMassageMessages;
             case MessageTypes.TransferMessages:
                 return TransferMessages;
+            case MessageTypes.KissTransferMessages:
+                return KissTransferMessages;
             case MessageTypes.VoreStealMessages:
                 return VoreStealMessages;
             case MessageTypes.BreastFeedMessages:
@@ -116,6 +119,7 @@ static class StoredLogTexts
     internal static List<EventString> TailRubMessages;
     internal static List<EventString> BallMassageMessages;
     internal static List<EventString> TransferMessages;
+    internal static List<EventString> KissTransferMessages;
     internal static List<EventString> VoreStealMessages;
     internal static List<EventString> BreastFeedMessages;
     internal static List<EventString> CumFeedMessages;
@@ -2435,8 +2439,34 @@ static class StoredLogTexts
             new EventString((i) => $"<b>{i.Target.Name}</b> wraps {GPPHis(i.Unit)} mouth around <b>{ApostrophizeWithOrWithoutS(i.Unit.Name)}</b> member and begins servicing it. <b>{i.Unit.Name}</b> can't hold on any longer and blows {GPPHis(i.Unit)} load into <b>{ApostrophizeWithOrWithoutS(i.Target.Name)}</b> mouth. <b>{i.Target.Name}</b> swallows most of it and {GPPHis(i.Target)} belly bloats out.",
             priority: 11, conditional: s => InStomach(s) && Lewd(s)),
         };
+
+        KissTransferMessages = new List<EventString>()
+        {
+            new EventString((i) => $"<b>{i.Unit.Name}</b> kisses <b>{i.Target.Name}</b>, causing <b>{ApostrophizeWithOrWithoutS(i.Target.Name)}</b> belly to {GetRandomStringFrom("suddenly", "instanlty", "inexplicably")} be filled with <b>{i.Prey.Name}</b>, <b>{i.Target.Name}</b> although {GetRandomStringFrom("satisfied", "full", "content")} is utterly baffled as to how it occurred.",
+            priority: 10, conditional: s => InStomach(s) && !s.Prey.IsDead ),
+            new EventString((i) => $"<b>{i.Unit.Name}</b> kisses <b>{i.Target.Name}</b>, instanlty giving <b>{i.Prey.Name}</b> in the process, {GetRandomStringFrom("satisfied", "pleased", "content")} with the outcome <b>{i.Target.Name}</b> happily pats {GPPHis(i.Unit)} belly.",
+            priority: 10, conditional: s => InStomach(s) && !s.Prey.IsDead ),
+            new EventString((i) => $"<b>{i.Unit.Name}</b> kisses <b>{i.Target.Name}</b>, and {GetRandomStringFrom("in less than a second", "instanlty", "without warning")} <b>{ApostrophizeWithOrWithoutS(i.Target.Name)}</b> belly is filled with <b>{i.Prey.Name}</b>. <b>{i.Unit.Name}</b> simply says \"You're welcome!\" as <b>{i.Target.Name}</b> just stands, puzzled as to what just happened.",
+            priority: 10, conditional: s => InStomach(s) && !s.Prey.IsDead ),
+            new EventString((i) => $"<b>{i.Unit.Name}</b> kisses <b>{i.Target.Name}</b>, instanlty sharing <b>{i.Prey.Name}</b> with {GPPHim(i.Unit)} in the process. After pulling away from the first kiss <b>{i.Unit.Name}</b> kisses <b>{i.Target.Name}</b> a second time {GetRandomStringFrom("in the heat of the moment", "just for fun", "just for good measure", "as a gift")}, <b>{i.Target.Name}</b> blushes profusely.",
+            priority: 10, conditional: s => InStomach(s) && !s.Prey.IsDead && ReqOSW(s)),
+        };
+
         VoreStealMessages = new List<EventString>()
         {
+            //Oral to Oral vore steal
+            new EventString((i) => $"<b>{i.Unit.Name}</b> {GetRandomStringFrom("tackles", "headbutts", "charges into", "bashes")} <b>{ApostrophizeWithOrWithoutS(i.Target.Name)}</b> {GetRandomStringFrom("filled", "bulbus", "exposed")} belly forcing {GPPHim(i.Target)} to {GetRandomStringFrom("regurgitate", "free", "release")} <b>{i.Prey.Name}</b> into the air who <b>{i.Unit.Name}</b> deftly catches in {GPPHis(i.Unit)} mouth.",
+            priority: 10, conditional: s => s.oldLocation == PreyLocation.stomach && s.preyLocation == PreyLocation.stomach),
+            // Friendly Oral to Oral vore steal
+            new EventString((i) => $"<b>{i.Unit.Name}</b> goes to kiss <b>{i.Target.Name}</b> and is quickly surprised to find <b>{i.Prey.Name}</b> {GetRandomStringFrom("suddenly", "instanlty", "inexplicably")} inside of {GPPHis(i.Unit)} stomach, <b>{i.Unit.Name}</b> and <b>{i.Target.Name}</b> are both equally confused as to how this happened but neither {GetRandomStringFrom("mind", "complain about", "object")} the outcome.",
+            priority: 12, conditional: s => s.oldLocation == PreyLocation.stomach && s.preyLocation == PreyLocation.stomach && Friendly(s)),
+            new EventString((i) => $"<b>{i.Unit.Name}</b> kisses <b>{i.Target.Name}</b>, after pulling back {GPPHe(i.Unit)} is pleasantly surprised to find <b>{i.Prey.Name}</b> now residing inside of {GPPHis(i.Unit)} belly, meanwhile <b>{i.Target.Name}</b> can't help but miss the full feeling {GPPHe(i.Target)} had.",
+            priority: 12, conditional: s => s.oldLocation == PreyLocation.stomach && s.preyLocation == PreyLocation.stomach && Friendly(s)),
+            new EventString((i) => $"<b>{i.Unit.Name}</b> kisses <b>{i.Target.Name}</b>, after pulling back {GPPHe(i.Unit)} is pleasantly surprised to find <b>{i.Prey.Name}</b> now residing inside of {GPPHis(i.Unit)} belly, meanwhile <b>{i.Target.Name}</b> can't help but feel slightly cheated.",
+            priority: 12, conditional: s => s.oldLocation == PreyLocation.stomach && s.preyLocation == PreyLocation.stomach && Friendly(s)),
+            new EventString((i) => $"As <b>{i.Unit.Name}</b> pulls back from {GPPHis(i.Unit)} kiss with <b>{i.Target.Name}</b>, is confused as to how <b>{i.Prey.Name}</b> is now {GPPHis(i.Unit)} in belly, however {GPPHe(i.Unit)} immediately stops caring as <b>{i.Target.Name}</b> {GetRandomStringFrom("pats", "rubs", "massages")} {GPPHis(i.Unit)} belly.",
+            priority: 12, conditional: s => s.oldLocation == PreyLocation.stomach && s.preyLocation == PreyLocation.stomach && Friendly(s)),
+
             // If you can make this not lewd, please advise, otherwise I may need to lock the whole mechanic behind lewd texts
             new EventString((i) => $"<b>{i.Unit.Name}</b> tackles <b>{i.Target.Name}</b> and rides {GPPHim(i.Target)} until {GPPHe(i.Target)} release{SIfSingular(i.Target)} <b>{i.Prey.Name}</b> into {GPPHis(i.Unit)} womb.",
             priority: 10, conditional: s => s.oldLocation == PreyLocation.balls && s.preyLocation == PreyLocation.womb),

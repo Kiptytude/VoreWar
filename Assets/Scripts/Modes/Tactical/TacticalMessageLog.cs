@@ -85,6 +85,7 @@ public class TacticalMessageLog
         Birth,
         TransferFail,
         TransferSuccess,
+        KissTransfer,
         Resist,
         Kill,
         Digest,
@@ -249,6 +250,8 @@ public class TacticalMessageLog
                 return GenerateBallMassageMessage(action);
             case MessageLogEvent.TransferSuccess:
                 return GetStoredMessage(StoredLogTexts.MessageTypes.TransferMessages, action);
+            case MessageLogEvent.KissTransfer:
+                return GetStoredMessage(StoredLogTexts.MessageTypes.KissTransferMessages, action);
             case MessageLogEvent.VoreStealSuccess:
                 return GetStoredMessage(StoredLogTexts.MessageTypes.VoreStealMessages, action);
             //return $"<b>{action.Target.Name}</b> gently pushes down <b>{action.Unit.Name}</b> as {GPPHe(action.Target)} straddles {GPPHim(action.Unit)}. As {GPPHe(action.Target)} rides {GPPHim(action.Unit)}, {GPPHe(action.Unit)} cums, shooting {GPPHis(action.Unit)} prey straight into {GPPHis(action.Target)} {action.preyLocation.ToSyn()}.{odds}";
@@ -257,6 +260,8 @@ public class TacticalMessageLog
             case MessageLogEvent.VoreStealFail:
                 if (action.oldLocation == PreyLocation.breasts || action.oldLocation == PreyLocation.leftBreast || action.oldLocation == PreyLocation.rightBreast)
                     return $"<b>{action.Target.Name}</b> shoves <b>{action.Unit.Name}</b> off of {GPPHim(action.Target)} before {GPPHe(action.Unit)} can suck <b>{action.Prey.Name}</b> out of {GPPHis(action.Target)} breasts.";
+                else if (action.oldLocation == PreyLocation.stomach)
+                    return $"<b>{action.Unit.Name}</b> {GetRandomStringFrom("tackles", "headbutts", "charges into", "bashes")} <b>{ApostrophizeWithOrWithoutS(action.Target.Name)}</b> {GetRandomStringFrom("filled", "bulbus", "exposed")} belly, but <b>{action.Target.Name}</b> refuses to let go of <b>{action.Prey.Name}</b> that easily.";
                 else
                     return $"<b>{action.Target.Name}</b> shoves <b>{action.Unit.Name}</b> off of {GPPHim(action.Target)} before {GPPHe(action.Unit)} can suck <b>{action.Prey.Name}</b> out of {GPPHis(action.Target)} balls.";
             case MessageLogEvent.Feed:
@@ -1061,6 +1066,20 @@ public class TacticalMessageLog
         events.Add(new EventLog
         {
             Type = MessageLogEvent.TransferSuccess,
+            Unit = donor,
+            Target = recipient,
+            Prey = donation,
+            Odds = odds,
+            preyLocation = loc,
+        });
+        UpdateListing();
+    }
+
+    public void RegisterKissTransfer(Unit donor, Unit recipient, Unit donation, float odds, PreyLocation loc)
+    {
+        events.Add(new EventLog
+        {
+            Type = MessageLogEvent.KissTransfer,
             Unit = donor,
             Target = recipient,
             Prey = donation,

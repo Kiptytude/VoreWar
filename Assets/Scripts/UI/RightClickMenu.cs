@@ -635,6 +635,18 @@ public class RightClickMenu : MonoBehaviour
                     }
                     currentButton++;
                 }
+                if (actor.PredatorComponent.CanKissTransfer() && data.Target.Unit.Predator)
+                {
+                    Buttons[currentButton].onClick.AddListener(() => data.Actor.PredatorComponent.KissTransferAttempt(data.Target));
+                    Buttons[currentButton].onClick.AddListener(FinishAction);
+                    Buttons[currentButton].GetComponentInChildren<Text>().text = $"Kiss Transfer";
+                    if (data.Target.PredatorComponent.FreeCap() < actor.PredatorComponent.GetKissTransferBulk())
+                    {
+                        Buttons[currentButton].GetComponentInChildren<Text>().text = $"Too bulky to Transfer";
+                        Buttons[currentButton].interactable = false;
+                    }
+                    currentButton++;
+                }
             }
             else if (data.Actor.Unit != data.Target.Unit && data.Target.Unit.Predator)
             {

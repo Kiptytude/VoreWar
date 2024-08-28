@@ -141,6 +141,14 @@ static class TacticalActionList
         TargetedDictionary[SpecialAction.Transfer] = TargetedActions.Last();
 
         TargetedActions.Add(new TargetedTacticalAction(
+            name: "Kiss Transfer",
+            requiresPred: true,
+            conditional: (a) => a.PredatorComponent?.CanKissTransfer() ?? false,
+            onClicked: () => State.GameManager.TacticalMode.TrySetSpecialMode(SpecialAction.KissTransfer),
+            onExecute: (a, t) => a.PredatorComponent.KissTransferAttempt(t)));
+        TargetedDictionary[SpecialAction.KissTransfer] = TargetedActions.Last();
+
+        TargetedActions.Add(new TargetedTacticalAction(
             name: "Vore Steal",
             requiresPred: true,
             conditional: (a) => Config.TransferAllowed == true && Config.KuroTenkoEnabled == true && a.Unit.Predator,

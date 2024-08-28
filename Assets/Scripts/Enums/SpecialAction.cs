@@ -6,6 +6,7 @@
     TailVore,
     AnalVore,
     Transfer,
+    KissTransfer,
     StealVore,
     BreastVore,
     BreastFeed,
