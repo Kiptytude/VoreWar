@@ -2442,6 +2442,7 @@ static class StoredLogTexts
 
         KissTransferMessages = new List<EventString>()
         {
+            //The main idea behind most of the dialouge was, how in several Kirby games Kirby share health pickups with his allies via kissing them and they would still somehow get the full effect of the heal, just seemed too good to pass up. Also the alternative is mother bird-like stuff going on and I ain't writing that -Wolfwar
             new EventString((i) => $"<b>{i.Unit.Name}</b> kisses <b>{i.Target.Name}</b>, causing <b>{ApostrophizeWithOrWithoutS(i.Target.Name)}</b> belly to {GetRandomStringFrom("suddenly", "instanlty", "inexplicably")} be filled with <b>{i.Prey.Name}</b>, <b>{i.Target.Name}</b> although {GetRandomStringFrom("satisfied", "full", "content")} is utterly baffled as to how it occurred.",
             priority: 10, conditional: s => InStomach(s) && !s.Prey.IsDead ),
             new EventString((i) => $"<b>{i.Unit.Name}</b> kisses <b>{i.Target.Name}</b>, instanlty giving <b>{i.Prey.Name}</b> in the process, {GetRandomStringFrom("satisfied", "pleased", "content")} with the outcome <b>{i.Target.Name}</b> happily pats {GPPHis(i.Unit)} belly.",
