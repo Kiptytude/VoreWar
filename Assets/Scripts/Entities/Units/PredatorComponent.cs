@@ -2873,6 +2873,37 @@ public class PredatorComponent
         return 0;
     }
 
+    public bool CanKissTransfer()
+    {
+        if (Config.TransferAllowed == false || Config.KuroTenkoEnabled == false)
+            return false;
+        return GetKissTransfer() != null;
+    }
+
+    private Prey GetKissTransfer()
+    {
+        foreach (Prey preyUnit in stomach)
+        {
+            if (preyUnit.Unit.IsDead == false)
+            {
+            return preyUnit;
+            }
+        }
+        return null;
+    }
+
+    public float GetKissTransferBulk()
+    {
+        foreach (Prey preyUnit in stomach)
+        {
+            if (preyUnit.Unit.IsDead == false)
+            {
+            return preyUnit.Actor.Bulk();
+            }
+        }
+        return 0;
+    }
+
     public float GetSuckleChance(Actor_Unit target, bool includeSecondaries = false)
     {
         if (target.Surrendered || actor.Unit.GetApparentSide() == target.Unit.FixedSide)
@@ -3122,6 +3153,17 @@ public class PredatorComponent
             }
 
         }
+        if (State.RaceSettings.GetVoreTypes(actor.Unit.Race).Contains(VoreType.Oral))
+        {
+            foreach (Prey preyUnit in target.PredatorComponent.stomach)
+            {
+                if (!preyUnit.Unit.IsDead)
+                {
+                    return preyUnit;
+                }
+            }
+
+        }
         return null;
     }
 
@@ -3149,6 +3191,15 @@ public class PredatorComponent
         return transfer.Actor.Bulk();
     }
 
+    public float KissTransferBulk()
+    {
+        Prey transfer = GetKissTransfer();
+        if (transfer == null)
+        {
+            return 999f;
+        }
+        return transfer.Actor.Bulk();
+    }
     public float StealBulk()
     {
         Prey transfer = GetVoreSteal(actor);
@@ -3399,6 +3450,25 @@ public class PredatorComponent
         return true;
     }
 
+    private bool KissTransfer(Actor_Unit target, Prey preyUnit)
+    {
+        Prey preyref = new Prey(preyUnit.Actor, target, preyUnit.Actor.PredatorComponent?.prey);
+        if (target.Position.GetNumberOfMovesDistance(actor.Position) > 1)
+        {
+            return false;
+        }
+        else
+        {
+            KissTransferFinalize(target, preyUnit, preyref, PreyLocation.stomach);
+        }
+        if (target.UnitSprite != null)
+        {
+            target.UnitSprite.UpdateSprites(actor, true);
+            target.UnitSprite.AnimateBellyEnter();
+        }
+        return true;
+    }
+
     private bool TransferFinalize(Actor_Unit recipient, Prey preyUnit, Prey preyref, PreyLocation destination)
     {
         // Empowerment handling
@@ -3468,6 +3538,33 @@ public class PredatorComponent
         UpdateFullness();
         return true;
     }
+	
+    private bool KissTransferFinalize(Actor_Unit recipient, Prey preyUnit, Prey preyref, PreyLocation destination)
+    {
+        if (preyUnit.Unit.IsDead == false)
+        {
+            recipient.PredatorComponent.AlivePrey++;
+            actor.PredatorComponent.AlivePrey--;
+        } else if (unit.HasTrait(Traits.Corruption))
+        {
+            recipient.AddCorruption(preyUnit.Unit.GetStatTotal()/2, unit.FixedSide);
+        }
+        else if (preyUnit.Unit.HasTrait(Traits.Corruption))
+            recipient.AddCorruption(preyUnit.Unit.GetStatTotal() / 2, preyUnit.Unit.FixedSide);
+        switch (destination)
+        {
+            default:
+                recipient.PredatorComponent.AddToStomach(preyref, 1.0f);
+                TacticalUtilities.Log.RegisterKissTransfer(unit, recipient.Unit, preyUnit.Unit, 1.0f, PreyLocation.stomach);
+                break;
+        }
+        recipient.PredatorComponent.AddPrey(preyref);
+        recipient.Unit.GiveScaledExp(4 * preyUnit.Unit.ExpMultiplier, recipient.Unit.Level - preyUnit.Unit.Level, true);
+        recipient.PredatorComponent.UpdateFullness();
+        actor.PredatorComponent.RemovePrey(preyUnit);
+        UpdateFullness();
+        return true;
+    }
 
     public bool TransferAttempt(Actor_Unit target)
     {
@@ -3504,9 +3601,52 @@ public class PredatorComponent
         return true;
     }
 
+    public bool KissTransferAttempt(Actor_Unit target)
+    {
+        if (actor.Unit.Predator == false || target.Unit.Predator == false)
+            return false;
+        if (target.Unit.Side != actor.Unit.Side || target.Surrendered)
+        {
+            return false;
+        }
+        if (target.Position.GetNumberOfMovesDistance(actor.Position) > 1)
+        {
+            return false;
+        }
+        if (target == actor)
+        {
+            return false;
+        }
+        if (actor.Movement == 0)
+        {
+            return false;
+        }
+        if (!CanKissTransfer())
+        {
+            return false;
+        }
+        Prey transfer = GetKissTransfer();
+        if (target.PredatorComponent.FreeCap() < transfer.Actor.Bulk() && !(target.Unit == actor.Unit))
+        {
+            return false;
+        }
+        if (!KissTransfer(target, transfer))
+        {};
+        int thirdMovement = (int)Math.Ceiling(actor.MaxMovement() / 3.0f);
+        if (actor.Movement > thirdMovement)
+            actor.Movement -= thirdMovement;
+        else
+            actor.Movement = 0;
+        return true;
+    }
+
     public bool VoreStealAttempt(Actor_Unit target)
     {
         if (target.Position.GetNumberOfMovesDistance(actor.Position) > 1)
+        {
+            return false;
+        }
+        if (target == actor)
         {
             return false;
         }

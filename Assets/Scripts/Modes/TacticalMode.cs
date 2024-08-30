@@ -1776,6 +1776,9 @@ Turns: {currentTurn}
             case SpecialAction.Transfer:
                 ShowCockVoreTransferPercentages(actor);
                 break;
+            case SpecialAction.KissTransfer:
+                ShowKissVoreTransferPercentages(actor);
+                break;
             case SpecialAction.StealVore:
                 ShowVoreStealPercentages(actor);
                 break;
@@ -1866,6 +1869,30 @@ Turns: {currentTurn}
         }
 
     }
+    void ShowKissVoreTransferPercentages(Actor_Unit actor)
+    {
+        if (actor.Unit.Predator == false)
+            return;
+        foreach (Actor_Unit target in units)
+        {
+            if (target.Unit.Predator == false)
+                continue;
+            if (target.Unit.Side == actor.Unit.Side && target.Surrendered == false)
+            {
+                if (actor.PredatorComponent.CanKissTransfer())
+                {
+                    if (target.PredatorComponent.FreeCap() < actor.PredatorComponent.KissTransferBulk() && !(target.Unit == actor.Unit))
+                        target.UnitSprite.DisplayHitPercentage(target.GetSpecialChance(SpecialAction.KissTransfer), Color.yellow);
+                    else if ((actor.Position.GetNumberOfMovesDistance(target.Position) < 2) && !(target.Unit == actor.Unit))
+                        target.UnitSprite.DisplayHitPercentage(target.GetSpecialChance(SpecialAction.KissTransfer), Color.red);
+                    else
+                        target.UnitSprite.DisplayHitPercentage(target.GetSpecialChance(SpecialAction.KissTransfer), Color.black);
+                }
+                continue;
+            }
+        }
+
+    }
 
     void ShowVoreStealPercentages(Actor_Unit actor)
     {
@@ -1873,9 +1900,9 @@ Turns: {currentTurn}
         {
             if (!actor.PredatorComponent.CanVoreSteal(target))
                 continue;
-            if (actor.PredatorComponent.FreeCap() < target.PredatorComponent.StealBulk() && !(target.Unit == actor.Unit))
+            if (actor.PredatorComponent.FreeCap() < target.PredatorComponent.StealBulk() && (target.Unit != actor.Unit))
                 target.UnitSprite.DisplayHitPercentage(target.PredatorComponent.GetVoreStealChance(actor), Color.yellow);
-            else if (actor.Position.GetNumberOfMovesDistance(target.Position) < 2)
+            else if ((actor.Position.GetNumberOfMovesDistance(target.Position) < 2) && (target.Unit != actor.Unit))
                 target.UnitSprite.DisplayHitPercentage(target.PredatorComponent.GetVoreStealChance(actor), Color.red);
             else
                 target.UnitSprite.DisplayHitPercentage(target.PredatorComponent.GetVoreStealChance(actor), Color.black);
