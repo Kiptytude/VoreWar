@@ -2915,7 +2915,7 @@ static class StoredLogTexts
             actorRace: Race.Panthers, priority: 9),
             new EventString((i) => $"<b>{i.Unit.Name}</b> grows tired of waiting for {GPPHis(i.Unit)} lazy {i.preyLocation.ToSyn()} to finish <b>{i.Target.Name}</b> off. Deciding to speed the process along, <b>{i.Unit.Name}</b> leans on {GPPHis(i.Unit)} sloshing {i.preyLocation.ToSyn()}, slathering {GPPHis(i.Unit)} meal with juices. A sudden muffled scream followed by stillness ensures the fight to be over.",
             actorRace: Race.Panthers, priority: 9),
-            new EventString((i) => $"/“You’ve been fighting for a long time in there, maybe I’ll get you back to town to sell you off as a sla-/” <b>{i.Unit.Name}</b> says before {GPPHis(i.Unit)} {i.preyLocation.ToSyn()} make{PluralForPart(i.preyLocation)} such thoughts moot by finishing the meal off.",
+            new EventString((i) => $"\"You’ve been fighting for a long time in there, maybe I’ll get you back to town to sell you off as a sla-\" <b>{i.Unit.Name}</b> says before {GPPHis(i.Unit)} {i.preyLocation.ToSyn()} make{PluralForPart(i.preyLocation)} such thoughts moot by finishing the meal off.",
             actorRace: Race.Panthers, priority: 9),
             new EventString((i) => $"A belch that shortly turns into a gleeful roar signals the end of <b>{i.Target.Name}</b> and the victory of the tribal warrior.",
             actorRace: Race.Panthers, priority: 9, conditional: s=> InStomach(s) && CanBurp(s)),
@@ -3275,9 +3275,9 @@ static class StoredLogTexts
             //First-timer absorption
             new EventString((i) => $"As <b>{ApostrophizeWithOrWithoutS(i.Unit.Name)}</b> body absorbs the last of <b>{i.Target.Name}</b> {GPPHe(i.Unit)} breathes a sigh of relief, satisfied from finishing off {GPPHis(i.Unit)} first meal.", 
             priority: 10, conditional: s => FirstTimeAbsorption(s)),
-            new EventString((i) => $"As <b>{ApostrophizeWithOrWithoutS(i.Unit.Name)}</b> body absorbs the last of <b>{i.Target.Name}</b> {GPPHe(i.Unit)} feels like a true predator proud of finishing {GPPHis(i.Unit)} first meal.", 
+            new EventString((i) => $"As <b>{ApostrophizeWithOrWithoutS(i.Unit.Name)}</b> body absorbs the last of <b>{i.Target.Name}</b> {GPPHe(i.Unit)} feels like a true predator; proud of finishing {GPPHis(i.Unit)} first meal.", 
             priority: 10, conditional: s => FirstTimeAbsorption(s)),
-            new EventString((i) => $"As <b>{ApostrophizeWithOrWithoutS(i.Unit.Name)}</b> belly absorbs the last of <b>{i.Target.Name}</b> {GPPHe(i.Unit)} lets out an enormous {GetRandomStringFrom("belch", "burp")} and blushes profusely, surpised that they could even make such a loud sound.", 
+            new EventString((i) => $"As <b>{ApostrophizeWithOrWithoutS(i.Unit.Name)}</b> belly absorbs the last of <b>{i.Target.Name}</b> the {GetRandomStringFrom("greenhorn", "newbie", "rookie")} pred lets out an enormous {GetRandomStringFrom("belch", "burp")} and blushes profusely, surpised that they could even make such a loud sound.", 
             priority: 10, conditional: s => FirstTimeAbsorption(s) && CanBurp(s) && InStomach(s)),
 
             //Weight gain generic
@@ -3819,7 +3819,7 @@ static class StoredLogTexts
         BreastFeedMessages = new List<EventString>()
         {
             new EventString((i) => $"<b>{i.Unit.Name}</b> sees <b>{ApostrophizeWithOrWithoutS(i.Target.Name)}</b> injuries and begins to nurse {GPPHim(i.Target)} from {GPPHis(i.Unit)} {GetRandomStringFrom("plump", "full", "filled")} {PreyLocStrings.ToBreastSynPlural()}, healing them with it's {PreyLocStrings.ToFluid(PreyLocation.breasts)}.",priority:9, conditional: s => s.Target.HealthPct <= 0.3f && s.Unit != s.Target),
-            new EventString((i) => $"<b>{i.Target.Name}</b> grabs and sucks on {(i.Unit == i.Target ? GPPHis(i.Target) + " own" : GPPHis(i.Unit))} {GetRandomStringFrom("plump", "full", "filled")} {PreyLocStrings.ToBreastSynPlural()}, gulping down a mouthful of {PreyLocStrings.ToFluid(PreyLocation.breasts)} with each squeeze.",priority:8, conditional: s => Lewd(s)),
+            new EventString((i) => $"<b>{i.Target.Name}</b> grabs and sucks on {(i.Unit == i.Target ? GPPHis(i.Target) + " own" : ApostrophizeWithOrWithoutS(i.Unit.Name))} {GetRandomStringFrom("plump", "full", "filled")} {PreyLocStrings.ToBreastSynPlural()}, gulping down a mouthful of {PreyLocStrings.ToFluid(PreyLocation.breasts)} with each squeeze.",priority:8, conditional: s => Lewd(s)),
             new EventString((i) => $"<b>{i.Unit.Name}</b> {GetRandomStringFrom("pulls", "waves", "calls", "beckons")} <b>{i.Target.Name}</b> over shoving {ApostrophizeWithOrWithoutS(i.Unit.Name)} {GetRandomStringFrom("plump", "full", "filled")} {PreyLocStrings.ToBreastSynPlural()} into {GPPHis(i.Target)} mounth, <b>{i.Prey.Name}</b> {GetRandomStringFrom("happily", "eagerly", "cheerily")} swallows the {PreyLocStrings.ToFluid(PreyLocation.breasts)}.",priority:8, conditional: s => Lewd(s) && s.Unit != s.Target),
             new EventString((i) => $"<b>{i.Target.Name}</b> suckles on {(i.Unit == i.Target ? GPPHis(i.Target) + " own" : ApostrophizeWithOrWithoutS(i.Unit.Name))} {GetRandomStringFrom("plump", "full", "filled")} {PreyLocStrings.ToBreastSynPlural()}, {GetRandomStringFrom("happily", "eagerly", "cheerily")} gulping down a mouthful of {PreyLocStrings.ToFluid(PreyLocation.breasts)}.",priority:8),
         };
