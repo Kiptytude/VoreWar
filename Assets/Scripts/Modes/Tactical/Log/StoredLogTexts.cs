@@ -3273,11 +3273,11 @@ static class StoredLogTexts
             priority: 8),
 
             //First-timer absorption
-            new EventString((i) => $"As <b>{ApostrophizeWithOrWithoutS(i.Unit.Name)}</b> body absorbs the last of <b>{i.Target.Name}</b> {GPPHe(i.Unit)} breathes a sigh of relief, satisfied from finishing off {GPPHis(i.Unit)} first meal.", 
+            new EventString((i) => $"As <b>{ApostrophizeWithOrWithoutS(i.Unit.Name)}</b> body absorbs the last of <b>{i.Target.Name}</b> {GPPHe(i.Unit)} breathes a sigh of relief; satisfied from finishing off {GPPHis(i.Unit)} first meal.", 
             priority: 10, conditional: s => FirstTimeAbsorption(s)),
             new EventString((i) => $"As <b>{ApostrophizeWithOrWithoutS(i.Unit.Name)}</b> body absorbs the last of <b>{i.Target.Name}</b> {GPPHe(i.Unit)} feels like a true predator; proud of finishing {GPPHis(i.Unit)} first meal.", 
             priority: 10, conditional: s => FirstTimeAbsorption(s)),
-            new EventString((i) => $"As <b>{ApostrophizeWithOrWithoutS(i.Unit.Name)}</b> belly absorbs the last of <b>{i.Target.Name}</b> the {GetRandomStringFrom("greenhorn", "newbie", "rookie")} pred lets out an enormous {GetRandomStringFrom("belch", "burp")} and blushes profusely, surpised that they could even make such a loud sound.", 
+            new EventString((i) => $"As <b>{ApostrophizeWithOrWithoutS(i.Unit.Name)}</b> belly absorbs the last of <b>{i.Target.Name}</b> the {GetRandomStringFrom("greenhorn", "newbie", "rookie")} pred lets out an enormous {GetRandomStringFrom("belch", "burp")} and blushes profusely; surpised that they could even make such a loud sound.", 
             priority: 10, conditional: s => FirstTimeAbsorption(s) && CanBurp(s) && InStomach(s)),
 
             //Weight gain generic

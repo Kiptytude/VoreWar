@@ -282,7 +282,7 @@ public class TacticalMessageLog
                         return $"<b>{action.Unit.Name}</b> gets down and skillfully begins {GetRandomStringFrom("servicing", "sucking", "fellating")} {GPPHis(action.Target)} {GetRandomStringFrom("shaft", "rod", "dick", "rod", "dick")}.{odds}";
                     else
                         if (State.Rand.Next(2) == 0)
-                            return $"<b>{action.Unit.Name}</b> catches <b>{action.Target.Name}</b> off guard and aggressively begins sucking <b>{ApostrophizeWithOrWithoutS(action.Target.Name)}</b> {GetRandomStringFrom("shaft", "rod", "dick", "rod", "dick")}.{odds}";
+                            return $"<b>{action.Unit.Name}</b> catches <b>{action.Target.Name}</b> off guard and aggressively begins sucking {GPPHis(action.Target)} {GetRandomStringFrom("shaft", "rod", "dick", "rod", "dick")}.{odds}";
                         else
                             return $"<b>{action.Unit.Name}</b> knocks down <b>{action.Target.Name}</b> and begins sucking {GPPHis(action.Target)} {GetRandomStringFrom("shaft", "rod", "dick", "rod", "dick")}.{odds}";
             case MessageLogEvent.SuckleFail:
