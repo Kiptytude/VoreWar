@@ -270,9 +270,21 @@ public class TacticalMessageLog
                 return GetStoredMessage(StoredLogTexts.MessageTypes.CumFeedMessages, action);
             case MessageLogEvent.Suckle:
                 if (action.preyLocation == PreyLocation.breasts || action.preyLocation == PreyLocation.leftBreast || action.preyLocation == PreyLocation.rightBreast)
-                    return $"<b>{action.Unit.Name}</b> hugs <b>{action.Target.Name}</b>, pinning {GPPHis(action.Target)} arms to {GPPHis(action.Target)} sides as {GPPHe(action.Unit)} starts sucking on {GPPHis(action.Target)} breasts!{odds}";
+                    if (action.Unit == action.Target)
+                        return $"<b>{action.Unit.Name}</b> {GetRandomStringFrom("grabs", "grips", "grasps")} {GPPHis(action.Target) + " own"} {GetRandomStringFrom("tits", "breasts")} and starts caringly sucking on them.{odds}";
+                    else
+                        if (State.Rand.Next(2) == 0)
+                            return $"<b>{action.Unit.Name}</b> pins <b>{action.Target.Name}</b>, to the ground as {GPPHe(action.Unit)} starts sucking on {GPPHis(action.Target)} {GetRandomStringFrom("tits", "breasts")}!{odds}";
+                        else
+                            return $"<b>{action.Unit.Name}</b> hugs <b>{action.Target.Name}</b>, pinning {GPPHis(action.Target)} arms to {GPPHis(action.Target)} sides as {GPPHe(action.Unit)} starts sucking on {GPPHis(action.Target)} {GetRandomStringFrom("tits", "breasts")}!{odds}";
                 else
-                    return $"<b>{action.Unit.Name}</b> knocks down <b>{action.Target.Name}</b> and begins sucking {GPPHis(action.Target)} rod.{odds}";
+                    if (action.Unit == action.Target)
+                        return $"<b>{action.Unit.Name}</b> gets down and skillfully begins {GetRandomStringFrom("servicing", "sucking", "fellating")} {GPPHis(action.Target)} {GetRandomStringFrom("shaft", "rod", "dick", "rod", "dick")}.{odds}";
+                    else
+                        if (State.Rand.Next(2) == 0)
+                            return $"<b>{action.Unit.Name}</b> catches <b>{action.Target.Name}</b> off guard and aggressively begins sucking {GPPHis(action.Target)} {GetRandomStringFrom("shaft", "rod", "dick", "rod", "dick")}.{odds}";
+                        else
+                            return $"<b>{action.Unit.Name}</b> knocks down <b>{action.Target.Name}</b> and begins sucking {GPPHis(action.Target)} {GetRandomStringFrom("shaft", "rod", "dick", "rod", "dick")}.{odds}";
             case MessageLogEvent.SuckleFail:
                 if (action.preyLocation == PreyLocation.breasts || action.preyLocation == PreyLocation.leftBreast || action.preyLocation == PreyLocation.rightBreast)
                     return $"<b>{action.Unit.Name}</b> hugs <b>{action.Target.Name}</b>, but {GPPHe(action.Target)} breaks free from {GPPHis(action.Unit)} hold before {action.Unit.Name} can do anything!{odds}";
