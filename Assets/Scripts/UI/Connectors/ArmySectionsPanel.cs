@@ -28,7 +28,7 @@ public class ArmySectionsPanel : MonoBehaviour
     public void OpenRenameArmy()
     {
         var box = Instantiate(State.GameManager.InputBoxPrefab).GetComponentInChildren<InputBox>();
-        box.SetData(State.GameManager.Recruit_Mode.RenameArmy, "Rename", "Cancel", "Rename this army?", 35);
+        box.SetData(State.GameManager.Recruit_Mode.RenameArmy, "Rename", "Cancel", "Rename this army?", 100);
 
     }
 

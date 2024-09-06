@@ -142,7 +142,7 @@ public class UnitCustomizer
             {
                 unit.Name = s;
                 RefreshView();
-            }, "Change", "Cancel", $"Modify name?", 14);
+            }, "Change", "Cancel", $"Modify name?", 100);
         });
     }
 
