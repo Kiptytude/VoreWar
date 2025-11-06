@@ -44,16 +44,25 @@ public class NameGenerator
     List<string> deerTownNames;
     List<string> aabayxTownNames;
     List<string> miceTownNames;
+    List<string> matronsminionsTownNames;
+    List<string> bearTownNames;
+    List<string> gnollTownNames;
+    List<string> ghostTownNames;
+    List<string> mainlandElvenTownNames;
+    List<string> umbreonTownNames;
+    List<string> lupineTownNames;
+    List<string> jackalTownNames;
 
     List<string> compyNames;
     List<string> vagrantNames;
     List<string> serpentNames;
     List<string> wyvernNames;
-    List<string> youngWyvernNames;
     List<string> gryphonNames;
     List<string> feralLionNames;
+    List<string> feralOrcasNames;
     
 	List<string> goodraNames;
+    List<string> viraeUltimaeNames;
 	
     Dictionary<Race, List<string>> RaceMaleNames;
     Dictionary<Race, List<string>> RaceFemaleNames;
@@ -272,13 +281,6 @@ public class NameGenerator
             "Deathtalon",
             "Sharpbeak",
             "Spineback",
-        };
-        youngWyvernNames = new List<string>
-        {
-            "Smallwing",
-            "Greedytalon",
-            "Widebeak",
-            "Lazyback",
         };
         gryphonNames = new List<string>
         {
@@ -547,6 +549,7 @@ public class NameGenerator
             "Marsupia",
             "Ayer",
             "Guardia",
+            "Uluroo",
         };
         taurusTownNames = new List<string>
         {
@@ -815,28 +818,56 @@ public class NameGenerator
             "Dragoo",
             "Gooigi",
         };
+        viraeUltimaeNames = new List<string>
+        {
+            "Ppptnnnx",
+            "Pppptnnnx",
+            "Ppptnmnx",
+            "Ppppptnnnnnx",
+            "Pttnnnnnnnx",
+            "Ppptrrnnx",
+            "Bchnnnnrrrrlllll",
+            "Bchnnnrrrllll",
+            "Bchnnrrlll",
+            "Bchnrll",
+            "Bnnnnsss",
+            "Bsnnnnsss",
+            "Bsnsnnnsss",
+            "Bsnsnsnnsss",
+            "Bsnsnsnsnsss",
+            "Bsnsnsnsnssss",
+            "Lnsnssnrs",
+            "Lnssnrssnrs",
+            "Lnr",
+            "Lrnrsrnrsrsrnrrs",
+            "Lnsssnsssssnsrss",
+            "Lnsnssrnrs",
+            "Lnsnnssnnrns",
+            "Pnr",
+            "Pnnr",
+            "Pnrr",
+            "Pnnrr",
+            "Pnnnrr",
+            "Pnnrrr",
+            "Pnnnrrr",
+            "Grhsll",
+        };
         aabayxTownNames = new List<string>
         {
-            "Akaryocyte",  ///(this one is the capital, by the way)
-            "Infection Site Zero",
-            "Arenai",
-            "Temple of Twenty",
-            "Adnaviria",
-            "Ysynsr aaz Lextrnl's Domain",
-            "Duplodnaviria",
-            "Bacteriophage",
-            "Monodnaviria",
-            "Aychkaynienteeseven",
-            "Riboviria",
-            "Capsid",
-            "Ribozyviria",
-            "Lipid Envelope",
-            "Varidnaviria",
-            "Mimi",
-            "Tevenvirinae",
-            "Myoviridae",
-            "Podoviridae",
-            "Autographiviridae",
+            "Temple of Twenty",  ///(Capital)
+            "Chapchapksyr",  ///(Translates as "Book place." When possible, the Aabayx prefer to keep all written records here, at the temple to Pntyr aaz Chapchap, believing that Pntyr aaz Chapchap will keep said writings safe)
+            "Aptnaxksyr",  ///(Translates as "Apnax's place")
+            "Tmpl",  ///(Translates as "Origin." Built around a major holy site for the Aabayx)
+            "Ninksyr",  ///(Translates as "Meeting place." Was a frequent meeting spot for Aabayx before the 20th Sythkrast)
+            "Kanayt aaz Sgl",  ///(Translates as "Tree of Sgl" or "Sgl's Tree"(both are equally valid translations))
+            "P'pl Snsn",  ///(Translates as "Black Mud")
+            "Akaryocyte",  ///(Doesn't translate anymore, but once upon a time meant something like "haunted grass"(No longer the capital, but I liked this one too much to get rid of it entirely))
+            "Temple of Kyes",  ///(Seen as mysterious, even by other Aabayx villages. Best thing to do is to avoid it)
+            "Lkrtr Axax",  ///(Translates as "Fort Axax" or "Axax's Fort"(both are equally valid translations))
+            "Lkrtr Dfndr",  ///(Translates as "Fort Silver")
+            "Lkrtr Yef Sxltl",  ///(Translates as "Fort Yef Sxltl" or "Yef Sxltl's Fort"(both are equally valid translations))
+            "Lkrtr Bnsa",  ///(Translates as "Fort Bnsa" or "Bnsa's Fort"(both are equally valid translations))
+            "Lkrtr Kchk",  ///(Translates as "Fort Fire")
         };
         miceTownNames = new List<string>
         {
@@ -859,26 +890,135 @@ public class NameGenerator
             "Tanglewood",
 
         };
+        matronsminionsTownNames = new List<string>
+        {
+            "Matron's Rest",
+            "Giant's Pass",
+            "Her Tranquility",
+            "Aged Gate",
+            "Fateland",
+            "Grave of All",
+            "Dragon's Lounge",
+            "Beaten Path",
+            "Lair of the Lady",
+            "Ancestor's Pit",
+        };
+        mainlandElvenTownNames = new List<string>
+        {
+            "Glassleaf vale",
+            "Silveren",
+            "Gold Glade",
+            "Greenfalls",
+            "Vanaheim",
+        };
+        bearTownNames = new List<string>
+        {
+            "Ursa-major",
+            "Honeycomb",
+            "Necessity",
+            "Bjornsburg",
+            "Hyperborea",
+            "Glaesisvellir",
+        };
+        umbreonTownNames = new List<string>
+        {
+            "Revolution's Might",
+            "Freedom Restored",
+            "Fort Cresent",
+            "Liberty Regained",
+            "Democracy",
+            "Merciful Hammer",
+            "Justice For All",
+            "The Downtown",
+            "New New Eevia",
+            "Duskville",
+            "Shadowwall",
+        };
+        lupineTownNames = new List<string>
+        {
+            "Denko", 
+            "Zebooth", 
+            "District 0", 
+            "The Black Market", 
+            "Fang City", 
+            "Direfort", 
+            "Howlburg", 
+            "Bitetown", 
+            "The Pack", 
+            "Moonlight"
+        };
+        jackalTownNames = new List<string>
+        {
+            "The Shard",
+            "Heliopolis",
+            "First Oasis",
+            "Ancient's Tomb",
+            "Sandhaven",
+            "Sandstone",
+            "City of Gold",
+            "The Grand Pyramid",
+            "Judgement",
+            "Golden Sands",
+            "River's Edge",
+            "Whispering Oasis",
+            "Pillars of Gold",
+            "Sunken Citadel",
+
+        };
+        gnollTownNames = new List<string>
+        {
+            "Meetin' Rock",
+            "Huntin' Grounds",
+            "Shalanzi",
+            "Balaizi's Claim",
+            "Corpsefeast",
+            "Hyeeni's Cut",
+            "Zefzi",
+            "Breakbone Village",
+            "The Boneyard",
+            "Good Pickin's",
+            "Oti' Koetzi",
+            "Dark Place",
+        };
+        ghostTownNames = new List<string>
+        {
+            "Terminalia",
+            "The Grave",
+            "Endless Haunt",
+            "Mortuary",
+            "Maze of Souls",
+            "Graystone",
+            "Lake Lebarge",
+            "Endlings Rest",
+            "Elder Burial",
+            "Headstone",
+            "Sematary",
+            "Extinction",
+            "Arlington",
+            "Eternal Bed",
+            "The Tomb",
+            "Spectroplasm",
+        };
 
         Encoding encoding = Encoding.GetEncoding("iso-8859-1");
 
-        if (File.Exists($"{State.StorageDirectory}males.txt"))
+        if (File.Exists($"{State.NameFileDirectory}males.txt"))
         {
-            var logFile = File.ReadAllLines($"{State.StorageDirectory}males.txt", encoding);
+            var logFile = File.ReadAllLines($"{State.NameFileDirectory}males.txt", encoding);
             if (logFile.Any())
                 maleNames = new List<string>(logFile);
         }
 
-        if (File.Exists($"{State.StorageDirectory}females.txt"))
+        if (File.Exists($"{State.NameFileDirectory}females.txt"))
         {
-            var logFile = File.ReadAllLines($"{State.StorageDirectory}females.txt", encoding);
+            var logFile = File.ReadAllLines($"{State.NameFileDirectory}females.txt", encoding);
             if (logFile.Any())
                 femaleNames = new List<string>(logFile);
         }
 
-        if (File.Exists($"{State.StorageDirectory}monsters.txt"))
+        if (File.Exists($"{State.NameFileDirectory}monsters.txt"))
         {
-            var logFile = File.ReadAllLines($"{State.StorageDirectory}monsters.txt", encoding);
+            var logFile = File.ReadAllLines($"{State.NameFileDirectory}monsters.txt", encoding);
             if (logFile.Any())
                 monsterNames = new List<string>(logFile);
         }
@@ -886,9 +1026,9 @@ public class NameGenerator
         ArmyNames = new Dictionary<Race, List<string>>();
         ArmyNameDefault = new Dictionary<Race, string>();
 
-        if (File.Exists($"{State.StorageDirectory}armyNames.txt"))
+        if (File.Exists($"{State.NameFileDirectory}armyNames.txt"))
         {
-            var logFile = File.ReadAllLines($"{State.StorageDirectory}armyNames.txt", encoding);
+            var logFile = File.ReadAllLines($"{State.NameFileDirectory}armyNames.txt", encoding);
             bool expectingdefault = false;
             Race currentRace = Race.Cats;
             foreach (string entry in logFile)
@@ -928,21 +1068,21 @@ public class NameGenerator
 
         foreach (Race race in (Race[])Enum.GetValues(typeof(Race)))
         {
-            if (File.Exists($"{State.StorageDirectory}male{race}.txt"))
+            if (File.Exists($"{State.NameFileDirectory}male{race}.txt"))
             {
-                var logFile = File.ReadAllLines($"{State.StorageDirectory}male{race}.txt", encoding);
+                var logFile = File.ReadAllLines($"{State.NameFileDirectory}male{race}.txt", encoding);
                 var names = new List<string>(logFile);
                 RaceMaleNames[race] = names;
             }
-            if (File.Exists($"{State.StorageDirectory}female{race}.txt"))
+            if (File.Exists($"{State.NameFileDirectory}female{race}.txt"))
             {
-                var logFile = File.ReadAllLines($"{State.StorageDirectory}female{race}.txt", encoding);
+                var logFile = File.ReadAllLines($"{State.NameFileDirectory}female{race}.txt", encoding);
                 var names = new List<string>(logFile);
                 RaceFemaleNames[race] = names;
             }
-            if (File.Exists($"{State.StorageDirectory}{race}.txt"))
+            if (File.Exists($"{State.NameFileDirectory}{race}.txt"))
             {
-                var logFile = File.ReadAllLines($"{State.StorageDirectory}{race}.txt", encoding);
+                var logFile = File.ReadAllLines($"{State.NameFileDirectory}{race}.txt", encoding);
                 var names = new List<string>(logFile);
                 RaceMonsterNames[race] = names;
             }
@@ -1037,9 +1177,6 @@ public class NameGenerator
             case Race.Wyvern:
                 list = wyvernNames;
                 break;
-            case Race.YoungWyvern:
-                list = youngWyvernNames;
-                break;
             case Race.Vagrants:
                 list = vagrantNames;
                 break;
@@ -1054,6 +1191,9 @@ public class NameGenerator
                 break;
 			case Race.Goodra:
                 list = goodraNames;
+                break;
+			case Race.ViraeUltimae:
+                list = viraeUltimaeNames;
                 break;
         }
         if (list != null)
@@ -1257,6 +1397,46 @@ public class NameGenerator
         {
             if (i >= 0 && i < miceTownNames.Count)
                 return miceTownNames[i];
+        }
+        else if (race == Race.MatronsMinions)
+        {
+            if (i >= 0 && i < matronsminionsTownNames.Count)
+                return matronsminionsTownNames[i];
+        }
+        else if (race == Race.Bears)
+        {
+            if (i >= 0 && i < bearTownNames.Count)
+                return bearTownNames[i];
+        }
+        else if (race == Race.Umbreon)
+        {
+            if (i >= 0 && i < umbreonTownNames.Count)
+                return umbreonTownNames[i];
+        }
+        else if (race == Race.Lupine)
+        {
+            if (i >= 0 && i < lupineTownNames.Count)
+                return lupineTownNames[i];
+        }
+        else if (race == Race.Jackals)
+        {
+            if (i >= 0 && i < jackalTownNames.Count)
+                return jackalTownNames[i];
+        }
+        else if (race == Race.MainlandElves)
+        {
+            if (i >= 0 && i < mainlandElvenTownNames.Count)
+                return mainlandElvenTownNames[i];
+        }
+        else if (race == Race.Gnolls)
+        {
+            if (i >= 0 && i < gnollTownNames.Count)
+                return gnollTownNames[i];
+        }
+        else if (race == Race.Ghosts)
+        {
+            if (i >= 0 && i < ghostTownNames.Count)
+                return ghostTownNames[i];
         }
 
 

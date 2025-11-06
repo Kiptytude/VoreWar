@@ -50,10 +50,21 @@ class Dragon : BlankSlate
 
     internal override void SetBaseOffsets(Actor_Unit actor)
     {
-        if (position == Position.StandingCrouch)
-        {
-            AddOffset(Belly, 0, 14 * .625f);
-        }
+        AddOffset(Head, 0, 25 * .625f);
+        AddOffset(Body, 0, 25 * .625f);
+        AddOffset(BodyAccent, 0, 25 * .625f);
+        AddOffset(BodyAccent2, 0, 25 * .625f);
+        AddOffset(BodyAccent3, 0, 25 * .625f);
+        AddOffset(BodyAccent4, 0, 25 * .625f);
+        AddOffset(BodyAccent5, 0, 25 * .625f);
+        AddOffset(BodyAccent6, 0, 25 * .625f);
+        AddOffset(BodyAccent7, 0, 25 * .625f);
+        AddOffset(BodyAccent8, 0, 25 * .625f);
+        AddOffset(BodyAccessory, 0, 25 * .625f);
+        AddOffset(BodySize, 0, 25 * .625f);
+        AddOffset(Belly, 0, 25 * .625f);
+        AddOffset(Dick, 0, 25 * .625f);
+        AddOffset(Balls, 0, 25 * .625f);
     }
 
 
@@ -257,6 +268,17 @@ class Dragon : BlankSlate
                 else if (actor.GetStomachSize(17, 1.6f) == 17)
                     return Sprites[67];
             }
+            else
+            {
+                if (position == Position.StandingCrouch && actor.GetStomachSize(16, 1.75f) >= 12)
+                {
+                    AddOffset(Belly, 0, -1 * .625f);
+                }
+                if (position == Position.StandingCrouch && actor.GetStomachSize(16, 1.75f) < 12)
+                {
+                    AddOffset(Belly, 0, -23 * .625f);
+                }
+            }
             return Sprites[50 + actor.GetStomachSize(16, 1.75f)];
         }
         return null;
@@ -285,7 +307,7 @@ class Dragon : BlankSlate
             return null;
         if (actor.PredatorComponent?.BallsFullness > 0)
         {
-            AddOffset(Balls, 0, 1 * .625f);
+            //AddOffset(Balls, 0, 21 * .625f);
             if (actor.PredatorComponent.IsUnitOfSpecificationInPrey(Race.Selicia, true, PreyLocation.balls))
                 return Sprites[91];
             else if (actor.PredatorComponent.IsUnitOfSpecificationInPrey(Race.Selicia, false, PreyLocation.balls))

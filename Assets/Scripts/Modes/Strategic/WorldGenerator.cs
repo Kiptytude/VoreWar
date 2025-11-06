@@ -473,6 +473,12 @@ public class WorldGenerator
                             tiles[j, k] = StrategicTileType.fieldSnow;
                         else if (type == StrategicTileType.desert || type == StrategicTileType.sandHills)
                             tiles[j, k] = StrategicTileType.fieldDesert;
+                        else if (type == StrategicTileType.ashen || type == StrategicTileType.ashenHills)
+                            tiles[j, k] = StrategicTileType.fieldAshen;
+                        else if (type == StrategicTileType.smallIslands || type == StrategicTileType.shallowWater)
+                            tiles[j, k] = StrategicTileType.fieldSmallIslands;
+                        else if (type == StrategicTileType.savannah)
+                            tiles[j, k] = StrategicTileType.fieldsavannah;
                         else
                             tiles[j, k] = StrategicTileType.field;
                     }
@@ -507,6 +513,36 @@ public class WorldGenerator
             usedLocations.Add(point);
             State.World.Tiles[point.x, point.y] = StrategicTileType.grass;
             State.World.MercenaryHouses[i] = new MercenaryHouse(point);
+        }
+
+    }
+    public void PlaceAncientTeleporters(int tele)
+    {
+
+        if (tele < 0)
+        {
+            State.World.AncientTeleporters = new AncientTeleporter[0];
+            return;
+        }
+
+        State.World.AncientTeleporters = new AncientTeleporter[tele];
+        int currPorter = 0;
+        /*
+        if (tele == 1 || tele > 5)
+        {
+            Vec2i center = GrabGoodMercLocation(Config.StrategicWorldSizeX / 2, Config.StrategicWorldSizeY / 2);
+            usedLocations.Add(center);
+            State.World.Tiles[center.x, center.y] = StrategicTileType.grass;
+            State.World.AncientTeleporters[0] = new AncientTeleporter(center);
+            currPorter++;
+        }
+        */
+        for (int i = currPorter; i < tele; i++)
+        {
+            Vec2i point = GrabGoodMercLocation(State.Rand.Next(Config.StrategicWorldSizeX), State.Rand.Next(Config.StrategicWorldSizeY));
+            usedLocations.Add(point);
+            State.World.Tiles[point.x, point.y] = StrategicTileType.grass;
+            State.World.AncientTeleporters[i] = new AncientTeleporter(point);
         }
 
     }

@@ -35,7 +35,7 @@ public enum Traits
     PackTactics = 14,
     /// <summary>Doubles unit's escape rate.</summary>
     EscapeArtist = 20,
-    /// <summary>Doubles unit's digestion rate.</summary>
+    /// <summary>Increases unit's digestion rate by 50%.</summary>
     FastDigestion = 21,
     /// <summary>Halves unit's digestion rate.</summary>
     SlowDigestion = 22,
@@ -156,7 +156,7 @@ public enum Traits
     /// <summary>Allows a weaker, 3-tile attack.</summary>
     TailStrike = 80,
     /// <summary>Unit does not digest friendly units.</summary>
-    Endosoma = 81,
+    FriendlyStomach = 81,
     /// <summary>Halves chance for unit's prey to escape.</summary>
     IronGut = 82,
     /// <summary>Reduces chance for unit's prey to escape by 15%.</summary>
@@ -352,7 +352,7 @@ public enum Traits
     ArcaneMagistrate = 177,
     /// <summary>Damage over time effect received from being devoured by an Aabayx</summary>
     ViralDigestion = 178,
-    /// <summary>This unit has a very strange body type, making them harder to swallow and providing less sustenance as prey.</summary>
+    /// <summary>This unit has a very strange body type, making them harder to swallow.</summary>
     AwkwardShape = 179,
     /// <summary>Unit deals up 1% more weapon damage per agility it has over it's target, up to 25%, tripled when using light weapons.</summary>
     SwiftStrike = 180,
@@ -368,6 +368,105 @@ public enum Traits
     ManaBarrier = 185,
     /// <summary>Unit's BladeDance, Tenacity, and Focus stack loss is reduced by if stacks are below 10% current HP.</summary>
     Unflinching = 186,
+    /// <summary></summary>
+    Legendary = 187,
+    /// <summary>Unit takes extra damage from all sources of fire. (150%)</summary>
+    FireVulnerable = 188,
+    /// <summary>Unit's stats are boosted by 220% But needs twice as much EXP to level</summary>
+    Elite = 189,
+    /// <summary>Unit generates 3 mana per turn</summary>
+    ManaDynamo = 190,
+    /// <summary>Unit deals extra melee or ranged damage at the cost of each attack consuming 6 mana. No bonus is received if mana is under 6</summary>
+    WeaponChanneler = 191,
+    /// <summary>Upon getting killed, this unit will be brought back to life within a 6 tile radius of where they were killed once per battle</summary>
+    Respawner = 192,
+    /// <summary>Upon getting killed, this unit will be brought back to life within a 6 tile radius of where they were killed 3 times per battle</summary>
+    RespawnerIII = 193,
+    /// <summary>Unit has set chance to return to army after dying in battle regardless of outcome. Chance starts at 100% then decreases 10% with each death, bottoming out at 10%.</summary>
+    DeathCheater = 194,
+    /// <summary>Unit deals no digestion damage, enemies eaten by this unit will eventually lose the ability to escape and will be considered defeated.</summary>
+    Endosoma = 195,
+    /// <summary>Units defeated by the Endosoma trait will now be recruited instead at the end of battle.</summary>
+    Friendosoma = 196,
+    /// <summary>Unit deals bonus ranged and melee damage to members of the same race.</summary>
+    Competitive = 197,
+    /// <summary></summary>
+    QueenOfFrost = 198,
+
+    /// <summary>Melee damage is increased by 100%. Damage is divided by the amount of adjacent enemy units.</summary>
+    Duelist = 500,
+    /// <summary>Melee damage is reduced to 12.5%. Damage is multiplied by the amount of adjacent enemy units.</summary>
+    Fervor = 501,
+    /// <summary>Accuracy is reduced against targets within 5 tiles. Closer targets are even harder to hit.</summary>
+    Farsighted = 502,
+    /// <summary>Unit has 50% reduced vore chance when it has prey.</summary>
+    EasilySatisfied = 503,
+    /// <summary>Unit's ranged attacks can instead attack any unit within 2 spaces of the target.</summary>
+    AwfulAim = 504,
+    /// <summary>Unit's MP regeneration is delayed by one turn after it regenerates MP.</summary>
+    Slacker = 505,
+    /// <summary>Unit's stats are increased by 100%, but MP regeneration is delayed by one turn after it regenerates MP.</summary>
+    Juggernaut = 506,
+    /// <summary>When attacked in melee, unit has a 10% chance to be afflicted with sleep for 2 turns.</summary>
+    PoorConstitution = 507,
+    /// <summary>At the start of each turn, if this unit is not full, it has a 10% chance to spend MP and attempt to eat a random adjacent unit.</summary>
+    IntrusiveAppetite = 508,
+    /// <summary>When digested, unit will permanently increase one of predator's stats by one for each of this unit's levels..</summary>
+    ExtraNutritious = 509,
+    /// <summary>While full, at the start of turn, unit has a chance based on current fullness to fall asleep.</summary>
+    FoodComaProne = 510,
+    /// <summary>While asleep, unit's digestion damage and absorption rate is doubled. Unit has a chance based on fullness to extend it's own sleep status by a turn.</summary>
+    SleepItOff = 511,
+    /// <summary>Unit has a 10% chance of force-feeding themselves to their melee attack target instead of attacking, if possible. Chance is increased by 5% per difference in level.</summary>
+    HaplessPrey = 512,
+    /// <summary>While being digested, unit will heal it's predator each turn.</summary>
+    PleasantDigestion = 513,
+    /// <summary>Unit gains the ability to make a vore attempt at increased odds, if it fails their target vores them instead, if possible.</summary>
+    AllIn = 514,
+    /// <summary>At the start of turn, Unit applies 1 stack of Weakened to all adjacent allies and Unit gainst 1 stack of Bolstered for every ally afflicted.</summary>
+    SiphoningAura = 515,
+    /// <summary>Unit has a small chance to gain Temptation each time an ally within 3 spaces is eaten.</summary>
+    EnviousPrey = 516,
+    /// <summary>When an another nearby unit is eaten, it has the chance to eat a random adjacent unit.</summary>
+    CompetetivePredator = 517,
+    /// <summary>When this unit rubs a unit's belly, the effect is doubled and 1 stack of Weakness is applied to the target.</summary>
+    RoughMassage = 518,
+    /// <summary>For the first 5 turns of battle, unit's MP is reduced by 50%.</summary>
+    SlowStart = 519,
+    /// <summary>When a unit within 3 spaces is consumed, this unit has a 10% chance to trade places with them and be consumed instead.</summary>
+    CurseOfSacrifice = 520,
+    /// <summary>At start of turn, Unit deals it's level in fire damage to itself and all units around it or it's predator, if this unit has been consumed. This damage can not kill. Effect does not activate if unit has surrendered.</summary>
+    CurseOfImmolation = 521,
+    /// <summary>At the start of each turn, this unit's highest stat is reduced by 1 and this unit's lowest stat is increased by 1.</summary>
+    CurseOfEquivalency = 522,
+    /// <summary>When hit by an attack, unit has a 50% chance to teleport to a random space within 3 spaces. If a unit occupies that space, this unit is consumed by the occupier.</summary>
+    CurseOfPhasing = 523,
+    /// <summary>At the start of battle, this unit has a 50% chance to have eaten one of it's allies.</summary>
+    CurseOfCraving = 524,
+    /// <summary>At the start of battle, this unit has a 25% chance to teleported into a random predator.</summary>
+    CurseOfPreyportaion = 525,
+    /// <summary>Prevents the AI from using weapons. AI will still buy weapons.</summary>
+    VoreObsession = 526,
+    /// <summary>If using size based settings: Bonus damage from larger units is reduced by 75% and Unit's damage against larger units is not reduced; Not using size based settings: Unit's damage is increased by 1% for every 1 size larger its target is. (capped at 25)</summary>
+    GiantSlayer = 527,
+    /// <summary>If using size based settings: Extra damage against smaller targets is increased by 50%; Not using size based settings: Unit's damage is increased by 1% for every 1 size smaller its target is. (capped at 25)</summary>
+    Crusher = 528,
+    /// <summary>This unit's melee attacks scale with 80% Strength and 30% Dexterity, instead of with 100% Strength.</summary>
+    Finesse = 529,
+    /// <summary>If this unit is wielding a melee weapon, melee attacks against this unit may deal half damage based on attacker's and unit's dexterity score (max 70% block chance). A successful block sets the attacker's MP to 0.</summary>
+    DexterousDefense = 530,
+    /// <summary>Unit gains increased dodge. This bonus is disabled for 3 turns after taking damage.</summary>
+    FocusedDodge = 531,
+    /// <summary>This unit heals any unit that buffs it, equal to 5% of Endurance every turn while the buff persists. This unit gives 'Mendinig' to an ally within 2 spaces every 4th turn, duration scaling with level.</summary>
+    BlessingOfNature = 532,
+    /// <summary>This unit grants barrier to any unit that buffs it, equal to 10% of Will every turn while the buff persists. This unit gives 'Shield' to an ally within 2 spaces every other turn, duration scaling with level.</summary>
+    BlessingOfEarth = 533,
+    /// <summary>This unit restores mana to any unit that buffs it, for 10% of Mind every turn while the buff persists. This unit gives 'Focus' to an ally within 2 spaces every other turn, stacks scaling with level.</summary>
+    BlessingOfWater = 534,
+    /// <summary>This unit grants sharpness to any unit that buffs it, equal to 10% of Strength every turn while the buff persists. This unit gives 'Valor' to an ally within 2 spaces every other turn, duration scaling with level.</summary>
+    BlessingOfFerocity = 535,
+
+
 
 
     //Hidden Traits
@@ -473,6 +572,35 @@ public enum Traits
     Symbiote = 298,
     /// <summary>creates a spawn unit on prey Absorption</summary>
     CreateSpawn = 299,
+    /// <summary>Unit takes 25% less damage from electric attacks.</summary>
+    Grounded = 300,
+    /// <summary>Unit takes 25% less damage from ice attacks.</summary>
+    ColdTolerance = 301,
+    /// <summary>Unit takes extra damage from all sources of ice. (150%)</summary>
+    IceVulnerable = 302,
+    /// <summary>Unit takes extra damage from all sources of electricity. (150%)</summary>
+    ElecVulnerable = 303,
+    /// <summary>Unit can move past (but not stop on) allied units.</summary>
+    PassThrough = 304,
+    /// <summary>Unit can move past (but not stop on) enemy units.</summary>
+    Blitz = 305,
+    /// <summary>Unit can move past (but not stop on) any unit.</summary>
+    SpectralStep  = 306,
+    /// <summary>If unit lands a killing blow on a poisoned unit they will create a new spawn unit.</summary>
+    InfectiousReproduction  = 307,
+    /// <summary>Provides the DireInfection ability which debilitates the target for 1 turn reducing movement to 1 and badly poisons them for 6 turns.</summary>
+    DireInfection  = 308,
+    /// <summary>Unit no longer has a 'mind' stat.</summary>
+    Brainless  = 309,
+    /// <summary>ViralDigestion, AwkwardShape, and AcellularBody in one trait.</summary>
+    ViralBiology  = 310,
+    /// <summary>If one of an army has this trait, all non-water tiles can be traversed by the army for 1 MP.</summary>
+    Cartography  = 311,
+    /// <summary>If one of an army has this trait, all non-water tiles can be traversed by the army for 1 MP.</summary>
+    BoundWeapon  = 312,
+    /// <summary>Reduced nutrition as prey. Impossible to convert, as well as have a hard time converting other races to its race. (50% convert rate and can only convert).</summary>
+    AcellularBody  = 313,
+
 
     // Growth-related section
     /// <summary>Unit increases in size when absorbing prey.</summary>
@@ -492,7 +620,19 @@ public enum Traits
     /// <summary>Unit's absorption growth decays 2x as fast.</summary>
     FleetingGrowth = 274,
     /// <summary>Doubles healing provided when absorbing unit and increases growth provided by 50%.</summary>
-    ProteinRich = 275
+    ProteinRich = 275,
+    /// <summary>Quarters unit's digestion rate.</summary>
+    SlowerDigestion = 276,
+    /// <summary>Quarters prey absorption rate.</summary>
+    SlowerAbsorption = 277,
+    /// <summary>Unit digests and absorbs prey a quarter of normal speed.</summary>
+    SlowerMetabolism = 278,
+    /// <summary>Doubles unit's digestion rate.</summary>
+    FasterDigestion = 279,
+    /// <summary>Doubles unit's absorption rate.</summary>
+    FasterAbsorption = 280,
+    /// <summary>Doubles unit's absorption rate.</summary>
+    Eeveeolutionist = 281
 
 }
 

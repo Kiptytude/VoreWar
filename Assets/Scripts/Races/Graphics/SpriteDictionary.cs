@@ -20,6 +20,7 @@ public class SpriteDictionary : MonoBehaviour
     public Sprite[] Breasts;
     public Sprite[] SquishedBreasts;
     public Sprite[] FeaturelessBreasts;
+    public Sprite[] NiplessVoreSprites;
     public Sprite[] Mouths;
 
     public Sprite[] Eyebrows;
@@ -178,6 +179,12 @@ public class SpriteDictionary : MonoBehaviour
     public Sprite[] Deer2;
     public Sprite[] Deer3;
     public Sprite[] Deer4;
+    public Sprite[] Bears;
+    public Sprite[] BearsClothes;
+    public Sprite[] Eevee;
+    public Sprite[] Umbreon;
+    public Sprite[] Umbreon2;
+    public Sprite[] Umbreon3;
 
     public Sprite[] Succubi;
     public Sprite[] Alligators;
@@ -203,7 +210,16 @@ public class SpriteDictionary : MonoBehaviour
     public Sprite[] Vargul4;
     public Sprite[] Vargul5;
     public Sprite[] Hamsters;
-
+    public Sprite[] RwuMercenaries1;
+    public Sprite[] RwuMercenaries2;
+    public Sprite[] RwuMercenaries3;
+    public Sprite[] RwuMercenaries4;
+    public Sprite[] RwuMercenaries5;
+    public Sprite[] RwuMercenaries6;
+    public Sprite[] RwuMercenaries7;
+    public Sprite[] RwuMercenaries8a;
+    public Sprite[] RwuMercenaries8b;
+    public Sprite[] Equaleon;
     public Sprite[] CowsSeliciaBelly;
 
     public Sprite[] PantherBase;
@@ -223,6 +239,7 @@ public class SpriteDictionary : MonoBehaviour
     public Sprite[] YoukoTails;
     public Sprite[] Aabayx;
     public Sprite[] AabayxFacePaint;
+    public Sprite[] AabayxLeader;
 
     public Sprite[] Mice1;
     public Sprite[] Mice2;
@@ -234,6 +251,32 @@ public class SpriteDictionary : MonoBehaviour
     public Sprite[] MiceVore2;
     public Sprite[] MiceVore3;
 
+    public Sprite[] GnollClothes;
+    public Sprite[] GnollsBodyParts;
+    public Sprite[] GnollsVoreParts;
+
+    public Sprite[] CentaurParts;
+    public Sprite[] CentaurTorsoAddOns;
+    public Sprite[] TaurTorso;
+
+    public Sprite[] MainlandElfParts;
+    public Sprite[] MainlandElfClothes;
+
+    public Sprite[] Lupine1;
+    public Sprite[] Lupine2;
+    public Sprite[] LupineClothes;
+    public Sprite[] LupineClothes2;
+    public Sprite[] LupineVoreSprites;
+
+    public Sprite[] JackalMain;
+    public Sprite[] JackalClothes;
+    public Sprite[] JackalJewel;
+
+    public Sprite[] Ghosts1;
+    public Sprite[] Ghosts2;
+    public Sprite[] Ghosts3;
+    public Sprite[] GhostsVoreSprites;
+
     [Header("Unique Mercenaries")]
     public Sprite[] Selicia;
     public Sprite[] Vision;
@@ -244,7 +287,7 @@ public class SpriteDictionary : MonoBehaviour
     public Sprite[] DRACO;
     public Sprite[] Zoey;
     public Sprite[] ZoeyHoliday;
-    public Sprite[] Abakhanskya;
+    public Sprite[] Cierihaka;
     public Sprite[] Zera240;
     public Sprite[] ZeraBelly;
     public Sprite[] ZeraBalls;
@@ -264,6 +307,20 @@ public class SpriteDictionary : MonoBehaviour
     public Sprite[] BellaHead2;
     public Sprite[] BellaRobe1;
     public Sprite[] BellaRobe2;
+    public Sprite[] Singularity1;
+    public Sprite[] Singularity2;
+    public Sprite[] Feit;
+    public Sprite[] Taraluxia;
+    public Sprite[] TaraTailStrikes;
+    public Sprite[] Xelhilde;
+    public Sprite[] Olivia;
+    public Sprite[] OliviaVoreSprites;
+    public Sprite[] Skapa;
+    public Sprite[] Tatltuae;
+    public Sprite[] Firefly;
+    
+    [Header("Bosses")]
+    public Sprite[] Abakhanskya;
 
     [Header("Monsters")]
     public Sprite[] Vagrants;
@@ -271,7 +328,7 @@ public class SpriteDictionary : MonoBehaviour
     public Sprite[] Vagrants3;
     public Sprite[] Serpents;
     public Sprite[] Wyvern;
-    public Sprite[] YoungWyvern;
+    public Sprite[] WyvernMatron;
     public Sprite[] Compy;
     public Sprite[] FeralWolf;
     public Sprite[] Shark;
@@ -312,7 +369,32 @@ public class SpriteDictionary : MonoBehaviour
     public Sprite[] FeralLions;
     public Sprite[] Goodra;
     public Sprite[] Whisp;
+    public Sprite[] FeralHorses;
+    public Sprite[] FeralFox;
+    public Sprite[] Terminid;
+    public Sprite[] FeralOrcas;
+    public Sprite[] Otachi;
+    public Sprite[] BoomBunnies;
+    public Sprite[] FeralSlime;
+    public Sprite[] ViraeUltimae;
+    public Sprite[] Viisels;
+    public Sprite[] FeralEevee;
+    public Sprite[] FeralUmbreon;
+    public Sprite[] FeralEqualeon;
+    public Sprite[] Smudger;
+    public Sprite[] SpaceCroach;
+    public Sprite[] Raiju;
+    public Sprite[] Raiju240;
+    public Sprite[] Utahraptor200;
+    public Sprite[] Utahraptor240A;
+    public Sprite[] Utahraptor240B;
+    public Sprite[] Trex;
 
+    public Sprite[] DryadSprites1;
+    public Sprite[] DryadSprites2;
+    public Sprite[] DryadSprites3;
+    public Sprite[] DryadSprites4;
+    public Sprite[] DryadSprites5;
 
     public Sprite[] Cake;
 
@@ -325,6 +407,13 @@ public class SpriteDictionary : MonoBehaviour
     public Sprite[] ScatV2MFront;
     public Sprite[] ScatV2SBack;
     public Sprite[] ScatV2SFront;
+    public Sprite[] ScatViralV2LBack;
+    public Sprite[] ScatViralV2LFront;
+    public Sprite[] ScatViralV2MBack;
+    public Sprite[] ScatViralV2MFront;
+    public Sprite[] ScatViralV2SBack;
+    public Sprite[] ScatViralV2SFront;
+    public Sprite[] BirdScat;
     public Sprite[] Bones;
     public Sprite[] CleanDisposalL;
     public Sprite[] CleanDisposalM;

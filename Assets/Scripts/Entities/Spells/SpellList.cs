@@ -30,11 +30,24 @@ public enum AbilityTargets
     Tile,
 }
 
+public enum AreaOfEffectType
+{
+    /// <summary> Full(default) - used for non AOE and full box AOE spells</summary>
+    Full,
+    /// <summary> FixedPattern - Used for patterns that don't move</summary>
+    FixedPattern,
+    /// <summary> RotatablePattern - Used for patterns that rotate in relation to target and unit position</summary>
+    RotatablePattern,
+}
+
 static class SpellList
 {
     static internal readonly DamageSpell Fireball;
     static internal readonly DamageSpell PowerBolt;
+    static internal readonly DamageSpell Icicle;
     static internal readonly DamageSpell LightningBolt;
+    static internal readonly DamageSpell ArcBolt;
+    static internal readonly DamageSpell JoltCrash;
     static internal readonly StatusSpell Meditate;
     static internal readonly StatusSpell Shield;
     static internal readonly StatusSpell Mending;
@@ -45,9 +58,24 @@ static class SpellList
 
     static internal readonly DamageSpell IceBlast;
     static internal readonly DamageSpell Pyre;
+    static internal readonly DamageSpell CrossShock;
+    static internal readonly DamageSpell ExplosiveHug;
+    static internal readonly DamageSpell Explode;
+    static internal readonly DamageSpell Flamberge;
+    static internal readonly DamageSpell ForkLightning;
     //static internal readonly Spell Warp;
     //static internal readonly DamageSpell MagicWall;
     static internal readonly StatusSpell Poison;
+    static internal readonly DamageSpell ForcePulse;
+    static internal readonly StatusSpell Bloodrite;
+    static internal readonly StatusSpell Trance;
+    static internal readonly DamageSpell FlameWave;
+    static internal readonly DamageSpell FireBomb;
+    static internal readonly StatusSpell Bolas;
+    static internal readonly Spell CaptureNet;
+    static internal readonly Spell SummonDoppelganger;
+    static internal readonly Spell SummonSpawn;
+    static internal readonly DamageSpell PreysHex;
 
     //Quicksand
     static internal readonly StatusSpell PreysCurse;
@@ -66,6 +94,8 @@ static class SpellList
     static internal readonly DamageSpell ManaFlux;
     static internal readonly DamageSpell UnstableMana;
     static internal readonly DamageSpell ManaExpolsion;
+
+    static internal readonly DamageSpell Conduit;
 
     static internal readonly StatusSpell AlraunePuff;
     static internal readonly StatusSpell Web;
@@ -135,17 +165,47 @@ static class SpellList
         };
         SpellDict[SpellTypes.PowerBolt] = PowerBolt;
 
+        Icicle = new DamageSpell()
+        {
+            Name = "Icicle",
+            Id = "icicle",
+            SpellType = SpellTypes.Icicle,
+            Description = "Deals ice damage to a single target, 1 in 3 chance to freeze target. Frozen units cannot take any actions or dodge, but take reduced damage and are slightly harder to eat.",
+            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy },
+            Range = new Range(8),
+            AreaOfEffect = 0,
+            Tier = 1,
+            Resistable = true,
+            DamageType = DamageTypes.Ice,
+            Damage = (a, t) => 5 + a.Unit.GetStat(Stat.Mind) / 10,
+            OnExecute = (a, t) =>
+            {
+                int curr = t.Unit.Health;
+                a.CastOffensiveSpell(Icicle, t);
+                TacticalGraphicalEffects.CreateIcicle(a.Position, t.Position, t);
+                State.GameManager.SoundManager.PlaySpellCast(PowerBolt, a);
+                bool didSpellHit = curr != t.Unit.Health;
+                if (didSpellHit && State.Rand.Next(3) == 0)
+                {
+                    State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"{t.Unit.Name} Was frozen solid!");
+                    t.Unit.ApplyStatusEffect(StatusEffectType.Frozen, 1f, 2);
+                }
+            },
+        };
+        SpellDict[SpellTypes.Icicle] = Icicle;
+
         LightningBolt = new DamageSpell()
         {
             Name = "Lightning Bolt",
             Id = "lightning-bolt",
             SpellType = SpellTypes.LightningBolt,
-            Description = "Deals damage to a single target, long range",
+            Description = "Deals electric damage to a single target, long range",
             AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy },
             Range = new Range(40),
             AreaOfEffect = 0,
             Tier = 1,
             Resistable = true,
+            DamageType = DamageTypes.Elec,
             Damage = (a, t) => 5 + a.Unit.GetStat(Stat.Mind) / 10,
             OnExecute = (a, t) =>
             {
@@ -154,6 +214,61 @@ static class SpellList
             },
         };
         SpellDict[SpellTypes.LightningBolt] = LightningBolt;
+
+        ArcBolt = new DamageSpell()
+        {
+            Name = "Arc Bolt",
+            Id = "arc-bolt",
+            SpellType = SpellTypes.ArcBolt,
+            Description = "Deals high electric damage to a single target",
+            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy },
+            Range = new Range(7),
+            AreaOfEffect = 0,
+            Tier = 2,
+            Resistable = true,
+            DamageType = DamageTypes.Elec,
+            Damage = (a, t) => 15 + a.Unit.GetStat(Stat.Mind) / 10,
+            OnExecute = (a, t) =>
+            {
+                a.CastOffensiveSpell(ArcBolt, t);
+                State.GameManager.SoundManager.PlaySpellCast(LightningBolt, a);
+                TacticalGraphicalEffects.CreateGenericMagic(a.Position, t.Position, t);
+            },
+        };
+        SpellDict[SpellTypes.ArcBolt] = ArcBolt;
+
+        JoltCrash = new DamageSpell()
+        {
+            Name = "Jolt Crash",
+            Id = "joltcrash",
+            SpellType = SpellTypes.JoltCrash,
+            Description = "Deals electric damage to a single target knocking them back and applying static, which increases all electric damage they recive",
+            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy },
+            Range = new Range(1),
+            AreaOfEffect = 0,
+            Tier = 1,
+            Resistable = true,
+            ResistanceMult = .90f,
+            DamageType = DamageTypes.Elec,
+            Damage = (a, t) => 6 + a.Unit.GetStat(Stat.Mind) / 10,
+            OnExecute = (a, t) =>
+            {
+                float crashDamage = 1.2f;
+                int curr = t.Unit.Health;
+                a.CastOffensiveSpell(JoltCrash, t);
+                bool didSpellHit = curr != t.Unit.Health;
+                if (didSpellHit)
+                {
+                    TacticalUtilities.CheckKnockBack(a, t, ref crashDamage);
+                    TacticalUtilities.KnockBack(a, t);
+                    t.Unit.ApplyStatusEffect(StatusEffectType.Static, 1f, 2);
+                    State.GameManager.SoundManager.PlaySpellCast(LightningBolt, a);
+                }
+                else
+                {State.GameManager.SoundManager.PlaySwing(a);}
+            },
+        };
+        SpellDict[SpellTypes.JoltCrash] = JoltCrash;
 
         Meditate = new StatusSpell()
         {
@@ -291,6 +406,7 @@ static class SpellList
             AreaOfEffect = 1,
             Tier = 2,
             Resistable = true,
+            DamageType = DamageTypes.Ice,
             Damage = (a, t) => 5 + a.Unit.GetStat(Stat.Mind) / 10,
             OnExecute = (a, t) =>
             {
@@ -324,14 +440,117 @@ static class SpellList
             {
                 a.CastOffensiveSpell(Pyre, t);
                 TacticalUtilities.CreateEffect(t.Position, TileEffectType.Fire, 1, 1 + a.Unit.GetStat(Stat.Mind) / 30, 4);
+                State.GameManager.SoundManager.PlaySpellCast(Fireball, a);
             },
             OnExecuteTile = (a, l) =>
             {
                 a.CastOffensiveSpell(Pyre, null, l);
                 TacticalUtilities.CreateEffect(l, TileEffectType.Fire, 1, 1 + a.Unit.GetStat(Stat.Mind) / 30, 4);
+                State.GameManager.SoundManager.PlaySpellCast(Fireball, a);
             },
         };
         SpellDict[SpellTypes.Pyre] = Pyre;
+
+        CrossShock = new DamageSpell()
+        {
+            Name = "Cross Shock",
+            Id = "crossshock",
+            SpellType = SpellTypes.CrossShock,
+            Description = "Deals electric damage in a 'X' pattern and applies 'static' to hit units, which increases all electric damage they recive",
+            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy, AbilityTargets.Tile },
+            Range = new Range(6),
+            AOEType = AreaOfEffectType.FixedPattern,
+            Tier = 2,
+            Pattern = new int[3, 3] { { 1, 0, 1 }, { 0, 1, 0 }, { 1, 0, 1 } },
+            Resistable = true,
+            DamageType = DamageTypes.Elec,
+            Damage = (a, t) => 8 + a.Unit.GetStat(Stat.Mind) / 10,
+            OnExecute = (a, t) =>
+            {
+                int curr = 0;
+                TacticalGraphicalEffects.CreateCrossShock(t.Position);
+                State.GameManager.SoundManager.PlaySpellCast(LightningBolt, a);
+                foreach (var splashTarget in TacticalUtilities.UnitsWithinPattern(t.Position, CrossShock.Pattern))
+                {
+                    curr = splashTarget.Unit.Health;
+                }
+                a.CastOffensiveSpell(CrossShock, t);
+                foreach (var splashTarget in TacticalUtilities.UnitsWithinPattern(t.Position, CrossShock.Pattern))
+                {
+                    bool didSpellHit = (curr != splashTarget.Unit.Health);
+                    if (didSpellHit)
+                    {
+                        splashTarget.Unit.ApplyStatusEffect(StatusEffectType.Static, 1f, 2);
+                    }
+                }
+            },
+            OnExecuteTile = (a, l) =>
+            {
+                int curr = 0;
+                TacticalGraphicalEffects.CreateCrossShock(l);
+                State.GameManager.SoundManager.PlaySpellCast(LightningBolt, a);
+                foreach (var splashTarget in TacticalUtilities.UnitsWithinPattern(l, CrossShock.Pattern))
+                {
+                    curr = splashTarget.Unit.Health;
+                }
+                a.CastOffensiveSpell(CrossShock, null, l);
+                foreach (var splashTarget in TacticalUtilities.UnitsWithinPattern(l, CrossShock.Pattern))
+                {
+                    bool didSpellHit = (curr != splashTarget.Unit.Health);
+                    if (didSpellHit)
+                    {
+                        splashTarget.Unit.ApplyStatusEffect(StatusEffectType.Static, 1f, 2);
+                    }
+                }
+            },
+        };
+        SpellDict[SpellTypes.CrossShock] = CrossShock;
+
+        ExplosiveHug = new DamageSpell()
+        {
+            Name = "Explosive Hug",
+            Id = "explosivehug",
+            SpellType = SpellTypes.ExplosiveHug,
+            Description = "Unit detonates, killing itself and dealing 2/3 of it's current HP in damage to targeted unit",
+            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy },
+            Range = new Range(1),
+            Tier = -1,
+            Resistable = true,
+            ResistanceMult = .50f,
+            Damage = (a, t) => (a.Unit.Health / 3) * 2,
+            OnExecute = (a, t) =>
+            {
+                a.CastOffensiveSpell(ExplosiveHug, t);
+                if(a.Unit.HasTrait(Traits.Fearless))//Auto-surrender prevention
+                    a.CastOffensiveSpell(Explode, a);
+                else
+                {
+                    a.Unit.AddPermanentTrait(Traits.Fearless);
+                    a.CastOffensiveSpell(Explode, a);
+                    a.Unit.RemoveTrait(Traits.Fearless);
+                }
+                State.GameManager.SoundManager.PlaySpellCast(Fireball, a);
+            },
+        };
+        SpellDict[SpellTypes.ExplosiveHug] = ExplosiveHug;
+
+        Explode = new DamageSpell()
+        {
+            Name = "Explosive Hug",
+            Id = "explode",
+            SpellType = SpellTypes.Explode,
+            Description = "Used to kill the exploding unit.",
+            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Self },
+            Range = new Range(1),
+            Tier = -1,
+            Resistable = false,
+            Damage = (a, t) => a.Unit.Health + 5,
+            OnExecute = (a, t) =>
+            {
+                a.CastOffensiveSpell(Explode, a);
+            },
+        };
+        SpellDict[SpellTypes.Explode] = Explode;
 
         //Warp = new Spell() //Implemented this and forgot it was supposed to be target and then location, only the caster makes it highly situational
         //{
@@ -374,6 +593,242 @@ static class SpellList
             },
         };
         SpellDict[SpellTypes.Poison] = Poison;
+
+        Trance = new StatusSpell()
+        {
+            Name = "Trance",
+            Id = "trance",
+            SpellType = SpellTypes.Trance,
+            Description = "Puts target to sleep, duration scales with mind",
+            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy },
+            Range = new Range(6),
+            Duration = (a, t) => 1 + a.Unit.GetStat(Stat.Mind) / 20,
+            Effect = (a, t) => 1,
+            Type = StatusEffectType.Sleeping,
+            Tier = 2,
+            Resistable = true,
+            ResistanceMult = 1.10f,
+            OnExecute = (a, t) =>
+            {
+                if (a.CastStatusSpell(Trance, t))
+                    TacticalGraphicalEffects.CreateGenericMagic(a.Position, t.Position, t, TacticalGraphicalEffects.SpellEffectIcon.Debuff);
+            },
+        };
+        SpellDict[SpellTypes.Trance] = Trance;
+
+        PreysHex = new DamageSpell()
+        {
+            Name = "Prey's Hex",
+            Id = "preysHex",
+            SpellType = SpellTypes.PreysHex,
+            Description = "A hex that causes immense nausea and dizziness forcing a predator to release one of their prey, deals minimal damage.",
+            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy },
+            Range = new Range(5),
+            Tier = 1,
+            Resistable = true,
+            ResistanceMult = 0.90f,
+            Damage = (a, t) => 1 + a.Unit.GetStat(Stat.Mind) / 25,
+            OnExecute = (a, t) =>
+            {
+                int curr = t.Unit.Health;
+                a.CastOffensiveSpell(PreysHex, t);
+                bool didSpellHit = curr != t.Unit.Health;
+                if (didSpellHit)
+                {
+                    if (t.PredatorComponent.AlivePrey == 0)
+                    {
+                        State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<b>{t.Unit.Name}</b> is dizzy from the hex but has no prey to release.");
+                        TacticalGraphicalEffects.CreateGenericMagic(a.Position, t.Position, t, TacticalGraphicalEffects.SpellEffectIcon.Poison);
+                    }
+                    else
+                    {
+                        t.PredatorComponent.FreeRandomPreyNow();
+                        TacticalGraphicalEffects.CreateGenericMagic(a.Position, t.Position, t, TacticalGraphicalEffects.SpellEffectIcon.Poison);
+                    }
+                }
+            },
+        };
+        SpellDict[SpellTypes.PreysHex] = PreysHex;
+
+        FlameWave = new DamageSpell()
+        {
+            Name = "Flame Wave",
+            Id = "FlameWave",
+            SpellType = SpellTypes.FlameWave,
+            Description = "Creates a 3 tile wide wall of flame next to the user",
+            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy, AbilityTargets.Tile },
+            Range = new Range(1),
+            AOEType = AreaOfEffectType.RotatablePattern,
+            Tier = 1,
+            Pattern = new int[3, 3] { { 0, 0, 0 }, { 1, 1, 1 }, { 0, 0, 0 } },
+            Resistable = true,
+            DamageType = DamageTypes.Fire,
+            Damage = (a, t) => 5 + a.Unit.GetStat(Stat.Mind) / 7,
+            OnExecute = (a, t) =>
+            {
+                a.CastOffensiveSpell(FlameWave, t);
+                TacticalUtilities.CreateEffectWithPattern(t.Position, a.Position, TileEffectType.Fire, 1 + a.Unit.GetStat(Stat.Mind) / 30, 4, FlameWave.Pattern, FlameWave.AOEType);
+                State.GameManager.SoundManager.PlaySpellCast(Fireball, a);
+            },
+            OnExecuteTile = (a, l) =>
+            {
+                a.CastOffensiveSpell(FlameWave, null, l);
+                TacticalUtilities.CreateEffectWithPattern(l, a.Position, TileEffectType.Fire, 1 + a.Unit.GetStat(Stat.Mind) / 30, 4, FlameWave.Pattern, FlameWave.AOEType);
+                State.GameManager.SoundManager.PlaySpellCast(Fireball, a);
+            },
+        };
+        SpellDict[SpellTypes.FlameWave] = FlameWave;
+
+        FireBomb = new DamageSpell()
+        {
+            Name = "Fire Bomb",
+            Id = "FireBomb",
+            SpellType = SpellTypes.FireBomb,
+            Description = "A heavy incendiary explosive that detonates in a cross pattern(Damage scales with Dexterity)",
+            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy, AbilityTargets.Tile },
+            Range = new Range(5),
+            AOEType = AreaOfEffectType.FixedPattern,
+            Tier = 3,
+            Pattern = new int[3, 3] { { 0, 1, 0 }, { 1, 1, 1 }, { 0, 1, 0 } },
+            Resistable = true,
+            ResistanceMult = .80f,
+            DamageType = DamageTypes.Fire,
+            Damage = (a, t) => 8 + a.Unit.GetStat(Stat.Dexterity) / 9,
+            OnExecute = (a, t) =>
+            {
+                a.CastOffensiveSpell(FireBomb, t);
+                TacticalGraphicalEffects.CreateFireBomb(a.Position, t.Position, t);
+            },
+            OnExecuteTile = (a, l) =>
+            {
+                a.CastOffensiveSpell(FireBomb, null, l);
+                TacticalGraphicalEffects.CreateFireBomb(a.Position, l, null);
+            },
+        };
+        SpellDict[SpellTypes.FireBomb] = FireBomb;
+
+        Bolas = new StatusSpell()
+        {
+            Name = "Bolas",
+            Id = "bolas",
+            SpellType = SpellTypes.Bolas,
+            Description = "Ensnares the target, lowering their movement to 1 for a few turns",
+            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy },
+            Range = new Range(7),
+            Duration = (a, t) => 2,
+            Effect = (a, t) => 1,
+            Type = StatusEffectType.Snared,
+            Tier = 2,
+            Resistable = true,
+            ResistanceMult = 0.4f,
+            OnExecute = (a, t) =>
+            {
+                a.CastStatusSpell(Bolas, t);
+                TacticalGraphicalEffects.CreateBola(a.Position, t.Position, t);
+                State.GameManager.SoundManager.PlaySwing(a);
+            },
+
+        };
+        SpellDict[SpellTypes.Bolas] = Bolas;
+
+        CaptureNet = new Spell()
+        {
+            Name = "Capture Net",
+            Id = "captureNet",
+            SpellType = SpellTypes.CaptureNet,
+            Description = "Attempts to capture the target with a net converting them to the user's side. Target must be at 5 health to capture otherwise will deal chip damage. (Doesn't work on summons or leaders)",
+            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy },
+            Range = new Range(5),
+            Tier = -1,
+            Resistable = false,
+            OnExecute = (a, t) =>
+            {
+                a.CastSpell(CaptureNet, t);
+                TacticalGraphicalEffects.CreateCaptureNet(a.Position, t.Position, t);
+                State.GameManager.SoundManager.PlaySwing(a);
+                if (t.Unit.Health <= 5 && t.Unit.CanBeConverted())
+                {
+                    if (State.Rand.Next(10) == 1)
+                        State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<b>{t.Unit.Name}</b> barely managed to shake off the net!");
+                    else
+                    {
+                        State.GameManager.TacticalMode.SwitchAlignment(t);
+                        t.Surrendered = true;
+                        t.Movement = 0;
+                        t.AIAvoidEat = 2;
+                        State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<b>{a.Unit.Name}</b> captured <b>{t.Unit.Name}</b>!");
+                    }
+                }
+                else
+                {
+                    State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<b>{a.Unit.Name}</b> hit <b>{t.Unit.Name}</b> in the face with the net dealing minimal damage.");
+                    t.Unit.Heal(-2);
+                }
+            },
+        };
+        SpellDict[SpellTypes.CaptureNet] = CaptureNet;
+
+        ForcePulse = new DamageSpell()
+        {
+            Name = "Force Pulse",
+            Id = "forcepulse",
+            SpellType = SpellTypes.ForcePulse,
+            Description = "Deals damage in an area and knocks back enemies. ALL enemies are knocked back even if the attack misses.",
+            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy, AbilityTargets.Tile },
+            Range = new Range(6),
+            AreaOfEffect = 1,
+            Tier = 1,
+            Resistable = true,
+            Damage = (a, t) => 3 + a.Unit.GetStat(Stat.Mind) / 10,
+            OnExecute = (a, t) =>
+            {
+                a.CastOffensiveSpell(ForcePulse, t);
+                float pulseDamage = 1.2f;
+                foreach (var splashTarget in TacticalUtilities.UnitsWithinTiles(t.Position, ForcePulse.AreaOfEffect))
+                {
+                    TacticalUtilities.CheckSpellKnockBack(t.Position, a, splashTarget, ref pulseDamage);
+                    TacticalUtilities.SpellKnockBack(t.Position, a, splashTarget);
+                }
+                TacticalUtilities.CheckKnockBack(a, t, ref pulseDamage);
+                TacticalUtilities.KnockBack(a, t);
+                TacticalGraphicalEffects.CreateGenericMagic(a.Position, t.Position, t);
+                State.GameManager.SoundManager.PlaySpellCast(PowerBolt, a);
+            },
+            OnExecuteTile = (a, l) =>
+            {
+                a.CastOffensiveSpell(ForcePulse, null, l);
+                float pulseDamage = 1.2f;
+                foreach (var splashTarget in TacticalUtilities.UnitsWithinTiles(l, ForcePulse.AreaOfEffect))
+                {
+                    TacticalUtilities.CheckSpellKnockBack(l, a, splashTarget, ref pulseDamage);
+                    TacticalUtilities.SpellKnockBack(l, a, splashTarget);
+                }
+                TacticalGraphicalEffects.CreateGenericMagic(a.Position, l, null);
+                State.GameManager.SoundManager.PlaySpellCast(PowerBolt, a);
+            },
+        };
+        SpellDict[SpellTypes.ForcePulse] = ForcePulse;
+
+        Bloodrite = new StatusSpell()
+        {
+            Name = "Bloodrite",
+            Id = "bloodrite",
+            SpellType = SpellTypes.Bloodrite,
+            Description = "Target sacrifices 1/2 of their current hp for 150% bonus melee damage and a 10% bonus ranged damage for 10 turns",
+            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Self },
+            Range = new Range(1),
+            Tier = 0,
+            Resistable = false,
+            OnExecute = (a, t) =>
+            {
+                a.CastSpell(Bloodrite, t);
+                a.Unit.UseableSpells.Remove(SpellList.Bloodrite);
+                t.Unit.StatusEffects.Add(new StatusEffect(StatusEffectType.Bloodrite, 1f, 11));
+                t.Unit.Heal(-(t.Unit.Health) / 2);
+                TacticalGraphicalEffects.CreateGenericMagic(a.Position, t.Position, t, TacticalGraphicalEffects.SpellEffectIcon.Buff);
+            },
+        };
+        SpellDict[SpellTypes.Bloodrite] = Bloodrite;
 
         PreysCurse = new StatusSpell()
         {
@@ -469,6 +924,77 @@ static class SpellList
             },
         };
         SpellDict[SpellTypes.Summon] = Summon;
+
+
+        SummonDoppelganger = new Spell()
+        {
+            Name = "Summon Doppelganger",
+            Id = "summondoppelganger",
+            SpellType = SpellTypes.SummonDoppelganger,
+            Description = "Summons a feral copy of the caster at 50 % of the real caster’s experience.",
+            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Tile },
+            Range = new Range(4),
+            Tier = 3,
+            Resistable = false,
+            OnExecuteTile = (a, loc) =>
+            {
+                if (TacticalUtilities.OpenTile(loc, null) && a.CastSpell(SummonDoppelganger, null))
+                {
+                    Unit unit = new Unit(a.Unit.Side, a.Unit.Race, (int)(a.Unit.Experience * .50f), true, UnitType.Summon);
+                    unit.Name = a.Unit.Name;
+                    foreach (Traits trait in a.Unit.GetTraits)
+                    {
+                        unit.AddTrait(trait);
+                    }
+                    unit.CopyAppearance(a.Unit);
+                    unit.AddTrait(Traits.Feral);
+                    var actorCharm = a.Unit.GetStatusEffect(StatusEffectType.Charmed) ?? a.Unit.GetStatusEffect(StatusEffectType.Hypnotized);
+                    if (actorCharm != null)
+                    {
+                        unit.ApplyStatusEffect(StatusEffectType.Charmed, actorCharm.Strength, actorCharm.Duration);
+                    }
+                    StrategicUtilities.SpendLevelUps(unit);
+                    State.GameManager.TacticalMode.AddUnitToBattle(unit, loc);
+                    State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<b>{a.Unit.Name}</b> has summoned a Doppelganger!");
+                    State.GameManager.SoundManager.PlaySpellCast(Summon, a);
+                }
+            },
+        };
+        SpellDict[SpellTypes.SummonDoppelganger] = SummonDoppelganger;
+
+        SummonSpawn = new Spell()
+        {
+            Name = "Summon Spawn",
+            Id = "summonspawn",
+            SpellType = SpellTypes.SummonSpawn,
+            Description = "Summons a feral spawn of the caster's race at 50 % of the caster’s experience.",
+            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Tile },
+            Range = new Range(4),
+            Tier = 3,
+            Resistable = false,
+            OnExecuteTile = (a, loc) =>
+            {
+                if (TacticalUtilities.OpenTile(loc, null) && a.CastSpell(SummonSpawn, null))
+                {
+                    Race spawnRace = a.Unit.DetermineSpawnRace();
+                    Race truespawnRace = a.Unit.HiddenUnit.DetermineSpawnRace();
+                    if (spawnRace != truespawnRace)
+                        spawnRace = a.Unit.HiddenUnit.DetermineSpawnRace();
+                    Unit unit = new Unit(a.Unit.Side, spawnRace, (int)(a.Unit.Experience * .50f), true, UnitType.Summon);
+                    unit.AddTrait(Traits.Feral);
+                    var actorCharm = a.Unit.GetStatusEffect(StatusEffectType.Charmed) ?? a.Unit.GetStatusEffect(StatusEffectType.Hypnotized);
+                    if (actorCharm != null)
+                    {
+                        unit.ApplyStatusEffect(StatusEffectType.Charmed, actorCharm.Strength, actorCharm.Duration);
+                    }
+                    StrategicUtilities.SpendLevelUps(unit);
+                    State.GameManager.TacticalMode.AddUnitToBattle(unit, loc);
+                    State.GameManager.TacticalMode.Log.RegisterMiscellaneous($"<b>{a.Unit.Name}</b> has summoned a spawn.");
+                    State.GameManager.SoundManager.PlaySpellCast(Summon, a);
+                }
+            },
+        };
+        SpellDict[SpellTypes.SummonSpawn] = SummonSpawn;
 
 
         Reanimate = new Spell()
@@ -1055,7 +1581,78 @@ static class SpellList
             }
         };
         SpellDict[SpellTypes.ManaExpolsion] = ManaExpolsion;
-        
+
+        Conduit = new DamageSpell()
+        {
+            Name = "Conduit",
+            Id = "conduit",
+            SpellType = SpellTypes.Conduit,
+            Description = "Deals damage around a target, but not to it. Scales with both Unit's mind and Target's",
+            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy, AbilityTargets.Ally},
+            Range = new Range(6),
+            Tier = 1,
+            AOEType = AreaOfEffectType.FixedPattern,
+            Pattern = new int[3,3] { { 1, 1, 1 }, { 1, 0, 1 }, { 1, 1, 1 } },
+            Damage = (a, t) => (a.Unit.GetStat(Stat.Mind) / 10) + (t.Unit.GetStat(Stat.Mind) / 10),
+            Resistable = true,
+            OnExecute = (a, t) =>
+            {
+                a.CastOffensiveSpell(Conduit, t);
+                TacticalGraphicalEffects.CreateGenericMagic(a.Position, t.Position, t);
+            }
+        };
+        SpellDict[SpellTypes.Conduit] = Conduit;
+
+        Flamberge = new DamageSpell()
+        {
+            Name = "Flamberge",
+            Id = "flamberge",
+            SpellType = SpellTypes.Flamberge,
+            Description = "Deals damage to a target and targets behind, sets ground on fire for a few turns",
+            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy, AbilityTargets.Tile },
+            Range = new Range(6),
+            AOEType = AreaOfEffectType.RotatablePattern,
+            Tier = 4,
+            Pattern = new int[5, 5] { { 1, 1, 1, 1, 1 }, { 0, 1, 1, 1, 0 }, { 0, 0, 1, 0, 0 }, { 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0 } },
+            Resistable = true,
+            DamageType = DamageTypes.Fire,
+            Damage = (a, t) => 10 + a.Unit.GetStat(Stat.Mind) / 7,
+            OnExecute = (a, t) =>
+            {
+                a.CastOffensiveSpell(Flamberge, t);
+                TacticalGraphicalEffects.CreateFireBall(a.Position, t.Position, t);
+                TacticalUtilities.CreateEffectWithPattern(t.Position, a.Position, TileEffectType.Fire, 1 + a.Unit.GetStat(Stat.Mind) / 30, 4, Flamberge.Pattern, Flamberge.AOEType);
+            },
+            OnExecuteTile = (a, l) =>
+            {
+                a.CastOffensiveSpell(Flamberge, null, l);
+                TacticalGraphicalEffects.CreateFireBall(a.Position, l, null);
+                TacticalUtilities.CreateEffectWithPattern(l, a.Position, TileEffectType.Fire, 1 + a.Unit.GetStat(Stat.Mind) / 30, 4, Flamberge.Pattern, Flamberge.AOEType);
+            },
+        };
+        SpellDict[SpellTypes.Flamberge] = Flamberge;
+
+        ForkLightning = new DamageSpell()
+        {
+            Name = "ForkLightning",
+            Id = "fork-lightning",
+            SpellType = SpellTypes.ForkLightning,
+            Description = "Deals damage to a target and targets behind, sets ground on fire for a few turns",
+            AcceptibleTargets = new List<AbilityTargets>() { AbilityTargets.Enemy},
+            Range = new Range(6),
+            AOEType = AreaOfEffectType.Full,
+            AreaOfEffect = 2,
+            Tier = 4,
+            Resistable = true,
+            Damage = (a, t) => 10 + a.Unit.GetStat(Stat.Mind) / 7,
+            OnExecute = (a, t) =>
+            {
+                a.CastOffensiveSpell(ForkLightning, t);
+                TacticalGraphicalEffects.CreateFireBall(a.Position, t.Position, t);
+                TacticalUtilities.CreateEffectWithPattern(t.Position, a.Position, TileEffectType.Fire, 1 + a.Unit.GetStat(Stat.Mind) / 30, 4, Flamberge.Pattern, Flamberge.AOEType);
+            },
+        };
+        SpellDict[SpellTypes.ForkLightning] = ForkLightning;
     }
 }
 
@@ -1071,6 +1668,25 @@ public class Spell
     internal int Tier;
     /// <summary>The number of tiles away a target is affected (i.e. 1 = 9 total tiles)</summary>
     internal int AreaOfEffect;
+    /// <summary> The type of AOE the spell will use, tells the code which functions to implement so it runs faster:
+    /// Full - The normal AOE type
+    /// FixedPattern - Will cause AreaOfEffect to be ignored and will use Pattern instead
+    /// RotatablePattern - Same as above, but will apply the rotation to the patetrn based on target's position
+    /// </summary>
+    internal AreaOfEffectType AOEType = AreaOfEffectType.Full;
+    /// <summary>The vector representing the spell's pattern
+    /// The game reads tiles from top left to bottom right so
+    /// [[0,0,0],[0,1,0],[1,1,1]] OR
+    /// [[0,0,0]
+    ///  [0,1,0]
+    ///  [1,1,1]]
+    ///  will have of shape
+    ///  O O O
+    ///  O X O
+    ///  X X X
+    ///  Length MUST be a odd perfect square (9, 25, 49, 81, ...) As the spell is centered on the target
+    /// </summary>
+    internal int[,] Pattern;
     internal Action<Actor_Unit, Vec2i> OnExecuteTile;
     internal bool Resistable;
     internal float ResistanceMult = 1;
@@ -1127,6 +1743,7 @@ class StatusSpell : Spell
 {
     internal Func<Actor_Unit, Actor_Unit, int> Duration;
     internal Func<Actor_Unit, Actor_Unit, float> Effect;
+    internal Func<Actor_Unit, Actor_Unit, StatusEffect> ExpireEffect = null;
     internal StatusEffectType Type;
     internal bool Alraune = false;
 }

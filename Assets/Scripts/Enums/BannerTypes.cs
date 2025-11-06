@@ -23,6 +23,17 @@
     Uvula,
     Stomach,
     VoreWar,
+    TwentyFour,
+    Sierpinski,
+    Echos,
+    Heart,
+    Diamond,
+    Spade,
+    Club,
+    Quad,
+    Tri,
+    Shield,
+    Daggers,
 
 }
 

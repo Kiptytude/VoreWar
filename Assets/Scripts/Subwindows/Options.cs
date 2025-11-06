@@ -77,6 +77,39 @@ public class Options : MonoBehaviour
     }
 
 
+    public void ResetUserdata()
+    {
+        var box = Instantiate(State.GameManager.DialogBoxPrefab).GetComponent<DialogBox>();
+        box.SetData(ClearUserdata, "Yes, wipe Userdata", "Cancel", "This deletes the 'Userdata' folder and restores it to a default state. This will delete ALL, saves, maps, saved strategic presets, race edit presets, namelists, uniform, unit customizations, custom traits, events, and, unit tags. Are you SURE you want to do this? This cannot be undone. (Will take some time to complete)");
+    }
+
+    void ClearUserdata()
+    {
+        State.WipeUserdata();
+    }
+
+    public void ResetNamelists()
+    {
+        var box = Instantiate(State.GameManager.DialogBoxPrefab).GetComponent<DialogBox>();
+        box.SetData(ClearLists, "Yes, reset namelists", "Cancel", "This deletes all namelists from the 'Userdata' folder and restores them to defaults. Are you sure you want to do this? This cannot be undone. (Will take a moment to complete)");
+    }
+
+    void ClearLists()
+    {
+        State.ResetNamelists();
+    }
+
+    public void UpdateNamelists()
+    {
+        var box = Instantiate(State.GameManager.DialogBoxPrefab).GetComponent<DialogBox>();
+        box.SetData(UpdateLists, "Update namelists", "Cancel", "This reloads all namelists from the 'Userdata' folder, immediately updating them in-game.");
+    }
+
+    void UpdateLists()
+    {
+        State.ReloadNamelists();
+    }
+
     void GetValues()
     {
         StrategicDelaySlider.value = PlayerPrefs.GetFloat("StrategicDelaySlider", .25f);

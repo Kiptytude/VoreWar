@@ -1,5 +1,6 @@
 ﻿using OdinSerializer;
 using System.Collections.Generic;
+using UnityEngine;
 using System.Linq;
 
 
@@ -64,7 +65,28 @@ class ItemStock
         List<ItemType> items = new List<ItemType>();
         foreach (var item in Items)
         {
-            if (item.Key >= ItemType.FireBall && item.Key <= ItemType.GateMaw)
+            if (item.Key >= ItemType.Meditate && item.Key <= ItemType.GateMaw)
+            {
+                if (item.Value > 0)
+                {
+                    for (int i = 0; i < item.Value; i++)
+                    {
+                        items.Add(item.Key);
+                    }
+                }
+            }
+        }
+        return items;
+    }
+
+    internal List<ItemType> GetAllPotions()
+    {
+        if (Items == null)
+            Items = new Dictionary<ItemType, int>();
+        List<ItemType> items = new List<ItemType>();
+        foreach (var item in Items)
+        {
+            if (item.Key >= ItemType.HealthPotion && item.Key <= ItemType.OmniPotion)
             {
                 if (item.Value > 0)
                 {
@@ -84,8 +106,13 @@ class ItemStock
         List<ItemType> items = new List<ItemType>();
         foreach (var item in Items)
         {
-            if (item.Key < ItemType.FireBall)
+            if (item.Key < ItemType.Mace)
             {
+                continue;
+            }
+            if (item.Key < ItemType.HealthPotion)
+            {
+
                 if (item.Value > 0)
                 {
                     empire.AddGold(State.World.ItemRepository.GetItem(item.Key).Cost / 2 * item.Value);
@@ -102,6 +129,10 @@ class ItemStock
         bool foundItem = false;
         foreach (var item in Items.ToList())
         {
+            if (item.Key < ItemType.Mace)
+            {
+                continue;
+            }
             if (item.Value > 0)
             {
                 foundItem = true;
@@ -122,6 +153,10 @@ class ItemStock
         bool foundItem = false;
         foreach (var item in Items.ToList())
         {
+            if (item.Key < ItemType.Mace)
+            {
+                continue;
+            }
             if (item.Value > 0)
             {
                 foundItem = true;

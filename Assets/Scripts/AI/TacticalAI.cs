@@ -742,7 +742,7 @@ public abstract class TacticalAI : ITacticalAI
                     if (distance <= movement || anyDistance)
                     {
                         float chance = unit.GetDevourChance(actor, true);
-                        if ((chance > .5f || (actor.Unit.HasTrait(Traits.Biter) && chance > .25f && actor.Unit.GetBestMelee().Damage > 2)) && unit.AIAvoidEat <= 0)
+                        if (((chance > .5f || (actor.Unit.HasTrait(Traits.Biter) && chance > .25f && actor.Unit.GetBestMelee().Damage > 2)) || actor.Unit.HasTrait(Traits.VoreObsession)) && unit.AIAvoidEat <= 0)
                         {
                             if (distance > 1 && TacticalUtilities.FreeSpaceAroundTarget(unit.Position, actor) == false)
                                 continue;
@@ -1507,7 +1507,7 @@ public abstract class TacticalAI : ITacticalAI
 
         if (State.GameManager.TacticalMode.IsOnlyOneSideVisible())
             return -1;
-        if (spell == SpellList.Summon) 
+        if (spell == SpellList.Summon || spell == SpellList.SummonDoppelganger || spell == SpellList.SummonSpawn) 
         {
             
                         return 1;
@@ -1556,7 +1556,7 @@ public abstract class TacticalAI : ITacticalAI
 
         if (State.GameManager.TacticalMode.IsOnlyOneSideVisible())
             return;
-        if (spell == SpellList.Summon) //Replace with better logic later
+        if (spell == SpellList.Summon || spell == SpellList.SummonDoppelganger || spell == SpellList.SummonSpawn) //Replace with better logic later
         {
             for (int i = 0; i < 4; i++)
             {
@@ -1678,6 +1678,97 @@ public abstract class TacticalAI : ITacticalAI
         return targets.OrderByDescending(t => t.utility).ToList();
     }
 
+    protected virtual void RunPotions(Actor_Unit actor)
+    {
+        if (actor.Unit.EquippedPotions == null || actor.Unit.EquippedPotions.Any(p => p.Value[0] > 0) == false)
+            return;
+        List<Potion> availablePotions = new List<Potion>();
+        foreach (var potionStash in actor.Unit.EquippedPotions)
+        {
+            if (potionStash.Value[0] > 0)
+            {
+                availablePotions.Add((Potion)State.World.ItemRepository.GetItem(potionStash.Key));
+            }
+        }
+
+        if (availablePotions == null || availablePotions.Any() == false)
+            return;
+
+        Potion potion = availablePotions[State.Rand.Next(availablePotions.Count())];
+
+        if (State.GameManager.TacticalMode.IsOnlyOneSideVisible())
+            return;
+        List<PotentialTarget> targets = GetListOfPotentialPotion(actor, potion, actor.Position, potion.NegativeEffect);
+        if (!targets.Any())
+            return;
+        Actor_Unit reserveTarget = targets[0].actor;
+        while (targets.Any())
+        {
+            if (targets[0].distance <= 3 && (targets[0].actor.InSight || !State.World.IsNight))
+            {
+                if (potion.ActivatePotion(actor, targets[0].actor))
+                    didAction = true;
+                return;
+            }
+            else
+            {
+                if (targets[0].actor.Position.GetNumberOfMovesDistance(actor.Position) <= actor.Movement + 3 && (targets[0].actor.InSight || !State.World.IsNight)) //discard the clearly impossible
+                {
+                    MoveToAndAction(actor, targets[0].actor.Position, 3, actor.Movement, () => potion.ActivatePotion(actor, targets[0].actor));
+                    if (foundPath && path.Path.Count() < actor.Movement)
+                        return;
+                    else
+                    {
+                        foundPath = false;
+                        path = null;
+                    }
+                }
+            }
+            targets.RemoveAt(0);
+        }
+    }
+
+    protected virtual List<PotentialTarget> GetListOfPotentialPotion(Actor_Unit actor, Potion potion, Vec2i position, bool IsNegative)
+    {
+        List<PotentialTarget> targets = new List<PotentialTarget>();
+        if (State.GameManager.TacticalMode.IsOnlyOneSideVisible() && actor.Unit.IsInfiltratingSide(AISide))
+            return targets;
+        foreach (Actor_Unit unit in actors)
+        {
+            if (TacticalUtilities.TreatAsHostile(actor, unit) && IsNegative)
+            {
+                if (unit.Targetable == true && (unit.InSight || !State.World.IsNight) && unit.Surrendered == false)
+                {
+                    int distance = unit.Position.GetNumberOfMovesDistance(position);
+                    float chance = unit.GetAttackChance(unit, true);
+                    targets.Add(new PotentialTarget(unit, chance, distance, 4));
+                }
+            }
+            else if (!TacticalUtilities.TreatAsHostile(actor, unit) && !IsNegative)
+            {
+                if (unit.Targetable == true && unit.Surrendered == false)
+                {
+                    int distance = unit.Position.GetNumberOfMovesDistance(position);
+                    float chance = (float)State.Rand.NextDouble();
+                    targets.Add(new PotentialTarget(unit, chance, distance, unit.Unit.Level));
+                }
+            }
+            else if (!TacticalUtilities.TreatAsHostile(actor, unit) && !IsNegative)
+            {
+                if (unit.Targetable == true && unit.Surrendered == false)
+                {
+                    int distance = unit.Position.GetNumberOfMovesDistance(position);
+                    float chance = (float)State.Rand.NextDouble();
+                    if (chance <= 0.5f)
+                    {
+                        chance += 0.3f;
+                    }
+                    targets.Add(new PotentialTarget(unit, chance, distance, unit.Unit.Level));
+                }
+            }
+        }
+        return targets.OrderByDescending(t => t.utility).ToList();
+    }
 
 
     protected virtual bool IsRanged(Actor_Unit actor)
@@ -1751,7 +1842,7 @@ public abstract class TacticalAI : ITacticalAI
         List<PotentialTarget> targets = new List<PotentialTarget>();
         foreach (Actor_Unit unit in actors)
         {
-            if (unit.Targetable && unit.Unit.Side == AISide)
+            if (unit.Targetable && unit.Unit.Side == AISide && unit.Surrendered == false)
             {
                 int distance = unit.Position.GetNumberOfMovesDistance(actor.Position);
                 if (distance < actor.Movement)

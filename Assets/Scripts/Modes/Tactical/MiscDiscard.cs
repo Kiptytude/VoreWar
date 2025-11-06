@@ -6,6 +6,7 @@ enum MiscDiscardType
     Scat,
     Bones,
     Cum,
+    Honey,
     DisposedCondom
 }
 
@@ -67,6 +68,11 @@ class MiscDiscard
                 sprite.sprite = State.GameManager.SpriteDictionary.Bones[spriteNum];
                 sprite.sortingOrder = int.MinValue;
                 if (color == 0) sprite.color = new Color(.51f, .89f, .98f);
+                break;
+            case MiscDiscardType.Honey:
+                sprite.sprite = State.GameManager.SpriteDictionary.Bones[27];
+                sprite.sortingOrder = int.MinValue;
+                //sprite.color = new Color(120.70f, 110.80f, .20f);
                 break;
             case MiscDiscardType.DisposedCondom:
                 sprite.sprite = State.GameManager.SpriteDictionary.Bones[25];

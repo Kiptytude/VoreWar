@@ -14,6 +14,10 @@ public class TacticalTileDictionary : MonoBehaviour
     internal Tile[] SnowEnviroment;
     internal Tile[] VolcanicOverLava;
     internal Tile[] VolcanicOverGravel;
+    internal Tile[] BeachOverOcean;
+    internal Tile[] BeachEnviroment;
+    internal Tile[] SwampOverBog;
+    internal Tile[] SwampEnviroment;
     internal Tile[] Paths;
 
 
@@ -30,6 +34,10 @@ public class TacticalTileDictionary : MonoBehaviour
     public Sprite[] VolcanicTileSprites;
     public Sprite[] VolcanicOverLavaSprites;
     public Sprite[] VolcanicOverGravelSptites;
+    public Sprite[] BeachOverOceanSprites;
+    public Sprite[] BeachEnviromentSprites;
+    public Sprite[] SwampOverWaterSprites;
+    public Sprite[] SwampEnviromentSprites;
     public Sprite[] PathSprites;
 
     void Start()
@@ -53,6 +61,10 @@ public class TacticalTileDictionary : MonoBehaviour
         VolcanicOverGravel = CreateTiles(VolcanicOverGravelSptites);
         GrassOverWater = CreateTiles(GrassOverWaterSprites);
         GrassEnviroment = CreateTiles(GrassEnviromentSprites);
+        BeachOverOcean = CreateTiles(BeachOverOceanSprites);
+        BeachEnviroment = CreateTiles(BeachEnviromentSprites);
+        SwampOverBog = CreateTiles(SwampOverWaterSprites);
+        SwampEnviroment = CreateTiles(SwampEnviromentSprites);
         Paths = CreateTiles(PathSprites);
 
 

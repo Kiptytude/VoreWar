@@ -18,13 +18,13 @@
     Kangaroo,
     Alligator,
     Wyvern,
-    YoungWyvern,
     Compy,
     Shark,
     DarkSwallower,
     Cake,
     WyvernBonesWithoutHead,
     VisionSkull,
+    HoneyPuddle,
 
 }
 

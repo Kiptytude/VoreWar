@@ -39,6 +39,12 @@ public class VillageBoosts
 
     internal int SpellLevels = 0;
 
+    internal int EquipmentLevels = 0;
+
+    internal int PotionLevel = 0;
+
+    internal int BuilderCount = 0;
+
 
     internal List<Traits> AddTraits = new List<Traits>();
 
@@ -64,7 +70,10 @@ public class VillageBoosts
         AdventurersPerTurnAdd = 0;
         MaxAdventurersAdd = 0;
         SpellLevels = 0;
+        EquipmentLevels = 0;
+        PotionLevel = 0;
         MaxHappinessAdd = 0;
+        BuilderCount = 0;
         AddTraits = new List<Traits>();
     }
 
@@ -90,8 +99,11 @@ public class VillageBoosts
         AdventurersPerTurnAdd += otherBoost.AdventurersPerTurnAdd;
         MaxAdventurersAdd += otherBoost.MaxAdventurersAdd;
         MaxHappinessAdd += otherBoost.MaxHappinessAdd;
+        BuilderCount += otherBoost.BuilderCount;
         AddTraits.AddRange(otherBoost.AddTraits);
         SpellLevels += otherBoost.SpellLevels;
+        EquipmentLevels += otherBoost.EquipmentLevels;
+        PotionLevel += otherBoost.PotionLevel;
 
         return this;
     }

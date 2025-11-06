@@ -13,6 +13,9 @@ public class WorldConfig
     internal Dictionary<Race, SpawnerInfo> SpawnerInfo = new Dictionary<Race, SpawnerInfo>();
 
     [OdinSerialize]
+    internal List<ConstructibleBuilding> BuildingInfo = new List<ConstructibleBuilding>();
+
+    [OdinSerialize]
     internal int[] VillagesPerEmpire = new int[Config.NumberOfRaces];
 
 
@@ -33,7 +36,7 @@ public class WorldConfig
     [OdinSerialize, AllowEditing, ProperName("Village Income Percent"), IntegerRange(0, 9999), Description("Multiplier to Village income")]
     internal int VillageIncomePercent = 100;
     [OdinSerialize, AllowEditing, ProperName("Villagers Per Farm"), IntegerRange(0, 9999), Description("Doesn't take effect until a new turn")]
-    internal int VillagersPerFarm = 6;
+    internal int VillagersPerFarm = 9;
     [OdinSerialize, AllowEditing, ProperName("Soft Level Cap"), IntegerRange(0, 9999), Description("After this level exp required spikes sharply")]
     internal int SoftLevelCap = 0;
     [OdinSerialize, AllowEditing, ProperName("Hard Level Cap"), IntegerRange(0, 9999), Description("After this level there are no more levels")]
@@ -46,7 +49,9 @@ public class WorldConfig
     internal bool CapMaxGarrisonIncrease = true;
 
     [OdinSerialize]
-    internal int MaxSpellLevelDrop = 4;
+    internal int MaxSpellLevelDrop = 4;   
+    [OdinSerialize]
+    internal int MaxEquipmentLevelDrop = 4;
 
     [OdinSerialize]
     internal int ArmyMP = 3;
@@ -148,6 +153,8 @@ public class WorldConfig
     [OdinSerialize]
     internal UBConversion UBConversion = 0;
     [OdinSerialize]
+    internal GoddessMercy GoddessMercy = 0;
+    [OdinSerialize]
     internal SucklingPermission SucklingPermission = 0;
 
     [OdinSerialize]
@@ -186,29 +193,34 @@ public class WorldConfig
     internal int NightStrategicSightReduction = 1;
     [OdinSerialize, AllowEditing, ProperName("Reveal Turn"), Description("The tactical turn where every unit is revealed.")]
     internal int RevealTurn = 50;
+    [OdinSerialize]
+    internal Config.DayNightMovemntType DayNightMonsterMovemnt = Config.DayNightMovemntType.Off;
 
     // CombatComplications configuration
     // Critical strikes
     [OdinSerialize, AllowEditing, ProperName("Base Critical Chance"), FloatRange(0, 1), Description("Base chance for a critical strike if not calculated from stats. If 'Stat Based Crit' is enabled with this, the chance will never be lower than this percentage, but it can be higher. Set to 0 to disable.")]
     internal float BaseCritChance = 0.05f;
-    [OdinSerialize, AllowEditing, ProperName("Critical Damage Multiplier"), FloatRange(0, 1), Description("Damage is multiplied by this number. At default value (1.5), 10 damage is modified to 15")]
+    [OdinSerialize, AllowEditing, ProperName("Critical Damage Multiplier"), FloatRange(0, 10), Description("Damage is multiplied by this number. At default value (1.5), 10 damage is modified to 15")]
     internal float CritDamageMod = 1.5f;
     // Graze
     [OdinSerialize, AllowEditing, ProperName("Base Graze Chance"), FloatRange(0, 1), Description("Base chance for a graze if not calculated from stats. If 'Stat Based Graze' is enabled, the chance will never be lower than this percentage, but it can be higher. Set to 0 to disable.")]
     internal float BaseGrazeChance = 0.10f;
-    [OdinSerialize, AllowEditing, ProperName("Graze Damage Multiplier"), FloatRange(0, 1), Description("Damage is multiplied by this number. At default value (0.3), 10 damage is modified to 3")]
+    [OdinSerialize, AllowEditing, ProperName("Graze Damage Multiplier"), FloatRange(0, 10), Description("Damage is multiplied by this number. At default value (0.3), 10 damage is modified to 3")]
     internal float GrazeDamageMod = 0.30f;
 
     [OdinSerialize]
     internal bool FactionLeaders;
     [OdinSerialize]
     internal int ItemSlots;
+    [OdinSerialize]
+    internal int PotionSlots = 3;
 
     [OdinSerialize]
     internal float BurpFraction = .1f;
 
     [OdinSerialize]
     internal float FartFraction = .1f;
+    [OdinSerialize]
     internal float WeightGainFraction = .1f;
 
     [OdinSerialize, AllowEditing, FloatRange(0, 1), ProperName("Leader death exp loss Percentage"), Description("On death they will lose this % of their total experience")]
@@ -239,10 +251,10 @@ public class WorldConfig
     internal int BellyRubsPerTurn = 1;
     [OdinSerialize]
     internal float DigestionRamp = .1f;
-    [OdinSerialize, AllowEditing, ProperName("Digestion Ramp Turn"), Description("Digestin damage change by the above  every X turns")]
+    [OdinSerialize]
     internal int DigestionRampTurn = 1;
-    [OdinSerialize, AllowEditing, ProperName("Digestion Ramp Cap"), Description("The above will only stack up to X times, negative numbers mean disabled")]
-    internal int DigestionRampCap = 1;
+    [OdinSerialize]
+    internal int DigestionRampCap = -1;
     [OdinSerialize]
     internal float DigestionRampLoss = 1;
     [OdinSerialize]
@@ -252,6 +264,8 @@ public class WorldConfig
     [OdinSerialize]
     internal float DigestionFlatDmg = -.01f;
     [OdinSerialize]
+    internal int AbsorbResourceModBoost = 0;
+    [OdinSerialize]
     internal float DigestionCap = 0;
     [OdinSerialize]
     internal int DigestionGraceTurns = 0;
@@ -259,6 +273,28 @@ public class WorldConfig
     internal float SurrenderedPredEscapeMult = 1;
     [OdinSerialize]
     internal float SurrenderedPredAutoRegur = 0;
+
+    [OdinSerialize]
+    internal int TacticalMovementSoftCap = -1;
+    [OdinSerialize]
+    internal int TacticalMovementHardCap = -1;
+    [OdinSerialize]
+    internal float SizeAccuracyMod = 0.01f;
+    [OdinSerialize]
+    internal float SizeAccuracyLowerBound = 10;
+    [OdinSerialize]
+    internal int SizeAccuracyInterval = 5;
+    [OdinSerialize]
+    internal float SizeAccuracyCap = -1;
+    [OdinSerialize]
+    internal float SizeDamageMod = 0.01f;
+    [OdinSerialize]
+    internal float SizeDamageLowerBound = 10;
+    [OdinSerialize]
+    internal int SizeDamageInterval = 5;
+    [OdinSerialize]
+    internal float SizeDamageCap = -1;
+
     internal bool GetValue(string name)
     {
         if (Toggles == null)
@@ -291,7 +327,7 @@ public class WorldConfig
             return value;
         }
 
-        var obj = new SpawnerInfo(false, 4, .15f, 40, 900 + (int)race, 1, true, 6f, 8, 12, 40);
+        var obj = SpecifySpawnerDefaults(race);
         SpawnerInfo[race] = obj;
         return obj;
     }
@@ -315,9 +351,83 @@ public class WorldConfig
         {
             if (race >= Race.Vagrants && race < Race.Selicia)
             {
-                SpawnerInfo[race] = new SpawnerInfo(false, 4, .15f, 40, 900 + (int)race, 1, true, 6f, 8, 12, 40);
+                SpawnerInfo[race] = SpecifySpawnerDefaults(race);
             }
         }
+    }
+
+    internal SpawnerInfo SpecifySpawnerDefaults(Race race)
+    {
+        SpawnerInfo ret_value;
+        switch (race)
+        {
+            case Race.Compy:
+                ret_value = new SpawnerInfo(false, 4, .15f, 40, 900 + (int)race, 1, true, 6f, 12, 18, 40, false);
+                break;
+            case Race.Gryphons:
+                ret_value = new SpawnerInfo(false, 4, .15f, 40, 900 + (int)race, 1, true, 6f, 4, 8, 40, false);
+                break;
+            case Race.Otachi:
+                ret_value = new SpawnerInfo(false, 4, .15f, 40, 900 + (int)race, 1, true, 6f, 1, 4, 40, false);
+                break;
+            case Race.Raiju:
+                ret_value = new SpawnerInfo(false, 4, .15f, 40, 900 + (int)race, 1, true, 6f, 1, 4, 40, false);
+                break;
+            case Race.Trex:
+                ret_value = new SpawnerInfo(false, 4, .15f, 40, 900 + (int)race, 1, true, 6f, 1, 4, 40, false);
+                break;
+            case Race.Utahraptor:
+                ret_value = new SpawnerInfo(false, 4, .15f, 40, 900 + (int)race, 1, true, 6f, 4, 8, 40, false);
+                break;
+			case Race.EasternDragon:
+                ret_value = new SpawnerInfo(false, 4, .15f, 40, 900 + (int)race, 1, true, 6f, 1, 4, 40, false);
+                break;
+			case Race.Wyvern:
+                ret_value = new SpawnerInfo(false, 4, .15f, 40, 900 + (int)race, 1, true, 6f, 4, 8, 40, false);
+                break;
+			case Race.SpaceCroach:
+                ret_value = new SpawnerInfo(false, 4, .15f, 40, 900 + (int)race, 1, true, 6f, 4, 8, 40, false);
+                break;
+            default:
+                ret_value = new SpawnerInfo(false, 4, .15f, 40, 900 + (int)race, 1, true, 6f, 8, 12, 40, false);
+                break;
+        }
+        return ret_value;
+    }
+
+    internal List<ConstructibleBuilding> GetBuildingInfo()
+    {
+        if(BuildingInfo == null)
+            ReloadBuildingInfo();
+        if(BuildingInfo.Count() <= 0)
+            ReloadBuildingInfo();
+        return BuildingInfo;
+    }
+
+    internal int GetBuildingInfoCount()
+    {
+        if(BuildingInfo == null)
+            ReloadBuildingInfo();
+        return BuildingInfo.Count();
+    }
+
+    internal void ReloadBuildingInfo()
+    {
+        BuildingInfo = new List<ConstructibleBuilding>
+        { 
+            new WorkCamp(null),
+            new LumberSite(null),
+            new Quarry(null),
+            new CasterTower(null),
+            new BarrierTower(null),
+            new DefenseEncampment(null),
+            new Academy(null),
+            new BlackMagicTower(null),
+            new TemporalTower(null),
+            new Laboratory(null),
+            new Teleporter(null),
+            new TownHall(null),
+        };
     }
 
     internal void ResetDictionary()
@@ -355,9 +465,14 @@ public class WorldConfig
             ["VagrantsEnabled"] = false,
             ["AnimatedBellies"] = true,
             ["DigestionSkulls"] = true,
+            ["BellyRubHands"] = true,
+            ["SurrenderFlag"] = true,
+            ["ShowUnitSides"] = true,
             ["Bones"] = true,
+            ["CleanDisposal"] = false,
             ["Scat"] = false,
             ["ScatBones"] = false,
+            ["BirdScat"] = false,
             ["CondomsForCV"] = false,
             ["AutoSurrender"] = false,
             ["EatSurrenderedAllies"] = false,
@@ -388,6 +503,9 @@ public class WorldConfig
             ["AbsorbRateDivision"] = false,
             ["AbsorbLoss"] = false,
             ["AbsorbBoostDeadOnly"] = false,
+            ["SizeAccuracyInverse"] = true,
+            ["SizeDamageInverse"] = true,
+            ["PotionSystemEnabled"] = false,
         };
 
         foreach (Race race in ((Race[])Enum.GetValues(typeof(Race))).Where(s => (int)s >= 0))

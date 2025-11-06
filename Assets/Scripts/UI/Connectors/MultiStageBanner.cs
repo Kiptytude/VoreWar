@@ -23,7 +23,7 @@ public class MultiStageBanner : MonoBehaviour
         if (army.BannerStyle == 0)
         {
             if (25 + (int)empire.Race < State.GameManager.StrategyMode.Banners.Length)
-                InsigniaLayer.sprite = State.GameManager.StrategyMode.Banners[25 + (int)empire.Race];
+                InsigniaLayer.sprite = State.GameManager.StrategyMode.Banners[36 + (int)empire.Race];
             else
                 InsigniaLayer.sprite = State.GameManager.StrategyMode.Banners[3];
         }

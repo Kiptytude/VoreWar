@@ -6,7 +6,7 @@ using System.Linq;
 
 public class World
 {
-    internal const int MonsterCount = 32;
+    internal const int MonsterCount = 48;//Be sure to increase when adding new monsters
     [OdinSerialize]
     public int Turn = 1;
     [OdinSerialize]
@@ -25,6 +25,7 @@ public class World
     public Empire ActingEmpire;
     public ItemRepository ItemRepository;
     public WorldConfig ConfigStorage;
+    public BuildingConfig BuildingConfigStorage;
     public StrategicStats Stats;
     public TacticalData TacticalData;
 
@@ -42,8 +43,13 @@ public class World
     public MonsterEmpire[] MonsterEmpires;
 
     public MercenaryHouse[] MercenaryHouses;
+
+    public AncientTeleporter[] AncientTeleporters;
+
     [OdinSerialize]
     internal ClaimableBuilding[] Claimables;
+    [OdinSerialize]
+    internal ConstructibleBuilding[] Constructibles;
 
     public List<Empire> AllActiveEmpires;
 
@@ -60,6 +66,7 @@ public class World
         Config.CenteredEmpire = new bool[Config.NumberOfRaces];
         State.World = this;
         ConfigStorage = Config.World;
+        BuildingConfigStorage = Config.BuildConfig;
         ItemRepository = new ItemRepository();
         if (MapEditorVersion)
         {
@@ -76,7 +83,9 @@ public class World
         }
         AllActiveEmpires = MainEmpires;
         MercenaryHouses = new MercenaryHouse[0];
+        AncientTeleporters = new AncientTeleporter[0];
         Claimables = new ClaimableBuilding[0];
+        Constructibles = new ConstructibleBuilding[0];
     }
 
     internal World(StrategicCreationArgs args, Map map)
@@ -84,6 +93,7 @@ public class World
         State.World = this;
         StrategyPathfinder.Initialized = false;
         ConfigStorage = Config.World;
+        BuildingConfigStorage = Config.BuildConfig;
 
         if (map == null)
         {
@@ -91,7 +101,9 @@ public class World
             int empireCount = Config.VillagesPerEmpire.Where(s => s > 0).Count();
             worldGen.GenerateWorld(ref Tiles, ref Villages, args.Team, args.MapGen);
             Claimables = new ClaimableBuilding[0];
+            Constructibles = new ConstructibleBuilding[0];
             worldGen.PlaceMercenaryHouses(args.MercCamps);
+            worldGen.PlaceAncientTeleporters(args.AncientTeleporters);
             worldGen.PlaceGoldMines(args.GoldMines);
             Doodads = new StrategicDoodadType[Config.StrategicWorldSizeX, Config.StrategicWorldSizeY];
             WorldGenerator.ClearVillagePaths(args.MapGen);
@@ -103,7 +115,9 @@ public class World
             MapVillagePopulator pop = new MapVillagePopulator(Tiles);
             pop.PopulateVillages(map, ref Villages);
             pop.PopulateMercenaryHouses(map, ref MercenaryHouses);
+            pop.PopulateAncientTeleporters(map, ref AncientTeleporters);
             pop.PopulateClaimables(map, ref Claimables);
+            pop.PopulateConstructibles(map, ref Constructibles);
         }
 
 
@@ -208,7 +222,7 @@ public class World
 
     }
 
-    internal void InitializeMonsters()
+    internal void InitializeMonsters()//Be sure to increase the MonsterCount at the top of this .cs when adding new monsters
     {
         MonsterEmpires = new MonsterEmpire[MonsterCount];
         MonsterEmpires[0] = new MonsterEmpire(new Empire.ConstructionArgs((int)Race.Vagrants, UnityEngine.Color.white, UnityEngine.Color.white, 9, StrategyAIType.Monster, TacticalAIType.Full, 996, 32, 0));
@@ -243,7 +257,23 @@ public class World
         MonsterEmpires[29] = new MonsterEmpire(new Empire.ConstructionArgs((int)Race.Dratopyr, UnityEngine.Color.white, UnityEngine.Color.white, 56, StrategyAIType.Monster, TacticalAIType.Full, 1024, 32, 0));
         MonsterEmpires[30] = new MonsterEmpire(new Empire.ConstructionArgs((int)Race.FeralLions, UnityEngine.Color.white, UnityEngine.Color.white, 57, StrategyAIType.Monster, TacticalAIType.Full, 1337, 32, 0));
         MonsterEmpires[31] = new MonsterEmpire(new Empire.ConstructionArgs((int)Race.Goodra, UnityEngine.Color.white, UnityEngine.Color.white, 58, StrategyAIType.Monster, TacticalAIType.Full, 1025, 32, 0));
-		foreach (var emp in MonsterEmpires)
+        MonsterEmpires[32] = new MonsterEmpire(new Empire.ConstructionArgs((int)Race.FeralHorses, UnityEngine.Color.white, UnityEngine.Color.white, 59, StrategyAIType.Monster, TacticalAIType.Full, 1026, 32, 0));
+		MonsterEmpires[33] = new MonsterEmpire(new Empire.ConstructionArgs((int)Race.FeralFox, UnityEngine.Color.white, UnityEngine.Color.white, 60, StrategyAIType.Monster, TacticalAIType.Full, 1027, 32, 0));
+        MonsterEmpires[34] = new MonsterEmpire(new Empire.ConstructionArgs((int)Race.Terminid, UnityEngine.Color.white, UnityEngine.Color.white, 61, StrategyAIType.Monster, TacticalAIType.Full, 1028, 32, 0));
+        MonsterEmpires[35] = new MonsterEmpire(new Empire.ConstructionArgs((int)Race.FeralOrcas, UnityEngine.Color.white, UnityEngine.Color.white, 62, StrategyAIType.Monster, TacticalAIType.Full, 1029, 32, 0));
+        MonsterEmpires[36] = new MonsterEmpire(new Empire.ConstructionArgs((int)Race.BoomBunnies, UnityEngine.Color.white, UnityEngine.Color.white, 64, StrategyAIType.Monster, TacticalAIType.Full, 1030, 32, 0));
+        MonsterEmpires[37] = new MonsterEmpire(new Empire.ConstructionArgs((int)Race.FeralSlime, UnityEngine.Color.white, UnityEngine.Color.white, 65, StrategyAIType.Monster, TacticalAIType.Full, 1031, 32, 0));
+        MonsterEmpires[38] = new MonsterEmpire(new Empire.ConstructionArgs((int)Race.ViraeUltimae, UnityEngine.Color.white, UnityEngine.Color.white, 66, StrategyAIType.Monster, TacticalAIType.Full, 1032, 32, 0));
+        MonsterEmpires[39] = new MonsterEmpire(new Empire.ConstructionArgs((int)Race.Viisels, UnityEngine.Color.white, UnityEngine.Color.white, 67, StrategyAIType.Monster, TacticalAIType.Full, 1033, 32, 0));
+        MonsterEmpires[40] = new MonsterEmpire(new Empire.ConstructionArgs((int)Race.FeralUmbreon, UnityEngine.Color.white, UnityEngine.Color.white, 68, StrategyAIType.Monster, TacticalAIType.Full, 1034, 32, 0));
+        MonsterEmpires[41] = new MonsterEmpire(new Empire.ConstructionArgs((int)Race.WoodDryad, UnityEngine.Color.white, UnityEngine.Color.white, 69, StrategyAIType.Monster, TacticalAIType.Full, 1035, 32, 0));
+        MonsterEmpires[42] = new MonsterEmpire(new Empire.ConstructionArgs((int)Race.Otachi, UnityEngine.Color.white, UnityEngine.Color.white, 70, StrategyAIType.Monster, TacticalAIType.Full, 1036, 32, 0));
+        MonsterEmpires[43] = new MonsterEmpire(new Empire.ConstructionArgs((int)Race.Raiju, UnityEngine.Color.white, UnityEngine.Color.white, 71, StrategyAIType.Monster, TacticalAIType.Full, 1037, 32, 0));
+        MonsterEmpires[44] = new MonsterEmpire(new Empire.ConstructionArgs((int)Race.Smudger, UnityEngine.Color.white, UnityEngine.Color.white, 72, StrategyAIType.Monster, TacticalAIType.Full, 1038, 32, 0));
+        MonsterEmpires[45] = new MonsterEmpire(new Empire.ConstructionArgs((int)Race.SpaceCroach, UnityEngine.Color.white, UnityEngine.Color.white, 73, StrategyAIType.Monster, TacticalAIType.Full, 1039, 32, 0));
+        MonsterEmpires[46] = new MonsterEmpire(new Empire.ConstructionArgs((int)Race.Trex, UnityEngine.Color.white, UnityEngine.Color.white, 74, StrategyAIType.Monster, TacticalAIType.Full, 1040, 32, 0));
+        MonsterEmpires[47] = new MonsterEmpire(new Empire.ConstructionArgs((int)Race.Utahraptor, UnityEngine.Color.white, UnityEngine.Color.white, 75, StrategyAIType.Monster, TacticalAIType.Full, 1041, 32, 0));
+        foreach (var emp in MonsterEmpires)
         {
             SpawnerInfo spawner = Config.SpawnerInfo(emp.Race);
             if (spawner == null)

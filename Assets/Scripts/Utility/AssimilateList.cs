@@ -26,7 +26,7 @@ public class AssimilateList
         CanAssimilate = new Dictionary<Traits, bool>();
         foreach (Traits trait in (Traits[])Enum.GetValues(typeof(Traits)))
         {
-            if (trait == Traits.Prey)
+            if (trait == Traits.Prey ||trait == Traits.Brainless)
                 continue;
             CanAssimilate[trait] = PlayerPrefs.GetInt($"A{trait}", 1) == 1;
         }

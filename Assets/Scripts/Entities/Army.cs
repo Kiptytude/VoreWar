@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static UnityEngine.UI.CanvasScaler;
 
 
 public class Army
@@ -42,6 +43,7 @@ public class Army
     public string Name;
 
     public bool JustCreated = false;
+    public bool JustSpawnedLeader = false;
 
     [OdinSerialize]
     public int RemainingMP { get; set; }
@@ -66,6 +68,12 @@ public class Army
 
     [OdinSerialize]
     internal int MonsterTurnsRemaining;
+    [OdinSerialize]
+    internal Teleporter LinkedTeleporter = null;
+    [OdinSerialize]
+    internal int teleportStoneCoolDown = 0;
+    [OdinSerialize]
+    internal int teleportCoolDown = 0;
 
     public bool DevourThisTurn { get; private set; } = false;
 
@@ -91,7 +99,16 @@ public class Army
     public float HealRate;
 
     [OdinSerialize]
+    public float UsedSize;
+    public float RemainnigSize => MaxSize - UsedSize;
+    public float PercentFull => UsedSize / MaxSize;
+    public bool MostlyFull => RemainnigSize - Empire.GetAvgDeployCost() <= 0; //Checks if army can fit any more units on average
+
+    [OdinSerialize]
     private ItemStock itemStock;
+
+    [OdinSerialize]
+    public bool IsMonsterArmy = false;
 
     internal ItemStock ItemStock
     {
@@ -131,12 +148,16 @@ public class Army
         Position = p;
         Units = new List<Unit>();
         JustCreated = true;
+        UsedSize = 0;
 
         NameArmy(empire);
-        if (empire.Side < 30)
+        if (empire.Side < Config.NumberOfRaces)
             BannerStyle = empire.BannerType;
         if ((State.World.Turn == 1 && Config.FirstTurnArmiesIdle) || 0 > RemainingMP)
             RemainingMP = 0;
+        if (JustSpawnedLeader && Config.LeaderSpawnFreeze)
+            RemainingMP = 0;
+
     }
 
     internal void NameArmy(Empire empire)
@@ -178,6 +199,9 @@ public class Army
                 else
                     unit.BaseScale = Math.Max(1, unit.BaseScale * ((1 - Config.GrowthDecayOffset) - Config.GrowthDecayIncreaseRate * (unit.BaseScale - 1)));  // default decayIncreaseRate = 0.04f
             }
+            EquipmentFunctions.TickCoolDown(unit, EquipmentType.RechargeStrategy);
+            EquipmentFunctions.CheckEquipment(unit, EquipmentActivator.OnStrategicTurnStart, new object[] { unit, this, null });
+
         }
         RefreshMovementMode();
 
@@ -191,39 +215,116 @@ public class Army
         GetTileHealRate();
         ProcessInVillageOnTurn();
         SCooldown = 0;
+        teleportStoneCoolDown = teleportStoneCoolDown >= 0 ? teleportStoneCoolDown - 1 : 0;
+        teleportCoolDown = teleportCoolDown >= 0 ? teleportCoolDown - 1 : 0;
     }
 
     public int GetMaxMovement()
     {
+        int movement = 0;
+        if (JustSpawnedLeader)
+        {
+            JustSpawnedLeader = false;
+            return movement;
+        }
         if (Units.Count <= Config.ScoutMax)
         {
             SCooldownOffset = ((Config.ArmyMP + Config.ScoutMP) + (int)(Config.ArmyMP * MPMod) - (int)SCooldown);
             MPMod = Mathf.MoveTowards(MPMod, 0, MPCurve);
             if (-1f > MPMod)
-                return 0;
+                movement = 0;
             else if (Config.ArmyMP < (int)SCooldown)
             {
                 if ((int)SCooldownOffset > 0f)
-                    return ((int)SCooldownOffset);
+                    movement = ((int)SCooldownOffset);
                 else
-                    return 0;
+                    movement = 1;
             }
-            return (Config.ArmyMP + Config.ScoutMP) + (int)(Config.ArmyMP * MPMod);
+            else
+                movement = (Config.ArmyMP + Config.ScoutMP) + (int)(Config.ArmyMP * MPMod);
         }
         else
         {
             MPMod = Mathf.MoveTowards(MPMod, 0, MPCurve);
-           if (-1f > MPMod)
-                return 0;
-           if (SCooldown > (Config.ArmyMP + (int)(Config.ArmyMP * MPMod)))
-                return 0;
-            return Config.ArmyMP + (int)(Config.ArmyMP * MPMod) - (int)SCooldown;
+            if (-1f > MPMod)
+                movement = 0;
+            else if (SCooldown > (Config.ArmyMP + (int)(Config.ArmyMP * MPMod)))
+                movement = 1;
+            else
+                movement = Config.ArmyMP + (int)(Config.ArmyMP * MPMod) - (int)SCooldown;
         }
+        var temporalTowers = StrategicUtilities.GetActiveEmpireBuildingsWithinXTiles(Position, empire, Config.BuildConfig.BuildingPassiveRange).Where(b => b is TemporalTower);
+        if (temporalTowers != null)
+        {
+            foreach (var building in temporalTowers)
+            {
+                TemporalTower tower = building as TemporalTower;
+                if (Empire.IsEnemy(tower.Owner))
+                {
+                    if (IsMonsterArmy)
+                    {
+                        if (tower.disruptUpgrade.built)
+                        {
+                            movement = 1;
+                            break;
+                        }
+                        else 
+                        {
+                            movement -= 1;
+                        }
+                    }
+                    else if (tower.tuneUpgrade.built)
+                    {
+                        movement -= 1;
+
+                    }
+                }
+                else if (tower.improveUpgrade.built)
+                {
+                    movement += 1;
+                }
+            }
+        }
+
+        Dictionary<Race, int> ArmyRaces = new Dictionary<Race, int>();
+
+        foreach (Unit unit in Units)
+        {
+            bool cartographyCheck = false;
+            if (unit.HasTrait(Traits.Cartography))
+                cartographyCheck = true;
+            if (cartographyCheck == true)
+            { movement += 1; }
+
+            // Get Army Race composition
+            ArmyRaces.TryGetValue(unit.Race, out var currentCount);
+            ArmyRaces[unit.Race] = currentCount + 1;
+        }
+
+        foreach (Unit unit in Units)
+        {
+            // Change attune race based on composition
+            if (unit.HasTrait(Traits.Eeveeolutionist))
+            {
+                AttuneEeveelution(unit, ArmyRaces);
+                if (unit.Level >= 5)
+                {
+                    unit.TriggerEeveelution();
+                }
+
+            }
+        }
+
+        if (movement < 0)
+            { movement = 0; }
+
+        return movement + (int)Math.Floor(AcademyResearch.GetValueFromEmpire(empire, AcademyResearchType.ArmyMP) * 0.5f);
     }
 
     public void RefreshMovementMode()
     {
         int flying = 0;
+        int cartography = 0;
         int noHill = 0;
         int yesLava = 0;
         int noSnow = 0;
@@ -240,6 +341,8 @@ public class Army
         {
             if (unit.HasTrait(Traits.Pathfinder))
                 flying++;
+            if (unit.HasTrait(Traits.Cartography))
+                cartography++;
             if (unit.HasTrait(Traits.HillImpedence))
                 noHill++;
             if (unit.HasTrait(Traits.LavaWalker)) 
@@ -409,6 +512,8 @@ public class Army
 
 
         if (flying > 0 && flying >= Units.Count / 2)
+            movementMode = MovementMode.Flight;
+        if (cartography > 0)
             movementMode = MovementMode.Flight;
         //else if (aquatic >= Units.Count / 2)
         //    movementMode = MovementMode.Aquatic;
@@ -634,6 +739,7 @@ public class Army
         {
             HealRate = State.World.Villages[InVillageIndex].Healrate();
         }
+        HealRate *= 1 + 0.25f * AcademyResearch.GetValueFromEmpire(Empire, AcademyResearchType.ArmyHealRate);
     }
 
     internal void ProcessInVillageOnTurn()
@@ -714,6 +820,7 @@ public class Army
     internal void Train(int level)
     {
         int xpGain = TrainingGetExpValue(level);
+        xpGain += (int)Math.Round(xpGain * 0.25f * AcademyResearch.GetValueFromEmpire(empire, AcademyResearchType.TrainingEXP));
         int cost = TrainingGetCost(level);
 
         if (empire.Gold >= cost)
@@ -803,5 +910,83 @@ public class Army
             }
         }
 
+    }
+
+    internal void RecalculateSizeValue()
+    {
+        UsedSize = 0;
+        foreach (Unit unit in Units)
+        {
+            UsedSize += State.RaceSettings.GetDeployCost(unit.Race) * unit.TraitBoosts.DeployCostMult;
+        }
+    }
+
+    internal float GetAverageArmyDeployment()
+    {
+        float avgDeploy = 0;
+        foreach (Unit unit in Units)
+        {
+            avgDeploy += State.RaceSettings.GetDeployCost(unit.Race) * unit.TraitBoosts.DeployCostMult;
+        }
+        avgDeploy /= Units.Count;
+        return avgDeploy;
+    }
+
+    private enum eeveeConversion
+    {
+        Equaleon,
+        Umbreon,        
+    }
+    internal void AttuneEeveelution(Unit unit, Dictionary<Race,int> races)
+    {
+        // Get if current race is a monster race
+        bool monster = unit.Race >= Race.Vagrants && unit.Race < Race.Selicia;
+        Dictionary<eeveeConversion,int> convertedRaces = new Dictionary<eeveeConversion,int>();
+
+        // Convert race demographic to eevee version
+        foreach (var item in races)
+        {
+            eeveeConversion shiftedRace;
+            switch (item.Key)
+            {
+                case Race.Umbreon:
+                case Race.FeralUmbreon:
+                    shiftedRace = eeveeConversion.Umbreon;
+                    break;
+                default:
+                    shiftedRace = eeveeConversion.Equaleon;
+                    break;
+            }
+            convertedRaces.TryGetValue(shiftedRace, out var currentCount);
+            convertedRaces[shiftedRace] = currentCount + 1;
+        }
+
+        // Get highest demographic
+        var majorityType = convertedRaces.Aggregate((l, r) => l.Value > r.Value ? l : r).Key;
+
+        // Set type to unit.
+        switch (majorityType)
+        {
+            case eeveeConversion.Umbreon:
+                if (monster)
+                {
+                    unit.attunedEeveeRace = Race.FeralUmbreon;
+                }
+                else
+                {
+                    unit.attunedEeveeRace = Race.Umbreon;
+                }
+                break;
+            default:
+                if (monster)
+                {
+                    unit.attunedEeveeRace = Race.FeralEqualeon;
+                }
+                else
+                {
+                    unit.attunedEeveeRace = Race.Equaleon;
+                }
+                break;
+        }
     }
 }

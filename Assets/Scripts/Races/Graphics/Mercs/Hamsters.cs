@@ -177,31 +177,31 @@ class Hamsters : BlankSlate
         int ballOffset = actor.GetBallSize(21, .8f);
         if ((actor.PredatorComponent?.IsUnitOfSpecificationInPrey(Race.Selicia, true, PreyLocation.balls) ?? false) && actor.GetBallSize(21, .8f) == 21)
         {
-            AddOffset(Balls, 0, -35 * .625f);
+            AddOffset(Balls, 0, -16 * .625f);
             return State.GameManager.SpriteDictionary.Balls[24];
         }
         else if ((actor.PredatorComponent?.IsUnitOfSpecificationInPrey(Race.Selicia, PreyLocation.balls) ?? false) && actor.GetBallSize(21, .8f) == 21)
         {
-            AddOffset(Balls, 0, -35 * .625f);
+            AddOffset(Balls, 0, -16 * .625f);
             return State.GameManager.SpriteDictionary.Balls[23];
         }
         else if ((actor.PredatorComponent?.IsUnitOfSpecificationInPrey(Race.Selicia, PreyLocation.balls) ?? false) && actor.GetBallSize(21, .8f) == 20)
         {
-            AddOffset(Balls, 0, -32 * .625f);
+            AddOffset(Balls, 0, -13 * .625f);
             return State.GameManager.SpriteDictionary.Balls[22];
         }
         else if ((actor.PredatorComponent?.IsUnitOfSpecificationInPrey(Race.Selicia, PreyLocation.balls) ?? false) && actor.GetBallSize(21, .8f) == 19)
         {
-            AddOffset(Balls, 0, -31 * .625f);
+            AddOffset(Balls, 0, -12 * .625f);
             return State.GameManager.SpriteDictionary.Balls[21];
         }
         int combined = Math.Min(baseSize + ballOffset + 2, 20);
         if (combined == 21)
-            AddOffset(Balls, 0, -31 * .625f);
+            AddOffset(Balls, 0, -9 * .625f);
         else if (combined == 20)
-            AddOffset(Balls, 0, -29 * .625f);
+            AddOffset(Balls, 0, -9 * .625f);
         else if (combined >= 17 && combined <= 19)
-            AddOffset(Balls, 0, -25 * .625f);
+            AddOffset(Balls, 0, -5 * .625f);
         if (ballOffset > 0)
         {
             return State.GameManager.SpriteDictionary.Balls[combined];

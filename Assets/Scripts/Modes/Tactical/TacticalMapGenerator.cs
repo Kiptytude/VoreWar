@@ -13,6 +13,8 @@ class TacticalMapGenerator
         Forest,
         Desert,
         Volcanic,
+        Beach,
+        Swamp,
     }
 
     TerrainType terrainType;
@@ -45,10 +47,20 @@ class TacticalMapGenerator
             terrainType = TerrainType.Desert;
             defaultType = TacticalTileType.RockOverSand;
         }
-        else if (stratTiletype == StrategicTileType.volcanic)
+        else if (stratTiletype == StrategicTileType.volcanic || stratTiletype == StrategicTileType.ashen || stratTiletype == StrategicTileType.ashenHills || stratTiletype == StrategicTileType.fieldAshen)
         {
             terrainType = TerrainType.Volcanic;
             defaultType = TacticalTileType.VolcanicOverGravel;
+        }
+        else if (stratTiletype == StrategicTileType.shallowWater || stratTiletype == StrategicTileType.fieldSmallIslands || stratTiletype == StrategicTileType.smallIslands)
+        {
+            terrainType = TerrainType.Beach;
+            defaultType = (TacticalTileType)600;
+        }
+        else if (stratTiletype == StrategicTileType.swamp || stratTiletype == StrategicTileType.drySwamp)
+        {
+            terrainType = TerrainType.Swamp;
+            defaultType = (TacticalTileType)700;
         }
         else
         {
@@ -200,6 +212,102 @@ class TacticalMapGenerator
                 PlaceRowOfBuildings(tiles, buildings, HalfX - 2, Config.TacticalSizeY / 4 - 2, -1);
                 PlaceRowOfBuildings(tiles, buildings, HalfX + 1, Config.TacticalSizeY / 4 + 1, 1);
                 PlaceRowOfBuildings(tiles, buildings, HalfX + 1, Config.TacticalSizeY / 4 - 2, 1);
+            }
+        }
+        else if (terrainType == TerrainType.Beach)
+        {
+            if (village != null)
+            {
+                for (int i = 0; i < Config.TacticalSizeX; i++)
+                {
+                    for (int j = 0; j < centerY; j++)
+                    {
+                        tiles[i, j] = RandomBeach(i, j);
+                    }
+                }
+                PlaceRowOfBuildings(tiles, buildings, HalfX - 2, Config.TacticalSizeY / 4 + 1, -1);
+                PlaceRowOfBuildings(tiles, buildings, HalfX - 2, Config.TacticalSizeY / 4 - 2, -1);
+                PlaceRowOfBuildings(tiles, buildings, HalfX + 1, Config.TacticalSizeY / 4 + 1, 1);
+                PlaceRowOfBuildings(tiles, buildings, HalfX + 1, Config.TacticalSizeY / 4 - 2, 1);
+
+                for (int i = 0; i < Config.TacticalSizeX; i++)
+                {
+                    for (int j = 0; j < centerY; j++)
+                    {
+                        if (State.Rand.Next(3) == 0)
+                            PlaceBeachDecoration(i, j);
+                    }
+                }
+
+            }
+            else
+            {
+                for (int i = 0; i < Config.TacticalSizeX; i++)
+                {
+                    for (int j = 0; j < centerY; j++)
+                    {
+                        tiles[i, j] = RandomBeach(i, j);
+                        PlaceBeachDecoration(i, j);
+                    }
+
+                }
+            }
+
+            for (int i = 0; i < Config.TacticalSizeX; i++)
+            {
+                for (int j = centerY; j < Config.TacticalSizeY; j++)
+                {
+                    tiles[i, j] = RandomBeach(i, j);
+                    PlaceBeachDecoration(i, j);
+                }
+            }
+        }
+        else if (terrainType == TerrainType.Swamp)
+        {
+            if (village != null)
+            {
+                for (int i = 0; i < Config.TacticalSizeX; i++)
+                {
+                    for (int j = 0; j < centerY; j++)
+                    {
+                        tiles[i, j] = RandomSwamp(i, j);
+                    }
+                }
+                PlaceRowOfBuildings(tiles, buildings, HalfX - 2, Config.TacticalSizeY / 4 + 1, -1);
+                PlaceRowOfBuildings(tiles, buildings, HalfX - 2, Config.TacticalSizeY / 4 - 2, -1);
+                PlaceRowOfBuildings(tiles, buildings, HalfX + 1, Config.TacticalSizeY / 4 + 1, 1);
+                PlaceRowOfBuildings(tiles, buildings, HalfX + 1, Config.TacticalSizeY / 4 - 2, 1);
+
+                for (int i = 0; i < Config.TacticalSizeX; i++)
+                {
+                    for (int j = 0; j < centerY; j++)
+                    {
+                        if (State.Rand.Next(3) == 0)
+                            PlaceSwampDecoration(i, j);
+                    }
+                }
+
+            }
+            else
+            {
+                for (int i = 0; i < Config.TacticalSizeX; i++)
+                {
+                    for (int j = 0; j < centerY; j++)
+                    {
+                        tiles[i, j] = RandomSwamp(i, j);
+                        PlaceSwampDecoration(i, j);
+                    }
+
+                }
+            }
+
+            for (int i = 0; i < Config.TacticalSizeX; i++)
+            {
+                for (int j = centerY; j < Config.TacticalSizeY; j++)
+                {
+                    tiles[i, j] = RandomSwamp(i, j);
+                    PlaceSwampDecoration(i, j);
+                }
             }
         }
         else
@@ -411,6 +519,67 @@ class TacticalMapGenerator
             }
         }
 
+        TacticalTileType RandomBeach(int x, int y)
+        {
+            TacticalTileType ret;
+
+            if (he_array[x, y] < Config.TacticalWaterValue - (0.01f * attempt))
+            {
+                ret = TacticalTileType.BeachOverOcean;
+                return ret;
+            }
+
+            ret = (TacticalTileType)600;
+
+            return ret;
+        }
+
+        void PlaceBeachDecoration(int i, int j)
+        {
+            if (tiles[i, j] != TacticalTileType.BeachOverOcean && State.Rand.Next(8) == 0 && decTilesUsed[i, j] == 0)
+            {
+                TacticalDecoration decoration;
+                TacDecType decType = TacticalDecorationList.BeachEnvironment[State.Rand.Next(TacticalDecorationList.BeachEnvironment.Length)];
+                decoration = TacticalDecorationList.DecDict[decType];
+                TryToPlaceDecoration(i, j, decoration, decType);
+
+            }
+        }
+        TacticalTileType RandomSwamp(int x, int y)
+        {
+            TacticalTileType ret;
+
+            if (he_array[x, y] < Config.TacticalWaterValue - (0.01f * attempt))
+            {
+                ret = TacticalTileType.SwampOverBog;
+                return ret;
+            }
+
+            ret = (TacticalTileType)700;
+
+            return ret;
+        }
+
+        void PlaceSwampDecoration(int i, int j)
+        {
+            if (tiles[i, j] != TacticalTileType.SwampOverBog && State.Rand.Next(8) == 0 && decTilesUsed[i, j] == 0)
+            {
+                TacticalDecoration decoration;
+                TacDecType decType = TacticalDecorationList.SwampEnvironment[State.Rand.Next(TacticalDecorationList.SwampEnvironment.Length)];
+                decoration = TacticalDecorationList.DecDict[decType];
+                TryToPlaceDecoration(i, j, decoration, decType);
+
+            }
+            if (tiles[i, j] == TacticalTileType.SwampOverBog && State.Rand.Next(8) == 0 && decTilesUsed[i, j] == 0)
+            {
+                TacticalDecoration decoration;
+                TacDecType decType = TacticalDecorationList.SwampWaterEnvironment[State.Rand.Next(TacticalDecorationList.SwampWaterEnvironment.Length)];
+                decoration = TacticalDecorationList.DecDict[decType];
+                TryToPlaceDecoration(i, j, decoration, decType);
+
+            }
+        }
+
         TacticalBuilding RandomBuilding(int x, int y)
         {
             switch (State.Rand.Next(6))
@@ -456,6 +625,7 @@ class TacticalMapGenerator
                         return;
                     if (blockedTile[x + i, y + j])
                         return;
+
                 }
             }
             placedDecorations.Add(new DecorationStorage(new Vec2(i, j), decorationType));

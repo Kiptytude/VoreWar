@@ -87,6 +87,8 @@ public class HedonistTacticalAI : TacticalAI
 
         if (State.Rand.Next(2) == 0 || actor.Unit.HasWeapon == false)
             RunSpells(actor);
+        if (State.Rand.Next(3) == 0)
+            RunPotions(actor);
         if (path != null)
             return;
         if (actor.Unit.HasTrait(Traits.Pounce) && actor.Movement >= 2)

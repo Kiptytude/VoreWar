@@ -79,13 +79,14 @@ public class InfoPanel
         UnitInfoPanel.ExpBar.GetComponentInChildren<Text>().text = $"EXP: {(int)actor.Experience} ";
         if (showNextText)
             UnitInfoPanel.ExpBar.GetComponentInChildren<Text>().text += $"(To Next: {actor.ExperienceRequiredForNextLevel - (int)actor.Experience})";
-        UnitInfoPanel.HealthBar.GetComponentInChildren<Text>().text = $"Health: {actor.Health}/{actor.MaxHealth}";
+        UnitInfoPanel.HealthBar.GetComponentInChildren<Text>().text = $"Health: {actor.Health}/{actor.MaxHealth}" + (actor.Barrier > 0 ? $" + {actor.Barrier}" : "");
         UnitInfoPanel.ManaBar.GetComponentInChildren<Text>().text = $"Mana: {actor.Mana}/{actor.MaxMana}";
         if (actor.ExperienceRequiredForNextLevel != 0)
             UnitInfoPanel.ExpBar.value = (actor.Experience - actor.GetExperienceRequiredForLevel(actor.Level - 1)) / (actor.ExperienceRequiredForNextLevel - actor.GetExperienceRequiredForLevel(actor.Level - 1));
         else
             UnitInfoPanel.ExpBar.value = 1;
         UnitInfoPanel.HealthBar.value = actor.HealthPct;
+        UnitInfoPanel.BarrierBar.value = actor.BarrierPct;
         UnitInfoPanel.ManaBar.value = (float)actor.Mana / actor.MaxMana;
     }
 
@@ -152,7 +153,7 @@ public class InfoPanel
             case Race.Foxes:
                 return "Fox";
             case Race.Youko:
-                return "Youko";    
+                return "Youko";
             case Race.Wolves:
                 return "Wolf";
             case Race.Bunnies:
@@ -220,16 +221,16 @@ public class InfoPanel
                 return "Serpent";
             case Race.Wyvern:
                 return "Wyvern";
-            case Race.YoungWyvern:
-                return "Young Wyvern";
+            case Race.WyvernMatron:
+                return "Wyvern Matron";
             case Race.Compy:
                 return "Compy";
             case Race.FeralWolves:
-                return "Feral Wolf";
+                return "Wolf";
             case Race.FeralSharks:
                 return "Shark";
             case Race.DarkSwallower:
-                return "Dark Swallower";
+                return "Swallower";
             case Race.Cake:
                 return "Cake";
             case Race.Harvesters:
@@ -243,7 +244,7 @@ public class InfoPanel
             case Race.FeralBats:
                 return "Bat";
             case Race.FeralFrogs:
-                return "Feral Frog";
+                return "Frog";
             case Race.Dragon:
                 return "Dragon";
             case Race.Dragonfly:
@@ -259,15 +260,15 @@ public class InfoPanel
             case Race.Gryphons:
                 return "Gryphon";
             case Race.SpitterSlugs:
-                return "Spitter Slug";
+                return "SpitterSlug";
             case Race.SpringSlugs:
-                return "Spring Slug";
+                return "SpringSlug";
             case Race.RockSlugs:
-                return "Rock Slug";
+                return "RockSlug";
             case Race.CoralSlugs:
-                return "Coral Slug";
+                return "CoralSlug";
             case Race.DewSprites:
-                return "Dew Sprite";
+                return "Sprite";
             case Race.Panthers:
                 return "Panther";
             case Race.Salamanders:
@@ -287,7 +288,7 @@ public class InfoPanel
             case Race.Ants:
                 return "Ant";
             case Race.WarriorAnts:
-                return "Warrior Ant";
+                return "Warrior Ants";
             case Race.Frogs:
                 return "Frog";
             case Race.Gazelle:
@@ -297,7 +298,7 @@ public class InfoPanel
             case Race.Earthworms:
                 return "Earthworm";
             case Race.FeralLizards:
-                return "Feral Lizard";
+                return "Lizard";
             case Race.Cockatrice:
                 return "Cockatrice";
             case Race.Monitors:
@@ -318,6 +319,68 @@ public class InfoPanel
                 return "Kobold";
             case Race.Whisp:
                 return "Whisp";
+            case Race.FeralHorses:
+                return "Horse";
+            case Race.Abakhanskya:
+                return "Khatunlao";
+            case Race.Singularity:
+                return "Faun";
+            case Race.Feit:
+                return "Draconic Raptor";
+            case Race.FeralFox:
+                return "Fox";
+            case Race.Terminid:
+                return "Terminid";
+            case Race.FeralOrcas:
+                return "Orca";
+            case Race.BoomBunnies:
+                return "Boom Bunnies";
+            case Race.Gnolls:
+                return "Gnoll";
+            case Race.Centaur:
+                return "Centaur";
+            case Race.FeralSlime:
+                return "Slime";
+            case Race.MainlandElves:
+                return "Elf";
+            case Race.ViraeUltimae:
+                return "ViraeUltimae";
+            case Race.Viisels:
+                return "Viisel";
+            case Race.Umbreon:
+                return "Umbreon";
+            case Race.Eevee:
+                return "Eevee";
+            case Race.Equaleon:
+                return "Equaleon";
+            case Race.FeralUmbreon:
+                return "Umbreon";
+            case Race.FeralEevee:
+                return "Eevee";
+            case Race.FeralEqualeon:
+                return "Equaleon";
+            case Race.Ghosts:
+                return "Ghost";
+            case Race.WoodDryad:
+                return "WoodDryad";
+            case Race.EarthDryad:
+                return "EarthDryad";
+            case Race.RiverDryad:
+                return "RiverDryad";
+            case Race.FungalDryad:
+                return "FungalDryad";
+            case Race.Otachi:
+                return "Otachi";
+            case Race.Raiju:
+                return "Raiju";
+            case Race.Smudger:
+                return "Smudger";    
+            case Race.SpaceCroach:
+                return "SpaceRoach";
+            case Race.Trex:
+                return "T-Rex";
+            case Race.Utahraptor:
+                return "Utahraptor";
             case Race.none:
                 return "None";
         }
@@ -398,8 +461,8 @@ public class InfoPanel
                 return "Serpent";
             case Race.Wyvern:
                 return "Wyvern";
-            case Race.YoungWyvern:
-                return "Young Wyvern";
+            case Race.WyvernMatron:
+                return "Wyvern Matron";
             case Race.Compy:
                 return "Compy";
             case Race.FeralWolves:
@@ -494,8 +557,70 @@ public class InfoPanel
                 return "Dratopyr";
             case Race.FeralLions:
                 return "Lion";
+            case Race.FeralHorses:
+                return "Horse";
             case Race.Whisp:
                 return "Whisp";
+            case Race.Abakhanskya:
+                return "Khatunlao";
+            case Race.Singularity:
+                return "Faun";
+            case Race.Feit:
+                return "Draconic Raptor";
+            case Race.FeralFox:
+                return "Fox";
+            case Race.Terminid:
+                return "Terminid";
+            case Race.FeralOrcas:
+                return "Feral Orca";
+            case Race.BoomBunnies:
+                return "Boom Bunny";
+            case Race.Gnolls:
+                return "Gnoll";
+            case Race.Centaur:
+                return "Centaur";
+            case Race.FeralSlime:
+                return "Slime";
+            case Race.MainlandElves:
+                return "Mainland Elf";
+            case Race.ViraeUltimae:
+                return "Virae Ultimae";
+            case Race.Viisels:
+                return "Viisel";
+            case Race.Umbreon:
+                return "Umbreon";
+            case Race.Eevee:
+                return "Eevee";
+            case Race.Equaleon:
+                return "Equaleon";
+            case Race.FeralUmbreon:
+                return "Umbreon";
+            case Race.FeralEevee:
+                return "Eevee";
+            case Race.FeralEqualeon:
+                return "Equaleon";
+            case Race.Ghosts:
+                return "Ghost";
+            case Race.WoodDryad:
+                return "Wood Dryad";
+            case Race.EarthDryad:
+                return "Earth Dryad";
+            case Race.RiverDryad:
+                return "River Dryad";
+            case Race.FungalDryad:
+                return "Fungal Dryad";
+            case Race.Otachi:
+                return "Otachi";
+            case Race.Raiju:
+                return "Raiju";
+            case Race.Smudger:
+                return "Smudger";    
+            case Race.SpaceCroach:
+                return "Space Roach";
+            case Race.Trex:
+                return "T-Rex";
+            case Race.Utahraptor:
+                return "Utahraptor";
         }
         return empire.ReplacedRace.ToString();
     }
@@ -543,11 +668,20 @@ public class InfoPanel
             }
             UnityEngine.Transform EquipRow = UnitInfoPanel.StatBlock.transform.GetChild(5);
 
-            EquipRow.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = unit.GetItem(0)?.Name;
-            EquipRow.transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text = unit.GetItem(1)?.Name;
+            if (unit.GetItem(0)?.Name == null)
+                EquipRow.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = "";
+            else
+                EquipRow.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = unit.GetItem(0)?.Name;
+            if (unit.GetItem(1)?.Name == null)
+                EquipRow.transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text = "";
+            else
+                EquipRow.transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text = unit.GetItem(1)?.Name;
             if (unit.HasTrait(Traits.Resourceful))
             {
                 EquipRow.transform.GetChild(2).gameObject.SetActive(true);
+            if (unit.GetItem(2)?.Name == null)
+                EquipRow.transform.GetChild(2).GetChild(0).GetComponent<TextMeshProUGUI>().text = "";
+            else
                 EquipRow.transform.GetChild(2).GetChild(0).GetComponent<TextMeshProUGUI>().text = unit.GetItem(2)?.Name;
             }
             else
@@ -574,7 +708,12 @@ public class InfoPanel
             DEXVal.text = unit.GetStatInfo(Stat.Dexterity);
             ENDVal.text = unit.GetStatInfo(Stat.Endurance);
             AGIVal.text = unit.GetStatInfo(Stat.Agility);
-            MNDVal.text = unit.GetStatInfo(Stat.Mind);
+            if (unit.HasTrait(Traits.Brainless))
+            {
+                MNDVal.text = "<color=red>1</color>";
+            }
+            else
+                MNDVal.text = unit.GetStatInfo(Stat.Mind);
             WLLVal.text = unit.GetStatInfo(Stat.Will);
             if (CanVore)
             {
@@ -635,6 +774,10 @@ public class InfoPanel
             if (!FifthLine.GetChild(0).gameObject.activeSelf && !FifthLine.GetChild(1).gameObject.activeSelf)
                 FifthLine.gameObject.SetActive(false);
 
+            if (Config.ShowUnitSides && actor?.Unit.Side == State.GameManager.TacticalMode.GetDefenderSide())
+                sb.AppendLine("DEFENDER");
+            if (Config.ShowUnitSides && actor?.Unit.Side == State.GameManager.TacticalMode.GetAttackerSide())
+                sb.AppendLine("ATTACKER");
             if (unit.SavedCopy != null && unit.SavedVillage != null)
                 sb.AppendLine($"Imprinted");
             if (actor?.Surrendered ?? false)

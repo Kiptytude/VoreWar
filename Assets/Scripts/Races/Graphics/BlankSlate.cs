@@ -46,6 +46,7 @@ class BlankSlate : DefaultRaceData
         SecondaryEyes = null;
         SecondaryAccessory = null;
         Belly = null;
+        SecondaryBelly = null;
         Weapon = null;
         BackWeapon = null;
         BodySize = null;
@@ -60,6 +61,7 @@ class BlankSlate : DefaultRaceData
     protected override Sprite AccessorySprite(Actor_Unit actor) => null;
     protected override Sprite BackWeaponSprite(Actor_Unit actor) => null;
     internal override Sprite BellySprite(Actor_Unit actor, GameObject belly) => null;
+    protected override Sprite SecondaryBellySprite(Actor_Unit actor) => null;
     protected override Sprite BodyAccentSprite(Actor_Unit actor) => null;
     protected override Sprite BodyAccentSprite2(Actor_Unit actor) => null;
     protected override Color BodyAccessoryColor(Actor_Unit actor) => Color.white;

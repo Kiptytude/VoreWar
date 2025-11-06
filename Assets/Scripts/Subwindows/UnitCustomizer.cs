@@ -1,5 +1,6 @@
 using System;
 using UnityEngine.UI;
+using UnityEngine;
 
 public class UnitCustomizer
 {
@@ -141,7 +142,7 @@ public class UnitCustomizer
             {
                 unit.Name = s;
                 RefreshView();
-            }, "Change", "Cancel", $"Modify name?", 14);
+            }, "Change", "Cancel", $"Modify name?", 100);
         });
     }
 
@@ -481,9 +482,15 @@ public class UnitCustomizer
                 buttons[(int)ButtonTypes.HairStyle].Label.text = "Mane Style";
                 buttons[(int)ButtonTypes.HairColor].Label.text = "Mane Color";
                 break;
+            case Race.FeralHorses:
+                buttons[(int)ButtonTypes.Skintone].Label.text = "Fur Color";
+                buttons[(int)ButtonTypes.HairStyle].Label.text = "Mane Style";
+                buttons[(int)ButtonTypes.HairColor].Label.text = "Mane Color";
+                break;
             case Race.Aabayx:
                 buttons[(int)ButtonTypes.BodyAccessoryColor].Label.text = "Head Color";
                 buttons[(int)ButtonTypes.ClothingExtraType1].Label.text = "Face Paint";
+                buttons[(int)ButtonTypes.EyeColor].Label.text = "Face Paint Color";
                 break;
             case Race.Mice:
                 buttons[(int)ButtonTypes.BodyAccentTypes1].Label.text = "Face Pattern";
@@ -491,6 +498,122 @@ public class UnitCustomizer
                 buttons[(int)ButtonTypes.BodyAccentTypes3].Label.text = "Hands/Feet Pattern";
                 buttons[(int)ButtonTypes.BodyAccentTypes4].Label.text = "Left Ear Damage";
                 buttons[(int)ButtonTypes.BodyAccentTypes5].Label.text = "Right Ear Damage";
+                break;
+            case Race.FeralOrcas:
+                buttons[(int)ButtonTypes.BodyAccentTypes1].Label.text = "Dorsal Fin";
+                break;
+            case Race.RwuMercenaries:
+                buttons[(int)ButtonTypes.BodyAccentTypes2].Label.text = "Race Detail";
+                buttons[(int)ButtonTypes.ClothingType].Label.text = "Bonus Accessory";
+                buttons[(int)ButtonTypes.EyeType].Label.text = "Race";
+                buttons[(int)ButtonTypes.MouthType].Label.text = "Helmet";
+                buttons[(int)ButtonTypes.HairStyle].Label.text = "Custom livery (for Sharks)";
+                break;
+            case Race.Olivia:
+                buttons[(int)ButtonTypes.BodyAccessoryType].Label.text = "Top";
+                buttons[(int)ButtonTypes.BodyAccentTypes1].Label.text = "Pants";
+                break;
+            case Race.Firefly:
+                buttons[(int)ButtonTypes.Skintone].Label.text = "Secondary Color";
+                buttons[(int)ButtonTypes.BodyAccessoryColor].Label.text = "Primary Color";
+                buttons[(int)ButtonTypes.BodyAccessoryType].Label.text = "Outfit";
+                buttons[(int)ButtonTypes.BodyAccentTypes2].Label.text = "Shoulder Pad";
+                break;
+            case Race.Taraluxia:
+                Taraluxia();
+                break;
+            case Race.ViraeUltimae:
+                buttons[(int)ButtonTypes.BodyAccessoryColor].Label.text = "Head Color";
+                break;
+            case Race.MainlandElves:
+                buttons[(int)ButtonTypes.BodyAccentTypes2].Label.text = "Ear Accessory";
+                break;
+            case Race.Umbreon:
+                buttons[(int)ButtonTypes.Furry].Label.text = "Handedness";
+                buttons[(int)ButtonTypes.BodyAccessoryColor].Label.text = "Ring Color";
+                buttons[(int)ButtonTypes.ExtraColor1].Label.text = "Body Armor Metal";
+                buttons[(int)ButtonTypes.ClothingExtraType1].Label.text = "Body Armor(req. item)";
+                buttons[(int)ButtonTypes.BodyAccentTypes1].Label.text = "Decal";
+                buttons[(int)ButtonTypes.BodyAccentTypes2].Label.text = "Armor Rust";
+                break;
+            case Race.Equaleon:
+            case Race.FeralEqualeon:
+                buttons[(int)ButtonTypes.BodyAccentTypes2].gameObject.SetActive(false);
+                buttons[(int)ButtonTypes.EyeColor].Label.text = "Right Eye Color";
+                buttons[(int)ButtonTypes.EyeType].Label.text = "Left Eye Color";
+                buttons[(int)ButtonTypes.BodyAccentTypes1].Label.text = "Heterochromia On/Off";
+                break;
+            case Race.Viisels:
+                buttons[(int)ButtonTypes.BodyAccessoryColor].Label.text = "Faceplate Color";
+                break;
+            case Race.Lupine:
+                buttons[(int)ButtonTypes.BodyAccessoryColor].Label.text = "Iris Color";
+                buttons[(int)ButtonTypes.EyeColor].Label.text = "Sclera Color";
+                buttons[(int)ButtonTypes.BodyAccentTypes1].Label.text = "Chest Pattern";
+                buttons[(int)ButtonTypes.BodyAccentTypes2].Label.text = "Arm Pattern";
+                buttons[(int)ButtonTypes.BodyAccentTypes3].Label.text = "Leg Pattern";
+                buttons[(int)ButtonTypes.BodyAccentTypes4].Label.text = "Head Pattern";
+                buttons[(int)ButtonTypes.HairStyle].Label.text = "Cheek Fluff";
+                buttons[(int)ButtonTypes.BodyAccessoryType].gameObject.SetActive(false);
+                break;
+            case Race.Tatltuae:
+                buttons[(int)ButtonTypes.BodyAccentTypes4].Label.text = "Hat";
+                buttons[(int)ButtonTypes.BodyAccentTypes3].Label.text = "Glasses";
+                buttons[(int)ButtonTypes.BodyAccessoryType].Label.text = "Outfit";
+                buttons[(int)ButtonTypes.BodyAccentTypes1].Label.text = "Shirt On/Off";
+                buttons[(int)ButtonTypes.BodyAccentTypes2].Label.text = "Pants On/Off";
+                break;
+            case Race.Skapa:
+                buttons[(int)ButtonTypes.TailTypes].Label.text = "Facing";
+                break;
+            case Race.Jackals:
+                buttons[(int)ButtonTypes.BodyAccessoryColor].Label.text = "Fur Color";
+                buttons[(int)ButtonTypes.ClothingExtraType1].Label.text = "Leg Ring";
+                buttons[(int)ButtonTypes.ClothingExtraType2].Label.text = "Arm Ring";
+                buttons[(int)ButtonTypes.ClothingExtraType3].Label.text = "Neck Accessory";
+                buttons[(int)ButtonTypes.ExtraColor1].Label.text = "Inner Ear Color";
+                buttons[(int)ButtonTypes.BodyAccentTypes1].Label.text = "Eyebrows";
+                buttons[(int)ButtonTypes.BodyAccentTypes3].Label.text = "Ear Piercing";
+                buttons[(int)ButtonTypes.BodyAccentTypes4].Label.text = "Navel Piercing";
+                break;
+            case Race.Smudger:
+                buttons[(int)ButtonTypes.ExtraColor1].Label.text = "Internal Color";
+                buttons[(int)ButtonTypes.BodyAccessoryType].Label.text = "Head Frills";
+                buttons[(int)ButtonTypes.BodyAccessoryColor].Label.text = "Pattern Color";
+                buttons[(int)ButtonTypes.BodyAccentTypes1].Label.text = "Patterns";
+                break;
+            case Race.Utahraptor:
+                buttons[(int)ButtonTypes.TailTypes].Label.text = "Preferred Facing";
+                break;
+            case Race.WoodDryad:
+                buttons[(int)ButtonTypes.ExtraColor1].Label.text = "Leaf Color";
+                buttons[(int)ButtonTypes.BodyAccessoryType].Label.text = "Trunk Type";
+                buttons[(int)ButtonTypes.BodyAccessoryColor].Label.text = "Wood Color";
+                buttons[(int)ButtonTypes.BodyAccentTypes1].Label.text = "Horn Type";
+                buttons[(int)ButtonTypes.BodyAccentTypes2].Label.text = "Leaves On/Off";
+                buttons[(int)ButtonTypes.BodyAccentTypes3].Label.text = "Eyebrows";
+                buttons[(int)ButtonTypes.BodyAccentTypes4].Label.text = "Trunk Addon";
+                break;
+            case Race.EarthDryad:
+                buttons[(int)ButtonTypes.ExtraColor1].Label.text = "Leaf Color";
+                buttons[(int)ButtonTypes.BodyAccessoryType].Label.text = "Pattern";
+                buttons[(int)ButtonTypes.Skintone].Label.text = "Body Color";
+                buttons[(int)ButtonTypes.BodyAccentTypes1].Label.text = "Horn Type";
+                buttons[(int)ButtonTypes.BodyAccentTypes2].Label.text = "Leaves On/Off";
+                buttons[(int)ButtonTypes.BodyAccentTypes3].Label.text = "Eyebrows";
+                break;
+            case Race.RiverDryad:
+                buttons[(int)ButtonTypes.BodyAccessoryType].Label.text = "Pattern";
+                buttons[(int)ButtonTypes.BodyAccentTypes3].Label.text = "Eyebrows";
+                break;
+            case Race.FungalDryad:
+                buttons[(int)ButtonTypes.BodyAccessoryColor].Label.text = "Mushroom Color";
+                buttons[(int)ButtonTypes.BodyAccessoryType].Label.text = "Hat Type";
+                buttons[(int)ButtonTypes.Skintone].Label.text = "Body Color";
+                buttons[(int)ButtonTypes.BodyAccentTypes1].Label.text = "Mushroom Damage";
+                buttons[(int)ButtonTypes.BodyAccentTypes2].Label.text = "Spots On/Off";
+                buttons[(int)ButtonTypes.BodyAccentTypes3].Label.text = "Spots Type";
+                buttons[(int)ButtonTypes.BodyAccentTypes4].Label.text = "Lower Mushroom Type";
                 break;
         }
     }
@@ -660,6 +783,12 @@ public class UnitCustomizer
         buttons[(int)ButtonTypes.BodyAccessoryColor].Label.text = "Scale Color";
         buttons[(int)ButtonTypes.ExtraColor1].Label.text = "Accent Color";
         buttons[(int)ButtonTypes.ExtraColor2].Label.text = "Tail Pattern Color";
+    }
+
+    void Taraluxia()
+    {
+        buttons[(int)ButtonTypes.BodyAccentTypes5].Label.text = "Glowing Maw";
+        buttons[(int)ButtonTypes.TailTypes].Label.text = "Facing Front";
     }
 
 
@@ -969,12 +1098,33 @@ public class UnitCustomizer
                 CustomizerUI.Reflexive.text = "themself";
                 CustomizerUI.Quantification.value = 1;
             }
+            CheckClothes(Unit);
             RefreshPronouns(Unit);
             Unit.ReloadTraits();
             Unit.InitializeTraits();
             RefreshView();
         }
 
+    }
+    internal void CheckClothes(Unit unit)
+    {
+        if (RaceData.AllowedMainClothingTypes.Count > 0)
+        {
+            MainClothing current_cloth = RaceData.AllowedMainClothingTypes[unit.ClothingType > 0 ? unit.ClothingType - 1 : 0];
+            if (!current_cloth.CanWear(Unit) && current_cloth.ExposeSwapValue() >= 0)
+            {
+                unit.ClothingType = current_cloth.ExposeSwapValue();
+            }
+        }
+
+        if (RaceData.AllowedWaistTypes.Count > 0)
+        {
+            MainClothing current_cloth = RaceData.AllowedWaistTypes[unit.ClothingType2 > 0 ? unit.ClothingType2 - 1 : 0];
+            if (!current_cloth.CanWear(Unit) && current_cloth.ExposeSwapValue() >= 0)
+            {
+                unit.ClothingType2 = current_cloth.ExposeSwapValue();
+            }
+        }
     }
 
     internal void ChangePronouns()

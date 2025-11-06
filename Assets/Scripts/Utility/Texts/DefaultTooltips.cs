@@ -130,7 +130,7 @@ Visible corpses must be on to enable this";
                 return @"Imports the saved global content settings into this game
 Useful for bringing old save games up to speed, but new games are automatically generated with the saved global settings";
             case 48:
-                return "When enabled, preds' bellies (or balls in the case of CV) will be animated.";
+                return "When enabled, preds' bellies (or balls/breasts in the case of CV/BV) will be animated.";
             case 49:
                 return "When enabled, a brief skull effect displays when a pred finishes diegesting and begins absorbing a prey.";
             case 50:
@@ -231,7 +231,7 @@ Note that scat overrides this as they both compete for the same slot and ground 
             case 88:
                 return @"Enables the Serpent monster packs";
             case 89:
-                return @"Enables the Wyvern monster packs (consisting of adult wyvern and young wyvern)";
+                return @"Enables the Wyvern monster packs (consisting of adult wyvern and wyvern Matrons)";
             case 90:
                 return @"Enables the Compy monster packs (a small cockvore predator)";
             case 91:
@@ -297,7 +297,7 @@ Fortify takes repopulation to an extreme and garrisons the village as well -- tu
                 return @"How many attempts the monster will make to spawn each turn
 Each one uses the given odds, but the rest will be skipped if the monster reaches its maximum army count";
             case 115:
-                return "If enabled, young wyvern will spawn with the adults";
+                return "If enabled, powerful wyvern matrons will spawn alongside their lesser brethren";
             case 116:
                 return "If enabled, dark swallowers will spawn with the sharks";
             case 117:
@@ -559,7 +559,7 @@ It should be fairly stable though.  There are a few places that are still keyed 
             case 216:
                 return "Controls whether winter holiday mode is enabled (changes the decorations for snow, and enables certain races to spawn with holiday related outfits)\nNote that when this expires or is turned off, units will still keep wearing what they were wearing.";
             case 217:
-                return "Controls how much maintenance each unit in an army costs per turn.";
+                return "Controls how much maintenance each unit in an army costs per turn regardless of race. A value below 0 will use individual race settings.";
             case 218:
                 return "Changes which types of feeding are allowed. After a unit digests a unit in their breast(s) or cock, they can use that organ to feed allies in order to heal them.";
             case 219:
@@ -567,7 +567,7 @@ It should be fairly stable though.  There are a few places that are still keyed 
             case 220:
                 return "Changes how unbirth is handled. If conversion is enabled, unbirthed units will be converted to their pred's side upon being digested. If rebirth is enabled, unbirthed units will be reborn as units of their pred's race as well as converted to their pred's side upon being absorbed. If both are enabled, conversion will occur first, but units can still be rebirthed by unbirthing a corpse or transferring a unit through CV.";
             case 221:
-                return "When enabled, cock vored units can transferred to allies, allowing their allies to digest/absorb them. Prey has a chance of escaping if they are still alive when transferring. Prey can be transferred to an ally's stomach or womb if the ally has a vagina.";
+                return "When enabled, cock and oral vored units can transferred to allies, allowing their allies to digest/absorb them. Prey has a chance of escaping if they are still alive when transferring. Prey can be transferred to an ally's stomach or womb if the ally has a vagina. Also enables vore stealing of living prey, useful for rescuing allies and transferring prey from one pred to another.";
             case 222:
                 return "When enabled, preds can transfer units they have 'cumgested' through cock vore to strengthen a target unit. The target unit must be unbirthed by one of the pred's allies, as well as either be on the pred's side themselves, or have already been digested inside the pred's ally's womb.";
             case 223:
@@ -705,7 +705,7 @@ Does not retroactively affect already created units.";
             case 283:
                 return "Replaces scat with diapers for absorbed units and diaper-related tactical log messages will be displayed.";
             case 284:
-                return "Controls how many bonus movement points scout sized armies start with every turn. When scouts use their bonus MP they will have decreased MP by the amount uesd the following turn";
+                return "Controls how many bonus movement points scout sized armies start with every turn. When scouts use their bonus MP they will have decreased MP by the amount uesd the following turn down to a minimum of 1 MP";
             case 285:
                 return "Determines the maximum amount of units allowed to be in a scout army(Set to 0 to disable feature).";
             case 286:
@@ -729,7 +729,7 @@ Does not retroactively affect already created units.";
             case 295:
                 return "Modifies how much health and mana is gained from absorbtion.";          
             case 296:
-                return "If on, stacks will begin to fall once ther is no more alive prey.";
+                return "If on, stacks will begin to fall (or begin to rise again) once there is no more alive prey.";
             case 297:
                 return "If on, stacks will be applied to absorbtion if there no more alive prey.";
             case 298:
@@ -746,6 +746,88 @@ Does not retroactively affect already created units.";
                 return "Prey within a surrendered predator will have their escape chanced multiplied by this amount. A value of 1 disables this setting.";
             case 304:
                 return "When a full predetor surrenders, it has this chance to release it's prey.";
+            case 305:
+                return "Enables wandering hauntings of Wisps";
+            case 306:
+                return "Enables wandering herds of Wild Horses";
+            case 307:
+                return "Enables wandering skulks of Feral Foxes";
+            case 308: 
+                return "Enables wandering swarms of the freedom-hating Terminids";
+            case 309: 
+                return "Enables wandering pods of Feral Orcas";
+            case 310:
+                return "Decides if and how the resource gain percentage setting is linked to ramp stacks. Can be used with settings that change stacks during absorbtion. \nMultiplicative: Multiplies resource gain by the bonus, will bottom out at zero health/mana per turn when a unit reaches zero stacks \nAdditive: Adds bonus onto the resourse gain, will bottom out at the normal value when stacks are zero.";
+            case 311:
+                return "If on, this monster is able to receive the scout MP bonus.";
+            case 312:
+                return "Changes the time of day when monsters are given AP. \n'Can always move' respects 'Monsters can only move at night' setting preventing movement \n'Can only move when Day' allows for movement durring day despite 'Monsters can only move at night' setting.";
+            case 313:
+                return "Controls if when a unit auto-surrenders if they are healed to full health. Can be changed from if only defecting units are healed, only units that remain loyal are healed, or if all auto-surrendered units are healed.";
+            case 314:
+                return "Enables explosive fluffles of Boom Bunnies.";
+            case 315:
+                return "Sets the amont of slots in an army this unit takes up. (This value can be a decimal)";
+            case 316:
+                return "Sets a soft cap on AP.  Every AP past this value will take double the regen than the last.\n Example: At a value of 4, A unit that would normally start with 10 AP will instead start with 6 AP. The first point of AP past 4 requires 2 AP and the second requires 4 AP, resulting in 6.";
+            case 317:
+                return "Sets a hard cap on AP.  Unit AP will never go above this value.";
+            case 318:
+                return "Modifies the accuracy of a weapon attack based on unit size.\nNote: Small values go a long way, this value is applied many times. Additionally, units also increase their size when full. (Recommended: 0.1 - 0.001)\n Example: A value of 0.1 will increase an accuracy of 30% by 10%, resulting in an accuracy of 33%.";
+            case 319:
+                return "Sets the bounds for the difference of body size. If the difference is within these bounds, the accuracy of an attack will not be modified.";
+            case 320:
+                return "Sets the interval the above accuracy modifier will be applied. Only applies to targets outside of the bounds.\n Example: With an interval value of 5, bounds of 10, and modifier of 0.1, a unit of size 10 will have 10% increased accuracy against a unit of size 25, ~15% increased accuracy against a unit of size 27, and 20% increased accuracy against a unit of size 30";
+            case 321:
+                return "Modifies the damage of a weapon attack based on unit size.\nNote: Small values go a long way, this value is applied many times. Additionally, units also increase their size when full. (Recommended: 0.1 - 0.001) \n Example: A value of 0.1 will increase a damage of 10 by 10%, resulting in 11 damage.";
+            case 322:
+                return "Sets the bounds for the difference of body size. If the difference is within these bounds, the damage of an attack will not be modified.";
+            case 323:
+                return "Sets the interval the above damage modifier will be applied. Only applies to targets outside of the bounds.\n Example: With an interval value of 5, bounds of 10, and modifier of 0.1, a unit of size 25 will have 10% increased damage against a unit of size 10, ~15% increased damage against a unit of size 7, and 20% increased damage against a unit of size 5";
+            case 324:
+                return "Sets the upkeep one unit of this race will incur.";
+            case 325:
+                return "When enabled, a hand effect displays when a pred has been belly rubbed.";
+            case 326:
+                return "Controls the maximum level of equipment dropped from monsters or goblins, or that spawn on mercenaries or adventurers.  Note that the maximum also depends on the monsters level, with level 4 equipment not generally appearing until after level 10, but this clamps that to your maximum";
+            case 327:
+                return "Enables encounters with feral slimes.";
+            case 328:
+                return "Enable to cause larger units to have a harder time hitting smaller units by the same coefficient.";
+            case 329:
+                return "Enable to cause smaller units to deal less damage against larger units by the same coefficient.";
+            case 330:
+                return "Accuracy based on size will not be multiplied or divided by a number higher than this value.\n Negative values disable this setting.";
+            case 331:
+                return "Damage based on size will not be multiplied or divided by a number higher than this value.\n Negative values disable this setting.";
+            case 332:
+                return "Enables wandering clusters of Virae Ultimae.";
+            case 333:
+                return "Enables wandering packs of Viisels.";
+            case 334:
+                return "When enabled, a white flag will appear next to surrendered units.";
+            case 335:
+                return "When enabled, unit's side will be displayed in their info panel.";
+            case 336:
+                return "Enables, birds and bird-like races to have more accurate appearing scat sprites.";
+            case 337:
+                return "Enables the Dryad monster packs - it's a pack of four different Dryad with complimentary abilities";
+            case 338:
+                return "Enables wandering packs of Otachi.";
+            case 339:
+                return "Enables wandering packs of Raiju.";
+            case 340:
+                return "Enables wandering packs of Smudgers.";
+            case 341:
+                return "Enables wandering packs of Space Roaches.";
+            case 342:
+                return "Enables wandering packs of T-Rex.";
+            case 343:
+                return "Enables wandering packs of Utahraptors.";
+            case 344:
+                return "Sets the leader's army to 0 MP upon respawning. (Helps the AI not run it down when an enemy army is nearby)";
+            case 345:
+                return "Disables the potion system. (Frees up a lot of AI income)";
             default:
                 return "";
         }

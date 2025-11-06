@@ -23,6 +23,8 @@ static class TacticalGraphicalEffects
         var sprite = ArrowType(actor, out Material material);
         if (actor.Unit.Race == Race.Panthers)
             PantherSetup(arrow, actor);
+        if (actor.Unit.Race == Race.Bears)
+            BearSetup(arrow, actor);
         if (sprite != null) arrow.GetComponentInChildren<SpriteRenderer>().sprite = sprite;
         if (material != null) arrow.GetComponentInChildren<SpriteRenderer>().material = material;
         arrow.Setup(actor.Position, target.Position, target);
@@ -62,6 +64,32 @@ static class TacticalGraphicalEffects
 
     }
 
+    private static void BearSetup(ArrowEffect obj, Actor_Unit actor)
+    {
+        Weapon weapon = actor.BestRanged;
+//        if (weapon.Graphic == 4)
+//        {
+//            Sprite[] sprites = State.GameManager.SpriteDictionary.Bears ;
+//            anim.Frame = new Sprite[]
+//            {
+//                sprites[34],
+//            };
+//            anim.FrameTime = new float[] { 1f };
+//        }
+        if (weapon.Graphic == 6)
+        {
+            var anim = obj.gameObject.AddComponent<AnimationEffectComponent>();
+            anim.Repeat = true;
+            Sprite[] sprites = State.GameManager.SpriteDictionary.Bears;
+            anim.Frame = new Sprite[]
+            {
+                sprites[36],
+                sprites[37],
+            };
+            anim.FrameTime = new float[] { .025f, .025f};
+        }
+
+    }
     static Sprite ArrowType(Actor_Unit actor, out Material material)
     {
         Weapon weapon = actor.BestRanged;
@@ -118,8 +146,29 @@ static class TacticalGraphicalEffects
             return State.GameManager.SpriteDictionary.Slimes[17];
         else if (actor.Unit.Race == Race.SpitterSlugs)
             return State.GameManager.SpriteDictionary.SpitterSlug[10];
+        else if (actor.Unit.Race == Race.EarthDryad)
+            return State.GameManager.SpriteDictionary.DryadSprites3[17];
+        else if (actor.Unit.Race == Race.RiverDryad)
+            return State.GameManager.SpriteDictionary.DryadSprites5[17];
         else if (actor.Unit.Race == Race.Bats)
             return State.GameManager.SpriteDictionary.Demibats1[132];
+        else if (actor.Unit.Race == Race.RwuMercenaries && (weapon.Graphic == 4 || weapon.Graphic == 6))
+            return State.GameManager.SpriteDictionary.Slimes[17];
+        else if (actor.Unit.Race == Race.Tatltuae)
+            return State.GameManager.SpriteDictionary.Equaleon[37];// intentionally blank sprite
+        else if (actor.Unit.Race == Race.Firefly)
+            return State.GameManager.SpriteDictionary.Firefly[13];
+        else if (actor.Unit.Race == Race.Hamsters && (weapon.Graphic == 4 || weapon.Graphic == 6))
+            return State.GameManager.SpriteDictionary.Slimes[17];
+        else if (actor.Unit.Race == Race.Lupine && (weapon.Graphic == 4 || weapon.Graphic == 6))
+            return State.GameManager.SpriteDictionary.Slimes[17];
+        else if (actor.Unit.Race == Race.Bears)
+        {
+            if (weapon.Graphic == 4)
+                return State.GameManager.SpriteDictionary.Bears[34];
+            else if (weapon.Graphic == 6)
+                return State.GameManager.SpriteDictionary.Bears[36];
+        }
         else if (actor.Unit.Race == Race.Panthers)
         {
             if (weapon.Graphic == 4)
@@ -143,6 +192,13 @@ static class TacticalGraphicalEffects
             else if (weapon.Graphic == 6)
                 return State.GameManager.SpriteDictionary.Vipers1[20];
         }
+        else if (actor.Unit.Race == Race.Bears)
+        {
+            if (weapon.Graphic == 4)
+                return State.GameManager.SpriteDictionary.Bears[34];
+            else if (weapon.Graphic == 6)
+                return State.GameManager.SpriteDictionary.Bears[36];
+        }
         return null;
     }
 
@@ -153,6 +209,17 @@ static class TacticalGraphicalEffects
         var obj = Object.Instantiate(State.GameManager.SpriteRendererPrefab);
         obj.transform.position = location;
         obj.AddComponent<Assets.Scripts.Entities.Animations.SuccubusSword>();
+
+    }
+
+    internal static void EntropicChaosEffect(Vector2 location)
+    {
+        if (State.GameManager.TacticalMode.turboMode)
+            return;
+        var obj = Object.Instantiate(State.GameManager.SpriteRendererPrefab);
+        obj.transform.position = location;
+        obj.transform.localScale = new Vector3(2, 2, 1);
+        obj.AddComponent<Assets.Scripts.Entities.Animations.EntropicChaos>();
 
     }
 
@@ -174,6 +241,65 @@ static class TacticalGraphicalEffects
         var prefab = State.GameManager.TacticalEffectPrefabList.Fireball;
         var effect = Object.Instantiate(prefab, new Vector3(startLocation.x, startLocation.y, 0), new Quaternion()).GetComponent<ArrowEffect>();
         effect.Setup(startLocation, endLocation, target, null, null);
+
+    }
+
+    internal static void CreateFireBomb(Vec2i startLocation, Vec2i endLocation, Actor_Unit target)
+    {
+        if (State.GameManager.TacticalMode.turboMode)
+            return;
+        var prefab = State.GameManager.TacticalEffectPrefabList.FireBomb;
+        var effect = Object.Instantiate(prefab, new Vector3(startLocation.x, startLocation.y, 0), new Quaternion()).GetComponent<ArrowEffect>();
+        effect.Setup(startLocation, endLocation, target, null, null);
+
+    }
+
+    internal static void CreateBola(Vec2i startLocation, Vec2i endLocation, Actor_Unit target)
+    {
+        if (State.GameManager.TacticalMode.turboMode)
+            return;
+        var prefab = State.GameManager.TacticalEffectPrefabList.Bola;
+        var effect = Object.Instantiate(prefab, new Vector3(startLocation.x, startLocation.y, 0), new Quaternion()).GetComponent<ArrowEffect>();
+        effect.Setup(startLocation, endLocation, target, null, null);
+
+    }
+
+    internal static void CreatePotion(Vec2i startLocation, Vec2i endLocation, Actor_Unit target)
+    {
+        if (State.GameManager.TacticalMode.turboMode)
+            return;
+        var prefab = State.GameManager.TacticalEffectPrefabList.Potion;
+        var effect = Object.Instantiate(prefab, new Vector3(startLocation.x, startLocation.y, 0), new Quaternion()).GetComponent<ArrowEffect>();
+        effect.Setup(startLocation, endLocation, target, null, null);
+
+    }
+
+    internal static void CreateCaptureNet(Vec2i startLocation, Vec2i endLocation, Actor_Unit target)
+    {
+        if (State.GameManager.TacticalMode.turboMode)
+            return;
+        var prefab = State.GameManager.TacticalEffectPrefabList.CaptureNet;
+        var effect = Object.Instantiate(prefab, new Vector3(startLocation.x, startLocation.y, 0), new Quaternion()).GetComponent<ArrowEffect>();
+        effect.Setup(startLocation, endLocation, target, null, null);
+
+    }
+
+    internal static void CreateIcicle(Vec2i startLocation, Vec2i endLocation, Actor_Unit target)
+    {
+        if (State.GameManager.TacticalMode.turboMode)
+            return;
+        var prefab = State.GameManager.TacticalEffectPrefabList.Icicle;
+        var effect = Object.Instantiate(prefab, new Vector3(startLocation.x, startLocation.y, 0), new Quaternion()).GetComponent<ArrowEffect>();
+        effect.Setup(startLocation, endLocation, target, null, null);
+
+    }
+
+    internal static void CreateCrossShock(Vec2 location)
+    {
+        if (State.GameManager.TacticalMode.turboMode)
+            return;
+        var prefab = State.GameManager.TacticalEffectPrefabList.CrossShock;
+        Object.Instantiate(prefab, new Vector3(location.x, location.y, 0), new Quaternion());
 
     }
 

@@ -24,6 +24,10 @@
     VolcanicOverGravel = 83,
     VolcanicOverLava = 84,
 
+    BeachOverOcean = 85,
+
+    SwampOverBog = 86,
+
     greengrass = 100,
     grassBush,
     grassFlower,
@@ -53,6 +57,10 @@ static class TacticalTileInfo
         if (type >= (TacticalTileType)2300 && type < (TacticalTileType)2399)
             return true;
         if (type >= (TacticalTileType)2000 && type < (TacticalTileType)2099)
+            return true;
+        if (type >= (TacticalTileType)700 && type < (TacticalTileType)799)
+            return true;
+        if (type >= (TacticalTileType)600 && type < (TacticalTileType)699)
             return true;
         if (type >= (TacticalTileType)500 && type < (TacticalTileType)599)
             return true;

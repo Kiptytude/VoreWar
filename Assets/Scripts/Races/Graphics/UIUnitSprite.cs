@@ -46,6 +46,7 @@ public class UIUnitSprite : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
         }
         CompleteSprite.UpdateSprite();
         //The second one is designed to fix the squishbreasts flag not applying correctly on the first round.  I could do a lot of complicated stuff to fix, or just this
+        CompleteSprite.AdjustSpriteScale();
 
         Name.color = actor.Unit.HasEnoughExpToLevelUp() ? new Color(1, .6f, 0) : new Color(.196f, .196f, .196f);
     }

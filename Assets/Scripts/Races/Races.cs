@@ -1,7 +1,5 @@
 ﻿static class Races
 {
-
-
     static internal Cats Cats = new Cats();
     static internal Dogs Dogs = new Dogs();
     static internal Foxes Foxes = new Foxes();
@@ -36,6 +34,16 @@
     static internal Youko Youko = new Youko();
     static internal Aabayx Aabayx = new Aabayx();
     static internal Mice Mice = new Mice();
+    static internal Abakhanskya Abakhanskya = new Abakhanskya();
+    static internal MatronsMinions MatronsMinions = new MatronsMinions();
+    static internal Gnolls Gnolls = new Gnolls();
+    static internal MainlandElves MainlandElves = new MainlandElves();
+    static internal Bears Bears = new Bears();
+    static internal Umbreon Umbreon = new Umbreon();
+    static internal Lupine Lupine = new Lupine();
+    static internal Jackals Jackals = new Jackals();
+    static internal Ghosts Ghosts = new Ghosts();
+
 
     static internal Tigers Tigers = new Tigers();
     static internal Goblins Goblins = new Goblins();
@@ -49,11 +57,15 @@
     static internal Cockatrice Cockatrice = new Cockatrice();
     static internal Vargul Vargul = new Vargul();
     static internal Hamsters Hamsters = new Hamsters();
+    static internal RwuMercenaries RwuMercenaries = new RwuMercenaries();
+    static internal Centaur Centaur = new Centaur();
+    static internal Eevee Eevee = new Eevee();
+    static internal Equaleon Equaleon = new Equaleon();
 
     static internal Vagrants Vagrants = new Vagrants();
     static internal Serpents Serpents = new Serpents();
     static internal Wyvern Wyvern = new Wyvern();
-    static internal YoungWyvern YoungWyvern = new YoungWyvern();
+    static internal WyvernMatron WyvernMatron = new WyvernMatron();
     static internal Compy Compy = new Compy();
     static internal FeralWolf FeralWolf = new FeralWolf();
     static internal Sharks Sharks = new Sharks();
@@ -89,6 +101,23 @@
     static internal Terrorbird Terrorbird = new Terrorbird();
     static internal Dratopyr Dratopyr = new Dratopyr();
     static internal FeralLions FeralLions = new FeralLions();
+    static internal BoomBunnies BoomBunnies = new BoomBunnies();
+    static internal FeralSlime FeralSlime = new FeralSlime();
+    static internal ViraeUltimae ViraeUltimae = new ViraeUltimae();
+    static internal Viisels Viisels = new Viisels();
+    static internal FeralEevee FeralEevee = new FeralEevee();
+    static internal FeralUmbreon FeralUmbreon = new FeralUmbreon();
+    static internal FeralEqualeon FeralEqualeon = new FeralEqualeon();
+    static internal WoodDryad WoodDryad = new WoodDryad();
+    static internal EarthDryad EarthDryad = new EarthDryad();
+    static internal RiverDryad RiverDryad = new RiverDryad();
+    static internal FungalDryad FungalDryad = new FungalDryad();
+    static internal Otachi Otachi = new Otachi();
+    static internal Raiju Raiju = new Raiju();
+    static internal Smudger Smudger = new Smudger();
+    static internal SpaceCroach SpaceCroach = new SpaceCroach();
+    static internal Trex Trex = new Trex();
+    static internal Utahraptor Utahraptor = new Utahraptor();
 
     static internal Selicia Selicia = new Selicia();
     static internal Vision Vision = new Vision();
@@ -97,16 +126,28 @@
     static internal Asura Asura = new Asura();
     static internal DRACO DRACO = new DRACO();
     static internal Zoey Zoey = new Zoey();
-    static internal Abakhanskya Abakhanskya = new Abakhanskya();
+    static internal Cierihaka Cierihaka = new Cierihaka();
     static internal Zera Zera = new Zera();
     static internal Auri Aurilika = new Auri();
     static internal Erin Erin = new Erin();
     static internal Salix Salix = new Salix();
     static internal Bella Bella = new Bella();
     static internal Goodra Goodra = new Goodra();
-
     static internal Whisp Whisp = new Whisp();
+    static internal FeralHorses FeralHorses = new FeralHorses();
+    static internal Singularity Singularity = new Singularity();
+    static internal Feit Feit = new Feit();
+    static internal FeralFox FeralFox = new FeralFox();
+    static internal Terminid Terminid = new Terminid();
+    static internal FeralOrcas FeralOrcas = new FeralOrcas();
     static internal BlankSlate BlankSlate = new BlankSlate();
+    static internal Taraluxia Taraluxia = new Taraluxia();
+    static internal Xelhilde Xelhilde = new Xelhilde();
+    static internal Olivia Olivia = new Olivia();
+    static internal Skapa Skapa = new Skapa();
+    static internal Tatltuae Tatltuae = new Tatltuae();
+    static internal Firefly Firefly = new Firefly();
+
 
     static internal DefaultRaceData GetRace(Unit unit)
     {
@@ -197,8 +238,8 @@
                 return Serpents;
             case Race.Wyvern:
                 return Wyvern;
-            case Race.YoungWyvern:
-                return YoungWyvern;
+            case Race.WyvernMatron:
+                return WyvernMatron;
             case Race.Compy:
                 return Compy;
             case Race.FeralWolves:
@@ -243,8 +284,8 @@
                 return DRACO;
             case Race.Zoey:
                 return Zoey;
-            case Race.Abakhanskya:
-                return Abakhanskya;
+            case Race.Cierihaka:
+                return Cierihaka;
             case Race.Zera:
                 return Zera;
             case Race.FeralAnts:
@@ -307,13 +348,15 @@
                 return Vargul;
             case Race.Hamsters:
                 return Hamsters;
+            case Race.RwuMercenaries:
+                return RwuMercenaries;
             case Race.Dratopyr:
                 return Dratopyr;
             case Race.Erin:
                 return Erin;
             case Race.FeralLions:
                 return FeralLions;
-	        case Race.Goodra:
+            case Race.Goodra:
                 return Goodra;
             case Race.Whisp:
                 return Whisp;
@@ -325,6 +368,88 @@
                 return Aabayx;
             case Race.Mice:
                 return Mice;
+            case Race.FeralHorses:
+                return FeralHorses;
+            case Race.Abakhanskya:
+                return Abakhanskya;
+            case Race.MatronsMinions:
+                return MatronsMinions;
+            case Race.Singularity:
+                return Singularity;
+            case Race.Feit:
+                return Feit;
+            case Race.FeralFox:
+                return FeralFox;
+            case Race.Terminid:
+                return Terminid;
+            case Race.FeralOrcas:
+                return FeralOrcas;
+            case Race.Taraluxia:
+                return Taraluxia;
+            case Race.Xelhilde:
+                return Xelhilde;
+            case Race.BoomBunnies:
+                return BoomBunnies;
+            case Race.Gnolls:
+                return Gnolls;
+            case Race.Centaur:
+                return Centaur;
+            case Race.FeralSlime:
+                return FeralSlime;
+            case Race.Olivia:
+                return Olivia;
+            case Race.MainlandElves:
+                return MainlandElves;
+            case Race.ViraeUltimae:
+                return ViraeUltimae;
+            case Race.Bears:
+                return Bears;
+            case Race.Eevee:
+                return Eevee;
+            case Race.Umbreon:
+                return Umbreon;
+            case Race.Lupine:
+                return Lupine;
+            case Race.Equaleon:
+                return Equaleon;
+            case Race.Viisels:
+                return Viisels;
+            case Race.FeralEevee:
+                return FeralEevee;
+            case Race.FeralUmbreon:
+                return FeralUmbreon;
+            case Race.FeralEqualeon:
+                return FeralEqualeon;
+            case Race.Skapa:
+                return Skapa;
+            case Race.Tatltuae:
+                return Tatltuae;
+            case Race.Jackals:
+                return Jackals;
+            case Race.Firefly:
+                return Firefly;
+            case Race.Otachi:
+                return Otachi;
+            case Race.Raiju:
+                return Raiju;
+            case Race.Smudger:
+                return Smudger;
+            case Race.SpaceCroach:
+               return SpaceCroach;
+            case Race.Ghosts:
+                return Ghosts;
+            case Race.WoodDryad:
+                return WoodDryad;
+            case Race.EarthDryad:
+                return EarthDryad;
+            case Race.RiverDryad:
+                return RiverDryad;
+            case Race.FungalDryad:
+                return FungalDryad;
+            case Race.Trex:
+                return Trex;
+            case Race.Utahraptor:
+                return Utahraptor;
         }
         UnityEngine.Debug.LogWarning("Couldn't find race, substituting the Blank Slate");
         return BlankSlate;

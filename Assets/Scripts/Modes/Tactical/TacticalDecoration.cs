@@ -79,6 +79,24 @@ namespace TacticalDecorations
         VolcanicMagmaRock3,
         VolcanicMagmaRock4,
         VolcanicMagmaRock5,
+
+        BeachPlainSand,
+        BeachSmallRock1,
+        BeachMediumRock1,
+        BeachBigRock1,
+        BeachGrass,
+        BeachBones,
+        BeachFishBones,
+        BeachStarfish,
+        BeachPalm,
+
+        SwampPad1,
+        SwampPad2,
+        SwampPad3,
+        SwampCatTail,
+        SwampGrass,
+        SwampTreeBig,
+        SwampTree,
     }
 
     class TacticalDecoration
@@ -175,6 +193,23 @@ namespace TacticalDecorations
             [TacDecType.VolcanicMagmaRock3] = new TacticalDecoration(1, 1, new int[,] { { 528 } }, PathType.Tree),
             [TacDecType.VolcanicMagmaRock4] = new TacticalDecoration(1, 1, new int[,] { { 529 } }, PathType.Tree),
             [TacDecType.VolcanicMagmaRock5] = new TacticalDecoration(1, 2, new int[,] { { 532, 531 } }, PathType.Tree),
+
+            [TacDecType.BeachSmallRock1] = new TacticalDecoration(1, 1, new int[,] { { 601 } }, PathType.Tree),
+            [TacDecType.BeachBigRock1] = new TacticalDecoration(2, 1, new int[,] { { 602 }, { 603 } }, PathType.Tree),
+            [TacDecType.BeachGrass] = new TacticalDecoration(0, 0, new int[,] { { 604 } }),
+            [TacDecType.BeachMediumRock1] = new TacticalDecoration(1, 1, new int[,] { { 605 }}, PathType.Tree),
+            [TacDecType.BeachBones] = new TacticalDecoration(2, 2, new int[,] { { 608, 606 }, { 609, 607 } }, PathType.Tree),
+            [TacDecType.BeachFishBones] = new TacticalDecoration(0, 0, new int[,] { {610} }),
+            [TacDecType.BeachStarfish] = new TacticalDecoration(0, 0, new int[,] { {611} }),
+            [TacDecType.BeachPalm] = new TacticalDecoration(1, 1, new int[,] { {613, 612 } }),
+
+            [TacDecType.SwampPad1] = new TacticalDecoration(0, 0, new int[,] { {701 } }),
+            [TacDecType.SwampPad2] = new TacticalDecoration(0, 0, new int[,] { {702} }),
+            [TacDecType.SwampPad3] = new TacticalDecoration(0, 0, new int[,] { { 703 }, {704} }),
+            [TacDecType.SwampCatTail] = new TacticalDecoration(0, 0, new int[,] { {705} }),
+            [TacDecType.SwampGrass] = new TacticalDecoration(0, 0, new int[,] { {706 } }),
+            [TacDecType.SwampTreeBig] = new TacticalDecoration(1, 1, new int[,] { { 708, 707}, { 710, 709 } }, PathType.Tree),
+            [TacDecType.SwampTree] = new TacticalDecoration(1, 1, new int[,] { {712, 711 } }, PathType.Tree),
         };
 
 
@@ -193,6 +228,11 @@ namespace TacticalDecorations
         internal static TacDecType[] CharredBones = new TacDecType[] { TacDecType.VolcanicBones1, TacDecType.VolcanicBones2, TacDecType.VolcanicBones3, TacDecType.VolcanicBones4 };
         internal static TacDecType[] VolcanicRocks = new TacDecType[] { TacDecType.VolcanicRocks1, TacDecType.VolcanicRocks2, TacDecType.VolcanicRocks3, TacDecType.VolcanicRocks4, TacDecType.VolcanicRocks5, TacDecType.VolcanicRocks6, TacDecType.VolcanicRocks7, TacDecType.VolcanicRocks8 };
         internal static TacDecType[] VolcanicMagmaRocks = new TacDecType[] { TacDecType.VolcanicMagmaRock1, TacDecType.VolcanicMagmaRock2, TacDecType.VolcanicMagmaRock3, TacDecType.VolcanicMagmaRock4, TacDecType.VolcanicMagmaRock5 };
+
+        internal static TacDecType[] BeachEnvironment = new TacDecType[] { TacDecType.BeachSmallRock1, TacDecType.BeachMediumRock1, TacDecType.BeachBigRock1, TacDecType.BeachGrass, TacDecType.BeachBones, TacDecType.BeachFishBones, TacDecType.BeachStarfish, TacDecType.BeachPalm};
+        
+        internal static TacDecType[] SwampEnvironment = new TacDecType[] {TacDecType.SwampGrass, TacDecType.SwampTreeBig, TacDecType.SwampTree };
+        internal static TacDecType[] SwampWaterEnvironment = new TacDecType[] { TacDecType.SwampPad1, TacDecType.SwampPad2, TacDecType.SwampPad3, TacDecType.SwampCatTail,};
     }
 }
 

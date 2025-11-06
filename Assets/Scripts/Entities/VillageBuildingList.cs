@@ -31,6 +31,15 @@ public enum VillageBuilding : int
     market3,
     MagicGuild,
     Cathedral,
+    builder1,
+    builder2,
+    builder3,
+    Workshop,
+    Forge,
+    ArcaneForge,
+    Apothecary,
+    Alchemist,
+    AlchemyGuild,
     LastIndex, //Keep this last
 
 }
@@ -164,6 +173,69 @@ public static class VillageBuildingList
             RequiresSubjugatedRace = true,
             Cost = new BuildingCost() { Wealth = 180 },
             Boosts = new VillageBoosts() { MaxHappinessAdd = 15, },
+        },
+
+        [VillageBuilding.Forge] = new VillageBuildingDefinition(
+            VillageBuilding.Forge, "Forge",
+            "Allows purchasing of tier 2 equipment"
+        )
+        {
+            Cost = new BuildingCost() { Wealth = 300 },
+            Boosts = new VillageBoosts()
+            {
+                EquipmentLevels = 1,
+            },
+        },
+
+        [VillageBuilding.ArcaneForge] = new VillageBuildingDefinition(
+            VillageBuilding.ArcaneForge, "Arcane Forge",
+            "Allows purchasing of tier 3 equipment"
+        )
+        {
+            Cost = new BuildingCost() { Wealth = 500 },
+            Boosts = new VillageBoosts()
+            {
+                EquipmentLevels = 1,
+            },
+            RequiredBuildings = new List<VillageBuilding>() { VillageBuilding.Forge, VillageBuilding.MagicGuild },
+        },
+
+        [VillageBuilding.Apothecary] = new VillageBuildingDefinition(
+            VillageBuilding.Apothecary, "Apothecary",
+            "Allows purchasing of tier 2 potions"
+        )
+        {
+            Cost = new BuildingCost() { Wealth = 150 },
+            Boosts = new VillageBoosts()
+            {
+                PotionLevel = 1,
+            },
+        },
+
+        [VillageBuilding.Alchemist] = new VillageBuildingDefinition(
+            VillageBuilding.Alchemist, "Alchemist",
+            "Allows purchasing of tier 3 potions"
+        )
+        {
+            Cost = new BuildingCost() { Wealth = 350 },
+            Boosts = new VillageBoosts()
+            {
+                PotionLevel = 1,
+            },
+            RequiredBuildings = new List<VillageBuilding>() { VillageBuilding.Apothecary },
+        },
+
+        [VillageBuilding.AlchemyGuild] = new VillageBuildingDefinition(
+            VillageBuilding.AlchemyGuild, "Alchemy Guild",
+            "Allows purchasing of tier 4 potions"
+        )
+        {
+            Cost = new BuildingCost() { Wealth = 500 },
+            Boosts = new VillageBoosts()
+            {
+                PotionLevel = 1,
+            },
+            RequiredBuildings = new List<VillageBuilding>() { VillageBuilding.Alchemist },
         },
 
     };
@@ -559,6 +631,69 @@ public static class VillageBuildingList
             RequiresSubjugatedRace = true,
             Cost = new BuildingCost() { Wealth = 180 },
             Boosts = new VillageBoosts() { MaxHappinessAdd = 15, },
+        },
+
+        [VillageBuilding.Forge] = new VillageBuildingDefinition(
+            VillageBuilding.Forge, "Forge",
+            "Allows purchasing of tier 2 equipment"
+        )
+        {
+            Cost = new BuildingCost() { Wealth = 300 },
+            Boosts = new VillageBoosts()
+            {
+                EquipmentLevels = 1,
+            },
+        },
+
+        [VillageBuilding.ArcaneForge] = new VillageBuildingDefinition(
+            VillageBuilding.ArcaneForge, "Arcane Forge",
+            "Allows purchasing of tier 3 equipment"
+        )
+        {
+            Cost = new BuildingCost() { Wealth = 500 },
+            Boosts = new VillageBoosts()
+            {
+                EquipmentLevels = 2,
+            },
+            RequiredBuildings = new List<VillageBuilding>() { VillageBuilding.Forge, VillageBuilding.MagicGuild },
+        },
+
+        [VillageBuilding.Apothecary] = new VillageBuildingDefinition(
+            VillageBuilding.Apothecary, "Apothecary",
+            "Allows purchasing of tier 2 potions"
+        )
+        {
+            Cost = new BuildingCost() { Wealth = 150 },
+            Boosts = new VillageBoosts()
+            {
+                PotionLevel = 1,
+            },
+        },
+
+        [VillageBuilding.Alchemist] = new VillageBuildingDefinition(
+            VillageBuilding.Alchemist, "Apothecary",
+            "Allows purchasing of tier 3 potions"
+        )
+        {
+            Cost = new BuildingCost() { Wealth = 350 },
+            Boosts = new VillageBoosts()
+            {
+                PotionLevel = 2,
+            },
+            RequiredBuildings = new List<VillageBuilding>() { VillageBuilding.Forge, VillageBuilding.MagicGuild },
+        },
+
+        [VillageBuilding.AlchemyGuild] = new VillageBuildingDefinition(
+            VillageBuilding.AlchemyGuild, "Alchemy Guild",
+            "Allows purchasing of tier 4 potions"
+        )
+        {
+            Cost = new BuildingCost() { Wealth = 500 },
+            Boosts = new VillageBoosts()
+            {
+                PotionLevel = 3,
+            },
+            RequiredBuildings = new List<VillageBuilding>() { VillageBuilding.Forge, VillageBuilding.MagicGuild },
         },
 
     };

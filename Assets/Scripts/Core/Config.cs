@@ -29,6 +29,12 @@ static class Config
         CompleteDevourAndMoveOn,
         CompleteDevourAndRepopulateFortify,
     }
+    public enum DayNightMovemntType
+    {
+        Off,
+        Day,
+        Night,
+    }
 
     public enum SeasonalType
     {
@@ -37,7 +43,7 @@ static class Config
         Disabled
     }
 
-    public const int NumberOfRaces = 31;
+    public const int NumberOfRaces = 39;
 
     public const int NewItemSlots = 2;
 
@@ -163,6 +169,7 @@ static class Config
     internal static FeedingType FeedingType => World.FeedingType;
     internal static FourthWallBreakType FourthWallBreakType => World.FourthWallBreakType;
     internal static UBConversion UBConversion => World.UBConversion;
+    internal static GoddessMercy GoddessMercy => World.GoddessMercy;
     internal static SucklingPermission SucklingPermission => World.SucklingPermission;
 
     internal static int StartingPopulation => World.StartingPopulation;
@@ -182,6 +189,7 @@ static class Config
     internal static bool SpecialMercsCanConvert => World.GetValue("SpecialMercsCanConvert");
 
     internal static bool LeadersRerandomizeOnDeath => World.GetValue("LeadersRerandomizeOnDeath");
+    internal static bool LeaderSpawnFreeze => World.GetValue("LeaderSpawnFreeze");
 
     internal static float MaleFraction => World.MaleFraction;
     internal static float HermFraction => World.HermFraction;
@@ -220,6 +228,7 @@ static class Config
     internal static int DefaultStartingWeight => World.DefaultStartingWeight;
     internal static int GoldMineIncome => World.GoldMineIncome;
     internal static int MaxSpellLevelDrop => World.MaxSpellLevelDrop;
+    internal static int MaxEquipmentLevelDrop => World.MaxEquipmentLevelDrop;
 
     internal static int ArmyMP => World.ArmyMP;
     internal static int ScoutMP => World.ScoutMP;
@@ -244,6 +253,7 @@ static class Config
 
     internal static bool GoblinCaravans => World.GetValue("GoblinCaravans");
     internal static bool MonstersDropSpells => World.GetValue("MonstersDropSpells");
+    internal static bool MonstersDropEquipment => World.GetValue("MonstersDropEquipment");
 
     internal static bool ExtraRandomHairColors => World.GetValue("ExtraRandomHairColors");
 
@@ -295,6 +305,7 @@ static class Config
     internal static bool AllowTopless => World.GetValue("AllowTopless");
     internal static bool FactionLeaders => World.FactionLeaders;
     internal static int ItemSlots => World.ItemSlots;
+    internal static int PotionSlots => World.PotionSlots;
 
     internal static bool FlatExperience => World.GetValue("FlatExperience");
     internal static bool FogOfWar => World.GetValue("FogOfWar");
@@ -311,6 +322,8 @@ static class Config
     internal static int DefualtTacticalSightRange => World.DefualtTacticalSightRange;
     internal static int NightStrategicSightReduction => World.NightStrategicSightReduction;
     internal static int RevealTurn => World.RevealTurn;
+    internal static DayNightMovemntType DayNightMonsterMovemnt => World.DayNightMonsterMovemnt;
+
 
     internal static bool CombatComplicationsEnabled => World.GetValue("CombatComplicationsEnabled");
     internal static bool StatCrit => World.GetValue("StatCrit");
@@ -335,10 +348,14 @@ static class Config
 
     public static bool AnimatedBellies => World.GetValue("AnimatedBellies");
     public static bool DigestionSkulls => World.GetValue("DigestionSkulls");
+    public static bool BellyRubHands => World.GetValue("BellyRubHands");
+    public static bool SurrenderFlag => World.GetValue("SurrenderFlag");
+    public static bool ShowUnitSides => World.GetValue("ShowUnitSides");
     public static bool Bones => World.GetValue("Bones");
     public static bool CleanDisposal => World.GetValue("CleanDisposal");
     public static bool Scat => World.GetValue("Scat");
     public static bool ScatV2 => World.GetValue("ScatV2");
+    public static bool BirdScat => World.GetValue("BirdScat");
     public static bool ScatBones => World.GetValue("ScatBones");
     public static bool CondomsForCV => World.GetValue("CondomsForCV");
     public static bool ClothingDiscards => World.GetValue("ClothingDiscards");
@@ -372,10 +389,31 @@ static class Config
     public static int DigestionGraceTurns => World.DigestionGraceTurns;
     internal static bool DigestionDamageDivision => World.GetValue("DigestionDamageDivision");
     internal static bool AbsorbRateDivision => World.GetValue("AbsorbRateDivision");
+    internal static int AbsorbResourceModBoost => World.AbsorbResourceModBoost;
     public static float SurrenderedPredEscapeMult => World.SurrenderedPredEscapeMult;
     public static float SurrenderedPredAutoRegur => World.SurrenderedPredAutoRegur;
+    public static int NumberOfBuildings => World.GetBuildingInfoCount();
+    public static int TacticalMovementSoftCap => World.TacticalMovementSoftCap;
+    public static int TacticalMovementHardCap => World.TacticalMovementHardCap;
+    public static float SizeAccuracyMod => World.SizeAccuracyMod;
+    public static float SizeAccuracyLowerBound => World.SizeAccuracyLowerBound;
+    public static int SizeAccuracyInterval => World.SizeAccuracyInterval;
+    public static bool SizeAccuracyInverse => World.GetValue("SizeAccuracyInverse");
+    public static float SizeAccuracyCap => World.SizeAccuracyCap;
+    public static float SizeDamageMod => World.SizeDamageMod;
+    public static float SizeDamageLowerBound => World.SizeDamageLowerBound;
+    public static int SizeDamageInterval => World.SizeDamageInterval;
+    public static bool SizeDamageInverse => World.GetValue("SizeDamageInverse");
+    public static float SizeDamageCap => World.SizeDamageCap;
+
+    public static bool PotionSystemEnabled => World.GetValue("PotionSystemEnabled");
 
 
+    public static List<ConstructibleBuilding> Buildings=> World.GetBuildingInfo();
+
+    //Everything below this line should be mirrored in BuildingConfig to ensure proper saving
+
+    internal static BuildingConfig BuildConfig = new BuildingConfig();
 
 
     internal static bool WinterActive()

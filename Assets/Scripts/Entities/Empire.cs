@@ -1,8 +1,11 @@
 using LegacyAI;
 using OdinSerializer;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using UnityEngine;
+using static UnityEngine.UI.CanvasScaler;
 
 public class Empire
 {
@@ -19,14 +22,26 @@ public class Empire
     [OdinSerialize]
     int gold;
     [OdinSerialize]
+    public ConstructionResources constructionResources;
+    [OdinSerialize]
+    public List<Vec2i> OwnedTiles;
+    [OdinSerialize]
     public int Income { get; private set; }
     [OdinSerialize]
     public List<Army> Armies;
+    [OdinSerialize]
+    public List<ConstructibleBuilding> Buildings;
+    [OdinSerialize]
+    public List<Traits> EmpTraits;
 
     [OdinSerialize]
     public int MaxArmySize;
     [OdinSerialize]
+    public int OrigMaxArmySize;
+    [OdinSerialize]
     public int MaxGarrisonSize;
+    [OdinSerialize]
+    public int OrigMaxGarrisonSize;
 
     [OdinSerialize]
     public string Name;
@@ -58,6 +73,16 @@ public class Empire
 
     [OdinSerialize]
     public Dictionary<int, bool> EventHappened;
+
+    [OdinSerialize]
+    public Dictionary<AcademyResearchType, int> AcademyResearchCompleted;
+    [OdinSerialize]
+    public int AcademyUpgradeEXPCost;
+
+    [OdinSerialize]
+    public Dictionary<ConstructibleType, int> EmpireBuildingLimit;
+    [OdinSerialize]
+    public Dictionary<LaboratoryPotion, int> EmpirePotions;
 
     [OdinSerialize]
     public List<int> RecentEvents;
@@ -162,8 +187,18 @@ public class Empire
         Side = args.side;
         Team = args.team;
         MaxArmySize = args.maxArmySize;
+        OrigMaxArmySize = args.maxArmySize;
         MaxGarrisonSize = args.maxGarrisonSize;
+        OrigMaxGarrisonSize = args.maxGarrisonSize;
         Armies = new List<Army>();
+        Buildings = new List<ConstructibleBuilding>();
+        EmpTraits = new List<Traits>();
+        InitBuildLimit();
+        OwnedTiles = new List<Vec2i>();
+        AcademyResearchCompleted = new Dictionary<AcademyResearchType, int>();
+        EmpirePotions = new Dictionary<LaboratoryPotion, int>();
+        constructionResources = new ConstructionResources();
+        constructionResources.Reset();
         Name = Race.ToString();
         if (args.strategicAI == StrategyAIType.None)
             StrategicAI = null;
@@ -184,6 +219,7 @@ public class Empire
         TacticalAIType = args.tacticalAI;
         Boosts = new EmpireBoosts();
         EventHappened = new Dictionary<int, bool>();
+        AcademyUpgradeEXPCost = Config.BuildConfig.AcademyUpgradeCost;
         RecentEvents = new List<int>();
 
         var raceFlags = State.RaceSettings.GetRaceTraits(Race);
@@ -201,12 +237,30 @@ public class Empire
 
     }
 
-    public void LoadFix()
+    public void LoadFix()//Add empire-based null checks for newly added internal(s) or protected(s) and the like to this void so that on loading an older version empires will recive them
     {
+        if (Buildings == null)
+        Buildings = new List<ConstructibleBuilding>();
+        if (EmpireBuildingLimit == null)
+        InitBuildLimit();
+        if (OwnedTiles == null)
+        OwnedTiles = new List<Vec2i>();
+        if (constructionResources == null)
+        {
+            constructionResources = new ConstructionResources();
+            constructionResources.Reset();
+            constructionResources.SetResources(10, 10, 10, 10, 10, 10);
+        }
         if (Reports == null)
             Reports = new List<StrategicReport>();
         if (EventHappened == null)
             EventHappened = new Dictionary<int, bool>();
+        if (AcademyResearchCompleted == null)
+            AcademyResearchCompleted = new Dictionary<AcademyResearchType, int>();
+        if (EmpirePotions == null)
+            EmpirePotions = new Dictionary<LaboratoryPotion, int>();
+        if (EmpTraits == null)
+            EmpTraits = new List<Traits>();
     }
 
     internal void CheckEvent()
@@ -232,9 +286,10 @@ public class Empire
         }
         if (Side < 50)
         {
+            int upkeep = GetUpkeep();
+            Income = Income - (int)(upkeep - (upkeep * 0.125f * AcademyResearch.GetValueFromEmpire(this, AcademyResearchType.GoldMineIncome)));
             for (int i = 0; i < Armies.Count; i++)
             {
-                Income = Income - (Armies[i].Units.Count * Config.World.ArmyUpkeep);
                 if (AddToStats)
                 {
                     State.World.Stats.CollectedGold(Armies[i].Units.Count * 2, Armies[i].Side);
@@ -246,7 +301,21 @@ public class Empire
         {
             if (claimable is GoldMine && claimable.Owner == this)
             {
-                Income += Config.GoldMineIncome;
+                Income += Config.GoldMineIncome + (int)(Config.GoldMineIncome * 0.125f * AcademyResearch.GetValueFromEmpire(this, AcademyResearchType.GoldMineIncome));
+            }
+        }
+        foreach (ConstructibleBuilding constructible in Buildings)
+        {
+            // Only add building here if it generates or removes income.
+            if (constructible is WorkCamp)
+            {
+                Income += 10;
+            }
+            if (constructible is Academy)
+            {
+                Academy academy = constructible as Academy;
+                Income -= academy.Income1;
+                Income -= academy.Income2;
             }
         }
         Income += Boosts.WealthAdd;
@@ -256,6 +325,15 @@ public class Empire
     {
         this.gold -= gold;
         State.World.Stats.SpentGold(gold, Side);
+    }
+
+    /// <summary>
+    /// Not to be confuese with SpendGold.
+    /// Made for storage in the bulding AI.
+    /// </summary>
+    public void RemoveGold(int gold)
+    {
+        this.gold -= gold;
     }
 
     public void AddGold(int gold)
@@ -359,7 +437,7 @@ public class Empire
     private void PlaceLeader(Village capital)
     {
         var CapitalArmy = StrategicUtilities.ArmyAt(capital.Position);
-        if (CapitalArmy != null && CapitalArmy.Units.Count < MaxArmySize && CapitalArmy.Side == Side)
+        if (CapitalArmy != null && StrategicUtilities.ArmyCanFitUnit(CapitalArmy, Leader) && CapitalArmy.Side == Side)
             CapitalArmy.Units.Add(Leader);
         else
         {
@@ -433,13 +511,17 @@ public class Empire
                 teamVillageList.Add(theVillage);
             }
         }
-
+        List<Empire> checkedEmpire = new List<Empire>();
         foreach (var village in teamVillageList)
         {
             Boosts.WealthAdd += village.NetBoosts.TeamWealthAdd;
             Boosts.StartingExpAdd += village.NetBoosts.TeamStartingExpAdd;
+            if (!checkedEmpire.Contains(village.Empire))
+            {
+                Boosts.StartingExpAdd += 10 * (int)AcademyResearch.GetValueFromEmpire(village.Empire, AcademyResearchType.TeamEXP);
+                checkedEmpire.Add(village.Empire);
+            }
         }
-
         return Boosts;
     }
 
@@ -455,5 +537,83 @@ public class Empire
                 }
             }
         }
+    }
+
+    internal int GetUpkeep()
+    {
+        float totalCost = 0;
+        foreach (Army army in Armies)
+        {
+            foreach (Unit unit in army.Units)
+            {
+                if (Config.World.ArmyUpkeep >= 0)
+                    totalCost += Config.World.ArmyUpkeep;
+                else
+                    totalCost += State.RaceSettings.GetUpkeep(unit.Race) * unit.TraitBoosts.UpkeepMult;
+            }
+        }
+        return (int)Math.Round(totalCost);
+    }
+    internal float GetUpkeepCoefficient()
+    {
+
+        if (Config.World.ArmyUpkeep >= 0)
+            return Config.World.ArmyUpkeep;
+
+        float currentCoeff = 0;
+        int unitCount = 0;
+        foreach (Army army in Armies)
+        {
+            foreach(Unit unit in army.Units)
+            {
+                currentCoeff += State.RaceSettings.GetUpkeep(unit.Race) * unit.TraitBoosts.UpkeepMult;
+                unitCount++;
+            }
+        }
+        if (unitCount == 0)
+        {
+            return 3;
+        }
+        return currentCoeff/unitCount;
+    }
+    internal float GetAvgDeployCost()
+    {
+        float ideal_size_Mult = 0;
+        foreach (var army in Armies)
+        {
+            ideal_size_Mult += army.GetAverageArmyDeployment();
+        }
+        if (ideal_size_Mult == 0)
+            State.RaceSettings.GetDeployCost(Race);
+        ideal_size_Mult /= Armies.Count;
+        return ideal_size_Mult;
+    }
+
+    internal void InitBuildLimit()
+    {
+        EmpireBuildingLimit = new Dictionary<ConstructibleType, int>
+        {
+            [ConstructibleType.WorkCamp] = Config.BuildConfig.WorkCamp.BuildLimit,
+            [ConstructibleType.LumberSite] = Config.BuildConfig.LumberSite.BuildLimit,
+            [ConstructibleType.Quarry] = Config.BuildConfig.Quarry.BuildLimit,
+            [ConstructibleType.CasterTower] = Config.BuildConfig.CasterTower.BuildLimit,
+            [ConstructibleType.BarrierTower] = Config.BuildConfig.BarrierTower.BuildLimit,
+            [ConstructibleType.DefEncampment] = Config.BuildConfig.DefenseEncampment.BuildLimit,
+            [ConstructibleType.Academy] = Config.BuildConfig.Academy.BuildLimit,
+            [ConstructibleType.DarkMagicTower] = Config.BuildConfig.DarkMagicTower.BuildLimit,
+            [ConstructibleType.TemporalTower] = Config.BuildConfig.TemporalTower.BuildLimit,
+            [ConstructibleType.Teleporter] = Config.BuildConfig.Teleporter.BuildLimit,
+            [ConstructibleType.Laboratory] = Config.BuildConfig.Laboratory.BuildLimit,
+            [ConstructibleType.TownHall] = Config.BuildConfig.TownHall.BuildLimit,
+        };
+    }
+
+    internal bool WithinBuildLimit(ConstructibleType type)
+    {
+        if (EmpireBuildingLimit[type] == 0)
+        {
+            return false;
+        }
+        return true;
     }
 }

@@ -28,15 +28,25 @@ class SpawnerInfo
     [OdinSerialize]
     internal bool UsingCustomType;
     [OdinSerialize]
+    internal bool MonsterScoutMP;
+    [OdinSerialize]
     internal Config.MonsterConquestType ConquestType;
+    [OdinSerialize]
+    internal bool DNRestrictOn;
+    [OdinSerialize]
+    internal Config.DayNightMovemntType DayNightMovemntType;
 
     internal Config.MonsterConquestType GetConquestType()
     {
         return UsingCustomType ? ConquestType : Config.MonsterConquest;
     }
 
+    internal Config.DayNightMovemntType GetDNMoveType()
+    {
+        return DNRestrictOn ? DayNightMovemntType : Config.NightMoveMonsters ? Config.DayNightMovemntType.Night : Config.DayNightMovemntType.Off;
+    }
 
-    public SpawnerInfo(bool enabled, int maxArmies, float spawnRate, float scalingFactor, int team, int spawnAttempts, bool addOnRace, float confidence, int minArmySize, int maxArmySize, int turnOrder)
+    public SpawnerInfo(bool enabled, int maxArmies, float spawnRate, float scalingFactor, int team, int spawnAttempts, bool addOnRace, float confidence, int minArmySize, int maxArmySize, int turnOrder, bool monsterScoutMP)
     {
         Enabled = enabled;
         MaxArmies = maxArmies;
@@ -49,6 +59,8 @@ class SpawnerInfo
         MinArmySize = minArmySize;
         MaxArmySize = maxArmySize;
         TurnOrder = turnOrder;
+        MonsterScoutMP = monsterScoutMP;
+
     }
 
     public void SetSpawnerType(Config.MonsterConquestType conquestType)
@@ -57,6 +69,10 @@ class SpawnerInfo
         UsingCustomType = true;
     }
 
-
+    public void SetSpawnerCycleMoveType(Config.DayNightMovemntType moveType)
+    {
+        DayNightMovemntType = moveType;
+        DNRestrictOn = true;
+    }
 }
 

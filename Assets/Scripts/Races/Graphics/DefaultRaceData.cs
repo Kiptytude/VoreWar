@@ -27,6 +27,7 @@ abstract class DefaultRaceData
     internal SpriteExtraInfo SecondaryEyes;
     internal SpriteExtraInfo SecondaryAccessory;
     internal SpriteExtraInfo Belly;
+    internal SpriteExtraInfo SecondaryBelly;
     internal SpriteExtraInfo Weapon;
     /// <summary>
     /// A special sprite intended for having weapons attached to the back when dual wielding, rotates sprite and positions it based on the normal weapon sprites
@@ -195,6 +196,7 @@ abstract class DefaultRaceData
         SecondaryEyes = null;
         SecondaryAccessory = new SpriteExtraInfo(1, SecondaryAccessorySprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.Fur, s.Unit.AccessoryColor));
         Belly = new SpriteExtraInfo(15, null, null, (s) => FurryBellyColor(s));
+        SecondaryBelly = null;
         Weapon = new SpriteExtraInfo(1, WeaponSprite, WhiteColored);
         BackWeapon = new SpriteExtraInfo(0, BackWeaponSprite, WhiteColored);
         BodySize = new SpriteExtraInfo(3, BodySizeSprite, null, (s) => ColorPaletteMap.FurryBellySwap);
@@ -707,7 +709,7 @@ abstract class DefaultRaceData
 
             Dick.GetPalette = null;
             Dick.GetColor = WhiteColored;
-            if (actor.PredatorComponent?.VisibleFullness < .75f)
+            if (actor.PredatorComponent?.VisibleFullness < .50f)
             {
                 Dick.layer = 18;
                 return State.GameManager.SpriteDictionary.FurryDicks[24 + type];
@@ -729,7 +731,7 @@ abstract class DefaultRaceData
 
         //if (actor.IsErect() && !Config.LamiaUseTailAsSecondBelly && actor.Unit.HasTrait(Traits.DualStomach))
         //{
-        //    if (actor.PredatorComponent?.CombinedStomachFullness < .75f)
+        //    if (actor.PredatorComponent?.CombinedStomachFullness < .50f)
         //    {
         //        Dick.layer = 18;
         //        return State.GameManager.SpriteDictionary.ErectDicks[actor.Unit.DickSize];
@@ -743,7 +745,7 @@ abstract class DefaultRaceData
 
         if (actor.IsErect())
         {
-            if (actor.PredatorComponent?.VisibleFullness < .75f)
+            if (actor.PredatorComponent?.VisibleFullness < .50f)
             {
                 Dick.layer = 18;
                 return State.GameManager.SpriteDictionary.ErectDicks[actor.Unit.DickSize];
@@ -880,6 +882,7 @@ abstract class DefaultRaceData
     protected virtual Sprite BodyAccentSprite9(Actor_Unit actor) => null;
     protected virtual Sprite BodyAccentSprite10(Actor_Unit actor) => null;
     protected virtual Sprite SecondaryBreastsSprite(Actor_Unit actor) => null;
+    protected virtual Sprite SecondaryBellySprite(Actor_Unit actor) => null;
 
     internal virtual void RunFirst(Actor_Unit actor)
     {

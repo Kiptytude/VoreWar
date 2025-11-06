@@ -37,6 +37,22 @@
     ManaFlux = 25,
     UnstableMana = 26,
     Meditate = 27,
+    Bloodrite = 28,
+    Protect = 29,
+
+    ForcePulse = 35,
+    Trance = 36,
+    FlameWave = 37,
+    SummonDoppelganger = 38,
+    FireBomb = 39,
+    Bolas = 40,
+    SummonSpawn = 41,
+    CaptureNet = 42,
+    Icicle = 43,
+    CrossShock = 44,
+    JoltCrash = 45,
+    ArcBolt = 46,
+    PreysHex = 47,
 
     AlraunePuff = 70,
     Web = 71,
@@ -47,13 +63,17 @@
     Bind = 76,
     Whispers = 77,
     //Corrupt = 78,
+    ExplosiveHug = 79,
 
     ViperDamage = 110,
     ForceFeed = 111,
     AssumeForm = 112,
     RevertForm = 113,
     ManaExpolsion = 114,
-
-
+    Conduit = 115,
+    Flamberge = 116,
+    ForkLightning = 117,
+    Explode = 118,
+    SweepingSwallow = 119,
 }
 

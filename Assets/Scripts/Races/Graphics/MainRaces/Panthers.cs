@@ -231,16 +231,7 @@ class Panthers : BlankSlate
 
         if (actor.IsErect())
         {
-            if (actor.PredatorComponent?.VisibleFullness < .75f)
-            {
-                Dick.layer = 18;
-                return SpritesBase[16 + actor.Unit.DickSize];
-            }
-            else
-            {
-                Dick.layer = 14;
-                return SpritesBase[16 + actor.Unit.DickSize];
-            }
+            return SpritesBase[16 + actor.Unit.DickSize];
         }
 
         Dick.layer = 14;

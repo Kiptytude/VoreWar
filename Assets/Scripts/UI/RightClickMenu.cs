@@ -215,7 +215,7 @@ public class RightClickMenu : MonoBehaviour
 
             if (target.Surrendered == false && actor.Unit.HasTrait(Traits.Cruel) == false && Config.AllowInfighting == false)
             {
-                if (actor.Unit.HasTrait(Traits.Endosoma))
+                if (actor.Unit.HasTrait(Traits.FriendlyStomach) || actor.Unit.HasTrait(Traits.Endosoma))
                 {
                     float devChance;
                     if (actor.Unit.Predator)
@@ -585,6 +585,11 @@ public class RightClickMenu : MonoBehaviour
                     PounceButtons[currentButton].GetComponentInChildren<Text>().text = $"Too bulky to {targetedAction.Name}";
                     PounceButtons[currentButton].interactable = false;
                 }
+                if (data.Actor.Unit.Race == Race.Ki && data.Target.Unit.Race != Race.Selicia && type == SpecialAction.CockVore)
+                {
+                    PounceButtons[currentButton].GetComponentInChildren<Text>().text = $"Ki's cock is for Selicia only";
+                    PounceButtons[currentButton].interactable = false;
+                }
                 else if (data.Actor.BodySize() < data.Target.BodySize() * 3 && data.Actor.Unit.HasTrait(Traits.TightNethers) && (type == SpecialAction.CockVore || type == SpecialAction.Unbirth))
                 {
                     PounceButtons[currentButton].GetComponentInChildren<Text>().text = $"Too large to {targetedAction.Name}";
@@ -629,6 +634,18 @@ public class RightClickMenu : MonoBehaviour
                     Buttons[currentButton].onClick.AddListener(FinishAction);
                     Buttons[currentButton].GetComponentInChildren<Text>().text = $"Transfer";
                     if (data.Target.PredatorComponent.FreeCap() < actor.PredatorComponent.GetTransferBulk())
+                    {
+                        Buttons[currentButton].GetComponentInChildren<Text>().text = $"Too bulky to Transfer";
+                        Buttons[currentButton].interactable = false;
+                    }
+                    currentButton++;
+                }
+                if (actor.PredatorComponent.CanKissTransfer() && data.Target.Unit.Predator)
+                {
+                    Buttons[currentButton].onClick.AddListener(() => data.Actor.PredatorComponent.KissTransferAttempt(data.Target));
+                    Buttons[currentButton].onClick.AddListener(FinishAction);
+                    Buttons[currentButton].GetComponentInChildren<Text>().text = $"Kiss Transfer";
+                    if (data.Target.PredatorComponent.FreeCap() < actor.PredatorComponent.GetKissTransferBulk())
                     {
                         Buttons[currentButton].GetComponentInChildren<Text>().text = $"Too bulky to Transfer";
                         Buttons[currentButton].interactable = false;

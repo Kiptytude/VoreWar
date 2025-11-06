@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 public enum AIMode
 {
@@ -86,12 +87,30 @@ class StrategicArmyCommander
                 if (army.MoveTo(newLoc))
                     StrategicUtilities.StartBattle(army);
                 else if (position == army.Position)
+                {
                     army.RemainingMP = 0; //This prevents the army from wasting time trying to move into a forest with 1 mp repeatedly
+                }
                 return true;
 
             }
             else
             {
+                //Teleport army if target is Ancient Teleporter to a random one
+                List<AncientTeleporter> target_Tele = StrategicUtilities.GetAncientTeleportersWithinXTiles(army.Position,1);
+                if (target_Tele != null)
+                {
+                    if (target_Tele.Count() >= 1)
+                    {
+                        if (StrategicUtilities.GetAllyArmyWithinXTiles(target_Tele.First().Position, 1, army.Empire).ToList().Contains(army))
+                        {
+                            List<AncientTeleporter> tp = State.World.AncientTeleporters.Where((t) => t != target_Tele.First()).ToList();
+                            army.SetPosition(tp[State.Rand.Next(tp.Count())].Position);
+                            army.Destination = null;
+                            army.teleportCoolDown = 3;
+                        }
+                    }
+
+                }
                 GenerateTaskForArmy(army);
                 if (path == null || path.Count == 0)
                     army.RemainingMP = 0;
@@ -118,8 +137,9 @@ class StrategicArmyCommander
             if (army.InVillageIndex > -1)
             {
                 UpdateEquipmentAndRecruit(army);
+                StockPotions(army, State.World.Villages[army.InVillageIndex]);
             }
-            if (army.AIMode == AIMode.Resupply && army.Units.Count == maxArmySize && StrategicUtilities.NumberOfDesiredUpgrades(army) == 0)
+            if (army.AIMode == AIMode.Resupply && army.MostlyFull && StrategicUtilities.NumberOfDesiredUpgrades(army) == 0)
                 army.AIMode = AIMode.Default;
         }
     }
@@ -143,6 +163,18 @@ class StrategicArmyCommander
             case AIMode.Heal:
                 if (army.InVillageIndex == -1)
                 {
+                    if (army.LinkedTeleporter != null)
+                    {
+                        if (army.teleportStoneCoolDown <= 0)
+                        {
+                            if (army.LinkedTeleporter.CanTeleportArmy(army, true))
+                            {
+                                army.SetPosition(army.LinkedTeleporter.Position);
+                                army.Destination = null;
+                                army.teleportStoneCoolDown = 3;
+                            }
+                        }
+                    }
                     if (NavigateToFriendlyVillage(army, false))
                         break;
                     Attack(army, 1);
@@ -165,18 +197,18 @@ class StrategicArmyCommander
                 }
 
 
-                if (army.InVillageIndex != -1 && empire.Gold > 4500 && Config.AICanHireSpecialMercs && MercenaryHouse.UniqueMercs.Count > 0 && army.Units.Count() < empire.MaxArmySize && NavigateToMercenaries(army, (int)(3f * army.GetMaxMovement())))
+                if (army.InVillageIndex != -1 && empire.Gold > 4500 && Config.AICanHireSpecialMercs && MercenaryHouse.UniqueMercs.Count > 0 && !army.MostlyFull && NavigateToMercenaries(army, (int)(3f * army.GetMaxMovement())))
                 {
                     break;
                 }
 
-                if (army.InVillageIndex != -1 && empire.Gold > 1500 && army.Units.Count() < empire.MaxArmySize && NavigateToMercenaries(army, (int)(2f * army.GetMaxMovement())))
+                if (army.InVillageIndex != -1 && empire.Gold > 1500 && !army.MostlyFull && NavigateToMercenaries(army, (int)(2f * army.GetMaxMovement())))
                 {
                     break;
                 }
 
 
-                if (army.InVillageIndex != -1 && empire.Gold > 500 && army.Units.Count() < empire.MaxArmySize && NavigateToMercenaries(army, (int)(1f * army.GetMaxMovement())))
+                if (army.InVillageIndex != -1 && empire.Gold > 500 && !army.MostlyFull && NavigateToMercenaries(army, (int)(1f * army.GetMaxMovement())))
                 {
                     break;
                 }
@@ -186,26 +218,35 @@ class StrategicArmyCommander
                 {
                     if (Config.AICanHireSpecialMercs)
                     {
-                        foreach (var merc in MercenaryHouse.UniqueMercs.OrderByDescending(s => s.Cost))
+                        foreach (var mercRaw in MercenaryHouse.UniqueMercs.OrderByDescending(s => s.Cost))
                         {
-                            HireSpecialMerc(army, merc);
+
+                            MercenaryContainer merc = new MercenaryContainer();
+                            merc.Unit = mercRaw.Unit;
+                            merc.Title = mercRaw.Title;
+                            merc.Cost = mercRaw.Cost - (int)Math.Round(mercRaw.Cost * (0.1f * AcademyResearch.GetValueFromEmpire(empire, AcademyResearchType.MercRecruitCost)));
+                            HireSpecialMerc(army, merc, mercRaw);
                         }
                     }
-                    foreach (var merc in mercHouseArmyIsIn.Mercenaries.OrderByDescending(s => s.Unit.Experience / s.Cost))
+                    foreach (var mercRaw in mercHouseArmyIsIn.Mercenaries.OrderByDescending(s => s.Unit.Experience / s.Cost))
                     {
-                        HireMerc(army, mercHouseArmyIsIn, merc);
+                        MercenaryContainer merc = new MercenaryContainer();
+                        merc.Unit = mercRaw.Unit;
+                        merc.Title = mercRaw.Title;
+                        merc.Cost = mercRaw.Cost - (int)Math.Round(mercRaw.Cost * (0.1f * AcademyResearch.GetValueFromEmpire(empire, AcademyResearchType.MercRecruitCost)));
+                        HireMerc(army, mercHouseArmyIsIn, merc, mercRaw);
                     }
                 }
 
                 if (villageArmyIsIn == null || villageArmyIsIn.GetTotalPop() < 12)
                 {
-                    if (NavigateToFriendlyVillage(army, army.Units.Count != maxArmySize))
+                    if (NavigateToFriendlyVillage(army, !army.MostlyFull))
                         break;
                     Attack(army, 1);
                     break;
                 }
                 UpdateEquipmentAndRecruit(army);
-                if (army.Units.Count == maxArmySize && StrategicUtilities.NumberOfDesiredUpgrades(army) == 0)
+                if (army.MostlyFull && StrategicUtilities.NumberOfDesiredUpgrades(army) == 0)
                     army.AIMode = AIMode.Default;
                 else
                     army.RemainingMP = 0;
@@ -245,31 +286,36 @@ class StrategicArmyCommander
         }
     }
 
-    void HireSpecialMerc(Army army, MercenaryContainer merc)
+    void HireSpecialMerc(Army army, MercenaryContainer merc, MercenaryContainer mercRaw)
     {
         if (empire.Gold >= merc.Cost * 2)
         {
-            if (army.Units.Count < army.MaxSize)
+            if (StrategicUtilities.ArmyCanFitUnit(army, merc.Unit))
             {
                 army.Units.Add(merc.Unit);
                 merc.Unit.Side = army.Side;
                 empire.SpendGold(merc.Cost);
                 MercenaryHouse.UniqueMercs.Remove(merc);
+                MercenaryHouse.UniqueMercs.Remove(mercRaw);
+                army.RecalculateSizeValue();
             }
         }
     }
 
-    void HireMerc(Army army, MercenaryHouse house, MercenaryContainer merc)
+    void HireMerc(Army army, MercenaryHouse house, MercenaryContainer merc, MercenaryContainer mercRaw)
     {
         if (empire.Gold >= merc.Cost)
         {
-            if (army.Units.Count < army.MaxSize)
+            if (StrategicUtilities.ArmyCanFitUnit(army, merc.Unit))
             {
                 army.Units.Add(merc.Unit);
                 merc.Unit.Side = army.Side;
                 empire.SpendGold(merc.Cost);
                 house.Mercenaries.Remove(merc);
                 MercenaryHouse.UniqueMercs.Remove(merc);
+                house.Mercenaries.Remove(mercRaw);
+                MercenaryHouse.UniqueMercs.Remove(mercRaw);
+                army.RecalculateSizeValue();
             }
         }
     }
@@ -358,7 +404,7 @@ class StrategicArmyCommander
                     potentialTargets.Add(Villages[i].Position);
                     int value = Villages[i].Race == empire.ReplacedRace ? 45 : ((State.World.GetEmpireOfRace(Villages[i].Race)?.IsAlly(empire) ?? false) ? 40 : 35);
                     if (Villages[i].GetTotalPop() == 0)
-                        value = 30;
+                        value = 38;
                     value -= Villages[i].Position.GetNumberOfMovesDistance(capitalPosition) / 3;
                     potentialTargetValue.Add(value);
                 }
@@ -391,6 +437,64 @@ class StrategicArmyCommander
             }
         }
 
+        //Here for maps that are linked via teleporter or something, idk, just need AI to be able to use it, even if priority is low
+        foreach (AncientTeleporter tele in StrategicUtilities.GetUnoccupiedAncientTeleporter(army.Empire))
+        {
+            Army defender = StrategicUtilities.ArmyAt(tele.Position);
+            if (defender != null && StrategicUtilities.ArmyPower(defender) > MaxDefenderStrength * StrategicUtilities.ArmyPower(army))
+                continue;
+            potentialTargets.Add(tele.Position);
+            int value = 9 - (army.teleportCoolDown*3);
+            value -= tele.Position.GetNumberOfMovesDistance(army.Position) / 3;
+            potentialTargetValue.Add(value);
+        }
+
+        foreach (ConstructibleBuilding construct in State.World.Constructibles)
+        {
+            if (construct.Owner == null || (empire.IsEnemy(construct.Owner) && !construct.ruined && Config.BuildConfig.EmpireBuildingCapture != 0))
+            {
+                Army defender = StrategicUtilities.ArmyAt(construct.Position);
+                if (defender != null && StrategicUtilities.ArmyPower(defender) > MaxDefenderStrength * StrategicUtilities.ArmyPower(army))
+                    continue;
+                potentialTargets.Add(construct.Position);
+                int value = 38;
+                value -= construct.Position.GetNumberOfMovesDistance(capitalPosition) / 3;
+                // Stay on building to trigger capture effect
+                if (construct.Position == army.Position)
+                {
+                    value = 100;
+                }
+                potentialTargetValue.Add(value);
+            }
+
+            // ReEnable disabled buildings if nearby
+            if (construct.Owner == empire && construct.ruined)
+            {
+                potentialTargets.Add(construct.Position);
+                int value = 38;
+                value -= construct.Position.GetNumberOfMovesDistance(capitalPosition) / 3;
+                potentialTargetValue.Add(value);
+            }
+
+            if (construct.Owner == empire && construct is Teleporter && construct.active && army.teleportCoolDown <= 0)
+            {
+                //Needs to have another teleporter to be a valid target
+                if ((((Teleporter)construct).ancientUpgrade.built && State.World.AncientTeleporters.Count() >= 1)|| empire.Buildings.Where(b => b is Teleporter).Count() >= 2)
+                {
+                    //Target Teleport needs to also have enough capacity to take army if ancient teleporting is not acceptable
+                    if ((((Teleporter)construct).ancientUpgrade.built || State.World.AncientTeleporters.Count() == 0) && empire.Buildings.Where(b => b is Teleporter && ((Teleporter)b).CanTeleportArmy(army)).Count() >= 1)
+                    {
+                        potentialTargets.Add(construct.Position);
+                        int value = 10;
+                        value += (army.LinkedTeleporter == null & ((Teleporter)construct).stoneUpgrade.built) ? 5 : 0;
+                        value += (((Teleporter)construct).ancientUpgrade.built) ? 5 : 0;
+                        value -= construct.Position.GetNumberOfMovesDistance(capitalPosition) / 3;
+                        potentialTargetValue.Add(value);
+                    }
+                }
+            }
+        }
+
         SetClosestPathWithPriority(army, potentialTargets.ToArray(), potentialTargetValue.ToArray());
     }
 
@@ -409,7 +513,7 @@ class StrategicArmyCommander
             if ((army.InVillageIndex > -1 && StrategicUtilities.NumberOfDesiredUpgrades(army) > 0) == false)
                 army.AIMode = AIMode.Default;
 
-        float need = 32 * (((float)maxArmySize - army.Units.Count()) / maxArmySize) + StrategicUtilities.NumberOfDesiredUpgrades(army);
+        float need = 32 * (1-army.PercentFull) + StrategicUtilities.NumberOfDesiredUpgrades(army);
         if (need > 4 && empire.Gold >= 40 && empire.Income > 25)
         {
             var path = StrategyPathfinder.GetPathToClosestObject(empire, army, Villages.Where(s => s.Side == army.Side).Select(s => s.Position).ToArray(), army.RemainingMP, 5, army.movementMode == Army.MovementMode.Flight);
@@ -496,21 +600,27 @@ class StrategicArmyCommander
         Village village = State.World.Villages[army.InVillageIndex];
         army.ItemStock.SellAllWeaponsAndAccessories(empire);
         StrategicUtilities.UpgradeUnitsIfAtLeastLevel(army, village, 4);
-        if (army.Units.Count != maxArmySize)
+        if (!army.MostlyFull)
         {
-            int goldPerTroop = empire.Gold / (maxArmySize - army.Units.Count());
-            for (int i = 0; i < maxArmySize; i++)
+            int goldPerTroop = (int)(empire.Gold / (army.Units.Count() * army.GetAverageArmyDeployment()));
+            while (!army.MostlyFull)
             {
+                army.RecalculateSizeValue();
+                Unit newUnit = null;
                 if (smarterAI && empire.Gold > 40)
-                    RecruitUnitAndEquip(army, village, 2);
-                else if (goldPerTroop > 40 && army.Units.Count < maxArmySize && village.GetTotalPop() > 3 && empire.Income > 15)
-                    RecruitUnitAndEquip(army, village, 2);
-                else if (empire.Gold > 16 && army.Units.Count < maxArmySize && village.GetTotalPop() > 3 && empire.Income > 5)
-                    RecruitUnitAndEquip(army, village, 1);
+                    newUnit = RecruitUnitAndEquip(army, village, 2);
+                else if (goldPerTroop > 40 && village.GetTotalPop() > 3 && empire.Income > 15)
+                    newUnit = RecruitUnitAndEquip(army, village, 2);
+                else if (empire.Gold > 16 && village.GetTotalPop() > 3 && empire.Income > 5)
+                    newUnit = RecruitUnitAndEquip(army, village, 1);
                 else
                     break;
+                if (newUnit == null)
+                {
+                    break;
+                }
             }
-            if (army.AIMode == AIMode.Resupply && army.Units.Count() == maxArmySize)
+            if (army.AIMode == AIMode.Resupply && army.MostlyFull)
                 army.AIMode = AIMode.Default;
 
         }
@@ -521,7 +631,7 @@ class StrategicArmyCommander
     {
         if (village.GetTotalPop() < 4)
             return null;
-        if (army.Units.Count >= army.MaxSize)
+        if (army.RemainnigSize <= 0)
             return null;
         if (empire.Leader?.Health <= 0)
             return ResurrectLeader(army, village);
@@ -595,6 +705,12 @@ class StrategicArmyCommander
             empire.Leader.ReloadTraits();
             empire.Leader.InitializeTraits();
         }
+        if (Config.LeaderSpawnFreeze)
+        {
+            army.JustSpawnedLeader = true;
+            army.RemainingMP = 0;
+        }
+
 
         return empire.Leader;
     }
@@ -639,5 +755,30 @@ class StrategicArmyCommander
             army.RemainingMP = 0;
     }
 
+    private void StockPotions(Army army, Village village)
+    {
+        if (!Config.PotionSystemEnabled)
+        {
+            return;
+        }
+        int potionBudget = empire.Gold / (3 + empire.Armies.Count);
+        //Reduce budget based on how many potinos we have in stock
+        foreach (var item in army.ItemStock.GetAllPotions())
+        {
+            potionBudget -= State.World.ItemRepository.GetItem(item).Cost;
+        }
+        int counter = 0;
+        while (potionBudget > 0 && counter < 100) 
+        {
+            potionBudget -= PotionShop.BuyItemForArmy(empire, army, State.World.ItemRepository.GetRandomPotion(1, village.NetBoosts.PotionLevel), 1);
+            counter++;
+        }
+        
+        //Equip avil potions to units
+        foreach (var item in army.ItemStock.GetAllPotions())
+        {
+            PotionShop.TransferItemToAllInArmy(item, army);
+        }
+    }
 }
 

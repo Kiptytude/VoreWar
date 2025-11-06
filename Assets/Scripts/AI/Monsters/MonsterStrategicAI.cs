@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 
 class MonsterStrategicAI : IStrategicAI
@@ -26,6 +27,7 @@ class MonsterStrategicAI : IStrategicAI
     {
         foreach (Army army in empire.Armies.ToList())
         {
+            army.IsMonsterArmy = true;
             if (army.RemainingMP < 1)
                 continue;
             if (path != null && pathIsFor == army)
@@ -133,12 +135,20 @@ class MonsterStrategicAI : IStrategicAI
 
                 if (empire.ReplacedRace == Race.Wyvern)
                 {
-                    for (int i = 0; i < count; i++)
+                    if (spawner.AddOnRace)
                     {
-                        if (spawner.AddOnRace && State.Rand.Next(4) == 0)
-                            army.Units.Add(new Unit(empire.Side, Race.YoungWyvern, RandXp(baseXp), true));
-                        else
+                        army.Units.Add(new Leader(empire.Side, Race.WyvernMatron, RandXp(baseXp * 2)));
+                        for (int i = 1; i < count; i++)
+                        {
                             army.Units.Add(new Unit(empire.Side, Race.Wyvern, RandXp(baseXp), true));
+                        }
+                    }
+                    else
+                    {
+                        for (int i = 0; i < count; i++)
+                        {
+                            army.Units.Add(new Unit(empire.Side, Race.Wyvern, RandXp(baseXp), true));
+                        }
                     }
                 }
                 else if (empire.ReplacedRace == Race.FeralSharks)
@@ -220,6 +230,34 @@ class MonsterStrategicAI : IStrategicAI
                         army.Units.Add(new Unit(empire.Side, Race.FeralLions, RandXp(baseXp), true));
                     }
                 }
+                else if (empire.ReplacedRace == Race.FeralUmbreon)
+                {
+                    for (int i = 0; i < count; i++)
+                    {
+                        if (spawner.AddOnRace && State.Rand.Next(4) == 0)
+                            army.Units.Add(new Unit(empire.Side, Race.FeralEevee, RandXp(baseXp), true));
+                        else
+                            army.Units.Add(new Unit(empire.Side, Race.FeralUmbreon, RandXp(baseXp), true));
+                    }
+                }
+                else if (empire.ReplacedRace == Race.WoodDryad)
+                {
+                    const float woodFraction = .25f;
+                    const float earthFraction = .25f;
+                    const float riverFraction = .25f;
+                    int woodCount = Math.Max((int)(woodFraction * count), 1);
+                    int earthCount = Math.Max((int)(earthFraction * count), 1);
+                    int riverCount = Math.Max((int)(riverFraction * count), 1);
+                    int fungalCount = count - woodCount - earthCount - riverCount;
+                    for (int i = 0; i < woodCount; i++)
+                        army.Units.Add(new Unit(empire.Side, Race.WoodDryad, RandXp(baseXp), true));
+                    for (int i = 0; i < earthCount; i++)
+                        army.Units.Add(new Unit(empire.Side, Race.EarthDryad, RandXp(baseXp), true));
+                    for (int i = 0; i < riverCount; i++)
+                        army.Units.Add(new Unit(empire.Side, Race.RiverDryad, RandXp(baseXp), true));
+                    for (int i = 0; i < fungalCount; i++)
+                        army.Units.Add(new Unit(empire.Side, Race.FungalDryad, RandXp(baseXp), true));
+                }
                 else
                 {
                     for (int i = 0; i < count; i++)
@@ -244,6 +282,26 @@ class MonsterStrategicAI : IStrategicAI
                                 army.ItemStock.AddItem((ItemType)State.World.ItemRepository.GetRandomBookType(2, 4));
                             else
                                 army.ItemStock.AddItem((ItemType)State.World.ItemRepository.GetRandomBookType(2, 4));
+                        }
+                    }
+                }
+
+                if (Config.MonstersDropSpells)
+                {
+                    for (int i = 0; i < 2; i++)
+                    {
+                        if (State.Rand.Next(3) == 0)
+                        {
+                            if (army.Units[0].Level < 3)
+                                army.ItemStock.AddItem((ItemType)State.World.ItemRepository.GetRandomEquipmentType(1, 2));
+                            else if (army.Units[0].Level < 5)
+                                army.ItemStock.AddItem((ItemType)State.World.ItemRepository.GetRandomEquipmentType(1, 3));
+                            else if (army.Units[0].Level < 7)
+                                army.ItemStock.AddItem((ItemType)State.World.ItemRepository.GetRandomEquipmentType(1, 4));
+                            else if (army.Units[0].Level < 9)
+                                army.ItemStock.AddItem((ItemType)State.World.ItemRepository.GetRandomEquipmentType(2, 4));
+                            else
+                                army.ItemStock.AddItem((ItemType)State.World.ItemRepository.GetRandomEquipmentType(2, 4));
                         }
                     }
                 }
@@ -299,10 +357,18 @@ class MonsterStrategicAI : IStrategicAI
 
         SpawnerInfo spawner = Config.SpawnerInfo(empire.Race);
         Config.MonsterConquestType spawnerType;
+        Config.DayNightMovemntType timedMovementType;
         if (spawner != null)
+        {
             spawnerType = spawner.GetConquestType();
+            timedMovementType = spawner.GetDNMoveType();
+        }
         else
+        {
             spawnerType = Config.MonsterConquest;
+            timedMovementType = Config.NightMoveMonsters ? Config.DayNightMovemntType.Night : Config.DayNightMovemntType.Off;
+
+        }
 
         if (army.InVillageIndex != -1)
         {
@@ -347,7 +413,14 @@ class MonsterStrategicAI : IStrategicAI
                 return;
             }
         }
-        if(Config.NightMoveMonsters && !State.World.IsNight && Config.DayNightEnabled) //DayNight Modification (zero's out monster AP when NOT night)
+        if ((!spawner.MonsterScoutMP) && army.RemainingMP > Config.ArmyMP)
+            army.RemainingMP = Config.ArmyMP;
+        if(timedMovementType == Config.DayNightMovemntType.Night && !State.World.IsNight && Config.DayNightEnabled) //DayNight Modification (zero's out monster AP based on their settings)
+        {
+            army.RemainingMP = 0;
+            return;
+        }
+        if (timedMovementType == Config.DayNightMovemntType.Day && State.World.IsNight && Config.DayNightEnabled)
         {
             army.RemainingMP = 0;
             return;
@@ -393,6 +466,24 @@ class MonsterStrategicAI : IStrategicAI
                     potentialTargets.Add(villages[i].Position);
                     potentialTargetValue.Add(-8);
                 }
+            }
+        }
+
+        foreach (ConstructibleBuilding construct in State.World.Constructibles)
+        {
+            if (empire.IsEnemy(construct.Owner) && !construct.ruined && Config.BuildConfig.MonsterBuildingCapture != 0)
+            {
+                Army defender = StrategicUtilities.ArmyAt(construct.Position);
+                if (defender != null && StrategicUtilities.ArmyPower(defender) > MaxDefenderStrength * StrategicUtilities.ArmyPower(army))
+                    continue;
+                potentialTargets.Add(construct.Position);
+                int value = -6;
+                // Stay on building to trigger capture effect
+                if (construct.Position == army.Position)
+                {
+                    value = 100;
+                }
+                potentialTargetValue.Add(value);
             }
         }
 

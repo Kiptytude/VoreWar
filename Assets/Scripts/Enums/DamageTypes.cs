@@ -3,5 +3,7 @@
     Generic,
     Fire,
     Poison,
-    Virus
+    Virus,
+    Ice,
+    Elec
 }

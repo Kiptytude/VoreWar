@@ -1,0 +1,347 @@
+
+
+CODE:
+Original game by <b>darkevilme/WarpedRealities</b>
+Converting the game to Unity / C# and all the new features - <b>Aurilika</b>
+<i>None of us would be here if not for the amazing work by these two!
+Give your Cat/Dog units many pets and please feed your Auri!</i>
+
+<u>Additional testing / bug fixing / coding by</u>
+<b>Selicia</b>
+<b>Cattitude</b>
+<b>Scarabyte</b>
+<b>Sheights</b>
+<b>CaneSugarCat</b>
+<b>Wolfwar106</b>
+<b>Ignis Flamescale</b>
+
+Crux Race code by <b>ChemicalCrux</b>
+FeralLions setup, name pool and behavior by <b>Cattitude</b>.
+Also implemented farts and added the belly rub hand, traits, fixes and other additions to the code base.
+Animated bellies, death skull and tactical chat long improvements - <b>Baif</b>
+Asymmetrical Breast Vore by <b>GreenSlime</b>
+Animated Breasts by <b>Ignis Flamescale</b>, borrowing and repurposing code from the bellies
+Alt vore code mostly by <b>KuroTenko</b> (breast vore, unbirth and cockvore)
+Scat V2 by <b>dddddd2</b>
+Multi-race villages code by <b>Danthebur</b>
+Maw/Gatemaw alternate destinations by <b>Cattitude</b>
+Infiltrators functionality by <b>Cattitude</b>
+Growth Trait functionality by <b>Cattitude</b>
+Assimilation Trait functionality by <b>Cattitude</b>
+Extraction Functionality by <b>Cattitude</b>
+Random Traits system implemented by <b>Cattitude</b>
+Options/Content menus makeover by <b>Scarabyte</b>
+Day/Night cycle by <b>CaneSugarCat</b>
+Metamorphosis functionality by <b>KuroTenko</b>
+Lizards AV/UB implementation by <b>Ignis Flamescale</b>
+Special thanks to <b>Sheights</b> for fixing the errors that the above caused
+Condoms for CV disposal implemented by <b>Ignis Flamescale</b>
+Clean Disposal (Diapers) implemented by <b>Wolfwar106</b>
+Clean Disposal (Diapers) log messages by <b>Mocha</b>
+Goddess' Mercy implemented by <b>Wolfwar106</b>
+Scout Armies implemented by <b>Wolfwar106</b>
+Kiss transfer implemented by <b>Wolfwar106</b>
+NearbyEnemies variable functionality by <b>CaneSugarCat</b>
+Unit Upkeep code by <b>CaneSugarCat</b>
+Unit Deploy Cost code by <b>CaneSugarCat</b>
+The incredibly expansive Construction System code by <b>CaneSugarCat</b>
+Ancient Teleporters by <b>CaneSugarCat</b>
+Custom/Conditional/Tagged Trait system by <b>CaneSugarCat</b>
+Potions by <b>CaneSugarCat</b>
+Unit/Trait Tag system by <b>CaneSugarCat</b>
+Size-based damage system by <b>CaneSugarCat</b>
+
+
+<b>AUDIO:</b>
+Almost all of the digestion sounds are from <b>chemicalcrux</b>
+Additional Vore sound effects recorded by <b>Ignis Flamescale</b>
+Additional Sound effects obtained from <b>https://www.zapsplat.com</b>
+
+
+<b>WRITERS:</b>
+A significant amount of log messages by <b>Katar</b>
+A good percentage of the town names are by <b>Katar</b>
+A significant amount of log messages by <b>HarryS</b>
+Most of the scat tactical log text from <b>InfernoTheDragon</b> or <b>Cattitude</b>
+Additional scat log messages by <b>Ignis Flamescale</b>
+Pouch vore, Tail vore, Cleavage vore, and Condom disposal messages by <b>Tatltuae</b>
+Fart log messages by <b>Cattitude</b>
+Wide array of synonyms applied throughout the TacLog by <b>Ignis Flamescale</b>
+Deer Log messages by <b>@bane of Fun#6036</b>
+A good amount of the unique race names and descriptions by <b>Tatltuae</b>
+Additional Force feeding, Rebirth/Conversion, Regurgitation, Kiss transfer, and Vore steal log messages by <b>Tatltuae</b>
+
+
+<b>ARTISTS:</b>
+
+<b><u>AgentAmbi:</b></u>
+Bella
+
+<b><u>CaneSugarCat:</b></u>
+Wood,Earth,River, and Fungal Dryad
+Feral Slime
+Jackal
+Mainland Elves
+Mice
+Salix
+Volcanic Tileset
+
+<b><u>Cattitude:</b></u>
+Feral Lions
+
+<b><u>dddddd2:</b></u>
+Scat V2
+
+<b><u>GreenSlime:</b></u>
+Cats
+Dogs
+Wolves
+Foxes
+Bunnies
+Humans
+and their update 
+(w/ <b>Micadi</b>)
+Asura
+Auri
+Centaur
+Crypters 
+Dragons
+Equines
+Erin
+Fairies
+Feral Wolves
+Harpies
+Imps
+Kobolds
+Lamia
+Lizards
+Panthers
+Puca
+Scylla
+Selicia
+Slimes
+Succubus
+Taurus
+Tigers
+Vagrants
+Zera
+Zoey
+
+<b><u>HarryS:</b></u>
+Alligators
+Alternate furry genitals
+Banner designs
+Cake
+Catfish
+Collectors
+Compys
+Crux
+Dark Swallowers
+Dratopyr
+Eastern Dragons
+Feral Bats
+Feral Sharks
+Harvesters
+Kangaroo
+Raptors
+Schiwardez
+Serpents
+Voilin
+Wyvern
+Wyvern Matrons
+
+<u><b>Ignis Flamescale</b></u>
+Lizard outfits
+Lizard UB/AV pose
+Sergals
+
+<b><u>Inferno The Dragon:</b></u>
+Feral Orcas
+
+<b><u>Komaru:</b></u>
+Scat sprites
+
+<b><u>KuroTenko:</b></u>
+Whisp
+Youko
+
+<b><u>Liongaming1:</b></u>
+Firefly
+
+<b><u>Magentasaur:</b></u>
+D.R.A.C.O.
+Scorch
+Vision
+
+<b><u>Micadi:</b></u>
+Alraune
+Ants
+Warrior Ants
+Avians
+Bees
+Cockatrice
+Deer
+Demi Bats
+Driders
+Earthworms
+Feral Foxes
+Feral Lizards
+Feit
+Frogs
+Gazelle
+Gnolls
+Gryphons
+Hippos
+Komodos
+Lupine
+Mantis
+Merfolk
+Monitors
+Raiju
+Sharks
+Singularity
+Skapa
+Slugs
+Smudger
+SpaceRoach
+Taraluxia
+Terminids
+Terrorbirds
+T-Rex
+Utahraptors
+Vargul
+Vipers
+
+<b><u>Novoyetelo:</b></u>
+Abakhanskya
+Cierihaka
+
+<b><u>Operation Omneon:</b></u>
+<i>Lion/Tatltuae</i>
+Eevee
+Umbreon
+Equaleon
+Feral Eevee
+Feral Umbreon
+Feral Equaleon 
+
+<b><u>PotatoFarmer:</b></u>
+Dew Sprites
+Feral Frogs
+
+<b><u>Sheights:</b></u>
+Goodra
+
+<b><u>Supra:</b></u>
+Olivia
+
+<b><u>Tatltuae:</b></u>
+Aabayx
+Banner updates (w/ Wolfwar)
+Tatltuae
+Twisted Vine Updates
+Virae Ultimae
+Bird scat sprites
+
+<b><u>Wolfwar106:</b></u>
+Boom Bunnies
+Diaper sprites
+Hamsters
+Plate Armor
+RWU Mercenary Corp
+Xelhilde
+
+<b><u>Yonell:</b></u>
+Bears
+Viisels
+
+
+[Old Graphics (now removed, but they helped guide the early stages, and were inspirations for their replacements):
+[Base character sprites (Base model / cat /dog) by <b>Rayen</b> (I modified them to a higher resolution, and added the foxes wolves and bunnies.)
+Imps / Lamia / Clothing sprites / Fox tail / The high quality village sprites by <b>GreenSlime</b>
+Lizard sprites, Crypters sprites, base model fur patches by <b>failbird105</b>
+Slime sprites and the very large breast/cock sizes by <b>Turbotowns</b>
+Scylla sprites by <b>LLEPAICG</b>
+Harpysprites by <b>Kligor</b>
+Alternate breast sizes by <b>KuroTenko</b>
+Equine sprites by <b>Anonymouse_Equine</b>]
+Some of the remaining sprites are still by <b>darkevilme</b>, but most of the tactical and strategic ground tiles are adapted from cc0 files.]
+
+
+<b>CHARACTER RIGHTS:</b>
+<i>These are all OCs and as such we must respect their wishes.
+These characters can <b>not</b> be used outside of this game 
+without explicit permission from their owners.</i>
+
+<b><u>Selicia:</b></u>
+Selicia
+Zera
+
+<b><u>InfernoTheDragon:</b></u>
+Zoey
+Feit
+Taraluxia
+
+<b><u>Magentasaur:</b></u>
+Scorch
+Vision
+D.R.A.C.O.
+
+<b><u>SecretlyKoishi:</b></u>
+Erin
+
+<b><u>GreenSlime:</b></u>
+Asura
+
+<b><u>Aurilika:</b></u>
+Auri
+
+<b><u>Novoyetelo:</b></u>
+Abakhanskya
+Cierihaka(?)
+
+<b><u>StarSpectre:</b></u>
+Singularity
+
+<b><u>CaneSugarCat:</b></u>
+Salix
+
+<b><u>Tatltuae:</b></u>
+Tatltuae
+
+<b><u>Wolfwar106:</b></u>
+Xelhilde
+
+<b><u>Supra:</b></u>
+Olivia
+
+<b><u>Zezmeril:</b></u>
+Skapa
+
+<b><u>Liongaming1:</b></u>
+Firefly
+
+<b><u>GAME FREAK/Creatures Inc./Nintendo:</b></u>
+Goodra
+Eevee, Anthro and Feral
+Umbreon, Anthro and Feral
+(Feels weird, I know.  But credit where its due.)
+
+
+<b><u><i>Note from Ignis</b></u></i> 
+I know I'm missing a bunch of stuff 
+as this game is seven years old now and I can 
+only recall so much information on my own.
+I'm especially unclear on who wrote what log messages
+Or who wrote the events for that matter.
+If you see anything missing that you would 
+like added, please don't hesitate to contact 
+me and let me know!
+
+
+
+
+
+
+
+

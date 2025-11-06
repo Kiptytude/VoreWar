@@ -7,18 +7,34 @@ class Plant : BlankSlate
     public Plant()
     {
         CanBeGender = new List<Gender>() { Gender.None };
-        Body = new SpriteExtraInfo(2, BodySprite, WhiteColored);
-        Head = new SpriteExtraInfo(4, HeadSprite, WhiteColored);
-        BodyAccent = new SpriteExtraInfo(1, BodyAccentSprite, WhiteColored);
-        Belly = new SpriteExtraInfo(3, null, WhiteColored);
-        EyeTypes = 2;
+        SkinColors = ColorPaletteMap.GetPaletteCount(ColorPaletteMap.SwapType.PlantSkin); // Body color
+        AccessoryColors = ColorPaletteMap.GetPaletteCount(ColorPaletteMap.SwapType.PlantSkin); // Face color
+        Body = new SpriteExtraInfo(2, BodySprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.PlantSkin, s.Unit.SkinColor));
+        Head = new SpriteExtraInfo(4, HeadSprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.PlantSkin, s.Unit.SkinColor));
+        Mouth = new SpriteExtraInfo(5, MouthSprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.PlantSkin, s.Unit.AccessoryColor)); // Face
+        BodyAccent = new SpriteExtraInfo(1, BodyAccentSprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.PlantSkin, s.Unit.SkinColor));
+        Belly = new SpriteExtraInfo(3, null, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.PlantSkin, s.Unit.SkinColor));
+        EyeTypes = 10;
     }
 
-    protected override Sprite BodySprite(Actor_Unit actor) => Sprites[4];
+    protected override Sprite BodySprite(Actor_Unit actor) => Sprites[21];
 
     protected override Sprite HeadSprite(Actor_Unit actor)
     {
-        int headType = actor.Unit.EyeType * 2;
+        if (actor.IsAttacking || actor.IsEating)
+            return Sprites[1];
+        return Sprites[0];
+    }
+
+    protected override Sprite MouthSprite(Actor_Unit actor)
+    {
+        int headType = (actor.Unit.EyeType * 2) + 1;
+        if (actor.Unit.EyeType == 0)
+        {
+            if (actor.IsAttacking || actor.IsEating)
+                return Sprites[2];
+            return null;
+        }
         if (actor.IsAttacking || actor.IsEating)
             headType++;
         return Sprites[headType];
@@ -26,7 +42,7 @@ class Plant : BlankSlate
 
     protected override Sprite BodyAccentSprite(Actor_Unit actor)
     {
-        return Sprites[5];
+        return Sprites[22];
     }
 
     internal override Sprite BellySprite(Actor_Unit actor, GameObject belly)
@@ -34,7 +50,7 @@ class Plant : BlankSlate
         if (actor.HasBelly == false)
             return null;
         if ((actor.PredatorComponent?.IsUnitOfSpecificationInPrey(Race.Selicia, true, PreyLocation.stomach) ?? false) && actor.GetStomachSize(15, 1) == 15)
-            return State.GameManager.SpriteDictionary.Plant[15];
-        return State.GameManager.SpriteDictionary.Plant[6 + actor.GetStomachSize(8)];
+            return State.GameManager.SpriteDictionary.Plant[32];
+        return State.GameManager.SpriteDictionary.Plant[22 + actor.GetStomachSize(8)];
     }
 }

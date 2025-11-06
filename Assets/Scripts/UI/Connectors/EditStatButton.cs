@@ -21,10 +21,10 @@ public class EditStatButton : MonoBehaviour
         Stat = stat;
         Unit = unit;
         Parent = parent;
-        Increase.onClick.AddListener(() => statAction(stat, 1));
-        IncreaseLevel.onClick.AddListener(() => levelAction(stat, 1));
-        Decrease.onClick.AddListener(() => statAction(stat, -1));
-        DecreaseLevel.onClick.AddListener(() => levelAction(stat, -1));
+        //Increase.onClick.AddListenerOnce(() => statAction(stat, 1));
+        //IncreaseLevel.onClick.AddListenerOnce(() => levelAction(stat, 1));
+        //Decrease.onClick.AddListenerOnce(() => statAction(stat, -1));
+        //DecreaseLevel.onClick.AddListenerOnce(() => levelAction(stat, -1));
         var button = Label.gameObject.AddComponent<Button>();
         button.onClick.AddListener(() => manualSetAction(stat, 0));
         if (Stat == Stat.Leadership && Unit.Type != UnitType.Leader)

@@ -55,7 +55,7 @@ internal class EventList
             empire.RecentEvents = new List<int>();
         for (int i = 0; i < 20; i++)
         {
-            int val = State.Rand.Next(30);
+            int val = State.Rand.Next(36);
             if (i < 17 && empire.RecentEvents.Contains(val))
                 continue;
             if (Config.EventsRepeat == false && empire.EventHappened.ContainsKey(val))
@@ -265,7 +265,10 @@ internal class EventList
                         villages[1].Happiness -= 20;
                     });
                     UI.SecondChoice.interactable = true;
-                    UI.ThirdChoice.GetComponentInChildren<Text>().text = "Neither town had asked for permission to raise livestock in our domain. Our leader shall devour the herd.";
+                    if(empire.Leader.HasTrait(Traits.Prey))
+                        UI.ThirdChoice.GetComponentInChildren<Text>().text = "Neither town had asked for permission to raise livestock in our domain. Our leader shall devour the herd. [Leader cannot vore]";
+                    else
+                        UI.ThirdChoice.GetComponentInChildren<Text>().text = "Neither town had asked for permission to raise livestock in our domain. Our leader shall devour the herd.";
                     UI.ThirdChoice.onClick.AddListener(() =>
                     {
                         State.GameManager.CreateMessageBox($"{villages[0].Name} -25 happiness, {villages[1].Name} -25 happiness, leader gains some exp, small chance of rebels");
@@ -275,7 +278,7 @@ internal class EventList
                         if (State.Rand.Next(100) < 5) CreateRebels(RebelDifficulty.Easy, villages[0]);
                         if (State.Rand.Next(100) < 5) CreateRebels(RebelDifficulty.Easy, villages[1]);
                     });
-                    UI.ThirdChoice.interactable = true;
+                    UI.ThirdChoice.interactable = !empire.Leader.HasTrait(Traits.Prey);
                 }
                 break;
             case 1:
@@ -300,19 +303,37 @@ internal class EventList
                         if (State.Rand.Next(100) < 95) CreateRebels(RebelDifficulty.Hard, village);
                     });
                     UI.SecondChoice.interactable = true;
-                    UI.ThirdChoice.GetComponentInChildren<Text>().text = "Excellent! Inform them to come to the capital immediately, a new position has recently opened up. They need only pass an oral examination…";
+                    if(empire.Leader.HasTrait(Traits.Prey))
+                        UI.ThirdChoice.GetComponentInChildren<Text>().text = "Excellent! Inform them to come to the capital immediately, for a grand feast {empire.Leader.Name}'s treat for thier \"accomplishments\"…";
+                    else
+                        UI.ThirdChoice.GetComponentInChildren<Text>().text = "Excellent! Inform them to come to the capital immediately, a new position has recently opened up. They need only pass an oral examination…";
                     UI.ThirdChoice.onClick.AddListener(() =>
                     {
-
-                        if (State.Rand.Next(100) < 90)
+                        if(empire.Leader.HasTrait(Traits.Prey))
                         {
-                            State.GameManager.CreateMessageBox($"The vassal was successfully eaten, the leader gains exp");
-                            GiveExp(empire.Leader, 75, .04f);
+                                if (State.Rand.Next(100) < 90)
+                            {
+                                State.GameManager.CreateMessageBox($"{empire.Leader.Name} tolerates many things as a frontline soldier, but this vassal's ego will not be one of them. The moment the vassal entered the capital's grand dining room they were greeted by {empire.Leader.Name}... and the empire's inquisition. \n\nLeader gains exp");
+                                GiveExp(empire.Leader, 75, .04f);
+                            }
+                            else
+                            {
+                                State.GameManager.CreateMessageBox($"The vassal figured out something was wrong and formed a rebel army outside the capital.");
+                                CreateRebels(RebelDifficulty.Hard, empire.CapitalCity);
+                            }
                         }
                         else
                         {
-                            State.GameManager.CreateMessageBox($"The vassal figured out something was wrong and formed a rebel army outside the capital.");
-                            CreateRebels(RebelDifficulty.Hard, empire.CapitalCity);
+                            if (State.Rand.Next(100) < 90)
+                            {
+                                State.GameManager.CreateMessageBox($"The vassal was successfully eaten, the leader gains exp");
+                                GiveExp(empire.Leader, 75, .04f);
+                            }
+                            else
+                            {
+                                State.GameManager.CreateMessageBox($"The vassal figured out something was wrong and formed a rebel army outside the capital.");
+                                CreateRebels(RebelDifficulty.Hard, empire.CapitalCity);
+                            }
                         }
                     });
                     UI.ThirdChoice.interactable = empire.CapitalCity != null && empire.CapitalCity.Side == empire.Side;
@@ -375,7 +396,10 @@ internal class EventList
 
                         });
                         UI.SecondChoice.interactable = true;
-                        UI.ThirdChoice.GetComponentInChildren<Text>().text = $"Excellent! We already have a place set aside for them! [Leader Rubs Belly]";
+                        if (empire.Leader != null && empire.Leader.HasTrait(Traits.Prey))
+                            UI.ThirdChoice.GetComponentInChildren<Text>().text = $"Excellent! We already have a place set aside for them! [Leader cannot vore]";
+                        else
+                            UI.ThirdChoice.GetComponentInChildren<Text>().text = $"Excellent! We already have a place set aside for them! [Leader Rubs Belly]";
                         UI.ThirdChoice.onClick.AddListener(() =>
                         {
                             GiveExp(empire.Leader, 80, .05f);
@@ -383,7 +407,7 @@ internal class EventList
                             State.GameManager.CreateMessageBox($"The {otherEmpire.Name} are outraged at your decision to eat all of the refugees! (Leader gains exp)");
 
                         });
-                        UI.ThirdChoice.interactable = empire.Leader != null;
+                        UI.ThirdChoice.interactable = empire.Leader != null && !empire.Leader.HasTrait(Traits.Prey);
                     }
                 }
                 break;
@@ -423,7 +447,10 @@ internal class EventList
                         }
                     });
                     UI.SecondChoice.interactable = true;
-                    UI.ThirdChoice.GetComponentInChildren<Text>().text = "If they are not comfortable within our borders, perhaps they shall be more so in our bellies! Issue an order to devour all malcontents throughout the nation.";
+                    if(!empire.CanVore)
+                        UI.ThirdChoice.GetComponentInChildren<Text>().text = "If they are not comfortable within our borders, perhaps they shall be more so in our bellies! Issue an order to devour all malcontents throughout the nation.[Empire cannot vore]";
+                    else
+                        UI.ThirdChoice.GetComponentInChildren<Text>().text = "If they are not comfortable within our borders, perhaps they shall be more so in our bellies! Issue an order to devour all malcontents throughout the nation.";
                     UI.ThirdChoice.onClick.AddListener(() =>
                     {
                         State.GameManager.CreateMessageBox($"+15 happiness for all {empire.ReplacedRace} villages, Population of non {empire.ReplacedRace} cities is cut in half, chance of rebellions");
@@ -441,7 +468,7 @@ internal class EventList
                             else vill.SubtractPopulation(vill.Population / 2);
                         }
                     });
-                    UI.ThirdChoice.interactable = true;
+                    UI.ThirdChoice.interactable = empire.CanVore;
                 }
                 break;
             case 4:
@@ -449,7 +476,10 @@ internal class EventList
                     var village = GetRandomVillage(empire.Side);
                     if (village == null || village.Garrison == 0)
                         return false;
-                    UI.MainText.text = $"A riot has broken out in {village.Name} after one of our guards devoured the daughter of a local cobbler. They are forming a lynch mob at this very moment to take justice into their own maws. If we do nothing, this may spiral out of control.";
+                    if(!empire.CanVore)
+                        UI.MainText.text = $"A riot has broken out in {village.Name} after one of our guards got drunk and got in a brawl injuring several citizens. They are forming a lynch mob at this very moment to take justice into their own hands. If we do nothing, this may spiral out of control.";
+                    else
+                        UI.MainText.text = $"A riot has broken out in {village.Name} after one of our guards devoured the daughter of a local cobbler. They are forming a lynch mob at this very moment to take justice into their own maws. If we do nothing, this may spiral out of control.";
                     UI.MainText.text += AddVillageInfo(village);
                     UI.FirstChoice.GetComponentInChildren<Text>().text = "Put the guard on trial, uncover the truth, and act accordingly.";
                     UI.FirstChoice.onClick.AddListener(() =>
@@ -494,7 +524,10 @@ internal class EventList
 
                     });
                     UI.SecondChoice.interactable = true;
-                    UI.ThirdChoice.GetComponentInChildren<Text>().text = "How dare they raise their arms against our people! Devour the lot of them!";
+                    if(!empire.CanVore)
+                        UI.ThirdChoice.GetComponentInChildren<Text>().text = "How dare they raise their arms against our people! Stand with our soldiers!";
+                    else
+                        UI.ThirdChoice.GetComponentInChildren<Text>().text = "How dare they raise their arms against our people! Devour the lot of them!";
                     UI.ThirdChoice.onClick.AddListener(() =>
                     {
                         State.GameManager.CreateMessageBox($"-40 happiness for {village.Name}, Population quartered");
@@ -527,7 +560,10 @@ internal class EventList
                         village.Happiness -= 10;
                     });
                     UI.SecondChoice.interactable = true;
-                    UI.ThirdChoice.GetComponentInChildren<Text>().text = $"HERETICS? Within our own borders! Inform the priest that there shall be no need to construct a temple. The malcontents shall find the goddess soon enough! She is at the bottom of {empire.Leader.Name}'s gullet!";
+                    if (empire.Leader.HasTrait(Traits.Prey))
+                        UI.ThirdChoice.GetComponentInChildren<Text>().text = $"HERETICS? Within our own borders! Inform the priest that there shall be no need to construct a temple. The malcontents shall find the goddess soon enough! She is at the bottom of {empire.Leader.Name}'s gullet! [Leader cannot vore]";
+                    else
+                        UI.ThirdChoice.GetComponentInChildren<Text>().text = $"HERETICS? Within our own borders! Inform the priest that there shall be no need to construct a temple. The malcontents shall find the goddess soon enough! She is at the bottom of {empire.Leader.Name}'s gullet!";
                     UI.ThirdChoice.onClick.AddListener(() =>
                     {
                         State.GameManager.CreateMessageBox($"-10 villagers, -40 happiness for village, Hero gains exp");
@@ -536,7 +572,7 @@ internal class EventList
                         village.Happiness -= 40;
                         GiveExp(empire.Leader, 40, .02f);
                     });
-                    UI.ThirdChoice.interactable = true;
+                    UI.ThirdChoice.interactable = !empire.Leader.HasTrait(Traits.Prey);
                 }
                 break;
             case 6:
@@ -623,7 +659,10 @@ internal class EventList
                     {
                         if (rand < 40)
                         {
-                            State.GameManager.CreateMessageBox($"The enemy spies have been eaten");
+                            if(!empire.CanVore)
+                                State.GameManager.CreateMessageBox($"The enemy spies have been dealt with");
+                            else
+                                State.GameManager.CreateMessageBox($"The enemy spies have been eaten");
                             GiveExp(empire.Leader, 50, .03f);
                         }
                         else
@@ -633,8 +672,11 @@ internal class EventList
                         }
                     });
                     UI.SecondChoice.interactable = true;
-                    UI.ThirdChoice.GetComponentInChildren<Text>().text = $"There is only one true determiner of innocence. The belly. Consume all high ranking officials. Only the guilty shall fully digest. ";
-                    UI.ThirdChoice.onClick.AddListener(() =>
+                    if(empire.Leader.HasTrait(Traits.Prey))
+                        UI.ThirdChoice.GetComponentInChildren<Text>().text = $"Let {empire.Leader.Name} and the inquisition deal the spies. Our ranks cannot afford to be compromised the officials shall be... questioned.";
+                    else
+                        UI.ThirdChoice.GetComponentInChildren<Text>().text = $"There is only one true determiner of innocence. The belly. Consume all high ranking officials. Only the guilty shall fully digest. ";
+                   UI.ThirdChoice.onClick.AddListener(() =>
                     {
                         if (rand < 90)
                         {
@@ -693,7 +735,10 @@ internal class EventList
                         }
                     });
                     UI.SecondChoice.interactable = true;
-                    UI.ThirdChoice.GetComponentInChildren<Text>().text = $"The “Envoys” are in actuality assassins. Curse them that nosey girl for discovering our ruse. Devour her before she can reveal our secrets.";
+                    if (!empire.CanVore)
+                        UI.ThirdChoice.GetComponentInChildren<Text>().text = $"The “Envoys” are in actuality assassins. Curse them that nosey girl for discovering our ruse. Silence her before she can reveal our secrets.";
+                    else
+                        UI.ThirdChoice.GetComponentInChildren<Text>().text = $"The “Envoys” are in actuality assassins. Curse them that nosey girl for discovering our ruse. Devour her before she can reveal our secrets.";
                     UI.ThirdChoice.onClick.AddListener(() =>
                     {
                         if (State.Rand.Next(2) == 0)
@@ -704,6 +749,9 @@ internal class EventList
                         }
                         else
                         {
+                            if (!empire.CanVore)
+                            State.GameManager.CreateMessageBox($"She was dealt with and relations stay the same");
+                            else
                             State.GameManager.CreateMessageBox($"She was eaten and relations stay the same");
                         }
                     });
@@ -750,7 +798,7 @@ internal class EventList
             case 10:
                 {
                     Village village = GetRandomVillage(empire.Side);
-                    if (village == null)
+                    if (village == null || empire.CanVore)
                         return false;
                     UI.MainText.text = $"News from the province of {village.Name}. It would seem that a traveling \"hero\" known as has devoured the local noble managing the area. The hero attests that the vassal was a petty tyrant whom tormented the local populace. The noble, over the sounds of their own digestion, vehemently denied these accusations with a wobble. What shall be done?";
                     UI.MainText.text += AddVillageInfo(village);
@@ -794,7 +842,7 @@ internal class EventList
                 {
                     Village village = GetRandomVillage(empire.Side);
                     var race = GetRandomEmpire(empire).ReplacedRace;
-                    if (village == null || empire.CapitalCity == null || empire.CapitalCity.Side != empire.Side)
+                    if (village == null || empire.CapitalCity == null || empire.CapitalCity.Side != empire.Side || empire.CanVore)
                         return false;
                     UI.MainText.text = $"A {race} bandit has taken up residence in {village.Name}. They have been devouring the most beautiful women throughout town. What shall be done?";
                     UI.MainText.text += AddVillageInfo(village);
@@ -1007,7 +1055,7 @@ internal class EventList
             case 16:
                 {
                     Empire otherEmpire = GetRandomEmpire(empire);
-                    if (otherEmpire == null || empire.Leader == null || Config.Diplomacy == false)
+                    if (otherEmpire == null || empire.Leader == null || empire.Leader.HasTrait(Traits.Prey) || Config.Diplomacy == false)
                         return false;
                     UI.MainText.text = $"A recent diplomatic event between our nation and the {otherEmpire.Name} has been going very well! It seems that good relations are likely! Well, were likely. One thing apparently led to another and the chief {otherEmpire.ReplacedRace} envoy is now sitting at the bottom of {empire.Leader.Name}'s gut! What shall be done!";
                     UI.FirstChoice.GetComponentInChildren<Text>().text = $"It was an accident! They’ve already gone soft so we must apologize profusely and hope they understand the situation!";
@@ -1130,7 +1178,10 @@ internal class EventList
                     UI.ThirdChoice.GetComponentInChildren<Text>().text = $"There is only one punishment for cattle rustling. Return to the corral owner and offer the thief to her.";
                     UI.ThirdChoice.onClick.AddListener(() =>
                     {
-                        State.GameManager.CreateMessageBox($"The coral owner pats her engorged tummy as it digest the young girl. “I appreciate you finding this scrumptious morsel, my herd will be a lot safer now. That she’s, *Urrrp*” the coral owner sooths her struggling tummy, “gurgling away. Here’s some money I saved up. Consider it a payment for the meal!” (100 gold received) ");
+                        if (!empire.CanVore)
+                            State.GameManager.CreateMessageBox($"The coral owner is surprisingly understanding of the young girl's situation and puts her to work on the farm, both as punishment but also a way she could EARN her food and not steal it. Within a week we receive a letter along with some gold reporting that the young girl is enjoying working on the farm and is not only earning her wages but actively helping the farm thrive. The gold is apparently the bonus income that she's helped raise since working there. (100 gold received) ");
+                        else
+                            State.GameManager.CreateMessageBox($"The coral owner pats her engorged tummy as it digests the young girl. “I appreciate you finding this scrumptious morsel, my herd will be a lot safer now. That she’s, *Urrrp*” the coral owner sooths her struggling tummy, “gurgling away. Here’s some money I saved up. Consider it a payment for the meal!” (100 gold received) ");
                         empire.AddGold(100);
                     });
                     UI.ThirdChoice.interactable = true;
@@ -1140,7 +1191,7 @@ internal class EventList
                 {
                     Empire otherEmpire = GetRandomEmpire(empire);
 
-                    if (otherEmpire == null)
+                    if (otherEmpire == null || !otherEmpire.CanVore || !empire.CanVore)
                         return false;
                     UI.MainText.text = $"The meeting room is silent aside from a loud sloshing as the {otherEmpire.ReplacedRace} envoy waddles into the court with their entourage. Their stomach is ludicrously swollen and full of various court servants. In an impressive power play, the envoy plans to negotiate with {empire.ReplacedRace} meat surging through their intestines. The statement is clear. What shall be done? ";
                     UI.FirstChoice.GetComponentInChildren<Text>().text = $"Demand that the envoy let their prey go. We shall not suffer our people to end up as pudge. ";
@@ -1192,7 +1243,7 @@ internal class EventList
                 if (Config.MaleFraction < .5f)
                 {
                     Village village = empire.CapitalCity;
-                    if (village == null || village.Side != empire.Side)
+                    if (village == null || village.Side != empire.Side || !empire.CanVore)
                         return false;
                     UI.MainText.text = $"An eccentric noble woman renowned for her beauty and wealth has opened up a grand tournament to select her next mate as the last one mysteriously became a layer of fat on her bosom. As such she has no desire for another weak partner and in order to gain a more stable relationship has spread word of this event across the empire. Single men and women across our nation rally to partake. How does the event pan out?";
                     UI.FirstChoice.GetComponentInChildren<Text>().text = $"The event goes off without a hitch.";
@@ -1224,7 +1275,7 @@ internal class EventList
                 else
                 {
                     Village village = empire.CapitalCity;
-                    if (village == null || village.Side != empire.Side)
+                    if (village == null || village.Side != empire.Side || !empire.CanVore)
                         return false;
                     UI.MainText.text = $"An eccentric noble man renowned for his beauty and wealth has opened up a grand tournament to select his next mate as the last one mysteriously became a layer of fat on his ass. As such he has no desire for another weak partner and in order to gain a more stable relationship has spread word of this event across the empire. Single men and women across our nation rally to partake. How does the event pan out?";
                     UI.FirstChoice.GetComponentInChildren<Text>().text = $"The event goes off without a hitch.";
@@ -1259,7 +1310,7 @@ internal class EventList
                 {
                     Empire otherEmpire = GetRandomEmpire(empire);
                     Village village = GetRandomVillage(empire.Side);
-                    if (otherEmpire == null || village == null)
+                    if (otherEmpire == null || village == null || !otherEmpire.CanVore)
                         return false;
                     UI.MainText.text = $"Our border guards have come across a pudgy assailant attempting to enter our empire. After arresting them they share their story. It seems they’re from {otherEmpire.Name} lands and that they’re being hunted down by a noble family there. It would seem they, in a fit of anger and hunger, swallowed and digested the noble family’s matriarch for marrying and then eating their brother. The assailant asks for asylum in our country. What should be done?";
                     UI.FirstChoice.GetComponentInChildren<Text>().text = $"Offer asylum. Corrupt nobles cannot be allowed to do as they please, no matter the country.";
@@ -1291,7 +1342,7 @@ internal class EventList
             case 22:
                 {
                     Empire otherEmpire = GetRandomEmpire(empire);
-                    if (otherEmpire == null)
+                    if (otherEmpire == null || !otherEmpire.CanVore || !empire.CanVore)
                         return false;
                     UI.MainText.text = $"Our most recent diplomatic endeavor with the {otherEmpire.Name} has become strained with the most recent talk ending with a bulging gut and digesting ambassador. Escalation of tensions seemed inevitable. However, in a surprise move, the lead negotiator of the opposing nation has sent their mother to our camp. The middle aged woman is extravagant to a fault and her attitude is overbearing. Her motherly figure clad in gaudy trinkets and overly-tight clothes. We are uncertain how to deal with this strange political maneuver. What shall be done?";
                     UI.FirstChoice.GetComponentInChildren<Text>().text = $"We shall treat her as we would our own mother. Lavish the woman in compliments and gifts.";
@@ -1342,7 +1393,7 @@ internal class EventList
             case 23:
                 {
                     Empire otherEmpire = GetRandomEmpire(empire);
-                    if (otherEmpire == null)
+                    if (otherEmpire == null || !otherEmpire.CanVore || !empire.CanVore)
                         return false;
                     UI.MainText.text = $"One of our top infiltrators have been able to ingratiate themselves with the {otherEmpire.Name} elites. Through this we’ve been made aware that a local magistrate that’s staying in the capital has been embezzling state finances and keeping this ill-begotten fortune spread throughout their rural fief. This corrupt official assuredly knows where the treasure is but in order to interrogate them we must first smuggle them out of the capital. What shall our infiltrator do?";
                     UI.FirstChoice.GetComponentInChildren<Text>().text = $"Reveal themselves to the local peacekeepers and make them aware of the situation we’ve uncovered.";
@@ -1351,14 +1402,14 @@ internal class EventList
                         if (State.Rand.Next(3) != 0)
                         {
                             empire.AddGold(1000);
-                            otherEmpire.AddGold(9000);
+                            otherEmpire.AddGold(1000);
                             RelationsManager.ChangeRelations(empire, otherEmpire, 5);
                             RelationsManager.ChangeRelations(otherEmpire, empire, 5);
                             State.GameManager.CreateMessageBox($"While initially concerned with the aspect of a foreign agent infiltrating their city, {otherEmpire.Name} appreciates the gesture of coming to them with the information damming the corrupt magistrate. It doesn’t take long before torture unveils the location of the hidden funds. While the locals take most of their stolen money back to their treasury, they do give a sizable sum to us as thanks for our contribution in finding the assailant.");
                         }
                         else
                         {
-                            otherEmpire.AddGold(10000);
+                            otherEmpire.AddGold(1200);
                             RelationsManager.ChangeRelations(empire, otherEmpire, -5);
                             RelationsManager.ChangeRelations(otherEmpire, empire, -5);
                             State.GameManager.CreateMessageBox($"After being informed to reveal themselves to the {otherEmpire.Name} authorities communications with our infiltrator go dark. Several days later we receive a package containing the partially digested skull of our agent. It would seem that our neighbors wish us to have no illusions to the fate of spies.");
@@ -1377,8 +1428,8 @@ internal class EventList
                     {
                         if (State.Rand.Next(3) == 0)
                         {
-                            empire.AddGold(10000);
-                            State.GameManager.CreateMessageBox($"In a stroke of luck, our agent was able to enter the magistrate’s home. While they slept our clever agent managed to silently swallow the corrupt official whole. Utilizing tightfitting garb, the infiltrator manages to compress their sloshing belly enough to make them seem heavily pregnant.  \nUpon reaching the city gates, they convince the guards that they are a spurned lover that has been banished from their partner’s estate. The sob story convinces them and they’re allowed to pass. Once far enough away the magistrate is regurgitated, still asleep and only suffering minor acid burns.Their interrogation leads our troops to a small fortune! (10,000 gold) ");
+                            empire.AddGold(1000);
+                            State.GameManager.CreateMessageBox($"In a stroke of luck, our agent was able to enter the magistrate’s home. While they slept our clever agent managed to silently swallow the corrupt official whole. Utilizing tightfitting garb, the infiltrator manages to compress their sloshing belly enough to make them seem heavily pregnant.  \nUpon reaching the city gates, they convince the guards that they are a spurned lover that has been banished from their partner’s estate. The sob story convinces them and they’re allowed to pass. Once far enough away the magistrate is regurgitated, still asleep and only suffering minor acid burns.Their interrogation leads our troops to a small fortune! (1,000 gold) ");
                         }
                         else
                         {
@@ -1392,7 +1443,7 @@ internal class EventList
             case 24:
                 {
                     Empire otherEmpire = GetRandomEmpire(empire);
-                    if (otherEmpire == null)
+                    if (otherEmpire == null || !otherEmpire.CanVore)
                         return false;
                     UI.MainText.text = $"A powerful noble family within the {otherEmpire.Name} controls a staggering 1/5th of their territory. This house is traditionally a force of stability within the nation. However, with the recent death of the family head the myriad of scions to the house have begun squabbling over land rights. What shall be done?";
                     UI.FirstChoice.GetComponentInChildren<Text>().text = $"Encourage cooperation between the scions. Stability is crucial for our plans in the region.";
@@ -1407,7 +1458,7 @@ internal class EventList
                         }
                         else
                         {
-                            otherEmpire.AddGold(10000);
+                            otherEmpire.AddGold(1000);
                             RelationsManager.ChangeRelations(empire, otherEmpire, -3);
                             ChangeAllVillageHappiness(otherEmpire, 20);
                             State.GameManager.CreateMessageBox($"Our attempts to intercede have been mistakenly interpreted as an aggressive maneuver to take over the house’s territory. The scions immediately rally under the leadership of their most martial sibling and begin pressuring their state to wage war against us.  \nWhile not what we wanted, the schism seems unlikely now.");
@@ -1518,9 +1569,16 @@ internal class EventList
                     UI.FirstChoice.GetComponentInChildren<Text>().text = $"Suffer not this beast, slay it and bring justice to the names of those it has already devoured.";
                     UI.FirstChoice.onClick.AddListener(() =>
                     {
+                        var garrison = village.PrepareAndReturnGarrison();
+                        if ((State.Rand.Next(5) >= 1) && (garrison.Count > 0))
+                        {
+                            State.GameManager.CreateMessageBox($"The canid, although great was successfully slain by the city's garrison. A day after the beast's demise we receive a gift of gold from the village as thanks for our intervention.\n\nVillage Happiness +10, Gold +160");
+                            village.Happiness += 10;
+                            empire.AddGold(160);
+                        }
+                        else
                         {
                             State.GameManager.CreateMessageBox($"The sizable canid has devoured the entire garrison with relative ease, snapping up and gulping down each and every soldier, one by one. It's gurgling stomach heard from nearby over the entire night. At sunrise, it pads out of its domicile, fattened up generously by its latest meal, and it heads off for less fattening lands. Whilst there was a grevious loss, at least the beast was driven away.");
-                            var garrison = village.PrepareAndReturnGarrison();
                             foreach (var unit in garrison)
                             {
                                 village.VillagePopulation.RemoveHireable(unit);
@@ -1573,29 +1631,40 @@ internal class EventList
                     {
                         {
                             var garrison = village.PrepareAndReturnGarrison();
-                            foreach (var unit in garrison)
+                            if ((State.Rand.Next(2) == 0) && (garrison.Count > 0))
                             {
-                                village.VillagePopulation.RemoveHireable(unit);
-                                village.SubtractPopulation(1);
+                                State.GameManager.CreateMessageBox($"The garrison successfully baits the creature out of it's den, once out they slowly lure it away from the village into the wilderness. The villagers are relieved to have the predator dealt with. The child, although sad that their \"kitty\" is gone, is happy knowing that it wasn’t harmed and is free to eat all it wants.\n\nVillage Happiness +20, Gold +100");
+                                empire.AddGold(100);
+                                village.Happiness += 20;
                             }
-                            village.SubtractPopulation(village.Maxpop / 6);
-                            village.SetPopulationToAtleastTwo();
-                            empire.AddGold(50);
-                            village.Happiness += 10;
-                            Unit youth = new Unit(empire.Side, empire.ReplacedRace, village.GetStartingXp(), empire.CanVore && !State.RaceSettings.Get(empire.ReplacedRace).RaceTraits.Contains(Traits.Prey));
-                            youth.Items[0] = State.World.ItemRepository.GetItem(ItemType.CompoundBow);
-                            Unit lion = new Unit(empire.Side, Race.FeralLions, 0, true);
-                            lion.AddPermanentTrait(Traits.Large);
-                            lion.AddPermanentTrait(Traits.IronGut);
-                            lion.AddPermanentTrait(Traits.StrongGullet);
-                            youth.AddPermanentTrait(Traits.PleasurableTouch);
-                            lion.Name = "Kitty";
-                            lion.DigestedUnits = State.Rand.Next(village.Maxpop / 6, (int)(village.Maxpop / 4));
-                            lion.GiveExp(lion.DigestedUnits * 10);
-                            State.GameManager.CreateMessageBox($"Dear government,\n\nKitty would like to say thanks for the treat, but I think something about soldier equipment makes {(lion.GetPronoun(2))} gassy, heheh. Anyways, it's been feeling pretty noisy here for Kitty so we'll leave!\nXOXO Kitty and {youth.Name} \n\nOn the bright side, we could recover all the victims' valuables and the remaining citizens are thankful for our efforts.\n\nVillage Happiness +10, Gold +50, Garrison wiped out, Population -{(village.Maxpop / 6)}, The duo is still out there");
-                            var armyName = $"Kitty and {youth.Name}";
-                            Empire kittyEmp = CreateFactionlessArmy(village, 57, new[] { lion, youth }, 10, armyName);
-                            kittyEmp.Name = armyName;
+                            else
+                            {
+                                foreach (var unit in garrison)
+                                {
+                                    village.VillagePopulation.RemoveHireable(unit);
+                                    village.SubtractPopulation(1);
+                                }
+                                village.SubtractPopulation(village.Maxpop / 6);
+                                village.SetPopulationToAtleastTwo();
+                                empire.AddGold(50);
+                                village.Happiness += 10;
+                                Unit youth = new Unit(empire.Side, empire.ReplacedRace, village.GetStartingXp(), empire.CanVore && !State.RaceSettings.Get(empire.ReplacedRace).RaceTraits.Contains(Traits.Prey));
+                                youth.Items[0] = State.World.ItemRepository.GetItem(ItemType.CompoundBow);
+                                Unit lion = new Unit(empire.Side, Race.FeralLions, 0, true);
+                                lion.AddPermanentTrait(Traits.Large);
+                                lion.AddPermanentTrait(Traits.IronGut);
+                                lion.AddPermanentTrait(Traits.StrongGullet);
+                                youth.AddPermanentTrait(Traits.PleasurableTouch);
+                                lion.Name = "Kitty";
+                                lion.DigestedUnits = State.Rand.Next(village.Maxpop / 6, (int)(village.Maxpop / 4));
+                                lion.GiveExp(lion.DigestedUnits * 10);
+                                State.GameManager.CreateMessageBox($"Dear government,\n\nKitty would like to say thanks for the treat, but I think something about soldier equipment makes {(lion.GetPronoun(2))} gassy, heheh. Anyways, it's been feeling pretty noisy here for Kitty so we'll leave!\nXOXO Kitty and {youth.Name} \n\nOn the bright side, we could recover all the victims' valuables and the remaining citizens are thankful for our efforts.\n\nVillage Happiness +10, Gold +50, Garrison wiped out, Population -{(village.Maxpop / 6)}, The duo is still out there");
+                                var armyName = $"Kitty and {youth.Name}";
+                                Empire kittyEmp = CreateFactionlessArmy(village, 57, new[] { lion, youth }, 10, armyName);
+                                kittyEmp.Name = armyName;
+                                youth.Side = kittyEmp.Side;
+                                lion.Side = kittyEmp.Side;
+                            }
                         }
 
                     });
@@ -1621,6 +1690,8 @@ internal class EventList
                         var armyName = $"Kitty and {youth.Name}";
                         Empire kittyEmp = CreateFactionlessArmy(village, 57, new[] { lion, youth }, 10, armyName);
                         kittyEmp.Name = armyName;
+                        youth.Side = kittyEmp.Side;
+                        lion.Side = kittyEmp.Side;
                         RelationsManager.SetPeace(kittyEmp, empire);
                     });
                     UI.SecondChoice.interactable = true;
@@ -1699,13 +1770,6 @@ internal class EventList
                     UI.SecondChoice.GetComponentInChildren<Text>().text = $"As long as the kobold pays taxes on the property exchange it's not our business how they deal with the competition.";
                     UI.SecondChoice.onClick.AddListener(() =>
                     {
-                        Unit unit = new Unit(empire.Side, Race.Terrorbird, village.GetStartingXp(), true);
-                        unit.AddPermanentTrait(Traits.IronGut);
-                        unit.DigestedUnits = 1;
-                        village.VillagePopulation.AddHireable(unit);
-                        village.SubtractPopulation(1);
-                        village.Happiness -= 5;
-
                         village.SubtractPopulation(1);
                         village.Happiness -= 5;
                         empire.AddGold(500);
@@ -1716,7 +1780,7 @@ internal class EventList
                     UI.ThirdChoice.onClick.AddListener(() =>
                     {
                         Unit unit;
-                        for (int x = 0; x < 2; x++)
+                        for (int x = 0; x < 3; x++)
                         {
                             unit = new Unit(empire.Side, Race.Kobolds, village.GetStartingXp(), true);
                             unit.AddPermanentTrait(Traits.PackVoracity);
@@ -1734,6 +1798,322 @@ internal class EventList
                     UI.ThirdChoice.interactable = true;
                 }
                 break;
+            //Event Idea by Dr.Fetish from discord
+            case 30:
+                {
+                    if ((empire.Leader == null) || (empire.Leader.Race >= Race.Vagrants))
+                        return false;
+                    UI.MainText.text = $"A wandering smith of great renown has come from a far in search of {empire.Leader.Name}. The smith approaches {empire.Leader.Name} saying they wish to forge an enchanted weapon for {(empire.Leader.GetPronoun(1))} to support {(empire.Leader.GetPronoun(2))} cause. What does {empire.Leader.Name} do?";
+                    UI.FirstChoice.GetComponentInChildren<Text>().text = "Requests an enchanted ranged weapon";
+                    UI.FirstChoice.onClick.AddListener(() =>
+                    {
+                        State.GameManager.CreateMessageBox($"The smith appears slightly dissapointed to not make a melee weapon, but nonetheless begins to hold their hands out in front of themselves as a bright white orb materializes in front of them, then they clap their hands together; the orb disappearing within. Then, as the smith pulls their hands apart, {empire.Leader.Name} watches the magical weapon levitate from the smith directly into {(empire.Leader.GetPronoun(2))} hands.\n\nLeader Gains Tier 3 Ranged weapon the \"Omni Launcher\"");
+                        empire.Leader.Items[0] = State.World.ItemRepository.GetSpecialItem(SpecialItems.OmniLauncher);
+                    });
+                    UI.FirstChoice.interactable = true;
+                    UI.SecondChoice.GetComponentInChildren<Text>().text = "Requests an enchanted melee Weapon";
+                    UI.SecondChoice.onClick.AddListener(() =>
+                    {
+                        State.GameManager.CreateMessageBox($"The smith gets a big grin on their face then begins to hold their hands out in front of themselves as a bright white orb materializes in front of them, then they clap their hands together; the orb disappearing within. Then, as the smith pulls their hands apart, {empire.Leader.Name} watches the magical weapon levitate from the smith directly into {(empire.Leader.GetPronoun(2))} hands.\n\nLeader Gains Tier 3 Melee weapon the \"Omni Buster\"");
+                        empire.Leader.Items[0] = State.World.ItemRepository.GetSpecialItem(SpecialItems.OmniBuster);
+                    });
+                    UI.SecondChoice.interactable = true;
+                    UI.ThirdChoice.GetComponentInChildren<Text>().text = "Asks the smith for a \"Special request.\"";
+                    UI.ThirdChoice.onClick.AddListener(() =>
+                    {
+                        if (empire.Leader.HasTrait(Traits.Prey))
+                            State.GameManager.CreateMessageBox($"{empire.Leader.Name} requests a set of armor explaining they are content with their current weapons, the smith thinks for a moment then gets an idea and asks {empire.Leader.Name} to outstretch  {(empire.Leader.GetPronoun(2))} hands. Clasping {empire.Leader.Name}'s hands in theirs the smith's hands glow a bright white which flows into {empire.Leader.Name} leaving {(empire.Leader.GetPronoun(2))} feeling greatly empowered. Before {empire.Leader.Name} can say a word to the smith {(empire.Leader.GetPronoun(0))} realizes they're gone.\n\nLeader gains EXP");
+                        else
+                            State.GameManager.CreateMessageBox($"The smith leans in, excited to hear what unique weapon {empire.Leader.Name} has in mind for them to make. However, just as the smith enters whispering range {empire.Leader.Name} easily swallows them whole! \"Don't worry. Look at it like this, you ARE still helping my cause just... in a different way!\" {empire.Leader.Name} says as the smith wobbles in {(empire.Leader.GetPronoun(2))} belly. However, almost in reaction to the leader's remark {(empire.Leader.GetPronoun(2))} belly glows in a bright light then stops leaving {empire.Leader.Name} feeling as though {(empire.Leader.GetPronoun(0))} just had a grand feast, despite only having one meal.\n\nLeader gains EXP");
+                        GiveExp(empire.Leader, 80, .09f);
+                    });
+                    UI.ThirdChoice.interactable = true;
+                }
+                break;
+            case 31:
+                {
+                    Village village = GetRandomVillage(empire.Side);
+                    if (village == null)
+                        return false;
+                    UI.MainText.text = $"One of our scouts from {village.Name} returned from their patrols reporting the presence of a group of fox bandits forming just on the outskirts of the settlement for a surprise attack. What shall be done?";
+                    UI.MainText.text += AddVillageInfo(village);
+                    UI.FirstChoice.GetComponentInChildren<Text>().text = $"Let the people know the situation and that the bandits shall be swifty dispatched.";
+                    UI.FirstChoice.onClick.AddListener(() =>
+                    {
+                        village.Happiness += 15;
+                        CreateBandits(RebelDifficulty.Medium, village, Race.Foxes);
+                        State.GameManager.CreateMessageBox($"The people can rest easy knowing the situation shall be resolved. The bandits gather to seize {village.Name}, now is our time to prepare or go in for a preemptive strike. \n\nHappiness +15");
+                    });
+                    UI.FirstChoice.interactable = true;
+                    UI.SecondChoice.GetComponentInChildren<Text>().text = $"Demand the people of {village.Name} to provide us additional gold so that we may shore up adequate defences.";
+                    UI.SecondChoice.onClick.AddListener(() =>
+                    {
+                        int payout = 170;
+                        village.Happiness -= 10;
+                        if (State.Rand.Next(2) == 0)
+                        {
+                            empire.AddGold(170);
+                        }
+                        else
+                        {
+                            empire.AddGold(250);
+                            payout = 250;
+                        }
+                        CreateBandits(RebelDifficulty.Medium, village, Race.Foxes);
+                        State.GameManager.CreateMessageBox($"Althogh unhappy the people willingly scrounge together what gold they can spare. To assist in the settlement's defence. \n\nHappiness -10, Gold +{payout}.");
+                    });
+                    UI.SecondChoice.interactable = true;
+                }
+                    UI.ThirdChoice.GetComponentInChildren<Text>().text = $"";
+                    UI.ThirdChoice.onClick.AddListener(() =>
+                    {
+                    });
+                    UI.ThirdChoice.interactable = false;
+                break;
+            //Event from Ryan The Sergal on discord
+            case 32:
+                {
+                    Village village = GetRandomVillage(empire.Side);
+                    if (village == null)
+                        return false;
+                    UI.MainText.text = $"The war has caused many guards who would otherwise patrol and defend the region around {village.Name} to join the army or become mercenaries instead. This has given a nearby gang of bandits the opportunity to act and grow freely. Recent reports indicate that they may be growing big enough to launch a raid on the city itself. How must we respond?";
+                    UI.MainText.text += AddVillageInfo(village);
+                    UI.FirstChoice.GetComponentInChildren<Text>().text = $"These reports are overblown. The local garrison is more than strong enough to handle it on their own.";
+                    UI.FirstChoice.onClick.AddListener(() =>
+                    {
+                        village.Happiness -= 10;
+                        CreateBandits(RebelDifficulty.Medium, village, Race.Humans);
+                        State.GameManager.CreateMessageBox($"After some time of raiding the local trade routes the bandits muster their forces for an attack on {village.Name}. \n\nHappiness -10");
+                    });
+                    UI.FirstChoice.interactable = true;
+                    UI.SecondChoice.GetComponentInChildren<Text>().text = $"The garrison can't handle this right now. We must invest gold to have some of the local adventurers deal with this threat before it becomes a problem. [200 gold]";
+                    UI.SecondChoice.onClick.AddListener(() =>
+                    {
+                        village.Happiness += 10;
+                        empire.SpendGold(200);
+                        State.GameManager.CreateMessageBox($"It didn’t take long after the bounties were made for the bandits, for adventurer and mercenary alike to wipeout the bandits making the roads safe yet again. \n\nHappiness +10, Gold -200");
+                    });
+                    UI.SecondChoice.interactable = empire.Gold >= 200;
+                    UI.ThirdChoice.GetComponentInChildren<Text>().text = $"Our garrison must handle this threat before it becomes a problem. Have them sally out and deal with them.";
+                    UI.ThirdChoice.onClick.AddListener(() =>
+                    {
+                        var garrison = village.PrepareAndReturnGarrison();
+                        if ((State.Rand.Next(5) >= 1) && (garrison.Count > 0))
+                        {
+                            village.Happiness += 10;
+                            State.GameManager.CreateMessageBox($"The garrison returns after not long reporting that they were successful in weakening the raiding party but were unable to finish them off before the rest scattered.\n\nHappiness +10, Bandit forces weakened");
+                            CreateBandits(RebelDifficulty.Easy, village, Race.Humans);
+                        }
+                        else if (garrison.Count == 0)
+                        {
+                            village.Happiness -= 10;
+                            State.GameManager.CreateMessageBox($"After the order is given a letter quickly returns from the city simply reading. \n\n\"Ah, yes allow us to send in our garrison, armed with the weapons that our great and mighty government has given us. Oh wait, I'm sorry. I've just been informed that we DON'T HAVE ONE!\"\n\nHappiness -10, The bandits prepare for their raid");
+                            CreateBandits(RebelDifficulty.Medium, village, Race.Humans);
+                        }
+                        else
+                        {
+                            State.GameManager.CreateMessageBox($"The raiders were warned beforehand of our plans. Because of this, they had the element of surprise on their side. Our soldiers fought bravely and fearlessly, but in the end, they have all been slain or devoured by these merciless raiders. We must finish what our fallen heroes have started and crush the raiders now that they are in a weakened state.\n\nGarrison Lost, Bandit forces weakened");
+                            CreateBandits(RebelDifficulty.Easy, village, Race.Humans);
+                            foreach (var unit in garrison)
+                            {
+                                village.VillagePopulation.RemoveHireable(unit);
+                                village.SubtractPopulation(1);
+                            }
+                        }
+                    });
+                }
+                    UI.ThirdChoice.interactable = true;
+                break;
+            case 33://Prey event|Event from Ryan The Sergal on discord
+                {
+                    var occupiedVillages = State.World.Villages.Where(s => s.Side == empire.Side && s.Race != empire.ReplacedRace);
+                    var selfVillages = State.World.Villages.Where(s => s.Side == empire.Side && s.Race == empire.ReplacedRace);
+                    Village village = empire.CapitalCity;
+                    if (village == null || empire.CanVore || occupiedVillages == null || village.Side != empire.Side)
+                        return false;
+                    UI.MainText.text = $"Whether by recruitment or natural migration, a recent census has determined that we now have a substantial population of voracious predators among our general populous. Some of them have begun to devour our people as well, whether it be willing or unwilling. The people are looking to us for an official response.";
+                    UI.MainText.text += AddVillageInfo(village);
+                    UI.FirstChoice.GetComponentInChildren<Text>().text = $"Let them live as they always have, but enforce some restrictions on eating the unwilling.";
+                    UI.FirstChoice.onClick.AddListener(() =>
+                    {
+                        foreach (Village vill in occupiedVillages)
+                        {
+                            vill.Happiness += 25;
+                            vill.SubtractPopulation(10);
+                            vill.SetPopulationToAtleastTwo();
+                        }
+                        State.GameManager.CreateMessageBox($"The new voracious population is grateful for your acceptance of their way of life. They’ve fully integrated into our society and live happily. Those who want to be devoured are happier as well, as they can now live out their fantasies. However, this has resulted in people all over the empire to go ‘missing’. Leading to an overall decrease in population. \n\nHappiness +25, Population -10 for all foreign towns");
+                    });
+                    UI.FirstChoice.interactable = true;
+                    UI.SecondChoice.GetComponentInChildren<Text>().text = $"Devouring other sapient beings whole is unacceptable. Force these preds to convert at once.";
+                    UI.SecondChoice.onClick.AddListener(() =>
+                    {
+                        foreach (Village vill in occupiedVillages)
+                        {
+                            vill.Happiness -= 15;
+                            vill.AddPopulation(20);
+                        }
+                        State.GameManager.CreateMessageBox($"We have managed to convert their people to our way of life, whether it be by force or by free will. We have saved many lives through this, no doubt. This, combined with the continued immigration and conversion of pred species has led to an overall increase in population. However, these former preds have expressed unhappiness and vocal disagreement with this policy as they’re forced to abandon their natural way of life. \n\nHappiness -15, Population +20 for all foreign towns");
+                    });
+                    UI.SecondChoice.interactable = true;
+                    UI.ThirdChoice.GetComponentInChildren<Text>().text = $"These monsters infiltrate our lands and devour our people?! Drive them out before they can eat any more innocents!";
+                    UI.ThirdChoice.onClick.AddListener(() =>
+                    {
+                        foreach (Village vill in occupiedVillages)
+                        {
+                            vill.Happiness -= 30;
+                            vill.SubtractPopulation(40);
+                            vill.SetPopulationToAtleastTwo();
+                        }
+                        foreach (Village vill in selfVillages)
+                        {
+                            vill.Happiness -= 10;
+                            vill.SubtractPopulation(5);
+                        }
+                        empire.AddGold(600);
+                        State.GameManager.CreateMessageBox($"Our response was brutal and swift. The voracious monsters have been fully driven from our lands, giving our people much-needed peace of mind, knowing they will no longer end up as some beast's next meal. Our response was so quick, that we’ve managed to loot a good number of their belongings, which have fetched us a decent amount of gold to fund our empire. However, this was not without loss of life on our part. The loss of life, combined with our rather brutal approach has left our people with decreased happiness as they mourn their losses and fear our way of governing. \n\nHappiness -30, Population -40 for all foreign towns \nHappiness -10, Population -5 for all non-foreign towns \n+600 Gold");
+                    });
+                    UI.ThirdChoice.interactable = true;
+                }
+                break;
+/*            case 34://Test for Empire wide Garrison modification.
+                {
+                    var totalVillages = State.World.Villages.Where(s => s.Side == empire.Side);
+                    var village = GetRandomVillage(empire.Side);
+                    if (village == null || village.Garrison == 0)
+                        return false;
+                    UI.MainText.text = $"Test for Garrison EXP.";
+                    UI.MainText.text += AddVillageInfo(village);
+                    UI.FirstChoice.GetComponentInChildren<Text>().text = "ALL Red shirts shall be executed.";
+                    UI.FirstChoice.onClick.AddListener(() =>
+                    {
+                        State.GameManager.CreateMessageBox($"All garrisons exterminated");
+                        foreach (Village vill in totalVillages)
+                        {
+                            var garrison = vill.PrepareAndReturnGarrison();
+                            foreach (var unit in garrison)
+                            {
+                                vill.VillagePopulation.RemoveHireable(unit);
+                                vill.SubtractPopulation(1);
+                            }
+                        }
+                    });
+                    UI.FirstChoice.interactable = true;
+                    UI.SecondChoice.GetComponentInChildren<Text>().text = "Invest in militry training for all garrisons. [500 Gold]";
+                    UI.SecondChoice.onClick.AddListener(() =>
+                    {
+                        State.GameManager.CreateMessageBox($"All garrisons gain +100xp");
+                        empire.SpendGold(500);
+                        foreach (Village vill in totalVillages)
+                        {
+                            var garrison = vill.PrepareAndReturnGarrison();
+                            foreach (var unit in garrison)
+                            {
+                            GiveExp(unit, 100, 0f);
+                            }
+                        }
+                    });
+                    UI.SecondChoice.interactable = empire.Gold >= 500;
+                    UI.ThirdChoice.GetComponentInChildren<Text>().text = "Leave them be";
+                    UI.ThirdChoice.onClick.AddListener(() =>
+                    {
+                        State.GameManager.CreateMessageBox($"The garrisons remain as is");
+                    });
+                    UI.ThirdChoice.interactable = true;
+                }
+                break;*/
+                //Event from Ryan The Sergal on discord
+            case 34:
+                {
+                    var village = GetRandomVillage(empire.Side);
+                    if (village == null || village.Garrison == 0)
+                        return false;
+                    UI.MainText.text = $"The state of our garrison at {village.Name} has been deemed inadequate by most of our officer corps, several of them citing a lack of good quality training and discipline, giving them no experience when fighting on the field. We have been suggested to enact some military reforms at that city, giving our garrison there much better quality training than they had before. While this will no doubt make them much more skilled and formidable and thus give them much higher survivability, it will be quite expensive to put into action. How should we proceed?";
+                    UI.MainText.text += AddVillageInfo(village);
+                    UI.FirstChoice.GetComponentInChildren<Text>().text = "The safety and strength of our people and soldiers are much more important than some excess wealth. Go through with the reforms!  [250 Gold]";
+                    UI.FirstChoice.onClick.AddListener(() =>
+                    {
+                        State.GameManager.CreateMessageBox($"While the better gear and extra training for both the local officers and soldiers was expensive, we have already seen a dramatic increase in discipline, strategic understanding and general combat effectiveness. The soldiers are now much better trained than they were before and thus much more capable to withstand invasion of any kind without the immediate aid of our army. \n\n-250 Gold, Garrison gains +100 EXP");
+                        empire.SpendGold(250);
+                        var garrison = village.PrepareAndReturnGarrison();
+                        foreach (var unit in garrison)
+                        {
+                            GiveExp(unit, 100, 0.05f);
+                        }
+                    });
+                    UI.FirstChoice.interactable = empire.Gold >= 250;
+                    UI.SecondChoice.GetComponentInChildren<Text>().text = "While tempting and no doubt important, we simply don't have the funds for this. We must stay our current course for now.";
+                    UI.SecondChoice.onClick.AddListener(() =>
+                    {
+                        State.GameManager.CreateMessageBox($"The local garrison has not received its special training. This has no immediate negative consequences, as we keep our money and don't change anything about their training regiment. However, they will be just as ill-prepared for future conflicts as they are now, likely relying more on our army's direct support to maintain the safety and control over their city.");
+                    });
+                    UI.SecondChoice.interactable = true;
+                    UI.ThirdChoice.GetComponentInChildren<Text>().text = "We are low on funds as it is, and now these worthless leeches need more to do their jobs? Have the officers devour them all! Let's make those useless worms actually useful!";
+                    UI.ThirdChoice.onClick.AddListener(() =>
+                    {
+                        State.GameManager.CreateMessageBox($"The local garrison was devoured by the officer corps for their incompetence. One by one, they were forced down the gullets of their superiors, ending up as nothing but padding on their hips. While at first they showed some concern regarding this decision, they had their minds quickly changed when they got to enjoy this grand and delicious meal, some even donating personal funds to our treasury in thanks. Perhaps now that the incompetent old guard is gone, they can be replaced with more capable, deadly soldiers and mercenaries instead. \n\nGarrison wiped out, +300 Gold");
+                        var garrison = village.PrepareAndReturnGarrison();
+                        foreach (var unit in garrison)
+                        {
+                            village.VillagePopulation.RemoveHireable(unit);
+                            village.SubtractPopulation(1);
+                        }
+                    });
+                    UI.ThirdChoice.interactable = empire.CanVore;
+                }
+                break;
+                //Event Idea from Alex discord
+            case 35:
+                {
+                    Village village = GetRandomVillage(empire.Side);
+                    if (village == null)
+                        return false;
+                    UI.MainText.text = $"A dragon that has been harassing {village.Name} for some time has grown tired of the town's meagre offerings to placate them, their last visit they demanded that a \"substantial tribute\" would be expected next time. What should the town do?";
+                    UI.MainText.text += AddVillageInfo(village);
+                    UI.FirstChoice.GetComponentInChildren<Text>().text = $"Dragons are fierce creatures we cannot offord to provoke one. Take money from our coffers to make sure the dragon is appeased. [500]";
+                    UI.FirstChoice.onClick.AddListener(() =>
+                    {
+                        village.Happiness += 25;
+                        empire.SpendGold(500);
+                        State.GameManager.CreateMessageBox($"The dragon gladly accepts the tribute and leaves the town alone for now... The people of {village.Name} are grateful for our assistance in having the dragon dealt with even if temporarily. \n\nHappiness +25, -500 Gold");
+                    });
+                    UI.FirstChoice.interactable = empire.Gold >= 500;
+                    UI.SecondChoice.GetComponentInChildren<Text>().text = $"The last thing we want is an angry dragon roaming across our lands, unfortunately we don't have the funds for a larger offering. Propose giving some villagers as servants to the dragon.";
+                    UI.SecondChoice.onClick.AddListener(() =>
+                    {
+                        village.Happiness -= 25;
+                        village.SubtractPopulation(village.Population / 2);
+                        village.SetPopulationToAtleastTwo();
+                        State.GameManager.CreateMessageBox($"The dragon liked the proposition, perhaps too much... The dragon first chose their servants the dragon then ate a substantial amount of the town's population threatening to raise the whole town to the ground should anyone object. Once the dragon ate their fill they left with newfound servants in tow. Let's hope the dragon won’t return soon. \n\nHappiness -25, Population halved");
+                    });
+                    UI.SecondChoice.interactable = true;
+                    UI.ThirdChoice.GetComponentInChildren<Text>().text = $"We shall suffer this dragon no longer. Send some scouts to steal from their hoard!";
+                    UI.ThirdChoice.onClick.AddListener(() =>
+                    {
+                        int payout = 500;
+                        if (State.Rand.Next(2) == 0)
+                        {
+                            empire.AddGold(500);
+                        }
+                        else
+                        {
+                            empire.AddGold(800);
+                            payout = 800;
+                        }
+                        State.GameManager.CreateMessageBox($"Our scouts return in success, managing to escape the dragon with sacks full of gems and gold! However the scouts also report that dragon is currently on the way to the town, let's hope we can fend it off.\n\n+{payout} Gold, The dragon about to attack the town!");
+                        int highestExp = State.GameManager.StrategyMode.ScaledExp;
+                        int baseXp = (int)(highestExp * 50 / 100);
+                        Unit dragon = new Unit(114, Race.Dragon, baseXp, true);
+                        dragon.AddPermanentTrait(Traits.Large);
+                        var armyName = $"{dragon.Name} The Vengeful";
+                        Empire dragonEmp = CreateFactionlessArmy(village, 35, new[] {dragon}, 1, armyName);
+                        dragonEmp.Name = armyName;
+                        dragon.Side = dragonEmp.Side;
+                    });
+                }
+                    UI.ThirdChoice.interactable = true;
+                break;
+
             default:
                 return false;
         }
@@ -1777,7 +2157,7 @@ internal class EventList
             return;
         Empire first = empires[0];
         Empire second = empires[1];
-        int num = State.Rand.Next(30);
+        int num = State.Rand.Next(32);
         int time = 90;
         if (State.GameManager.StrategyMode.OnlyAIPlayers)
             time = 12;
@@ -1949,6 +2329,34 @@ internal class EventList
                 State.GameManager.CreateMessageBox($"{second.Name} settlers setting up near the {first.Name} border went missing recently. The {second.Name} accuses the {first.Name} of devouring their people but their border guard refuses whole heartedly, saying they’d never go so low as to eat something so disgusting.", time);
                 RelationsManager.ChangeRelations(first, second, -1);
                 RelationsManager.ChangeRelations(second, first, -1);
+                break;
+            case 30:
+                {
+                    Village village = GetRandomVillage(first.Side);
+                    State.GameManager.CreateMessageBox($"A group of our scouts have reported that the {first.Name} have heavily fortified their defences at {village.Name}, we should take caution if we are to attack this city.", time);
+                    var garrison = village.PrepareAndReturnGarrison();
+                    foreach (var unit in garrison)
+                    {
+                        GiveExp(unit, 130, 0.05f);
+                    }
+                }
+                break;
+            case 31:
+                {
+                    Village village1 = GetRandomVillage(first.Side);
+                    Village village2 = GetRandomVillage(second.Side);
+                    State.GameManager.CreateMessageBox($"Our spies report that escalated tensions between the {second.Name} and the {first.Name} have resulted in them investing in their defences at {village1.Name} and {village2.Name}, this could be problematic if we are planning an invasion on either location.", time);
+                    var garrison1 = village1.PrepareAndReturnGarrison();
+                    foreach (var unit in garrison1)
+                    {
+                        GiveExp(unit, 100, 0.05f);
+                    }
+                    var garrison2 = village2.PrepareAndReturnGarrison();
+                    foreach (var unit in garrison2)
+                    {
+                        GiveExp(unit, 100, 0.05f);
+                    }
+                }
                 break;
         }
     }
@@ -2157,7 +2565,7 @@ internal class EventList
         pseudoEmp.ReplacedRace = army.Units[0].Race;
         pseudoEmp.Armies.Add(army);
         pseudoEmp.TurnOrder = 1337;
-        Config.World.SpawnerInfo[(Race)unusedSide] = new SpawnerInfo(true, 1, 0, 0.4f, pseudoEmp.Team, 0, false, 9999, 2, pseudoEmp.MaxArmySize, pseudoEmp.TurnOrder);
+        Config.World.SpawnerInfo[(Race)unusedSide] = new SpawnerInfo(true, 1, 0, 0.4f, pseudoEmp.Team, 0, false, 9999, 2, pseudoEmp.MaxArmySize, pseudoEmp.TurnOrder, false);
         State.World.AllActiveEmpires.Add(pseudoEmp);
         State.World.RefreshTurnOrder();
         return pseudoEmp;

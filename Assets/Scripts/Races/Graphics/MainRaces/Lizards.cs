@@ -18,7 +18,7 @@ class Lizards : DefaultRaceData
         MouthTypes = 1;
         BodySizes = 0;
 
-
+        
         Body = new SpriteExtraInfo(2, BodySprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.LizardMain, s.Unit.AccessoryColor));
         Head = new SpriteExtraInfo(2, HeadSprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.LizardMain, s.Unit.AccessoryColor));
         BodyAccessory = new SpriteExtraInfo(5, AccessorySprite, null, (s) => ColorPaletteMap.GetPalette(ColorPaletteMap.SwapType.LizardMain, s.Unit.HairColor)); //Horns / Skin
@@ -54,6 +54,7 @@ class Lizards : DefaultRaceData
             RaceSpecificClothing.LizardBoneCrown,
             RaceSpecificClothing.LizardLeatherCrown,
             RaceSpecificClothing.LizardClothCrown,
+            RaceSpecificClothing.LizardNoCrown,
         };
 
         AvoidedMainClothingTypes = 3;

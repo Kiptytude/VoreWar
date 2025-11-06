@@ -22,6 +22,7 @@ public enum SpriteType
     BodyAccessory,
     SecondaryAccessory,
     Belly,
+    SecondaryBelly,
     Weapon,
     BackWeapon,
     BodySize,
@@ -91,6 +92,30 @@ class CompleteSprite
         }
 
     }
+    /// <summary>
+    /// Normalizes sprite scale in UI to matche the set pixelsPerUnit based on actual sprite width.
+    /// </summary>
+    public void AdjustSpriteScale()
+    {
+        if (actor.Unit.Race == Race.Centaur ||
+            actor.Unit.Race == Race.Ghosts)
+        {
+            foreach (var sprite in sprites)
+            {
+                if (sprite != null)
+                {
+                    if (sprite.Sprite != null)
+                    {
+                        var bodyres = sprite.Sprite.pixelsPerUnit;
+                        var bodywidth = sprite.Sprite.rect.width;
+                        float mult = bodywidth / bodyres;
+                        sprite.GameObject.transform.localScale = new Vector3(mult, mult, sprite.GameObject.transform.localScale.z);
+                    }
+                }
+            }
+        }
+
+    }
 
     public SpriteContainer GetSpriteOfType(SpriteType spriteType)
     {
@@ -98,6 +123,8 @@ class CompleteSprite
         if (sprites[typeInt] != null)
             return sprites[typeInt];
         if (spriteType == SpriteType.Belly && animatedType != null)
+            sprites[typeInt] = new SpriteContainer(animatedType, folder, spriteType.ToString(), 0, 0, null);
+            else if (spriteType == SpriteType.SecondaryBelly && animatedType != null)
             sprites[typeInt] = new SpriteContainer(animatedType, folder, spriteType.ToString(), 0, 0, null);
         else if (spriteType == SpriteType.Balls && animatedType != null)
             sprites[typeInt] = new SpriteContainer(animatedType, folder, spriteType.ToString(), 0, 0, null);
@@ -161,9 +188,6 @@ class CompleteSprite
         sprites[typeInt].Sprite = sprite.GetSprite(actor);
         int sortOrder = sprite.layer + actor.spriteLayerOffset;
         sprites[typeInt].SortOrder = sortOrder;
-
-        
-       
 
     }
 
@@ -299,6 +323,7 @@ class CompleteSprite
         if (actor.Unit.Race == Race.Imps && sprites[(int)SpriteType.BodyAccent6] != null)
             sprites[(int)SpriteType.BodyAccent6].GameObject.transform.SetParent(sprites[(int)SpriteType.Belly].GameObject.transform.parent, false);
         SetSprite(SpriteType.Belly, belly);
+        SetSprite(SpriteType.SecondaryBelly, race.SecondaryBelly);
         SetSprite(SpriteType.Eyes, race.Eyes);
         SetSprite(SpriteType.Weapon, race.Weapon);
         SetSprite(SpriteType.BackWeapon, race.BackWeapon);
@@ -377,6 +402,7 @@ class CompleteSprite
         UpdatePosition(SpriteType.Beard, race.Beard);
         UpdatePosition(SpriteType.SecondaryAccessory, race.SecondaryAccessory);
         UpdatePosition(SpriteType.Belly, belly);
+        UpdatePosition(SpriteType.SecondaryBelly, race.SecondaryBelly);
         UpdatePosition(SpriteType.Eyes, race.Eyes);
         UpdatePosition(SpriteType.Weapon, race.Weapon);
         UpdatePosition(SpriteType.BackWeapon, race.BackWeapon);

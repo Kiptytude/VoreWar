@@ -6,6 +6,7 @@
     TailVore,
     AnalVore,
     Transfer,
+    KissTransfer,
     StealVore,
     BreastVore,
     BreastFeed,
@@ -17,4 +18,8 @@
     ShunGokuSatsu,
     Regurgitate,
     TailStrike,
+    GiantSweep,
+    SweepingSwallow,
+    AllInVore,
+    DireInfection,
 }

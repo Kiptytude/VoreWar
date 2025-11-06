@@ -2,6 +2,7 @@ using OdinSerializer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 
 
@@ -15,6 +16,7 @@ public class ConstructionWants
     public bool Defenses = false;
     public bool Mercenaries = false;
     public bool Magic = false;
+    public bool Equipment = false;
 }
 
 public class StrategicAI : IStrategicAI
@@ -34,6 +36,8 @@ public class StrategicAI : IStrategicAI
 
     StrategicArmyCommander ArmyCommander;
 
+    StrategicBuildingContractor BuildingContractor;
+
     int idealArmySize;
 
     int AISide => empire.Side;
@@ -48,6 +52,11 @@ public class StrategicAI : IStrategicAI
     void RegenArmyCommander()
     {
         ArmyCommander = new StrategicArmyCommander(empire, empire.MaxArmySize, smarterAI);
+    }
+
+    void RegenBuildingContractor()
+    {
+        BuildingContractor = new StrategicBuildingContractor(empire);
     }
 
     public bool RunAI()
@@ -69,6 +78,14 @@ public class StrategicAI : IStrategicAI
         if (Config.Diplomacy)
             ProcessRelations();
 
+        // Don't run buildings unless system is enabled or one is captured off of map.
+        if (Config.BuildConfig.BuildingSystemEnabled || empire.Buildings.Count() > 0)
+        {
+            if (BuildingContractor == null)
+                RegenBuildingContractor();
+            BuildingContractor.AssessBuildStatus();
+        }
+
         if (ArmyCommander == null)
             RegenArmyCommander();
         ArmyCommander.ResetPath();
@@ -85,17 +102,17 @@ public class StrategicAI : IStrategicAI
         int totalIncome = empire.Income;
         for (int i = 0; i < empire.Armies.Count; i++)
         {
-            totalIncome += (empire.Armies[i].Units.Count * Config.World.ArmyUpkeep);
+            totalIncome += empire.GetUpkeep();
         }
 
         int idealUnitCount;
 
-        idealUnitCount = totalIncome / Math.Max(Config.World.ArmyUpkeep * 3 / 5, 1);
+        idealUnitCount = (int)Math.Round(totalIncome / Math.Max(empire.GetUpkeepCoefficient() * 3 / 5, 1));
         if (empire.Gold > 3000)
-            idealUnitCount = totalIncome / Math.Max(Config.World.ArmyUpkeep * 4 / 5, 1);
-        int minArmySize = empire.MaxArmySize * 3 / 4;
+            idealUnitCount = (int)Math.Round(totalIncome / Math.Max(empire.GetUpkeepCoefficient() * 4 / 5, 1));
+        int minArmySize = (int)Math.Round((empire.MaxArmySize / empire.GetAvgDeployCost()) * 3 / 4);
         if (currentUnitCount > 40 || ArmyCommander.StrongestArmyRatio < .7f)
-            minArmySize = empire.MaxArmySize;
+            minArmySize = (int)Math.Round((empire.MaxArmySize / empire.GetAvgDeployCost()));
 
         if (currentUnitCount > 32)
         {
@@ -121,6 +138,7 @@ public class StrategicAI : IStrategicAI
         }
         if (empire.Gold > 50 + minThreshold + minArmySize * unitCost && empire.Income > 10 && (idealUnitCount - currentUnitCount >= minArmySize || currentUnitCount == 0) && empire.Armies.Count() < Config.MaxArmies)
         {
+
             purchasedArmy = PurchaseArmy(unitCost, ref currentUnitCount, forcedHeavyWeapon);
             for (int i = 0; i < 10; i++) //Can purchase additional armies if absolutely loaded with cash
             {
@@ -330,6 +348,7 @@ public class StrategicAI : IStrategicAI
             HealRate = true,
             Defenses = true,
             Magic = true,
+            Equipment = true,
         });
     }
 
@@ -412,6 +431,14 @@ public class StrategicAI : IStrategicAI
             foreach (var result in resultList)
                 validBuildings.Add(result.Key, result.Value);
         }
+        else if (wants.Equipment)
+        {
+            var resultList = VillageBuildingList.Buildings.Where(pair =>
+                pair.Value.Boosts.EquipmentLevels > 0
+            );
+            foreach (var result in resultList)
+                validBuildings.Add(result.Key, result.Value);
+        }
 
 
         foreach (var possibleBuilding in validBuildings)
@@ -477,9 +504,9 @@ public class StrategicAI : IStrategicAI
     private bool PurchaseArmy(int unitCost, ref int currentUnitCount, bool ForceAdvancedWeapons)
     {
         idealArmySize = empire.Gold / unitCost;
-        if (idealArmySize > empire.MaxArmySize)
+        if (idealArmySize > empire.MaxArmySize / empire.GetAvgDeployCost())
         {
-            idealArmySize = empire.MaxArmySize;
+            idealArmySize = (int)Math.Round(empire.MaxArmySize / empire.GetAvgDeployCost());
         }
         int tier = 1;
         if (empire.Gold > idealArmySize * 40)
@@ -506,17 +533,16 @@ public class StrategicAI : IStrategicAI
         Army army = new Army(empire, new Vec2i(village.Position.x, village.Position.y), village.Side);
         if (idealArmySize > village.GetTotalPop() - 3)
             idealArmySize = village.GetTotalPop() - 3;
-        if (idealArmySize < 4 && idealArmySize < empire.MaxArmySize)
+        if (idealArmySize < 4 && Math.Floor(empire.MaxArmySize / empire.GetAvgDeployCost()) > idealArmySize)
             return null;
-
-
+        
         if (Config.AICanCheatSpecialMercs && MercenaryHouse.UniqueMercs?.Count > 0)
         {
             foreach (var merc in MercenaryHouse.UniqueMercs)
             {
                 if (State.Rand.Next(40 * MercenaryHouse.UniqueMercs.Count) == 0)
                 {
-                    if (army.Units.Count < army.MaxSize)
+                    if (StrategicUtilities.ArmyCanFitUnit(army, merc.Unit))
                     {
                         army.Units.Add(merc.Unit);
                         merc.Unit.Side = army.Side;
